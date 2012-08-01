@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) OASIS Open 2006-2007. All Rights Reserved.
+-->
+<xsd:schema targetNamespace="http://docs.oasis-open.org/wsbpel/2.0/serviceref"
+			xmlns:sref="http://docs.oasis-open.org/wsbpel/2.0/serviceref"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified"
+			blockDefault="#all">
+	
+	<xsd:annotation>
+		<xsd:documentation>
+			Service Reference Schema for WS-BPEL 2.0
+			OASIS Standard
+			11th April, 2007
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:element name="service-ref" type="sref:ServiceRefType">
+		<xsd:annotation>
+			<xsd:documentation>
+				This element can be used within a from-spec.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="ServiceRefType">
+		<xsd:annotation>
+			<xsd:documentation>
+				This type definition is for service reference container.
+				This container is used as envelope to wrap around the actual endpoint reference value,
+				when a BPEL process interacts the endpoint reference of a partnerLink.
+				It provides pluggability of different versions of service referencing schemes
+				being used within a BPEL program. The design pattern here is similar to those of
+				expression language.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:any namespace="##other" processContents="lax"/>
+		</xsd:sequence>
+		<xsd:attribute name="reference-scheme" type="xsd:anyURI"/>
+	</xsd:complexType>
+	
+</xsd:schema>

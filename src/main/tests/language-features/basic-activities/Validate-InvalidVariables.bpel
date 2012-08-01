@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Validate-InvalidVariables"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/validateInvalidVariables"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="AssignReplyData" >
+            <copy>
+                <from>
+                    <literal>
+                        false
+                    </literal>
+                </from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <validate name="Validate" variables="ReplyData"/>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

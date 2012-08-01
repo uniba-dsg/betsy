@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Flow-Links-ReceiveCreatingInstances"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/flow-links-receiveCreatingInstances"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+            location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="BranchVariable" type="xsd:int"/>
+    </variables>
+    <sequence>
+        <flow name="Flow">
+            <links>
+                <link name="RecvToAssign"/>
+            </links>
+            <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+                     portType="ti:TestInterfacePortType" variable="InitData">
+                <sources>
+                    <source linkName="RecvToAssign"/>
+                </sources>
+            </receive>
+            <assign name="SetBranch1">
+                <targets>
+                    <target linkName="RecvToAssign"/>
+                </targets>
+                <copy>
+                    <from>1</from>
+                    <to variable="BranchVariable"/>
+                </copy>
+            </assign>
+        </flow>
+        <assign name="AssignReplyData">
+            <copy>
+                <from>$BranchVariable + $InitData.inputPart</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

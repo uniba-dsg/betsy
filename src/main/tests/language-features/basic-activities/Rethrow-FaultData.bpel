@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+name="Rethrow-FaultData"
+targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/rethrowFaultDataUnmodified"
+xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+<import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+<partnerLinks>
+    <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+</partnerLinks>
+<variables>
+    <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+    <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+</variables>
+<faultHandlers>
+    <catch faultName="bpel:completionConditionFailure" faultVariable="FaultData" faultMessageType="ti:executeProcessSyncResponse">
+        <sequence>
+            <rethrow name="Rethrow"/>
+        </sequence>
+    </catch>
+</faultHandlers>
+<scope>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="AssignFaultData">
+            <copy>
+                <from variable="InitData" part="inputPart" />
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <throw name="Throw" faultName="bpel:completionConditionFailure" faultVariable="ReplyData"/>
+    </sequence>
+</scope>
+</process>

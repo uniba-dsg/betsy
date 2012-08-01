@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Throw-CustomFaultInWsdl"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/throw-customFaultInWsdl"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="FaultData" messageType="ti:executeProcessSyncFault"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign>
+            <copy>
+                <from variable="InitData" part="inputPart"/>
+                <to variable="FaultData" part="payload"/>
+            </copy>
+        </assign>
+        <throw name="Throw" faultName="ti:syncFault" faultVariable="FaultData" />
+    </sequence>
+</process>

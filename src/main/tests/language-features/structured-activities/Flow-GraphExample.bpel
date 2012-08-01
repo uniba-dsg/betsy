@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This process emulates the Flow Graph Example defined in the BPEL Spec 11.6.4 with our structure-->
+<process
+        name="Flow-GraphExample"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/flowGraphExample"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="BuyerInformationRequest" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="BuyerInformationResponse" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="SellerInformationRequest" messageType="ti:executeProcessAsyncRequest"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
+    <sequence>
+        <!-- bootstrap the process and initiate the correlationSet-->
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData">
+            <copy>
+                <from>$InitData.inputPart</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+
+        <!-- Flow Graph Example -->
+        <flow name="Flow" suppressJoinFailure="yes">
+            <links>
+                <link name="buyToSettle" />
+                <link name="sellToSettle" />
+                <link name="toBuyConfirm" />
+                <link name="toSellConfirm" />
+            </links>
+
+            <!-- Buyer and seller information in parallel -->
+            <sequence>
+                <receive name="receiveBuyerInformation"  partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="BuyerInformationRequest">
+                    <sources>
+                        <source linkName="buyToSettle" />
+                    </sources>
+                    <correlations>
+                        <correlation set="CorrelationSet" initiate="no"/>
+                    </correlations>
+                </receive>
+                <assign name="AssignBuyerInformationReplyData">
+                    <copy>
+                        <from>$BuyerInformationRequest.inputPart</from>
+                        <to variable="BuyerInformationResponse" part="outputPart"/>
+                    </copy>
+                </assign>
+                <reply name="ReplyToReceiveBuyerInformation" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="BuyerInformationResponse"/>
+            </sequence>
+            <receive name="receiveSellerInformation"  partnerLink="MyRoleLink" operation="startProcessAsync" portType="ti:TestInterfacePortType" variable="SellerInformationRequest">
+                <sources>
+                    <source linkName="sellToSettle" />
+                </sources>
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+            </receive>
+
+            <!-- Merge the requests -->
+            <empty name="settleTrade" >
+                <targets>
+                    <joinCondition>$buyToSettle and $sellToSettle</joinCondition>
+                        <target linkName="buyToSettle" />
+                        <target linkName="sellToSettle" />
+                </targets>
+                <sources>
+                    <source linkName="toBuyConfirm" />
+                    <source linkName="toSellConfirm" />
+                </sources>
+            </empty>
+
+            <!-- Reply the result. We need an extra invocation here, because in the test setting, buyer and seller are
+            the same entity which would deadlock itself if each request is synchronous. The purpose of this test is to
+            verify the correct processing of links and parallelism  -->
+            <sequence>
+                <receive name="confirmBuyerInformation"  partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="BuyerInformationRequest">
+                    <targets>
+                        <target linkName="toBuyConfirm" />
+                    </targets>
+                    <correlations>
+                        <correlation set="CorrelationSet" initiate="no"/>
+                    </correlations>
+                </receive>
+                <assign name="AssignConfirmBuyerInformationReplyData">
+                    <copy>
+                        <from>$BuyerInformationRequest.inputPart</from>
+                        <to variable="BuyerInformationResponse" part="outputPart"/>
+                    </copy>
+                </assign>
+                <reply name="ReplyToConfirmBuyerInformation" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="BuyerInformationResponse"/>
+            </sequence>
+            <receive name="confirmSellerInformation"  partnerLink="MyRoleLink" operation="startProcessAsync" portType="ti:TestInterfacePortType" variable="SellerInformationRequest">
+                <targets>
+                    <target linkName="toSellConfirm" />
+                </targets>
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+            </receive>
+
+        </flow>
+
+    </sequence>
+</process>

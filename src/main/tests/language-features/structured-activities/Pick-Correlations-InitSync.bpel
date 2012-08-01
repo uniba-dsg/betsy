@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Pick-Correlations-InitSync"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/pickCorrelationsSync"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" >
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
+    <sequence>
+        <receive name="StartProcess" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData">
+            <copy>
+                <from variable="InitData" part="inputPart"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+
+        <pick name="Pick" createInstance="no">
+            <onMessage partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+                <sequence name="Sequence">
+                    <assign name="AssignReplyData">
+                        <copy>
+                            <from>$InitData.inputPart + $ReplyData.outputPart</from>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                    <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+                </sequence>
+            </onMessage>
+        </pick>
+    </sequence>
+</process>
+
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Scope-EventHandlers-OnAlarm-Until"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeEventHandlersOnAlarmUntil"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" >
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData" />
+        <scope name="OuterScope">
+            <eventHandlers>
+                <onAlarm>
+                    <documentation>As the deadline has already passed, the handler should execute immediately</documentation>
+                    <until>'2012-03-28T12:26:24.0'</until>
+                    <scope name="Scope">
+                        <sequence name="Sequence">
+                            <assign name="AssignReplyData">
+                                <copy>
+                                    <from variable="InitData" part="inputPart"/>
+                                    <to variable="replyData" part="outputPart"/>
+                                </copy>
+                            </assign>
+                            <reply name="CorrelatedReply" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData" />
+                        </sequence>
+                    </scope>
+                </onAlarm>
+            </eventHandlers>
+            <wait name="WaitFor10Seconds">
+                <for>'P0Y0M0DT0H0M10.0S'</for>
+            </wait>
+        </scope>
+    </sequence>
+</process>
+

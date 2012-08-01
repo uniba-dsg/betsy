@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Invoke-FromParts"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/invokeFromParts"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+        xmlns:tp="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner" location="../TestPartner.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+        <partnerLink name="TestPartnerLink" partnerLinkType="tp:TestPartnerLinkType" partnerRole="testPartnerRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="TempInt" type="xs:int"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="AssignPartnerInitData">
+            <copy>
+                <from variable="InitData" part="inputPart"/>
+                <to variable="PartnerInitData" part="inputPart"/>
+            </copy>
+        </assign>
+        <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync" portType="tp:TestPartnerPortType" inputVariable="PartnerInitData">
+            <fromParts>
+                <fromPart part="outputPart" toVariable="TempInt" />
+            </fromParts>
+        </invoke>
+        <assign>
+            <copy>
+                <from variable="TempInt" />
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

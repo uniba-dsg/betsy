@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!-- Adapted from BPEL-Spec, Sec 12.4.2 -->
+<process name="Scope-ComplexCompensation"
+targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeComplexCompensation"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="V1" type="xsd:int"/>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <compensate />
+        </catchAll>
+    </faultHandlers>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="InitializeV1">
+            <copy>
+                <from>0</from>
+                <to variable="V1"/>
+            </copy>
+        </assign>
+        <scope name="S2">
+            <variables>
+                <variable name="V2" type="xsd:int"/>
+            </variables>
+            <compensationHandler>
+                <empty/>
+            </compensationHandler>
+            <sequence>
+                <assign name="InitializeV2">
+                    <copy>
+                        <from>0</from>
+                        <to variable="V2"/>
+                    </copy>
+                </assign>
+                <scope name="S3">
+                    <variables>
+                        <variable name="V3" type="xsd:int"/>
+                    </variables>
+                    <compensationHandler>
+               <!-- V1, V2, and V3 ALL have the value 1
+                    when this logic is reached. So the result should be 3 -->
+                        <sequence>
+                            <assign>
+                                <copy>
+                                    <from>$V1+$V2+$V3</from>
+                                    <to variable="ReplyData" part="outputPart"/>
+                                </copy>
+                            </assign>
+                            <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+                        </sequence>
+                    </compensationHandler>
+                    <sequence>
+                        <assign name="InitializeV3">
+                            <copy>
+                                <from>0</from>
+                                <to variable="V2"/>
+                            </copy>
+                        </assign>
+                        <assign name="IncrementV3">
+                            <copy>
+                                <from>1</from>
+                                <to variable="V3" />
+                            </copy>
+                        </assign>
+                    </sequence>
+                </scope> <!-- end of scope S3 -->
+                <assign name="IncrementV1AndV2">
+                    <copy>
+                        <from>1</from>
+                        <to variable="V1" />
+                    </copy>
+                    <copy>
+                        <from>1</from>
+                        <to variable="V2" />
+                    </copy>
+                </assign>
+                <throw name="Throw" faultName="bpel:completionConditionFailure"/>
+            </sequence>
+        </scope> <!-- end of scope S2 -->
+    </sequence>
+</process>

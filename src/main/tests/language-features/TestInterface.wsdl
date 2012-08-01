@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TestInterface"
+             targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+             xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+
+    <plink:partnerLinkType name="TestInterfacePartnerLinkType">
+        <plink:role name="testInterfaceRole" portType="tns:TestInterfacePortType"/>
+    </plink:partnerLinkType>
+
+    <vprop:property name="correlationId" type="xsd:int"/>
+    <vprop:propertyAlias messageType="tns:executeProcessSyncRequest" part="inputPart" propertyName="tns:correlationId"/>
+    <vprop:propertyAlias messageType="tns:executeProcessSyncResponse" part="outputPart" propertyName="tns:correlationId" />
+    <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="tns:correlationId"/>
+
+    <types>
+        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+            <xsd:element name="testElementSyncRequest" type="xsd:int"/>
+            <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
+            <xsd:element name="testElementSyncResponse" type="xsd:int"/>
+            <xsd:element name="testElementSyncFault" type="xsd:int"/>
+        </xsd:schema>
+    </types>
+
+    <message name="executeProcessSyncRequest">
+        <part name="inputPart" element="tns:testElementSyncRequest"/>
+    </message>
+    <message name="executeProcessAsyncRequest">
+        <part name="inputPart" element="tns:testElementAsyncRequest"/>
+    </message>
+    <message name="executeProcessSyncResponse">
+        <part name="outputPart" element="tns:testElementSyncResponse"/>
+    </message>
+    <message name="executeProcessSyncFault">
+        <part name="payload" element="tns:testElementSyncFault"/>
+    </message>
+
+    <portType name="TestInterfacePortType">
+        <operation name="startProcessAsync">
+            <input name="asyncInput" message="tns:executeProcessAsyncRequest"/>
+        </operation>
+        <operation name="startProcessSync">
+            <input name="syncInput" message="tns:executeProcessSyncRequest"/>
+            <output name="syncOutput" message="tns:executeProcessSyncResponse"/>
+            <fault name="syncFault" message="tns:executeProcessSyncFault"/>
+        </operation>
+    </portType>
+
+    <binding name="TestInterfacePortTypeBinding" type="tns:TestInterfacePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="startProcessAsync">
+            <soap:operation soapAction="async"/>
+            <input name="asyncInput">
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+        <operation name="startProcessSync">
+            <soap:operation soapAction="sync"/>
+            <input name="syncInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="syncOutput">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="syncFault">
+                <soap:fault name="syncFault" use="literal"/>
+            </fault>
+        </operation>
+    </binding>
+
+    <service name="TestInterfaceService">
+        <port name="TestInterfacePort" binding="tns:TestInterfacePortTypeBinding">
+            <soap:address location="ENDPOINT_URL"/>
+        </port>
+    </service>
+
+</definitions>

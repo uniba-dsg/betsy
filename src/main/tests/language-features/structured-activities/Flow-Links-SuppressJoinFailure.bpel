@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Flow-Links-SuppressJoinFailure"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/flow-links-suppessJoinFailure"
+        suppressJoinFailure="yes"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+            location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="Branch1" type="xsd:int"/>
+        <variable name="Branch2" type="xsd:int"/>
+        <variable name="Branch3" type="xsd:int"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+                 portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="init-vars">
+            <copy>
+                <from>0</from>
+                <to variable="Branch1"/>
+            </copy>
+            <copy>
+                <from>0</from>
+                <to variable="Branch2"/>
+            </copy>
+            <copy>
+                <from>0</from>
+                <to variable="Branch3"/>
+            </copy>
+        </assign>
+        <flow name="Flow" suppressJoinFailure="yes">
+            <links>
+                <link name="FromFirstToThird"/>
+                <link name="FromSecondToThird"/>
+            </links>
+            <assign name="First">
+                <sources>
+                    <source linkName="FromFirstToThird">
+                        <transitionCondition>false()</transitionCondition>
+                    </source>
+                </sources>
+                <copy>
+                    <from>1</from>
+                    <to variable="Branch1"/>
+                </copy>
+            </assign>
+            <assign name="Second">
+                <sources>
+
+                    <source linkName="FromSecondToThird">
+                        <transitionCondition>false()</transitionCondition>
+                    </source>
+                </sources>
+                <copy>
+                    <from>1</from>
+                    <to variable="Branch2"/>
+                </copy>
+            </assign>
+            <assign name="Third">
+                <targets>
+                    <joinCondition>
+                        $FromFirstToThird and $FromSecondToThird
+                    </joinCondition>
+                    <target linkName="FromFirstToThird"/>
+                    <target linkName="FromSecondToThird"/>
+                </targets>
+                <copy>
+                    <from>1</from>
+                    <to variable="Branch3"/>
+                </copy>
+            </assign>
+        </flow>
+        <assign name="AssignReplyData">
+            <copy>
+                <from>$Branch1 + $InitData.inputPart + $Branch3 + $Branch2</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

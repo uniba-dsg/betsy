@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Scope-Variables-Overwriting"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeVariablesOverwriting"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <scope name="Scope">
+        <variables>
+            <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+            <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+            <variable name="Value" type="xs:integer"/>
+        </variables>
+        <sequence>
+            <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+
+            <assign name="InitReplyData" >
+                <copy>
+                    <from>0</from>
+                    <to variable="ReplyData" part="outputPart"/>
+                </copy>
+            </assign>
+
+
+            <assign name="InitValue">
+                <copy>
+                    <from>1</from>
+                    <to variable="Value"/>
+                </copy>
+            </assign>
+
+            <scope name="InnerScope">
+                <variables>
+                    <variable name="Value" type="xs:integer"/>
+                </variables>
+                <sequence>
+                    <assign name="ReInitValue">
+                        <copy>
+                            <from>2</from>
+                            <to variable="Value"/>
+                        </copy>
+                    </assign>
+                    <assign name="InnerAssignReplyData" >
+                        <copy>
+                            <from>$Value + $ReplyData.outputPart</from>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </scope>
+
+            <assign name="AssignReplyData" >
+                <copy>
+                    <from>$Value + $ReplyData.outputPart</from>
+                    <to variable="ReplyData" part="outputPart"/>
+                </copy>
+            </assign>
+
+            <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+        </sequence>
+    </scope>
+</process>

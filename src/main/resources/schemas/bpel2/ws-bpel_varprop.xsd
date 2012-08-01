@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) OASIS Open 2003-2007. All Rights Reserved.
+-->
+<xsd:schema targetNamespace="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+			xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified"
+			blockDefault="#all">
+	
+	<xsd:annotation>
+		<xsd:documentation>
+			Variable Properties Schema for WS-BPEL 2.0
+			OASIS Standard
+			11th April, 2007
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+	
+	<xsd:element name="property">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="vprop:tExtensibleElements">
+					<xsd:attribute name="name" type="xsd:NCName" use="required"/>
+					<xsd:attribute name="type" type="xsd:QName"/>
+					<xsd:attribute name="element" type="xsd:QName"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:complexType name="tExtensibleElements">
+		<xsd:annotation>
+			<xsd:documentation>
+				This type is extended by other component types to allow elements and attributes from
+				other namespaces to be added at the modeled places.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="vprop:documentation" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	
+	<xsd:element name="documentation">
+		<xsd:complexType mixed="true">
+			<xsd:sequence>
+				<xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:attribute name="source" type="xsd:anyURI"/>
+			<xsd:attribute ref="xml:lang"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="propertyAlias">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="vprop:tExtensibleElements">
+					<xsd:sequence>
+						<xsd:element ref="vprop:query" minOccurs="0"/>
+					</xsd:sequence>
+					<xsd:attribute name="propertyName" type="xsd:QName" use="required"/>
+					<xsd:attribute name="messageType" type="xsd:QName"/>
+					<xsd:attribute name="part" type="xsd:NCName"/>
+					<xsd:attribute name="type" type="xsd:QName"/>
+					<xsd:attribute name="element" type="xsd:QName"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="query" type="vprop:tQuery"/>
+	<xsd:complexType name="tQuery" mixed="true">
+		<xsd:sequence>
+			<xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="queryLanguage" type="xsd:anyURI" default="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	
+</xsd:schema>

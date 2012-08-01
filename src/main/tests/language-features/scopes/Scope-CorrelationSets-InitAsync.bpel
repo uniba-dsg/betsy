@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Scope-CorrelationSets-InitAsync"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeCorrelationSetsInitAsync"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="InitData" messageType="ti:executeProcessAsyncRequest"/>
+        <variable name="InitDataSync" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="NumberOfInvocations" messageType="ti:executeProcessSyncResponse"/>
+    </variables>
+    <scope name="Scope">
+        <correlationSets>
+            <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+        </correlationSets>
+        <sequence>
+            <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessAsync" portType="ti:TestInterfacePortType" variable="InitData">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="yes"/>
+                </correlations>
+            </receive>
+            <assign name="InitNumberOfInvocations">
+                <copy>
+                    <from>1</from>
+                    <to variable="NumberOfInvocations" part="outputPart"/>
+                </copy>
+            </assign>
+            <receive name="CorrelatedReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" createInstance="no" variable="InitDataSync">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+            </receive>
+            <assign name="InitNumberOfInvocations">
+                <copy>
+                    <from>$NumberOfInvocations.outputPart + 1</from>
+                    <to variable="NumberOfInvocations" part="outputPart"/>
+                </copy>
+            </assign>
+            <reply name="ReplyToSecondReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="NumberOfInvocations"/>
+        </sequence>
+    </scope>
+</process>
+

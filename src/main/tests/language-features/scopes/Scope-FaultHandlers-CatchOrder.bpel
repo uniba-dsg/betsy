@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Scope-FaultHandlers-CatchOrder"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeFaultHandlersCatchOrder"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+        xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <scope name="Scope">
+        <!-- Adapted from the example in sec 12.5 -->
+        <faultHandlers>
+            <catch faultName="bpel:completionConditionFailure">
+                <empty />
+            </catch>
+            <catch faultVariable="ReplyData" faultMessageType="ti:executeProcessSyncResponse">
+                <empty />
+            </catch>
+            <catch faultName="bpel:completionConditionFailure" faultVariable="ReplyData" faultMessageType="ti:executeProcessSyncResponse">
+                <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+            </catch>
+            <catchAll>
+                <empty />
+            </catchAll>
+        </faultHandlers>
+        <sequence>
+            <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+            <assign name="AssignReplyData">
+                <copy>
+                    <from variable="InitData" part="inputPart"/>
+                    <to variable="ReplyData" part="outputPart"/>
+                </copy>
+            </assign>
+            <throw name="Throw" faultName="bpel:completionConditionFailure" faultVariable="ReplyData"/>
+        </sequence>
+    </scope>
+</process>

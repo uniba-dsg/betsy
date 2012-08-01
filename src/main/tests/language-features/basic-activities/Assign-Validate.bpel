@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Assign-Validate"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/assignValidate"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:months="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months" location="months.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="ToBeValidated" type="months:monthInteger"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="AssignReplyData">
+            <copy>
+                <from variable="InitData" part="inputPart"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <assign name="ValidateOnAssign" validate="yes">
+            <copy>
+                <from variable="ReplyData" part="outputPart"/>
+                <to variable="ToBeValidated"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Receive-AmbiguousReceiveFault"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/receiveAmbiguousReceiveFault"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+   <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/" />
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="asyncInitData" messageType="ti:executeProcessAsyncRequest"/>
+        <variable name="syncInitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet1" properties="ti:correlationId"/>
+        <correlationSet name="CorrelationSet2" properties="ti:correlationId"/>
+    </correlationSets>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessAsync" portType="ti:TestInterfacePortType" variable="asyncInitData">
+			<correlations>
+                <correlation set="CorrelationSet1" initiate="yes"/>
+				<correlation set="CorrelationSet2" initiate="yes"/>
+            </correlations>
+        </receive>
+        <flow>
+			<sequence>
+				<receive name="Receive1" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
+					<correlations>
+						<correlation set="CorrelationSet1" initiate="no"/>
+					</correlations>
+				</receive>
+				<assign name="AssignReplyData1">
+					<copy>
+                        <from>
+                            <literal>
+                                1
+                            </literal>
+                        </from>
+						<to variable="replyData" part="outputPart"/>
+					</copy>
+				</assign>
+				<reply name="ReplyToReceive1" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData"/>
+			</sequence>
+            <sequence>
+				<receive name="Receive2" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
+					<correlations>
+						<correlation set="CorrelationSet2" initiate="no"/>
+					</correlations>
+				</receive>
+				<assign name="AssignReplyData2">
+					<copy>
+                        <from>
+                            <literal>
+                                2
+                            </literal>
+                        </from>
+						<to variable="replyData" part="outputPart"/>
+					</copy>
+				</assign>
+				<reply name="ReplyToReceive2" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData"/>
+			</sequence>
+        </flow>
+    </sequence>
+</process>
+

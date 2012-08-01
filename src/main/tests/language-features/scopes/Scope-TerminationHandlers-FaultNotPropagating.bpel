@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Scope-TerminationHandlers-FaultNotPropagating"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeTerminationHandlers-faultNotPropagating"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+        >
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+            location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <scope name="Scope">
+        <sequence>
+            <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+                     portType="ti:TestInterfacePortType" variable="InitData"/>
+            <assign name="AssignReplyData">
+                <copy>
+                    <from variable="InitData" part="inputPart"/>
+                    <to variable="ReplyData" part="outputPart"/>
+                </copy>
+            </assign>
+
+            <scope>
+
+                <faultHandlers>
+                    <catch faultName="bpel:selectionFault">
+                        <empty/>
+                    </catch>
+                    <catch faultName="thisShouldNotBeSeenByAnyone">
+                        <rethrow />
+                    </catch>
+                </faultHandlers>
+
+                <sequence>
+                    <flow>
+                        <scope>
+                            <terminationHandler>
+                                <sequence>
+                                    <assign name="AssignTerminationReplyData">
+                                        <copy>
+                                            <from>
+                                                <literal>
+                                                    -1
+                                                </literal>
+                                            </from>
+                                            <to variable="ReplyData" part="outputPart"/>
+                                        </copy>
+                                    </assign>
+                                    <throw faultName="thisShouldNotBeSeenByAnyone"/>
+                                </sequence>
+                            </terminationHandler>
+                            <wait>
+                                <for>'PT2.0S'</for>
+                            </wait>
+                        </scope>
+                        <scope>
+                            <sequence>
+                                <wait>
+                                    <for>'PT0.01S'</for>
+                                </wait>
+                                <throw faultName="bpel:selectionFault"/>
+                            </sequence>
+                        </scope>
+                    </flow>
+                </sequence>
+            </scope>
+
+            <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+                   portType="ti:TestInterfacePortType" variable="ReplyData"/>
+
+        </sequence>
+    </scope>
+</process>

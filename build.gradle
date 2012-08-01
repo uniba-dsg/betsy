@@ -1,0 +1,39 @@
+apply plugin: "groovy"
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "eclipse"
+apply plugin: "application"
+
+mainClassName = "configuration.TestUsingParameters"
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+            srcDir 'src/main/tests'
+
+        }
+    }
+}
+
+dependencies {
+    groovy 'org.codehaus.groovy:groovy-all:2.0.0'
+
+    compile 'org.apache.ant:ant:1.8.3'
+    compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.0\\lib', includes: ['*.jar']))
+    compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.0\\bin', includes: ['*.jar']))
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0'
+}
+
+run {
+    if(project.hasProperty('args')){
+        args project.args.split('\\s+')
+    }
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Scope-RepeatableConstructCompensation"
+    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeRepeatableConstructCompensation"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" 
+    xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="Counter" type="xsd:int"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <sequence name="FaultSequence">
+                <compensate name="Compensate"/>
+                <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+            </sequence>
+        </catchAll>
+    </faultHandlers>
+    <sequence name="Sequence">
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="InitializeLoopCounterAndReplyData">
+            <copy>
+                <from>0</from>
+                <to variable="Counter"/>
+            </copy>
+            <copy>
+                <from>0</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <while name="While">
+            <condition>$Counter &lt; $InitData.inputPart</condition>
+            <scope name="Scope">
+                <compensationHandler>
+                    <assign name="IncrementReplyData" >
+                        <copy>
+                            <from>$ReplyData.outputPart + 1</from>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                </compensationHandler>
+                <sequence>
+                    <assign name="IncrementLoopCounter">
+                        <copy>
+                            <from>$Counter + 1</from>
+                            <to variable="Counter"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </scope>
+        </while>
+        <throw name="Throw" faultName="bpel:completionConditionFailure"/>
+    </sequence>
+</process>
+

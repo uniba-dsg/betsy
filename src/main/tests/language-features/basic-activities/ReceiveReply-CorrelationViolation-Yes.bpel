@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="ReceiveReply-CorrelationViolation-Yes"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/receiveReplyCorrelationViolationYes"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" >
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="syncInitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
+    <sequence>
+        <receive name="CorrelatedReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData">
+            <copy>
+                <from variable="syncInitData" part="inputPart"/>
+                <to variable="replyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="CorrelatedReply" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="no"/>
+            </correlations>
+        </reply>
+        <!-- A second attempt to initiate the correlationSet should produce a correlationViolation-->
+        <receive name="CorrelatedReceive2" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData2">
+            <copy>
+                <from variable="syncInitData" part="inputPart"/>
+                <to variable="replyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="CorrelatedReply2" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="no"/>
+            </correlations>
+        </reply>
+
+    </sequence>
+</process>
