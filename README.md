@@ -32,7 +32,7 @@ $ gradlew run -Pargs="ALL SEQUENCE" # Running Sequence test for all engines
 $ gradlew run -Pargs="ALL SEQUENCE,WHILE" # Running Sequence and While test for all engines
 $ gradlew run -Pargs="ode SEQUENCE" # Running Sequence test for Apache ODE
 $ gradlew run -Pargs="-s" # Running all tests for all engines installing engines only once
-$ gradlew run -Pargs="-s ode" # Running all tests for Apache ODE installing engines only once
+$ gradlew run -Pargs="-s ode ALL" # Running all tests for Apache ODE installing engines only once
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
