@@ -53,6 +53,7 @@ class CompositeSequential extends Composite {
                                         reportingDirectory: process.targetReportsPath, ant: ant).run()
                             }
                             ant.sleep(milliseconds: 500)
+                            engine.storeLogs(process)
                         }
                         context.testPartner.unpublish()
 

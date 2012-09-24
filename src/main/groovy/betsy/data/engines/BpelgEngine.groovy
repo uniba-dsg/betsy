@@ -23,6 +23,14 @@ class BpelgEngine extends Engine {
     }
 
     @Override
+    void storeLogs(Process process) {
+        ant.mkdir(dir: "${process.targetPath}/logs")
+        ant.copy(todir: "${process.targetPath}/logs") {
+            ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
+        }
+    }
+
+    @Override
     void failIfRunning() {
         tomcat.checkIfIsRunning()
     }

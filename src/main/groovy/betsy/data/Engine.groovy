@@ -124,6 +124,8 @@ abstract class Engine {
         ant.mkdir dir: path
     }
 
+    void storeLogs(Process process) {}
+
     boolean equals(o) {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
