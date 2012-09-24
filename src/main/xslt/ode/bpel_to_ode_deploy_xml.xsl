@@ -11,8 +11,6 @@
             <process name="tns:{attribute::name}">
                 <xsl:namespace name="tns" select="string(@targetNamespace)"/>
                 <active>true</active>
-                <xsl:comment>Ensure to not use database for instances - persistency is not required</xsl:comment>
-                <in-memory>true</in-memory>
                 <xsl:apply-templates />
             </process>
         </deploy>
