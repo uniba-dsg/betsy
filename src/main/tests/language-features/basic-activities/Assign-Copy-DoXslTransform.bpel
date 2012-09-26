@@ -17,7 +17,7 @@
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignReplyData" >
             <copy>
-                <from>bpel:doXslTransform("echo.xsl", $InitData.inputPart)</from>
+                <from>bpel:doXslTransform("echo.xslt", $InitData.inputPart)</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
