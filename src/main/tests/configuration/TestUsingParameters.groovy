@@ -40,7 +40,7 @@ class TestUsingParameters {
         if (args.length == 0 || "ALL" == args[0]) {
             Engine.availableEngines()
         } else {
-            Engine.build(args[0].split(",") as List<String>)
+            Engine.build(args[0].toLowerCase().split(",") as List<String>)
         }
     }
 
