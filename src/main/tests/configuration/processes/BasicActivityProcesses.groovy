@@ -389,12 +389,9 @@ class BasicActivityProcesses {
     )
 
     public final Process INVOKE_CORRELATION_INIT_ASYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet used by a subsequent invoke which is thereafter followed by receive-reply pair that also uses the correlationSet.",
+            "basic-activities/Invoke-Correlation-InitAsync", "Violates SA00046 as the synchronous invoke does not specify the pattern for the correlation",
             [
-                    new TestCase(testSteps: [
-                            new TestStep(input: "1", operation: WsdlOperation.ASYNC, timeToWaitAfterwards: 1000),
-                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)
-                    ])
+                    new TestCase(testSteps: [new TestStep(input: "1", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.ASYNC)])
             ]
     )
 
@@ -409,12 +406,9 @@ class BasicActivityProcesses {
     )
 
     public final Process INVOKE_CORRELATION_INIT_SYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-InitSync", "A synchronous receive that initiates a correlationSet used by a subsequent invoke which is thereafter followed by receive-reply pair that also uses the correlationSet.",
+            "basic-activities/Invoke-Correlation-InitSync", "Violates SA00046 as the synchronous invoke does not specify the pattern for the correlation",
             [
-                    new TestCase(testSteps: [
-                            new TestStep(input: "1", output: "0", operation: WsdlOperation.SYNC, timeToWaitAfterwards: 1000),
-                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)
-                    ])
+                    new TestCase(testSteps: [new TestStep(input: "1", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.ASYNC)])
             ]
     )
 
