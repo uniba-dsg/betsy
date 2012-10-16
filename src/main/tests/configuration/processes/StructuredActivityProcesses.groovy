@@ -4,7 +4,6 @@ import betsy.data.Process
 import betsy.data.TestCase
 import betsy.data.TestStep
 import betsy.data.WsdlOperation
-import betsy.data.assertions.NotDeployableAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 
 class StructuredActivityProcesses {
