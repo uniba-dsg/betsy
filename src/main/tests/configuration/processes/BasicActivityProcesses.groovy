@@ -7,7 +7,6 @@ import betsy.data.TestStep
 import betsy.data.WsdlOperation
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.ExitAssertion
-import betsy.data.assertions.NotDeployableAssertion
 
 class BasicActivityProcesses {
 
@@ -17,20 +16,6 @@ class BasicActivityProcesses {
             "Empty", "A receive-reply pair with an intermediate empty.",
             [
                     new TestCase(testSteps: [new TestStep(input: "5", output: "5", operation: WsdlOperation.SYNC)])
-            ]
-    )
-
-    public final Process EXTENSION_ACTIVITY_NO_MUST_UNDERSTAND = builder.buildBasicActivityProcess(
-            "ExtensionActivity-NoMustUnderstand", "A receive-reply pair with an extensionActivity from an extension that has mustUnderstand set to no. The activity should be treated as an empty according to Sec. 10.9.",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "5", output: "5", operation: WsdlOperation.SYNC)])
-            ]
-    )
-
-    public final Process EXTENSION_ACTIVITY_MUST_UNDERSTAND = builder.buildBasicActivityProcess(
-            "ExtensionActivity-MustUnderstand","A receive-reply pair with an extensionActivity from an extension that has mustUnderstand set to no. The process defnition must be rejected according to Sec. 14.",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "5", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.SYNC)])
             ]
     )
 
@@ -598,8 +583,6 @@ class BasicActivityProcesses {
             BASIC_ACTIVITIES_THROW,
             BASIC_ACTIVITIES_WAIT,
             EMPTY,
-            EXTENSION_ACTIVITY_NO_MUST_UNDERSTAND,
-            EXTENSION_ACTIVITY_MUST_UNDERSTAND,
             EXIT,
             VALIDATE,
             VALIDATE_INVALID_VARIABLES,
