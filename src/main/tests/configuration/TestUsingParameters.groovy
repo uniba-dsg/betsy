@@ -45,7 +45,7 @@ class TestUsingParameters {
     }
 
     private static List<Process> parseProcesses(String[] args) {
-        if( args.length == 0 ){
+        if( args.length <= 1 ){
             ["ALL"].collect() { new Processes().get(it) }.flatten()
         } else {
             args[1].split(",").collect() { new Processes().get(it) }.flatten()
