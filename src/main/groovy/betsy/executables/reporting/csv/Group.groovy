@@ -6,6 +6,12 @@ class Group implements Comparable<Group> {
 
     SortedSet<Test> tests = new TreeSet<Test>()
 
+    List<Result> getResultsPerEngine(Engine engine){
+        tests.collect { test ->
+            test.engineToResult.get(engine)
+        }
+    }
+
     @Override
     int compareTo(Group o) {
         return name.compareTo(o.name)
