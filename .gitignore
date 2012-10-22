@@ -18,3 +18,4 @@ downloads/
 .project
 .classpath
 /.settings
+/classes

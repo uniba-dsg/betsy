@@ -12,7 +12,8 @@
     </plink:partnerLinkType>
 
     <types>
-        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner" xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner">
+        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner"
+                    xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner">
             <xsd:element name="testElementSyncRequest" type="xsd:int"/>
             <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
             <xsd:element name="testElementSyncResponse" type="xsd:int"/>

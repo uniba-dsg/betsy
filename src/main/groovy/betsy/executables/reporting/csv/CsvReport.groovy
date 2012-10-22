@@ -19,6 +19,18 @@ class CsvReport {
         }
     }
 
+    Collection<Engine> getEngines() {
+        return nameToEngine.values();
+    }
+
+    Collection<Group> getGroups() {
+        return nameToGroup.values();
+    }
+
+    Collection<Test> getTests(){
+        return nameToTest.values()
+    }
+
     Engine getEngine(String name) {
         if (nameToEngine.containsKey(name)) {
             return nameToEngine.get(name)
