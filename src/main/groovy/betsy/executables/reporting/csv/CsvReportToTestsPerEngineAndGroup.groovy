@@ -26,7 +26,6 @@ class CsvReportToTestsPerEngineAndGroup {
         }
 
         writer.println "Engine in %"
-
         int total = report.tests.size()
         report.getEngines().each { engine ->
             int totalSuccessful = 0
