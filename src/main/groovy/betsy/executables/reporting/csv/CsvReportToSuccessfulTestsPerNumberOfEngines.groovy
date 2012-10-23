@@ -33,8 +33,7 @@ class CsvReportToSuccessfulTestsPerNumberOfEngines {
         }
 
         writer.println "At least one engine"
-        writer.println results.findAll(){it.successful > 0} + "\t" +  (int)((double) values.size() / total * 100) + "%"
-
+        writer.println results.findAll(){it.successful > 0}.size() + "\t" +  (int)((double) results.findAll(){it.successful > 0}.size() / total * 100) + "%"
     }
 
     public static void main(String[] args) {
