@@ -11,7 +11,7 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
         writer.println "Activity\t" + report.engines.collect {it.name}.join("\t") + "\ttotal tests"
 
         report.groups.each { group ->
-            def activityGroups = group.tests.groupBy { properties.get(it.name) }
+            def activityGroups = group.tests.groupBy { properties.get(it.name) }.sort() {it.key}
             activityGroups.each { key, values ->
                 writer.print key + "\t"
                 report.engines.each { engine ->
