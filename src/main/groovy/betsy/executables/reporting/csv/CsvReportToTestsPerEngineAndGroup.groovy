@@ -34,7 +34,8 @@ class CsvReportToTestsPerEngineAndGroup {
                 totalSuccessful += results.count { it.partial == Result.Support.TOTAL}
             }
 
-            writer.println "${engine.name}\t$totalSuccessful\t${(int)((double) totalSuccessful / total * 100)}%"
+            def successfulInPercent = (int) Math.round(((double) totalSuccessful / total * 100))
+            writer.println "${engine.name}\t$totalSuccessful\t${successfulInPercent}%\t${100-successfulInPercent}%"
         }
     }
 

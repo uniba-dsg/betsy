@@ -87,7 +87,7 @@ class CsvReportToPortabilityData {
                     writer.print "-"
                 } else {
                     double v = (double) portBetweenTwo.find { it.engines.sort().containsAll([a, b])}.commonSuccessfulTests
-                    writer.print ((int)((v / totalTests) * 100))
+                    writer.print ((int)Math.round((v / totalTests) * 100))
                     writer.print "%"
                 }
                 writer.print "\t"
@@ -98,7 +98,7 @@ class CsvReportToPortabilityData {
         def portBetweenThree = portabilities.findAll {it.engines.size() == 3}
         writer.println "Comparing portability between 3 engines"
         portBetweenThree.each { p ->
-            writer.print p.commonSuccessfulTests + "/$totalTests ${(int)((double) p.commonSuccessfulTests / totalTests * 100)}%"
+            writer.print p.commonSuccessfulTests + "/$totalTests ${(int)Math.round((double) p.commonSuccessfulTests / totalTests * 100)}%"
             writer.print "\t"
             writer.print p.engines
             writer.print "\n"

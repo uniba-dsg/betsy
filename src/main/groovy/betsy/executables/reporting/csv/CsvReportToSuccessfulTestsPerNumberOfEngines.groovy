@@ -29,11 +29,11 @@ class CsvReportToSuccessfulTestsPerNumberOfEngines {
 
         writer.println "Aggregated"
         results.groupBy { it.successful }.sort() {it.key}.each { key, values ->
-            writer.println key + "\t" + values.size() + "\t" + (int)((double) values.size() / total * 100) + "%"
+            writer.println key + "\t" + values.size() + "\t" + (int)Math.round((double) values.size() / total * 100) + "%"
         }
 
         writer.println "At least one engine"
-        writer.println results.findAll(){it.successful > 0}.size() + "\t" +  (int)((double) results.findAll(){it.successful > 0}.size() / total * 100) + "%"
+        writer.println results.findAll(){it.successful > 0}.size() + "\t" +  (int)Math.round((double) results.findAll(){it.successful > 0}.size() / total * 100) + "%"
     }
 
     public static void main(String[] args) {
