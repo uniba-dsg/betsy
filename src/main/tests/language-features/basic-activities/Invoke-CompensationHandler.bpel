@@ -3,6 +3,7 @@
     name="Invoke-CompensationHandler"
     targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/invokeCompensationHandler"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
     xmlns:tp="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner">
     <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
