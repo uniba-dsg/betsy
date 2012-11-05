@@ -14,8 +14,8 @@
     </variables>
     <eventHandlers>
         <onAlarm>
-            <repeatEvery>'P0Y0M0DT0H0M1.0S'</repeatEvery>
             <until>'2012-03-28T12:26:24.0'</until>
+            <repeatEvery>'P0Y0M0DT0H0M1.0S'</repeatEvery>
             <scope name="Scope">
                 <sequence name="Sequence">
                     <assign name="AssignReplyData">

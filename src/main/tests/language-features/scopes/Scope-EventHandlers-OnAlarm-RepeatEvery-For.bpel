@@ -14,8 +14,8 @@
     </variables>
     <eventHandlers>
         <onAlarm>
-            <repeatEvery>'P0Y0M0DT0H0M1.0S'</repeatEvery>
             <for>'P0Y0M0DT0H0M1.0S'</for>
+            <repeatEvery>'P0Y0M0DT0H0M1.0S'</repeatEvery>
             <scope name="Scope">
                 <sequence name="Sequence">
                     <assign name="AssignReplyData">
