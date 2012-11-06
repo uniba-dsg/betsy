@@ -14,7 +14,7 @@
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
-        <assign name="AssignReplyData" validate="yes">
+        <assign name="AssignReplyData" >
             <copy>
                 <from variable="InitData" property="ti:correlationId"/>
                 <to variable="ReplyData" part="outputPart"/>
