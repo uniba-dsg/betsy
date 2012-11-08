@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "TestPartnerPortType", targetNamespace = "http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner")
+@WebService(name = "TestPartnerPortType", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     ObjectFactory.class
@@ -31,7 +31,7 @@ public interface TestPartnerPortType {
     @WebMethod
     @Oneway
     public void startProcessAsync(
-            @WebParam(name = "testElementAsyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner", partName = "inputPart")
+            @WebParam(name = "testElementAsyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
             int inputPart);
 
     /**
@@ -41,9 +41,9 @@ public interface TestPartnerPortType {
      *     returns int
      */
     @WebMethod
-    @WebResult(name = "testElementSyncResponse", targetNamespace = "http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner", partName = "outputPart")
+    @WebResult(name = "testElementSyncResponse", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "outputPart")
     public int startProcessSync(
-            @WebParam(name = "testElementSyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner", partName = "inputPart")
+            @WebParam(name = "testElementSyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
             int inputPart);
 
     /**

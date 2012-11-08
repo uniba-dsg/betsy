@@ -248,7 +248,7 @@ try {
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
-      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">${input}</testElementSyncRequest>
+      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">${input}</testElementSyncRequest>
    </soapenv:Body>
 </soapenv:Envelope>
         """
@@ -259,7 +259,7 @@ try {
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
-      <testElementAsyncRequest xmlns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">${input}</testElementAsyncRequest>
+      <testElementAsyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">${input}</testElementAsyncRequest>
    </soapenv:Body>
 </soapenv:Envelope>
         """

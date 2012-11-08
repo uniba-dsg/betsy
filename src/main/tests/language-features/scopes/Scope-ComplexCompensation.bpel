@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <!-- Adapted from BPEL-Spec, Sec 12.4.2 -->
 <process name="Scope-ComplexCompensation"
-targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/scopeComplexCompensation"
+targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/scopeComplexCompensation"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+    xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
-    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>

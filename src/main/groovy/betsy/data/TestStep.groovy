@@ -36,11 +36,11 @@ class TestStep {
     }
 
     public void setOutput(String output) {
-        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface';//test:testElementSyncResponse = ${output}", output: "${output}")
+        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse = ${output}", output: "${output}")
     }
 
     public void setOutputAsLeast(String output) {
-        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface';//test:testElementSyncResponse >= ${output}", output: "${output}")
+        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse >= ${output}", output: "${output}")
     }
 
     void setAssertions(List<TestAssertion> assertions) {

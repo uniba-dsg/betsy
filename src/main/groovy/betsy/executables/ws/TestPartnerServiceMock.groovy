@@ -12,7 +12,7 @@ import javax.xml.ws.soap.SOAPFaultException
 name = "TestPartnerPortType",
 serviceName = "TestPartnerService",
 portName = "TestPartnerInterfacePortTypeBindingPort",
-targetNamespace = "http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner",
+targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
 endpointInterface = "de.uniba.wiai.dsg.bpel_engine_comparison.activities.wsdl.testpartner.TestPartnerPortType",
 wsdlLocation = "TestPartner.wsdl")
 class TestPartnerServiceMock implements TestPartnerPortType {
@@ -36,7 +36,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
         println "Partner: startProcessSync with ${inputPart}"
         if (inputPart == -5) {
             SOAPFactory fac = SOAPFactory.newInstance();
-            SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner","CustomFault"))
+            SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner","CustomFault"))
             throw new SOAPFaultException(sf);
         }
         if (replyInput) {

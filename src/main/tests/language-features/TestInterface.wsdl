@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="TestInterface"
-             targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
              xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
              xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
-             xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+             xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
 
     <plink:partnerLinkType name="TestInterfacePartnerLinkType">
         <plink:role name="testInterfaceRole" portType="tns:TestInterfacePortType"/>
@@ -18,7 +18,7 @@
     <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="tns:correlationId"/>
 
     <types>
-        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
+        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
             <xsd:element name="testElementSyncRequest" type="xsd:int"/>
             <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
             <xsd:element name="testElementSyncResponse" type="xsd:int"/>

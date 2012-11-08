@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="TestPartner"
-             targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner"
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-             xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner"
+             xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
              xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 
@@ -12,7 +12,7 @@
     </plink:partnerLinkType>
 
     <types>
-        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner" xmlns:tns="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner">
+        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
             <xsd:element name="testElementSyncRequest" type="xsd:int"/>
             <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
             <xsd:element name="testElementSyncResponse" type="xsd:int"/>

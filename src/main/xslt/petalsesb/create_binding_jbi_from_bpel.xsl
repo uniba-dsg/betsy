@@ -19,12 +19,12 @@
         <xsl:variable name="bpelNameWithPrefix" select="concat($bpelNamespacePrefix,':',$bpelName)" as="xsd:string" />
 
         <jbi xmlns="http://java.sun.com/xml/ns/jbi"
-             xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface"
+             xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
              version="1.0">
 
             <xsl:namespace name="{$bpelNamespacePrefix}" select="$bpelNamespace" />
-            <xsl:namespace name="ti" select="'http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface'"/>
-            <xsl:namespace name="tp" select="'http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner'"/>
+            <xsl:namespace name="ti" select="'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface'"/>
+            <xsl:namespace name="tp" select="'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner'"/>
 
             <services binding-component="true"
                       xmlns:cdk5="http://petals.ow2.org/components/extensions/version-5"

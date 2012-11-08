@@ -20,8 +20,8 @@
              version="1.0">
 
             <xsl:namespace name="{$bpelNamespacePrefix}" select="$bpelNamespace" />
-            <xsl:namespace name="ti" select="'http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface'"/>
-            <xsl:namespace name="tp" select="'http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testpartner'"/>
+            <xsl:namespace name="ti" select="'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface'"/>
+            <xsl:namespace name="tp" select="'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner'"/>
 
             <service-assembly>
                 <identification>

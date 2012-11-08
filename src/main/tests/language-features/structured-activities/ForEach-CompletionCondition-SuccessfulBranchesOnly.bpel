@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
     name="ForEach-CompletionCondition-SuccessfulBranchesOnly"
-    targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/bpel/forEach-completionCondition-successfulBranchesOnly"
+    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/forEach-completionCondition-successfulBranchesOnly"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-    xmlns:ti="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface">
-    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>
