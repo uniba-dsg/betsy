@@ -1,3 +1,4 @@
+
 package de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner;
 
 import javax.jws.Oneway;
@@ -30,20 +31,23 @@ public interface TestPartnerPortType {
     @WebMethod
     @Oneway
     public void startProcessAsync(
-            @WebParam(name = "testElementAsyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
-            int inputPart);
+        @WebParam(name = "testElementAsyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
+        int inputPart);
 
     /**
      * 
      * @param inputPart
      * @return
      *     returns int
+     * @throws FaultMessage
      */
     @WebMethod
     @WebResult(name = "testElementSyncResponse", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "outputPart")
     public int startProcessSync(
-            @WebParam(name = "testElementSyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
-            int inputPart);
+        @WebParam(name = "testElementSyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
+        int inputPart)
+        throws FaultMessage
+    ;
 
     /**
      * 

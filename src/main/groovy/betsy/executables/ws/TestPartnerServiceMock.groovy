@@ -7,6 +7,8 @@ import javax.xml.soap.SOAPFactory
 import javax.xml.soap.SOAPFault
 import javax.xml.namespace.QName
 import javax.xml.ws.soap.SOAPFaultException
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.ObjectFactory
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
 
 @WebService(
 name = "TestPartnerPortType",
@@ -37,8 +39,14 @@ class TestPartnerServiceMock implements TestPartnerPortType {
         if (inputPart == -5) {
             SOAPFactory fac = SOAPFactory.newInstance();
             SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner","CustomFault"))
-            throw new SOAPFaultException(sf);
+            throw new SOAPFaultException(sf)
         }
+
+        if (inputPart == -6) {
+            FaultMessage fault = new FaultMessage("expected Error",inputPart)
+            throw fault
+        }
+
         if (replyInput) {
             return inputPart
         } else {

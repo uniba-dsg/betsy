@@ -429,6 +429,13 @@ class BasicActivityProcesses {
             ]
     )
 
+    public final Process INVOKE_CATCH_EXPLICIT_FAULT = builder.buildProcessWithPartner(
+            "basic-activities/Invoke-Catch-ExplicitFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is declared in the Web Service Definition of the partner service.",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "-6", output: "0", operation: WsdlOperation.SYNC)])
+            ]
+    )
+
     public final Process INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
@@ -455,6 +462,7 @@ class BasicActivityProcesses {
             INVOKE_CORRELATION_PATTERN_INIT_ASYNC,
             INVOKE_CORRELATION_PATTERN_INIT_SYNC,
             INVOKE_CATCH,
+            INVOKE_CATCH_EXPLICIT_FAULT,
             INVOKE_CATCHALL,
             INVOKE_COMPENSATION_HANDLER
     ]
