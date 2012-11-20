@@ -1,6 +1,6 @@
 package betsy.executables.ws
 
-import de.uniba.wiai.dsg.bpel_engine_comparison.activities.wsdl.testpartner.TestPartnerPortType
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
 
 import javax.xml.ws.Endpoint
 

@@ -1,6 +1,6 @@
 package betsy.executables.ws
 
-import de.uniba.wiai.dsg.bpel_engine_comparison.activities.wsdl.testpartner.TestPartnerPortType
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
 
 import javax.jws.WebService
 import javax.xml.soap.SOAPFactory
@@ -13,7 +13,7 @@ name = "TestPartnerPortType",
 serviceName = "TestPartnerService",
 portName = "TestPartnerInterfacePortTypeBindingPort",
 targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
-endpointInterface = "de.uniba.wiai.dsg.bpel_engine_comparison.activities.wsdl.testpartner.TestPartnerPortType",
+endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
 wsdlLocation = "TestPartner.wsdl")
 class TestPartnerServiceMock implements TestPartnerPortType {
 
