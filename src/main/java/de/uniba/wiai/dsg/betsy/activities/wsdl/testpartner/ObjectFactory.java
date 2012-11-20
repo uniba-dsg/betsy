@@ -1,5 +1,4 @@
-
-package de.uniba.wiai.dsg.bpel_engine_comparison.activities.wsdl.testpartner;
+package de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
