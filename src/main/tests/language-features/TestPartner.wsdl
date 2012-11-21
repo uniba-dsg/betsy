@@ -4,18 +4,12 @@
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
-             xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
              xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
-             xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 
     <plink:partnerLinkType name="TestPartnerLinkType">
         <plink:role name="testPartnerRole" portType="tns:TestPartnerPortType"/>
     </plink:partnerLinkType>
-
-    <vprop:propertyAlias messageType="tns:executeProcessSyncRequest" part="inputPart" propertyName="ti:correlationId"/>
-    <vprop:propertyAlias messageType="tns:executeProcessSyncResponse" part="outputPart" propertyName="ti:correlationId" />
-    <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="ti:correlationId"/>
 
     <types>
         <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
@@ -70,6 +64,9 @@
             <output name="syncOutput">
                 <soap:body use="literal"/>
             </output>
+            <fault name="CustomFault">
+                <soap:fault name="CustomFault" use="literal" />
+            </fault>
         </operation>
         <operation name="startProcessWithEmptyMessage">
             <soap:operation/>
@@ -79,8 +76,8 @@
         </operation>
     </binding>
 
-    <service name="TestPartnerService">
-        <port name="TestPartnerInterfacePortTypeBindingPort" binding="tns:TestPartnerPortTypeBinding">
+    <service name="TestService">
+        <port name="TestPort" binding="tns:TestPartnerPortTypeBinding">
             <soap:address location="http://localhost:2000/bpel-testpartner"/>
         </port>
     </service>

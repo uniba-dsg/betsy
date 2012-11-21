@@ -12,8 +12,8 @@ import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
 
 @WebService(
 name = "TestPartnerPortType",
-serviceName = "TestPartnerService",
-portName = "TestPartnerInterfacePortTypeBindingPort",
+serviceName = "TestService",
+portName = "TestPort",
 targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
 endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
 wsdlLocation = "TestPartner.wsdl")
