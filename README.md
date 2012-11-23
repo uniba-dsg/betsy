@@ -28,9 +28,10 @@ Requirements have to be fulfilled in order to execute any of these `gradlew` tas
 $ gradlew run # Running all tests for all engines
 $ gradlew run -Pargs="ode" # Running all tests for Apache ODE
 $ gradlew run -Pargs="ode,bpelg" # Running all tests for Apache ODE and bpel-g
-$ gradlew run -Pargs="ALL SEQUENCE" # Running Sequence test for all engines
-$ gradlew run -Pargs="ALL SEQUENCE,WHILE" # Running Sequence and While test for all engines
-$ gradlew run -Pargs="ode SEQUENCE" # Running Sequence test for Apache ODE
+$ gradlew run -Pargs="ALL Sequence" # Running Sequence test for all engines
+$ gradlew run -Pargs="ALL Sequence,While" # Running Sequence and While test for all engines
+$ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
+$ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
 $ gradlew run -Pargs="-s" # Running all tests for all engines installing engines only once
 $ gradlew run -Pargs="-s ode ALL" # Running all tests for Apache ODE installing engines only once
 $ gradlew idea # Generating Intellij IDEA project files

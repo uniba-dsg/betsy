@@ -33,7 +33,10 @@ class Processes {
             if(result == null){
                 result = getScopeProcess(name)
                 if(result == null){
-                    throw new IllegalArgumentException("Process ${name} does not exist")
+                    result = ALL.findAll( {it.bpelFileNameWithoutExtension == name})
+                    if(result.isEmpty()) {
+                        throw new IllegalArgumentException("Process ${name} does not exist")
+                    }
                 }
             }
         }
