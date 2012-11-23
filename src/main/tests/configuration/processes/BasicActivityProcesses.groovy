@@ -7,7 +7,6 @@ import betsy.data.TestStep
 import betsy.data.WsdlOperation
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.ExitAssertion
-import betsy.data.assertions.NotDeployableAssertion
 
 class BasicActivityProcesses {
 
@@ -17,20 +16,6 @@ class BasicActivityProcesses {
             "Empty", "A receive-reply pair with an intermediate empty.",
             [
                     new TestCase(testSteps: [new TestStep(input: "5", output: "5", operation: WsdlOperation.SYNC)])
-            ]
-    )
-
-    public final Process EXTENSION_ACTIVITY_NO_MUST_UNDERSTAND = builder.buildBasicActivityProcess(
-            "ExtensionActivity-NoMustUnderstand", "A receive-reply pair with an extensionActivity from an extension that has mustUnderstand set to no. The activity should be treated as an empty according to Sec. 10.9.",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "5", output: "5", operation: WsdlOperation.SYNC)])
-            ]
-    )
-
-    public final Process EXTENSION_ACTIVITY_MUST_UNDERSTAND = builder.buildBasicActivityProcess(
-            "ExtensionActivity-MustUnderstand","A receive-reply pair with an extensionActivity from an extension that has mustUnderstand set to no. The process defnition must be rejected according to Sec. 14.",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "5", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.SYNC)])
             ]
     )
 
@@ -388,13 +373,6 @@ class BasicActivityProcesses {
             ]
     )
 
-    public final Process INVOKE_CORRELATION_INIT_ASYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-InitAsync", "Violates SA00046 as the synchronous invoke does not specify the pattern for the correlation",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "1", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.ASYNC)])
-            ]
-    )
-
     public final Process INVOKE_CORRELATION_PATTERN_INIT_ASYNC = builder.buildProcessWithPartner(
             "basic-activities/Invoke-Correlation-Pattern-InitAsync",  "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             [
@@ -402,13 +380,6 @@ class BasicActivityProcesses {
                             new TestStep(input: "1", operation: WsdlOperation.ASYNC, timeToWaitAfterwards: 1000),
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)
                     ])
-            ]
-    )
-
-    public final Process INVOKE_CORRELATION_INIT_SYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-InitSync", "Violates SA00046 as the synchronous invoke does not specify the pattern for the correlation",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "1", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.ASYNC)])
             ]
     )
 
@@ -457,8 +428,6 @@ class BasicActivityProcesses {
             INVOKE_EMPTY,
             INVOKE_TO_PARTS,
             INVOKE_FROM_PARTS,
-            INVOKE_CORRELATION_INIT_ASYNC,
-            INVOKE_CORRELATION_INIT_SYNC,
             INVOKE_CORRELATION_PATTERN_INIT_ASYNC,
             INVOKE_CORRELATION_PATTERN_INIT_SYNC,
             INVOKE_CATCH,
@@ -622,8 +591,6 @@ class BasicActivityProcesses {
             BASIC_ACTIVITIES_THROW,
             BASIC_ACTIVITIES_WAIT,
             EMPTY,
-            EXTENSION_ACTIVITY_NO_MUST_UNDERSTAND,
-            EXTENSION_ACTIVITY_MUST_UNDERSTAND,
             EXIT,
             VALIDATE,
             VALIDATE_INVALID_VARIABLES,

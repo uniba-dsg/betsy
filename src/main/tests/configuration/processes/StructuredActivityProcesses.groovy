@@ -4,7 +4,6 @@ import betsy.data.Process
 import betsy.data.TestCase
 import betsy.data.TestStep
 import betsy.data.WsdlOperation
-import betsy.data.assertions.NotDeployableAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 
 class StructuredActivityProcesses {
@@ -22,13 +21,6 @@ class StructuredActivityProcesses {
             "Flow", "A receive-reply pair with an intermediate flow that contains two assigns.",
             [
                     new TestCase(testSteps: [new TestStep(input: "5", output: "7", operation: WsdlOperation.SYNC)])
-            ]
-    )
-
-    public final Process FLOW_RECEIVE_CREATING_INSTANCES = builder.buildStructuredActivityProcess(
-            "Flow-ReceiveCreatingInstances",  "A flow with a starting activity (receive with createInstance set to yes) and non-starting activities (assign) that run in parallel. Such a process definition must be rejected by an engine.",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "5", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.SYNC)])
             ]
     )
 
@@ -129,7 +121,6 @@ class StructuredActivityProcesses {
             FLOW_LINKS_SUPPRESS_JOIN_FAILURE,
             FLOW_LINKS_TRANSITION_CONDITION,
             FLOW_GRAPH_EXAMPLE,
-            FLOW_RECEIVE_CREATING_INSTANCES,
             FLOW_LINKS_RECEIVE_CREATING_INSTANCES
     ].flatten() as List<Process>
 
@@ -216,13 +207,6 @@ class StructuredActivityProcesses {
             ]
     )
 
-    public final Process FOR_EACH_DUPLICATE_COUNTER_VARIABLE = builder.buildStructuredActivityProcess(
-            "ForEach-DuplicateCounterVariable", "A receive-reply pair with an intermediate forEach that contains a variable of the same name as the counter variable in its child scope. The process definition must be rejected.",
-            [
-                    new TestCase(name: "SA00076", testSteps: [new TestStep(input: "2", assertions: [new NotDeployableAssertion()], operation: WsdlOperation.SYNC)]),
-            ]
-    )
-
     public final Process FOR_EACH_NEGATIVE_START_COUNTER = builder.buildStructuredActivityProcess(
             "ForEach-NegativeStartCounter",  "A receive-reply pair with an intermediate forEach that should always fail with an invalidExpressionValue fault as startCounterValue is negative.",
             [
@@ -292,7 +276,6 @@ class StructuredActivityProcesses {
             FOR_EACH_PARALLEL,
             FOR_EACH_NEGATIVE_START_COUNTER,
             FOR_EACH_TOO_LARGE_START_COUNTER,
-            FOR_EACH_DUPLICATE_COUNTER_VARIABLE,
             FOR_EACH_COMPLETION_CONDITION_NEGATIVE_BRANCHES
     ].flatten() as List<Process>
 
