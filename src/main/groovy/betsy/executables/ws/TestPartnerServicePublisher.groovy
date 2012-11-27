@@ -14,6 +14,10 @@ class TestPartnerServicePublisher {
 
     AntBuilder ant = new AntBuilder()
 
+    public static void main(String[] args) {
+        new TestPartnerServicePublisher().publish()
+    }
+
     void publish() {
         publishRegularEndpoint(regularUrl)
         publishPartnerLinkAssignmentEndpoint(partnerLinkAssignmentUrl)
