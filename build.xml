@@ -32,7 +32,7 @@
     <property name="bpelg.server.xml" value="src/main/resources/bpelg/server.xml"/>
     <property name="bpelg.log4j.properties" value="src/main/resources/bpelg/log4j.properties"/>
 
-    <property name="active-bpel.dir" value="server/active-bpel" />
+    <property name="active-bpel.dir" value="server\active-bpel" />
     <property name="active-bpel.file.name" value="activebpel-5.0.2-bin.zip"/>
     <property name="active-bpel.download.url" value="${download.base.url}${active-bpel.file.name}" />
 
@@ -242,7 +242,11 @@
         <get dest="${download.dir}" skipexisting="true">
             <url url="${active-bpel.download.url}"/>
         </get>
-        <unzip src="${download.dir}/${active-bpel.file.name}" dest="${active-bpel.dir}/apache-tomcat-5.5.36/webapps/active-bpel"/>
+        <unzip src="${download.dir}/${active-bpel.file.name}" dest="${active-bpel.dir}"/>
+        <exec executable="cmd" dir="${basedir}/${active-bpel.dir}/activebpel-5.0.2/" >
+            <arg value="/c install.bat" />
+            <env key="CATALINA_HOME" path="${basedir}\${active-bpel.dir}\apache-tomcat-5.5.36"/>
+        </exec>
 
     </target >
 
