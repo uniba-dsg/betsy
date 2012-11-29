@@ -57,8 +57,38 @@ class ActiveBpelEngine extends Engine{
     }
 
     @Override
+    void buildDeploymentDescriptor(Process process) {
+        String metaDir = process.targetBpelPath + "/META-INF"
+        ant.echo file: "$metaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
+        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.bpelFileNameWithoutExtension}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
+        ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
+    }
+
+    @Override
     void deploy(Process process) {
         ant.copy(file: process.targetPackageFilePath, todir: deploymentDir)
+        ant.move(file: "${deploymentDir}/${process.bpelFileNameWithoutExtension}.zip", toFile: "${deploymentDir}/${process.bpelFileNameWithoutExtension}.bpr")
+    }
+
+    @Override
+    void onPostDeployment() {
+        ant.echo(message: "waiting for the active-bpel deployment process to fire")
+
+        ant.parallel() {
+            processes.each { process ->
+                onPostDeployment(process)
+            }
+        }
+    }
+
+    @Override
+    void onPostDeployment(Process process) {
+        ant.sequential() {
+            ant.waitfor(maxwait: "100", maxwaitunit: "second") {
+                available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_zip"
+            }
+            ant.sleep(milliseconds: 1000)
+        }
     }
 
     @Override
