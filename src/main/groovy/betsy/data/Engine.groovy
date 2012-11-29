@@ -10,7 +10,7 @@ abstract class Engine {
      * @return a list of all available engines
      */
     public static List<Engine> availableEngines() {
-        [new OdeEngine(), new BpelgEngine(), new OpenEsbEngine(), new PetalsEsbEngine(), new OrchestraEngine()]
+        [new OdeEngine(), new BpelgEngine(), new OpenEsbEngine(), new PetalsEsbEngine(), new OrchestraEngine(), new ActiveBpelEngine()]
     }
 
     /**
