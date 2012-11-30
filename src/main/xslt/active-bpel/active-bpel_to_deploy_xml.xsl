@@ -3,8 +3,10 @@
 
     <xsl:output indent="yes" method="xml"/>
 
+
     <xsl:template match="/bpel:process">
-            <process xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" name="tns:{attribute::name}" platform="opensource" location="{attribute::name}.bpel">
+
+        <process xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" name="tns:{attribute::name}" platform="opensource" location="{attribute::name}.bpel">
                 <xsl:namespace name="tns" select="string(@targetNamespace)"/>
                 <partnerLinks>
                     <xsl:apply-templates select="bpel:partnerLinks"/>
@@ -27,7 +29,11 @@
 
         <xsl:if test="attribute::myRole">
             <partnerLink xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" name="{string(attribute::name)}">
-               <myRole allowedRoles="" binding="MSG" service="{string(attribute::name)}Service"/>
+               <myRole allowedRoles="" binding="MSG" >
+                   <xsl:attribute name="service">
+                        <xsl:value-of select="concat(string(ancestor::bpel:process/@name),'TestInterfaceService')" />
+                    </xsl:attribute>
+               </myRole>
             </partnerLink>
         </xsl:if>
 
