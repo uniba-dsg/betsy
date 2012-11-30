@@ -85,9 +85,9 @@ class ActiveBpelEngine extends Engine{
     void onPostDeployment(Process process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-                available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_zip"
+                available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
             }
-            ant.sleep(milliseconds: 1000)
+            ant.sleep(milliseconds: 10000)
         }
     }
 
