@@ -15,13 +15,8 @@ class OpenEsbEngine extends Engine {
     }
 
     @Override
-    String getDeploymentPrefix() {
-        CHECK_URL
-    }
-
-    @Override
-    String getDeploymentPostfix() {
-        "TestInterface"
+    String getEndpointUrl(Process process) {
+        "${CHECK_URL}/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
     OpenEsbCLI getCli(){

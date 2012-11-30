@@ -37,8 +37,6 @@ abstract class Engine {
     AntBuilder ant = new AntBuilder()
 
     public abstract String getName()
-    public abstract String getDeploymentPrefix()
-    public abstract String getDeploymentPostfix()
 
     TestSuite testSuite
 
@@ -47,6 +45,8 @@ abstract class Engine {
     public void buildAdditionalArchives(Process process) {
         // do nothing
     }
+
+    public abstract String getEndpointUrl(Process process)
 
     void setAnt(AntBuilder ant) {
         this.ant = ant
@@ -140,4 +140,5 @@ abstract class Engine {
     int hashCode() {
         return (getName() != null ? getName().hashCode() : 0)
     }
+
 }

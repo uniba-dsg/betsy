@@ -12,13 +12,8 @@ class OdeEngine extends Engine {
     }
 
     @Override
-    String getDeploymentPrefix() {
-        "${tomcat.tomcatUrl}/ode/processes"
-    }
-
-    @Override
-    String getDeploymentPostfix() {
-        "TestInterface"
+    String getEndpointUrl(Process process) {
+        "${tomcat.tomcatUrl}/ode/processes/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
     String getDeploymentDir() {

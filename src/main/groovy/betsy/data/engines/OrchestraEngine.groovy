@@ -17,8 +17,8 @@ class OrchestraEngine extends Engine {
     }
 
     @Override
-    String getDeploymentPrefix() {
-        "${tomcat.tomcatUrl}/orchestra"
+    String getEndpointUrl(Process process) {
+        "${tomcat.tomcatUrl}/orchestra/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
     @Override
@@ -27,11 +27,6 @@ class OrchestraEngine extends Engine {
         ant.copy(todir: "${process.targetPath}/logs") {
             ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
         }
-    }
-
-    @Override
-    String getDeploymentPostfix() {
-        "TestInterface"
     }
 
     @Override

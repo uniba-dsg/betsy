@@ -17,13 +17,8 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    String getDeploymentPrefix() {
-        "$CHECK_URL/petals/services"
-    }
-
-    @Override
-    String getDeploymentPostfix() {
-        "TestInterfaceService"
+    String getEndpointUrl(Process process) {
+        "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
     @Override

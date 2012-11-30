@@ -13,11 +13,6 @@ class BpelgEngine extends Engine {
         "bpelg"
     }
 
-    @Override
-    String getDeploymentPrefix() {
-        "${tomcat.tomcatUrl}/bpel-g/services"
-    }
-
     String getDeploymentDir() {
         "${tomcat.tomcatDir}/bpr"
     }
@@ -36,8 +31,8 @@ class BpelgEngine extends Engine {
     }
 
     @Override
-    String getDeploymentPostfix() {
-        "TestInterfaceService"
+    String getEndpointUrl(Process process) {
+        "${tomcat.tomcatUrl}/bpel-g/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
     Tomcat getTomcat() {

@@ -54,7 +54,7 @@ class Process implements Cloneable {
     }
 
     String getEndpoint() {
-        "${engine.deploymentPrefix}/${bpelFileNameWithoutExtension}${engine.deploymentPostfix}"
+        getEngine().getEndpointUrl(this)
     }
 
     String getWsdlEndpoint() {
