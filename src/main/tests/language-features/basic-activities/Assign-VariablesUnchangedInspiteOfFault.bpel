@@ -32,7 +32,7 @@
             </assign>
             <assign name="AssignReplyData" >
                 <copy>
-                    <from>$InitData.inputPart/asdf:test</from>
+                    <from>$InitData.inputPart/ti:test</from>
                     <to variable="ReplyData" part="outputPart"/>
                 </copy>
             </assign>
