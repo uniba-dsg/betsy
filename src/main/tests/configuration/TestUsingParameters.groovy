@@ -13,7 +13,7 @@ class TestUsingParameters {
     public static void main(String[] args) {
         CliBuilder cli = new CliBuilder(usage: "[options] <engines> <process>")
         cli.s("skip reinstalling each engine for each process")
-        cli.o("do not open results in default browser")
+        cli.o("Opens results in default browser")
 
         def options = cli.parse(args)
         if (options == null || options == false) {
@@ -39,8 +39,12 @@ class TestUsingParameters {
                 new Betsy(engines: engines, processes: processes, composite: new CompositeSequential()).execute()
             }
 
-            if (!options.o) {
-                Desktop.getDesktop().browse(new File("test/reports/results.html").toURI())
+            if (options.o) {
+                try {
+                    Desktop.getDesktop().browse(new File("test/reports/results.html").toURI())
+                } catch (Exception e){
+                    // ignore any exceptions
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

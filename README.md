@@ -34,7 +34,7 @@ $ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
 $ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
 $ gradlew run -Pargs="-s" # Running all tests for all engines installing engines only once
 $ gradlew run -Pargs="-s ode ALL" # Running all tests for Apache ODE installing engines only once
-$ gradlew run -Pargs="-o" # Prevents opening the results in the default browser (e.g. for jenkins)
+$ gradlew run -Pargs="-o" # Opens the results in the default browser after a successful run
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
