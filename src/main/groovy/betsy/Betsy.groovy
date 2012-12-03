@@ -15,7 +15,7 @@ class Betsy {
 
     Composite composite = new Composite()
 
-    public void execute() {
+    public void execute() throws Exception {
         new Validator().validate(processes)
 
         new Init().allowInsecureDownloads()
@@ -24,14 +24,7 @@ class Betsy {
 
         ExecutionContext context = tests.buildExecutionContext()
 
-        try {
-            composite.context = context
-            composite.execute()
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            // shutdown as SoapUI creates threads which cannot be shutdown so easily
-            System.exit(0)
-        }
+        composite.context = context
+        composite.execute()
     }
 }
