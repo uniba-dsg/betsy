@@ -10,6 +10,7 @@
                 <xsl:namespace name="tns" select="string(@targetNamespace)"/>
                 <partnerLinks>
                     <xsl:apply-templates select="bpel:partnerLinks"/>
+                    <xsl:apply-templates select="bpel:scope" />
                 </partnerLinks>
                 <references>
                     <xsl:apply-templates select="bpel:import" />
@@ -59,6 +60,10 @@
             </partnerLink>
         </xsl:if>
 
+    </xsl:template>
+
+    <xsl:template match="//bpel:scope" name="getScopes">
+        <xsl:apply-templates select="bpel:partnerLinks"/>
     </xsl:template>
 
 </xsl:stylesheet>
