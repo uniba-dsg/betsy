@@ -16,6 +16,7 @@
     <variables>
         <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="syncInitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
     </variables>
     <correlationSets>
         <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
@@ -38,7 +39,7 @@
         <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
                 portType="tp:TestPartnerPortType" inputVariable="PartnerInitData">
             <correlations>
-                <correlation set="CorrelationSet" initiate="join"/>
+                <correlation set="CorrelationSet" initiate="join" pattern="request"/>
             </correlations>
         </invoke>
         <assign name="AssignReplyData2">
