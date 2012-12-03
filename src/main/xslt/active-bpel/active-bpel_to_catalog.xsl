@@ -10,7 +10,20 @@
     </xsl:template>
 
     <xsl:template match="//bpel:import" name="getImports">
-        <wsdlEntry xmlns="http://schemas.active-endpoints.com/catalog/2006/07/catalog.xsd">
+
+        <xsl:if test="@importType='http://www.w3.org/2001/XMLSchema'">
+            <schemaEntry xmlns="http://schemas.active-endpoints.com/catalog/2006/07/catalog.xsd">
+                <xsl:attribute name="location">
+                    <xsl:value-of select="concat('project:',@location)" />
+                </xsl:attribute>
+                <xsl:attribute name="classpath">
+                    <xsl:value-of select="@location" />
+                </xsl:attribute>
+            </schemaEntry>
+        </xsl:if>
+
+        <xsl:if test="@importType='http://schemas.xmlsoap.org/wsdl/'">
+            <wsdlEntry xmlns="http://schemas.active-endpoints.com/catalog/2006/07/catalog.xsd">
             <xsl:attribute name="location">
                 <xsl:value-of select="concat('project:',substring(@location,4))" />
             </xsl:attribute>
@@ -18,6 +31,8 @@
                 <xsl:value-of select="substring(@location,4)" />
             </xsl:attribute>
         </wsdlEntry>
+        </xsl:if>
+
     </xsl:template>
 
 </xsl:stylesheet>

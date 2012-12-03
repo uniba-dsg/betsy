@@ -18,11 +18,22 @@
     </xsl:template>
 
     <xsl:template match="//bpel:import" name="getImports">
-        <wsdl xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" namespace="{attribute::namespace}">
-            <xsl:attribute name="location">
+
+        <xsl:if test="@importType='http://schemas.xmlsoap.org/wsdl/'">
+            <wsdl xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" namespace="{attribute::namespace}">
+                <xsl:attribute name="location">
                 <xsl:value-of select="concat('project:',substring(@location,4))" />
-            </xsl:attribute>
-        </wsdl>
+                </xsl:attribute>
+            </wsdl>
+        </xsl:if>
+
+        <xsl:if test="@importType='http://www.w3.org/2001/XMLSchema'">
+            <schema xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" namespace="{attribute::namespace}">
+                <xsl:attribute name="location">
+                    <xsl:value-of select="concat('project:',@location)" />
+                </xsl:attribute>
+            </schema>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="//bpel:partnerLink" name="getPartnerLinks">
