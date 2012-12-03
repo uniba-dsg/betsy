@@ -20,5 +20,9 @@
                     <to variable="ReplyData" part="outputPart"/>
                 </copy>
             </assign>
+            <if>
+                <condition>false()</condition>
+                <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+            </if>
         </sequence>
 </process>
