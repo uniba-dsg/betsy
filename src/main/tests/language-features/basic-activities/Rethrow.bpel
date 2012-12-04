@@ -27,5 +27,6 @@
             </copy>
         </assign>
         <throw name="Throw" faultName="bpel:completionConditionFailure" />
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>

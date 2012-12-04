@@ -30,6 +30,7 @@ xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
             </copy>
         </assign>
         <throw name="Throw" faultName="bpel:completionConditionFailure" faultVariable="ReplyData"/>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </scope>
 </process>

@@ -18,8 +18,10 @@ class Tomcat {
      */
     String engineDir
 
+    String tomcatName = "apache-tomcat-7.0.26"
+
     String getTomcatDir() {
-        "$engineDir/apache-tomcat-7.0.26"
+        "$engineDir/$tomcatName"
     }
 
     String getTomcatUrl() {

@@ -33,7 +33,7 @@
             </correlations>
         </reply>
         <!-- A second attempt to initiate the correlationSet should produce a correlationViolation-->
-        <receive name="CorrelatedReceive2" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
+        <receive name="CorrelatedReceive2" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
             <correlations>
                 <correlation set="CorrelationSet" initiate="yes"/>
             </correlations>

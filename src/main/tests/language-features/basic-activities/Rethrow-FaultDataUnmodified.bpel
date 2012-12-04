@@ -36,6 +36,7 @@
                 </copy>
             </assign>
             <throw name="Throw" faultName="bpel:completionConditionFailure" faultVariable="ReplyData"/>
+            <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
         </sequence>
     </scope>
 </process>

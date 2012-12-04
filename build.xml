@@ -32,6 +32,10 @@
     <property name="bpelg.server.xml" value="src/main/resources/bpelg/server.xml"/>
     <property name="bpelg.log4j.properties" value="src/main/resources/bpelg/log4j.properties"/>
 
+    <property name="active-bpel.dir" value="server\active-bpel" />
+    <property name="active-bpel.file.name" value="activebpel-5.0.2-bin.zip"/>
+    <property name="active-bpel.download.url" value="${download.base.url}${active-bpel.file.name}" />
+
     <property name="orchestra.dir" value="server/orchestra"/>
     <property name="orchestra.name" value="orchestra-cxf-tomcat-4.9.0"/>
     <property name="orchestra.file.name" value="orchestra-cxf-tomcat-4.9.0.zip"/>
@@ -213,6 +217,38 @@
         <copy file="server/jbpmbpel/jboss-4.2.3.GA/client/jboss-saaj.jar"
               todir="server/jbpmbpel/jboss-4.2.3.GA/lib/endorsed"/>
     </target>
+
+    <target name="active-bpel" description="Install active-bpel">
+        <sequential>
+            <mkdir dir="${download.dir}"/>
+
+            <get dest="${download.dir}" skipexisting="true">
+                <url url="${download.base.url}apache-tomcat-5.5.36.zip"/>
+            </get>
+            <delete dir="${active-bpel.dir}"/>
+            <mkdir dir="${active-bpel.dir}"/>
+            <unzip src="${download.dir}/apache-tomcat-5.5.36.zip" dest="${active-bpel.dir}"/>
+
+            <echo file="${active-bpel.dir}/${tomcat.startup.script.name}">
+                SET "CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m -Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl"
+                cd apache-tomcat-5.5.36/bin &amp;&amp; call startup.bat
+            </echo>
+
+            <echo file="${active-bpel.dir}/${tomcat.shutdown.script.name}">
+                cd apache-tomcat-5.5.36/bin &amp;&amp; call shutdown.bat
+            </echo>
+        </sequential>
+
+        <get dest="${download.dir}" skipexisting="true">
+            <url url="${active-bpel.download.url}"/>
+        </get>
+        <unzip src="${download.dir}/${active-bpel.file.name}" dest="${active-bpel.dir}"/>
+        <exec executable="cmd" dir="${basedir}/${active-bpel.dir}/activebpel-5.0.2/" >
+            <arg value="/c install.bat" />
+            <env key="CATALINA_HOME" path="${basedir}\${active-bpel.dir}\apache-tomcat-5.5.36"/>
+        </exec>
+
+    </target >
 
     <target name="printEnvironmentVariables">
         <property environment="env"/>
