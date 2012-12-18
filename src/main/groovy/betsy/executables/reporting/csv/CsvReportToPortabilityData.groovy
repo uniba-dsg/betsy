@@ -104,6 +104,25 @@ class CsvReportToPortabilityData {
             writer.print "\n"
         }
 
+        def portBetweenFour = portabilities.findAll {it.engines.size() == 4}
+        writer.println "Comparing portability between 4 engines"
+        portBetweenFour.each { p ->
+            writer.print p.commonSuccessfulTests + "/$totalTests ${(int)Math.round((double) p.commonSuccessfulTests / totalTests * 100)}%"
+            writer.print "\t"
+            writer.print p.engines
+            writer.print "\n"
+        }
+
+        def portBetweenFive = portabilities.findAll {it.engines.size() == 5}
+        writer.println "Comparing portability between 5 engines"
+        portBetweenFive.each { p ->
+            writer.print p.commonSuccessfulTests + "/$totalTests ${(int)Math.round((double) p.commonSuccessfulTests / totalTests * 100)}%"
+            writer.print "\t"
+            writer.print p.engines
+            writer.print "\n"
+        }
+
+
     }
 
     private int[] xor(List<int[]> input) {
