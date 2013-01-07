@@ -24,7 +24,7 @@
     <property name="ode.server.xml" value="src/main/resources/ode/server.xml"/>
     <property name="ode.log4j.properties" value="src/main/resources/ode/log4j.properties"/>
 
-    <property name="bpelg.file.name" value="bpel-g.war"/>
+    <property name="bpelg.file.name" value="bpel-g-5.3.war"/>
     <property name="bpelg.download.url" value="${download.base.url}${bpelg.file.name}"/>
     <property name="bpelg.dir" value="server/bpelg"/>
     <property name="bpelg.database.name" value="h2-1.2.122.jar"/>
