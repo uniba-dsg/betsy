@@ -1,8 +1,8 @@
 # BETSY (BPEL Engine Test System)
 
 Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
-More information can be found in the [technical report](https://github.com/downloads/uniba-dsg/betsy/techrep-betsy-final.pdf).
-A [sample output](https://github.com/downloads/uniba-dsg/betsy/test-results.zip) of a run of betsy are also available. 
+More information can be found in the [technical report](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/techrep-betsy-final.pdf).
+A [sample output](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results.zip) of a run of betsy are also available. The tool has been subject to the paper [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/) for which the following [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
 
 This software is licensed under the LGPL Version 3 Open Source License.
 
