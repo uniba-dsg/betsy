@@ -102,21 +102,11 @@ class BpelgEngine extends Engine {
 
     private String computeMatchingPattern(Process process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
-        boolean syncFound = false
-        boolean asyncFound = false
-        process.testCases.each { testCase ->
-            testCase.testSteps.each {  testStep ->
-                if (testStep.operation.equals(WsdlOperation.ASYNC)) {
-                    asyncFound = true
-                } else if (testStep.operation.equals(WsdlOperation.SYNC)) {
-                    syncFound = true
-                }
-            }
-        }
+        String text = new File(process.bpelFilePath).getText()
 
-        if (!syncFound) {
+        if (!text.contains(WsdlOperation.SYNC.name)) {
             return WsdlOperation.SYNC.name
-        } else if (!asyncFound) {
+        } else if (!text.contains(WsdlOperation.ASYNC.name)) {
             return WsdlOperation.ASYNC.name
         } else {
             return ""
