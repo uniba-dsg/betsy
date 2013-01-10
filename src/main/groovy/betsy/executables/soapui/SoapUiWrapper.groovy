@@ -164,13 +164,17 @@ try {
     }
 
     private void addNotDeployableTestSteps(WsdlTestCase soapUITestCase) {
-        WsdlGroovyScriptTestStep groovyScriptTestStep = soapUITestCase.addTestStep(GroovyScriptStepFactory.GROOVY_TYPE, "Test Availabilty of WSDL") as WsdlGroovyScriptTestStep
+        WsdlGroovyScriptTestStep groovyScriptTestStep = soapUITestCase.addTestStep(GroovyScriptStepFactory.GROOVY_TYPE, "Test Unavailabilty of WSDL") as WsdlGroovyScriptTestStep
         groovyScriptTestStep.script = """
 try {
  def url = new URL("${process.wsdlEndpoint}")
  def connection = url.openConnection()
- def text = connection.inputStream.text
- assert !text.contains("definitions>"), "wsdl file available - however, process should not be deployable"
+ if(connection.responseCode == 500) {
+    assert true, "500 error"
+ } else {
+    def text = connection.inputStream.text
+    assert !text.contains("definitions>"), "wsdl file available - however, process should not be deployable"
+ }
 } catch (ConnectException e){
     assert true, "connection refused"
 } catch (FileNotFoundException e){
@@ -195,7 +199,7 @@ try {
 } catch (FileNotFoundException e){
     assert false, "file not found"
 } catch (Exception e){
-    assert false, "error \${e.message}"
+    assert false, "error \${e.message}\n\${e}"
 }
 """
     }
