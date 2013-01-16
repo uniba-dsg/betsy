@@ -37,3 +37,9 @@ run {
         args project.args.split('\\s+')
     }
 }
+
+task enginecontrol (type: JavaExec, dependsOn: build){
+    description = 'Starts Engine Control GUI'
+    classpath = sourceSets.main.runtimeClasspath
+    main = "betsy.EngineControl"
+}
