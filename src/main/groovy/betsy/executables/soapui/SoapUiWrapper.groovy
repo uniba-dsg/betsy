@@ -199,7 +199,7 @@ try {
 } catch (FileNotFoundException e){
     assert false, "file not found"
 } catch (Exception e){
-    assert false, "error \${e.message}\n\${e}"
+    assert false, "error \${e.message} \${e}"
 }
 """
     }
