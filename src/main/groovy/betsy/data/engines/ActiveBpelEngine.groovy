@@ -15,13 +15,13 @@ class ActiveBpelEngine extends Engine{
         return "active-bpel"
     }
 
-    Tomcat getTomcat() {
-        new Tomcat(ant: ant, engineDir: serverPath, tomcatName: "apache-tomcat-5.5.36")
+    @Override
+    String getEndpointUrl(Process process) {
+        "${tomcat.tomcatUrl}/active-bpel/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
-    @Override
-    String getDeploymentPrefix() {
-        "${tomcat.tomcatUrl}/active-bpel/services"
+    Tomcat getTomcat() {
+        new Tomcat(ant: ant, engineDir: serverPath, tomcatName: "apache-tomcat-5.5.36")
     }
 
     String getDeploymentDir() {
@@ -36,10 +36,6 @@ class ActiveBpelEngine extends Engine{
         }
     }
 
-    @Override
-    String getDeploymentPostfix() {
-        "TestInterfaceService"
-    }
 
     @Override
     void startup() {
