@@ -459,9 +459,16 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
-            "basic-activities/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus refernce to a partnerLink which is used in a subsequent invoke. The refernce scheme should not be supported by any engine and fail with a corresponding fault.",
+            "basic-activities/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus refernce to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.SYNC, assertions: [new SoapFaultTestAssertion(faultString: "unsupportedReference")])]),
+            ]
+    )
+
+    public final Process ASSIGN_MISMATCHED_ASSIGNMENT_FAILURE = builder.buildProcessWithPartner(
+            "basic-activities/Assign-MismatchedAssignmentFailure", "An assignment between two incompatible types. A mismatchedAssignmentFailure should be thrown.",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.SYNC, assertions: [new SoapFaultTestAssertion(faultString: "mismatchedAssignment")])]),
             ]
     )
 
@@ -568,6 +575,7 @@ class BasicActivityProcesses {
             ASSIGN_PROPERTY,
             ASSIGN_PARTNERLINK,
             ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE,
+            ASSIGN_MISMATCHED_ASSIGNMENT_FAILURE,
             ASSIGN_LITERAL,
             ASSIGN_EXPRESSION_FROM,
             ASSIGN_EXPRESSION_TO,
