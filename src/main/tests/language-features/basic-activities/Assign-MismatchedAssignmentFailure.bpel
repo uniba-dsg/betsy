@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
     name="Assign-MismatchedAssignmentFailure"
-    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/assignLiteral"
+    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/assignMismatchedAssignmentFailure"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
