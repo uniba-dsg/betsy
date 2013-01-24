@@ -54,7 +54,7 @@
             <partnerLink  xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" name="{string(attribute::name)}">
                 <partnerRole endpointReference="static" invokeHandler="default:Address">
                     <wsa:EndpointReference xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:s="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
-                        <wsa:Address>http://localhost:2000/bpel-testpartner</wsa:Address>
+                        <wsa:Address>http://PARTNER_IP_AND_PORT/bpel-testpartner</wsa:Address>
                         <wsa:ServiceName PortName="TestPort">s:TestService</wsa:ServiceName>
                     </wsa:EndpointReference>
                 </partnerRole>
