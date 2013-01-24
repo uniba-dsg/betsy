@@ -84,7 +84,7 @@
 
     <service name="TestService">
         <port name="TestPort" binding="tns:TestPartnerPortTypeBinding">
-            <soap:address location="http://localhost:2000/bpel-testpartner"/>
+            <soap:address location="http://PARTNER_IP_AND_PORT/bpel-testpartner"/>
         </port>
     </service>
 

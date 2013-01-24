@@ -32,7 +32,7 @@
                         <sref:service-ref>
                             <addr:EndpointReference>
                                 <addr:Address>
-                                    http://localhost:2000/bpel-assigned-testpartner
+                                    http://PARTNER_IP_AND_PORT/bpel-assigned-testpartner
                                 </addr:Address>
                             </addr:EndpointReference>
                         </sref:service-ref>

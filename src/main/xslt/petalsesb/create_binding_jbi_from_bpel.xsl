@@ -38,7 +38,7 @@
                         <cdk5:wsdl>TestPartner.wsdl</cdk5:wsdl>
 
                         <!-- Component specific elements -->
-                        <soap:address>http://localhost:2000/bpel-testpartner</soap:address>
+                        <soap:address>http://PARTNER_IP_AND_PORT/bpel-testpartner</soap:address>
                         <soap:soap-version>1.1</soap:soap-version>
                         <soap:chunked-mode>false</soap:chunked-mode>
                         <soap:cleanup-transport>true</soap:cleanup-transport>

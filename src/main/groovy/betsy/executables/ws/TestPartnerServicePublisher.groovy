@@ -1,5 +1,6 @@
 package betsy.executables.ws
 
+import betsy.Configuration
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
 
 import javax.xml.ws.Endpoint
@@ -7,10 +8,10 @@ import javax.xml.ws.Endpoint
 class TestPartnerServicePublisher {
 
     Endpoint regularEndpoint
-    String regularUrl = "http://0.0.0.0:2000/bpel-testpartner"
+    String regularUrl = "http://${Configuration.PARTNER_IP_AND_PORT}/bpel-testpartner"
 
     Endpoint partnerLinkAssignmentEndpoint
-    String partnerLinkAssignmentUrl = "http://0.0.0.0:2000/bpel-assigned-testpartner"
+    String partnerLinkAssignmentUrl = "http://${Configuration.PARTNER_IP_AND_PORT}/bpel-assigned-testpartner"
 
     AntBuilder ant = new AntBuilder()
 

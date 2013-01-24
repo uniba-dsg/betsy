@@ -1,5 +1,6 @@
 package betsy.data.engines.packager
 
+import betsy.Configuration
 import betsy.data.Process
 
 class PetalsEsbCompositePackager {
@@ -23,6 +24,9 @@ class PetalsEsbCompositePackager {
         ant.copy file: process.targetPackageFilePath, todir: compositeDir
         ant.copy file: sun_http_binding, todir: compositeDir
 
+        ant.replace(dir: compositeDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
+        ant.replace(dir: compositeMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
+
         // build composite
         ant.zip file: process.targetPackageCompositeFilePath, basedir: compositeDir
     }
@@ -37,6 +41,9 @@ class PetalsEsbCompositePackager {
             fileset(dir: process.targetBpelPath, includes: "*.xsd")
             fileset(dir: process.targetBpelPath, includes: "*.wsdl")
         }
+
+        ant.replace(dir: bindingDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
+        ant.replace(dir: bindingMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
 
         sun_http_binding = "${process.targetPackagePath}/${process.bpelFileNameWithoutExtension}Binding.zip"
         ant.zip(file: sun_http_binding, basedir: bindingDir)

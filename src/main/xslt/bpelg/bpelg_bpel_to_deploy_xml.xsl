@@ -39,7 +39,7 @@
                 <service name="TestService"
                          port="TestPort">
                     <wsa:EndpointReference xmlns:wsa='http://www.w3.org/2005/08/addressing'>
-                        <wsa:Address>http://localhost:2000/bpel-testpartner</wsa:Address>
+                        <wsa:Address>http://PARTNER_IP_AND_PORT/bpel-testpartner</wsa:Address>
                     </wsa:EndpointReference>
                 </service>
             </invoke>

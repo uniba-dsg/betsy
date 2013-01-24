@@ -1,5 +1,6 @@
 package betsy.executables.generator
 
+import betsy.Configuration
 import betsy.data.Process
 import betsy.data.Engine
 
@@ -38,6 +39,7 @@ class PackageBuilder {
 
         ant.echo message: "Setting Endpoint of wsdl IF for $process on ${engine} to ${process.endpoint}"
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
+        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
 
         ant.mkdir dir: process.targetPackagePath
         ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
