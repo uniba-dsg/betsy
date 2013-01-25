@@ -25,6 +25,15 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 Requirements have to be fulfilled in order to execute any of these `gradlew` tasks.
 
 ```bash
+$ gradlew run -Pargs="<ARGS>"
+
+# usage: [options] <engines> <process>
+#  -s,--skip-reinstallation   skip reinstalling each engine for each process
+#  -h                         Print out usage information
+#  -o                         Opens results in default browser
+#  -p <ip-and-port>           Partner IP and Port (defaults to 0.0.0.0:2000)
+
+# Examples
 $ gradlew run # Running all tests for all engines
 $ gradlew run -Pargs="ode" # Running all tests for Apache ODE
 $ gradlew run -Pargs="ode,bpelg" # Running all tests for Apache ODE and bpel-g
@@ -35,6 +44,8 @@ $ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache O
 $ gradlew run -Pargs="-s" # Running all tests for all engines installing engines only once
 $ gradlew run -Pargs="-s ode ALL" # Running all tests for Apache ODE installing engines only once
 $ gradlew run -Pargs="-o" # Opens the results in the default browser after a successful run
+
+# Other gradlew tasks
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc

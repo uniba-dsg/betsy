@@ -1,6 +1,7 @@
 package configuration
 
 import betsy.Betsy
+import betsy.Configuration
 import betsy.data.Engine
 import betsy.data.Process
 import betsy.executables.CompositeSequential
@@ -12,17 +13,26 @@ class TestUsingParameters {
 
     public static void main(String[] args) {
         CliBuilder cli = new CliBuilder(usage: "[options] <engines> <process>")
-        cli.s("skip reinstalling each engine for each process")
+        cli.s(longOpt:'skip-reinstallation',"skip reinstalling each engine for each process")
         cli.o("Opens results in default browser")
+        cli.h("Print out usage information")
+        cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
 
         def options = cli.parse(args)
-        if (options == null || options == false) {
+        if (options == null || options == false || options.h) {
             println cli.usage()
             return
         }
 
         if (options.s) {
-            println "Reinstalling engine for each process"
+            println "Skipping reinstalling engine for each process test"
+        } else {
+            println "Reinstalling engine per process test"
+        }
+
+        if (options.p){
+            println "Setting Partner IP and Port to ${options.p} from previous setting ${Configuration.PARTNER_IP_AND_PORT}"
+            Configuration.PARTNER_IP_AND_PORT = options.p
         }
 
         List<Engine> engines = parseEngines(options.arguments() as String[]).unique()
@@ -30,7 +40,6 @@ class TestUsingParameters {
 
         println "Engines: ${engines.collect {it.name}}"
         println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
-
 
         try {
             if (options.s) {
