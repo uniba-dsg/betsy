@@ -26,7 +26,8 @@ public class EngineControl extends JFrame {
 
 
 
-		for (final Engine engine : engines) {
+		for (Engine tmpEngine : engines) {
+            final Engine engine = tmpEngine;
 
 			add(new JLabel(engine.getName()));
 
