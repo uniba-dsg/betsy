@@ -3,7 +3,7 @@
     <property environment="env"/>
 
     <property name="download.dir" value="downloads"/>
-    <property name="download.base.url" value="https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/"/>
+    <property name="download.base.url" value="https://lspi.wiai.uni-bamberg.de/svn/betsy/"/>
 
 
     <property name="tomcat.file.name" value="apache-tomcat-7.0.26-windows-x64.zip"/>
