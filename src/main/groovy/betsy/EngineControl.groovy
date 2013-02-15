@@ -38,6 +38,7 @@ public class EngineControl extends JFrame {
 					new Thread() {
 						public void run() {
 							engine.install();
+                            System.out.println("Installation of $engine.name is complete")
 						}
 					}.start();
 				}
@@ -81,6 +82,7 @@ public class EngineControl extends JFrame {
 					new Thread() {
 						public void run() {
 							engine.install();
+                            System.out.println("Installation of $engine.name is complete")
 						}
 					}.start();
 				}
