@@ -53,7 +53,7 @@ $ gradlew groovydoc # Generating GroovyDoc
 
 ## Downloads
 
-From public subversion directory https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/
+From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 
 ## Project Structure
 
