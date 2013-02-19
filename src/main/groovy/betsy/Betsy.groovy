@@ -5,7 +5,6 @@ import betsy.data.Process
 import betsy.data.TestSuite
 import betsy.executables.Composite
 import betsy.executables.ExecutionContext
-import betsy.executables.Init
 import betsy.executables.Validator
 
 class Betsy {
@@ -17,8 +16,6 @@ class Betsy {
 
     public void execute() throws Exception {
         new Validator().validate(processes)
-
-        new Init().allowInsecureDownloads()
 
         TestSuite tests = TestSuite.createTests(engines, processes.sort { it.id })
 

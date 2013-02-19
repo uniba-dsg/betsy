@@ -6,11 +6,11 @@ import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.SoapUiRunner
 import betsy.executables.util.Stopwatch
+import betsy.executables.util.StringUtil
 import org.apache.log4j.FileAppender
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
-import betsy.executables.util.StringUtil
 
 class Composite {
 
@@ -24,9 +24,6 @@ class Composite {
 
         // set output level to ERROR for console
         ant.project.getBuildListeners().get(0).setMessageOutputLevel(0)
-
-        // hack for downloading from site with bad ssl certificate
-        new Init().allowInsecureDownloads()
 
         context.testSuite.prepare()
 
