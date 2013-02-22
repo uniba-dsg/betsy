@@ -465,7 +465,7 @@ class BasicActivityProcesses {
             ]
     )
 
-    public final Process ASSIGN_MISMATCHED_ASSIGNMENT_FAILURE = builder.buildProcessWithPartner(
+    public final Process ASSIGN_MISMATCHED_ASSIGNMENT_FAILURE = builder.buildBasicActivityProcess(
             "basic-activities/Assign-MismatchedAssignmentFailure", "An assignment between two incompatible types. A mismatchedAssignmentFailure should be thrown.",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.SYNC, assertions: [new SoapFaultTestAssertion(faultString: "mismatchedAssignment")])]),
