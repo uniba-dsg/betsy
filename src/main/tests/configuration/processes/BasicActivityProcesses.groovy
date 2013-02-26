@@ -500,13 +500,6 @@ class BasicActivityProcesses {
             ]
     )
 
-    public final Process ASSIGN_EMPTY = builder.buildBasicActivityProcess(
-            "Assign-Empty", "A receive-reply pair with an intermediate assign that uses empty to and from elements.",
-            [
-                    new TestCase(testSteps: [new TestStep(input: "5", output: "5", operation: WsdlOperation.SYNC)])
-            ]
-    )
-
     public final Process ASSIGN_COPY_QUERY = builder.buildBasicActivityProcess(
             "Assign-Copy-Query",  "A process with a receive-reply pair with an intermediate assign that uses a query in a from element.",
             [
@@ -580,7 +573,6 @@ class BasicActivityProcesses {
             ASSIGN_EXPRESSION_FROM,
             ASSIGN_EXPRESSION_TO,
             ASSIGN_SELECTION_FAILURE,
-            ASSIGN_EMPTY,
             ASSIGN_COPY_QUERY,
             ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME,
             ASSIGN_COPY_IGNORE_MISSING_FROM_DATA,
