@@ -39,7 +39,7 @@
         <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
                 portType="tp:TestPartnerPortType" inputVariable="PartnerInitData">
             <correlations>
-                <correlation set="CorrelationSet" initiate="join" pattern="request"/>
+                <correlation set="CorrelationSet" initiate="join" />
             </correlations>
         </invoke>
         <assign name="AssignReplyData2">
