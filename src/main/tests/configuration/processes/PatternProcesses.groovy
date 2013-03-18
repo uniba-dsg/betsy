@@ -21,14 +21,16 @@ class PatternProcesses {
         )
     }
 
-    public final List<Process> CONTROL_FLOW_PATTERNS = [
-            SEQUENCE_PATTERN
-    ]
-
     public final Process SEQUENCE_PATTERN = buildPatternProcess(
-            "basic/SequencePattern",
+            "SequencePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", output: "1AB", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
+
+    public final List<Process> CONTROL_FLOW_PATTERNS = [
+           SEQUENCE_PATTERN
+    ].flatten() as List<Process>
+
+
 }

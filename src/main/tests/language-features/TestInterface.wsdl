@@ -44,7 +44,7 @@
         <part name="inputPart" element="tns:testElementSyncStringRequest"/>
     </message>
     <message name="executeProcessSyncStringResponse">
-        <part name="inputPart" element="tns:testElementSyncStringResponse"/>
+        <part name="outputPart" element="tns:testElementSyncStringResponse"/>
     </message>
 
     <portType name="TestInterfacePortType">
