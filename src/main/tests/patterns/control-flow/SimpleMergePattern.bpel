@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="SimpleMergePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/simpleMerge"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <if name="If1">
+            <condition>$InitData.inputPart &lt; 10</condition>
+            <assign name="Choice1">
+                <copy>
+                    <from>concat($InitData.inputPart,'A')</from>
+                    <to variable="InitData" part="inputPart"/>
+                </copy>
+            </assign>
+            <else>
+                <assign name="Choice2">
+                    <copy>
+                        <from>concat($InitData.inputPart,'B')</from>
+                        <to variable="InitData" part="inputPart"/>
+                    </copy>
+                </assign>
+            </else>
+        </if>
+        <assign name="SimpleMerge">
+            <copy>
+                <from variable="InitData" part="inputPart" />
+                <to variable="ReplyData" part="outputPart" />
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>
