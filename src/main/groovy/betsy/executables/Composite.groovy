@@ -1,7 +1,6 @@
 package betsy.executables
 
 import betsy.data.Engine
-import betsy.executables.generator.PackageBuilder
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.SoapUiRunner
@@ -61,7 +60,7 @@ class Composite {
                         log "${process.targetPath}/build", {
 
                             log "${process.targetPath}/build_package", {
-                                new PackageBuilder(process: process, ant: ant).buildPackage()
+                                engine.buildArchives(process)
                             }
 
                             log "${process.targetPath}/build_test", {

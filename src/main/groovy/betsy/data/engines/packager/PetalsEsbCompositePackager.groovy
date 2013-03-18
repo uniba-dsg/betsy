@@ -8,8 +8,6 @@ class PetalsEsbCompositePackager {
     AntBuilder ant = new AntBuilder()
     Process process
 
-    private String sun_http_binding
-
     void build() {
         createBinding()
         createComposite()
@@ -22,7 +20,7 @@ class PetalsEsbCompositePackager {
         ant.mkdir dir: compositeMetaDir
         ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_composite_jbi_from_bpel.xsl")
         ant.copy file: process.targetPackageFilePath, todir: compositeDir
-        ant.copy file: sun_http_binding, todir: compositeDir
+        ant.copy file: bindingArchive, todir: compositeDir
 
         ant.replace(dir: compositeDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
         ant.replace(dir: compositeMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
@@ -45,8 +43,11 @@ class PetalsEsbCompositePackager {
         ant.replace(dir: bindingDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
         ant.replace(dir: bindingMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
 
-        sun_http_binding = "${process.targetPackagePath}/${process.bpelFileNameWithoutExtension}Binding.zip"
-        ant.zip(file: sun_http_binding, basedir: bindingDir)
+        ant.zip(file: bindingArchive, basedir: bindingDir)
+    }
+
+    private GString getBindingArchive() {
+        "${process.targetPackagePath}/${process.bpelFileNameWithoutExtension}Binding.zip"
     }
 
 }

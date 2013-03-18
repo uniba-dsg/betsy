@@ -112,7 +112,11 @@ class Process implements Cloneable {
      * @return the path <code>test/$engine/$process/pkg/$processId.zip</code>
      */
     String getTargetPackageFilePath() {
-        "${getTargetPackagePath()}/${bpelFileNameWithoutExtension}.zip"
+        getTargetPackageFilePath("zip")
+    }
+
+    String getTargetPackageFilePath(String extension) {
+        "${getTargetPackagePath()}/${bpelFileNameWithoutExtension}.${extension}"
     }
 
     /**
@@ -121,7 +125,7 @@ class Process implements Cloneable {
      * @return the path <code>test/$engine/$process/pkg/$processId.jar</code>
      */
     String getTargetPackageJarFilePath() {
-        "${getTargetPackagePath()}/${bpelFileNameWithoutExtension}.jar"
+        getTargetPackageFilePath("jar")
     }
 
     /**
@@ -220,4 +224,5 @@ class Process implements Cloneable {
     int hashCode() {
         return (bpel != null ? bpel.hashCode() : 0)
     }
+
 }

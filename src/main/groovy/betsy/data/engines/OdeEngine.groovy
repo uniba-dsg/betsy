@@ -72,14 +72,17 @@ class OdeEngine extends Engine {
     }
 
     @Override
-    void buildDeploymentDescriptor(Process process) {
-        ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "$xsltPath/bpel_to_ode_deploy_xml.xsl")
-    }
+    void buildArchives(Process process) {
+        createFolderAndCopyFilesToTarget(process)
 
-    @Override
-    void transform(Process process) {
+        // engine specific steps
+        ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "$xsltPath/bpel_to_ode_deploy_xml.xsl")
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
         ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+
+        replaceEndpointAndPartnerTokensWithValues(process)
+
+        bpelFolderToZipFile(process)
     }
 
     @Override

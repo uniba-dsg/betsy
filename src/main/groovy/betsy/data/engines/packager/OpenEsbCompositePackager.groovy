@@ -7,7 +7,10 @@ class OpenEsbCompositePackager {
     AntBuilder ant = new AntBuilder()
     Process process
 
-    private String sun_http_binding
+    void build() {
+        createBinding()
+        createComposite()
+    }
 
     private void createComposite() {
         // create composite
@@ -17,7 +20,7 @@ class OpenEsbCompositePackager {
         ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_composite_jbi_from_bpel.xsl")
         ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/MANIFEST.MF", style: "${process.engine.xsltPath}/create_composite_manifest_from_bpel.xsl")
         ant.copy file: process.targetPackageJarFilePath, todir: compositeDir
-        ant.copy file: sun_http_binding, todir: compositeDir
+        ant.copy file: bindingArchive, todir: compositeDir
 
         // build composite
         ant.zip file: process.targetPackageCompositeFilePath, basedir: compositeDir
@@ -45,12 +48,10 @@ class OpenEsbCompositePackager {
             fileset(dir: process.targetBpelPath, includes: "*.wsdl")
         }
 
-        sun_http_binding = "${process.targetPackagePath}/sun-http-binding.jar"
-        ant.zip(file: sun_http_binding, basedir: bindingDir)
+        ant.zip(file: bindingArchive, basedir: bindingDir)
     }
 
-    void build() {
-        createBinding()
-        createComposite()
+    private String getBindingArchive() {
+        "${process.targetPackagePath}/sun-http-binding.jar"
     }
 }

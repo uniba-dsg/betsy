@@ -1,10 +1,9 @@
 package betsy.data.engines
 
 import betsy.data.Engine
-
 import betsy.data.Process
-import betsy.data.engines.server.Tomcat
 import betsy.data.WsdlOperation
+import betsy.data.engines.server.Tomcat
 
 class BpelgEngine extends Engine {
 
@@ -51,17 +50,12 @@ class BpelgEngine extends Engine {
 
     @Override
     void install() {
-         ant.ant(antfile: "build.xml", target: getName())
+        ant.ant(antfile: "build.xml", target: getName())
     }
 
     @Override
     void deploy(Process process) {
         ant.copy(file: process.targetPackageFilePath, todir: deploymentDir)
-    }
-
-    @Override
-    void buildDeploymentDescriptor(Process process) {
-        ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "${getXsltPath()}/bpelg_bpel_to_deploy_xml.xsl")
     }
 
     @Override
@@ -86,13 +80,22 @@ class BpelgEngine extends Engine {
     }
 
     @Override
-    void transform(Process process) {
+    void buildArchives(Process process) {
+        createFolderAndCopyFilesToTarget(process)
+
+        // deployment descriptor
+        ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "${getXsltPath()}/bpelg_bpel_to_deploy_xml.xsl")
+
+        // remove unimplemented methods
         ant.xslt(in: "${process.PATH_PREFIX}/language-features/TestInterface.wsdl", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
             param(name: "deletePattern", expression: computeMatchingPattern(process))
         }
-
+        // uniquify service name
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
         ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+
+        replaceEndpointAndPartnerTokensWithValues(process)
+        bpelFolderToZipFile(process)
     }
 
     private String computeMatchingPattern(Process process) {

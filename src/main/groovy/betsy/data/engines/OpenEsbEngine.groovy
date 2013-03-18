@@ -2,8 +2,8 @@ package betsy.data.engines
 
 import betsy.data.Engine
 import betsy.data.Process
-import betsy.data.engines.packager.OpenEsbCompositePackager
 import betsy.data.engines.cli.OpenEsbCLI
+import betsy.data.engines.packager.OpenEsbCompositePackager
 
 class OpenEsbEngine extends Engine {
 
@@ -19,7 +19,12 @@ class OpenEsbEngine extends Engine {
         "${CHECK_URL}/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
-    OpenEsbCLI getCli(){
+    @Override
+    void storeLogs(Process process) {
+        // TODO not yet implemented
+    }
+
+    OpenEsbCLI getCli() {
         new OpenEsbCLI(ant: ant, engine: this)
     }
 
@@ -49,6 +54,19 @@ class OpenEsbEngine extends Engine {
     }
 
     @Override
+    public void buildArchives(Process process) {
+        createFolderAndCopyFilesToTarget(process)
+
+        // engine specific steps
+        buildDeploymentDescriptor(process)
+        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+
+        replaceEndpointAndPartnerTokensWithValues(process)
+        bpelFolderToZipFile(process)
+
+        new OpenEsbCompositePackager(ant: ant, process: process).build()
+    }
+
     void buildDeploymentDescriptor(Process process) {
         String metaDir = process.targetBpelPath + "/META-INF"
         String catalogFile = "$metaDir/catalog.xml"
@@ -61,15 +79,6 @@ class OpenEsbEngine extends Engine {
         ant.xslt(in: process.targetBpelFilePath, out: "$metaDir/jbi.xml", style: "$xsltPath/create_jbi_from_bpel.xsl")
     }
 
-    @Override
-    void buildAdditionalArchives(Process process) {
-        new OpenEsbCompositePackager(ant: ant, process: process).build()
-    }
-
-    @Override
-    void transform(Process process) {
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
-    }
 
     @Override
     void failIfRunning() {

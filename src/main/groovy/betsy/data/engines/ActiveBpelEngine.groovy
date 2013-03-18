@@ -3,12 +3,11 @@ package betsy.data.engines
 import betsy.data.Engine
 import betsy.data.Process
 import betsy.data.engines.server.Tomcat
-import betsy.data.WsdlOperation
 
 /*
 * Currently using in-memory mode for the engine
  */
-class ActiveBpelEngine extends Engine{
+class ActiveBpelEngine extends Engine {
 
     @Override
     String getName() {
@@ -36,7 +35,6 @@ class ActiveBpelEngine extends Engine{
         }
     }
 
-
     @Override
     void startup() {
         tomcat.startup()
@@ -52,18 +50,10 @@ class ActiveBpelEngine extends Engine{
         ant.ant(antfile: "build.xml", target: getName())
     }
 
-    @Override
-    void buildDeploymentDescriptor(Process process) {
-        String metaDir = process.targetBpelPath + "/META-INF"
-        ant.echo file: "$metaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
-        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.bpelFileNameWithoutExtension}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
-        ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
-    }
 
     @Override
     void deploy(Process process) {
-        ant.copy(file: process.targetPackageFilePath, todir: deploymentDir)
-        ant.move(file: "${deploymentDir}/${process.bpelFileNameWithoutExtension}.zip", toFile: "${deploymentDir}/${process.bpelFileNameWithoutExtension}.bpr")
+        ant.copy(file: process.getTargetPackageFilePath("bpr"), todir: deploymentDir)
     }
 
     @Override
@@ -85,6 +75,22 @@ class ActiveBpelEngine extends Engine{
             }
             ant.sleep(milliseconds: 10000)
         }
+    }
+
+    public void buildArchives(Process process) {
+        createFolderAndCopyFilesToTarget(process)
+
+        // create deployment descriptor
+        String metaDir = process.targetBpelPath + "/META-INF"
+        ant.echo file: "$metaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
+        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.bpelFileNameWithoutExtension}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
+        ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
+
+        replaceEndpointAndPartnerTokensWithValues(process)
+        bpelFolderToZipFile(process)
+
+        // create bpr file
+        ant.copy(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))
     }
 
     @Override

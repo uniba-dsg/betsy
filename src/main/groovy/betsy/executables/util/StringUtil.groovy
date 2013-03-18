@@ -7,7 +7,6 @@ class StringUtil {
         int paddingLength = length - string.length()
         if(paddingLength < 0 ){
             paddingLength = 0
-            println "PADDING ERROR"
         }
         String paddingString = " " * paddingLength
         string + paddingString

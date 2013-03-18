@@ -1,8 +1,5 @@
 package betsy.data
 
-import betsy.data.assertions.NotDeployableAssertion
-
-
 class TestCase {
 
     /**

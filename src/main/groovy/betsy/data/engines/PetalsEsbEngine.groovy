@@ -22,6 +22,11 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
+    void storeLogs(Process process) {
+        // TODO not yet implemented
+    }
+
+    @Override
     void startup() {
         ant.parallel() {
             ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/petals-esb-4.0/bin") {
@@ -51,9 +56,11 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void deploy(Process process) {
-        String installationDir = "${getServerPath()}/petals-esb-4.0/install"
-
         ant.copy(file: process.targetPackageCompositeFilePath, todir: installationDir)
+    }
+
+    private String getInstallationDir() {
+        "${getServerPath()}/petals-esb-4.0/install"
     }
 
     @Override
@@ -67,7 +74,6 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void onPostDeployment(Process process) {
-        String installationDir = "${getServerPath()}/petals-esb-4.0/install"
         ant.waitfor(maxwait: "100", maxwaitunit: "second", checkevery: "1000") {
             not() {
                 available(file: "$installationDir/${process.targetPackageCompositeFile}")
@@ -76,25 +82,24 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    void buildDeploymentDescriptor(Process process) {
+    void buildArchives(Process process) {
+        createFolderAndCopyFilesToTarget(process)
+
+        // engine specific steps
         String metaDir = "${process.targetBpelPath}/META-INF"
         ant.mkdir(dir: metaDir)
         ant.xslt(in: process.targetBpelFilePath, out: "$metaDir/jbi.xml", style: "$xsltPath/create_jbi_from_bpel.xsl")
-    }
 
-    @Override
-    void buildAdditionalArchives(Process process) {
-        new PetalsEsbCompositePackager(process: process, ant: ant).build()
-    }
-
-    @Override
-    void transform(Process process) {
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
         if (Files.exists(Paths.get("${process.targetBpelPath}/TestPartner.wsdl"))) {
             ant.replace(file: "${process.targetBpelPath}/TestPartner.wsdl", token: "TestService", value: "${process.bpelFileNameWithoutExtension}TestService")
         }
 
+        replaceEndpointAndPartnerTokensWithValues(process)
+        bpelFolderToZipFile(process)
+
+        new PetalsEsbCompositePackager(process: process, ant: ant).build()
     }
 
     @Override

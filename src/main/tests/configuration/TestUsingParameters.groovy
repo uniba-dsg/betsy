@@ -3,6 +3,7 @@ package configuration
 import betsy.Betsy
 import betsy.Configuration
 import betsy.data.Engine
+import betsy.data.Engines
 import betsy.data.Process
 import betsy.executables.CompositeSequential
 import configuration.processes.Processes
@@ -65,9 +66,9 @@ class TestUsingParameters {
 
     private static List<Engine> parseEngines(String[] args) {
         if (args.length == 0 || "ALL" == args[0]) {
-            Engine.availableEngines()
+            Engines.availableEngines()
         } else {
-            Engine.build(args[0].toLowerCase().split(",") as List<String>)
+            Engines.build(args[0].toLowerCase().split(",") as List<String>)
         }
     }
 

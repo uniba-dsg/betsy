@@ -1,30 +1,30 @@
 package betsy.executables
 
 import betsy.data.Process
-import configuration.processes.Processes
 
 /**
  * Validates a list of processes
  */
 class Validator {
 
-    public void validate(List<Process> processes) {
+    List<Process> processes
+
+    public void validate() {
         // checks for two processes referencing the same BPEL file
-        assertEachProcessReferenceBpelFile(processes)
+        assertEachProcessReferenceBpelFile()
 
         // checks that the files references by the process exist
-        assertAllFilesPerProcessExists(processes)
+        assertAllFilesPerProcessExists()
 
         // checks that the BPEL process name is equal to the file name
-        assertBpelProcessNameEqualToFileName(processes)
+        assertBpelProcessNameEqualToFileName()
 
         // checks that the targetNamespace of each BPEL process is unique
-        assertBpelTargetNamespacesAreUnique(processes)
+        assertBpelTargetNamespacesAreUnique()
     }
 
-    private void assertBpelTargetNamespacesAreUnique(List<Process> processes) {
-        List<String> namespaces = processes.collect {
-            process ->
+    private void assertBpelTargetNamespacesAreUnique() {
+        List<String> namespaces = processes.collect { process ->
             def bpel = new XmlSlurper(false, false).parse(process.bpelFilePath)
             [bpel.@name.text(), bpel.@targetNamespace.text()]
         }
@@ -37,9 +37,8 @@ class Validator {
         }
     }
 
-    private void assertBpelProcessNameEqualToFileName(List<Process> processes) {
-        processes.each {
-            process ->
+    private void assertBpelProcessNameEqualToFileName() {
+        processes.each { process ->
             String attributeName = new XmlSlurper(false, false).parse(process.bpelFilePath).@name.text()
             if (attributeName != process.bpelFileNameWithoutExtension) {
                 throw new IllegalStateException("The configuration does not correspond with the BPEL process. Names differ. BPEL uses " + attributeName + " while " + process.bpelFileNameWithoutExtension + " is the given filename")
@@ -47,9 +46,8 @@ class Validator {
         }
     }
 
-    private void assertAllFilesPerProcessExists(List<Process> processes) {
-        processes.each {
-            process ->
+    private void assertAllFilesPerProcessExists() {
+        processes.each { process ->
             List<String> paths = [process.bpelFilePath, process.wsdlPaths, process.additionalFilePaths].flatten()
 
             paths.each { path ->
@@ -60,11 +58,9 @@ class Validator {
         }
     }
 
-    private void assertEachProcessReferenceBpelFile(List<Process> processes) {
-        processes.each {
-            p1 ->
-            processes.each {
-                p2 ->
+    private void assertEachProcessReferenceBpelFile() {
+        processes.each { p1 ->
+            processes.each { p2 ->
                 if (!p1.is(p2) && p1.bpelFileName == p2.bpelFileName) {
                     throw new IllegalStateException("Two processes reference same bpel file: " + p1 + " and " + p2)
                 }

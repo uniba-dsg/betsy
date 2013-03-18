@@ -1,52 +1,14 @@
 package betsy.data
 
-import betsy.data.engines.*
+import betsy.Configuration
 
-abstract class Engine {
-
-    /**
-     * Returns a list of all available engines.
-     *
-     * @return a list of all available engines
-     */
-    public static List<Engine> availableEngines() {
-        [new OdeEngine(), new BpelgEngine(), new OpenEsbEngine(), new PetalsEsbEngine(), new OrchestraEngine(), new ActiveBpelEngine()]
-    }
-
-    /**
-     * Find an engine by name.
-     *
-     * @param name the name of an engine
-     * @return the engine if it can be found
-     * @throws IllegalArgumentException if the engine can not be found
-     */
-    public static Engine build(String name) {
-        Engine engine = availableEngines().find {it.name == name}
-
-        if (engine == null) {
-            throw new IllegalArgumentException("passed engine $name does not exist")
-        } else {
-            return engine
-        }
-    }
-
-    public static List<Engine> build(List<String> names) {
-        names.collect { Engine.build(it) }
-    }
+abstract class Engine implements EngineAPI {
 
     AntBuilder ant = new AntBuilder()
-
-    public abstract String getName()
 
     TestSuite testSuite
 
     final List<Process> processes = []
-
-    public void buildAdditionalArchives(Process process) {
-        // do nothing
-    }
-
-    public abstract String getEndpointUrl(Process process)
 
     void setAnt(AntBuilder ant) {
         this.ant = ant
@@ -83,27 +45,36 @@ abstract class Engine {
         getName()
     }
 
-    /**
-     * Start the engine and wait until it started.
-     */
-    public abstract void startup()
+    protected void createFolderAndCopyFilesToTarget(Process process) {
+        Engine engine = this
 
-    /**
-     * Stop the engine immediatly.
-     */
-    public abstract void shutdown()
+        // engine independent package steps
+        ant.mkdir dir: process.targetPath
 
-    public abstract void install()
+        ant.echo message: "Copying files for ${process} for engine ${engine}"
 
-    /**
-     * Deploy the given <code>process</code> to the current engine.
-     *
-     * @param process to be deployed
-     */
-    public abstract void deploy(Process process)
+        ant.copy file: process.bpelFilePath, todir: process.targetBpelPath
+        ant.replace(file: process.targetBpelFilePath, token: "../", value: "")
 
-    public void buildDeploymentDescriptor(Process process) {
-        // do nothing, can be overridden
+        process.wsdlPaths.each { wsdlPath ->
+            ant.copy file: wsdlPath, todir: process.targetBpelPath
+        }
+
+        process.additionalFilePaths.each {additionalPath ->
+            ant.copy file: additionalPath, todir: process.targetBpelPath
+        }
+    }
+
+    protected void bpelFolderToZipFile(Process process) {
+        ant.mkdir dir: process.targetPackagePath
+        ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
+    }
+
+    protected void replaceEndpointAndPartnerTokensWithValues(Process process) {
+        ant.echo message: "Setting Endpoint of wsdl IF for $process on ${this} to ${process.endpoint}"
+        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
+        ant.echo message: "Setting Partner Address of for $process on ${this} to ${Configuration.PARTNER_IP_AND_PORT}"
+        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
     }
 
     public void onPostDeployment() {
@@ -114,17 +85,9 @@ abstract class Engine {
 
     }
 
-    public void transform(Process process) {
-        // do nothing, can be overridden
-    }
-
-    public abstract void failIfRunning()
-
     void prepare() {
         ant.mkdir dir: path
     }
-
-    void storeLogs(Process process) {}
 
     boolean equals(o) {
         if (this.is(o)) return true

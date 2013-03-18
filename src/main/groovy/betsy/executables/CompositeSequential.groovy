@@ -1,7 +1,6 @@
 package betsy.executables
 
 import betsy.data.Engine
-import betsy.executables.generator.PackageBuilder
 import betsy.executables.generator.TestBuilder
 import betsy.executables.soapui.SoapUiRunner
 
@@ -9,7 +8,7 @@ class CompositeSequential extends Composite {
 
     protected void executeEngine(Engine engine) {
         log "${context.testSuite.path}/${engine.name}", {
-            engine.processes.each {process ->
+            engine.processes.each { process ->
 
                 println "Process ${engine.processes.indexOf(process) + 1} of ${engine.processes.size()}"
 
@@ -19,7 +18,7 @@ class CompositeSequential extends Composite {
                         log "${process.targetPath}/build", {
 
                             log "${process.targetPath}/build_package", {
-                                new PackageBuilder(process: process, ant: ant).buildPackage()
+                                engine.buildArchives(process)
                             }
 
                             log "${process.targetPath}/build_test", {
