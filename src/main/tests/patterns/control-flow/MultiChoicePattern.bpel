@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="MultiChoicePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multiChoice"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="Branch1" type="xs:string" />
+        <variable name="Branch2" type="xs:string" />
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <flow name="Choice" suppressJoinFailue="yes">
+            <links>
+                <link name="Choice1Condition"/>
+                <link name="Choice2Condition"/>
+            </links>
+
+                <assign name="ChoiceAssign">
+                    <sources>
+                        <source linkName="Choice2Condition">
+                            <transitionCondition>$InitData.inputPart &gt; 2</transitionCondition>
+                        </source>
+                        <source linkName="Choice1Condition">
+                            <transitionCondition>$InitData.inputPart &gt; 1</transitionCondition>
+                        </source>
+                    </sources>
+                    <copy>
+                        <from>
+                            <literal>A</literal>
+                        </from>
+                        <to variable="InitData" part="inputPart"/>
+                    </copy>
+                    <copy>
+                        <from>
+                            <literal>Y</literal>
+                        </from>
+                        <to variable="Branch1"/>
+                    </copy>
+                    <copy>
+                        <from>
+                            <literal>Z</literal>
+                        </from>
+                        <to variable="Branch2"/>
+                    </copy>
+                </assign>
+
+            <sequence name="Choice1">
+                <targets>
+                    <joinCondition>
+                        $Choice1Condition
+                    </joinCondition>
+                    <target linkName="Choice1Condition"/>
+                </targets>
+                <assign name="Choice1Assign">
+                    <copy>
+                        <from>
+                            <literal>B</literal>
+                        </from>
+                        <to variable="Branch1" />
+                    </copy>
+                </assign>
+            </sequence>
+            <sequence name="Choice2">
+                <targets>
+                    <joinCondition>
+                        $Choice2Condition
+                    </joinCondition>
+                    <target linkName="Choice2Condition"/>
+                </targets>
+                <assign name="Choice2Assign">
+                    <copy>
+                        <from>
+                            <literal>C</literal>
+                        </from>
+                        <to variable="Branch2" />
+                    </copy>
+                </assign>
+            </sequence>
+        </flow>
+        <assign name="Merge" >
+            <copy>
+                <from>concat($InitData.inputPart,$Branch1,$Branch2)</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>
