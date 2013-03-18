@@ -6,6 +6,15 @@ class Stopwatch {
     private long start
     private long stop
 
+    static String benchmark(Closure closure) {
+        Stopwatch stopwatch = new Stopwatch()
+        stopwatch.start()
+        closure.call()
+        stopwatch.stop()
+
+        stopwatch.formattedDiff
+    }
+
     public void start() {
         start = System.currentTimeMillis()
     }

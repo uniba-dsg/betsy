@@ -6,7 +6,6 @@ import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.SoapUiRunner
 import betsy.executables.util.IOUtil
 import betsy.executables.util.Stopwatch
-import betsy.executables.util.StringUtil
 import org.apache.log4j.FileAppender
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
@@ -30,28 +29,37 @@ class Composite {
         // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
         context.testSuite.prepare()
 
-        // create reports
-        log "${context.testSuite.path}/prepare", {
+        log "${context.testSuite.path}/all", {
 
-            // ensure folder structure
-            context.testSuite.engines.each { engine ->
-                engine.prepare()
+            try {
+                // create reports
+                log "${context.testSuite.path}/prepare", {
+
+                    // ensure folder structure
+                    context.testSuite.engines.each { engine ->
+                        engine.prepare()
+                    }
+
+                    // ensure that no engine is currently running
+                    context.testSuite.engines.each { engine ->
+                        engine.failIfRunning()
+                    }
+                }
+
+                log "${context.testSuite.path}/execute", {
+                    // prepare folder structure
+                    executeEngines(context)
+                }
+
+                // create reports
+                log "${context.testSuite.path}/report", {
+                    new Reporter(ant: ant, tests: context.testSuite).createReports()
+                }
+            } catch (Exception e) {
+                ant.echo message: IOUtil.getStackTrace(e), loglevel: "error"
+                throw e
             }
 
-            // ensure that no engine is currently running
-            context.testSuite.engines.each { engine ->
-                engine.failIfRunning()
-            }
-        }
-
-        log "${context.testSuite.path}/execute", {
-            // prepare folder structure
-            executeEngines(context)
-        }
-
-        // create reports
-        log "${context.testSuite.path}/report", {
-            new Reporter(ant: ant, tests: context.testSuite).createReports()
         }
     }
 
@@ -134,19 +142,15 @@ class Composite {
     void log(String name, Closure closure) {
         ant.mkdir dir: new File(name).parent
         ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
+
+        ant.echo message: name
         println name
-        println "${name} ${benchmark(closure)}"
+
+        String result = "${name} ${Stopwatch.benchmark(closure)}"
+        ant.echo message: result
+        println result
+
         ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
-    }
-
-    String benchmark(Closure closure) {
-        Stopwatch stopwatch = new Stopwatch()
-        stopwatch.start()
-        closure.call()
-        stopwatch.stop()
-        ant.echo message: stopwatch.toString()
-
-        stopwatch.formattedDiff
     }
 
     void soapui(String name, Closure closure) {
