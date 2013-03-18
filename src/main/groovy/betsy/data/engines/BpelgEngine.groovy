@@ -2,7 +2,6 @@ package betsy.data.engines
 
 import betsy.data.Engine
 import betsy.data.Process
-import betsy.data.WsdlOperation
 import betsy.data.engines.server.Tomcat
 
 class BpelgEngine extends Engine {

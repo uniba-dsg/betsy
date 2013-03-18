@@ -56,7 +56,7 @@ class Composite {
                     new Reporter(ant: ant, tests: context.testSuite).createReports()
                 }
             } catch (Exception e) {
-                ant.echo message: IOUtil.getStackTrace(e), loglevel: "error"
+                ant.echo message: IOUtil.getStackTrace(e), level: "error"
                 throw e
             }
 

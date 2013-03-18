@@ -18,10 +18,12 @@ class IOUtil {
         System.out = newOut
         System.err = newErr
 
-        closure.call()
-
-        System.out = saveOut
-        System.err = saveOErr
+        try {
+            closure.call()
+        } finally {
+            System.out = saveOut
+            System.err = saveOErr
+        }
 
         [bufOut.toString(), bufErr.toString()] as String[]
     }
