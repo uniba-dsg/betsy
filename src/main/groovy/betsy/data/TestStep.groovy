@@ -40,7 +40,7 @@ class TestStep {
     }
 
     public void setStringOperationOutput(String output) {
-        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';matches(//test:testElementSyncStringResponse , '${output}')", output: "${output}")
+        assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncStringResponse", output: output)
     }
 
     public void setOutputAsLeast(String output) {
