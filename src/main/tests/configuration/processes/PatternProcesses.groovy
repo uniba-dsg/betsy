@@ -28,8 +28,16 @@ class PatternProcesses {
             ]
     )
 
+    public final Process PARALLEL_SPLIT_PATTERN = buildPatternProcess(
+            "ParallelSplitPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final List<Process> CONTROL_FLOW_PATTERNS = [
-           SEQUENCE_PATTERN
+           SEQUENCE_PATTERN,
+           PARALLEL_SPLIT_PATTERN
     ].flatten() as List<Process>
 
 
