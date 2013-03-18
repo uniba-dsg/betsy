@@ -39,6 +39,10 @@ class TestStep {
         assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse = ${output}", output: "${output}")
     }
 
+    public void setStringOperationOutput(String output) {
+        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';matches(//test:testElementSyncStringResponse , '${output}')", output: "${output}")
+    }
+
     public void setOutputAsLeast(String output) {
         assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse >= ${output}", output: "${output}")
     }

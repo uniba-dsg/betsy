@@ -24,7 +24,7 @@ class PatternProcesses {
     public final Process SEQUENCE_PATTERN = buildPatternProcess(
             "SequencePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", output: "1AB", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
