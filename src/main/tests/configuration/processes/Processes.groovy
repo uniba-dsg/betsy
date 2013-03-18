@@ -10,10 +10,13 @@ class Processes {
 
     ScopeProcesses scopeProcesses = new ScopeProcesses()
 
+    PatternProcesses patternProcesses = new PatternProcesses()
+
     public final List<Process> ALL = [
             structuredActivityProcesses.STRUCTURED_ACTIVITIES,
             basicActivityProcesses.BASIC_ACTIVITIES,
-            scopeProcesses.SCOPES
+            scopeProcesses.SCOPES,
+            patternProcesses.CONTROL_FLOW_PATTERNS
     ].flatten() as List<Process>
 
     public final List<Process> NOT_DEPLOYABLE = ALL.findAll { process ->

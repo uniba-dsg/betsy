@@ -16,6 +16,11 @@ class WsdlOperation {
     public final static WsdlOperation ASYNC = new WsdlOperation(name: "startProcessAsync")
 
     /**
+     * The WSDL WsdlOperation startProcessSyncString
+     */
+    public final static WsdlOperation SYNC_STRING = new WsdlOperation(name: "startProcessSyncString")
+
+    /**
      * The name of the WSDL operation.
      */
     String name
