@@ -5,7 +5,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
-    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>
