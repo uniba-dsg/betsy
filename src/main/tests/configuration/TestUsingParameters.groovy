@@ -26,7 +26,7 @@ class TestUsingParameters {
         }
 
         if (options.s) {
-            println "Skipping reinstalling engine for each process test"
+            println "Skipping reinstallation of engine for each process test"
         } else {
             println "Reinstalling engine per process test"
         }
