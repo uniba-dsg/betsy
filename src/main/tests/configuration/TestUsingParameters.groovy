@@ -66,7 +66,7 @@ class TestUsingParameters {
     }
 
     private static List<Engine> parseEngines(String[] args) {
-        if (args.length == 0 || "ALL" == args[0]) {
+        if (args.length == 0 || "all" == args[0].toLowerCase()) {
             Engines.availableEngines()
         } else {
             Engines.build(args[0].toLowerCase().split(",") as List<String>)
