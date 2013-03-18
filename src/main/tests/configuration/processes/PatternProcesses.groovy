@@ -42,10 +42,19 @@ class PatternProcesses {
             ]
     )
 
+    public final Process EXCLUSIVE_CHOICE_PATTERN = buildPatternProcess(
+            "ExclusiveChoicePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "1B", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
            PARALLEL_SPLIT_PATTERN,
-           SYNCHRONIZATION_PATTERN
+           SYNCHRONIZATION_PATTERN,
+           EXCLUSIVE_CHOICE_PATTERN
     ].flatten() as List<Process>
 
 
