@@ -5,6 +5,7 @@
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+        xmlns:failure="http://dsg.wiai.uniba.de/betsy/errors"
         >
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
             location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -32,7 +33,7 @@
                     <catch faultName="bpel:selectionFault">
                         <empty/>
                     </catch>
-                    <catch faultName="thisShouldNotBeSeenByAnyone">
+                    <catch faultName="failure:thisShouldNotBeSeenByAnyone">
                         <rethrow />
                     </catch>
                 </faultHandlers>
@@ -52,7 +53,7 @@
                                             <to variable="ReplyData" part="outputPart"/>
                                         </copy>
                                     </assign>
-                                    <throw faultName="thisShouldNotBeSeenByAnyone"/>
+                                    <throw faultName="failure:thisShouldNotBeSeenByAnyone"/>
                                 </sequence>
                             </terminationHandler>
                             <wait>

@@ -3,7 +3,8 @@
         name="Pick-OnAlarm-For"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/pick-onAlarm-for"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" >
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+        xmlns:failure="http://lspi.wiai.uniba.de/failures">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
@@ -27,7 +28,7 @@
                 <correlations>
                     <correlation set="CorrelationSet" initiate="no"/>
                 </correlations>
-                <throw xmlns:failure="http://lspi.wiai.uniba.de/failures" faultName="failure:shouldNotBeExecuted"/>
+                <throw faultName="failure:shouldNotBeExecuted"/>
             </onMessage>
             <onAlarm>
                 <for>'P0Y0M0DT0H0M2.0S'</for>

@@ -32,7 +32,7 @@
                 portType="tp:TestPartnerPortType" inputVariable="PartnerInitData" outputVariable="PartnerReplyData">
             <catchAll>
                 <sequence>
-                    <assign name="AssignReplyData">
+                    <assign name="AssignReplyDataInsideCatch">
                         <copy>
                             <from>
                                 <literal>
@@ -42,7 +42,7 @@
                             <to variable="ReplyData" part="outputPart"/>
                         </copy>
                     </assign>
-                    <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+                    <reply name="ReplyToInitialReceiveInsideCatch" partnerLink="MyRoleLink" operation="startProcessSync"
                            portType="ti:TestInterfacePortType" variable="ReplyData"/>
                 </sequence>
             </catchAll>

@@ -28,7 +28,7 @@
         <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync" portType="tp:TestPartnerPortType" inputVariable="PartnerInitData" outputVariable="PartnerReplyData">
             <catch faultName="tp:CustomFault">
                 <sequence>
-                    <assign name="AssignReplyData">
+                    <assign name="AssignReplyDataInsideCatch">
                         <copy>
                             <from>
                                 <literal>
@@ -38,7 +38,7 @@
                             <to variable="ReplyData" part="outputPart"/>
                         </copy>
                     </assign>
-                    <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+                    <reply name="ReplyToInitialReceiveInsideCatch" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
                 </sequence>
             </catch>
         </invoke>

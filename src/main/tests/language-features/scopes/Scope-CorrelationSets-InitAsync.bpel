@@ -34,7 +34,7 @@
                     <correlation set="CorrelationSet" initiate="no"/>
                 </correlations>
             </receive>
-            <assign name="InitNumberOfInvocations">
+            <assign name="InitNumberOfInvocations2">
                 <copy>
                     <from>$NumberOfInvocations.outputPart + 1</from>
                     <to variable="NumberOfInvocations" part="outputPart"/>
