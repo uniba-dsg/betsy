@@ -37,9 +37,7 @@
         </flow>
         <assign name="Synchronization" >
             <copy>
-                <from>
-                    concat($InitData.inputPart,$Branch1,$Branch2)
-                </from>
+                <from>concat($InitData.inputPart,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>

@@ -16,17 +16,13 @@
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="SequenceFirstStep" >
             <copy>
-                <from>
-                    concat($InitData.inputPart,'A')
-                </from>
+                <from>concat($InitData.inputPart,'A')</from>
                 <to variable="InitData" part="inputPart"/>
             </copy>
         </assign>
         <assign name="SequenceSecondStep" >
             <copy>
-                <from>
-                    concat($InitData.inputPart,'B')
-                </from>
+                <from>concat($InitData.inputPart,'B')</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
