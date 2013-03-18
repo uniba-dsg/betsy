@@ -83,7 +83,7 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void buildArchives(Process process) {
-        createFolderAndCopyFilesToTarget(process)
+        createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         String metaDir = "${process.targetBpelPath}/META-INF"

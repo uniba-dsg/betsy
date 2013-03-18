@@ -4,6 +4,7 @@ import betsy.data.Engine
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.SoapUiRunner
+import betsy.executables.util.IOUtil
 import betsy.executables.util.Stopwatch
 import betsy.executables.util.StringUtil
 import org.apache.log4j.FileAppender
@@ -17,19 +18,30 @@ class Composite {
     ExecutionContext context
 
     public void execute() {
+        // use same ant builder in every class
         context.testSuite.ant = ant
-        context.testSuite.engines.each { engine -> engine.ant = ant}
+        context.testSuite.engines.each { engine -> engine.ant = ant }
         context.testPartner.ant = ant
 
         // set output level to ERROR for console
         ant.project.getBuildListeners().get(0).setMessageOutputLevel(0)
 
+        // prepare test suite
+        // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
         context.testSuite.prepare()
 
         // create reports
         log "${context.testSuite.path}/prepare", {
-            // prepare folder structure
-            context.testSuite.failIfAnyEngineIsRunning()
+
+            // ensure folder structure
+            context.testSuite.engines.each { engine ->
+                engine.prepare()
+            }
+
+            // ensure that no engine is currently running
+            context.testSuite.engines.each { engine ->
+                engine.failIfRunning()
+            }
         }
 
         log "${context.testSuite.path}/execute", {
@@ -55,7 +67,7 @@ class Composite {
             try {
                 // build
                 log "${engine.path}/build", {
-                    engine.processes.each {process ->
+                    engine.processes.each { process ->
                         // deploy
                         log "${process.targetPath}/build", {
 
@@ -85,7 +97,7 @@ class Composite {
 
                 // deploy
                 log "${engine.path}/deploy", {
-                    engine.processes.each {process ->
+                    engine.processes.each { process ->
                         log "${process.targetPath}/deploy", {
                             ant.echo message: "Deploying process ${process} to engine ${this}"
                             engine.deploy(process)
@@ -119,15 +131,15 @@ class Composite {
         }
     }
 
-    def log = {String name, Closure closure ->
+    void log(String name, Closure closure) {
         ant.mkdir dir: new File(name).parent
         ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
-        println "STARTING ${name}"
-        println "DONE ${StringUtil.addSpaces(name,130)} --- ${benchmark(closure)}"
+        println name
+        println "${name} ${benchmark(closure)}"
         ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
     }
 
-    def benchmark = { Closure closure ->
+    String benchmark(Closure closure) {
         Stopwatch stopwatch = new Stopwatch()
         stopwatch.start()
         closure.call()
@@ -137,37 +149,18 @@ class Composite {
         stopwatch.formattedDiff
     }
 
-    def soapui = { String name, Closure closure ->
+    void soapui(String name, Closure closure) {
         Logger root = Logger.getRootLogger();
         root.removeAllAppenders()
         root.setLevel(Level.INFO)
         root.addAppender(new FileAppender(
                 new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN), "${name}.log", true));
 
-        String[] systemOuts = captureSystemOutAndErr closure
+        String[] systemOuts = IOUtil.captureSystemOutAndErr closure
 
         ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
         ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
     }
 
-    def captureSystemOutAndErr = { Closure closure ->
-        ByteArrayOutputStream bufOut = new ByteArrayOutputStream()
-        PrintStream newOut = new PrintStream(bufOut)
-        PrintStream saveOut = System.out
-
-        ByteArrayOutputStream bufErr = new ByteArrayOutputStream()
-        PrintStream newErr = new PrintStream(bufErr)
-        PrintStream saveOErr = System.err
-
-        System.out = newOut
-        System.err = newErr
-
-        closure.call()
-
-        System.out = saveOut
-        System.err = saveOErr
-
-        [bufOut.toString(), bufErr.toString()]
-    }
 
 }

@@ -73,7 +73,7 @@ class OdeEngine extends Engine {
 
     @Override
     void buildArchives(Process process) {
-        createFolderAndCopyFilesToTarget(process)
+        createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "$xsltPath/bpel_to_ode_deploy_xml.xsl")

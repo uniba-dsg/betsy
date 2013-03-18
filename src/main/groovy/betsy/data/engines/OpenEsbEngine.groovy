@@ -54,8 +54,18 @@ class OpenEsbEngine extends Engine {
     }
 
     @Override
+    void onPostDeployment() {
+        // do nothing - as using synchronous deployment
+    }
+
+    @Override
+    void onPostDeployment(Process process) {
+        // do nothing - as using synchronous deployment
+    }
+
+    @Override
     public void buildArchives(Process process) {
-        createFolderAndCopyFilesToTarget(process)
+        createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         buildDeploymentDescriptor(process)

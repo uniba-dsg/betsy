@@ -57,6 +57,7 @@ class TestUsingParameters {
                 }
             }
         } catch (Exception e) {
+            println "ERROR - ${e.message}"
             e.printStackTrace();
         } finally {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily

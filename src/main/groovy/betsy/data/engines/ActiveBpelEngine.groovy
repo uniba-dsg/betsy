@@ -78,7 +78,7 @@ class ActiveBpelEngine extends Engine {
     }
 
     public void buildArchives(Process process) {
-        createFolderAndCopyFilesToTarget(process)
+        createFolderAndCopyProcessFilesToTarget(process)
 
         // create deployment descriptor
         String metaDir = process.targetBpelPath + "/META-INF"

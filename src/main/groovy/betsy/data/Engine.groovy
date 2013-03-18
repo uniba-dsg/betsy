@@ -10,10 +10,6 @@ abstract class Engine implements EngineAPI {
 
     final List<Process> processes = []
 
-    void setAnt(AntBuilder ant) {
-        this.ant = ant
-    }
-
     /**
      * The path <code>src/main/xslt/$engine</code>
      *
@@ -45,7 +41,7 @@ abstract class Engine implements EngineAPI {
         getName()
     }
 
-    protected void createFolderAndCopyFilesToTarget(Process process) {
+    protected void createFolderAndCopyProcessFilesToTarget(Process process) {
         Engine engine = this
 
         // engine independent package steps
@@ -77,15 +73,8 @@ abstract class Engine implements EngineAPI {
         ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
     }
 
-    public void onPostDeployment() {
-        // do nothing, can be overridden
-    }
-
-    public void onPostDeployment(Process process) {
-
-    }
-
     void prepare() {
+        // setup engine folder
         ant.mkdir dir: path
     }
 

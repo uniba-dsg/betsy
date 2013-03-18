@@ -53,17 +53,8 @@ class TestSuite {
     public void prepare() {
         ant.delete dir: path
         ant.mkdir dir: path
-
-        engines.each { engine ->
-            engine.prepare()
-        }
     }
 
-    public void failIfAnyEngineIsRunning() {
-        engines.each {engine ->
-            engine.failIfRunning()
-        }
-    }
 
     @Override
     public String toString() {

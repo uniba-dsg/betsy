@@ -81,7 +81,7 @@ class BpelgEngine extends Engine {
 
     @Override
     void buildArchives(Process process) {
-        createFolderAndCopyFilesToTarget(process)
+        createFolderAndCopyProcessFilesToTarget(process)
 
         // deployment descriptor
         ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "${getXsltPath()}/bpelg_bpel_to_deploy_xml.xsl")

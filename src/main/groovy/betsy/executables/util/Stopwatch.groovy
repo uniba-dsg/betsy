@@ -27,19 +27,7 @@ class Stopwatch {
         long remainingSeconds = seconds - (minutes * 60);
         long remainingSecondsInPercent = (remainingSeconds * 100) / 60
 
-        "${addLeadingSpaces(seconds)} seconds (${addLeadingSpaces(minutes)}.${addLeadingZeros(remainingSecondsInPercent)} min)"
-    }
-
-    String addLeadingSpaces(long number) {
-        if (number < 10) {
-            "   $number"
-        } else if (number < 100) {
-            "  $number"
-        } else if (number < 1000) {
-            " $number"
-        } else {
-            "$number"
-        }
+        "(${minutes}.${addLeadingZeros(remainingSecondsInPercent)} min)"
     }
 
     String addLeadingZeros(long number) {

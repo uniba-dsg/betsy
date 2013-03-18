@@ -54,8 +54,18 @@ class OrchestraEngine extends Engine {
         new OrchestraCLI(engine: this, ant: ant).deploy(process)
     }
 
+    @Override
+    void onPostDeployment() {
+        // do nothing - as using synchronous deployment
+    }
+
+    @Override
+    void onPostDeployment(Process process) {
+        // do nothing - as using synchronous deployment
+    }
+
     public void buildArchives(Process process) {
-        createFolderAndCopyFilesToTarget(process)
+        createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         replaceEndpointAndPartnerTokensWithValues(process)
