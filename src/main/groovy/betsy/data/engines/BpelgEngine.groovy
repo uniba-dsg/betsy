@@ -88,7 +88,7 @@ class BpelgEngine extends Engine {
 
         // remove unimplemented methods
         ant.xslt(in: "${process.PATH_PREFIX}/language-features/TestInterface.wsdl", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
-            param(name: "deletePattern", expression: computeMatchingPattern(process))
+            param(name: "deletePattern", expression: Util.computeMatchingPattern(process))
         }
         // uniquify service name
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
@@ -96,19 +96,6 @@ class BpelgEngine extends Engine {
 
         replaceEndpointAndPartnerTokensWithValues(process)
         bpelFolderToZipFile(process)
-    }
-
-    private String computeMatchingPattern(Process process) {
-        // This method works based on the knowledge that we have no more than two operations available anyway
-        String text = new File(process.bpelFilePath).getText()
-
-        if (!text.contains(WsdlOperation.SYNC.name)) {
-            return WsdlOperation.SYNC.name
-        } else if (!text.contains(WsdlOperation.ASYNC.name)) {
-            return WsdlOperation.ASYNC.name
-        } else {
-            return ""
-        }
     }
 
 }
