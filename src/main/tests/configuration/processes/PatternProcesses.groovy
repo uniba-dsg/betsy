@@ -35,9 +35,17 @@ class PatternProcesses {
             ]
     )
 
+    public final Process SYNCHRONIZATION_PATTERN = buildPatternProcess(
+            "SynchronizationPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
-           PARALLEL_SPLIT_PATTERN
+           PARALLEL_SPLIT_PATTERN,
+           SYNCHRONIZATION_PATTERN
     ].flatten() as List<Process>
 
 
