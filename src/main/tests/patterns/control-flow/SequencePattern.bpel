@@ -33,25 +33,3 @@
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
