@@ -3,17 +3,21 @@
         name="ReceiveReply-ConflictingRequestFault"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/receiveConflictingRequestFault"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/" />
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>
     <messageExchanges>
-        <messageExchange name="theOnlyExchange" />
+        <messageExchange name="theOnlyExchange"/>
     </messageExchanges>
     <variables>
         <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="syncInitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="stringReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="stringInitData" messageType="ti:executeProcessSyncStringRequest"/>
         <variable name="Counter" type="xsd:int"/>
     </variables>
     <correlationSets>
@@ -21,7 +25,8 @@
     </correlationSets>
 
     <sequence>
-        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+                 portType="ti:TestInterfacePortType" variable="syncInitData">
             <correlations>
                 <correlation set="CorrelationSet" initiate="yes"/>
             </correlations>
@@ -36,30 +41,37 @@
                 <to variable="Counter"/>
             </copy>
         </assign>
-        <reply name="ReplyToReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData"/>
-       <while name="While">
-            <condition>$Counter &lt; 2</condition>
-            <sequence>
-                <receive name="ReceiveWithExchange" messageExchange="theOnlyExchange" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="syncInitData">
-                    <correlations>
-                        <correlation set="CorrelationSet" initiate="no"/>
-                    </correlations>
-                </receive>
-                <assign name="IncrementCounter">
-                    <copy>
-                        <from>$Counter + 1</from>
-                        <to variable="Counter"/>
-                    </copy>
-                </assign>
-            </sequence>
-        </while>
+        <reply name="ReplyToReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+               portType="ti:TestInterfacePortType" variable="replyData"/>
+        <forEach name="ForEach" parallel="yes" counterName="ForEachCounter">
+            <startCounterValue>0</startCounterValue>
+            <finalCounterValue>$syncInitData.inputPart</finalCounterValue>
+            <scope name="Scope">
+                <sequence>
+                    <receive name="ReceiveWithExchange" messageExchange="theOnlyExchange" partnerLink="MyRoleLink"
+                             operation="startProcessSyncString" portType="ti:TestInterfacePortType"
+                             variable="stringInitData">
+                        <correlations>
+                            <correlation set="CorrelationSet" initiate="no"/>
+                        </correlations>
+                    </receive>
+                    <assign name="IncrementCounter">
+                        <copy>
+                            <from>$Counter + 1</from>
+                            <to variable="Counter"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </scope>
+        </forEach>
         <assign name="AssignReplyData">
             <copy>
-                <from variable="syncInitData" part="inputPart"/>
-                <to variable="replyData" part="outputPart"/>
+                <from variable="stringInitData" part="inputPart"/>
+                <to variable="stringReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <reply name="ReplyToReceiveWithExchange" messageExchange="theOnlyExchange" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="replyData"/>
+        <reply name="ReplyToReceiveWithExchange" messageExchange="theOnlyExchange" partnerLink="MyRoleLink"
+               operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="stringReplyData"/>
     </sequence>
 </process>
 

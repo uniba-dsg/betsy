@@ -212,8 +212,8 @@ class BasicActivityProcesses {
             [
                     new TestCase(testSteps: [
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC, description: "start up, should complete normally", timeToWaitAfterwards: 1000),
-                            new TestStep(input: "1", operation: WsdlOperation.SYNC, description: "no reply, also normal, we need to open the message exchange", timeToWaitAfterwards: 1000),
-                            new TestStep(input: "1", description: "now, there should be the fault", operation: WsdlOperation.SYNC, assertions: [new SoapFaultTestAssertion(faultString: "conflictingRequest")])
+                            new TestStep(input: "1", operation: WsdlOperation.SYNC_STRING, description: "no reply, also normal, we need to open the message exchange", timeToWaitAfterwards: 1000),
+                            new TestStep(input: "1", description: "now, there should be the fault", operation: WsdlOperation.SYNC_STRING, assertions: [new SoapFaultTestAssertion(faultString: "conflictingRequest")])
                     ])
             ]
     )
