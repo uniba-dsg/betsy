@@ -12,19 +12,26 @@ class Util {
         String text = new File(process.bpelFilePath).getText()
         String canonicalText = canonicalizeXML(text)
 
-        def operations = [WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC]
-        def implementedOperations = []
+        boolean implementsSyncOperation = false;
+        boolean implementsAsyncOperation = false;
 
         canonicalText.eachLine { line ->
-            operations.each { operation ->
-                if (line.contains(operation.name) && !line.contains("invoke")) {
-                    implementedOperations << operation;
-                }
+            if (line.contains(WsdlOperation.ASYNC.name) && !line.contains("invoke")) {
+                implementsAsyncOperation = true;
+            }
+
+            if (line.contains(WsdlOperation.SYNC.name) && !line.contains("invoke")) {
+                implementsSyncOperation = true;
             }
         }
 
-        def unimplementedOperations = operations - implementedOperations
-        unimplementedOperations.collect{it.name}
+        if (!implementsSyncOperation) {
+            return WsdlOperation.SYNC.name
+        } else if (!implementsAsyncOperation) {
+            return WsdlOperation.ASYNC.name
+        } else {
+            return ""
+        }
     }
 
     public static String canonicalizeXML(String text) {
