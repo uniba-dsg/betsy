@@ -4,6 +4,7 @@ import betsy.data.Process
 import betsy.data.TestCase
 import betsy.data.TestStep
 import betsy.data.WsdlOperation
+import betsy.data.assertions.ExitAssertion
 
 /**
  * Created with IntelliJ IDEA.
@@ -141,6 +142,14 @@ class PatternProcesses {
             ]
     )
 
+    public final Process CANCEL_CASE_PATTERN = buildPatternProcess(
+            "CancelCasePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "0", assertions: [new ExitAssertion()], operation: WsdlOperation.SYNC_STRING)]),
+            ]
+    )
+
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
            PARALLEL_SPLIT_PATTERN,
@@ -155,7 +164,8 @@ class PatternProcesses {
            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
-           CANCEL_ACTIVITY_PATTERN
+           CANCEL_ACTIVITY_PATTERN,
+           CANCEL_CASE_PATTERN
     ].flatten() as List<Process>
 
 
