@@ -86,9 +86,13 @@ class BpelgEngine extends Engine {
         ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "${getXsltPath()}/bpelg_bpel_to_deploy_xml.xsl")
 
         // remove unimplemented methods
-        ant.xslt(in: "${process.PATH_PREFIX}/language-features/TestInterface.wsdl", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
-            param(name: "deletePattern", expression: Util.computeMatchingPattern(process))
+        Util.computeMatchingPattern(process).each { pattern ->
+            ant.copy(file:  "${process.targetBpelPath}/TestInterface.wsdl", tofile: "${process.targetBpelPath}/TestInterface.wsdl.before_removing_${pattern}")
+            ant.xslt(in: "${process.targetBpelPath}/TestInterface.wsdl.before_removing_${pattern}", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
+                param(name: "deletePattern", expression: pattern)
+            }
         }
+
         // uniquify service name
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
         ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
