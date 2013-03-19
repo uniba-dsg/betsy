@@ -45,6 +45,7 @@ class TestUsingParameters {
         } catch (Exception e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
+            System.exit(0)
         }
 
         println "Engines: ${engines.collect {it.name}}"
