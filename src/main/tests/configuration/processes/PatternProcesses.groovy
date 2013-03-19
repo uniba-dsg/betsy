@@ -99,7 +99,14 @@ class PatternProcesses {
             ]
     )
 
-
+    public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
+            "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
 
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
@@ -110,7 +117,8 @@ class PatternProcesses {
            MULTI_CHOICE_PATTERN,
            ARBITRARY_CYCLES_PATTERN,
            IMPLICIT_TERMINATION_PATTERN,
-           MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN
+           MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
+           MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN
     ].flatten() as List<Process>
 
 
