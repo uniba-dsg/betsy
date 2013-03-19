@@ -21,6 +21,13 @@ class PatternProcesses {
         )
     }
 
+    private Process buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
+        new Process(bpel: "patterns/control-flow/${name}.bpel",
+                wsdls: ["language-features/TestInterface.wsdl", "language-features/TestPartner.wsdl"],
+                testCases: testCases
+        )
+    }
+
     public final Process SEQUENCE_PATTERN = buildPatternProcess(
             "SequencePattern",
             [
@@ -83,6 +90,15 @@ class PatternProcesses {
             ]
     )
 
+    public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
+            "MultipleInstancesWithoutSynchronizationPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
 
 
     public final List<Process> CONTROL_FLOW_PATTERNS = [
@@ -93,7 +109,8 @@ class PatternProcesses {
            SIMPLE_MERGE_PATTERN,
            MULTI_CHOICE_PATTERN,
            ARBITRARY_CYCLES_PATTERN,
-           IMPLICIT_TERMINATION_PATTERN
+           IMPLICIT_TERMINATION_PATTERN,
+           MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN
     ].flatten() as List<Process>
 
 
