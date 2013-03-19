@@ -125,7 +125,6 @@ class PatternProcesses {
             ]
     )
 
-<<<<<<< HEAD
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
@@ -181,7 +180,7 @@ class PatternProcesses {
            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
            CANCEL_ACTIVITY_PATTERN,
-           CANCEL_CASE_PATTERN
+           CANCEL_CASE_PATTERN,
            MILESTONE
     ].flatten() as List<Process>
 
