@@ -83,6 +83,13 @@ class PatternProcesses {
             ]
     )
 
+    public final Process DISCRIMINATOR_PATTERN = buildPatternProcess(
+            "DiscriminatorPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
             "ArbitraryCyclesPattern",
             [
@@ -134,6 +141,7 @@ class PatternProcesses {
            SIMPLE_MERGE_PATTERN,
            MULTI_CHOICE_PATTERN,
            SYNCHRONIZING_MERGE_PATTERN,
+           DISCRIMINATOR_PATTERN,
            ARBITRARY_CYCLES_PATTERN,
            IMPLICIT_TERMINATION_PATTERN,
            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
