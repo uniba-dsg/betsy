@@ -36,7 +36,7 @@ class TestStep {
     }
 
     public void setOutput(String output) {
-        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse = ${output}", output: "${output}")
+        assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer", output: output)
     }
 
     public void setStringOperationOutput(String output) {
