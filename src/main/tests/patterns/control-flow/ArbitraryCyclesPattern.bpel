@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="ArbitraryCyclesPattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/arbitraryCycles"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="exitLoop" type="xs:boolean"/>
+        <variable name="counter" type="xs:int"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="CycleStart">
+            <copy>
+                <from>false()</from>
+                <to variable="exitLoop"/>
+            </copy>
+            <copy>
+                <from>$InitData.inputPart</from>
+                <to variable="counter"/>
+            </copy>
+        </assign>
+        <while name="CycleLoop">
+            <condition>not($exitLoop)</condition>
+            <if name="CycleCondition">
+                <condition>$counter &lt; 2</condition>
+                <assign name="AlternativeBranchA">>
+                    <copy>
+                        <from>$counter + 1</from>
+                        <to variable="counter"/>
+                    </copy>
+                    <copy>
+                        <from>concat($InitData.inputPart,'A')</from>
+                        <to variable="InitData" part="inputPart"/>
+                    </copy>
+                </assign>
+                <else>
+                    <sequence name="Sequence">
+                        <if name="CycleExitCondition">
+                            <condition>$counter &lt; 3</condition>
+                            <assign name="AlternativeBranchB">
+                                <copy>
+                                    <from>$counter + 1</from>
+                                    <to variable="counter"/>
+                                </copy>
+                                <copy>
+                                    <from>concat($InitData.inputPart,'B')</from>
+                                    <to variable="InitData" part="inputPart"/>
+                                </copy>
+                            </assign>
+                            <else>
+                                <assign name="CycleExit">
+                                    <copy>
+                                        <from>true()</from>
+                                        <to variable="exitLoop"/>
+                                    </copy>
+                                    <copy>
+                                        <from>concat($InitData.inputPart,'C')</from>
+                                        <to variable="ReplyData" part="outputPart"/>
+                                    </copy>
+                                </assign>
+                            </else>
+                        </if>
+                    </sequence>
+                </else>
+            </if>
+        </while>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

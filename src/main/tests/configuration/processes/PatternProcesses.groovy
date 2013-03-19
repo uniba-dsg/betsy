@@ -67,13 +67,24 @@ class PatternProcesses {
             ]
     )
 
+    public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
+            "ArbitraryCyclesPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1ABC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2BC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3C", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
+
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
            PARALLEL_SPLIT_PATTERN,
            SYNCHRONIZATION_PATTERN,
            EXCLUSIVE_CHOICE_PATTERN,
            SIMPLE_MERGE_PATTERN,
-           MULTI_CHOICE_PATTERN
+           MULTI_CHOICE_PATTERN,
+           ARBITRARY_CYCLES_PATTERN
     ].flatten() as List<Process>
 
 
