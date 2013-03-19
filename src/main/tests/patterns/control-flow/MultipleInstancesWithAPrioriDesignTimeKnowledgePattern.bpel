@@ -14,7 +14,8 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
+        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
@@ -28,11 +29,11 @@
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <forEach name="MultipleInstances" parallel="no" counterName="cCounter">
+        <forEach name="MultipleInstances" parallel="yes" counterName="cCounter">
             <startCounterValue>0</startCounterValue>
             <finalCounterValue>3</finalCounterValue>
             <scope name="Scope">
-                <invoke name="MultipleInstancesActivity" partnerLink="TestPartnerLink" operation="startProcessAsync" portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
+                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync" portType="tp:TestPartnerPortType" inputVariable="PartnerInitData" outputVariable="PartnerReplyData"/>
             </scope>
         </forEach>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
