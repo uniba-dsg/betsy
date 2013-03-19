@@ -29,7 +29,7 @@
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <forEach name="MultipleInstances" parallel="yes" counterName="cCounter">
+        <forEach name="MultipleInstances" parallel="yes" counterName="counter">
             <startCounterValue>0</startCounterValue>
             <finalCounterValue>3</finalCounterValue>
             <scope name="Scope">
