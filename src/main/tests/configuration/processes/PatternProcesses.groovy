@@ -158,8 +158,8 @@ class PatternProcesses {
             ]
     )
 
-    public final Process MILESTONE = buildPatternProcessWithPartner(
-            "Milestone",
+    public final Process MILESTONE_PATTERN = buildPatternProcess(
+            "MilestonePattern",
             [
                     new TestCase(testSteps: [
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC),
@@ -170,6 +170,13 @@ class PatternProcesses {
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC, timeToWaitAfterwards: 4000),
                             new TestStep(input: "1", output: "9", operation: WsdlOperation.SYNC),
                     ])
+            ]
+    )
+
+    public final Process INTERLEAVED_PARALLEL_ROUTING_PATTERN = buildPatternProcess(
+            "InterleavedParallelRoutingPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AW1ABW2B", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
@@ -190,7 +197,8 @@ class PatternProcesses {
            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
            CANCEL_ACTIVITY_PATTERN,
            CANCEL_CASE_PATTERN,
-           MILESTONE
+           MILESTONE_PATTERN,
+           INTERLEAVED_PARALLEL_ROUTING_PATTERN
     ].flatten() as List<Process>
 
 
