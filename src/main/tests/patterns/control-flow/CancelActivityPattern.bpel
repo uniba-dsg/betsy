@@ -3,6 +3,7 @@
         name="CancelActivityPattern"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/cancelActivity"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
@@ -11,17 +12,26 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+
+        <variable name="result" type="xs:string"/>
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="InitiateResult">
+            <copy>
+                <from>concat('',$InitData.inputPart)</from>
+                <to variable="result"/>
+            </copy>
+        </assign>
+
         <scope name="CancelActivity">
             <faultHandlers>
                 <catchAll>
                     <sequence>
                         <assign name="AssignOutput" >
                             <copy>
-                                <from>concat($InitData.inputPart,'B')</from>
-                                <to variable="ReplyData" part="outputPart"/>
+                                <from>concat($result,'B')</from>
+                                <to variable="result"/>
                             </copy>
                         </assign>
                     </sequence>
@@ -34,12 +44,19 @@
                 </if>
                 <assign name="Assign2">
                     <copy>
-                        <from>concat($InitData.inputPart,'A')</from>
-                        <to variable="ReplyData" part="outputPart"/>
+                        <from>concat($result,'A')</from>
+                        <to variable="result"/>
                     </copy>
                 </assign>
             </sequence>
         </scope>
+
+        <assign name="ResultToReplyData">
+            <copy>
+                <from variable="result"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
         <reply name="DiscriminatorFired" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>

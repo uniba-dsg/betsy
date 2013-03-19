@@ -20,7 +20,7 @@
                     <sequence>
                         <assign name="AssignOutput" >
                             <copy>
-                                <from variable="InitData" part="inputPart" />
+                                <from>concat('',$InitData.inputPart)</from>
                                 <to variable="ReplyData" part="outputPart"/>
                             </copy>
                         </assign>

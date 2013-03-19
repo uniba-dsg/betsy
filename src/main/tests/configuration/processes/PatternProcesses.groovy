@@ -54,7 +54,7 @@ class PatternProcesses {
             "ExclusiveChoicePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "1B", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "11B", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
@@ -62,7 +62,7 @@ class PatternProcesses {
             "SimpleMergePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "1B", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "11B", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
@@ -111,34 +111,34 @@ class PatternProcesses {
             "DeferredChoicePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)]),
-                    new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.ASYNC)])
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithoutSynchronizationPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CCCC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCCC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCC", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 

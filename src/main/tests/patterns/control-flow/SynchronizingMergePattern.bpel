@@ -13,6 +13,7 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+
         <variable name="initValue" type="xs:int" />
         <variable name="Root" type="xs:string" />
         <variable name="Branch1" type="xs:string"/>

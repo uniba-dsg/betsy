@@ -16,7 +16,7 @@
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignOutput" >
             <copy>
-                <from variable="InitData" part="inputPart" />
+                <from>concat('',$InitData.inputPart)</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>

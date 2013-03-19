@@ -12,18 +12,26 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+
         <variable name="exitLoop" type="xs:boolean"/>
         <variable name="counter" type="xs:int"/>
+        <variable name="result" type="xs:string"/>
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="InitiateResult">
+            <copy>
+                <from>concat('',$InitData.inputPart)</from>
+                <to variable="result"/>
+            </copy>
+        </assign>
         <assign name="CycleStart">
             <copy>
                 <from>false()</from>
                 <to variable="exitLoop"/>
             </copy>
             <copy>
-                <from>$InitData.inputPart</from>
+                <from variable="InitData" part="inputPart"/>
                 <to variable="counter"/>
             </copy>
         </assign>
@@ -37,8 +45,8 @@
                         <to variable="counter"/>
                     </copy>
                     <copy>
-                        <from>concat($InitData.inputPart,'A')</from>
-                        <to variable="InitData" part="inputPart"/>
+                        <from>concat($result, 'A')</from>
+                        <to variable="result"/>
                     </copy>
                 </assign>
                 <else>
@@ -51,8 +59,8 @@
                                     <to variable="counter"/>
                                 </copy>
                                 <copy>
-                                    <from>concat($InitData.inputPart,'B')</from>
-                                    <to variable="InitData" part="inputPart"/>
+                                    <from>concat($result, 'B')</from>
+                                    <to variable="result"/>
                                 </copy>
                             </assign>
                             <else>
@@ -62,8 +70,8 @@
                                         <to variable="exitLoop"/>
                                     </copy>
                                     <copy>
-                                        <from>concat($InitData.inputPart,'C')</from>
-                                        <to variable="ReplyData" part="outputPart"/>
+                                        <from>concat($result, 'C')</from>
+                                        <to variable="result"/>
                                     </copy>
                                 </assign>
                             </else>
@@ -72,6 +80,13 @@
                 </else>
             </if>
         </while>
+
+        <assign name="ResultToReplyData">
+            <copy>
+                <from variable="result"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>

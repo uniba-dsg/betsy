@@ -14,6 +14,7 @@
 
     <vprop:property name="correlationId" type="xsd:int"/>
     <vprop:propertyAlias messageType="tns:executeProcessSyncRequest" part="inputPart" propertyName="tns:correlationId"/>
+    <vprop:propertyAlias messageType="tns:executeProcessSyncStringRequest" part="inputPart" propertyName="tns:correlationId"/>
     <vprop:propertyAlias messageType="tns:executeProcessSyncResponse" part="outputPart" propertyName="tns:correlationId" />
     <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="tns:correlationId"/>
 
@@ -23,7 +24,7 @@
             <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
             <xsd:element name="testElementSyncResponse" type="xsd:int"/>
             <xsd:element name="testElementSyncFault" type="xsd:int"/>
-            <xsd:element name="testElementSyncStringRequest" type="xsd:string"/>
+            <xsd:element name="testElementSyncStringRequest" type="xsd:int"/>
             <xsd:element name="testElementSyncStringResponse" type="xsd:string"/>
         </xsd:schema>
     </types>
