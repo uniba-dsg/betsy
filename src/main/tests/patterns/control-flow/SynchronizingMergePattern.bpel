@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="SynchronizingMergePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/synchronizingMerge"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="initValue" type="xs:int" />
+        <variable name="Root" type="xs:string" />
+        <variable name="Branch1" type="xs:string"/>
+        <variable name="Branch2" type="xs:string"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
+                 portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="StoreInput">
+            <copy>
+                <from variable="InitData" part="inputPart" />
+                <to variable="initValue"/>
+            </copy>
+        </assign>
+        <flow name="Choice" suppressJoinFailure="yes">
+            <links>
+                <link name="Choice1Condition"/>
+                <link name="Choice2Condition"/>
+            </links>
+            <assign name="ChoiceAssign">
+                <sources>
+                    <source linkName="Choice2Condition">
+                        <transitionCondition>$initValue > 2</transitionCondition>
+                    </source>
+                    <source linkName="Choice1Condition">
+                        <transitionCondition>$initValue > 1</transitionCondition>
+                    </source>
+                </sources>
+                <copy>
+                    <from>'A'</from>
+                    <to variable="Root" />
+                </copy>
+                <copy>
+                    <from>'Y'</from>
+                    <to variable="Branch1"/>
+                </copy>
+                <copy>
+                    <from>'Z'</from>
+                    <to variable="Branch2"/>
+                </copy>
+            </assign>
+
+            <sequence name="Choice1">
+                <targets>
+                    <target linkName="Choice1Condition"/>
+                </targets>
+                <assign name="Choice1Assign">
+                    <copy>
+                        <from>'B'</from>
+                        <to variable="Branch1"/>
+                    </copy>
+                </assign>
+            </sequence>
+            <sequence name="Choice2">
+                <targets>
+                    <target linkName="Choice2Condition"/>
+                </targets>
+                <assign name="Choice2Assign">
+                    <copy>
+                        <from>'C'</from>
+                        <to variable="Branch2"/>
+                    </copy>
+                </assign>
+            </sequence>
+        </flow>
+        <assign name="SynchronizingMerge">
+            <copy>
+                <from>concat($Root,$Branch1,$Branch2)</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

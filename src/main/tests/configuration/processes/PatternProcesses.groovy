@@ -74,6 +74,15 @@ class PatternProcesses {
             ]
     )
 
+    public final Process SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
+            "SynchronizingMergePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "ABC", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
             "ArbitraryCyclesPattern",
             [
@@ -124,6 +133,7 @@ class PatternProcesses {
            EXCLUSIVE_CHOICE_PATTERN,
            SIMPLE_MERGE_PATTERN,
            MULTI_CHOICE_PATTERN,
+           SYNCHRONIZING_MERGE_PATTERN,
            ARBITRARY_CYCLES_PATTERN,
            IMPLICIT_TERMINATION_PATTERN,
            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
