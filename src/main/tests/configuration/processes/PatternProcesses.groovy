@@ -107,6 +107,14 @@ class PatternProcesses {
             ]
     )
 
+    public final Process DEFERRED_CHOICE_PATTERN = buildPatternProcess(
+            "DeferredChoicePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)]),
+                    new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.ASYNC)])
+            ]
+    )
+
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithoutSynchronizationPattern",
             [
@@ -176,6 +184,7 @@ class PatternProcesses {
            DISCRIMINATOR_PATTERN,
            ARBITRARY_CYCLES_PATTERN,
            IMPLICIT_TERMINATION_PATTERN,
+           DEFERRED_CHOICE_PATTERN,
            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
