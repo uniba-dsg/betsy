@@ -161,14 +161,14 @@ class PatternProcesses {
     public final Process MILESTONE_PATTERN = buildPatternProcess(
             "MilestonePattern",
             [
-                    new TestCase(testSteps: [
+                    new TestCase(name: "PickAsyncMessage", testSteps: [
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC),
                             new TestStep(input: "1", operation: WsdlOperation.ASYNC),
-                            new TestStep(input: "1", output: "8", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "1", stringOperationOutput: "8", operation: WsdlOperation.SYNC_STRING),
                     ]),
-                    new TestCase(testSteps: [
+                    new TestCase(name: "Pick3sTimeout", testSteps: [
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC, timeToWaitAfterwards: 4000),
-                            new TestStep(input: "1", output: "9", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "1", stringOperationOutput: "9", operation: WsdlOperation.SYNC_STRING),
                     ])
             ]
     )
