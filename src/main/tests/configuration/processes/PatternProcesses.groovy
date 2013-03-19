@@ -76,6 +76,14 @@ class PatternProcesses {
             ]
     )
 
+    public final Process IMPLICIT_TERMINATION_PATTERN = buildPatternProcess(
+            "ImplicitTerminationPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
+
 
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
@@ -84,7 +92,8 @@ class PatternProcesses {
            EXCLUSIVE_CHOICE_PATTERN,
            SIMPLE_MERGE_PATTERN,
            MULTI_CHOICE_PATTERN,
-           ARBITRARY_CYCLES_PATTERN
+           ARBITRARY_CYCLES_PATTERN,
+           IMPLICIT_TERMINATION_PATTERN
     ].flatten() as List<Process>
 
 
