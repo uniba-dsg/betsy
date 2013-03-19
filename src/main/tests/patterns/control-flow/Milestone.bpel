@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Milestone"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/milestone"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+
+    <variables>
+        <!-- internal -->
+        <variable name="result" type="xs:int"/>
+
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+
+        <!-- pick -->
+        <variable name="InitDataPick" messageType="ti:executeProcessAsyncRequest"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
+    <sequence>
+        <!-- ReceiveReply Pair to Create Instance With Correlation Set -->
+        <receive name="StartProcess" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+                 portType="ti:TestInterfacePortType" variable="InitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData">
+            <copy>
+                <from variable="InitData" part="inputPart"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+
+        <pick name="Pick" createInstance="no">
+            <onMessage partnerLink="MyRoleLink" operation="startProcessAsync" portType="ti:TestInterfacePortType"
+                       variable="InitDataPick">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+                <assign name="TimeoutExpired">
+                    <copy>
+                        <from>8</from>
+                        <to variable="result"/>
+                    </copy>
+                </assign>
+            </onMessage>
+            <onAlarm>
+                <for>'P0Y0M0DT0H0M3.0S'</for>
+                <assign name="TimeoutExpired">
+                    <copy>
+                        <from>9</from>
+                        <to variable="result"/>
+                    </copy>
+                </assign>
+            </onAlarm>
+        </pick>
+
+        <!-- ReceiveReply Pair to Observer State -->
+        <receive name="ObserveState" partnerLink="MyRoleLink" operation="startProcessSync"
+                 portType="ti:TestInterfacePortType" variable="InitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="no"/>
+            </correlations>
+        </receive>
+        <assign name="RetrieveInternalValue">
+            <copy>
+                <from variable="result" />
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

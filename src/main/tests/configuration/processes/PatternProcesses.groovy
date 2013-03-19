@@ -125,6 +125,7 @@ class PatternProcesses {
             ]
     )
 
+<<<<<<< HEAD
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
@@ -146,7 +147,22 @@ class PatternProcesses {
             "CancelCasePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "0", assertions: [new ExitAssertion()], operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "0", assertions: [new ExitAssertion()], operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
+    public final Process MILESTONE = buildPatternProcessWithPartner(
+            "Milestone",
+            [
+                    new TestCase(testSteps: [
+                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "1", operation: WsdlOperation.ASYNC),
+                            new TestStep(input: "1", output: "8", operation: WsdlOperation.SYNC),
+                    ]),
+                    new TestCase(testSteps: [
+                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC, timeToWaitAfterwards: 4000),
+                            new TestStep(input: "1", output: "9", operation: WsdlOperation.SYNC),
+                    ])
             ]
     )
 
@@ -166,6 +182,7 @@ class PatternProcesses {
            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
            CANCEL_ACTIVITY_PATTERN,
            CANCEL_CASE_PATTERN
+           MILESTONE
     ].flatten() as List<Process>
 
 
