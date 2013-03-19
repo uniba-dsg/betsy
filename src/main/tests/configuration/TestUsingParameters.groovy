@@ -45,9 +45,6 @@ class TestUsingParameters {
         } catch (Exception e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
-        } finally {
-            // shutdown as SoapUI creates threads which cannot be shutdown so easily
-            System.exit(0)
         }
 
         println "Engines: ${engines.collect {it.name}}"
