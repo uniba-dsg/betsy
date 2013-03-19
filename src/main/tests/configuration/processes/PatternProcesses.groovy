@@ -133,6 +133,14 @@ class PatternProcesses {
             ]
     )
 
+    public final Process CANCEL_ACTIVITY_PATTERN = buildPatternProcess(
+            "CancelActivityPattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "0", stringOperationOutput: "0B", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final List<Process> CONTROL_FLOW_PATTERNS = [
            SEQUENCE_PATTERN,
            PARALLEL_SPLIT_PATTERN,
@@ -146,7 +154,8 @@ class PatternProcesses {
            IMPLICIT_TERMINATION_PATTERN,
            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
-           MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN
+           MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
+           CANCEL_ACTIVITY_PATTERN
     ].flatten() as List<Process>
 
 

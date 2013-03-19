@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="CancelActivityPattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/cancelActivity"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <scope name="CancelActivity">
+            <faultHandlers>
+                <catchAll>
+                    <sequence>
+                        <assign name="AssignOutput" >
+                            <copy>
+                                <from>concat($InitData.inputPart,'B')</from>
+                                <to variable="ReplyData" part="outputPart"/>
+                            </copy>
+                        </assign>
+                    </sequence>
+                </catchAll>
+            </faultHandlers>
+            <sequence>
+                <if name="CancellationCondition">
+                    <condition>$InitData.inputPart = 0</condition>
+                    <throw name="CancelAssign2" faultName="bpel:selectionFailure" />
+                </if>
+                <assign name="Assign2">
+                    <copy>
+                        <from>concat($InitData.inputPart,'A')</from>
+                        <to variable="ReplyData" part="outputPart"/>
+                    </copy>
+                </assign>
+            </sequence>
+        </scope>
+        <reply name="DiscriminatorFired" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>
