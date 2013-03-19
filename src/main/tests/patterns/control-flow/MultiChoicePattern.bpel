@@ -13,71 +13,66 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="initValue" type="xs:int" />
+        <variable name="Root" type="xs:string" />
         <variable name="Branch1" type="xs:string"/>
         <variable name="Branch2" type="xs:string"/>
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
                  portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="StoreInput">
+            <copy>
+                <from variable="InitData" part="inputPart" />
+                <to variable="initValue"/>
+            </copy>
+        </assign>
         <flow name="Choice" suppressJoinFailure="yes">
             <links>
                 <link name="Choice1Condition"/>
                 <link name="Choice2Condition"/>
             </links>
-
             <assign name="ChoiceAssign">
                 <sources>
                     <source linkName="Choice2Condition">
-                        <transitionCondition>$InitData.inputPart > 2</transitionCondition>
+                        <transitionCondition>$initValue > 2</transitionCondition>
                     </source>
                     <source linkName="Choice1Condition">
-                        <transitionCondition>$InitData.inputPart > 1</transitionCondition>
+                        <transitionCondition>$initValue > 1</transitionCondition>
                     </source>
                 </sources>
                 <copy>
-                    <from>
-                        <literal>A</literal>
-                    </from>
-                    <to variable="InitData" part="inputPart"/>
+                    <from>'A'</from>
+                    <to variable="Root" />
                 </copy>
                 <copy>
-                    <from>
-                        <literal>Y</literal>
-                    </from>
+                    <from>'Y'</from>
                     <to variable="Branch1"/>
                 </copy>
                 <copy>
-                    <from>
-                        <literal>Z</literal>
-                    </from>
+                    <from>'Z'</from>
                     <to variable="Branch2"/>
                 </copy>
             </assign>
 
             <sequence name="Choice1">
                 <targets>
-                    <joinCondition>$Choice1Condition</joinCondition>
                     <target linkName="Choice1Condition"/>
                 </targets>
                 <assign name="Choice1Assign">
                     <copy>
-                        <from>
-                            <literal>B</literal>
-                        </from>
+                        <from>'B'</from>
                         <to variable="Branch1"/>
                     </copy>
                 </assign>
             </sequence>
             <sequence name="Choice2">
                 <targets>
-                    <joinCondition>$Choice2Condition</joinCondition>
                     <target linkName="Choice2Condition"/>
                 </targets>
                 <assign name="Choice2Assign">
                     <copy>
-                        <from>
-                            <literal>C</literal>
-                        </from>
+                        <from>'C'</from>
                         <to variable="Branch2"/>
                     </copy>
                 </assign>
@@ -85,7 +80,7 @@
         </flow>
         <assign name="Merge">
             <copy>
-                <from>concat($InitData.inputPart,$Branch1,$Branch2)</from>
+                <from>concat($Root,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
