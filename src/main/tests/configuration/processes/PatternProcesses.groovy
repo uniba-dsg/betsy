@@ -127,7 +127,7 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", outputAsLeast: "106", operation: WsdlOperation.SYNC)])
+                    new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.SYNC), new TestStep(input: "101", testPartner: true, concurrencyTest: true)])
             ]
     )
 
@@ -179,24 +179,24 @@ class PatternProcesses {
     )
 
     public final List<Process> CONTROL_FLOW_PATTERNS = [
-           SEQUENCE_PATTERN,
-           PARALLEL_SPLIT_PATTERN,
-           SYNCHRONIZATION_PATTERN,
-           EXCLUSIVE_CHOICE_PATTERN,
-           SIMPLE_MERGE_PATTERN,
-           MULTI_CHOICE_PATTERN,
-           SYNCHRONIZING_MERGE_PATTERN,
-           DISCRIMINATOR_PATTERN,
-           ARBITRARY_CYCLES_PATTERN,
-           IMPLICIT_TERMINATION_PATTERN,
-           DEFERRED_CHOICE_PATTERN,
-           MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
-           MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
-           MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
-           CANCEL_ACTIVITY_PATTERN,
-           CANCEL_CASE_PATTERN,
-           MILESTONE_PATTERN,
-           INTERLEAVED_PARALLEL_ROUTING_PATTERN
+            SEQUENCE_PATTERN,
+            PARALLEL_SPLIT_PATTERN,
+            SYNCHRONIZATION_PATTERN,
+            EXCLUSIVE_CHOICE_PATTERN,
+            SIMPLE_MERGE_PATTERN,
+            MULTI_CHOICE_PATTERN,
+            SYNCHRONIZING_MERGE_PATTERN,
+            DISCRIMINATOR_PATTERN,
+            ARBITRARY_CYCLES_PATTERN,
+            IMPLICIT_TERMINATION_PATTERN,
+            DEFERRED_CHOICE_PATTERN,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
+            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
+            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
+            CANCEL_ACTIVITY_PATTERN,
+            CANCEL_CASE_PATTERN,
+            MILESTONE_PATTERN,
+            INTERLEAVED_PARALLEL_ROUTING_PATTERN
     ].flatten() as List<Process>
 
 

@@ -109,7 +109,7 @@ class SoapUiWrapper {
         } else if (testStep.operation.equals(WsdlOperation.ASYNC)) {
             soapUiRequest.requestContent = createAsyncInputMessage(testStep.input)
         } else if (testStep.isTestPartner()) {
-            soapUiRequest.requestContent = createSyncTestPartnerInputMessage()
+            soapUiRequest.requestContent = createSyncTestPartnerInputMessage(testStep.input)
         } else {
             soapUiRequest.requestContent = createSyncStringInputMessage(testStep.input)
         }
@@ -307,12 +307,12 @@ try {
         soapUiTestStep as WsdlTestRequestStep
     }
 
-    private String createSyncTestPartnerInputMessage() {
+    private String createSyncTestPartnerInputMessage(String input) {
         """
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
-      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">101</testElementSyncRequest>
+      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">${input}</testElementSyncRequest>
    </soapenv:Body>
 </soapenv:Envelope>
         """

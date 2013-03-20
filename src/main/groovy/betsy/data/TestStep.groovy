@@ -33,6 +33,8 @@ class TestStep {
 
     boolean testPartner = false
 
+    boolean concurrencyTest = false
+
     boolean isOneWay() {
         WsdlOperation.ASYNC == operation
     }
@@ -41,8 +43,15 @@ class TestStep {
         assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer", output: output)
     }
 
-    public void setPartnerOutput() {
-        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse >= 0,")
+    public void setConcurrencyTest(boolean concurrencyTest) {
+        if (concurrencyTest) {
+            assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse >= 0")
+        }
+        this.concurrencyTest = concurrencyTest
+    }
+
+    public void setPartnerOutput(String output) {
+        assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';number(//test:testElementSyncResponse) cast as xs:integer", output: output)
     }
 
     public void setStringOperationOutput(String output) {
