@@ -84,8 +84,10 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             return totalConcurrentAccesses.get()
         } else if (inputPart == 102) {
             // magic number for querying number of total accesses, do not count to totalAccesses
-            totalAccesses.decrementAndGet()
-            return totalAccesses.get()
+            int result = totalAccesses.decrementAndGet()
+            //reset totalAccesses after each query
+            totalAccesses.set(0)
+            return result
         } else {
             return inputPart
         }

@@ -141,7 +141,7 @@ class PatternProcesses {
                             new TestStep(input: "102", testPartner: true, partnerOutput: 2)]),
                     new TestCase(testSteps: [new TestStep(input: "2", operation: WsdlOperation.SYNC),
                             new TestStep(input: "101", testPartner: true, concurrencyTest: true),
-                            new TestStep(input: "102", testPartner: true, partnerOutput: 5)]),
+                            new TestStep(input: "102", testPartner: true, partnerOutput: 3)]),
             ]
     )
 
