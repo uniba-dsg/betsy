@@ -51,7 +51,7 @@
                 <correlations>
                     <correlation set="CorrelationSet" initiate="no"/>
                 </correlations>
-                <assign name="TimeoutExpired">
+                <assign name="MessageReceived">
                     <copy>
                         <from>8</from>
                         <to variable="result"/>
@@ -82,7 +82,7 @@
                 <to variable="ReplyDataString" part="outputPart"/>
             </copy>
         </assign>
-        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
+        <reply name="ReplyToObservingReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
                portType="ti:TestInterfacePortType" variable="ReplyDataString"/>
     </sequence>
 </process>
