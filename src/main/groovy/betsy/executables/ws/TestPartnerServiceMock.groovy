@@ -26,6 +26,8 @@ class TestPartnerServiceMock implements TestPartnerPortType {
 
     private final AtomicInteger totalConcurrentAccesses = new AtomicInteger(0)
 
+    private final AtomicInteger totalAccesses = new AtomicInteger(0)
+
     public TestPartnerServiceMock() {
         this.replyInput = true
     }
@@ -41,15 +43,16 @@ class TestPartnerServiceMock implements TestPartnerPortType {
 
     public int startProcessSync(int inputPart) {
         println "Partner: startProcessSync with ${inputPart}"
+        totalAccesses.incrementAndGet()
 
         if (inputPart == -5) {
             SOAPFactory fac = SOAPFactory.newInstance();
-            SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner","CustomFault"))
+            SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "CustomFault"))
             throw new SOAPFaultException(sf)
         }
 
         if (inputPart == -6) {
-            FaultMessage fault = new FaultMessage("expected Error",inputPart)
+            FaultMessage fault = new FaultMessage("expected Error", inputPart)
             throw fault
         }
 
@@ -60,24 +63,27 @@ class TestPartnerServiceMock implements TestPartnerPortType {
         }
     }
 
-    private int testWithConcurrency(int inputPart){
-        if(inputPart == 100){
+    private int testWithConcurrency(int inputPart) {
+        if (inputPart == 100) {
             //magic number for tracking concurrent accesses
             concurrentAccesses.incrementAndGet()
             Thread.sleep(200)
 
             int result = 100
-            if(concurrentAccesses.get() == 1){
+            if (concurrentAccesses.get() == 1) {
                 // no concurrency detected
                 result = 0
-            }else{
+            } else {
                 totalConcurrentAccesses.incrementAndGet()
             }
             concurrentAccesses.decrementAndGet()
             return result
-        } else if(inputPart == 101){
+        } else if (inputPart == 101) {
             // magic number for querying number of concurrent accesses
             return totalConcurrentAccesses.get()
+        } else if (inputPart == 102) {
+            // magic number for querying number of total accesses
+            return totalAccesses.get()
         } else {
             return inputPart
         }
