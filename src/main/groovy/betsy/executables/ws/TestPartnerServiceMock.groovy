@@ -24,6 +24,8 @@ class TestPartnerServiceMock implements TestPartnerPortType {
 
     private final AtomicInteger concurrentAccesses = new AtomicInteger(0)
 
+    private final AtomicInteger totalConcurrentAccesses = new AtomicInteger(0)
+
     public TestPartnerServiceMock() {
         this.replyInput = true
     }
@@ -68,9 +70,14 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             if(concurrentAccesses.get() == 1){
                 // no concurrency detected
                 result = 0
+            }else{
+                totalConcurrentAccesses.incrementAndGet()
             }
             concurrentAccesses.decrementAndGet()
             return result
+        } else if(inputPart == 101){
+            // magic number for querying number of concurrent accesses
+            return totalConcurrentAccesses.get()
         } else {
             return inputPart
         }
