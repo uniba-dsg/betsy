@@ -39,7 +39,7 @@
             <condition>not($exitLoop)</condition>
             <if name="CycleCondition">
                 <condition>$counter &lt; 2</condition>
-                <assign name="AlternativeBranchA">>
+                <assign name="AlternativeBranchA">
                     <copy>
                         <from>$counter + 1</from>
                         <to variable="counter"/>
