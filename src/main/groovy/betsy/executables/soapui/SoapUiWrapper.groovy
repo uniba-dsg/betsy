@@ -76,36 +76,15 @@ class SoapUiWrapper {
         }
 
         addDeployableTestSteps(soapUITestCase)
+
         testCase.testSteps.each { testStep ->
             int testStepNumber = testCase.testSteps.indexOf(testStep)
             WsdlTestRequestStep soapUiRequestStep = createTestStepConfig(soapUITestCase, testStep, testStepNumber)
 
-            WsdlTestRequest soapUiRequest = soapUiRequestStep.testRequest
-            if (testStep.operation.equals(WsdlOperation.SYNC)) {
-                soapUiRequest.requestContent = createSyncInputMessage(testStep.input)
-            } else if (testStep.operation.equals(WsdlOperation.ASYNC)){
-                soapUiRequest.requestContent = createAsyncInputMessage(testStep.input)
-            }  else{
-                soapUiRequest.requestContent = createSyncStringInputMessage(testStep.input)
-            }
-            soapUiRequest.timeout = requestTimeout
+            WsdlTestRequest soapUiRequest = createSoapUiRequest(soapUiRequestStep,testStep)
 
             if (!testStep.isOneWay()) {
-
-                testStep.assertions.each {assertion ->
-
-                    if (assertion instanceof XpathTestAssertion) {
-                        addXpathTestAssertions(soapUiRequest, soapUiRequestStep, assertion)
-                    } else if (assertion instanceof SoapFaultTestAssertion) {
-                        addSoapFaultTestAssertions(soapUiRequest, soapUiRequestStep, assertion)
-                    } else if (assertion instanceof ExitAssertion) {
-                        addExitAssertions(soapUiRequest, soapUiRequestStep, assertion, soapUITestCase, testStepNumber)
-                    }
-                }
-
-                if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
-                    soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL)
-                }
+                addSynchronousAssertion(testStep, soapUiRequest, soapUITestCase, soapUiRequestStep, testStepNumber)
             } else {
                 addOneWayAssertion(soapUiRequest)
             }
@@ -113,6 +92,36 @@ class SoapUiWrapper {
             if (testStep.timeToWaitAfterwards != null) {
                 addDelayTime(soapUITestCase, testStep, testStepNumber)
             }
+        }
+    }
+
+    private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, TestStep testStep){
+        WsdlTestRequest soapUiRequest = soapUiRequestStep.testRequest
+        if (testStep.operation.equals(WsdlOperation.SYNC)) {
+            soapUiRequest.requestContent = createSyncInputMessage(testStep.input)
+        } else if (testStep.operation.equals(WsdlOperation.ASYNC)){
+            soapUiRequest.requestContent = createAsyncInputMessage(testStep.input)
+        }  else{
+            soapUiRequest.requestContent = createSyncStringInputMessage(testStep.input)
+        }
+        soapUiRequest.timeout = requestTimeout
+        return soapUiRequest
+    }
+
+    private void addSynchronousAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestCase soapUITestCase, WsdlTestRequestStep soapUiRequestStep, int testStepNumber) {
+        testStep.assertions.each {assertion ->
+
+            if (assertion instanceof XpathTestAssertion) {
+                addXpathTestAssertions(soapUiRequest, soapUiRequestStep, assertion)
+            } else if (assertion instanceof SoapFaultTestAssertion) {
+                addSoapFaultTestAssertions(soapUiRequest, soapUiRequestStep, assertion)
+            } else if (assertion instanceof ExitAssertion) {
+                addExitAssertions(soapUiRequest, soapUiRequestStep, assertion, soapUITestCase, testStepNumber)
+            }
+        }
+
+        if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
+            soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL)
         }
     }
 
