@@ -78,7 +78,7 @@
         </receive>
         <assign name="RetrieveInternalValue">
             <copy>
-                <from>concat('',$result)</from>
+                <from>concat('',floor($result))</from>
                 <to variable="ReplyDataString" part="outputPart"/>
             </copy>
         </assign>
