@@ -45,7 +45,7 @@ class TestStep {
 
     public void setConcurrencyTest(boolean concurrencyTest) {
         if (concurrencyTest) {
-            assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse >= 0")
+            assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse > 0")
         }
         this.concurrencyTest = concurrencyTest
     }
