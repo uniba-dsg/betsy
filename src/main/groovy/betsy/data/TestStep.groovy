@@ -31,12 +31,18 @@ class TestStep {
      */
     String description
 
+    boolean testPartner = false
+
     boolean isOneWay() {
         WsdlOperation.ASYNC == operation
     }
 
     public void setOutput(String output) {
         assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer", output: output)
+    }
+
+    public void setPartnerOutput() {
+        assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse >= 0,")
     }
 
     public void setStringOperationOutput(String output) {

@@ -134,7 +134,7 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", outputAsLeast: "101", operation: WsdlOperation.SYNC)]),
+                    new TestCase(testSteps: [new TestStep(input: "1", testPartner: true)]),
                     new TestCase(testSteps: [new TestStep(input: "2", outputAsLeast: "103", operation: WsdlOperation.SYNC)]),
                     new TestCase(testSteps: [new TestStep(input: "3", outputAsLeast: "106", operation: WsdlOperation.SYNC)])
             ]

@@ -79,33 +79,55 @@ class SoapUiWrapper {
 
         testCase.testSteps.each { testStep ->
             int testStepNumber = testCase.testSteps.indexOf(testStep)
-            WsdlTestRequestStep soapUiRequestStep = createTestStepConfig(soapUITestCase, testStep, testStepNumber)
 
-            WsdlTestRequest soapUiRequest = createSoapUiRequest(soapUiRequestStep,testStep)
-
-            if (!testStep.isOneWay()) {
-                addSynchronousAssertion(testStep, soapUiRequest, soapUITestCase, soapUiRequestStep, testStepNumber)
+            if (testStep.isTestPartner()) {
+                WsdlTestRequestStep partnerRequestStep = createPartnerTestStepConfig(soapUITestCase,testStep,testStepNumber)
+                WsdlTestRequest soapUiRequest = createSoapUiRequest(partnerRequestStep, testStep)
+                addTestPartnerAssertion(testStep,soapUiRequest,partnerRequestStep)
             } else {
-                addOneWayAssertion(soapUiRequest)
-            }
+                WsdlTestRequestStep soapUiRequestStep = createTestStepConfig(soapUITestCase, testStep, testStepNumber)
 
-            if (testStep.timeToWaitAfterwards != null) {
-                addDelayTime(soapUITestCase, testStep, testStepNumber)
+                WsdlTestRequest soapUiRequest = createSoapUiRequest(soapUiRequestStep, testStep)
+
+                if (!testStep.isOneWay()) {
+                    addSynchronousAssertion(testStep, soapUiRequest, soapUITestCase, soapUiRequestStep, testStepNumber)
+                } else  {
+                    addOneWayAssertion(soapUiRequest)
+                }
+
+                if (testStep.timeToWaitAfterwards != null) {
+                    addDelayTime(soapUITestCase, testStep, testStepNumber)
+                }
             }
         }
     }
 
-    private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, TestStep testStep){
+    private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, TestStep testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.testRequest
         if (testStep.operation.equals(WsdlOperation.SYNC)) {
             soapUiRequest.requestContent = createSyncInputMessage(testStep.input)
-        } else if (testStep.operation.equals(WsdlOperation.ASYNC)){
+        } else if (testStep.operation.equals(WsdlOperation.ASYNC)) {
             soapUiRequest.requestContent = createAsyncInputMessage(testStep.input)
-        }  else{
+        } else if (testStep.isTestPartner()) {
+            soapUiRequest.requestContent = createSyncTestPartnerInputMessage()
+        } else {
             soapUiRequest.requestContent = createSyncStringInputMessage(testStep.input)
         }
         soapUiRequest.timeout = requestTimeout
         return soapUiRequest
+    }
+
+    private void addTestPartnerAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestRequestStep soapUiRequestStep) {
+        testStep.assertions.each {assertion ->
+
+            if (assertion instanceof XpathTestAssertion) {
+                addXpathTestAssertions(soapUiRequest, soapUiRequestStep, assertion)
+            }
+        }
+
+        if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
+            soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL)
+        }
     }
 
     private void addSynchronousAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestCase soapUITestCase, WsdlTestRequestStep soapUiRequestStep, int testStepNumber) {
@@ -256,6 +278,44 @@ try {
         }
 
         soapUiTestStep as WsdlTestRequestStep
+    }
+
+    private WsdlTestRequestStep createPartnerTestStepConfig(WsdlTestCase soapUiTestCase, TestStep testStep, int testStepNumber) {
+        String iface = "TestPartnerPortTypeBinding"
+        String operation = "startProcessSync"
+        String wsdlOperationName = "Sending ${iface}.${operation} Step #${testStepNumber}"
+
+        WsdlInterface inter_face = project.getInterfaceByName(iface) as WsdlInterface
+        com.eviware.soapui.impl.wsdl.WsdlOperation op = inter_face.getOperationByName(operation)
+
+        if (op == null) {
+            throw new RuntimeException("WsdlOperation ${iface}.${operation} could not be found in soapUI project of process ${process} on engine ${process.engine}")
+        }
+
+        TestStepConfig config = WsdlTestRequestStepFactory.createConfig(op, wsdlOperationName)
+
+        if (config == null) {
+            throw new RuntimeException("Could not create config for ${wsdlOperationName} of process ${process} on engine ${process.engine}")
+        }
+
+        WsdlTestStep soapUiTestStep = soapUiTestCase.addTestStep(config)
+
+        if (soapUiTestStep == null) {
+            throw new RuntimeException("Could not create request step for ${wsdlOperationName} of process ${process} on engine ${process.engine}")
+        }
+
+        soapUiTestStep as WsdlTestRequestStep
+    }
+
+    private String createSyncTestPartnerInputMessage() {
+        """
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">101</testElementSyncRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+        """
     }
 
     private String createSyncInputMessage(String input) {
