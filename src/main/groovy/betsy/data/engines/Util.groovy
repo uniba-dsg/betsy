@@ -7,7 +7,7 @@ import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer
 
 class Util {
 
-    public static String computeMatchingPattern(betsy.data.Process process) {
+    public static String[] computeMatchingPattern(betsy.data.Process process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
         String text = new File(process.bpelFilePath).getText()
         String canonicalText = canonicalizeXML(text)
