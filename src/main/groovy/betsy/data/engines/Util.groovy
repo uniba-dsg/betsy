@@ -17,7 +17,7 @@ class Util {
 
         canonicalText.eachLine { line ->
             operations.each { operation ->
-                if (line.contains(operation.name) && !line.contains("invoke")) {
+                if (line.contains("operation=\"${operation.name}\"") && !line.contains("invoke")) {
                     implementedOperations << operation;
                 }
             }
