@@ -116,8 +116,9 @@ class Composite {
 
                 // test
                 log "${engine.path}/test", {
-                    context.testPartner.publish()
+
                     engine.processes.each { process ->
+                        context.testPartner.publish()
                         log "${process.targetPath}/test", {
                             soapui "${process.targetPath}/soapui_test", {
                                 new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
@@ -126,8 +127,9 @@ class Composite {
                             ant.sleep(milliseconds: 500)
                             engine.storeLogs(process)
                         }
+                        context.testPartner.unpublish()
                     }
-                    context.testPartner.unpublish()
+
                 }
 
             } finally {
