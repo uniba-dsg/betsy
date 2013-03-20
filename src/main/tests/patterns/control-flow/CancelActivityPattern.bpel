@@ -3,9 +3,11 @@
         name="CancelActivityPattern"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/cancelActivity"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
-    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>
@@ -16,7 +18,8 @@
         <variable name="result" type="xs:string"/>
     </variables>
     <sequence>
-        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
+                 portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="InitiateResult">
             <copy>
                 <from>concat('',$InitData.inputPart)</from>
@@ -28,7 +31,7 @@
             <faultHandlers>
                 <catchAll>
                     <sequence>
-                        <assign name="AssignOutput" >
+                        <assign name="AssignOutput">
                             <copy>
                                 <from>concat($result,'B')</from>
                                 <to variable="result"/>
@@ -40,7 +43,7 @@
             <sequence>
                 <if name="CancellationCondition">
                     <condition>$InitData.inputPart = 0</condition>
-                    <throw name="CancelAssign2" faultName="bpel:selectionFailure" />
+                    <throw name="CancelAssign2" faultName="bpel:selectionFailure"/>
                 </if>
                 <assign name="Assign2">
                     <copy>
@@ -57,6 +60,7 @@
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <reply name="DiscriminatorFired" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+        <reply name="DiscriminatorFired" partnerLink="MyRoleLink" operation="startProcessSyncString"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>
