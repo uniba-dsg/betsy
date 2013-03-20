@@ -9,6 +9,7 @@ import javax.xml.namespace.QName
 import javax.xml.ws.soap.SOAPFaultException
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.ObjectFactory
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
+import java.util.concurrent.atomic.AtomicInteger
 
 @WebService(
 name = "TestPartnerPortType",
@@ -20,6 +21,8 @@ wsdlLocation = "TestPartner.wsdl")
 class TestPartnerServiceMock implements TestPartnerPortType {
 
     private final boolean replyInput
+
+    private final AtomicInteger concurrentAccesses = new AtomicInteger(0)
 
     public TestPartnerServiceMock() {
         this.replyInput = true
@@ -36,6 +39,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
 
     public int startProcessSync(int inputPart) {
         println "Partner: startProcessSync with ${inputPart}"
+
         if (inputPart == -5) {
             SOAPFactory fac = SOAPFactory.newInstance();
             SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner","CustomFault"))
@@ -48,9 +52,27 @@ class TestPartnerServiceMock implements TestPartnerPortType {
         }
 
         if (replyInput) {
-            return inputPart
+            return testWithConcurrency(inputPart)
         } else {
             return 0
+        }
+    }
+
+    private int testWithConcurrency(int inputPart){
+        if(inputPart == 100){
+            //magic number for tracking concurrent accesses
+            concurrentAccesses.incrementAndGet()
+            Thread.sleep(200)
+
+            int result = 100
+            if(concurrentAccesses.get() == 1){
+                // no concurrency detected
+                result = 0
+            }
+            concurrentAccesses.decrementAndGet()
+            return result
+        } else {
+            return inputPart
         }
     }
 

@@ -127,18 +127,16 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CCCC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCCC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", outputAsLeast: "106", operation: WsdlOperation.SYNC)])
             ]
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "1", outputAsLeast: "101", operation: WsdlOperation.SYNC)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", outputAsLeast: "103", operation: WsdlOperation.SYNC)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", outputAsLeast: "106", operation: WsdlOperation.SYNC)])
             ]
     )
 
