@@ -37,22 +37,18 @@
             <startCounterValue>0</startCounterValue>
             <finalCounterValue>3</finalCounterValue>
             <scope name="Scope">
-                <sequence>
-                    <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                            portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                            outputVariable="PartnerReplyData"/>
-                    <assign name="AddCallToOutput">
-                        <copy>
-
-                            <from>$ReplyData.outputPart + $PartnerReplyData.outputPart +$counter</from>
-
-                            <to variable="ReplyData" part="outputPart"/>
-                        </copy>
-                    </assign>
-                </sequence>
+                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                        outputVariable="PartnerReplyData"/>
             </scope>
         </forEach>
 
+        <assign name="AddReplyData">
+            <copy>
+                <from>$InitData.inputPart</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
                portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
