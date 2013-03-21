@@ -66,8 +66,8 @@ class SoapUiTestStepBuilder {
     private WsdlTestRequestStep createTestStepConfig(WsdlTestCase soapUiTestCase, TestStep testStep, int testStepNumber, String portTypeName, String operationName) {
         String wsdlOperationName = "Sending ${portTypeName}.${operationName} Step #${testStepNumber}"
 
-        WsdlInterface inter_face = wsdlProject.getInterfaceByName(portTypeName) as WsdlInterface
-        com.eviware.soapui.impl.wsdl.WsdlOperation op = inter_face.getOperationByName(operationName)
+        WsdlInterface wsdlInterface = wsdlProject.getInterfaceByName(portTypeName) as WsdlInterface
+        com.eviware.soapui.impl.wsdl.WsdlOperation op = wsdlInterface.getOperationByName(operationName)
 
         if (op == null) {
             throw new RuntimeException("WsdlOperation ${portTypeName}.${operationName} could not be found in soapUI project of process ${process} on engine ${process.engine}")
