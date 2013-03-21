@@ -91,60 +91,16 @@ class SoapUiTestStepBuilder {
     private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, TestStep testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.testRequest
         if (testStep.operation.equals(WsdlOperation.SYNC)) {
-            soapUiRequest.requestContent = createSyncInputMessage(testStep.input)
+            soapUiRequest.requestContent = TestMessages.createSyncInputMessage(testStep.input)
         } else if (testStep.operation.equals(WsdlOperation.ASYNC)) {
-            soapUiRequest.requestContent = createAsyncInputMessage(testStep.input)
+            soapUiRequest.requestContent = TestMessages.createAsyncInputMessage(testStep.input)
         } else if (testStep.isTestPartner()) {
-            soapUiRequest.requestContent = createSyncTestPartnerInputMessage(testStep.input)
+            soapUiRequest.requestContent = TestMessages.createSyncTestPartnerInputMessage(testStep.input)
         } else {
-            soapUiRequest.requestContent = createSyncStringInputMessage(testStep.input)
+            soapUiRequest.requestContent = TestMessages.createSyncStringInputMessage(testStep.input)
         }
         soapUiRequest.timeout = requestTimeout
         return soapUiRequest
-    }
-
-    private String createSyncTestPartnerInputMessage(String input) {
-        """
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">${input}</testElementSyncRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
-        """
-    }
-
-    private String createSyncInputMessage(String input) {
-        """
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <testElementSyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">${input}</testElementSyncRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
-        """
-    }
-
-    private String createSyncStringInputMessage(String input) {
-        """
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <testElementSyncStringRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">${input}</testElementSyncStringRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
-        """
-    }
-
-    private String createAsyncInputMessage(String input) {
-        """
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <testElementAsyncRequest xmlns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">${input}</testElementAsyncRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
-        """
     }
 
     private void addTestPartnerAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestRequestStep soapUiRequestStep) {
