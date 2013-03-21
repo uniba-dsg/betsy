@@ -1,4 +1,4 @@
-package betsy.executables.reporting.csv
+package betsy.executables.analytics.model
 
 
 class CsvReport {
@@ -51,6 +51,14 @@ class CsvReport {
 
             return test
         }
+    }
+
+    String getRelativePath(Group group, Engine engine, Test test) {
+        String path = new FileNameFinder().getFileNames("test/reports/html/soapui/${engine.name}/${group.name}", "*_${test.fullName}.html").first()
+        String parentPath = new File(file).parentFile.absolutePath
+        String relativePath = path.substring(parentPath.length() + 1)
+
+        relativePath
     }
 
 

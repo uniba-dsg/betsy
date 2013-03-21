@@ -1,8 +1,11 @@
-package betsy.executables.reporting.csv
+package betsy.executables.analytics
 
 import betsy.executables.reporting.bpel.BpelAnalyzer
+import betsy.executables.analytics.model.CsvReport
+import betsy.executables.analytics.model.Engine
+import betsy.executables.analytics.model.Result
 
-class CsvReportToLatexTables {
+class LatexAnalytics {
 
     CsvReport report
 

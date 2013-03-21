@@ -50,6 +50,10 @@ class TestSuite {
         "${getReportsPath()}/${getCsvFile()}"
     }
 
+    String getJUnitXMLFilePath() {
+        "${getReportsPath()}/TESTS-TestSuites.xml"
+    }
+
     public void prepare() {
         ant.delete dir: path
         ant.mkdir dir: path

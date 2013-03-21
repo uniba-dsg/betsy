@@ -1,0 +1,57 @@
+<html>
+	<head>
+	      <title>Results</title>
+	      <style type='text/css'>
+	             .NONE {
+                    background-color: red;
+                 }
+                 .PARTIAL {
+                    background-color: yellow;
+                 }
+                 .TOTAL {
+                    background-color: green;
+                 }
+                 .result {
+                     text-align: center;
+                     width: 60px;
+                 }
+                 body {
+                     font-size: large;
+                 }
+                 table {
+                     width: 900px;
+                 }
+                 .group {
+                     width: 150px;
+                     font-weight: bold
+                 }
+	      </style>
+	</head>
+	<body>
+		<% report.nameToGroup.each { groupName, group -> %>
+			<table>
+				<tr class="engines">
+					<td></td><td></td><td></td><td class='result'><%= report.nameToEngine.keySet().join("</td><td class='result'>") %></td>
+				</tr>
+
+	            <% group.tests.each { test -> %>
+	                <tr>
+	                <% if (group.tests.first() == test) { %>
+	                    <td class='group'>${group.name}</td>
+	                <% } else { %>
+	                    <td></td>
+	                <% } %>
+	                    <td></td>
+	                    <td class='${test.support}'>${test.fullName}</td>
+	                <% test.engineToResult.each {engine, result -> %>
+                        <td class='${result.partial} result'>
+                            <a href='${report.getRelativePath(group,engine,test)}'>${result.partial.toNormalizedSymbol()}</a>
+                        </td>
+                    <% } %>
+	                </tr>
+	            <% } %>
+
+	        </table>
+	    <% } %>
+	</body>
+</html>
