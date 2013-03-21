@@ -5,7 +5,7 @@ class TestCaseCsvReports {
     /**
      * Represents one row in the resulting csv file
      */
-    class CsvRow {
+    static class CsvRow {
         String name
         String engine
         String group
