@@ -1,4 +1,4 @@
-package betsy.executables.reporting.bpel
+package betsy.executables.analytics
 
 import betsy.data.Process
 import betsy.data.TestCase
@@ -51,6 +51,8 @@ class BpelAnalyzer {
             }
         }
     }
+
+
 
     public void printLatexTableWithResult(String name, String resultString) {
         Process process = getProcess(name)
