@@ -127,7 +127,7 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.SYNC),
+                    new TestCase(testSteps: [new TestStep(input: "100", operation: WsdlOperation.SYNC),
                             new TestStep(input: "101", testPartner: true, concurrencyTest: true),
                             new TestStep(input: "102", testPartner: true, partnerOutput: 4)])
             ]

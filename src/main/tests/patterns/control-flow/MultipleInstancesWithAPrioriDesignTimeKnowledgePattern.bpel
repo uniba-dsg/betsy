@@ -25,7 +25,7 @@
                  portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignInitData">
             <copy>
-                <from>100</from>
+                <from variable="InitData" part="inputPart" />
                 <to variable="PartnerInitData" part="inputPart"/>
             </copy>
             <copy>
