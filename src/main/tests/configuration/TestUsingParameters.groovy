@@ -14,10 +14,10 @@ class TestUsingParameters {
 
     public static void main(String[] args) {
         CliBuilder cli = new CliBuilder(usage: "[options] <engines> <process>")
-        cli.s(longOpt:'skip-reinstallation',"skip reinstalling each engine for each process")
+        cli.s(longOpt: 'skip-reinstallation', "skip reinstalling each engine for each process")
         cli.o("Opens results in default browser")
         cli.h("Print out usage information")
-        cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
+        cli.p(args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
 
         def options = cli.parse(args)
         if (options == null || options == false || options.h) {
@@ -26,18 +26,27 @@ class TestUsingParameters {
         }
 
         if (options.s) {
-            println "Skipping reinstalling engine for each process test"
+            println "Skipping reinstallation of engine for each process test"
         } else {
             println "Reinstalling engine per process test"
         }
 
-        if (options.p){
+        if (options.p) {
             println "Setting Partner IP and Port to ${options.p} from previous setting ${Configuration.PARTNER_IP_AND_PORT}"
             Configuration.PARTNER_IP_AND_PORT = options.p
         }
 
-        List<Engine> engines = parseEngines(options.arguments() as String[]).unique()
-        List<Process> processes = parseProcesses(options.arguments() as String[]).unique()
+
+        List<Engine> engines = null
+        List<Process> processes = null
+        try {
+            engines = parseEngines(options.arguments() as String[]).unique()
+            processes = parseProcesses(options.arguments() as String[]).unique()
+        } catch (Exception e) {
+            println "----------------------"
+            println "ERROR - ${e.message} - Did you misspell the name?"
+            System.exit(0)
+        }
 
         println "Engines: ${engines.collect {it.name}}"
         println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
@@ -52,7 +61,7 @@ class TestUsingParameters {
             if (options.o) {
                 try {
                     Desktop.getDesktop().browse(new File("test/reports/results.html").toURI())
-                } catch (Exception e){
+                } catch (Exception e) {
                     // ignore any exceptions
                 }
             }

@@ -1,4 +1,8 @@
-package betsy.executables.reporting.csv
+package betsy.executables.analytics.additional
+
+import betsy.executables.analytics.CsvReportLoader
+import betsy.executables.analytics.model.CsvReport
+import betsy.executables.analytics.model.Result
 
 
 class CsvReportToTestsPerEngineAndGroup {
@@ -40,8 +44,6 @@ class CsvReportToTestsPerEngineAndGroup {
     }
 
     public static void main(String[] args) {
-        CsvToReports csvToLatexTable = new CsvToReports(file: args[0])
-        csvToLatexTable.load()
-        new CsvReportToTestsPerEngineAndGroup(report: csvToLatexTable.report).toCsvReport(System.out)
+        new CsvReportToTestsPerEngineAndGroup(report: new CsvReportLoader(csvFile: args[0]).load()).toCsvReport(System.out)
     }
 }

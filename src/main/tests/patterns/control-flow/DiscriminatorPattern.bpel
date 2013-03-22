@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="DiscriminatorPattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/discriminator"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <scope name="Discriminator">
+            <faultHandlers>
+                <catchAll>
+                    <sequence>
+                        <assign name="AssignOutput" >
+                            <copy>
+                                <from>concat('',$InitData.inputPart)</from>
+                                <to variable="ReplyData" part="outputPart"/>
+                            </copy>
+                        </assign>
+                        <reply name="DiscriminatorFired" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+                    </sequence>
+                </catchAll>
+            </faultHandlers>
+            <flow name="DiscriminatorBranches">
+                <sequence name="Branch1">
+                    <empty name="DoSomeWork1" />
+                    <throw name="SignalCompletionOfBranch1" faultName="bpel:selectionFailure"/>
+                </sequence>
+                <sequence name="Branch2">
+                    <empty name="DoSomeWork2" />
+                    <throw name="SignalCompletionOfBranch2" faultName="bpel:selectionFailure"/>
+                </sequence>
+            </flow>
+        </scope>
+    </sequence>
+</process>

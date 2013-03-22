@@ -1,4 +1,4 @@
-package betsy.executables.reporting.csv
+package betsy.executables.analytics.model
 
 
 class Result {

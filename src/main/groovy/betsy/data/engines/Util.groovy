@@ -7,34 +7,27 @@ import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer
 
 class Util {
 
-    public static String computeMatchingPattern(betsy.data.Process process) {
+    public static String[] computeMatchingPattern(betsy.data.Process process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
         String text = new File(process.bpelFilePath).getText()
         String canonicalText = canonicalizeXML(text)
 
-        boolean implementsSyncOperation = false;
-        boolean implementsAsyncOperation = false;
+        def operations = [WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC]
+        def implementedOperations = []
 
         canonicalText.eachLine { line ->
-            if (line.contains(WsdlOperation.ASYNC.name) && !line.contains("invoke")) {
-                implementsAsyncOperation = true;
-            }
-
-            if (line.contains(WsdlOperation.SYNC.name) && !line.contains("invoke")) {
-                implementsSyncOperation = true;
+            operations.each { operation ->
+                if (line.contains("operation=\"${operation.name}\"") && !line.contains("invoke")) {
+                    implementedOperations << operation;
+                }
             }
         }
 
-        if (!implementsSyncOperation) {
-            return WsdlOperation.SYNC.name
-        } else if (!implementsAsyncOperation) {
-            return WsdlOperation.ASYNC.name
-        } else {
-            return ""
-        }
+        def unimplementedOperations = operations - implementedOperations
+        unimplementedOperations.collect{it.name}
     }
 
-    public static String canonicalizeXML(String text) {
+    private static String canonicalizeXML(String text) {
         Init.init();
         Canonicalizer canon = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 

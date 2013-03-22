@@ -1,9 +1,17 @@
-package betsy.executables.reporting.csv
+package betsy.executables.analytics
+
+import betsy.executables.analytics.model.CsvReport
+import betsy.executables.analytics.model.Engine
+import betsy.executables.analytics.model.Group
+import betsy.executables.analytics.model.Result
+import betsy.executables.analytics.model.Test
 
 
 class CsvReportLoader {
 
-    CsvReport loadFromCsv(String csvFile) {
+    String csvFile
+
+    CsvReport load() {
         CsvReport report = new CsvReport(file: csvFile)
 
         new File(csvFile).eachLine { line ->

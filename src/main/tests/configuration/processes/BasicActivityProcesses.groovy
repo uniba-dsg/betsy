@@ -212,8 +212,8 @@ class BasicActivityProcesses {
             [
                     new TestCase(testSteps: [
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC, description: "start up, should complete normally", timeToWaitAfterwards: 1000),
-                            new TestStep(input: "1", operation: WsdlOperation.SYNC, description: "no reply, also normal, we need to open the message exchange", timeToWaitAfterwards: 1000),
-                            new TestStep(input: "1", description: "now, there should be the fault", operation: WsdlOperation.SYNC, assertions: [new SoapFaultTestAssertion(faultString: "conflictingRequest")])
+                            new TestStep(input: "1", operation: WsdlOperation.SYNC_STRING, description: "no reply, also normal, we need to open the message exchange", timeToWaitAfterwards: 1000),
+                            new TestStep(input: "1", description: "now, there should be the fault", operation: WsdlOperation.SYNC_STRING, assertions: [new SoapFaultTestAssertion(faultString: "conflictingRequest")])
                     ])
             ]
     )
@@ -493,6 +493,13 @@ class BasicActivityProcesses {
             ]
     )
 
+    public final Process ASSIGN_INT = builder.buildProcessWithPartner(
+            "basic-activities/Assign-Int",  "A receive-reply pair combined with an assign and an invoke inbetween. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", output: "10", operation: WsdlOperation.SYNC)]),
+            ]
+    )
+
     public final Process ASSIGN_SELECTION_FAILURE = builder.buildBasicActivityProcess(
             "Assign-SelectionFailure", "A receive-reply pair with an intermediate assign that uses a from that retuns zero nodes. This should trigger a selectionFailure.",
             [
@@ -572,6 +579,7 @@ class BasicActivityProcesses {
             ASSIGN_LITERAL,
             ASSIGN_EXPRESSION_FROM,
             ASSIGN_EXPRESSION_TO,
+            ASSIGN_INT,
             ASSIGN_SELECTION_FAILURE,
             ASSIGN_COPY_QUERY,
             ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME,

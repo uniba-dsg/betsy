@@ -9,6 +9,10 @@ class TestBuilder {
     AntBuilder ant = new AntBuilder()
 
     Process process
+
+    /**
+     * timeout for pending response in milliseconds
+     */
     int requestTimeout
 
     public void buildTest() {

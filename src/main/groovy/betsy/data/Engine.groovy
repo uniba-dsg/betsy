@@ -6,7 +6,7 @@ abstract class Engine implements EngineAPI {
 
     AntBuilder ant = new AntBuilder()
 
-    TestSuite testSuite
+    String parentFolder
 
     final List<Process> processes = []
 
@@ -34,7 +34,7 @@ abstract class Engine implements EngineAPI {
      * @return the path <code>test/$engine</code>
      */
     String getPath() {
-        "${testSuite.path}/${getName()}"
+        "${parentFolder}/${getName()}"
     }
 
     String toString() {

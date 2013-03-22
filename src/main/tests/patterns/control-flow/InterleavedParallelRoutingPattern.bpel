@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="InterleavedParallelRoutingPattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/InterleavedParallelRouting"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="result" type="xs:string"/>
+    </variables>
+    <sequence name="Sequence1">
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
+                 portType="ti:TestInterfacePortType" variable="InitData"/>
+
+        <assign name="InitializeResult">
+            <copy>
+                <from>''</from>
+                <to variable="result"/>
+            </copy>
+        </assign>
+
+        <flow name="Flow">
+            <links>
+                <link name="scopeLink"/>
+            </links>
+            <scope name="Scope1" isolated="yes">
+                <sources>
+                    <source linkName="scopeLink"/>
+                </sources>
+                <sequence name="Sequence2">
+                    <assign name="Preprotocol1">
+                        <copy>
+                            <from>concat($result, 'A')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                    <assign name="Assign1">
+                        <copy>
+                            <from>concat($result, 'W1')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                    <assign name="Postprotocol1">
+                        <copy>
+                            <from>concat($result, 'A')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </scope>
+            <scope name="Scope2" isolated="yes">
+                <targets>
+                    <target linkName="scopeLink"/>
+                </targets>
+                <sequence name="Sequence3">
+                    <assign name="Preprotocol2">
+                        <copy>
+                            <from>concat($result, 'B')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                    <assign name="Assign2">
+                        <copy>
+                            <from>concat($result, 'W2')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                    <assign name="Postprotocol2">
+                        <copy>
+                            <from>concat($result, 'B')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </scope>
+        </flow>
+
+        <!-- report observed data -->
+        <assign name="Merge">
+            <copy>
+                <from variable="result"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+
+    </sequence>
+</process>

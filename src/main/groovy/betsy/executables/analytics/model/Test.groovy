@@ -1,4 +1,4 @@
-package betsy.executables.reporting.csv
+package betsy.executables.analytics.model
 
 
 class Test implements Comparable<Test> {

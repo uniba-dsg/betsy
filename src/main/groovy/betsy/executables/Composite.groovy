@@ -1,6 +1,7 @@
 package betsy.executables
 
 import betsy.data.Engine
+import betsy.executables.analytics.Analyzer
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.SoapUiRunner
@@ -55,6 +56,13 @@ class Composite {
                 log "${context.testSuite.path}/report", {
                     new Reporter(ant: ant, tests: context.testSuite).createReports()
                 }
+
+                // create reports
+                log "${context.testSuite.path}/analytics", {
+                    new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
+                            reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
+                }
+
             } catch (Exception e) {
                 ant.echo message: IOUtil.getStackTrace(e), level: "error"
                 throw e
@@ -116,8 +124,9 @@ class Composite {
 
                 // test
                 log "${engine.path}/test", {
-                    context.testPartner.publish()
+
                     engine.processes.each { process ->
+                        context.testPartner.publish()
                         log "${process.targetPath}/test", {
                             soapui "${process.targetPath}/soapui_test", {
                                 new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
@@ -126,8 +135,9 @@ class Composite {
                             ant.sleep(milliseconds: 500)
                             engine.storeLogs(process)
                         }
+                        context.testPartner.unpublish()
                     }
-                    context.testPartner.unpublish()
+
                 }
 
             } finally {

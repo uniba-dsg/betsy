@@ -18,8 +18,10 @@ class TestSuite {
 
         engines.each { engine ->
             engine.processes.addAll(processes.collect() { p -> p.clone() as Process})
+            // set engine
             engine.processes.each { process -> process.engine = engine}
-            engine.testSuite = test
+            // set parentFolder
+            engine.parentFolder = test.path
         }
 
         test.engines = engines
@@ -48,6 +50,10 @@ class TestSuite {
 
     String getCsvFilePath() {
         "${getReportsPath()}/${getCsvFile()}"
+    }
+
+    String getJUnitXMLFilePath() {
+        "${getReportsPath()}/TESTS-TestSuites.xml"
     }
 
     public void prepare() {

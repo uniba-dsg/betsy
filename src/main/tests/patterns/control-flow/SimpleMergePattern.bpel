@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="SimpleMergePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/simpleMerge"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+
+        <variable name="result" type="xs:string"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
+                 portType="ti:TestInterfacePortType" variable="InitData"/>
+
+        <assign>
+            <copy>
+                <from>concat('',$InitData.inputPart)</from>
+                <to variable="result"/>
+            </copy>
+        </assign>
+
+        <if name="If1">
+            <condition>$InitData.inputPart &lt; 10</condition>
+            <assign name="Choice1">
+                <copy>
+                    <from>concat($result,'A')</from>
+                    <to variable="result"/>
+                </copy>
+            </assign>
+            <else>
+                <assign name="Choice2">
+                    <copy>
+                        <from>concat($result,'B')</from>
+                        <to variable="result"/>
+                    </copy>
+                </assign>
+            </else>
+        </if>
+
+        <assign name="SimpleMerge">
+            <copy>
+                <from variable="result"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

@@ -14,6 +14,7 @@
 
     <vprop:property name="correlationId" type="xsd:int"/>
     <vprop:propertyAlias messageType="tns:executeProcessSyncRequest" part="inputPart" propertyName="tns:correlationId"/>
+    <vprop:propertyAlias messageType="tns:executeProcessSyncStringRequest" part="inputPart" propertyName="tns:correlationId"/>
     <vprop:propertyAlias messageType="tns:executeProcessSyncResponse" part="outputPart" propertyName="tns:correlationId" />
     <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="tns:correlationId"/>
 
@@ -23,6 +24,8 @@
             <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
             <xsd:element name="testElementSyncResponse" type="xsd:int"/>
             <xsd:element name="testElementSyncFault" type="xsd:int"/>
+            <xsd:element name="testElementSyncStringRequest" type="xsd:int"/>
+            <xsd:element name="testElementSyncStringResponse" type="xsd:string"/>
         </xsd:schema>
     </types>
 
@@ -38,6 +41,12 @@
     <message name="executeProcessSyncFault">
         <part name="payload" element="tns:testElementSyncFault"/>
     </message>
+    <message name="executeProcessSyncStringRequest">
+        <part name="inputPart" element="tns:testElementSyncStringRequest"/>
+    </message>
+    <message name="executeProcessSyncStringResponse">
+        <part name="outputPart" element="tns:testElementSyncStringResponse"/>
+    </message>
 
     <portType name="TestInterfacePortType">
         <operation name="startProcessAsync">
@@ -47,6 +56,10 @@
             <input name="syncInput" message="tns:executeProcessSyncRequest"/>
             <output name="syncOutput" message="tns:executeProcessSyncResponse"/>
             <fault name="syncFault" message="tns:executeProcessSyncFault"/>
+        </operation>
+        <operation name="startProcessSyncString">
+            <input name="syncInput" message="tns:executeProcessSyncStringRequest"/>
+            <output name="syncOutput" message="tns:executeProcessSyncStringResponse"/>
         </operation>
     </portType>
 
@@ -69,6 +82,15 @@
             <fault name="syncFault">
                 <soap:fault name="syncFault" use="literal"/>
             </fault>
+        </operation>
+        <operation name="startProcessSyncString">
+            <soap:operation soapAction="syncString"/>
+            <input name="syncInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="syncOutput">
+                <soap:body use="literal"/>
+            </output>
         </operation>
     </binding>
 

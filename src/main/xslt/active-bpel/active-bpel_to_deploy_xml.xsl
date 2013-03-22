@@ -67,4 +67,7 @@
         <xsl:apply-templates select="bpel:partnerLinks"/>
     </xsl:template>
 
+    <!-- Override default template for copying text -->
+    <xsl:template match="text()|@*" />
+
 </xsl:stylesheet>

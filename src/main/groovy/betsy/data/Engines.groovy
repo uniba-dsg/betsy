@@ -24,7 +24,7 @@ class Engines {
         Engine engine = availableEngines().find { it.name == name }
 
         if (engine == null) {
-            throw new IllegalArgumentException("passed engine $name does not exist")
+            throw new IllegalArgumentException("Engine $name does not exist")
         } else {
             return engine
         }
