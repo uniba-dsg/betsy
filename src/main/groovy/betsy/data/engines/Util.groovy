@@ -27,7 +27,7 @@ class Util {
         unimplementedOperations.collect{it.name}
     }
 
-    public static String canonicalizeXML(String text) {
+    private static String canonicalizeXML(String text) {
         Init.init();
         Canonicalizer canon = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 

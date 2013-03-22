@@ -39,6 +39,14 @@ class TestStep {
         WsdlOperation.ASYNC == operation
     }
 
+    String getOperationType(){
+        if(isOneWay()){
+            "asynchronous"
+        } else {
+            "synchronous"
+        }
+    }
+
     public void setOutput(String output) {
         assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer", output: output)
     }

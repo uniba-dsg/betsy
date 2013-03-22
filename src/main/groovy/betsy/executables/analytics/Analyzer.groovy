@@ -1,6 +1,9 @@
 package betsy.executables.analytics
 
+import betsy.executables.analytics.html.HtmlAnalytics
 import betsy.executables.analytics.model.CsvReport
+import betsy.executables.analytics.texresults.LatexAnalytics
+import betsy.executables.analytics.textables.TechReportBpelTable
 
 
 class Analyzer {
