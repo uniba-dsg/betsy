@@ -127,7 +127,8 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "100", operation: WsdlOperation.SYNC),
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "100", operation: WsdlOperation.SYNC),
                             new TestStep(input: "101", testPartner: true, concurrencyTest: true),
                             new TestStep(input: "102", testPartner: true, partnerOutput: 4)])
             ]
@@ -136,10 +137,12 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", operation: WsdlOperation.SYNC),
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "1", operation: WsdlOperation.SYNC),
                             new TestStep(input: "101", testPartner: true, concurrencyTest: true),
                             new TestStep(input: "102", testPartner: true, partnerOutput: 2)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", operation: WsdlOperation.SYNC),
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "2", operation: WsdlOperation.SYNC),
                             new TestStep(input: "101", testPartner: true, concurrencyTest: true),
                             new TestStep(input: "102", testPartner: true, partnerOutput: 3)]),
             ]
