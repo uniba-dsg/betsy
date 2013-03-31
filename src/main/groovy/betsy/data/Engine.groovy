@@ -1,10 +1,9 @@
 package betsy.data
 
-import betsy.Configuration
-
 abstract class Engine implements EngineAPI {
 
     AntBuilder ant = new AntBuilder()
+	EnginePackageBuilder packageBuilder = new EnginePackageBuilder(getName())
 
     TestSuite testSuite
 
@@ -20,15 +19,6 @@ abstract class Engine implements EngineAPI {
     }
 
     /**
-     * The path <code>server/$engine</code>
-     *
-     * @return the path <code>server/$engine</code>
-     */
-    String getServerPath() {
-        "server/${getName()}"
-    }
-
-    /**
      * The path <code>test/$engine</code>
      *
      * @return the path <code>test/$engine</code>
@@ -37,42 +27,12 @@ abstract class Engine implements EngineAPI {
         "${testSuite.path}/${getName()}"
     }
 
+	@Override
     String toString() {
         getName()
     }
 
-    protected void createFolderAndCopyProcessFilesToTarget(Process process) {
-        Engine engine = this
-
-        // engine independent package steps
-        ant.mkdir dir: process.targetPath
-
-        ant.echo message: "Copying files for ${process} for engine ${engine}"
-
-        ant.copy file: process.bpelFilePath, todir: process.targetBpelPath
-        ant.replace(file: process.targetBpelFilePath, token: "../", value: "")
-
-        process.wsdlPaths.each { wsdlPath ->
-            ant.copy file: wsdlPath, todir: process.targetBpelPath
-        }
-
-        process.additionalFilePaths.each {additionalPath ->
-            ant.copy file: additionalPath, todir: process.targetBpelPath
-        }
-    }
-
-    protected void bpelFolderToZipFile(Process process) {
-        ant.mkdir dir: process.targetPackagePath
-        ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
-    }
-
-    protected void replaceEndpointAndPartnerTokensWithValues(Process process) {
-        ant.echo message: "Setting Endpoint of wsdl IF for $process on ${this} to ${process.endpoint}"
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
-        ant.echo message: "Setting Partner Address of for $process on ${this} to ${Configuration.PARTNER_IP_AND_PORT}"
-        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
-    }
-
+	@Override
     void prepare() {
         // setup engine folder
         ant.mkdir dir: path
@@ -92,5 +52,5 @@ abstract class Engine implements EngineAPI {
     int hashCode() {
         return (getName() != null ? getName().hashCode() : 0)
     }
-
+	
 }
