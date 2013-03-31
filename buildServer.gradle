@@ -1,0 +1,89 @@
+apply plugin: "groovy"
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "eclipse"
+apply plugin: "application"
+
+// Change to have a buildDir separated from betsy
+buildDir = "build-bvms"
+
+// Main class of betsy
+mainClassName = "de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer"
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/java'
+			exclude 'de/uniba/wiai/dsg/betsy/activities/**'
+			exclude 'de/uniba/wiai/dsg/betsy/virtual/engines/**'
+			exclude 'de/uniba/wiai/dsg/betsy/virtual/host/**'
+			exclude 'de/uniba/wiai/dsg/betsy/virtual/deprecated/**'
+			exclude 'de/uniba/wiai/dsg/bpel_engine_comparison/**'
+		}
+		groovy {
+			srcDir 'src/main/groovy'
+			srcDir 'src/main/tests'
+			exclude 'betsy/**'
+			exclude 'configuration/**'
+			exclude 'language-features/**'
+		}
+		resources {
+			srcDir 'src/main/resources'
+            include 'virtual/server/**'
+        }
+	}
+	jarconfig {
+		resources {
+			srcDir "$projectDir"
+            include 'Config.groovy'
+		}
+	}
+}
+
+dependencies {
+	groovy 'org.codehaus.groovy:groovy-all:2.1.2'
+	compile 'org.apache.ant:ant:1.8.4'
+	compile 'log4j:log4j:1.2.17'
+	compile 'commons-daemon:commons-daemon:1.0.12'
+	compile 'org.apache.commons:commons-compress:1.5'
+	compile 'org.apache.commons:commons-io:1.3.2'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.4'
+}
+
+task jarServer(type: Jar, dependsOn: classes) {
+	from files(sourceSets.main.output.classesDir) {
+		include '**/*.*'
+	}
+	from files(sourceSets.main.resources) {
+		include '**/*.*'
+	}
+	from files(sourceSets.jarconfig.resources) {
+		include '**/*.*'
+	}
+	
+	classifier = 'vms'
+	destinationDir = file('bvms')
+	baseName = 'betsy'
+	
+	manifest {
+		attributes 'Main-Class': 'de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer','Implementation-Title': 'Betsy-VirtualMachineServer','Built-Date': new Date()
+	}
+	
+	doFirst {
+		from (configurations.runtime.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
+			exclude 'META-INF/MANIFEST.MF'
+		}
+	}
+}
+
+task runServer(type: JavaExec, dependsOn: classes) {
+	main = 'de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer'
+	classpath = sourceSets.main.runtimeClasspath
+}
