@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.ChecksumException;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.CollectLogfileException;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.ConnectionException;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.DeployException;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.InvalidResponseException;
 
 public interface CommClient extends CommPartner {
 
