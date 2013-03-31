@@ -14,9 +14,9 @@ import com.jgoodies.looks.Options;
 
 
 import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxWebService;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngines;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.ConfigurationException;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.VirtualBoxWebService;
 
 class TestUsingParameters {
 
