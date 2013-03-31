@@ -1,58 +1,60 @@
 package betsy.executables.ws
 
-import betsy.Configuration
+import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
 
 import javax.xml.ws.Endpoint
 
 class TestPartnerServicePublisher {
 
-    Endpoint regularEndpoint
-    String regularUrl = "http://${Configuration.PARTNER_IP_AND_PORT}/bpel-testpartner"
+	Configuration config = Configuration.getInstance()
 
-    Endpoint partnerLinkAssignmentEndpoint
-    String partnerLinkAssignmentUrl = "http://${Configuration.PARTNER_IP_AND_PORT}/bpel-assigned-testpartner"
+	Endpoint regularEndpoint
+	String regularUrl = "http://${config.getValueAsString('PARTNER_IP_AND_PORT')}/bpel-testpartner"
 
-    AntBuilder ant = new AntBuilder()
+	Endpoint partnerLinkAssignmentEndpoint
+	String partnerLinkAssignmentUrl = "http://${config.getValueAsString('PARTNER_IP_AND_PORT')}/bpel-assigned-testpartner"
 
-    public static void main(String[] args) {
-        new TestPartnerServicePublisher().publish()
-    }
+	AntBuilder ant = new AntBuilder()
 
-    void publish() {
-        publishRegularEndpoint(regularUrl)
-        publishPartnerLinkAssignmentEndpoint(partnerLinkAssignmentUrl)
-    }
+	public static void main(String[] args) {
+		new TestPartnerServicePublisher().publish()
+	}
 
-    private void publishRegularEndpoint(String url) {
-        TestPartnerPortType portType = new TestPartnerServiceMock(true)
-        regularEndpoint = Endpoint.publish(url, portType)
-        ant.echo message: "Published regular TestPartnerService to ${url}"
-    }
+	void publish() {
+		publishRegularEndpoint(regularUrl)
+		publishPartnerLinkAssignmentEndpoint(partnerLinkAssignmentUrl)
+	}
 
-    private void publishPartnerLinkAssignmentEndpoint(String url) {
-        TestPartnerPortType portType = new TestPartnerServiceMock(false)
-        partnerLinkAssignmentEndpoint = Endpoint.publish(url, portType)
-        ant.echo message: "Published regular TestPartnerService to ${url}"
-    }
+	private void publishRegularEndpoint(String url) {
+		TestPartnerPortType portType = new TestPartnerServiceMock(true)
+		regularEndpoint = Endpoint.publish(url, portType)
+		ant.echo message: "Published regular TestPartnerService to ${url}"
+	}
 
-    void unpublish() {
-        unpublishEndpoint(regularEndpoint, regularUrl)
-        unpublishEndpoint(partnerLinkAssignmentEndpoint, partnerLinkAssignmentUrl)
-    }
+	private void publishPartnerLinkAssignmentEndpoint(String url) {
+		TestPartnerPortType portType = new TestPartnerServiceMock(false)
+		partnerLinkAssignmentEndpoint = Endpoint.publish(url, portType)
+		ant.echo message: "Published regular TestPartnerService to ${url}"
+	}
 
-    private void unpublishEndpoint(Endpoint endpoint, String url) {
-        if (endpoint == null) {
-            ant.echo "Cannot unpublish TestPartnerService from ${url} as it has not been published yed."
-        } else {
-            try {
-                endpoint.stop()
-                ant.echo "Unpublished TestPartnerService from ${url}"
-            } catch (NullPointerException ignore) {
-                // do nothing, as this expected
-            }
+	void unpublish() {
+		unpublishEndpoint(regularEndpoint, regularUrl)
+		unpublishEndpoint(partnerLinkAssignmentEndpoint, partnerLinkAssignmentUrl)
+	}
 
-        }
-    }
+	private void unpublishEndpoint(Endpoint endpoint, String url) {
+		if (endpoint == null) {
+			ant.echo "Cannot unpublish TestPartnerService from ${url} as it has not been published yed."
+		} else {
+			try {
+				endpoint.stop()
+				ant.echo "Unpublished TestPartnerService from ${url}"
+			} catch (NullPointerException ignore) {
+				// do nothing, as this expected
+			}
+
+		}
+	}
 
 }
