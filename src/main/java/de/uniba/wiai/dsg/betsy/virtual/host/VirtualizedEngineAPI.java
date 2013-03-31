@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 import betsy.data.Process;
 
