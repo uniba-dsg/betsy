@@ -27,8 +27,9 @@ class TestUsingParameters {
         cli.s(longOpt:'skip-reinstallation',"skip reinstalling each engine for each process")
         cli.o("Opens results in default browser")
         cli.h("Print out usage information")
-        cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
+		cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${config.getValueAsString('PARTNER_IP_AND_PORT')} for standard engines)")
 		cli.v("Use virtualized testing. Requires working VirtualBox installation, specified in 'Config.groovy'")
+		// TODO implement parameter to clean all VirtualEngine directories (use VirtualEngine.cleanAll())
 
         def options = cli.parse(args)
         if (options == null || options == false || options.h) {
