@@ -1,11 +1,10 @@
-package betsy.data.engines
+package betsy.data.engines.orchestra
 
-import betsy.data.Engine
+import betsy.data.LocalEngine
 import betsy.data.Process
-import betsy.data.engines.cli.OrchestraCLI
 import betsy.data.engines.server.Tomcat
 
-class OrchestraEngine extends Engine {
+class OrchestraEngine extends LocalEngine {
 
     @Override
     String getName() {
@@ -65,11 +64,12 @@ class OrchestraEngine extends Engine {
     }
 
     public void buildArchives(Process process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
     }
 
 }

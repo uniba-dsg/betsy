@@ -1,13 +1,13 @@
-package betsy.data.engines
+package betsy.data.engines.petalsEsb
 
-import betsy.data.Engine
+import betsy.data.EnginePackageBuilder;
+import betsy.data.LocalEngine
 import betsy.data.Process
-import betsy.data.engines.packager.PetalsEsbCompositePackager
 
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class PetalsEsbEngine extends Engine {
+class PetalsEsbEngine extends LocalEngine {
 
     private static final String CHECK_URL = "http://localhost:8084"
 
@@ -83,7 +83,7 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void buildArchives(Process process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         String metaDir = "${process.targetBpelPath}/META-INF"
@@ -96,8 +96,9 @@ class PetalsEsbEngine extends Engine {
             ant.replace(file: "${process.targetBpelPath}/TestPartner.wsdl", token: "TestService", value: "${process.bpelFileNameWithoutExtension}TestService")
         }
 
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
 
         new PetalsEsbCompositePackager(process: process, ant: ant).build()
     }
