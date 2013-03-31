@@ -65,11 +65,19 @@ class TestUsingParameters {
         }
     }
 
-    private static List<Engine> parseEngines(String[] args) {
+	private static List<Engine> parseLocalEngines(String[] args) {
+		if (args.length == 0 || "all" == args[0].toLowerCase()) {
+			LocalEngines.availableEngines()
+		} else {
+			LocalEngines.build(args[0].toLowerCase().split(",") as List<String>)
+		}
+	}
+
+	private static List<Engine> parseVirtualizedEngines(String[] args) {
         if (args.length == 0 || "all" == args[0].toLowerCase()) {
-            Engines.availableEngines()
+			VirtualizedEngines.availableEngines()
         } else {
-            Engines.build(args[0].toLowerCase().split(",") as List<String>)
+			VirtualizedEngines.build(args[0].toLowerCase().split(",") as List<String>)
         }
     }
 
