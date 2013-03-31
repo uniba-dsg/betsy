@@ -37,10 +37,11 @@ class Reporter  {
         ant.echo(message: createAntReportFile(tests.path), file: "${tests.path}/build.xml")
 
         ant.echo(message: "executing reporting ant scripts")
-        ant.exec(executable: "cmd", dir: tests.path) {
+        ant.exec(executable: "cmd", dir: tests.path, osfamily: "windows") {
             arg(value: "/c")
             arg(value: "ant")
         }
+		ant.exec(executable: "ant", dir: tests.path, osfamily: "unix")
     }
 
     private void mergeMessageExchangeProtocolsIntoJUnitReports() {
