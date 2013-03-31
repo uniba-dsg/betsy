@@ -4,6 +4,7 @@ apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "application"
 
+// Main class of betsy
 mainClassName = "configuration.TestUsingParameters"
 
 repositories {
@@ -12,6 +13,9 @@ repositories {
 
 sourceSets {
     main {
+		java {
+			srcDir 'src/main/java'
+		}
         groovy {
             srcDir 'src/main/groovy'
             srcDir 'src/main/tests'
