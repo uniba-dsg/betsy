@@ -1,11 +1,7 @@
 package de.uniba.wiai.dsg.betsy.virtual.server.deployers;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import de.uniba.wiai.dsg.betsy.virtual.common.Logfile;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
 public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
