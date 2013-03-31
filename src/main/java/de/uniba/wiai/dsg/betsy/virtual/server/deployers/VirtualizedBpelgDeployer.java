@@ -6,8 +6,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
 public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {

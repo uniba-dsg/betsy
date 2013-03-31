@@ -14,13 +14,13 @@ import org.apache.log4j.Logger;
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommServer;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.CollectLogfileException;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.ConnectionException;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.server.LogfileCollector;
 
 //TODO JavaDoc

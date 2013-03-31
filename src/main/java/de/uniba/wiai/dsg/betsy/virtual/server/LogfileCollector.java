@@ -11,11 +11,10 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
-import de.uniba.wiai.dsg.betsy.virtual.common.Logfile;
-import de.uniba.wiai.dsg.betsy.virtual.common.LogfileType;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
-import de.uniba.wiai.dsg.betsy.virtual.exceptions.CollectLogfileException;
 
 public class LogfileCollector {
 
@@ -60,9 +59,9 @@ public class LogfileCollector {
 				+ "because the file's data could not be read.");
 	}
 
-	private List<Logfile> collectBetsyServerLogfiles(
+	private List<DataContainer> collectBetsyServerLogfiles(
 			final File betsyServerInstallDir) throws IOException {
-		List<Logfile> list = new LinkedList<>();
+		List<DataContainer> list = new LinkedList<>();
 
 		Collection<?> logfiles = FileUtils.listFiles(betsyServerInstallDir,
 				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
@@ -71,8 +70,7 @@ public class LogfileCollector {
 			File file = (File) o;
 			byte[] data = FileUtils.readFileToByteArray(file);
 			Checksum checksum = new Checksum(data);
-			Logfile lf = new Logfile(file.getName(), data, LogfileType.SERVER,
-					checksum);
+			DataContainer lf = new DataContainer(file.getName(), data, checksum);
 			list.add(lf);
 		}
 
@@ -83,9 +81,9 @@ public class LogfileCollector {
 		return list;
 	}
 
-	private List<Logfile> collectEngineLogfiles(final File engineLogDirectory)
+	private List<DataContainer> collectEngineLogfiles(final File engineLogDirectory)
 			throws IOException {
-		List<Logfile> list = new LinkedList<>();
+		List<DataContainer> list = new LinkedList<>();
 
 		Collection<?> logfiles = FileUtils.listFiles(engineLogDirectory,
 				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
@@ -94,8 +92,7 @@ public class LogfileCollector {
 			File file = (File) o;
 			byte[] data = FileUtils.readFileToByteArray(file);
 			Checksum checksum = new Checksum(data);
-			Logfile lf = new Logfile(file.getName(), data, LogfileType.ENGINE,
-					checksum);
+			DataContainer lf = new DataContainer(file.getName(), data, checksum);
 			list.add(lf);
 		}
 
