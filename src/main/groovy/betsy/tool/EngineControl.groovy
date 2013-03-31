@@ -1,34 +1,34 @@
-package betsy.tool
+package betsy;
 
-import betsy.data.EngineAPI
-import betsy.data.Engines
+import betsy.data.Engine
+import betsy.data.LocalEngines;
 
-import javax.swing.*
-import java.awt.*
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
-import java.util.List
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class EngineControl extends JFrame {
 
-	private final List<EngineAPI> engines;
+	private final List<Engine> engines;
 
 	public static void main(String[] args) {
 		new EngineControl().setVisible(true);
 	}
 
 	public EngineControl() {
-		this.engines = Engines.availableEngines();
+		this.engines = LocalEngines.availableEngines();
 
 		this.setLayout(new GridLayout(engines.size() + 1,4,0,10));
 		this.setSize(400, 300);
 		this.setTitle("Engine Control Center");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
-		for (EngineAPI tmpEngine : engines) {
-            final EngineAPI engine = tmpEngine;
+		for (Engine tmpEngine : engines) {
+            final Engine engine = tmpEngine;
 
 			add(new JLabel(engine.getName()));
 
@@ -79,7 +79,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final EngineAPI engine : engines) {
+				for (final Engine engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.install();
@@ -95,7 +95,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final EngineAPI engine : engines) {
+				for (final Engine engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.startup();
@@ -110,7 +110,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final EngineAPI engine : engines) {
+				for (final Engine engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.shutdown();
