@@ -1,10 +1,10 @@
-package betsy.data.engines
+package betsy.data.engines.ode
 
-import betsy.data.Engine
+import betsy.data.LocalEngine
 import betsy.data.Process
 import betsy.data.engines.server.Tomcat
 
-class OdeEngine extends Engine {
+class OdeEngine extends LocalEngine {
 
     @Override
     String getName() {
@@ -73,16 +73,17 @@ class OdeEngine extends Engine {
 
     @Override
     void buildArchives(Process process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "$xsltPath/bpel_to_ode_deploy_xml.xsl")
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
         ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
-        replaceEndpointAndPartnerTokensWithValues(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+		packageBuilder.replacePartnerTokenWithValue(process)
 
-        bpelFolderToZipFile(process)
+        packageBuilder.bpelFolderToZipFile(process)
     }
 
     @Override
