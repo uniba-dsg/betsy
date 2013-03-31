@@ -14,10 +14,12 @@ class JUnitHtmlReports {
         ant.echo(message: createAntReportFile(), file: "${path}/build.xml")
 
         ant.echo(message: "executing reporting ant scripts")
-        ant.exec(executable: "cmd", dir: path) {
+        ant.exec(executable: "cmd", dir: path, osfamily: "windows") {
             arg(value: "/c")
             arg(value: "ant")
         }
+
+        ant.exec(executable: "ant", dir: tests.path, osfamily: "unix")
     }
 
     private String createAntReportFile() {
