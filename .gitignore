@@ -1,4 +1,5 @@
 *.log
+*.log.*
 *.cbp
 *.iml
 *.zip
@@ -9,6 +10,8 @@ tmp/
 /test/
 out/
 build/
+build-bvms/
+bvms/
 *.iws
 *.ipr
 .gradle
