@@ -32,6 +32,7 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-activebpel_v.tar.bz2"
 			// time in seconds
 			serviceTimeout = 300
+			mac = "08:00:27:c9:86:06"
 		}
 
 		bpelg_v {
@@ -59,6 +60,7 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-ode_v.tar.bz2"
 			// time in seconds
 			serviceTimeout = 300
+			mac = "08:00:27:6f:6c:5a"
 		}
 
 		openesb_v {
@@ -66,6 +68,7 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-openesb_v.tar.bz2"
 			// time in seconds
 			serviceTimeout = 300
+			mac = "08:00:27:ce:1e:55"
 		}
 
 		orchestra_v {
@@ -73,6 +76,7 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-orchestra_v.tar.bz2"
 			// time in seconds
 			serviceTimeout = 300
+			mac = "08:00:27:5c:76:8a"
 		}
 
 		petalsesb_v {
@@ -80,6 +84,7 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-petalsesb_v.tar.bz2"
 			// time in seconds
 			serviceTimeout = 300
+			mac = "08:00:27:eb:f4:c8"
 		}
 	}
 }
