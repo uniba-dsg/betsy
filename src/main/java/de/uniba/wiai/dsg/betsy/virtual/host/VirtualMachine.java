@@ -109,6 +109,38 @@ public class VirtualMachine {
 		}
 	}
 
+	public void saveState() {
+		log.trace("Saving VM state");
+		try {
+			if (isRunning()) {
+				IConsole console = session.getConsole();
+				IProgress stopProgress = console.saveState();
+				stopProgress.waitForCompletion(30000);
+			}
+		} catch (VBoxException exception) {
+			if (VirtualBoxExceptionCode.valueOf(exception).equals(
+					VirtualBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
+				// ignore
+				log.warn("Could not save VM state, was in invalid state:",
+						exception);
+			} else {
+				// unknown
+				log.error("Unexpected VBoxException: ", exception);
+				throw exception;
+			}
+		} finally {
+			// verify if stopped, else kill
+			if (isActive()) {
+				kill();
+			}
+			try {
+				session.unlockMachine();
+			} catch (VBoxException exception) {
+				// ignore if was not locked
+			}
+		}
+	}
+
 	public void kill() {
 		machine.launchVMProcess(session, "emergencystop", null);
 	}
