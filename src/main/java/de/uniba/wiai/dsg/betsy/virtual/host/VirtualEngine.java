@@ -195,7 +195,14 @@ public abstract class VirtualEngine extends Engine implements
 		comm.disconnect();
 		// if there is no virtualMachine then there is nothing to stop
 		if (this.vm != null) {
+			boolean saveState = config.getValueAsBoolean(
+					"virtualisation.engines." + getName()
+							+ ".shutdownSaveState", false);
+			if (saveState) {
+				this.vm.saveState();
+			} else {
 			this.vm.stop();
+		}
 		}
 		log.trace("...shutdown done!");
 	}
