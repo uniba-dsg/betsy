@@ -1,4 +1,4 @@
-package betsy;
+package betsy.tool;
 
 import betsy.data.Engine
 import betsy.data.Engines;
