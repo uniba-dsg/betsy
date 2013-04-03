@@ -21,14 +21,14 @@ sourceSets {
 }
 
 dependencies {
-    groovy 'org.codehaus.groovy:groovy-all:2.1.1'
+    groovy 'org.codehaus.groovy:groovy-all:2.1.2'
     compile 'org.apache.ant:ant:1.8.4'
     compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\lib', includes: ['*.jar']))
     compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\bin', includes: ['*.jar']))
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.4'
+    gradleVersion = '1.5'
 }
 
 run {
