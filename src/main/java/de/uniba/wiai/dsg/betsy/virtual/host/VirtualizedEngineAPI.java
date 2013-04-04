@@ -39,6 +39,8 @@ public interface VirtualizedEngineAPI {
 
 	public Integer getVMDeploymentTimeout();
 
-	void replaceEndpointAndPartnerTokens(Process process);
+	public void replaceEndpointAndPartnerTokens(Process process);
+
+	public String getTargetPackageExtension();
 
 }
