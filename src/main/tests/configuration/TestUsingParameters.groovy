@@ -74,7 +74,7 @@ class TestUsingParameters {
 					throw new ConfigurationException("The VBoxManage executable specified in the 'Config.groovy' could not be found.")
 				}
 
-				final VirtualBoxWebService vBoxWebSrv = new VirtualBoxWebService(vboxwebsrvPath)
+				final VirtualBoxWebService vBoxWebSrv = new VirtualBoxWebService(vboxwebsrvFile.absolutePath)
 				vBoxWebSrv.start()
 
 				Thread shutdownThread = new Thread(new Runnable() {
