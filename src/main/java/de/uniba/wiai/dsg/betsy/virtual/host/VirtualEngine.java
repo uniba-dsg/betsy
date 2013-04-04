@@ -446,7 +446,7 @@ public abstract class VirtualEngine extends Engine implements
 	// TODO is in seconds
 	public Integer getVMDeploymentTimeout() {
 		Integer timeout = config.getValueAsInteger("virtualisation.engines."
-				+ getName() + ".deploymentTimeout", 15);
+				+ getName() + ".deploymentTimeout", 20);
 		return timeout * 1000;
 	}
 
