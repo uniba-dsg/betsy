@@ -25,7 +25,7 @@ class OpenEsbEngine extends Engine {
     }
 
     OpenEsbCLI getCli() {
-        new OpenEsbCLI(ant: ant, engine: this)
+        new OpenEsbCLI(ant: ant, serverPath: getServerPath())
     }
 
     @Override

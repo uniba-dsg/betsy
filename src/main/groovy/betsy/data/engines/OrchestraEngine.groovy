@@ -51,7 +51,7 @@ class OrchestraEngine extends Engine {
 
     @Override
     void deploy(Process process) {
-        new OrchestraCLI(engine: this, ant: ant).deploy(process)
+        new OrchestraCLI(serverPath: getServerPath(), ant: ant).deploy(process)
     }
 
     @Override

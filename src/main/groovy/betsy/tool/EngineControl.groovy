@@ -1,17 +1,17 @@
-package betsy.tool;
+package betsy.tool
 
-import betsy.data.Engine
-import betsy.data.Engines;
+import betsy.data.EngineAPI
+import betsy.data.Engines
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
+import javax.swing.*
+import java.awt.*
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import java.util.List
 
 public class EngineControl extends JFrame {
 
-	private final List<Engine> engines;
+	private final List<EngineAPI> engines;
 
 	public static void main(String[] args) {
 		new EngineControl().setVisible(true);
@@ -27,8 +27,8 @@ public class EngineControl extends JFrame {
 
 
 
-		for (Engine tmpEngine : engines) {
-            final Engine engine = tmpEngine;
+		for (EngineAPI tmpEngine : engines) {
+            final EngineAPI engine = tmpEngine;
 
 			add(new JLabel(engine.getName()));
 
@@ -79,7 +79,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Engine engine : engines) {
+				for (final EngineAPI engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.install();
@@ -95,7 +95,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Engine engine : engines) {
+				for (final EngineAPI engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.startup();
@@ -110,7 +110,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Engine engine : engines) {
+				for (final EngineAPI engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.shutdown();

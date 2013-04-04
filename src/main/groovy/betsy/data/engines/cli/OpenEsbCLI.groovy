@@ -1,13 +1,13 @@
 package betsy.data.engines.cli
 
 import betsy.data.Process
-import betsy.data.Engine
 
 
 class OpenEsbCLI {
 
     AntBuilder ant = new AntBuilder()
-    Engine engine
+
+    String serverPath
 
     void stopDomain(){
         ant.exec(executable: "cmd", failOnError: "true") {
@@ -28,7 +28,7 @@ class OpenEsbCLI {
     }
 
     private String getCliToolPath() {
-        new File("${engine.serverPath}/glassfish/bin").absolutePath + "\\asadmin.bat"
+        new File("${serverPath}/glassfish/bin").absolutePath + "\\asadmin.bat"
     }
 
     void forceRedeploy(Process process) {
