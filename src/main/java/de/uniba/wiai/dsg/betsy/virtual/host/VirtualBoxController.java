@@ -113,8 +113,6 @@ public class VirtualBoxController {
 
 		for (IMachine vm : machines) {
 			log.trace(String.format("Found machine '%s'", vm.getName()));
-			System.out
-					.println(String.format("Found machine '%s'", vm.getName()));
 			if (vm.getName().equals(vmName)) {
 				return true;
 			}
@@ -340,9 +338,6 @@ public class VirtualBoxController {
 		logFolder.delete();
 
 		List<IMedium> removableMediums = machine.unregister(CleanupMode.Full);
-		for (IMedium medium : removableMediums) {
-			System.out.println("Medium location: " + medium.getLocation());
-		}
 		machine.delete(removableMediums);
 	}
 

@@ -186,8 +186,8 @@ public abstract class VirtualEngine extends Engine implements
 			if (saveState) {
 				this.vm.saveState();
 			} else {
-			this.vm.stop();
-		}
+				this.vm.stop();
+			}
 		}
 		log.trace("...shutdown done!");
 	}
@@ -247,7 +247,8 @@ public abstract class VirtualEngine extends Engine implements
 	@Override
 	public DeployContainer buildDeployContainer(Process process)
 			throws IOException {
-		Path path = Paths.get(process.getTargetPackageFilePath());
+		Path path = Paths.get(process
+				.getTargetPackageFilePath(getTargetPackageExtension()));
 		Path filenamePath = path.getFileName();
 		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
@@ -261,22 +262,32 @@ public abstract class VirtualEngine extends Engine implements
 
 	@Override
 	public void deploy(Process process) {
-		log.debug("Deploy virtualized engine " + getName() + ", process: "
-				+ process.toString() + " ...");
+		try {
+			log.debug("Deploy virtualized engine " + getName() + ", process: "
+					+ process.toString() + " ...");
 
-		// resend once in case of checksum exception
-		int attemptsLeft = 2;
-		while (attemptsLeft > 0) {
-			attemptsLeft--;
-			try {
-				executeDeploy(process);
-				log.info("...deploy done!");
-				return;
-			} catch (ChecksumException exception) {
-				if (attemptsLeft <= 0) {
-					throw new TestFailedException(exception, true);
+			// resend once in case of checksum exception
+			int attemptsLeft = 2;
+			while (attemptsLeft > 0) {
+				attemptsLeft--;
+				try {
+					executeDeploy(process);
+					log.info("...deploy done!");
+					return;
+				} catch (ChecksumException exception) {
+					if (attemptsLeft <= 0) {
+						throw new TestFailedException(exception, true);
+					}
 				}
 			}
+		} catch (TestFailedException exception) {
+			try {
+				process.getEngine().storeLogs(process);
+			} catch (TestFailedException exception2) {
+				log.info("Could not store logfiles for failed deployment:",
+						exception2);
+			}
+			throw exception;
 		}
 	}
 
@@ -432,9 +443,11 @@ public abstract class VirtualEngine extends Engine implements
 	}
 
 	@Override
+	// TODO is in seconds
 	public Integer getVMDeploymentTimeout() {
-		return config.getValueAsInteger("virtualisation.engines."
-				+ getVirtualMachineName() + ".deploymentTimeout", 10000);
+		Integer timeout = config.getValueAsInteger("virtualisation.engines."
+				+ getName() + ".deploymentTimeout", 15);
+		return timeout * 1000;
 	}
 
 	@Override
@@ -442,21 +455,22 @@ public abstract class VirtualEngine extends Engine implements
 	public void replaceEndpointAndPartnerTokens(Process process) {
 		// TODO verify need and functionality
 		log.debug("Setting Partner Address of for $process on ${engineName} to ${config.getValueAsString('PARTNER_IP_AND_PORT')}");
-		
-		String hostIp = config.getValueAsString("virtualisation.partnerIp", "10.0.2.2");
+
+		String hostIp = config.getValueAsString("virtualisation.partnerIp",
+				"10.0.2.2");
 		String ipPort = config.getValueAsString("PARTNER_IP_AND_PORT");
 		String port = ipPort.split(":")[1];
-		
-		log.debug("PartnerIP: "+hostIp);
-		log.debug("PartnerPort: "+port);
-		
+
+		log.debug("PartnerIP: " + hostIp);
+		log.debug("PartnerPort: " + port);
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("dir", process.getTargetBpelPath());
 		map.put("token", ipPort);
 		map.put("value", hostIp + ":" + port);
-		
+
 		ant.invokeMethod("replace", map);
-		
+
 		log.debug("replaced!");
 	}
 }
