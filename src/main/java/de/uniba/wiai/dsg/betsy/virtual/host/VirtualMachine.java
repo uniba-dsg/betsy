@@ -232,23 +232,28 @@ public class VirtualMachine {
 	}
 
 	public void resetToLatestSnapshot() {
+		ISession subSession = null;
+		try {
 		log.debug("Resetting " + machine.getName() + " to latest snapshot");
 
-		boolean useSubSession = false;
-		ISession subSession = null;
-		if (machine.getSessionState().equals(SessionState.Unlocked)) {
-			useSubSession = true;
+			IConsole console = null;
+			// if (machine.getSessionState().equals(SessionState.Unlocked)
+			// || machine.getSessionState().equals(SessionState.Unlocking)) {
+			log.info("Using subSession now");
 			subSession = vbManager.getSessionObject();
 			machine.lockMachine(subSession, LockType.Write);
-		}
+			console = subSession.getConsole();
+			// } else {
+			// console = session.getConsole();
+			// }
 
 		ISnapshot snapshot = machine.getCurrentSnapshot();
 		if (snapshot == null) {
-			throw new IllegalStateException("Can't reset the VM to the latest "
+				throw new IllegalStateException(
+						"Can't reset the VM to the latest "
 					+ "snapshot if the VM does not have any snapshot.");
 		}
 
-		IConsole console = session.getConsole();
 		IProgress snapshotProgress = console.restoreSnapshot(snapshot);
 
 		// TODO include realistic timeout
@@ -257,9 +262,12 @@ public class VirtualMachine {
 			snapshotProgress.waitForCompletion(5000);
 		}
 
-		log.trace("Snapshot restored state: " + machine.getState().toString());
+			log.trace("Snapshot restored state: "
+					+ machine.getState().toString());
 
-		if (useSubSession) {
+		} finally {
+			if (subSession != null
+					&& subSession.getState().equals(SessionState.Locked)) {
 			subSession.unlockMachine();
 		}
 	}
