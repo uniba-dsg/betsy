@@ -90,8 +90,15 @@ public class URLPinger {
 	public void waitUntilAvailable(final URL url, final int timeoutInMs)
 			throws TimeoutException {
 		long start = -System.currentTimeMillis();
-		boolean available = false;
+		boolean available = isAddressAvailable(url);
 		while (!available && (start + System.currentTimeMillis()) < timeoutInMs) {
+			log.trace("Waiting for address '" + url.toString()
+					+ "' to be available");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// ignore
+			}
 			available = isAddressAvailable(url);
 		}
 
