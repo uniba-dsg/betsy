@@ -38,7 +38,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceValidator;
 public class VirtualMachine {
 
 	private final Configuration config = Configuration.getInstance();
-	
+
 	private final IMachine machine;
 	private final VirtualBoxManager vbManager;
 	private ISession session;
@@ -234,7 +234,7 @@ public class VirtualMachine {
 	public void resetToLatestSnapshot() {
 		ISession subSession = null;
 		try {
-		log.debug("Resetting " + machine.getName() + " to latest snapshot");
+			log.debug("Resetting " + machine.getName() + " to latest snapshot");
 
 			IConsole console = null;
 			// if (machine.getSessionState().equals(SessionState.Unlocked)
@@ -247,20 +247,20 @@ public class VirtualMachine {
 			// console = session.getConsole();
 			// }
 
-		ISnapshot snapshot = machine.getCurrentSnapshot();
-		if (snapshot == null) {
+			ISnapshot snapshot = machine.getCurrentSnapshot();
+			if (snapshot == null) {
 				throw new IllegalStateException(
 						"Can't reset the VM to the latest "
-					+ "snapshot if the VM does not have any snapshot.");
-		}
+								+ "snapshot if the VM does not have any snapshot.");
+			}
 
-		IProgress snapshotProgress = console.restoreSnapshot(snapshot);
+			IProgress snapshotProgress = console.restoreSnapshot(snapshot);
 
-		// TODO include realistic timeout
-		while (!snapshotProgress.getCompleted()) {
-			log.trace("wait on restoring completion");
-			snapshotProgress.waitForCompletion(5000);
-		}
+			// TODO include realistic timeout
+			while (!snapshotProgress.getCompleted()) {
+				log.trace("wait on restoring completion");
+				snapshotProgress.waitForCompletion(5000);
+			}
 
 			log.trace("Snapshot restored state: "
 					+ machine.getState().toString());
@@ -268,9 +268,9 @@ public class VirtualMachine {
 		} finally {
 			if (subSession != null
 					&& subSession.getState().equals(SessionState.Locked)) {
-			subSession.unlockMachine();
+				subSession.unlockMachine();
+			}
 		}
-	}
 	}
 
 	public void applyPortForwardingWS(final Set<Integer> forwardingPorts)
@@ -278,17 +278,17 @@ public class VirtualMachine {
 		if (!isAlreadyRedirected(forwardingPorts)) {
 			log.debug("Applying new port redirects...");
 
-		// remove old redirections first
-		clearPortForwardingWS();
+			// remove old redirections first
+			clearPortForwardingWS();
 
-		// add bVMS port if not yet contained
-		forwardingPorts.add(48888);
+			// add bVMS port if not yet contained
+			forwardingPorts.add(48888);
 
-		INATEngine natEngine = getNATEngine();
-		for (Integer port : forwardingPorts) {
-			// assuming every service uses TCP, which is true for HTTP
-			natEngine.addRedirect("", NATProtocol.TCP, "", port, "", port);
-		}
+			INATEngine natEngine = getNATEngine();
+			for (Integer port : forwardingPorts) {
+				// assuming every service uses TCP, which is true for HTTP
+				natEngine.addRedirect("", NATProtocol.TCP, "", port, "", port);
+			}
 
 			long timeout = 10000;
 			long start = -System.currentTimeMillis();

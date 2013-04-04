@@ -93,4 +93,10 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 		return null;
 	}
 
+	@Override
+	public String getTargetPackageExtension() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

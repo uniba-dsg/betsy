@@ -5,10 +5,9 @@ import groovy.util.AntBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.uniba.wiai.dsg.betsy.Configuration;
-
 import betsy.data.EnginePackageBuilder;
 import betsy.data.Process;
+import de.uniba.wiai.dsg.betsy.Configuration;
 
 public class VirtualEnginePackageBuilder extends EnginePackageBuilder {
 

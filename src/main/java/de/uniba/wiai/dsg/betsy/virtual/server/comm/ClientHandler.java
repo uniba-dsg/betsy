@@ -187,10 +187,6 @@ public class ClientHandler implements Runnable, CommPartner {
 		}
 	}
 
-	public void close() {
-		this.keepRunning = false;
-	}
-
 	@Override
 	public boolean isConnected() {
 		return socket != null && !socket.isClosed();
@@ -222,6 +218,10 @@ public class ClientHandler implements Runnable, CommPartner {
 		} else {
 			this.close();
 		}
+	}
+	
+	public void close() {
+		this.keepRunning = false;
 	}
 
 	private void tidyUp() {
