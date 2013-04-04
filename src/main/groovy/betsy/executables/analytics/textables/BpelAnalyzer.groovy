@@ -36,7 +36,7 @@ class BpelAnalyzer {
         }
     }
 
-    String getAssertionsDescription(List<TestAssertion> assertions) {
+    static String getAssertionsDescription(List<TestAssertion> assertions) {
         assertions.collect {
             if (it instanceof NotDeployableAssertion) {
                 "NotDeployable"
@@ -54,7 +54,7 @@ class BpelAnalyzer {
         }.join("; ")
     }
 
-    private static betsy.data.Process getProcess(String name) {
+    private static Process getProcess(String name) {
         new Processes().ALL.find { it.bpelFileName == name }
     }
 

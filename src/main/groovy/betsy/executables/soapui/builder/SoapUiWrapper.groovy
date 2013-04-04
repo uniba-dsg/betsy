@@ -1,4 +1,4 @@
-package betsy.executables.soapui
+package betsy.executables.soapui.builder
 
 import betsy.data.Process
 import com.eviware.soapui.impl.WsdlInterfaceFactory
@@ -21,7 +21,6 @@ class SoapUiWrapper {
     int requestTimeout
 
     private WsdlProject project
-    private WsdlTestSuite soapUiTestSuite
 
     void createSoapUIProject() {
         createProject()
@@ -42,9 +41,9 @@ class SoapUiWrapper {
     }
 
     private void createTestCases() {
-        soapUiTestSuite = project.addNewTestSuite(process.targetSoapUIProjectName)
+        WsdlTestSuite soapUiTestSuite = project.addNewTestSuite(process.targetSoapUIProjectName)
 
-        SoapUiTestCaseBuilder testCaseBuilder = new SoapUiTestCaseBuilder(soapUiTestSuite,project,process,requestTimeout)
+        SoapUiTestCaseBuilder testCaseBuilder = new SoapUiTestCaseBuilder(soapUiTestSuite,project,process.wsdlEndpoint,requestTimeout)
         process.testCases.each { testCase ->
             testCaseBuilder.addTestCase(testCase)
         }

@@ -4,7 +4,7 @@ import betsy.data.Engine
 import betsy.executables.analytics.Analyzer
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
-import betsy.executables.soapui.SoapUiRunner
+import betsy.executables.soapui.runner.SoapUiRunner
 import betsy.executables.util.IOUtil
 import betsy.executables.util.Stopwatch
 import org.apache.log4j.FileAppender

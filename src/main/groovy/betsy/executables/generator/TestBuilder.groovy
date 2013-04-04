@@ -1,6 +1,6 @@
 package betsy.executables.generator
 
-import betsy.executables.soapui.SoapUiWrapper
+import betsy.executables.soapui.builder.SoapUiWrapper
 import betsy.data.Process
 
 

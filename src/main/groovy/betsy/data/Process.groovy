@@ -19,7 +19,7 @@ class Process implements Cloneable {
         this.testCases = testCases
     }
 
-    private void uniqueifyTestCaseNames(List<TestCase> testCases) {
+    private static void uniqueifyTestCaseNames(List<TestCase> testCases) {
         // group by name of test case
         testCases.groupBy { it.name }.each {
 

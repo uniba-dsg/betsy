@@ -36,10 +36,10 @@ class Stopwatch {
         long remainingSeconds = seconds - (minutes * 60);
         long remainingSecondsInPercent = (remainingSeconds * 100) / 60
 
-        "(${minutes}.${addLeadingZeros(remainingSecondsInPercent)} min)"
+        "(${minutes}.${addLeadingZero(remainingSecondsInPercent)} min)"
     }
 
-    String addLeadingZeros(long number) {
+    static String addLeadingZero(long number) {
         if (number < 10) {
             "0$number"
         } else {

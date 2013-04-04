@@ -23,7 +23,7 @@ public class EngineControl extends JFrame {
 		this.setLayout(new GridLayout(engines.size() + 1,4,0,10));
 		this.setSize(400, 300);
 		this.setTitle("Engine Control Center");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
 

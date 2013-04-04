@@ -129,7 +129,7 @@ class CsvReportToPortabilityData {
 
     }
 
-    private int[] xor(List<int[]> input) {
+    private static int[] xor(List<int[]> input) {
         List<int[]> myList = new ArrayList<int[]>(input);
         int[] result = new int[myList.first().length];
         for (int i = 0; i < result.length; i++) {

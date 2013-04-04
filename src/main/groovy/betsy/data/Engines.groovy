@@ -31,7 +31,7 @@ class Engines {
     }
 
     public static List<Engine> build(List<String> names) {
-        names.collect { Engines.build(it) }
+        names.collect { build(it) }
     }
 
 }

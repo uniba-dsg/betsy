@@ -1,8 +1,7 @@
-package betsy.executables.soapui
+package betsy.executables.soapui.builder
 
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite
 import betsy.data.TestCase
-import betsy.data.Process
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
@@ -15,14 +14,14 @@ class SoapUiTestCaseBuilder {
 
     private WsdlProject wsdlProject
 
-    private Process process
+    private String wsdlEndpoint
 
     private int requestTimeout
 
-    public SoapUiTestCaseBuilder(WsdlTestSuite soapUiTestSuite, WsdlProject project, Process process, int requestTimeout) {
+    public SoapUiTestCaseBuilder(WsdlTestSuite soapUiTestSuite, WsdlProject project, String wsdlEndpoint, int requestTimeout) {
         this.soapUiTestSuite = soapUiTestSuite
         this.wsdlProject = project
-        this.process = process
+        this.wsdlEndpoint = wsdlEndpoint
         this.requestTimeout = requestTimeout
     }
 
@@ -31,7 +30,7 @@ class SoapUiTestCaseBuilder {
 
         addDeploymentTestSteps(soapUITestCase, testCase)
 
-        SoapUiTestStepBuilder testStepBuilder = new SoapUiTestStepBuilder(testCase, soapUITestCase, wsdlProject, process, requestTimeout)
+        SoapUiTestStepBuilder testStepBuilder = new SoapUiTestStepBuilder(testCase, soapUITestCase, wsdlProject, requestTimeout)
         testCase.testSteps.each { testStep ->
            testStepBuilder.addTestStep(testStep)
         }
@@ -50,7 +49,7 @@ class SoapUiTestCaseBuilder {
         WsdlGroovyScriptTestStep groovyScriptTestStep = soapUITestCase.addTestStep(GroovyScriptStepFactory.GROOVY_TYPE, "Test Unavailabilty of WSDL") as WsdlGroovyScriptTestStep
         groovyScriptTestStep.script = """
 try {
- def url = new URL("${process.wsdlEndpoint}")
+ def url = new URL("${wsdlEndpoint}")
  def connection = url.openConnection()
  if(connection.responseCode == 500) {
     assert true, "500 error"
@@ -72,7 +71,7 @@ try {
         WsdlGroovyScriptTestStep groovyScriptTestStep = soapUITestCase.addTestStep(GroovyScriptStepFactory.GROOVY_TYPE, "Test Availabilty of WSDL") as WsdlGroovyScriptTestStep
         groovyScriptTestStep.script = """
 try {
- def url = new URL("${process.wsdlEndpoint}")
+ def url = new URL("${wsdlEndpoint}")
  def connection = url.openConnection()
  connection.guessContentTypeFromName("test.xml")
  def text = connection.inputStream.text

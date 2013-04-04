@@ -1,4 +1,4 @@
-package betsy.executables.soapui
+package betsy.executables.soapui.runner
 
 import com.eviware.soapui.tools.SoapUITestCaseRunner
 

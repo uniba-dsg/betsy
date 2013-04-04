@@ -2,7 +2,7 @@ package betsy.executables
 
 import betsy.data.Engine
 import betsy.executables.generator.TestBuilder
-import betsy.executables.soapui.SoapUiRunner
+import betsy.executables.soapui.runner.SoapUiRunner
 
 class CompositeSequential extends Composite {
 

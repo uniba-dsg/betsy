@@ -1,4 +1,4 @@
-package betsy.executables.soapui
+package betsy.executables.soapui.builder
 
 class TestMessages {
 
