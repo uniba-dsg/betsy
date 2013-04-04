@@ -27,7 +27,6 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
-import de.uniba.wiai.dsg.betsy.virtual.deprecated.Logfile;
 
 //TODO JAVADOC
 public class TCPCommClient implements CommClient {
