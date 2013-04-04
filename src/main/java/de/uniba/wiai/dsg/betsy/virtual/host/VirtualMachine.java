@@ -434,6 +434,7 @@ public class VirtualMachine {
 			String redirectName = rds[0];
 			natEngine.removeRedirect(redirectName);
 		}
+		}
 	}
 
 	private INATEngine getNATEngine() {
