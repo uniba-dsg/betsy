@@ -78,7 +78,7 @@ public class URLPinger {
 			int serverResponseCode = conn.getResponseCode();
 			return (200 <= serverResponseCode && serverResponseCode <= 399);
 		} catch (IOException exception) {
-			log.trace("Exception while checking url availability:", exception);
+			// ignore exception
 			return false;
 		}
 	}
