@@ -3,7 +3,12 @@ package de.uniba.wiai.dsg.betsy.virtual.server.comm;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedActiveBpelDeployer;
 import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedBpelgDeployer;
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOdeDeployer;
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOpenEsbDeployer;
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOrchestraDeployer;
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedPetalsEsbDeployer;
 
 public class VirtualizedEngineDeployers {
 
@@ -13,10 +18,13 @@ public class VirtualizedEngineDeployers {
 	 * @return a list of all available deployable engines
 	 */
 	public static List<VirtualizedEngineDeployer> availableEngines() {
-		// TODO enable all engines
 		LinkedList<VirtualizedEngineDeployer> deployers = new LinkedList<>();
+		deployers.add(new VirtualizedActiveBpelDeployer());
 		deployers.add(new VirtualizedBpelgDeployer());
-
+		deployers.add(new VirtualizedOdeDeployer());
+		deployers.add(new VirtualizedOrchestraDeployer());
+		deployers.add(new VirtualizedOpenEsbDeployer());
+		deployers.add(new VirtualizedPetalsEsbDeployer());
 		return deployers;
 	}
 

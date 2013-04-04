@@ -8,8 +8,7 @@ public class VirtualizedOpenEsbDeployer implements VirtualizedEngineDeployer {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "openesb_v";
 	}
 
 	@Override

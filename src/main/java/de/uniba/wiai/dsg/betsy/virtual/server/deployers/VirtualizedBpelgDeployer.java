@@ -108,7 +108,7 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 			FileUtils.writeByteArrayToFile(file, container.getData());
 		} catch (IOException exception) {
 			throw new DeployException("Couldn't write the container data to "
-					+ "the localdisk:", exception);
+					+ "the local disk:", exception);
 		}
 	}
 

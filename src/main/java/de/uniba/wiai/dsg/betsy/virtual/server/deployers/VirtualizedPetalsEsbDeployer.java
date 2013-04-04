@@ -8,8 +8,7 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "petalsesb_v";
 	}
 
 	@Override
