@@ -5,38 +5,36 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import betsy.data.Process;
 import betsy.data.engines.activeBpel.ActiveBpelEngine;
+import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
-/*
-* Currently using in-memory mode for the engine
- */
-public class VirtualActiveBpelEngine extends VirtualEngine{
+public class VirtualActiveBpelEngine extends VirtualEngine {
 
 	private final ActiveBpelEngine defaultEngine;
-	private final Logger log = Logger.getLogger(getClass());
-	
+	private final Configuration config = Configuration.getInstance();
+
 	public VirtualActiveBpelEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new ActiveBpelEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
+				getName()));
 	}
-	
-    @Override
-    public String getName() {
-        return "active-bpel_v";
-    }
 
-    @Override
+	@Override
+	public String getName() {
+		return "active_bpel_v";
+	}
+
+	@Override
 	public List<ServiceAddress> getRequiredAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
-		// TODO adapt
-		saList.add(new ServiceAddress("http", "localhost", "/active-bpel/services",
-				8080));
+		saList.add(new ServiceAddress("http", "localhost",
+				"/active-bpel/services", 8080));
 		return saList;
 	}
 
@@ -54,7 +52,8 @@ public class VirtualActiveBpelEngine extends VirtualEngine{
 
 	@Override
 	public String getEndpointPath(Process process) {
-		return "/active-bpel/services/" + process.getBpelFileNameWithoutExtension()
+		return "/active-bpel/services/"
+				+ process.getBpelFileNameWithoutExtension()
 				+ "TestInterfaceService";
 	}
 
@@ -63,12 +62,12 @@ public class VirtualActiveBpelEngine extends VirtualEngine{
 		// use default engine's operations
 		defaultEngine.buildArchives(process);
 	}
-	
+
 	@Override
-    public String getXsltPath() {
-        return "src/main/xslt/"+defaultEngine.getName();
-    }
-	
+	public String getXsltPath() {
+		return "src/main/xslt/" + defaultEngine.getName();
+	}
+
 	@Override
 	public void onPostDeployment() {
 		// not required. deploy is in sync and does not return before engine is
@@ -82,14 +81,21 @@ public class VirtualActiveBpelEngine extends VirtualEngine{
 	}
 
 	@Override
-	public String getVMLogfileDir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getVMDeploymentDir() {
+		return config.getValueAsString(
+				"virtualisation.engines.active-bpel_v.deploymentDir",
+				"/usr/share/tomcat5.5/bpr");
 	}
 
 	@Override
-	public String getVMDeploymentDir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getVMLogfileDir() {
+		return config.getValueAsString(
+				"virtualisation.engines.active-bpel_v.logfileDir",
+				"/usr/share/tomcat5.5/logs");
+	}
+
+	@Override
+	public String getTargetPackageExtension() {
+		return "bpr";
 	}
 }

@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import betsy.data.Process;
 import betsy.data.engines.bpelg.BpelgEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
@@ -18,7 +16,6 @@ import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 public class VirtualBpelgEngine extends VirtualEngine {
 
 	private final Configuration config = Configuration.getInstance();
-	private final Logger log = Logger.getLogger(getClass());
 	private final BpelgEngine defaultEngine;
 
 	public VirtualBpelgEngine(VirtualBoxController vbc) {
@@ -92,7 +89,12 @@ public class VirtualBpelgEngine extends VirtualEngine {
 	@Override
 	public String getVMLogfileDir() {
 		return config.getValueAsString(
-				"virtualisation.engines.ode_v.logfileDir",
+				"virtualisation.engines.bpelg_v.logfileDir",
 				"/var/lib/tomcat7/logs");
+	}
+	
+	@Override
+	public String getTargetPackageExtension() {
+		return "zip";
 	}
 }
