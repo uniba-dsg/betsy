@@ -15,7 +15,6 @@ import java.net.Socket;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
-import de.uniba.wiai.dsg.betsy.virtual.common.Logfile;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
@@ -23,10 +22,12 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
+import de.uniba.wiai.dsg.betsy.virtual.deprecated.Logfile;
 
 //TODO JAVADOC
 public class TCPCommClient implements CommClient {
@@ -138,10 +139,10 @@ public class TCPCommClient implements CommClient {
 									+ sm.toString() + "'");
 				}
 			} else {
-				log.fatal("Invalid StatusMessage received upon sending engine name: '"
+				log.fatal("Invalid response received upon sending engine name: '"
 						+ o.getClass().toString() + "'");
 				throw new InvalidResponseException(
-						"Invalid StatusMessage received upon sending engine name: '"
+						"Invalid response received upon sending engine name: '"
 								+ o.getClass().toString() + "'");
 			}
 		} catch (ConnectionException | IOException exception) {
@@ -248,14 +249,14 @@ public class TCPCommClient implements CommClient {
 				LogfileCollection logfiles = (LogfileCollection) o;
 
 				// validate checksum of engine logs
-				for (Logfile lf : logfiles.getEngineLogfiles()) {
+				for (DataContainer lf : logfiles.getEngineLogfiles()) {
 					if (!lf.getChecksum().equals(new Checksum(lf.getData()))) {
 						throw new ChecksumException(
 								"Checksum of logfile did not match");
 					}
 				}
 				// validate checksum of betsy logs
-				for (Logfile lf : logfiles.getBetsyLogfiles()) {
+				for (DataContainer lf : logfiles.getBetsyLogfiles()) {
 					if (!lf.getChecksum().equals(new Checksum(lf.getData()))) {
 						throw new ChecksumException(
 								"Checksum of logfile did not match");
