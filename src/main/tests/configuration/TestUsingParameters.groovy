@@ -109,7 +109,7 @@ class TestUsingParameters {
                     // ignore any exceptions
                 }
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             println "----------------------"
             println "ERROR - ${e.message}"
         } finally {
