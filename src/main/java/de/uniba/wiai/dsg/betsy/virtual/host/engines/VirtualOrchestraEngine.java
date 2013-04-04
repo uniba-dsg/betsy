@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import betsy.data.Process;
 import betsy.data.engines.orchestra.OrchestraEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
@@ -18,7 +16,6 @@ import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 public class VirtualOrchestraEngine extends VirtualEngine {
 
 	private final OrchestraEngine defaultEngine;
-	private final Logger log = Logger.getLogger(getClass());
 	private Configuration config = Configuration.getInstance();
 
 	public VirtualOrchestraEngine(VirtualBoxController vbc) {
@@ -90,7 +87,13 @@ public class VirtualOrchestraEngine extends VirtualEngine {
 
 	@Override
 	public String getVMDeploymentDir() {
-		// TODO Auto-generated method stub
-		return null;
+		return config.getValueAsString(
+				"virtualisation.engines.orchestra_v.deploymentDir",
+				"/usr/share/tomcat7/webapps/orchestra/WEB-INF/processes");
+	}
+
+	@Override
+	public String getTargetPackageExtension() {
+		return "zip";
 	}
 }
