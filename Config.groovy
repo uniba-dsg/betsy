@@ -69,7 +69,7 @@ virtualisation {
 			serviceTimeout = 300
 			mac = "08:00:27:e5:61:b6"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
-			deploymentTimeout = 15
+			deploymentTimeout = 30
 			logfileDir = "/usr/share/tomcat5.5/logs"
 			headless = true
 			shutdownSaveState = true
