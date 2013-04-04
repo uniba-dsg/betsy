@@ -11,6 +11,7 @@ import betsy.data.Process;
 import betsy.data.engines.openEsb.OpenEsbEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualOpenEsbEngine extends VirtualEngine {
@@ -21,6 +22,8 @@ public class VirtualOpenEsbEngine extends VirtualEngine {
 	public VirtualOpenEsbEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OpenEsbEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
+				getName()));
 	}
 	
     @Override

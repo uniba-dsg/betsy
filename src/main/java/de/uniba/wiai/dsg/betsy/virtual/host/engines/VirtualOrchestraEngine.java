@@ -12,6 +12,7 @@ import betsy.data.engines.orchestra.OrchestraEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualOrchestraEngine extends VirtualEngine {
@@ -23,6 +24,8 @@ public class VirtualOrchestraEngine extends VirtualEngine {
 	public VirtualOrchestraEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OrchestraEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
+				getName()));
 	}
 
 	@Override
