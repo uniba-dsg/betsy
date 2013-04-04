@@ -35,11 +35,8 @@ dependencies {
 	compile 'org.apache.commons:commons-compress:1.5'
 	compile 'org.virtualbox:vboxjws:4.2.10'
 	
-	// temporary workaround if soapui libs are not installed
-	compile files(fileTree(dir: 'soapuilibs', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*']))
-	
-	//compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*']))
-	//compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\bin', includes: ['*.jar']))
+	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*']))
+	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\bin', includes: ['*.jar']))
 }
 
 task wrapper(type: Wrapper) {
