@@ -11,6 +11,7 @@ import betsy.data.Process;
 import betsy.data.engines.petalsEsb.PetalsEsbEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualPetalsEsbEngine extends VirtualEngine {
@@ -21,6 +22,8 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	public VirtualPetalsEsbEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new PetalsEsbEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
+				getName()));
 	}
 
     @Override
