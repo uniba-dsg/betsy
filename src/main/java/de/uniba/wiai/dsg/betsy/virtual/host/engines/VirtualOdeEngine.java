@@ -5,22 +5,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import betsy.data.Process;
-import betsy.data.engines.bpelg.BpelgEngine;
+import betsy.data.engines.ode.OdeEngine;
+import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualOdeEngine extends VirtualEngine {
 
-	private final BpelgEngine defaultEngine;
-	private final Logger log = Logger.getLogger(getClass());
+	private final Configuration config = Configuration.getInstance();
+	private final OdeEngine defaultEngine;
 	
 	public VirtualOdeEngine(VirtualBoxController vbc) {
 		super(vbc);
-		this.defaultEngine = new BpelgEngine();
+		this.defaultEngine = new OdeEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
+				getName()));
 	}
 	
     @Override
@@ -31,8 +33,7 @@ public class VirtualOdeEngine extends VirtualEngine {
     @Override
 	public List<ServiceAddress> getRequiredAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
-		// TODO adapt to ODE
-		saList.add(new ServiceAddress("http", "localhost", "/bpel-g/services",
+		saList.add(new ServiceAddress("http", "localhost", "/ode",
 				8080));
 		return saList;
 	}
@@ -79,15 +80,21 @@ public class VirtualOdeEngine extends VirtualEngine {
 	}
 
 	@Override
-	public String getVMLogfileDir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getVMDeploymentDir() {
+		return config.getValueAsString(
+				"virtualisation.engines.ode_v.deploymentDir",
+				"/usr/share/tomcat7/webapps/ode/WEB-INF/processes");
 	}
 
 	@Override
-	public String getVMDeploymentDir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getVMLogfileDir() {
+		return config.getValueAsString(
+				"virtualisation.engines.ode_v.logfileDir",
+				"/var/lib/tomcat7/logs");
 	}
-
+	
+	@Override
+	public String getTargetPackageExtension() {
+		return "zip";
+	}
 }
