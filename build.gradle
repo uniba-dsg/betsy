@@ -14,9 +14,10 @@ repositories {
 sourceSets {
 	main {
 		java {
-			srcDir 'src/main/java'
+			srcDirs = []
 		}
 		groovy {
+			srcDir 'src/main/java'
 			srcDir 'src/main/groovy'
 			srcDir 'src/main/tests'
 		}

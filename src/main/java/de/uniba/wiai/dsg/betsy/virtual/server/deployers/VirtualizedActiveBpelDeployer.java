@@ -55,6 +55,8 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. The operation timed out.");
 		}
+		
+		log.info("Deploy catalog found");
 
 		// process is deployed, now wait for verification in logfile
 		boolean logVerification = false;
