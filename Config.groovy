@@ -1,3 +1,7 @@
+// #############################
+//   ALL TIMES ARE IN SECONDS
+// #############################
+
 PARTNER_IP_AND_PORT = "0.0.0.0:2000"
 
 virtualisation {
@@ -28,62 +32,85 @@ virtualisation {
 	}
 
 	engines {
-		active-bpel_v {
+		example_engine {
 			// supported formats are .ova, .zip and .tar.bz2
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-activebpel_v.tar.bz2"
-			// time in seconds
-			serviceTimeout = 300
-			mac = "08:00:27:c9:86:06"
-		}
+			// NO DEFAULT !
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/example.tar.bz2"
 
-		bpelg_v {
-			// supported formats are .ova, .zip and .tar.bz2
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-bpelg_v.ova"
 			// time in seconds
-			serviceTimeout = 240
+			// Default: 300
+			serviceTimeout = 300
+
+			// a valid MAC address, groups seperated with :
+			// NO DEFAULT !
 			// if set, the mac address will be applied to the first network adapter (eth0)
 			// --> /etc/udev/rules.d/70-persistent-net.rules must not be deleted manually
-			//mac = "08:00:27:c4:07:74"
-			mac = "08:00:27:5a:9d:70"
-			deploymentDir = "/usr/share/tomcat7/bpr"
-			// time in seconds
-			deploymentTimeout = 10
+			mac = "08:00:27:c9:86:06"
 
-			// DEFAULT
+			// Where the pkg files should be copied to
+			// Default different per engine
+			deploymentDir = "/usr/share/tomcat7/bpr"
+
+			// How long to wait on deployment process
+			// Default: 15
+			deploymentTimeout = 15
+
+			// Where the engines logfiles can be collected from
+			// Default different per engine
 			logfileDir = "/var/lib/tomcat7/logs"
 
-			// DEFAULT: false
+			// Running vbox without the gui?
+			// Default: false
 			headless = true
 		}
 
+		active_bpel_v {
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-activebpel_v.tar.bz2"
+			serviceTimeout = 300
+			mac = "08:00:27:e5:61:b6"
+			deploymentDir = "/usr/share/tomcat5.5/bpr"
+			deploymentTimeout = 15
+			logfileDir = "/usr/share/tomcat5.5/logs"
+			headless = true
+			shutdownSaveState = true
+		}
+
+		bpelg_v {
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-bpelg_v.ova"
+			serviceTimeout = 240
+			mac = "08:00:27:5a:9d:70"
+			deploymentDir = "/usr/share/tomcat7/bpr"
+			deploymentTimeout = 15
+			logfileDir = "/var/lib/tomcat7/logs"
+			headless = true
+			shutdownSaveState = true
+		}
+
 		ode_v {
-			// supported formats are .ova, .zip and .tar.bz2
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-ode_v.tar.bz2"
-			// time in seconds
 			serviceTimeout = 300
 			mac = "08:00:27:6f:6c:5a"
+			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
+			deploymentTimeout = 15
+			logfileDir = "/var/lib/tomcat7/logs"
+			headless = true
+			shutdownSaveState = true
 		}
 
 		openesb_v {
-			// supported formats are .ova, .zip and .tar.bz2
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-openesb_v.tar.bz2"
-			// time in seconds
 			serviceTimeout = 300
 			mac = "08:00:27:ce:1e:55"
 		}
 
 		orchestra_v {
-			// supported formats are .ova, .zip and .tar.bz2
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-orchestra_v.tar.bz2"
-			// time in seconds
 			serviceTimeout = 300
 			mac = "08:00:27:5c:76:8a"
 		}
 
 		petalsesb_v {
-			// supported formats are .ova, .zip and .tar.bz2
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-petalsesb_v.tar.bz2"
-			// time in seconds
 			serviceTimeout = 300
 			mac = "08:00:27:eb:f4:c8"
 		}
