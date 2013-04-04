@@ -4,7 +4,6 @@ import groovy.util.AntBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,7 +52,6 @@ public abstract class VirtualEngine extends Engine implements
 	private final CommClient comm;
 
 	private VirtualMachine vm = null;
-	private InetAddress localIpAddress = null;
 
 	public VirtualEngine(VirtualBoxController vbc) {
 		if (vbc == null) {
@@ -169,19 +167,6 @@ public abstract class VirtualEngine extends Engine implements
 		} catch (InvalidResponseException exception) {
 			throw new TestFailedException("The VM was started, but the "
 					+ "engine information could not be send properly.",
-					exception, false);
-		}
-
-		try {
-			localIpAddress = comm.getIpAddressFromServer();
-			log.trace("...local ip address received from server");
-		} catch (ConnectionException exception) {
-			throw new TestFailedException("The VM was started, but the "
-					+ "local IP address could not be requested properly.",
-					exception, true);
-		} catch (InvalidResponseException exception) {
-			throw new TestFailedException("The VM was started, but the "
-					+ "local IP address could not be requested properly.",
 					exception, false);
 		}
 
