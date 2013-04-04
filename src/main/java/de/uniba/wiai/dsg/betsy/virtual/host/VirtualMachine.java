@@ -271,9 +271,13 @@ public class VirtualMachine {
 			subSession.unlockMachine();
 		}
 	}
+	}
 
-	// TODO not usable because of current BUG
-	public void applyPortForwardingWS(final Set<Integer> forwardingPorts) {
+	public void applyPortForwardingWS(final Set<Integer> forwardingPorts)
+			throws PortRedirectException {
+		if (!isAlreadyRedirected(forwardingPorts)) {
+			log.debug("Applying new port redirects...");
+
 		// remove old redirections first
 		clearPortForwardingWS();
 
@@ -286,7 +290,23 @@ public class VirtualMachine {
 			natEngine.addRedirect("", NATProtocol.TCP, "", port, "", port);
 		}
 
-		log.debug("Found " + natEngine.getRedirects().size() + " NAT redirects");
+			long timeout = 10000;
+			long start = -System.currentTimeMillis();
+
+			while (natEngine.getRedirects().size() != forwardingPorts.size()) {
+				if (System.currentTimeMillis() + start > timeout) {
+					throw new PortRedirectException("Could not set redirected "
+							+ "ports within 10s");
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+			}
+		} else {
+			log.trace("All ports are already redirected, skip.");
+		}
 	}
 
 	private boolean isAlreadyRedirected(final Set<Integer> forwardingPorts) {
@@ -426,14 +446,28 @@ public class VirtualMachine {
 		}
 	}
 
-	// TODO not usable because of current BUG
-	public void clearPortForwardingWS() {
+	public void clearPortForwardingWS() throws PortRedirectException {
+		log.debug("Deleting all existing port redirections");
 		INATEngine natEngine = getNATEngine();
 		for (String redirect : natEngine.getRedirects()) {
 			String[] rds = redirect.split(",");
 			String redirectName = rds[0];
 			natEngine.removeRedirect(redirectName);
 		}
+
+		long timeout = 10000;
+		long start = -System.currentTimeMillis();
+
+		while (natEngine.getRedirects().size() != 0) {
+			if (System.currentTimeMillis() + start > timeout) {
+				throw new PortRedirectException("Could not delete all "
+						+ "redirected ports within 10s");
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// ignore
+			}
 		}
 	}
 
