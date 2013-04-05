@@ -66,36 +66,11 @@ public class VirtualMachineImporter {
 			DownloadException {
 		log.debug("Importing " + vmName + "...");
 		try {
-			if (!isDownloaded()) {
-				log.debug(String.format("VM '%s' is not downloaded yet.",
-						vmName));
-				executeDownload();
-			}
+			executeDownload();
 
-			boolean correctExtraction = false;
-			try {
-				correctExtraction = isExtractedAndHasImportableFiles();
-			} catch (ArchiveContentException exception) {
-				// ignore --> extract again...
-			}
+			executeExtraction();
 
-			if (!correctExtraction) {
-				log.debug(String
-						.format("VM '%s' is not extracted yet.", vmName));
-				executeExtraction();
-
-				// check if we got all relevant files
-				if (!isExtractedAndHasImportableFiles()) {
-					throw new ArchiveContentException("The extracted "
-							+ "archive either did not contain the "
-							+ "required files. " + getArchiveRequirements());
-				}
-			}
-
-			// import
-			File importableOvaFile = getVBoxImportFile();
-			log.debug("Importing file: " + importableOvaFile.toString());
-			vbc.importEngine(vmName, engineName, importableOvaFile);
+			vbc.importEngine(vmName, engineName, getVBoxImportFile());
 			log.trace("...import finished!");
 		} finally {
 			// always clean the extraction directory
@@ -213,47 +188,62 @@ public class VirtualMachineImporter {
 	}
 
 	private void executeExtraction() throws ArchiveException {
-		log.debug("Extract " + vmName + "...");
-		// extract
-		List<File> extractedFiles = new LinkedList<>();
+		boolean correctExtraction = false;
 		try {
-			// make sure extraction directory is empty --> clean
-			cleanVMExtractPath();
+			correctExtraction = isExtractedAndHasImportableFiles();
+		} catch (ArchiveContentException exception) {
+			// ignore --> extract again...
+		}
 
-			ArchiveExtractor ae = new ArchiveExtractor();
-			extractedFiles = ae.ectractArchive(getDownloadArchiveFile(),
-					this.extractPath);
-
-			File[] pathFiles = this.extractPath.listFiles();
-			List<File> pathFileList = Arrays.asList(pathFiles);
-
-			/*
-			 * Try to handle archives in which there is no single folder that
-			 * wraps all the engine's files.
-			 */
-			if (isExtractedWithoutEngineDir(extractedFiles, pathFileList)) {
-				moveFilesIntoVmDir(extractedFiles, pathFileList);
-			}
-
-		} catch (UnsupportedArchiveException | IOException exception) {
-			log.error("Could not extract the downloaded archive:", exception);
+		if (!correctExtraction) {
+			log.debug("Extract " + vmName + "...");
+			// extract
+			List<File> extractedFiles = new LinkedList<>();
 			try {
+				// make sure extraction directory is empty --> clean
 				cleanVMExtractPath();
-			} catch (IOException e) {
-				// can be ignored
-			}
-			// if files had been extracted to the top level, remove them too
-			for (File delFile : extractedFiles) {
+
+				ArchiveExtractor ae = new ArchiveExtractor();
+				extractedFiles = ae.ectractArchive(getDownloadArchiveFile(),
+						this.extractPath);
+
+				File[] pathFiles = this.extractPath.listFiles();
+				List<File> pathFileList = Arrays.asList(pathFiles);
+
+				/*
+				 * Try to handle archives in which there is no single folder
+				 * that wraps all the engine's files.
+				 */
+				if (isExtractedWithoutEngineDir(extractedFiles, pathFileList)) {
+					moveFilesIntoVmDir(extractedFiles, pathFileList);
+				}
+
+			} catch (UnsupportedArchiveException | IOException exception) {
 				try {
-					FileUtils.forceDelete(delFile);
-				} catch (IOException exception2) {
+					cleanVMExtractPath();
+				} catch (IOException e) {
 					// can be ignored
 				}
+				// if files had been extracted to the top level, remove them too
+				for (File delFile : extractedFiles) {
+					try {
+						FileUtils.forceDelete(delFile);
+					} catch (IOException exception2) {
+						// can be ignored
+					}
+				}
+				throw new ArchiveExtractionException(
+						"Could not extract the downloaded archive:", exception);
 			}
-			throw new ArchiveExtractionException(
-					"Could not extract the downloaded archive:", exception);
+			log.trace("...extraction finished!");
+
+			// check if we got all relevant files
+			if (!isExtractedAndHasImportableFiles()) {
+				throw new ArchiveContentException("The extracted "
+						+ "archive either did not contain the "
+						+ "required files. " + archiveRequirements);
+			}
 		}
-		log.trace("...extraction finished!");
 	}
 
 	private boolean isExtractedWithoutEngineDir(List<File> extractedFiles,
@@ -329,26 +319,20 @@ public class VirtualMachineImporter {
 	}
 
 	private void executeDownload() throws DownloadException {
-		log.debug("Download " + vmName + "...");
-		// download
-		try {
-			FileDownloader fd = new FileDownloader();
-			fd.downloadFile(getDownloadAddress(), getDownloadArchiveFile());
-		} catch (MalformedURLException | URIException exception) {
-			log.error("Could not download the virtual " + engineName
-					+ " image:", exception);
-			throw new DownloadException("Could not download the virtual "
-					+ engineName + " image:", exception);
-		}
-		log.trace("...download finished!");
-	}
+		if (!isDownloaded()) {
+			log.debug(String.format("VM '%s' is not downloaded yet.", vmName));
 
-	private String getArchiveRequirements() {
-		return "Please verify to meet the requirements of the archive structure. "
-				+ "The archive must either contain"
-				+ " the .ova file or the .ovf file. They can be either "
-				+ "stored without or within a folder. If a folder is used it "
-				+ "should be named just as the engine.";
+			log.debug("Download " + vmName + "...");
+			// download
+			try {
+				FileDownloader fd = new FileDownloader();
+				fd.downloadFile(getDownloadAddress(), getDownloadArchiveFile());
+			} catch (MalformedURLException | URIException exception) {
+				throw new DownloadException("Could not download the virtual "
+						+ engineName + " image:", exception);
+			}
+			log.trace("...download finished!");
+		}
 	}
 
 }
