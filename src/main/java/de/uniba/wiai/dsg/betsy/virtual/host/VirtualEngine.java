@@ -199,7 +199,7 @@ public abstract class VirtualEngine extends Engine implements
 				if (!this.vm.hasRunningSnapshot()) {
 					// need to create a running snapshot
 					this.vm.createRunningSnapshot(getName(),
-							getRequiredAddresses(), getRequiredPorts());
+							getVerifiableServiceAddresses(), getRequiredPorts());
 				}
 			}
 
