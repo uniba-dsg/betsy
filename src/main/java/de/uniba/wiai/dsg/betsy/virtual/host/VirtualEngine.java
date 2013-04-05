@@ -1,14 +1,10 @@
 package de.uniba.wiai.dsg.betsy.virtual.host;
 
-import groovy.util.AntBuilder;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -47,7 +43,6 @@ public abstract class VirtualEngine extends Engine implements
 	private static final Logger log = Logger.getLogger(VirtualEngine.class);
 
 	private final Configuration config = Configuration.getInstance();
-	private final AntBuilder ant = new AntBuilder();
 	private final VirtualBoxController vbController;
 	private final CommClient comm;
 
@@ -255,8 +250,8 @@ public abstract class VirtualEngine extends Engine implements
 		Checksum checksum = new Checksum(data);
 		DeployContainer container = new DeployContainer(filename,
 				process.getBpelFileNameWithoutExtension(), data, getName(),
-				getVMDeploymentTimeout(), getVMDeploymentDir(),
-				getVMLogfileDir(), checksum);
+				getVMDeploymentTimeout(), getVMDeploymentDir(), getVMLogfileDir(),
+				checksum);
 		return container;
 	}
 
@@ -443,34 +438,10 @@ public abstract class VirtualEngine extends Engine implements
 	}
 
 	@Override
-	// TODO is in seconds
 	public Integer getVMDeploymentTimeout() {
 		Integer timeout = config.getValueAsInteger("virtualisation.engines."
 				+ getName() + ".deploymentTimeout", 20);
 		return timeout * 1000;
 	}
 
-	@Override
-	// TODO not needed anymore
-	public void replaceEndpointAndPartnerTokens(Process process) {
-		// TODO verify need and functionality
-		log.debug("Setting Partner Address of for $process on ${engineName} to ${config.getValueAsString('PARTNER_IP_AND_PORT')}");
-
-		String hostIp = config.getValueAsString("virtualisation.partnerIp",
-				"10.0.2.2");
-		String ipPort = config.getValueAsString("PARTNER_IP_AND_PORT");
-		String port = ipPort.split(":")[1];
-
-		log.debug("PartnerIP: " + hostIp);
-		log.debug("PartnerPort: " + port);
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("dir", process.getTargetBpelPath());
-		map.put("token", ipPort);
-		map.put("value", hostIp + ":" + port);
-
-		ant.invokeMethod("replace", map);
-
-		log.debug("replaced!");
-	}
 }
