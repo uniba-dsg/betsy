@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
 public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
@@ -23,7 +23,7 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void deploy(DeployContainer container) throws DeployException {
+	public void deploy(DeployOperation container) throws DeployException {
 		// write data to temp dir first
 		File tmpFile = new File("tmp", container.getFilename());
 		createLocalDeployFile(tmpFile, container);
@@ -64,7 +64,7 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 		}
 	}
 
-	private void createLocalDeployFile(File tmpFile, DeployContainer container)
+	private void createLocalDeployFile(File tmpFile, DeployOperation container)
 			throws DeployException {
 		try {
 			FileUtils.writeByteArrayToFile(tmpFile, container.getData());
@@ -75,7 +75,7 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void onPostDeployment(DeployContainer container)
+	public void onPostDeployment(DeployOperation container)
 			throws DeployException {
 		// do nothing - as using synchronous deployment
 	}

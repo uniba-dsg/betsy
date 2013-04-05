@@ -17,7 +17,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommServer;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
@@ -90,8 +90,8 @@ public class ClientHandler implements Runnable, CommPartner {
 					if (o instanceof StatusMessage) {
 						StatusMessage sm = (StatusMessage) o;
 						handleStatusMessage(sm);
-					} else if (o instanceof DeployContainer) {
-						DeployContainer dc = (DeployContainer) o;
+					} else if (o instanceof DeployOperation) {
+						DeployOperation dc = (DeployOperation) o;
 						handleDeployContainer(dc);
 					} else if (o instanceof LogRequest) {
 						LogRequest lr = (LogRequest) o;
@@ -135,7 +135,7 @@ public class ClientHandler implements Runnable, CommPartner {
 		}
 	}
 
-	private void handleDeployContainer(DeployContainer dc) throws IOException,
+	private void handleDeployContainer(DeployOperation dc) throws IOException,
 			ConnectionException {
 		log.debug("RCV deploy instructions");
 		// checksum verification

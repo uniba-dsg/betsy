@@ -23,7 +23,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
@@ -303,7 +303,7 @@ public class TCPCommClient implements CommClient {
 	}
 
 	@Override
-	public void sendDeploy(DeployContainer container) throws DeployException,
+	public void sendDeploy(DeployOperation container) throws DeployException,
 			ChecksumException, ConnectionException, InvalidResponseException {
 		try {
 			this.sendMessage(container);

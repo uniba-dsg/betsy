@@ -21,7 +21,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.DownloadException;
@@ -240,7 +240,7 @@ public abstract class VirtualEngine extends Engine implements
 	}
 
 	@Override
-	public DeployContainer buildDeployContainer(Process process)
+	public DeployOperation buildDeployContainer(Process process)
 			throws IOException {
 		Path path = Paths.get(process
 				.getTargetPackageFilePath(getTargetPackageExtension()));
@@ -248,7 +248,7 @@ public abstract class VirtualEngine extends Engine implements
 		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
 		Checksum checksum = new Checksum(data);
-		DeployContainer container = new DeployContainer(filename,
+		DeployOperation container = new DeployOperation(filename,
 				process.getBpelFileNameWithoutExtension(), data, getName(),
 				getVMDeploymentTimeout(), getVMDeploymentDir(), getVMLogfileDir(),
 				checksum);
@@ -289,7 +289,7 @@ public abstract class VirtualEngine extends Engine implements
 	private void executeDeploy(Process process) throws ChecksumException {
 		if (comm.isConnected()) {
 			try {
-				DeployContainer container = buildDeployContainer(process);
+				DeployOperation container = buildDeployContainer(process);
 				comm.sendDeploy(container);
 			} catch (IOException | ConnectionException | DeployException exception) {
 				throw new TestFailedException(exception, true);

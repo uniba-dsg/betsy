@@ -16,7 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
 public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
@@ -29,7 +29,7 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void deploy(DeployContainer container) throws DeployException {
+	public void deploy(DeployOperation container) throws DeployException {
 		try {
 			unzipContainer(container);
 		} catch (IOException exception) {
@@ -38,7 +38,7 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 		}
 	}
 
-	private void unzipContainer(DeployContainer container) throws IOException {
+	private void unzipContainer(DeployOperation container) throws IOException {
 		// String path = "";
 		ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(
 				container.getData()));
@@ -103,7 +103,7 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void onPostDeployment(DeployContainer container)
+	public void onPostDeployment(DeployOperation container)
 			throws DeployException {
 		log.info("waiting for the ode_v deployment process to fire");
 
@@ -188,7 +188,7 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 		}
 	}
 
-	private boolean isDeployedFileAvailable(DeployContainer container) {
+	private boolean isDeployedFileAvailable(DeployOperation container) {
 		File file = new File(container.getDeploymentDir() + "/"
 				+ container.getBpelFileNameWithoutExtension() + ".deployed");
 		return file.isFile();
