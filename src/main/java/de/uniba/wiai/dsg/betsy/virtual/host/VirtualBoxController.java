@@ -236,9 +236,8 @@ public class VirtualBoxController {
 		 * of the guest machine remains silent until he resumes his work stored
 		 * in his networkstack
 		 */
-		if (!vBox.getExtraData(
-				"VBoxInternal/Devices/e1000/0/Config/LinkUpDelay").equals(
-				Integer.toString(milliSeconds))) {
+		if (Integer.parseInt(vBox.getExtraData("VBoxInternal/Devices/e1000/0/"
+				+ "Config/LinkUpDelay")) != milliSeconds) {
 
 			log.info("Disabling LinkUpDelay for this VirtualBox instance...");
 			vBox.setExtraData(
