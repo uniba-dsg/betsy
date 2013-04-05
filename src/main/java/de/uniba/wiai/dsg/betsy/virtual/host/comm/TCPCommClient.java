@@ -249,14 +249,14 @@ public class TCPCommClient implements CommClient {
 
 				// validate checksum of engine logs
 				for (FileMessage lf : logfiles.getEngineLogfiles()) {
-					if (!lf.getChecksum().equals(new Checksum(lf.getData()))) {
+					if (!lf.isDataValid()) {
 						throw new ChecksumException(
 								"Checksum of logfile did not match");
 					}
 				}
 				// validate checksum of betsy logs
 				for (FileMessage lf : logfiles.getBetsyLogfiles()) {
-					if (!lf.getChecksum().equals(new Checksum(lf.getData()))) {
+					if (!lf.isDataValid()) {
 						throw new ChecksumException(
 								"Checksum of logfile did not match");
 					}

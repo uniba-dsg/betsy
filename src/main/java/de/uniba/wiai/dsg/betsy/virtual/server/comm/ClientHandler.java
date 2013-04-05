@@ -139,7 +139,7 @@ public class ClientHandler implements Runnable, CommPartner {
 			ConnectionException {
 		log.debug("RCV deploy instructions");
 		// checksum verification
-		boolean dataValid = dc.getChecksum().equals(new Checksum(dc.getData()));
+		boolean dataValid = dc.getFileMessage().isDataValid();
 		log.debug("Is checksum valid? " + dataValid);
 		if (dataValid) {
 			try {
