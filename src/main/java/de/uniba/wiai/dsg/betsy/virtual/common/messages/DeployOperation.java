@@ -28,15 +28,15 @@ public class DeployOperation implements Serializable {
 			String engineName, final Integer deployTimeout,
 			final String deployDir, final String engineLogDir,
 			final Checksum checksum) {
-		if (StringUtils.isNotBlank(engineName)) {
+		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException("serverType must not be null "
 					+ "or empty");
 		}
-		if (StringUtils.isNotBlank(deployDir)) {
+		if (StringUtils.isBlank(deployDir)) {
 			throw new IllegalArgumentException("deployDir must not be null "
 					+ "or empty");
 		}
-		if (StringUtils.isNotBlank(engineLogDir)) {
+		if (StringUtils.isBlank(engineLogDir)) {
 			throw new IllegalArgumentException("engineLogDir must not be null "
 					+ "or empty");
 		}
@@ -44,7 +44,7 @@ public class DeployOperation implements Serializable {
 			throw new IllegalArgumentException("deployTimeout must be greater "
 					+ "than 0");
 		}
-		if (StringUtils.isNotBlank(bpelFileNameWithoutExtension)) {
+		if (StringUtils.isBlank(bpelFileNameWithoutExtension)) {
 			throw new IllegalArgumentException("bpelFileNameWithoutExtension "
 					+ "must not be null or empty");
 		}

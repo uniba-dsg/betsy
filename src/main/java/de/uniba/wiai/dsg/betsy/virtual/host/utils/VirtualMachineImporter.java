@@ -8,10 +8,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
@@ -35,29 +37,22 @@ public class VirtualMachineImporter {
 	public VirtualMachineImporter(final String vmName, final String engineName,
 			final File downloadPath, final File extractPath,
 			final VirtualBoxController vbc) {
-		if (downloadPath == null) {
-			throw new IllegalArgumentException("downloadPath must not be null");
-		}
-		if (vbc == null) {
-			throw new IllegalArgumentException("vbc must not be null");
-		}
-		if (extractPath == null) {
-			throw new IllegalArgumentException("extractPath must not be null");
-		}
-		if (vmName == null || vmName.trim().isEmpty()) {
+		if (StringUtils.isBlank(vmName)) {
 			throw new IllegalArgumentException("vmName must not be null or"
 					+ " empty");
 		}
-		if (engineName == null || engineName.trim().isEmpty()) {
+		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException("engineName must not be null "
 					+ "or empty");
 		}
 
+		this.vbc = Objects.requireNonNull(vbc);
+		this.extractPath = Objects.requireNonNull(extractPath);
+		this.downloadPath = Objects.requireNonNull(downloadPath);
+		
 		this.vmName = vmName;
 		this.engineName = engineName;
-		this.vbc = vbc;
-		this.downloadPath = downloadPath;
-		this.extractPath = extractPath;
+		
 	}
 
 	public void importVirtualMachine() throws ArchiveException,

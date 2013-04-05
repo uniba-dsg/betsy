@@ -2,6 +2,8 @@ package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
+
 public class LogRequest implements Serializable {
 
 	/**
@@ -14,11 +16,11 @@ public class LogRequest implements Serializable {
 
 	public LogRequest(final String betsyInstallDir,
 			final String engineInstallDir) {
-		if (betsyInstallDir == null || betsyInstallDir.trim().isEmpty()) {
+		if (StringUtils.isBlank(betsyInstallDir)) {
 			throw new IllegalArgumentException("betsyInstallDir must not be "
 					+ "null or empty");
 		}
-		if (engineInstallDir == null || engineInstallDir.trim().isEmpty()) {
+		if (StringUtils.isBlank(engineInstallDir)) {
 			throw new IllegalArgumentException("engineInstallDir must not be "
 					+ "null or empty");
 		}

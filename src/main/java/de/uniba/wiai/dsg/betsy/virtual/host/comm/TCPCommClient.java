@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
@@ -41,7 +42,7 @@ public class TCPCommClient implements CommClient {
 
 	public TCPCommClient(final String serverName, final int serverPort) {
 		// catch invalid values, null or empty
-		if (serverName == null || serverName.trim().isEmpty()) {
+		if (StringUtils.isBlank(serverName)) {
 			throw new IllegalArgumentException(
 					"serverName must not be null or empty");
 		} else if (serverPort <= 0 || serverPort > 65535) {

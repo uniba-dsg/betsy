@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.CleanupMode;
 import org.virtualbox_4_2.IAppliance;
@@ -94,7 +95,7 @@ public class VirtualBoxController {
 	}
 
 	public boolean containsMachine(final String vmName) {
-		if (vmName == null || vmName.trim().isEmpty()) {
+		if (StringUtils.isBlank(vmName)) {
 			throw new IllegalArgumentException(
 					"vmName must not be null or empty");
 		}
@@ -120,11 +121,11 @@ public class VirtualBoxController {
 	public void importEngine(final String vmName, final String engineName,
 			final File importFile) {
 
-		if (vmName == null || vmName.trim().isEmpty()) {
+		if (StringUtils.isBlank(vmName)) {
 			throw new IllegalArgumentException(
 					"The name of the vm to import must not be null or empty");
 		}
-		if (engineName == null || engineName.trim().isEmpty()) {
+		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException(
 					"The name of the engine to import must not be null or empty");
 		}

@@ -2,6 +2,7 @@ package de.uniba.wiai.dsg.betsy.virtual.host.utils;
 
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 public class VirtualBoxWebService {
@@ -11,7 +12,7 @@ public class VirtualBoxWebService {
 	private Process vboxServiceProcess;
 	
 	public VirtualBoxWebService(final String path) {
-		if(path == null || path.trim().isEmpty()) {
+		if(StringUtils.isBlank(path)) {
 			throw new IllegalArgumentException("Path to the VBoxWebSrv must not be null or empty!");
 		}
 		this.path = path;
