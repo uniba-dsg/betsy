@@ -6,7 +6,6 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-
 // TODO JavaDoc
 public class TCPCommServer implements CommServer {
 
@@ -42,35 +41,8 @@ public class TCPCommServer implements CommServer {
 		try {
 			Socket socket = serverSocket.accept();
 			clientHandler = new ClientHandler(this, socket);
-
-//			new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					try {
-//						String cmd = "ntpdate pool.ntp.org";
-//						Runtime run = Runtime.getRuntime();
-//						log.info("Requesting timeserver sync");
-//						Process pr = run.exec(cmd);
-//						pr.waitFor();
-//						BufferedReader buf = new BufferedReader(
-//								new InputStreamReader(pr.getInputStream()));
-//
-//						String line = buf.readLine();
-//						while (line != null) {
-//							// TODO remove after test of setting system time
-//							log.debug(line);
-//							line = buf.readLine();
-//						}
-//					} catch (IOException | InterruptedException exception) {
-//						log.error("Exception while setting new system time",
-//								exception);
-//					}
-//				}
-//			}).start();
-
 			// run in current Thread
 			clientHandler.run();
-
 		} catch (IOException exception) {
 			log.error("Exception while receiving connection: "
 					+ "close and start listening again", exception);
@@ -82,7 +54,6 @@ public class TCPCommServer implements CommServer {
 
 	@Override
 	public void close() {
-
 		if (clientHandler != null) {
 			clientHandler.close();
 		}
