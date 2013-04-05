@@ -2,7 +2,7 @@ package betsy.data.engines.orchestra
 
 import betsy.data.Process
 import betsy.data.engines.LocalEngine;
-import betsy.data.engines.server.Tomcat
+import betsy.data.engines.Tomcat;
 
 class OrchestraEngine extends LocalEngine {
 

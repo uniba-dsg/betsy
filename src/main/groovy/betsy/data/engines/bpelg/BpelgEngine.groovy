@@ -4,8 +4,8 @@ package betsy.data.engines.bpelg
 import betsy.data.Process
 import betsy.data.engines.EnginePackageBuilder;
 import betsy.data.engines.LocalEngine;
+import betsy.data.engines.Tomcat;
 import betsy.data.engines.Util;
-import betsy.data.engines.server.Tomcat
 
 class BpelgEngine extends LocalEngine {
 
