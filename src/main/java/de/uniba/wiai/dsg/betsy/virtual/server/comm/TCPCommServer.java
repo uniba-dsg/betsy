@@ -8,7 +8,6 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommServer;
 
 // TODO JavaDoc
 public class TCPCommServer implements CommServer {

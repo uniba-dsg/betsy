@@ -15,7 +15,6 @@ import betsy.data.Process;
 import betsy.data.engines.Engine;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
@@ -24,6 +23,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseExceptio
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
+import de.uniba.wiai.dsg.betsy.virtual.host.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.DownloadException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PermanentFailedTestException;

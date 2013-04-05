@@ -1,15 +1,16 @@
-package de.uniba.wiai.dsg.betsy.virtual.common.comm;
+package de.uniba.wiai.dsg.betsy.virtual.host.comm;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 
 public interface CommClient extends CommPartner {
@@ -21,7 +22,7 @@ public interface CommClient extends CommPartner {
 			throws ChecksumException, ConnectionException,
 			InvalidResponseException, CollectLogfileException;
 
-	public void sendDeploy(DeployContainer container) throws DeployException,
+	public void sendDeploy(DeployOperation container) throws DeployException,
 			ChecksumException, ConnectionException, InvalidResponseException;
 
 	public boolean isConnectionAlive() throws InvalidResponseException;

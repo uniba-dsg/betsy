@@ -11,7 +11,7 @@ import org.apache.commons.daemon.DaemonInitException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommServer;
+import de.uniba.wiai.dsg.betsy.virtual.server.comm.CommServer;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.TCPCommServer;
 
 /**
