@@ -140,18 +140,19 @@ public class ClientHandler implements Runnable, CommPartner {
 		log.debug("RCV deploy instructions");
 		// checksum verification
 		boolean dataValid = dc.getChecksum().equals(new Checksum(dc.getData()));
-		log.debug("Is data still valid? " + dataValid);
+		log.debug("Is checksum valid? " + dataValid);
 		if (dataValid) {
 			try {
 				long start = -System.currentTimeMillis();
 				deployer.deploy(dc);
-				log.debug("deployed! now wait on availability");
+				log.debug("Deployed! now wait on availability");
 
 				deployer.onPostDeployment(dc);
 				log.info("Deploy took: " + (System.currentTimeMillis() + start)
 						+ "ms");
 				this.sendMessage(StatusMessage.DEPLOYED);
 			} catch (DeployException exception) {
+				log.warn("Deployment failed, notifying client");
 				this.sendMessage(StatusMessage.DEPLOY_FAILED);
 			}
 		} else {
@@ -161,10 +162,12 @@ public class ClientHandler implements Runnable, CommPartner {
 
 	private void handleLogRequest(LogRequest container) throws IOException,
 			ConnectionException {
+		log.debug("Log request received");
 		try {
 			LogfileCollector collector = new LogfileCollector();
 			LogfileCollection lfc = collector.collectLogfiles(container);
 			this.sendMessage(lfc);
+			log.info("Logfiles sent to client");
 		} catch (CollectLogfileException e) {
 			this.sendMessage(StatusMessage.ERROR_COLLECT_LOGFILES);
 		}
@@ -175,7 +178,7 @@ public class ClientHandler implements Runnable, CommPartner {
 		log.debug("RCV statusMessage: " + sm.toString());
 
 		if (sm.equals(StatusMessage.REQUEST_IP)) {
-			log.info("Connected client has IP: "
+			log.debug("Connected client has IP: "
 					+ this.socket.getInetAddress().getHostAddress());
 			this.sendMessage(this.socket.getInetAddress());
 		} else if (sm.equals(StatusMessage.EXIT)) {
