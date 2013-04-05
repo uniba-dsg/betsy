@@ -62,6 +62,10 @@ virtualisation {
 			// Running vbox without the gui?
 			// Default: false
 			headless = true
+
+			// Saving the vm's state instead of poweringOff?
+			// Default: false
+			shutdownSaveState = true
 		}
 
 		active_bpel_v {
