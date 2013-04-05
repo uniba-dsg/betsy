@@ -1,5 +1,7 @@
 package betsy.data
 
+import betsy.data.engines.Engine;
+
 class Process implements Cloneable {
 
     public static String PATH_PREFIX = "src/main/tests"

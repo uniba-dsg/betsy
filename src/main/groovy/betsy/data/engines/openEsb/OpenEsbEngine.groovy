@@ -1,7 +1,7 @@
 package betsy.data.engines.openEsb
 
-import betsy.data.LocalEngine
 import betsy.data.Process
+import betsy.data.engines.LocalEngine;
 
 class OpenEsbEngine extends LocalEngine {
 

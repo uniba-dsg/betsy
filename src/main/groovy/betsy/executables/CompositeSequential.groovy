@@ -1,8 +1,8 @@
 package betsy.executables
 
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TestFailedException;
-import betsy.data.Engine
 import betsy.data.Process;
+import betsy.data.engines.Engine;
 import betsy.executables.generator.TestBuilder
 import betsy.executables.soapui.SoapUiRunner
 

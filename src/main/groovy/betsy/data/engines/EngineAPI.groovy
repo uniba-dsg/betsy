@@ -1,4 +1,6 @@
-package betsy.data
+package betsy.data.engines
+
+import betsy.data.Process;
 
 interface EngineAPI {
 

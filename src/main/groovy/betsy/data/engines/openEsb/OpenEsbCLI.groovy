@@ -1,7 +1,7 @@
 package betsy.data.engines.openEsb
 
 import betsy.data.Process
-import betsy.data.Engine
+import betsy.data.engines.Engine;
 
 
 class OpenEsbCLI {

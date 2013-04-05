@@ -1,8 +1,8 @@
 package betsy.data.engines.petalsEsb
 
-import betsy.data.EnginePackageBuilder;
-import betsy.data.LocalEngine
 import betsy.data.Process
+import betsy.data.engines.EnginePackageBuilder;
+import betsy.data.engines.LocalEngine;
 
 import java.nio.file.Files
 import java.nio.file.Paths

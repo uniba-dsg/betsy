@@ -14,8 +14,8 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import betsy.data.Engine;
 import betsy.data.Process;
+import betsy.data.engines.Engine;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommClient;

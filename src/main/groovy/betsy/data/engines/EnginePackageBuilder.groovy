@@ -1,5 +1,6 @@
-package betsy.data;
+package betsy.data.engines;
 
+import betsy.data.Process;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import groovy.util.AntBuilder;
 

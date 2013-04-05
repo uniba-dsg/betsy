@@ -1,7 +1,7 @@
 package betsy;
 
-import betsy.data.Engine
-import betsy.data.LocalEngines;
+import betsy.data.engines.Engine;
+import betsy.data.engines.LocalEngines;
 
 import javax.swing.*;
 import java.awt.*;

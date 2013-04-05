@@ -2,9 +2,9 @@ package configuration
 
 import betsy.Betsy
 import betsy.Configuration
-import betsy.data.Engine
-import betsy.data.LocalEngines
 import betsy.data.Process
+import betsy.data.engines.Engine;
+import betsy.data.engines.LocalEngines;
 import betsy.executables.CompositeSequential
 import configuration.processes.Processes
 
