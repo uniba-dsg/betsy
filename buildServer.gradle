@@ -7,9 +7,6 @@ apply plugin: "application"
 // Change to have a buildDir separated from betsy
 buildDir = "build-bvms"
 
-// Main class of betsy
-mainClassName = "de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer"
-
 repositories {
     mavenCentral()
 }
@@ -73,7 +70,7 @@ task jarServer(type: Jar, dependsOn: classes) {
 	baseName = 'betsy'
 	
 	manifest {
-		attributes 'Main-Class': 'de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer','Implementation-Title': 'Betsy-VirtualMachineServer','Built-Date': new Date()
+		attributes 'Main-Class': 'de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServerDaemon','Implementation-Title': 'Betsy-VirtualMachineServer','Built-Date': new Date()
 	}
 	
 	doFirst {
