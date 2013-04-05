@@ -247,11 +247,10 @@ public abstract class VirtualEngine extends Engine implements
 		Path filenamePath = path.getFileName();
 		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
-		Checksum checksum = new Checksum(data);
 		DeployOperation container = new DeployOperation(filename,
 				process.getBpelFileNameWithoutExtension(), data, getName(),
-				getVMDeploymentTimeout(), getVMDeploymentDir(), getVMLogfileDir(),
-				checksum);
+				getVMDeploymentTimeout(), getVMDeploymentDir(),
+				getVMLogfileDir(), Checksum.createChecksum(data));
 		return container;
 	}
 
