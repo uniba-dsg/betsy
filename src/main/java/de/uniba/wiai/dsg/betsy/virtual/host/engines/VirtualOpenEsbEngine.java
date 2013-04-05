@@ -22,8 +22,7 @@ public class VirtualOpenEsbEngine extends VirtualEngine {
 	public VirtualOpenEsbEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OpenEsbEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
-				getName()));
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
 	
     @Override

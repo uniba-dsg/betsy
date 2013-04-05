@@ -22,8 +22,7 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	public VirtualPetalsEsbEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new PetalsEsbEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
-				getName()));
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
 
     @Override
