@@ -1,11 +1,10 @@
 package de.uniba.wiai.dsg.betsy.virtual.server.deployers;
 
-import groovy.util.AntBuilder;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -25,30 +24,48 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 
 	@Override
 	public void deploy(DeployContainer container) throws DeployException {
-
-		// TODO write data to temp dir
-		File tmpFile = new File("tmp/" + container.getFilename());
+		// write data to temp dir first
+		File tmpFile = new File("tmp", container.getFilename());
 		createLocalDeployFile(tmpFile, container);
 		log.info("Temporary deploy file written to disk");
-		
-		// TODO requires Ant on system
-		AntBuilder ant = new AntBuilder();
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("executable", "ant");
-		// TODO check where directory is located
-		map.put("dir", "${engine.serverPath}/orchestra-cxf-tomcat-4.9.0");
-		map.put("dir", container.getDeploymentDir());
-		// TODO verify if is working
-		map.put("arg", "deploy");
-		map.put("arg", "-Dbar=" + tmpFile.getAbsolutePath().toString());
+		// ant must have been installed for the installation itself
+		File buildFile = new File(container.getDeploymentDir(), "build.xml");
+		if (!buildFile.exists()) {
+			log.error("Deployment failed: The build.xml file "
+					+ "of orchestra has not been found at '"
+					+ buildFile.getAbsolutePath() + "'");
+			throw new DeployException("Deployment failed: The build.xml file "
+					+ "of orchestra has not been found at '"
+					+ buildFile.getAbsolutePath() + "'");
+		}
 
-		map.put("osfamily", "unix");
-		ant.invokeMethod("exec", map);
+		Runtime runtime = Runtime.getRuntime();
+		String[] attributes = { "ant", "-f", buildFile.getAbsolutePath(),
+				"deploy", "-Dbar=" + tmpFile.getAbsolutePath() };
 
+		log.debug("Executing now:");
+		log.debug(attributes.toString());
+
+		try {
+			Process proc = runtime.exec(attributes);
+			InputStream inStr = proc.getInputStream();
+			BufferedReader buff = new BufferedReader(new InputStreamReader(
+					inStr));
+			String str;
+			log.debug("Console output:");
+			while ((str = buff.readLine()) != null) {
+				log.debug("--:" + str);
+			}
+		} catch (IOException exception) {
+			log.error("Deploying failed:", exception);
+			throw new DeployException("Deployment failed because of an "
+					+ "unexpected exception:", exception);
+		}
 	}
 
-	private void createLocalDeployFile(File tmpFile, DeployContainer container) throws DeployException {
+	private void createLocalDeployFile(File tmpFile, DeployContainer container)
+			throws DeployException {
 		try {
 			FileUtils.writeByteArrayToFile(tmpFile, container.getData());
 		} catch (IOException exception) {
