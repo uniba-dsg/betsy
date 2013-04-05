@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 import betsy.data.Process;
@@ -30,7 +30,7 @@ public interface VirtualizedEngineAPI {
 	// TODO
 	public String getEndpointPath(Process process);
 
-	public DeployContainer buildDeployContainer(Process process)
+	public DeployOperation buildDeployContainer(Process process)
 			throws IOException;
 
 	public String getVMLogfileDir();

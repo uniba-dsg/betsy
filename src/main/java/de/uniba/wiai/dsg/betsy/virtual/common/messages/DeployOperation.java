@@ -2,10 +2,12 @@ package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 
 //TODO JAVADOC
-public class DeployContainer extends DataContainer implements Serializable {
+public class DeployOperation implements Serializable {
 
 	/**
 	 * SerialVersioUID.
@@ -19,22 +21,22 @@ public class DeployContainer extends DataContainer implements Serializable {
 	private final String deployDir;
 	private final String engineLogDir;
 
-	public DeployContainer(final String filename,
+	private final FileMessage fileMessage;
+
+	public DeployOperation(final String filename,
 			final String bpelFileNameWithoutExtension, final byte[] data,
 			String engineName, final Integer deployTimeout,
 			final String deployDir, final String engineLogDir,
 			final Checksum checksum) {
-		// null check performed in DataContainer
-		super(filename, data, checksum);
-		if (engineName == null || engineName.trim().isEmpty()) {
+		if (StringUtils.isNotBlank(engineName)) {
 			throw new IllegalArgumentException("serverType must not be null "
 					+ "or empty");
 		}
-		if (deployDir == null || deployDir.trim().isEmpty()) {
+		if (StringUtils.isNotBlank(deployDir)) {
 			throw new IllegalArgumentException("deployDir must not be null "
 					+ "or empty");
 		}
-		if (engineLogDir == null || engineLogDir.trim().isEmpty()) {
+		if (StringUtils.isNotBlank(engineLogDir)) {
 			throw new IllegalArgumentException("engineLogDir must not be null "
 					+ "or empty");
 		}
@@ -42,11 +44,13 @@ public class DeployContainer extends DataContainer implements Serializable {
 			throw new IllegalArgumentException("deployTimeout must be greater "
 					+ "than 0");
 		}
-		if (bpelFileNameWithoutExtension == null
-				|| bpelFileNameWithoutExtension.trim().isEmpty()) {
+		if (StringUtils.isNotBlank(bpelFileNameWithoutExtension)) {
 			throw new IllegalArgumentException("bpelFileNameWithoutExtension "
 					+ "must not be null or empty");
 		}
+
+		// null check performed in DataContainer
+		this.fileMessage = new FileMessage(filename, data, checksum);
 
 		this.engineName = engineName;
 		this.bpelFileNameWithoutExtension = bpelFileNameWithoutExtension;
@@ -73,6 +77,10 @@ public class DeployContainer extends DataContainer implements Serializable {
 
 	public String getEngineLogfileDir() {
 		return engineLogDir;
+	}
+
+	public FileMessage getFileMessage() {
+		return fileMessage;
 	}
 
 }

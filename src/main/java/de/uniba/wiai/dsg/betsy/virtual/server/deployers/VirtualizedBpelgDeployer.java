@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
 public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
@@ -20,7 +20,7 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void onPostDeployment(DeployContainer container)
+	public void onPostDeployment(DeployOperation container)
 			throws DeployException {
 		log.info("waiting for the bpel-g_v deployment process to fire");
 
@@ -93,7 +93,7 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 		}
 	}
 
-	private boolean isDeployedFileAvailable(DeployContainer container) {
+	private boolean isDeployedFileAvailable(DeployOperation container) {
 		File file = new File(container.getDeploymentDir() + "/work/ae_temp_"
 				+ container.getBpelFileNameWithoutExtension()
 				+ "_zip/deploy.xml");
@@ -101,7 +101,7 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void deploy(DeployContainer container) throws DeployException {
+	public void deploy(DeployOperation container) throws DeployException {
 		try {
 			File file = new File(container.getDeploymentDir(),
 					container.getFilename());
