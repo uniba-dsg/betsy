@@ -214,16 +214,12 @@ public abstract class VirtualEngine extends Engine implements
 			// ArchiveException: was not imported yet, nothing to delete
 			// PortException: was imported, can be kept in virtualBox
 			// VBServiceException: import can be kept, do NOT delete the VM
-			log.error("The VMs installation could not be processed", exception);
 			throw new PermanentFailedTestException("The VMs installation "
 					+ "could not be processed:", exception);
 		} catch (PortRedirectException exception) {
-			log.error("The VMs installation could not be processed", exception);
 			throw new TemporaryFailedTestException("The VMs installation "
 					+ "could not be processed:", exception);
 		} catch (InterruptedException exception) {
-			log.error("The VMs installation could not be processed. The "
-					+ "snapshot creation was interrupted:", exception);
 			throw new TemporaryFailedTestException("The VMs installation "
 					+ "could not be processed. The snapshot creation was "
 					+ "interrupted:", exception);

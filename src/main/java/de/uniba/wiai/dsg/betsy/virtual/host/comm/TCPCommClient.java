@@ -99,8 +99,6 @@ public class TCPCommClient implements CommClient {
 				}
 			}
 
-			log.fatal("Invalid response received upon PING request: '"
-					+ o.getClass().toString() + "'");
 			throw new InvalidResponseException(
 					"Invalid response received upon PING request: '"
 							+ o.getClass().toString() + "'");
@@ -108,7 +106,6 @@ public class TCPCommClient implements CommClient {
 			log.error("Exception in client while PING server:", exception);
 			return false;
 		} catch (ClassNotFoundException exception) {
-			log.fatal("Invalid response received upon PING request:", exception);
 			throw new InvalidResponseException(
 					"Invalid response received upon PING request:", exception);
 		}
@@ -129,28 +126,20 @@ public class TCPCommClient implements CommClient {
 					// engine is available at the VM
 					return;
 				} else {
-					log.fatal("Invalid StatusMessage received upon sending engine name: '"
-							+ sm.toString() + "'");
 					throw new InvalidResponseException(
 							"Invalid StatusMessage received upon sending engine name: '"
 									+ sm.toString() + "'");
 				}
 			} else {
-				log.fatal("Invalid response received upon sending engine name: '"
-						+ o.getClass().toString() + "'");
 				throw new InvalidResponseException(
 						"Invalid response received upon sending engine name: '"
 								+ o.getClass().toString() + "'");
 			}
 		} catch (ConnectionException | IOException exception) {
-			log.error("Connection error in client while sending engine name:",
-					exception);
 			throw new ConnectionException(
 					"Connection error in client while sending engine name:",
 					exception);
 		} catch (ClassNotFoundException exception) {
-			log.fatal("Invalid response received upon sending engine name:",
-					exception);
 			throw new InvalidResponseException(
 					"Invalid response received upon sending engine name:",
 					exception);
@@ -186,8 +175,8 @@ public class TCPCommClient implements CommClient {
 			this.oos.writeObject(object);
 			this.oos.flush();
 		} else {
-			throw new ConnectException(
-					"Sending message failed: no connection to a server established!");
+			throw new ConnectException("Sending message failed: no connection"
+					+ " to a server established!");
 		}
 	}
 
@@ -204,23 +193,15 @@ public class TCPCommClient implements CommClient {
 				log.debug("InetAddress received!");
 				return (InetAddress) o;
 			} else {
-				log.fatal("Invalid response received upon IP request: '"
-						+ o.getClass().toString() + "'");
 				throw new InvalidResponseException(
 						"Invalid response received upon IP request: '"
 								+ o.getClass().toString() + "'");
 			}
 		} catch (IOException exception) {
-			log.error(
-					"Connection error in client while requesting IP address answer",
-					exception);
 			throw new ConnectionException(
 					"Connection error in client while requesting IP address answer",
 					exception);
 		} catch (ClassNotFoundException exception) {
-			log.fatal(
-					"Invalid response received upon IP request: class could not be found",
-					exception);
 			throw new InvalidResponseException(
 					"Invalid response received upon IP request: class could not be found'",
 					exception);
@@ -270,30 +251,20 @@ public class TCPCommClient implements CommClient {
 					throw new CollectLogfileException("Couldn't collect "
 							+ "logfiles from server.");
 				} else {
-					log.fatal("Invalid StatusMessage received upon logfile request: '"
-							+ sm.toString() + "'");
 					throw new InvalidResponseException(
 							"Invalid StatusMessage received upon logfile request: '"
 									+ sm.toString() + "'");
 				}
 			} else {
-				log.fatal("Invalid response received upon logfile request: '"
-						+ o.getClass().toString() + "'");
 				throw new InvalidResponseException(
 						"Invalid response received upon logfile request: '"
 								+ o.getClass().toString() + "'");
 			}
 		} catch (IOException exception) {
-			log.error(
-					"Connection error in client while receiving logfile request answer",
-					exception);
 			throw new ConnectionException(
 					"Connection error in client while receiving logfile request answer",
 					exception);
 		} catch (ClassNotFoundException exception) {
-			log.fatal(
-					"Invalid response received upon logfile request: class could not be found",
-					exception);
 			throw new InvalidResponseException(
 					"Invalid response received upon logfile request: class could not be found'",
 					exception);
@@ -325,30 +296,20 @@ public class TCPCommClient implements CommClient {
 					throw new ChecksumException(
 							"Could not deploy package, package was corrupted");
 				} else {
-					log.fatal("Invalid StatusMessage received upon sending deployment instructions: '"
-							+ sm.toString() + "'");
 					throw new InvalidResponseException(
 							"Invalid StatusMessage received upon sending deployment instructions: '"
 									+ sm.toString() + "'");
 				}
 			} else {
-				log.fatal("Invalid response received upon sending deployment instructions "
-						+ o.getClass().toString() + "'");
 				throw new InvalidResponseException(
 						"Invalid response received upon sending deployment instructions: '"
 								+ o.getClass().toString() + "'");
 			}
 		} catch (IOException exception) {
-			log.error(
-					"Connection error in client while receiving answer to deployment instructions",
-					exception);
 			throw new ConnectionException(
 					"Connection error in client while receiving answer to deployment instructions",
 					exception);
 		} catch (ClassNotFoundException exception) {
-			log.fatal(
-					"Invalid response received sending deployment instructions: class could not be found",
-					exception);
 			throw new InvalidResponseException(
 					"Invalid response received upon sending deployment instructions: class could not be found'",
 					exception);
