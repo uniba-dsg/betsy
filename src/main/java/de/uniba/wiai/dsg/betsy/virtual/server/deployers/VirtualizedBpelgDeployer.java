@@ -103,9 +103,10 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 	@Override
 	public void deploy(DeployOperation container) throws DeployException {
 		try {
-			File file = new File(container.getDeploymentDir(),
-					container.getFilename());
-			FileUtils.writeByteArrayToFile(file, container.getData());
+			File file = new File(container.getDeploymentDir(), container
+					.getFileMessage().getFilename());
+			FileUtils.writeByteArrayToFile(file, container.getFileMessage()
+					.getData());
 		} catch (IOException exception) {
 			throw new DeployException("Couldn't write the container data to "
 					+ "the local disk:", exception);

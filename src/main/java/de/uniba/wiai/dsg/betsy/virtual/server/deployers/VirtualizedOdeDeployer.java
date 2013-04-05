@@ -41,10 +41,10 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 	private void unzipContainer(DeployOperation container) throws IOException {
 		// String path = "";
 		ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(
-				container.getData()));
+				container.getFileMessage().getData()));
 		ZipEntry entry = null;
 		File deployFolder = new File(container.getDeploymentDir(), container
-				.getFilename().replace(".zip", ""));
+				.getFileMessage().getFilename().replace(".zip", ""));
 
 		try {
 			boolean createdParent = deployFolder.mkdirs();
