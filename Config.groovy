@@ -111,6 +111,12 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-orchestra_v.tar.bz2"
 			serviceTimeout = 300
 			mac = "08:00:27:5c:76:8a"
+
+			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
+			deploymentTimeout = 15
+			logfileDir = "/var/lib/tomcat7/logs"
+			headless = true
+			shutdownSaveState = false
 		}
 
 		petalsesb_v {
