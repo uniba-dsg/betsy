@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
@@ -13,7 +12,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseExceptio
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 
-public interface CommClient extends CommPartner {
+public interface CommClient {
 
 	public void reconnect(int timeout) throws UnknownHostException, IOException;
 
@@ -32,5 +31,9 @@ public interface CommClient extends CommPartner {
 
 	public InetAddress getIpAddressFromServer()
 			throws InvalidResponseException, ConnectionException;
+	
+	public void disconnect();
+	
+	public boolean isConnected();
 	
 }

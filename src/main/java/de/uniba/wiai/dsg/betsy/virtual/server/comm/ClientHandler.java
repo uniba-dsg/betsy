@@ -12,8 +12,6 @@ import java.util.Objects;
 
 import org.apache.log4j.Logger;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
@@ -24,7 +22,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
 import de.uniba.wiai.dsg.betsy.virtual.server.LogfileCollector;
 
 //TODO JavaDoc
-public class ClientHandler implements Runnable, CommPartner {
+public class ClientHandler implements Runnable {
 
 	private final Logger log = Logger.getLogger(getClass());
 	private final CommServer commServer;
@@ -114,12 +112,17 @@ public class ClientHandler implements Runnable, CommPartner {
 			ConnectionException {
 		if (o != null && o instanceof String) {
 			String message = (String) o;
-			if (message.equals(CommPartner.PING)) {
+			deployer = VirtualizedEngineDeployers.build(message);
+			keepRunning = true;
+		}else if (o != null && o instanceof StatusMessage) {
+			String message = (String) o;
+			if (message.equals(StatusMessage.PING)) {
 				// test if connection is alive, respond:
-				sendMessage(CommPartner.PONG);
+				sendMessage(StatusMessage.PONG);
 			} else {
-				deployer = VirtualizedEngineDeployers.build(message);
-				keepRunning = true;
+				// invalid response
+				this.sendMessage(StatusMessage.ERROR_ENGINE_EXPECTED);
+				this.disconnect();
 			}
 		} else {
 			// invalid response
@@ -183,7 +186,6 @@ public class ClientHandler implements Runnable, CommPartner {
 		}
 	}
 
-	@Override
 	public boolean isConnected() {
 		return socket != null && !socket.isClosed();
 	}
@@ -200,7 +202,6 @@ public class ClientHandler implements Runnable, CommPartner {
 		}
 	}
 
-	@Override
 	public void disconnect() {
 		log.debug("Properly disconnecting...");
 		if (isConnected()) {

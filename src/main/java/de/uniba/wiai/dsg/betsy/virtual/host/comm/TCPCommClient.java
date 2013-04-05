@@ -15,7 +15,6 @@ import java.net.Socket;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
@@ -89,13 +88,13 @@ public class TCPCommClient implements CommClient {
 	@Override
 	public boolean isConnectionAlive() throws InvalidResponseException {
 		try {
-			sendMessage(CommPartner.PING);
+			sendMessage(StatusMessage.PING);
 
 			Object o = ois.readObject();
-			if (o instanceof String) {
-				String stringO = (String) o;
-				log.debug("PING response received: '" + stringO + "'");
-				if (o.equals(CommPartner.PONG)) {
+			if (o instanceof StatusMessage) {
+				StatusMessage sm = (StatusMessage) o;
+				log.debug("PING response received: '" + sm + "'");
+				if (o.equals(StatusMessage.PONG)) {
 					return true;
 				}
 			}
