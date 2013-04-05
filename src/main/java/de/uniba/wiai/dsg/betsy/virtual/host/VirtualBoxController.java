@@ -112,7 +112,6 @@ public class VirtualBoxController {
 		}
 
 		for (IMachine vm : machines) {
-			log.trace(String.format("Found machine '%s'", vm.getName()));
 			if (vm.getName().equals(vmName)) {
 				return true;
 			}
@@ -216,25 +215,6 @@ public class VirtualBoxController {
 				} else {
 					log.info("No MAC address to apply found");
 				}
-
-				// TODO should be unimportant if adapter is of type NAT or not
-				// important would be to know the MAC address
-
-				// adapt network and set NAT only
-				// for (Long slot = 0l; slot < maxNetworkAdapters; slot++) {
-				// INetworkAdapter na = lockedVM.getNetworkAdapter(slot);
-				//
-				// if (na.getAttachmentType()
-				// .equals(NetworkAttachmentType.NAT)
-				// && na.getEnabled()) {
-				// foundNAT = true;
-				// if (validMACAddress) {
-				// na.setMACAddress(macAddress);
-				// }
-				// // using one adapter is enough
-				// break;
-				// }
-				// }
 
 				// if there is no NAT adapter, then make first adapter to it
 				// BUT: only if there is a MAC address to set, preventing
