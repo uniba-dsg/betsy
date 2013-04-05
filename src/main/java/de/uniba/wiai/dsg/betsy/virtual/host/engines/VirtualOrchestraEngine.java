@@ -89,7 +89,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
 	public String getVMDeploymentDir() {
 		return config.getValueAsString(
 				"virtualisation.engines.orchestra_v.deploymentDir",
-				"/usr/share/tomcat7/webapps/orchestra/WEB-INF/processes");
+				"/home/betsy/orchestra-cxf-tomcat");
 	}
 
 	@Override
