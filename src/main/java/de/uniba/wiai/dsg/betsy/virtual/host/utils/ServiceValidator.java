@@ -36,9 +36,8 @@ public class ServiceValidator {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					URLPinger pinger = new URLPinger();
 					try {
-						pinger.waitUntilAvailable(serviceURL,
+						UrlAvailabilityVerifier.waitUntilAvailable(serviceURL,
 								secondsToWait * 1000);
 						// available and no exception --> decrement
 						cdl.countDown();
