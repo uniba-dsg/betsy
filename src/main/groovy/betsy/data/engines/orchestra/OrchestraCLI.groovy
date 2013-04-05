@@ -1,6 +1,7 @@
 package betsy.data.engines.orchestra
 
 import betsy.data.Process
+import betsy.data.engines.Engine;
 
 class OrchestraCLI {
 

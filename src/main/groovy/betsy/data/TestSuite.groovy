@@ -1,5 +1,6 @@
 package betsy.data
 
+import betsy.data.engines.Engine;
 import betsy.executables.ExecutionContext
 
 class TestSuite {

@@ -1,7 +1,7 @@
 package betsy.data.engines.activeBpel
 
-import betsy.data.LocalEngine
 import betsy.data.Process
+import betsy.data.engines.LocalEngine;
 import betsy.data.engines.server.Tomcat
 
 /*

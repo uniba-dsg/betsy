@@ -1,4 +1,7 @@
-package betsy.data
+package betsy.data.engines
+
+import betsy.data.Process;
+import betsy.data.TestSuite;
 
 abstract class Engine implements EngineAPI {
 
