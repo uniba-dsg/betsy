@@ -142,7 +142,7 @@ class TestUsingParameters {
 		final VirtualBoxWebService vBoxWebSrv = new VirtualBoxWebService(vboxwebsrvFile.absolutePath)
 		vBoxWebSrv.start()
 
-		Thread shutdownThread = new Thread({vBoxWebSrv.stop()} as Runnable).start()
+		Thread shutdownThread = new Thread({vBoxWebSrv.stop()} as Runnable)
 		Runtime.getRuntime().addShutdownHook(shutdownThread);
 	}
 
