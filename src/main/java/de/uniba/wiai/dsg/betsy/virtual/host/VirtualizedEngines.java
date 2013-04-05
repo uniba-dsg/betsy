@@ -19,6 +19,7 @@ public class VirtualizedEngines {
 	 */
 	public static List<VirtualEngine> availableEngines() {
 		VirtualBoxController vbc = new VirtualBoxController();
+		vbc.init();
 
 		LinkedList<VirtualEngine> engines = new LinkedList<>();
 		engines.add(new VirtualOdeEngine(vbc));
