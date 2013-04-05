@@ -12,6 +12,8 @@ import betsy.data.Process;
 // TODO JavaDoc
 public interface VirtualizedEngineAPI {
 
+	// COMMENT warum nicht getName() ?
+	// --> kein Ersatz, sondern Zusatz: "betsy-" + getName()  
 	public String getVirtualMachineName();
 
 	public boolean isVirtualMachineReady();

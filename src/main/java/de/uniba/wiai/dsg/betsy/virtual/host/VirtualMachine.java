@@ -83,11 +83,10 @@ public class VirtualMachine {
 			if (VirtualBoxExceptionCode.valueOf(exception).equals(
 					VirtualBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
 				// ignore
-				log.warn("Could not power off VM, was in invalid state:",
+				log.warn("Could not power off, VM was in invalid state:",
 						exception);
 			} else {
-				// unknown
-				log.error("Unexpected VBoxException: ", exception);
+				// TODO COMMENT rethrow as unexpected VBoxException
 				throw exception;
 			}
 		} finally {
@@ -184,7 +183,7 @@ public class VirtualMachine {
 		return false;
 	}
 
-	public boolean containsRunningSnapshot() {
+	public boolean hasRunningSnapshot() {
 		ISnapshot snapshot = machine.getCurrentSnapshot();
 		if (snapshot != null) {
 			// online snapshot?

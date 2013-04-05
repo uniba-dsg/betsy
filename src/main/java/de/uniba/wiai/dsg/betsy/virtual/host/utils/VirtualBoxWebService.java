@@ -1,12 +1,17 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.utils;
 
+import groovy.util.AntBuilder;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 public class VirtualBoxWebService {
 
+	private final AntBuilder ant = new AntBuilder();
 	private final Logger log = Logger.getLogger(getClass());
 	private final String path;
 	private Process vboxServiceProcess;
@@ -24,15 +29,11 @@ public class VirtualBoxWebService {
 		vboxServiceProcess = pb.start();
 		// give the webSrv some time to start
 		log.debug("Waiting 3 seconds for the VBoxWebSrv to start...");
-		long start = -System.currentTimeMillis();
-		while(start + System.currentTimeMillis() < 3000) {
-			try {
-				Thread.sleep(1000);
-			}catch(Exception exception) {
-				// ignore
-				log.warn("...interrupted sleep");
-			}
-		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("seconds", 3);
+		ant.invokeMethod("sleep", map);
+		
 		log.debug("...VBoxWebSrv started!");
 	}
 	

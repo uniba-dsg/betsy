@@ -20,8 +20,8 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
@@ -88,7 +88,7 @@ public abstract class VirtualEngine extends Engine implements
 			VirtualMachine vm;
 			try {
 				vm = vbController.getVirtualMachine(getVirtualMachineName());
-				return vm.containsRunningSnapshot();
+				return vm.hasRunningSnapshot();
 			} catch (VirtualMachineException e) {
 				// should not happen as vm was already found
 			}
@@ -107,11 +107,10 @@ public abstract class VirtualEngine extends Engine implements
 
 		try {
 			// verify port usage
-			PortVerifier verifier = new PortVerifier();
 			Set<Integer> ports = getRequiredPorts();
 			// also verify the bVMS port
 			ports.add(48888);
-			verifier.verify(ports);
+			PortVerifier.verify(ports);
 
 			// forward and verify used ports
 			this.vm.applyPortForwarding(getRequiredPorts());
@@ -197,7 +196,7 @@ public abstract class VirtualEngine extends Engine implements
 				}
 				this.vm = vbController
 						.getVirtualMachine(getVirtualMachineName());
-				if (!this.vm.containsRunningSnapshot()) {
+				if (!this.vm.hasRunningSnapshot()) {
 					// need to create a running snapshot
 					this.vm.createRunningSnapshot(getName(),
 							getRequiredAddresses(), getRequiredPorts());

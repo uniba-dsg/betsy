@@ -42,12 +42,16 @@ public class LogfileCollector {
 				lfc.addEngineLogfiles(collectEngineLogfiles(engineLogDirectory));
 			} catch (IOException exception) {
 				log.error("Engine logfile could not be read:", exception);
+				// try again
+				continue;
 			}
 
 			try {
 				lfc.addBetsyLogfiles(collectBetsyServerLogfiles(betsyServerInstallDir));
 			} catch (IOException exception) {
-				log.error("Engine logfile could not be read:", exception);
+				log.error("Betsy logfile could not be read:", exception);
+				// try again
+				continue;
 			}
 
 			return lfc;
