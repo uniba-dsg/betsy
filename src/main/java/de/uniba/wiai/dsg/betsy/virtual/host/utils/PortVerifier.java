@@ -9,35 +9,23 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
 
 public class PortVerifier {
 
-	public boolean isPortAvailable(final int portNumber) {
-		ServerSocket serverSocket = null;
-		DatagramSocket datagramSocket = null;
-		try {
-			serverSocket = new ServerSocket(portNumber);
+	private static boolean isPortAvailable(final int portNumber) {
+		try (ServerSocket serverSocket = new ServerSocket(portNumber);
+				DatagramSocket datagramSocket = new DatagramSocket(portNumber)) {
+
 			serverSocket.setReuseAddress(true);
-			datagramSocket = new DatagramSocket(portNumber);
 			datagramSocket.setReuseAddress(true);
 			// both could be creates, port is unused!
 			return true;
 		} catch (final IOException e) {
 			return false;
-		} finally {
-			if (datagramSocket != null) {
-				datagramSocket.close();
-			}
-			if (serverSocket != null) {
-				try {
-					serverSocket.close();
-				} catch (final IOException e) {
-					// ignore
-				}
-			}
 		}
 	}
 
-	public void verify(Collection<Integer> ports) throws PortUsageException {
+	public static void verify(Collection<Integer> ports)
+			throws PortUsageException {
 		for (Integer port : ports) {
-			if (!this.isPortAvailable(port)) {
+			if (!isPortAvailable(port)) {
 				throw new PortUsageException("Can't forward port '" + port
 						+ "'. The port is already in use by another"
 						+ " appliaction.");
