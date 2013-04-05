@@ -123,11 +123,9 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 
 		if (!deployedFileAvailable) {
 			// timed out :/
-			String msg = "Process could not be deployed within "
+			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. .deployed not found. The "
-					+ "operation timed out.";
-			log.warn(msg);
-			throw new DeployException(msg);
+					+ "operation timed out.");
 		}
 
 		// process is deployed, now wait for verification in logfile
@@ -172,11 +170,9 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 				}
 			}
 			if (!logVerification) {
-				String msg = "Process could not be deployed within "
-						+ deployTimeout + "seconds. Log verification failed. "
-						+ "The operation timed out.";
-				log.warn(msg);
-				throw new DeployException(msg);
+				throw new DeployException("Process could not be deployed "
+						+ "within " + deployTimeout + "seconds. Log "
+						+ "verification failed. The operation timed out.");
 			}
 		} else {
 			log.warn("Catalina.out not found, wait 2s for deployment");

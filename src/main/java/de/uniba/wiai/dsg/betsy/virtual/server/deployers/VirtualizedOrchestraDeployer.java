@@ -32,9 +32,6 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 		// ant must have been installed for the installation itself
 		File buildFile = new File(container.getDeploymentDir(), "build.xml");
 		if (!buildFile.exists()) {
-			log.error("Deployment failed: The build.xml file "
-					+ "of orchestra has not been found at '"
-					+ buildFile.getAbsolutePath() + "'");
 			throw new DeployException("Deployment failed: The build.xml file "
 					+ "of orchestra has not been found at '"
 					+ buildFile.getAbsolutePath() + "'");
@@ -58,7 +55,6 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 				log.debug("--:" + str);
 			}
 		} catch (IOException exception) {
-			log.error("Deploying failed:", exception);
 			throw new DeployException("Deployment failed because of an "
 					+ "unexpected exception:", exception);
 		}

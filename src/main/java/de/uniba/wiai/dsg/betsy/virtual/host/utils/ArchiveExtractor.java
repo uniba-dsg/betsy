@@ -65,7 +65,6 @@ public class ArchiveExtractor {
 			list.add(destination);
 			return list;
 		} catch (IOException exception) {
-			log.error("Exception while extracting .ova archive:", exception);
 			throw new ArchiveExtractionException(
 					"Exception while extracting .ova archive", exception);
 		}
@@ -100,7 +99,6 @@ public class ArchiveExtractor {
 
 			return this.extractTar(new File(tarFilePath), outputDir);
 		} catch (ArchiveExtractionException | IOException exception) {
-			log.error("Exception while extracting .tar.bz2 archive:", exception);
 			throw new ArchiveExtractionException(
 					"Exception while extracting .tar.bz2 archive", exception);
 		} finally {
@@ -143,7 +141,7 @@ public class ArchiveExtractor {
 
 			return extractedFiles;
 		} catch (IOException exception) {
-			log.error("Exception while extracting .zip archive:", exception);
+			log.error("Exception while extracting .zip archive");
 			throw exception;
 		}
 	}
@@ -162,7 +160,6 @@ public class ArchiveExtractor {
 				bos = new BufferedOutputStream(new FileOutputStream(file));
 				IOUtils.copy(bis, bos);
 			} catch (IOException exception) {
-				log.error("Exception while saving ZipEntry:", exception);
 				throw new ArchiveExtractionException(
 						"Exception while saving ZipEntry:", exception);
 			} finally {
@@ -258,7 +255,6 @@ public class ArchiveExtractor {
 			// ... and done!
 			return extractedFiles;
 		} catch (ArchiveException | IOException exception) {
-			log.error("Exception while extracting .tar archive:", exception);
 			throw new ArchiveExtractionException(
 					"Exception while extracting .tar archive", exception);
 		} finally {

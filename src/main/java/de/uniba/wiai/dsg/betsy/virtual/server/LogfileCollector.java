@@ -57,8 +57,6 @@ public class LogfileCollector {
 			return lfc;
 		}
 
-		log.error("Logfiles could not be collected because the file's data "
-				+ "could not be read.");
 		throw new CollectLogfileException("Logfiles could not be collected "
 				+ "because the file's data could not be read.");
 	}

@@ -94,11 +94,9 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 				}
 			}
 			if (!logVerification) {
-				String msg = "Process could not be deployed within "
-						+ deployTimeout + "seconds. Log verification failed. "
-						+ "The operation timed out.";
-				log.warn(msg);
-				throw new DeployException(msg);
+				throw new DeployException("Process could not be deployed "
+						+ "within " + deployTimeout + "seconds. Log "
+						+ "verification failed. The operation timed out.");
 			}
 		} else {
 			log.warn("aeDeployment.log not found, wait 1s for deployment");

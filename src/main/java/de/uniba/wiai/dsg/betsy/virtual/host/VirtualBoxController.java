@@ -71,15 +71,14 @@ public class VirtualBoxController {
 
 				this.vbManager.connect(host + ":" + port, username, password);
 				log.info("Conneting to vboxWebSrv succeeded!");
-			} else if (exception
-					.getMessage()
-					.equals("HTTP transport error: java.net.ConnectException: Connection refused")) {
+			} else if (exception.getMessage().equals(
+					"HTTP transport error: "
+							+ "java.net.ConnectException: Connection refused")) {
 				log.error("VBoxWebSrv does not seem to be running on the specified address!");
 				throw exception;
 			} else {
 				// unknown exception, can't solve situation
-				log.error("Unknown exception while connecting to vboxWebSrv:",
-						exception);
+				log.error("Unknown exception while connecting to vboxWebSrv");
 				throw exception;
 			}
 		}
