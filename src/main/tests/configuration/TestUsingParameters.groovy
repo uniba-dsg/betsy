@@ -10,9 +10,6 @@ import configuration.processes.Processes
 
 import java.awt.Desktop
 
-import com.jgoodies.looks.Options;
-
-
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngines;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.ConfigurationException;
