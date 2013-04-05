@@ -1,6 +1,6 @@
 package betsy.executables
 
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TestFailedException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TemporaryFailedTestException;
 import betsy.data.Process;
 import betsy.data.engines.Engine;
 import betsy.executables.generator.TestBuilder
@@ -73,7 +73,7 @@ class CompositeSequential extends Composite {
 		                        }
 							}
 						}
-					}catch(TestFailedException exception) {
+					}catch(TemporaryFailedTestException exception) {
 						println("Process ${engine.processes.indexOf(process) + 1} test failed")
 						if(exception.isTestRepeatable() && testCount <= 1) {
 							testProcess = true
