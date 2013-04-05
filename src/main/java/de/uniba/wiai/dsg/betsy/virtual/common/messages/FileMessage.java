@@ -1,6 +1,9 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
 import java.io.Serializable;
+import java.util.Objects;
+
+import org.apache.commons.lang.StringUtils;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 
@@ -18,20 +21,14 @@ public class FileMessage implements Serializable {
 
 	public FileMessage(final String filename, final byte[] data,
 			final Checksum checksum) {
-		if (filename == null || filename.trim().isEmpty()) {
+		if (StringUtils.isBlank(filename)) {
 			throw new IllegalArgumentException(
 					"filename must not be null or empty");
 		}
-		if (data == null) {
-			throw new IllegalArgumentException("data must not be null");
-		}
-		if (checksum == null) {
-			throw new IllegalArgumentException("checksum must not be null");
-		}
 
-		this.data = data;
 		this.filename = filename;
-		this.checksum = checksum;
+		this.data = Objects.requireNonNull(data);
+		this.checksum = Objects.requireNonNull(checksum);
 	}
 
 	public byte[] getData() {

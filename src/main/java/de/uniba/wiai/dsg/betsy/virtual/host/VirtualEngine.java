@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -50,10 +51,7 @@ public abstract class VirtualEngine extends Engine implements
 	private VirtualMachine vm = null;
 
 	public VirtualEngine(VirtualBoxController vbc) {
-		if (vbc == null) {
-			throw new IllegalArgumentException("vbc must not be null!");
-		}
-		this.vbController = vbc;
+		this.vbController = Objects.requireNonNull(vbc);
 		this.setPackageBuilder(new VirtualEnginePackageBuilder());
 		// create communication handler
 		comm = new TCPCommClient("127.0.0.1", 48888);

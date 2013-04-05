@@ -8,12 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Objects;
 
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommServer;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
@@ -39,15 +39,8 @@ public class ClientHandler implements Runnable, CommPartner {
 
 	public ClientHandler(final CommServer commServer, final Socket socket)
 			throws IOException {
-		if (socket == null) {
-			throw new IllegalArgumentException("socket must not be null");
-		}
-		if (commServer == null) {
-			throw new IllegalArgumentException("commServer must not be null");
-		}
-
-		this.commServer = commServer;
-		this.socket = socket;
+		this.commServer = Objects.requireNonNull(commServer);
+		this.socket = Objects.requireNonNull(socket);
 
 		// client connected, now create all needed objects
 		socket.setKeepAlive(true);

@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -46,18 +47,11 @@ public class VirtualMachine {
 	private final Logger log = Logger.getLogger(getClass());
 
 	public VirtualMachine(VirtualBoxManager vbManager, IMachine machine) {
-		if (vbManager == null) {
-			throw new IllegalArgumentException("vbManager must not be null");
-		} else if (machine == null) {
-			throw new IllegalArgumentException("machine must not be null");
-		}
-
-		this.machine = machine;
-		this.vbManager = vbManager;
+		this.machine = Objects.requireNonNull(machine);
+		this.vbManager = Objects.requireNonNull(vbManager);
 		this.session = vbManager.getSessionObject();
 	}
 
-	// TODO headless option
 	public void start(final boolean headless) {
 		log.debug("VM state before start: " + machine.getState().toString());
 		if (!isActive()) {

@@ -3,6 +3,8 @@ package de.uniba.wiai.dsg.betsy.virtual.host;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualActiveBpelEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualBpelgEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualOdeEngine;
@@ -42,7 +44,7 @@ public class VirtualizedEngines {
 	 *             if the virtualized engine can not be found
 	 */
 	public static VirtualEngine build(final String name) {
-		if (name == null || name.trim().isEmpty()) {
+		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("name must not be null or empty");
 		}
 		String namet = name.trim();
