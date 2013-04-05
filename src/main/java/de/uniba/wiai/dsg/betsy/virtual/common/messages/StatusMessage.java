@@ -2,6 +2,10 @@ package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
 public enum StatusMessage {
 
+	// Ask for availability
+	PING("PING"),
+	// Confirmation of availability
+	PONG("PONG"),
 	// confirm last action/request
 	OK("OK"),
 	// check logs why
