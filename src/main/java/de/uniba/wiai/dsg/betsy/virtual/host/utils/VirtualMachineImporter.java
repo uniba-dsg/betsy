@@ -28,6 +28,13 @@ public class VirtualMachineImporter {
 
 	private final Logger log = Logger.getLogger(getClass());
 
+	private final String archiveRequirements = "Please verify to meet the "
+			+ "requirements of the archive structure. "
+			+ "The archive must either contain"
+			+ " the .ova file or the .ovf file. They can be either "
+			+ "stored without or within a folder. If a folder is used it "
+			+ "should be named just as the engine.";
+
 	private final VirtualBoxController vbc;
 	private final String vmName;
 	private final String engineName;
@@ -185,8 +192,9 @@ public class VirtualMachineImporter {
 		// verify there is only one match
 		if (collection.size() != 1) {
 			if (collection.size() > 1) {
-				throw new ArchiveContentException("Could not determine "
-						+ "which appliance should be imported. Please "
+				throw new ArchiveContentException("Could not determine which "
+						+ "appliance should be imported. Expected 1, got "
+						+ collection.size() + ". Please "
 						+ "assure the archive contains only one appliance.");
 			} else {
 				throw new ArchiveContentException("The extracted archive did "
@@ -295,8 +303,7 @@ public class VirtualMachineImporter {
 					throw new ArchiveExtractionException(
 							"The archive can't be extracted correctly. "
 									+ "The renaming of the extracted "
-									+ "folder failed. "
-									+ getArchiveRequirements());
+									+ "folder failed. " + archiveRequirements);
 				}
 			}
 		} else {

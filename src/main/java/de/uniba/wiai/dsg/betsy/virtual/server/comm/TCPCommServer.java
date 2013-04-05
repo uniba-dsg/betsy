@@ -1,8 +1,6 @@
 package de.uniba.wiai.dsg.betsy.virtual.server.comm;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -45,33 +43,33 @@ public class TCPCommServer implements CommServer {
 			Socket socket = serverSocket.accept();
 			clientHandler = new ClientHandler(this, socket);
 
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						String cmd = "ntpdate pool.ntp.org";
-						Runtime run = Runtime.getRuntime();
-						log.info("Requesting timeserver sync");
-						Process pr = run.exec(cmd);
-						pr.waitFor();
-						BufferedReader buf = new BufferedReader(
-								new InputStreamReader(pr.getInputStream()));
-
-						String line = buf.readLine();
-						while (line != null) {
-							// TODO remove after test of setting system time
-							log.debug(line);
-							line = buf.readLine();
-						}
-					} catch (IOException | InterruptedException exception) {
-						log.error("Exception while setting new system time",
-								exception);
-					}
-				}
-			}).start();
+//			new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					try {
+//						String cmd = "ntpdate pool.ntp.org";
+//						Runtime run = Runtime.getRuntime();
+//						log.info("Requesting timeserver sync");
+//						Process pr = run.exec(cmd);
+//						pr.waitFor();
+//						BufferedReader buf = new BufferedReader(
+//								new InputStreamReader(pr.getInputStream()));
+//
+//						String line = buf.readLine();
+//						while (line != null) {
+//							// TODO remove after test of setting system time
+//							log.debug(line);
+//							line = buf.readLine();
+//						}
+//					} catch (IOException | InterruptedException exception) {
+//						log.error("Exception while setting new system time",
+//								exception);
+//					}
+//				}
+//			}).start();
 
 			// run in current Thread
-			new Thread(clientHandler).run();
+			clientHandler.run();
 
 		} catch (IOException exception) {
 			log.error("Exception while receiving connection: "

@@ -2,6 +2,11 @@ package de.uniba.wiai.dsg.betsy.virtual.host.exceptions;
 
 public class PortUsageException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public PortUsageException() {
 		// TODO Auto-generated constructor stub
 	}
