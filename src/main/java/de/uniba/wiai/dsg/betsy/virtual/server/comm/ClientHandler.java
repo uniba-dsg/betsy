@@ -110,6 +110,7 @@ public class ClientHandler implements Runnable {
 
 	private void handleInitialMessage(Object o) throws IOException,
 			ConnectionException {
+		log.debug("handle initial message");
 		if (o != null && o instanceof String) {
 			String message = (String) o;
 			deployer = VirtualizedEngineDeployers.build(message);
@@ -120,12 +121,12 @@ public class ClientHandler implements Runnable {
 				// test if connection is alive, respond:
 				sendMessage(StatusMessage.PONG);
 			} else {
-				// invalid response
-				this.sendMessage(StatusMessage.ERROR_ENGINE_EXPECTED);
+				// invalid message
+				this.sendMessage(StatusMessage.ERROR_INVALID_REQUEST);
 				this.disconnect();
 			}
 		} else {
-			// invalid response
+			// invalid message
 			this.sendMessage(StatusMessage.ERROR_ENGINE_EXPECTED);
 			this.disconnect();
 		}
@@ -216,7 +217,7 @@ public class ClientHandler implements Runnable {
 			this.close();
 		}
 	}
-	
+
 	public void close() {
 		this.keepRunning = false;
 	}
