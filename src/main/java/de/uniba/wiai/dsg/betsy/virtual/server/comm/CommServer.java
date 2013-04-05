@@ -1,4 +1,4 @@
-package de.uniba.wiai.dsg.betsy.virtual.common.comm;
+package de.uniba.wiai.dsg.betsy.virtual.server.comm;
 
 
 public interface CommServer {

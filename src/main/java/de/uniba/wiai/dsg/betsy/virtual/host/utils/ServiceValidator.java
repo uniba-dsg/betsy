@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
+import de.uniba.wiai.dsg.betsy.virtual.host.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TimeoutException;
 

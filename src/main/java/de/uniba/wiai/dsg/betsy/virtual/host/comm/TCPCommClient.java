@@ -16,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
-import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.common.comm.CommPartner;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
