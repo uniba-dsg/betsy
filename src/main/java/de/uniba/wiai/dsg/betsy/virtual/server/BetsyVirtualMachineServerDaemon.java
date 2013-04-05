@@ -94,11 +94,15 @@ public class BetsyVirtualMachineServerDaemon implements Daemon, Runnable {
 	 */
 	@Override
 	public void run() {
-		log.info("betsy-Daemon: started acceptor loop");
-		while (keepRunning) {
-			com.waitForConnection();
+		try {
+			log.info("betsy-Daemon: started acceptor loop");
+			while (keepRunning) {
+				com.waitForConnection();
+			}
+			log.info("betsy-Daemon: exiting acceptor loop");
+		} catch (Exception exception) {
+			log.error("betsy-Daemon execution failed:", exception);
 		}
-		log.info("betsy-Daemon: exiting acceptor loop");
 	}
 
 }

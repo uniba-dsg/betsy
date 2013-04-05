@@ -27,10 +27,14 @@ public class BetsyVirtualMachineServer {
 			.getLogger(BetsyVirtualMachineServer.class);
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("Starting 'Main' execution!");
-		BetsyVirtualMachineServer vms = new BetsyVirtualMachineServer();
-		vms.init();
-		vms.start();
+		try {
+			System.out.println("Starting 'Main' execution!");
+			BetsyVirtualMachineServer vms = new BetsyVirtualMachineServer();
+			vms.init();
+			vms.start();
+		} catch (Exception exception) {
+			log.error("bVMS execution failed:", exception);
+		}
 	}
 
 	private CommServer com;
