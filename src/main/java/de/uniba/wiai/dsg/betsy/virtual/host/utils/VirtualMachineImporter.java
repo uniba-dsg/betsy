@@ -56,10 +56,10 @@ public class VirtualMachineImporter {
 		this.vbc = Objects.requireNonNull(vbc);
 		this.extractPath = Objects.requireNonNull(extractPath);
 		this.downloadPath = Objects.requireNonNull(downloadPath);
-		
+
 		this.vmName = vmName;
 		this.engineName = engineName;
-		
+
 	}
 
 	public void importVirtualMachine() throws ArchiveException,
@@ -325,8 +325,16 @@ public class VirtualMachineImporter {
 			log.debug("Download " + vmName + "...");
 			// download
 			try {
-				FileDownloader fd = new FileDownloader();
-				fd.downloadFile(getDownloadAddress(), getDownloadArchiveFile());
+				try {
+					// creates relevant dirs and overwrites existing files
+					FileUtils.copyURLToFile(getDownloadAddress(),
+							getDownloadArchiveFile());
+				} catch (IOException exception) {
+					throw new DownloadException(String.format(
+							"The download of '%s' failed:",
+							getDownloadAddress().toExternalForm()), exception);
+				}
+
 			} catch (MalformedURLException | URIException exception) {
 				throw new DownloadException("Could not download the virtual "
 						+ engineName + " image:", exception);
