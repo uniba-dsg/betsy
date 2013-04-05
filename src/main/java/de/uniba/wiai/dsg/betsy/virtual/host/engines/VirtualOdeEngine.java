@@ -21,8 +21,7 @@ public class VirtualOdeEngine extends VirtualEngine {
 	public VirtualOdeEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OdeEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
-				getName()));
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
 	
     @Override

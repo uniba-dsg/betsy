@@ -21,8 +21,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
 	public VirtualOrchestraEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OrchestraEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
-				getName()));
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
 
 	@Override

@@ -14,8 +14,8 @@ public class VirtualEnginePackageBuilder extends EnginePackageBuilder {
 	private final AntBuilder ant = new AntBuilder();
 	private final Configuration config = Configuration.getInstance();
 
-	public VirtualEnginePackageBuilder(final String engineName) {
-		super(engineName);
+	public VirtualEnginePackageBuilder() {
+		super();
 	}
 
 	@Override

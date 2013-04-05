@@ -21,8 +21,7 @@ public class VirtualBpelgEngine extends VirtualEngine {
 	public VirtualBpelgEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new BpelgEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder(
-				getName()));
+		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
 
 	@Override

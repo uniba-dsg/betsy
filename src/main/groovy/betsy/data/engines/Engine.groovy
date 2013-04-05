@@ -6,7 +6,7 @@ import betsy.data.TestSuite;
 abstract class Engine implements EngineAPI {
 
     AntBuilder ant = new AntBuilder()
-	EnginePackageBuilder packageBuilder = new EnginePackageBuilder(getName())
+	EnginePackageBuilder packageBuilder = new EnginePackageBuilder()
 
     String parentFolder
 
