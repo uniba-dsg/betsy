@@ -12,34 +12,34 @@ public class LogfileCollection implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<DataContainer> engineLogfiles = new LinkedList<>();
-	private List<DataContainer> betsyLogfiles = new LinkedList<>();
+	private List<FileMessage> engineLogfiles = new LinkedList<>();
+	private List<FileMessage> betsyLogfiles = new LinkedList<>();
 
-	public void addBetsyLogfile(DataContainer logfile) {
+	public void addBetsyLogfile(FileMessage logfile) {
 		this.betsyLogfiles.add(logfile);
 	}
 
-	public void addBetsyLogfiles(List<DataContainer> logfileCollection) {
-		for (DataContainer logfile : logfileCollection) {
+	public void addBetsyLogfiles(List<FileMessage> logfileCollection) {
+		for (FileMessage logfile : logfileCollection) {
 			this.betsyLogfiles.add(logfile);
 		}
 	}
 
-	public List<DataContainer> getBetsyLogfiles() {
+	public List<FileMessage> getBetsyLogfiles() {
 		return this.betsyLogfiles;
 	}
 
-	public void addEngineLogfile(DataContainer logfile) {
+	public void addEngineLogfile(FileMessage logfile) {
 		this.engineLogfiles.add(logfile);
 	}
 
-	public void addEngineLogfiles(List<DataContainer> logfileCollection) {
-		for (DataContainer logfile : logfileCollection) {
+	public void addEngineLogfiles(List<FileMessage> logfileCollection) {
+		for (FileMessage logfile : logfileCollection) {
 			this.engineLogfiles.add(logfile);
 		}
 	}
 
-	public List<DataContainer> getEngineLogfiles() {
+	public List<FileMessage> getEngineLogfiles() {
 		return this.engineLogfiles;
 	}
 

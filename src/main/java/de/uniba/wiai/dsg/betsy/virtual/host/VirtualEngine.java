@@ -20,7 +20,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
@@ -365,11 +365,11 @@ public abstract class VirtualEngine extends Engine implements
 					betsyLogFolder.mkdir();
 
 					// save to disk...
-					for (DataContainer lf : lfc.getEngineLogfiles()) {
+					for (FileMessage lf : lfc.getEngineLogfiles()) {
 						File f = new File(engineLogFolder, lf.getFilename());
 						FileUtils.writeByteArrayToFile(f, lf.getData());
 					}
-					for (DataContainer lf : lfc.getBetsyLogfiles()) {
+					for (FileMessage lf : lfc.getBetsyLogfiles()) {
 						File f = new File(betsyLogFolder, lf.getFilename());
 						FileUtils.writeByteArrayToFile(f, lf.getData());
 					}

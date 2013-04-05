@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 
@@ -59,9 +59,9 @@ public class LogfileCollector {
 				+ "because the file's data could not be read.");
 	}
 
-	private List<DataContainer> collectBetsyServerLogfiles(
+	private List<FileMessage> collectBetsyServerLogfiles(
 			final File betsyServerInstallDir) throws IOException {
-		List<DataContainer> list = new LinkedList<>();
+		List<FileMessage> list = new LinkedList<>();
 
 		Collection<?> logfiles = FileUtils.listFiles(betsyServerInstallDir,
 				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
@@ -69,8 +69,8 @@ public class LogfileCollector {
 		for (Object o : logfiles) {
 			File file = (File) o;
 			byte[] data = FileUtils.readFileToByteArray(file);
-			Checksum checksum = new Checksum(data);
-			DataContainer lf = new DataContainer(file.getName(), data, checksum);
+			FileMessage lf = new FileMessage(file.getName(), data,
+					Checksum.createChecksum(data));
 			list.add(lf);
 		}
 
@@ -81,9 +81,9 @@ public class LogfileCollector {
 		return list;
 	}
 
-	private List<DataContainer> collectEngineLogfiles(final File engineLogDirectory)
-			throws IOException {
-		List<DataContainer> list = new LinkedList<>();
+	private List<FileMessage> collectEngineLogfiles(
+			final File engineLogDirectory) throws IOException {
+		List<FileMessage> list = new LinkedList<>();
 
 		Collection<?> logfiles = FileUtils.listFiles(engineLogDirectory,
 				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
@@ -91,8 +91,8 @@ public class LogfileCollector {
 		for (Object o : logfiles) {
 			File file = (File) o;
 			byte[] data = FileUtils.readFileToByteArray(file);
-			Checksum checksum = new Checksum(data);
-			DataContainer lf = new DataContainer(file.getName(), data, checksum);
+			FileMessage lf = new FileMessage(file.getName(), data,
+					Checksum.createChecksum(data));
 			list.add(lf);
 		}
 

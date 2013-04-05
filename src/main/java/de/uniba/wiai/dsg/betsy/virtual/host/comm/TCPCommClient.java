@@ -22,7 +22,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DataContainer;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
@@ -248,14 +248,14 @@ public class TCPCommClient implements CommClient {
 				LogfileCollection logfiles = (LogfileCollection) o;
 
 				// validate checksum of engine logs
-				for (DataContainer lf : logfiles.getEngineLogfiles()) {
+				for (FileMessage lf : logfiles.getEngineLogfiles()) {
 					if (!lf.getChecksum().equals(new Checksum(lf.getData()))) {
 						throw new ChecksumException(
 								"Checksum of logfile did not match");
 					}
 				}
 				// validate checksum of betsy logs
-				for (DataContainer lf : logfiles.getBetsyLogfiles()) {
+				for (FileMessage lf : logfiles.getBetsyLogfiles()) {
 					if (!lf.getChecksum().equals(new Checksum(lf.getData()))) {
 						throw new ChecksumException(
 								"Checksum of logfile did not match");
