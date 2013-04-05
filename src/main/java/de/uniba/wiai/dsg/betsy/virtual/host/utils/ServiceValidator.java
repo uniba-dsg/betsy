@@ -18,7 +18,7 @@ public class ServiceValidator {
 
 	private final Logger log = Logger.getLogger(getClass());
 
-	public boolean isEngineReady(final List<ServiceAddress> engineServices,
+	public boolean isEngineReady(final List<String> engineServices,
 			final int secondsToWait) throws MalformedURLException,
 			InterruptedException {
 		if (engineServices.size() <= 0) {
@@ -31,7 +31,7 @@ public class ServiceValidator {
 
 		final CountDownLatch cdl = new CountDownLatch(engineServices.size());
 
-		for (ServiceAddress sa : engineServices) {
+		for (String sa : engineServices) {
 			final URL serviceURL = new URL(sa.toString());
 			new Thread(new Runnable() {
 				@Override
