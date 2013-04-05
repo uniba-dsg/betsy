@@ -25,9 +25,10 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.DownloadException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PermanentFailedTestException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortRedirectException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TestFailedException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TemporaryFailedTestException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.engine.VirtualizedEngineServiceException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineException;
@@ -123,13 +124,11 @@ public abstract class VirtualEngine extends Engine implements
 			this.vm.start(headless);
 			log.debug("...VM started");
 		} catch (PortUsageException exception) {
-			log.error("The VM could not be started properly:", exception);
-			throw new TestFailedException("The VM could not be started "
-					+ "properly:", exception, false);
+			throw new PermanentFailedTestException("The VM could not be "
+					+ "started properly:", exception);
 		} catch (PortRedirectException exception) {
-			log.error("The VM could not be started properly:", exception);
-			throw new TestFailedException("The VM could not be started "
-					+ "properly:", exception, true);
+			throw new TemporaryFailedTestException("The VM could not be "
+					+ "started properly:", exception);
 		}
 
 		// start communication client-part
@@ -142,27 +141,23 @@ public abstract class VirtualEngine extends Engine implements
 			// stop VM before doing anything else
 			shutdown();
 
-			log.error("The VM was started, but the communication to betsy's "
-					+ "server could not be established. Please verify the server "
-					+ "is properly installed.");
-			throw new TestFailedException(
-					"The VM was started, but the communication to betsy's "
-							+ "server could not be established. Please verify "
-							+ "the server is properly installed.", exception,
-					true);
+			throw new TemporaryFailedTestException("The VM was started, but "
+					+ "the communication to betsy's server could not be "
+					+ "established. Please verify the server is properly "
+					+ "installed.", exception);
 		}
 
 		try {
 			comm.sendEngineInformation(getName());
 			log.trace("...engine info sent to bVMS");
 		} catch (ConnectionException exception) {
-			throw new TestFailedException("The VM was started, but the "
-					+ "engine information could not be send properly.",
-					exception, true);
+			throw new TemporaryFailedTestException("The VM was started, but "
+					+ "the engine information could not be send properly.",
+					exception);
 		} catch (InvalidResponseException exception) {
-			throw new TestFailedException("The VM was started, but the "
-					+ "engine information could not be send properly.",
-					exception, false);
+			throw new PermanentFailedTestException("The VM was started, but "
+					+ "the engine information could not be send properly.",
+					exception);
 		}
 
 		log.trace("...startup done!");
@@ -223,18 +218,18 @@ public abstract class VirtualEngine extends Engine implements
 			// PortException: was imported, can be kept in virtualBox
 			// VBServiceException: import can be kept, do NOT delete the VM
 			log.error("The VMs installation could not be processed", exception);
-			throw new TestFailedException("The VMs installation "
-					+ "could not be processed:", exception, false);
+			throw new PermanentFailedTestException("The VMs installation "
+					+ "could not be processed:", exception);
 		} catch (PortRedirectException exception) {
 			log.error("The VMs installation could not be processed", exception);
-			throw new TestFailedException("The VMs installation "
-					+ "could not be processed:", exception, true);
+			throw new TemporaryFailedTestException("The VMs installation "
+					+ "could not be processed:", exception);
 		} catch (InterruptedException exception) {
 			log.error("The VMs installation could not be processed. The "
 					+ "snapshot creation was interrupted:", exception);
-			throw new TestFailedException("The VMs installation "
-					+ "could not be processed. The "
-					+ "snapshot creation was interrupted:", exception, true);
+			throw new TemporaryFailedTestException("The VMs installation "
+					+ "could not be processed. The snapshot creation was "
+					+ "interrupted:", exception);
 		}
 		log.trace("...installation done!");
 	}
@@ -270,14 +265,14 @@ public abstract class VirtualEngine extends Engine implements
 					return;
 				} catch (ChecksumException exception) {
 					if (attemptsLeft <= 0) {
-						throw new TestFailedException(exception, true);
+						throw new TemporaryFailedTestException(exception);
 					}
 				}
 			}
-		} catch (TestFailedException exception) {
+		} catch (TemporaryFailedTestException exception) {
 			try {
 				process.getEngine().storeLogs(process);
-			} catch (TestFailedException exception2) {
+			} catch (TemporaryFailedTestException exception2) {
 				log.info("Could not store logfiles for failed deployment:",
 						exception2);
 			}
@@ -291,14 +286,13 @@ public abstract class VirtualEngine extends Engine implements
 				DeployOperation container = buildDeployContainer(process);
 				comm.sendDeploy(container);
 			} catch (IOException | ConnectionException | DeployException exception) {
-				throw new TestFailedException(exception, true);
+				throw new TemporaryFailedTestException(exception);
 			} catch (InvalidResponseException exception) {
-				throw new TestFailedException(exception, false);
+				throw new PermanentFailedTestException(exception);
 			}
 		} else {
-			throw new TestFailedException("VirtualEngine can only be "
-					+ "deployed if the connection to the server is alive.",
-					true);
+			throw new TemporaryFailedTestException("VirtualEngine can only be "
+					+ "deployed if the connection to the server is alive.");
 		}
 	}
 
@@ -343,10 +337,9 @@ public abstract class VirtualEngine extends Engine implements
 					break;
 				} catch (ChecksumException exception) {
 					if (attempt >= 2) {
-						throw new TestFailedException("Test failed while "
-								+ "collecting the logfiles. There were "
-								+ "repeated checksum exceptions:", exception,
-								true);
+						throw new TemporaryFailedTestException("Test failed "
+								+ "while collecting the logfiles. There were "
+								+ "repeated checksum exceptions:", exception);
 					}
 				}
 			}
@@ -374,18 +367,18 @@ public abstract class VirtualEngine extends Engine implements
 					}
 				}
 			} catch (IOException exception) {
-				throw new TestFailedException("Test failed as we could not "
-						+ "write the resulting logfiles to the disk.",
-						exception, true);
+				throw new TemporaryFailedTestException("Test failed as we "
+						+ "could not write the resulting logfiles to "
+						+ "the disk.", exception);
 			}
 		} catch (CollectLogfileException | ConnectionException exception) {
 			// usually temporary failures --> test can be repeated
-			throw new TestFailedException("Test failed while collecing the "
-					+ "logfiles:", exception, true);
+			throw new TemporaryFailedTestException("Test failed while "
+					+ "collecing the logfiles:", exception);
 		} catch (InvalidResponseException exception) {
 			// permanent failure, maybe incompatible versions
-			throw new TestFailedException("Test failed while collecing the "
-					+ "logfiles:", exception, false);
+			throw new PermanentFailedTestException("Test failed while "
+					+ "collecing the logfiles:", exception);
 		}
 
 		log.trace("...storing logs done!");
@@ -405,7 +398,8 @@ public abstract class VirtualEngine extends Engine implements
 		}
 
 		if (tmpVm.isActive()) {
-			throw new TestFailedException("VirtualMachine is already running.");
+			throw new PermanentFailedTestException("VirtualMachine is "
+					+ "already running.");
 		}
 	}
 
