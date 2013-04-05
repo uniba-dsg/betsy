@@ -115,7 +115,7 @@ public class ClientHandler implements Runnable {
 			deployer = VirtualizedEngineDeployers.build(message);
 			keepRunning = true;
 		}else if (o != null && o instanceof StatusMessage) {
-			String message = (String) o;
+			StatusMessage message = (StatusMessage) o;
 			if (message.equals(StatusMessage.PING)) {
 				// test if connection is alive, respond:
 				sendMessage(StatusMessage.PONG);
