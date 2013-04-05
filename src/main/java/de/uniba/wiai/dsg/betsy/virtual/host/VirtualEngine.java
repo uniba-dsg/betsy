@@ -53,7 +53,7 @@ public abstract class VirtualEngine extends Engine implements
 			throw new IllegalArgumentException("vbc must not be null!");
 		}
 		this.vbController = vbc;
-		this.setPackageBuilder(new VirtualEnginePackageBuilder(getName()));
+		this.setPackageBuilder(new VirtualEnginePackageBuilder());
 		// create communication handler
 		comm = new TCPCommClient("127.0.0.1", 48888);
 	}
