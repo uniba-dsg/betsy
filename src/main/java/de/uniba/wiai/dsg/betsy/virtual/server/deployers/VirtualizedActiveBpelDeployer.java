@@ -22,9 +22,10 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 	@Override
 	public void deploy(DeployOperation container) throws DeployException {
 		try {
-			File file = new File(container.getDeploymentDir(),
-					container.getFilename());
-			FileUtils.writeByteArrayToFile(file, container.getData());
+			File file = new File(container.getDeploymentDir(), container
+					.getFileMessage().getFilename());
+			FileUtils.writeByteArrayToFile(file, container.getFileMessage()
+					.getData());
 		} catch (IOException exception) {
 			throw new DeployException("Couldn't write the container data to "
 					+ "the local disk:", exception);
@@ -55,7 +56,7 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. The operation timed out.");
 		}
-		
+
 		log.info("Deploy catalog found");
 
 		// process is deployed, now wait for verification in logfile

@@ -23,14 +23,14 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 	}
 
 	@Override
-	public void deploy(DeployOperation container) throws DeployException {
+	public void deploy(DeployOperation operation) throws DeployException {
 		// write data to temp dir first
-		File tmpFile = new File("tmp", container.getFilename());
-		createLocalDeployFile(tmpFile, container);
+		File tmpFile = new File("tmp", operation.getFileMessage().getFilename());
+		createLocalDeployFile(tmpFile, operation);
 		log.info("Temporary deploy file written to disk");
 
 		// ant must have been installed for the installation itself
-		File buildFile = new File(container.getDeploymentDir(), "build.xml");
+		File buildFile = new File(operation.getDeploymentDir(), "build.xml");
 		if (!buildFile.exists()) {
 			throw new DeployException("Deployment failed: The build.xml file "
 					+ "of orchestra has not been found at '"
@@ -63,7 +63,8 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 	private void createLocalDeployFile(File tmpFile, DeployOperation container)
 			throws DeployException {
 		try {
-			FileUtils.writeByteArrayToFile(tmpFile, container.getData());
+			FileUtils.writeByteArrayToFile(tmpFile, container.getFileMessage()
+					.getData());
 		} catch (IOException exception) {
 			throw new DeployException("Couldn't write the container data to "
 					+ "the local disk:", exception);
