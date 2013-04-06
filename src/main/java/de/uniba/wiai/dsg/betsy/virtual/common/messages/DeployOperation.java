@@ -17,6 +17,7 @@ public class DeployOperation implements Serializable {
 
 	private Integer deployTimeout;
 	private String deploymentDir;
+	private String deploymentExecutable;
 	private String engineLogDir;
 
 	private FileMessage fileMessage;
@@ -45,6 +46,10 @@ public class DeployOperation implements Serializable {
 		return fileMessage;
 	}
 
+	public String getDeploymentExecutable() {
+		return deploymentExecutable;
+	}
+
 	public void setEngineName(String engineName) {
 		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException("serverType must not be null "
@@ -53,7 +58,8 @@ public class DeployOperation implements Serializable {
 		this.engineName = engineName;
 	}
 
-	public void setBpelFileNameWithoutExtension(String bpelFileNameWithoutExtension) {
+	public void setBpelFileNameWithoutExtension(
+			String bpelFileNameWithoutExtension) {
 		if (StringUtils.isBlank(bpelFileNameWithoutExtension)) {
 			throw new IllegalArgumentException("bpelFileNameWithoutExtension "
 					+ "must not be null or empty");
@@ -87,6 +93,14 @@ public class DeployOperation implements Serializable {
 
 	public void setFileMessage(FileMessage fileMessage) {
 		this.fileMessage = fileMessage;
+	}
+
+	public void setDeploymentExecutable(String deploymentExecutable) {
+		if (StringUtils.isBlank(deploymentExecutable)) {
+			throw new IllegalArgumentException("deploymentExecutable must not "
+					+ "be null or empty");
+		}
+		this.deploymentExecutable = deploymentExecutable;
 	}
 
 }
