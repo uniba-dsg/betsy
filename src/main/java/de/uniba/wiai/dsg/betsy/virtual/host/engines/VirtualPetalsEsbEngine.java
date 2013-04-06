@@ -87,9 +87,8 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	}
 
 	@Override
-	public String getTargetPackageExtension() {
-		// TODO Auto-generated method stub
-		return null;
+	public Path getDeployableFilePath(Process process) {
+		return Paths.get(process.getTargetPackageCompositeFilePath());
 	}
 
 }

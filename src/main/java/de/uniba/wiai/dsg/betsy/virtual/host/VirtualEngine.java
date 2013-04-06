@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Set;
 
@@ -234,8 +233,7 @@ public abstract class VirtualEngine extends Engine implements
 	@Override
 	public DeployOperation buildDeployContainer(Process process)
 			throws IOException {
-		Path path = Paths.get(process
-				.getTargetPackageFilePath(getTargetPackageExtension()));
+		Path path = getDeployableFilePath(process);
 		Path filenamePath = path.getFileName();
 		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
