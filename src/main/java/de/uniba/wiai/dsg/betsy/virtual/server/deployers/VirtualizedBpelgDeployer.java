@@ -45,7 +45,7 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 		}
 
 		// process is deployed, now wait for verification in logfile
-		boolean secondVerification = false;
+		boolean logVerification = false;
 		File catalinaLog = new File(container.getEngineLogfileDir(),
 				"catalina.out");
 		String successMessage = "Deployment successful";
@@ -55,19 +55,19 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 		if (catalinaLog.isFile()) {
 			// verify deployment with engine log. Either until deployment
 			// result or until timeout is reached
-			while (!secondVerification
+			while (!logVerification
 					&& (System.currentTimeMillis() + start < deployTimeout)) {
 				log.debug("try log verification...");
 				try {
 					String fileContent = FileUtils
 							.readFileToString(catalinaLog);
 					// try positive case
-					secondVerification = fileContent.contains(successMessage);
+					logVerification = fileContent.contains(successMessage);
 					// try negative case
-					if (!secondVerification) {
-						secondVerification = fileContent.contains(errorMessage);
+					if (!logVerification) {
+						logVerification = fileContent.contains(errorMessage);
 					}
-					if (!secondVerification) {
+					if (!logVerification) {
 						// not available yet? wait a little...
 						try {
 							Thread.sleep(100);
