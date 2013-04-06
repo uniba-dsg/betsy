@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
-
 import betsy.data.Process;
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 // TODO JavaDoc
 public interface VirtualizedEngineAPI {
@@ -19,7 +19,7 @@ public interface VirtualizedEngineAPI {
 
 	public boolean isVMImported();
 
-	public List<String> getVerifiableServiceAddresses();
+	public List<ServiceAddress> getVerifiableServiceAddresses();
 
 	// TODO change to enginePorts
 	public Set<Integer> getRequiredPorts();
