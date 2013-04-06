@@ -11,6 +11,7 @@ import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualBpelgEngine extends VirtualEngine {
 
@@ -29,9 +30,9 @@ public class VirtualBpelgEngine extends VirtualEngine {
 	}
 
 	@Override
-	public List<String> getVerifiableServiceAddresses() {
-		List<String> saList = new LinkedList<>();
-		saList.add("http://localhost:8080/bpel-g/services");
+	public List<ServiceAddress> getVerifiableServiceAddresses() {
+		List<ServiceAddress> saList = new LinkedList<>();
+		saList.add(new ServiceAddress("http://localhost:8080/bpel-g/services"));
 		return saList;
 	}
 

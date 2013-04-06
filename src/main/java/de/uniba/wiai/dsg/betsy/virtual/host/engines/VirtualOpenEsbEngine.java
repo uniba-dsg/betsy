@@ -12,6 +12,7 @@ import betsy.data.engines.openEsb.OpenEsbEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualOpenEsbEngine extends VirtualEngine {
 
@@ -30,10 +31,10 @@ public class VirtualOpenEsbEngine extends VirtualEngine {
     }
 
     @Override
-	public List<String> getVerifiableServiceAddresses() {
-		List<String> saList = new LinkedList<>();
+	public List<ServiceAddress> getVerifiableServiceAddresses() {
+		List<ServiceAddress> saList = new LinkedList<>();
 		// TODO adapt
-		saList.add("http://localhost:18181/");
+		saList.add(new ServiceAddress("http://localhost:18181/"));
 		return saList;
 	}
 

@@ -1,12 +1,18 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.utils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
@@ -18,7 +24,7 @@ public class ServiceValidator {
 
 	private final Logger log = Logger.getLogger(getClass());
 
-	public boolean isEngineReady(final List<String> engineServices,
+	public boolean isEngineReady(final List<ServiceAddress> engineServices,
 			final int secondsToWait) throws MalformedURLException,
 			InterruptedException {
 		if (engineServices.size() <= 0) {
@@ -31,14 +37,19 @@ public class ServiceValidator {
 
 		final CountDownLatch cdl = new CountDownLatch(engineServices.size());
 
-		for (String sa : engineServices) {
+		for (final ServiceAddress sa : engineServices) {
 			final URL serviceURL = new URL(sa.toString());
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						UrlAvailabilityVerifier.waitUntilAvailable(serviceURL,
-								secondsToWait * 1000);
+						if (sa.isRequiringHtmlContent()) {
+							waitUntilAvailable(serviceURL,
+									sa.getRequiredHtmlContent(),
+									secondsToWait * 1000);
+						} else {
+							waitUntilAvailable(serviceURL, secondsToWait * 1000);
+						}
 						// available and no exception --> decrement
 						cdl.countDown();
 					} catch (TimeoutException e) {
@@ -69,6 +80,99 @@ public class ServiceValidator {
 			}
 		}
 		return false;
+	}
+
+	private void waitUntilAvailable(final URL url, final int timeoutInMs)
+			throws TimeoutException {
+		long start = -System.currentTimeMillis();
+		boolean available = isAddressAvailable(url, 5000);
+		while (!available && (start + System.currentTimeMillis()) < timeoutInMs) {
+			log.trace("Waiting for address '" + url.toString()
+					+ "' to be available");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// ignore
+			}
+			available = isAddressAvailable(url, 5000);
+		}
+
+		if (!available) {
+			throw new TimeoutException("URL '" + url.toString()
+					+ "' is not available, operation timed out.");
+		}
+	}
+
+	private void waitUntilAvailable(final URL url,
+			final String requiredContent, final int timeoutInMs)
+			throws TimeoutException {
+		long start = -System.currentTimeMillis();
+		boolean urlAvailable = isAddressAvailable(url, 5000);
+		while (!urlAvailable
+				&& (start + System.currentTimeMillis()) < timeoutInMs) {
+			log.trace("Waiting for address '" + url.toString()
+					+ "' to be available");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// ignore
+			}
+			urlAvailable = isAddressAvailable(url, 5000);
+		}
+
+		if (!urlAvailable) {
+			throw new TimeoutException("URL '" + url.toString()
+					+ "' is not available, operation timed out.");
+		}
+
+		boolean contentAvailable = isAddressContentAvailable(url,
+				requiredContent, 5000);
+		while (!contentAvailable
+				&& (start + System.currentTimeMillis()) < timeoutInMs) {
+			log.trace("Waiting for content of address'" + url.toString()
+					+ "' to be available");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// ignore
+			}
+			contentAvailable = isAddressContentAvailable(url, requiredContent,
+					5000);
+		}
+
+		if (!contentAvailable) {
+			throw new TimeoutException("Required content of URL '"
+					+ url.toString()
+					+ "' is not available, operation timed out.");
+		}
+
+	}
+
+	private boolean isAddressAvailable(final URL url, int timeout) {
+		try {
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(timeout);
+			int serverResponseCode = conn.getResponseCode();
+			return (200 <= serverResponseCode && serverResponseCode <= 399);
+		} catch (IOException exception) {
+			// ignore exception
+			return false;
+		}
+	}
+
+	private boolean isAddressContentAvailable(final URL url,
+			final String content, int timeout) {
+		try {
+			HttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(url.toString());
+			HttpResponse response = client.execute(request);
+			String html = EntityUtils.toString(response.getEntity());
+			return html.contains(content);
+		} catch (IOException exception) {
+			// ignore exception
+			return false;
+		}
 	}
 
 }

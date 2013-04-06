@@ -32,6 +32,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortRedirectException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.engine.VirtualizedEngineServiceException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualBoxExceptionCode;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceValidator;
 
 //TODO Javadoc
@@ -482,7 +483,7 @@ public class VirtualMachine {
 	}
 
 	public void createRunningSnapshot(final String engineName,
-			final List<String> engineServices,
+			final List<ServiceAddress> engineServices,
 			final Set<Integer> forwardingPorts, final boolean headless)
 			throws VirtualizedEngineServiceException, PortUsageException,
 			PortRedirectException, InterruptedException {

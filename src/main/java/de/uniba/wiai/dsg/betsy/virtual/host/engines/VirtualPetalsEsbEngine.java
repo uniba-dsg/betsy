@@ -12,6 +12,7 @@ import betsy.data.engines.petalsEsb.PetalsEsbEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualPetalsEsbEngine extends VirtualEngine {
 
@@ -30,10 +31,10 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
     }
 
     @Override
-	public List<String> getVerifiableServiceAddresses() {
-		List<String> saList = new LinkedList<>();
+	public List<ServiceAddress> getVerifiableServiceAddresses() {
+		List<ServiceAddress> saList = new LinkedList<>();
 		// TODO adapt to petals
-		saList.add("http://localhost:8084/petals/services");
+		saList.add(new ServiceAddress("http://localhost:8084/petals/services"));
 		return saList;
 	}
 
