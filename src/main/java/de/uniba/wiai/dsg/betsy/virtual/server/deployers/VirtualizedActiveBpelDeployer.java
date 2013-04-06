@@ -35,11 +35,12 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 	@Override
 	public void onPostDeployment(DeployOperation container)
 			throws DeployException {
-		log.info("waiting for the active_bpel_v deployment process to fire");
-
 		boolean fileAvailable = isDeployedFileAvailable(container);
 		long start = -System.currentTimeMillis();
 		int deployTimeout = container.getDeployTimeout();
+
+		log.info("waiting for the active_bpel_v deployment process to fire for "
+				+ deployTimeout + " seconds");
 
 		while (!fileAvailable
 				&& (System.currentTimeMillis() + start < deployTimeout)) {

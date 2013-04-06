@@ -149,7 +149,7 @@ public class ClientHandler implements Runnable {
 						+ "ms");
 				this.sendMessage(StatusMessage.DEPLOYED);
 			} catch (DeployException exception) {
-				log.warn("Deployment failed, notifying client");
+				log.warn("Deployment failed, notifying client:", exception);
 				this.sendMessage(StatusMessage.DEPLOY_FAILED);
 			}
 		} else {

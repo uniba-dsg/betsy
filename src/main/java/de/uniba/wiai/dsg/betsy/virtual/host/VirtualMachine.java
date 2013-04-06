@@ -97,6 +97,7 @@ public class VirtualMachine {
 				session.unlockMachine();
 			} catch (VBoxException exception) {
 				// ignore if was not locked
+				log.warn("Unlocking session after stop vm failed");
 			}
 		}
 	}
@@ -135,6 +136,12 @@ public class VirtualMachine {
 
 	public void kill() {
 		machine.launchVMProcess(session, "emergencystop", null);
+		try {
+			session.unlockMachine();
+		} catch (VBoxException exception) {
+			// ignore if was not locked
+			log.warn("Unlocking session after killing vm failed");
+		}
 	}
 
 	// Running in sense of stoppable
@@ -241,9 +248,9 @@ public class VirtualMachine {
 
 			ISnapshot snapshot = machine.getCurrentSnapshot();
 			if (snapshot == null) {
-				throw new IllegalStateException(
-						"Can't reset the VM to the latest "
-								+ "snapshot if the VM does not have any snapshot.");
+				throw new IllegalStateException("Can't reset the VM to the "
+						+ "latest snapshot if the VM does not have any "
+						+ "snapshot.");
 			}
 
 			IProgress snapshotProgress = console.restoreSnapshot(snapshot);
@@ -258,9 +265,14 @@ public class VirtualMachine {
 					+ machine.getState().toString());
 
 		} finally {
-			if (subSession != null
-					&& subSession.getState().equals(SessionState.Locked)) {
+			if (subSession != null) {
+				try {
 				subSession.unlockMachine();
+				} catch (VBoxException exception) {
+					// ignore if was not locked
+					log.warn("Unlocking subSession after restoration failed:",
+							exception);
+				}
 			}
 		}
 	}
