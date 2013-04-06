@@ -75,7 +75,7 @@ class CompositeSequential extends Composite {
 						}
 					}catch(TemporaryFailedTestException exception) {
 						println("Process ${engine.processes.indexOf(process) + 1} test failed")
-						if(exception.isTestRepeatable() && testCount <= 1) {
+						if(testCount <= 1) {
 							testProcess = true
 							// delete old log output by moving to failed tests
 
@@ -84,7 +84,7 @@ class CompositeSequential extends Composite {
 							ant.mkdir(dir: repeatedDir)
 							ant.move(file: process.targetPath, tofile: destDir, force: true, performGCOnFailedDelete: true)
 
-						}else if(exception.isTestRepeatable() && testCount > 1) {
+						}else if(testCount > 1) {
 							throw new IllegalStateException("Process " +
 							"${engine.processes.indexOf(process) + 1} test " +
 							"failed repeatedly: ", exception);
