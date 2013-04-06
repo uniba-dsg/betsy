@@ -76,7 +76,7 @@ virtualisation {
 			deploymentTimeout = 30
 			logfileDir = "/usr/share/tomcat5.5/logs"
 			headless = true
-			shutdownSaveState = true
+			shutdownSaveState = false
 		}
 
 		bpelg_v {
@@ -87,7 +87,7 @@ virtualisation {
 			deploymentTimeout = 15
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
-			shutdownSaveState = true
+			shutdownSaveState = false
 		}
 
 		ode_v {
@@ -98,7 +98,7 @@ virtualisation {
 			deploymentTimeout = 15
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
-			shutdownSaveState = true
+			shutdownSaveState = false
 		}
 
 		openesb_v {
