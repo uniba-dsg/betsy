@@ -1,14 +1,15 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.engines;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import betsy.data.Process;
 import betsy.data.engines.petalsEsb.PetalsEsbEngine;
+import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
@@ -16,6 +17,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualPetalsEsbEngine extends VirtualEngine {
 
+	private final Configuration config = Configuration.getInstance();
 	private final PetalsEsbEngine defaultEngine;
 
 	public VirtualPetalsEsbEngine(VirtualBoxController vbc) {
@@ -32,8 +34,8 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	@Override
 	public List<ServiceAddress> getVerifiableServiceAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
-		// TODO adapt to petals
-		saList.add(new ServiceAddress("http://localhost:8084/petals/services"));
+		saList.add(new ServiceAddress(
+				"http://localhost:8084/petals/services/listServices"));
 		return saList;
 	}
 
@@ -75,20 +77,21 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	}
 
 	@Override
-	public String getVMLogfileDir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getVMDeploymentDir() {
+		return config.getValueAsString(
+				"virtualisation.engines.petalsesb_v.deploymentDir",
+				"/opt/petalsesb/install");
 	}
 
 	@Override
-	public String getVMDeploymentDir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getVMLogfileDir() {
+		return config.getValueAsString(
+				"virtualisation.engines.petalsesb_v.logfileDir",
+				"/opt/petalsesb/logs");
 	}
 
 	@Override
 	public Path getDeployableFilePath(Process process) {
 		return Paths.get(process.getTargetPackageCompositeFilePath());
 	}
-
 }
