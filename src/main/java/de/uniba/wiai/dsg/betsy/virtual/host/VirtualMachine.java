@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.IConsole;
 import org.virtualbox_4_2.IMachine;
@@ -366,10 +367,10 @@ public class VirtualMachine {
 			Runtime r = Runtime.getRuntime();
 
 			for (Integer port : forwardingPorts) {
+				try {
 				String[] cmd = { vbm.getAbsolutePath(), "modifyvm",
 						machine.getName(), "--natpf1",
 						",tcp,," + port + ",," + port };
-				try {
 					Process proc = r.exec(cmd);
 					InputStream inStr = proc.getInputStream();
 					BufferedReader buff = new BufferedReader(
@@ -488,13 +489,13 @@ public class VirtualMachine {
 			throws VirtualizedEngineServiceException, PortUsageException,
 			PortRedirectException, InterruptedException {
 
-		if (engineName == null || engineName.trim().isEmpty()) {
-			throw new IllegalArgumentException(
-					"The name of the engine to import must not be null or empty");
+		if (StringUtils.isBlank(engineName)) {
+			throw new IllegalArgumentException("The name of the engine to "
+					+ "import must not be blank");
 		}
 		if (engineServices == null || engineServices.isEmpty()) {
-			throw new IllegalArgumentException(
-					"The list of services to verify if a vm has been started must not be null or empty");
+			throw new IllegalArgumentException("The list of services to verify"
+					+ " if a vm has been started must not be null or empty");
 		}
 
 		if (isActive()) {

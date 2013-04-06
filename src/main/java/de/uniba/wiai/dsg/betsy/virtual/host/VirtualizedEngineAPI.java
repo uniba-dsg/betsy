@@ -24,7 +24,7 @@ public interface VirtualizedEngineAPI {
 	// TODO change to enginePorts
 	public Set<Integer> getRequiredPorts();
 
-	// required to forwared the port
+	// required to forward the port
 	public Integer getEndpointPort();
 
 	// TODO
