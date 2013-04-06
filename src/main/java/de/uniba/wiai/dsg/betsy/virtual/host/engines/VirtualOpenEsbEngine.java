@@ -1,5 +1,7 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.engines;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,9 +86,8 @@ public class VirtualOpenEsbEngine extends VirtualEngine {
 	}
 
 	@Override
-	public String getTargetPackageExtension() {
-		// TODO Auto-generated method stub
-		return null;
+	public Path getDeployableFilePath(Process process) {
+		return Paths.get(process.getTargetPackageFilePath("zip"));
 	}
 
 }

@@ -1,6 +1,7 @@
 package de.uniba.wiai.dsg.betsy.virtual.host;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,6 @@ public interface VirtualizedEngineAPI {
 
 	public List<ServiceAddress> getVerifiableServiceAddresses();
 
-	// TODO change to enginePorts
 	public Set<Integer> getRequiredPorts();
 
 	public DeployOperation buildDeployContainer(Process process)
@@ -33,6 +33,6 @@ public interface VirtualizedEngineAPI {
 
 	public Integer getVMDeploymentTimeout();
 
-	public String getTargetPackageExtension();
+	public Path getDeployableFilePath(Process process);
 
 }
