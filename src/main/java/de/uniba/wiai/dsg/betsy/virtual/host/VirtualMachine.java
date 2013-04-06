@@ -483,7 +483,7 @@ public class VirtualMachine {
 
 	public void createRunningSnapshot(final String engineName,
 			final List<String> engineServices,
-			final Set<Integer> forwardingPorts)
+			final Set<Integer> forwardingPorts, final boolean headless)
 			throws VirtualizedEngineServiceException, PortUsageException,
 			PortRedirectException, InterruptedException {
 
@@ -508,8 +508,7 @@ public class VirtualMachine {
 			applyPortForwarding(forwardingPorts);
 
 			// start the VM for the first time
-			// TODO load from config ?
-			this.start(false);
+			this.start(headless);
 
 			final int secondsToWait = config.getValueAsInteger(
 					"virtualisation.engines." + engineName + ".serviceTimeout",

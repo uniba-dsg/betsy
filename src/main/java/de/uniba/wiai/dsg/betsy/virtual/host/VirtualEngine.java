@@ -197,9 +197,13 @@ public abstract class VirtualEngine extends Engine implements
 				this.vm = vbController
 						.getVirtualMachine(getVirtualMachineName());
 				if (!this.vm.hasRunningSnapshot()) {
+					boolean headless = config
+							.getValueAsBoolean("virtualisation.engines."
+									+ getName() + ".headless", false);
 					// need to create a running snapshot
 					this.vm.createRunningSnapshot(getName(),
-							getVerifiableServiceAddresses(), getRequiredPorts());
+							getVerifiableServiceAddresses(),
+							getRequiredPorts(), headless);
 				}
 			}
 
