@@ -27,9 +27,9 @@ class CompositeSequential extends Composite {
 								// build
 								log "${process.targetPath}/build", {
 
-                            log "${process.targetPath}/build_package", {
-                                engine.buildArchives(process)
-                            }
+		                            log "${process.targetPath}/build_package", {
+		                                engine.buildArchives(process)
+		                            }
 
 									log "${process.targetPath}/build_test", {
 										soapui "${process.targetPath}/soapui_generation", {
