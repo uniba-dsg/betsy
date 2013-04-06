@@ -44,17 +44,24 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 		log.debug("Executing now:");
 		log.debug(attributes.toString());
 
+		BufferedReader buff = null;
 		try {
 			Process proc = runtime.exec(attributes);
 			InputStream inStr = proc.getInputStream();
-			BufferedReader buff = new BufferedReader(new InputStreamReader(
-					inStr));
+			buff = new BufferedReader(new InputStreamReader(inStr));
 			String str;
 			log.debug("Console output:");
 			while ((str = buff.readLine()) != null) {
 				log.debug("--:" + str);
 			}
 		} catch (IOException exception) {
+			if (buff != null) {
+				try {
+					buff.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 			throw new DeployException("Deployment failed because of an "
 					+ "unexpected exception:", exception);
 		}
