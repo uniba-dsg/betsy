@@ -17,23 +17,29 @@ public class VirtualOdeEngine extends VirtualEngine {
 
 	private final Configuration config = Configuration.getInstance();
 	private final OdeEngine defaultEngine;
-	
+
 	public VirtualOdeEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OdeEngine();
 		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
-	
-    @Override
-    public String getName() {
-        return "ode_v";
-    }
 
-    @Override
+	@Override
+	public String getName() {
+		return "ode_v";
+	}
+
+	@Override
 	public List<ServiceAddress> getVerifiableServiceAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
 		saList.add(new ServiceAddress("http://localhost:8080/ode"));
 		return saList;
+	}
+
+	@Override
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8080/ode/processes/"
+				+ process.getBpelFileNameWithoutExtension() + "TestInterface";
 	}
 
 	@Override
@@ -42,29 +48,18 @@ public class VirtualOdeEngine extends VirtualEngine {
 		portList.add(8080);
 		return portList;
 	}
-    
-    @Override
-	public Integer getEndpointPort() {
-		return 8080;
-	}
-
-	@Override
-	public String getEndpointPath(Process process) {
-		return "/ode/processes/" + process.getBpelFileNameWithoutExtension()
-				+ "TestInterface";
-	}
 
 	@Override
 	public void buildArchives(Process process) {
 		// use default engine's operations
 		defaultEngine.buildArchives(process);
 	}
-	
+
 	@Override
-    public String getXsltPath() {
-        return "src/main/xslt/"+defaultEngine.getName();
-    }
-	
+	public String getXsltPath() {
+		return "src/main/xslt/" + defaultEngine.getName();
+	}
+
 	@Override
 	public void onPostDeployment() {
 		// not required. deploy is in sync and does not return before engine is
@@ -90,7 +85,7 @@ public class VirtualOdeEngine extends VirtualEngine {
 				"virtualisation.engines.ode_v.logfileDir",
 				"/var/lib/tomcat7/logs");
 	}
-	
+
 	@Override
 	public String getTargetPackageExtension() {
 		return "zip";

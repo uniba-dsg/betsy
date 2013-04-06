@@ -17,20 +17,19 @@ import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 public class VirtualPetalsEsbEngine extends VirtualEngine {
 
 	private final PetalsEsbEngine defaultEngine;
-	private final Logger log = Logger.getLogger(getClass());
-    		
+
 	public VirtualPetalsEsbEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new PetalsEsbEngine();
 		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
 	}
 
-    @Override
-    public String getName() {
-        return "petalsesb_v";
-    }
+	@Override
+	public String getName() {
+		return "petalsesb_v";
+	}
 
-    @Override
+	@Override
 	public List<ServiceAddress> getVerifiableServiceAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
 		// TODO adapt to petals
@@ -46,13 +45,9 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	}
 
 	@Override
-	public Integer getEndpointPort() {
-		return 8084;
-	}
-
-	@Override
-	public String getEndpointPath(Process process) {
-		return "/petals/services/" + process.getBpelFileNameWithoutExtension()
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8084/petals/services/"
+				+ process.getBpelFileNameWithoutExtension()
 				+ "TestInterfaceService";
 	}
 
@@ -61,12 +56,12 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 		// use default engine's operations
 		defaultEngine.buildArchives(process);
 	}
-	
+
 	@Override
-    public String getXsltPath() {
-        return "src/main/xslt/"+defaultEngine.getName();
-    }
-	
+	public String getXsltPath() {
+		return "src/main/xslt/" + defaultEngine.getName();
+	}
+
 	@Override
 	public void onPostDeployment() {
 		// not required. deploy is in sync and does not return before engine is

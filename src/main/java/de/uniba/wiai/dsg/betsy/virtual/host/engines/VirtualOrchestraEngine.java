@@ -44,14 +44,9 @@ public class VirtualOrchestraEngine extends VirtualEngine {
 	}
 
 	@Override
-	public Integer getEndpointPort() {
-		return 8080;
-	}
-
-	@Override
-	public String getEndpointPath(Process process) {
-		return "/orchestra/" + process.getBpelFileNameWithoutExtension()
-				+ "TestInterface";
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8080/orchestra/"
+				+ process.getBpelFileNameWithoutExtension() + "TestInterface";
 	}
 
 	@Override

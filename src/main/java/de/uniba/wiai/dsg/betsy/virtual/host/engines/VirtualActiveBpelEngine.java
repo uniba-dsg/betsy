@@ -40,22 +40,17 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
 	}
 
 	@Override
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8080/active-bpel/services/"
+				+ process.getBpelFileNameWithoutExtension()
+				+ "TestInterfaceService";
+	}
+
+	@Override
 	public Set<Integer> getRequiredPorts() {
 		Set<Integer> portList = new HashSet<>();
 		portList.add(8080);
 		return portList;
-	}
-
-	@Override
-	public Integer getEndpointPort() {
-		return 8080;
-	}
-
-	@Override
-	public String getEndpointPath(Process process) {
-		return "/active-bpel/services/"
-				+ process.getBpelFileNameWithoutExtension()
-				+ "TestInterfaceService";
 	}
 
 	@Override
