@@ -239,11 +239,17 @@ public abstract class VirtualEngine extends Engine implements
 		Path filenamePath = path.getFileName();
 		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
-		DeployOperation container = new DeployOperation(filename,
-				process.getBpelFileNameWithoutExtension(), data, getName(),
-				getVMDeploymentTimeout(), getVMDeploymentDir(),
-				getVMLogfileDir(), Checksum.createChecksum(data));
-		return container;
+		
+		DeployOperation operation = new DeployOperation();
+		FileMessage fm = new FileMessage(filename, data);
+		operation.setFileMessage(fm);
+		operation.setEngineName(getName());
+		operation.setBpelFileNameWithoutExtension(process.getBpelFileNameWithoutExtension());
+		operation.setEngineLogDir(getVMLogfileDir());
+		operation.setDeploymentDir(getVMDeploymentDir());
+		operation.setDeployTimeout(getVMDeploymentTimeout());
+		
+		return operation;
 	}
 
 	@Override
