@@ -33,7 +33,9 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
 	public List<ServiceAddress> getVerifiableServiceAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
 		saList.add(new ServiceAddress(
-				"http://localhost:8080/active-bpel/services", "Running"));
+				"http://localhost:8080/active-bpel/services"));
+		saList.add(new ServiceAddress("http://localhost:8080/BpelAdmin/",
+				"Running"));
 		return saList;
 	}
 
