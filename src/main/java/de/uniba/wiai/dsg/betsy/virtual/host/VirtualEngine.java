@@ -294,25 +294,6 @@ public abstract class VirtualEngine extends Engine implements
 	}
 
 	@Override
-	public abstract Integer getEndpointPort();
-
-	@Override
-	public abstract String getEndpointPath(Process process);
-
-	private String getEndpointHost() {
-		return "http://localhost:" + getEndpointPort();
-	}
-
-	@Override
-	public String getEndpointUrl(Process process) {
-		String host = getEndpointHost();
-		String path = getEndpointPath(process);
-		host = host.endsWith("/") ? host.substring(0, host.length() - 1) : host;
-		path = path.startsWith("/") ? path : "/" + path;
-		return host + path;
-	}
-
-	@Override
 	public void storeLogs(Process process) {
 		log.debug("Store logs for engine " + getName() + " ...");
 		try {

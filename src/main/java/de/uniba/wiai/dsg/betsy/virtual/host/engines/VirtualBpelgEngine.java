@@ -44,13 +44,9 @@ public class VirtualBpelgEngine extends VirtualEngine {
 	}
 
 	@Override
-	public Integer getEndpointPort() {
-		return 8080;
-	}
-
-	@Override
-	public String getEndpointPath(Process process) {
-		return "/bpel-g/services/" + process.getBpelFileNameWithoutExtension()
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8080/bpel-g/services/"
+				+ process.getBpelFileNameWithoutExtension()
 				+ "TestInterfaceService";
 	}
 
@@ -90,7 +86,7 @@ public class VirtualBpelgEngine extends VirtualEngine {
 				"virtualisation.engines.bpelg_v.logfileDir",
 				"/var/lib/tomcat7/logs");
 	}
-	
+
 	@Override
 	public String getTargetPackageExtension() {
 		return "zip";

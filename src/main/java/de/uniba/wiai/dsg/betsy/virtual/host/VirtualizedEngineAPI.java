@@ -24,12 +24,6 @@ public interface VirtualizedEngineAPI {
 	// TODO change to enginePorts
 	public Set<Integer> getRequiredPorts();
 
-	// required to forward the port
-	public Integer getEndpointPort();
-
-	// TODO
-	public String getEndpointPath(Process process);
-
 	public DeployOperation buildDeployContainer(Process process)
 			throws IOException;
 
