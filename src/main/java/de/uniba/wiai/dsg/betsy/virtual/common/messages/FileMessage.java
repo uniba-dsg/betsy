@@ -19,8 +19,7 @@ public class FileMessage implements Serializable {
 	private final String filename;
 	private final Checksum checksum;
 
-	public FileMessage(final String filename, final byte[] data,
-			final Checksum checksum) {
+	public FileMessage(final String filename, final byte[] data) {
 		if (StringUtils.isBlank(filename)) {
 			throw new IllegalArgumentException(
 					"filename must not be null or empty");
@@ -28,7 +27,7 @@ public class FileMessage implements Serializable {
 
 		this.filename = filename;
 		this.data = Objects.requireNonNull(data);
-		this.checksum = Objects.requireNonNull(checksum);
+		this.checksum = Checksum.createChecksum(data);
 	}
 
 	public byte[] getData() {

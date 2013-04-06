@@ -71,8 +71,7 @@ public class LogfileCollector {
 		for (Object o : logfiles) {
 			File file = (File) o;
 			byte[] data = FileUtils.readFileToByteArray(file);
-			FileMessage lf = new FileMessage(file.getName(), data,
-					Checksum.createChecksum(data));
+			FileMessage lf = new FileMessage(file.getName(), data);
 			list.add(lf);
 		}
 
@@ -93,8 +92,7 @@ public class LogfileCollector {
 		for (Object o : logfiles) {
 			File file = (File) o;
 			byte[] data = FileUtils.readFileToByteArray(file);
-			FileMessage lf = new FileMessage(file.getName(), data,
-					Checksum.createChecksum(data));
+			FileMessage lf = new FileMessage(file.getName(), data);
 			list.add(lf);
 		}
 
