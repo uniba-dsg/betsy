@@ -110,7 +110,7 @@ virtualisation {
 			deploymentTimeout = 15
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
 			headless = true
-			shutdownSaveState = true
+			shutdownSaveState = false
 		}
 
 		orchestra_v {
@@ -138,20 +138,4 @@ virtualisation {
 
 		}
 	}
-}
-
-test_setup {
-	run_ode = false
-	run_bpelg = false
-	run_activebpel = false
-	run_orchestra = false
-	run_openesb = false
-	run_petalsesb = false
-
-	run_ode_virtualized = false 
-	run_bpelg_virtualized = false
-	run_activebpel_virtualized = false
-	run_orchestra_virtualized = false
-	run_openesb_virtualized = false
-	run_petalsesb_virtualized = false
 }
