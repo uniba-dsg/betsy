@@ -105,6 +105,12 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-openesb_v.tar.bz2"
 			serviceTimeout = 300
 			mac = "08:00:27:ce:1e:55"
+
+			deploymentExecutable = "/opt/openesb/glassfish/bin/asadmin"
+			deploymentTimeout = 15
+			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
+			headless = true
+			shutdownSaveState = true
 		}
 
 		orchestra_v {
@@ -123,6 +129,13 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-petalsesb_v.tar.bz2"
 			serviceTimeout = 300
 			mac = "08:00:27:eb:f4:c8"
+
+			deploymentDir = "/opt/petalsesb/install"
+			deploymentTimeout = 15
+			logfileDir = "/opt/petalsesb/logs"
+			headless = true
+			shutdownSaveState = false
+
 		}
 	}
 }
