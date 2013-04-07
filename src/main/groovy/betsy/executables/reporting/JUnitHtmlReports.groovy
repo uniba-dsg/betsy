@@ -19,7 +19,7 @@ class JUnitHtmlReports {
             arg(value: "ant")
         }
 
-        ant.exec(executable: "ant", dir: tests.path, osfamily: "unix")
+        ant.exec(executable: "ant", dir: path, osfamily: "unix")
     }
 
     private String createAntReportFile() {

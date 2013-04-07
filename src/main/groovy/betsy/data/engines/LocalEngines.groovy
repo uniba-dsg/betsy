@@ -39,7 +39,7 @@ class LocalEngines {
 		LocalEngine engine = availableEngines().find {it.name == name}
 
 		if (engine == null) {
-			throw new IllegalArgumentException("passed local engine $name does not exist")
+			throw new IllegalArgumentException("LocalEngine $name does not exist")
 		} else {
 			return engine
 		}

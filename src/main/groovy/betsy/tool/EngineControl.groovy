@@ -1,6 +1,6 @@
-package betsy;
+package betsy.tool;
 
-import betsy.data.engines.Engine;
+import betsy.data.engines.EngineAPI;
 import betsy.data.engines.LocalEngines;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class EngineControl extends JFrame {
 
-	private final List<Engine> engines;
+	private final List<EngineAPI> engines;
 
 	public static void main(String[] args) {
 		new EngineControl().setVisible(true);
@@ -23,12 +23,12 @@ public class EngineControl extends JFrame {
 		this.setLayout(new GridLayout(engines.size() + 1,4,0,10));
 		this.setSize(400, 300);
 		this.setTitle("Engine Control Center");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
 
-		for (Engine tmpEngine : engines) {
-            final Engine engine = tmpEngine;
+		for (EngineAPI tmpEngine : engines) {
+            final EngineAPI engine = tmpEngine;
 
 			add(new JLabel(engine.getName()));
 
@@ -79,7 +79,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Engine engine : engines) {
+				for (final EngineAPI engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.install();
@@ -95,7 +95,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Engine engine : engines) {
+				for (final EngineAPI engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.startup();
@@ -110,7 +110,7 @@ public class EngineControl extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Engine engine : engines) {
+				for (final EngineAPI engine : engines) {
 					new Thread() {
 						public void run() {
 							engine.shutdown();

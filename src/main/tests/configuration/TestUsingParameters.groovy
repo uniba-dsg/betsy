@@ -35,7 +35,7 @@ class TestUsingParameters {
 		}
 
 		if (options.s) {
-			println "Skipping reinstalling engine for each process test"
+			println "Skipping reinstallation of engine for each process test"
 		} else {
 			println "Reinstalling engine per process test"
 		}
@@ -46,21 +46,28 @@ class TestUsingParameters {
 		}
 
 		try {
-			List<Object> engines;
-			if(options.v) {
-				verifyVirtualizedTestingConfiguration()
-				// start now and stop after tests are finished
-				triggerVirtualBoxWebService()
+			List<Object> engines = null;
+			List<Process> processes = null;
+			try {
+				if(options.v) {
+					verifyVirtualizedTestingConfiguration()
+					// start now and stop after tests are finished
+					triggerVirtualBoxWebService()
 
-				engines = parseVirtualizedEngines(options.arguments() as String[]).unique()
-				println "Virtualized-Engines: ${engines.collect {it.name}}"
-			}else {
-				// default testing
-				engines = parseLocalEngines(options.arguments() as String[]).unique()
-				println "Local-Engines: ${engines.collect {it.name}}"
-			}
+					engines = parseVirtualizedEngines(options.arguments() as String[]).unique()
+					println "Virtualized-Engines: ${engines.collect {it.name}}"
+				}else {
+					// default testing
+					engines = parseLocalEngines(options.arguments() as String[]).unique()
+					println "Local-Engines: ${engines.collect {it.name}}"
+				}
+				processes = parseProcesses(options.arguments() as String[]).unique()
+			} catch (Exception e) {
+	            println "----------------------"
+	            println "ERROR - ${e.message} - Did you misspell the name?"
+	            System.exit(0)
+	        }
 
-			List<Process> processes = parseProcesses(options.arguments() as String[]).unique()
 			println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
 
 			if (options.s) {
