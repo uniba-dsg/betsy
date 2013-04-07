@@ -174,11 +174,7 @@ public class ClientHandler implements Runnable {
 			ConnectionException {
 		log.debug("RCV statusMessage: " + sm.toString());
 
-		if (sm.equals(StatusMessage.REQUEST_IP)) {
-			log.debug("Connected client has IP: "
-					+ this.socket.getInetAddress().getHostAddress());
-			this.sendMessage(this.socket.getInetAddress());
-		} else if (sm.equals(StatusMessage.EXIT)) {
+		if (sm.equals(StatusMessage.EXIT)) {
 			// close connection --> quit while loop
 			this.close();
 		} else {

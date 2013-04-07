@@ -181,35 +181,6 @@ public class TCPCommClient implements CommClient {
 	}
 
 	@Override
-	public InetAddress getIpAddressFromServer()
-			throws InvalidResponseException, ConnectionException {
-		try {
-			// send the request
-			this.sendMessage(StatusMessage.REQUEST_IP);
-
-			// receive the answer
-			Object o = ois.readObject();
-			if (o instanceof InetAddress) {
-				log.debug("InetAddress received!");
-				return (InetAddress) o;
-			} else {
-				throw new InvalidResponseException(
-						"Invalid response received upon IP request: '"
-								+ o.getClass().toString() + "'");
-			}
-		} catch (IOException exception) {
-			throw new ConnectionException(
-					"Connection error in client while requesting IP address answer",
-					exception);
-		} catch (ClassNotFoundException exception) {
-			throw new InvalidResponseException(
-					"Invalid response received upon IP request: class could not be found'",
-					exception);
-		}
-
-	}
-
-	@Override
 	public LogfileCollection getLogfilesFromServer(
 			final String betsyInstallDir, final String engineInstallDir)
 			throws ChecksumException, ConnectionException,

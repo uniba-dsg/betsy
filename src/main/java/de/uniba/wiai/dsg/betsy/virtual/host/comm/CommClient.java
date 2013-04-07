@@ -1,7 +1,6 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.comm;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
@@ -29,9 +28,6 @@ public interface CommClient {
 	public void sendEngineInformation(final String engineName)
 			throws InvalidResponseException, ConnectionException;
 
-	public InetAddress getIpAddressFromServer()
-			throws InvalidResponseException, ConnectionException;
-	
 	public void disconnect();
 	
 	public boolean isConnected();

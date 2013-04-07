@@ -12,8 +12,6 @@ public enum StatusMessage {
 	DEPLOY_FAILED("DEPLOY_FAILED"),
 	// essential to know when start testing
 	DEPLOYED("DEPLOYED"),
-	// client wants to get the IP Address the server is connected to
-	REQUEST_IP("REQUEST_IP"),
 	// exit connection
 	EXIT("EXIT"),
 	//
