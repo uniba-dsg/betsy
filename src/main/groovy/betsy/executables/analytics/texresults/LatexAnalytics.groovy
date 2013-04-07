@@ -14,7 +14,8 @@ class LatexAnalytics {
 
     void toLatexReport(String filename) {
         def engine = new SimpleTemplateEngine()
-        def template = engine.createTemplate(new File("src\\main\\groovy\\betsy\\executables\\analytics\\texresults\\LatexAnalytics.template").text).make([
+		File file = new File("src" + File.separator + "main" + File.separator + "groovy" + File.separator + "betsy" + File.separator + "executables" + File.separator + "analytics" + File.separator + "texresults" + File.separator + "LatexAnalytics.template")
+        def template = engine.createTemplate(file.text).make([
                 "report": report
         ])
 

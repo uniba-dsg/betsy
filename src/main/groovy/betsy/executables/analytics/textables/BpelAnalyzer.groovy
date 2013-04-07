@@ -18,7 +18,8 @@ class BpelAnalyzer {
         Process process = getProcess(name)
 
         def engine = new SimpleTemplateEngine()
-        def template = engine.createTemplate(new File("src\\main\\groovy\\betsy\\executables\\analytics\\textables\\BpelAnalyzer.template").text).make([
+		File file = new File("src" + File.separator + "main" + File.separator + "groovy" + File.separator + "betsy" + File.separator + "executables" + File.separator + "analytics" + File.separator + "textables" + File.separator + "BpelAnalyzer.template")
+        def template = engine.createTemplate(file.text).make([
                 "process": process,
                 "name": process.getBpelFileNameWithoutExtension(),
                 "resultString": resultString,
