@@ -238,15 +238,10 @@ public class VirtualMachine {
 			log.debug("Resetting " + machine.getName() + " to latest snapshot");
 
 			IConsole console = null;
-			// if (machine.getSessionState().equals(SessionState.Unlocked)
-			// || machine.getSessionState().equals(SessionState.Unlocking)) {
 			log.info("Using subSession now");
 			subSession = vbManager.getSessionObject();
 			machine.lockMachine(subSession, LockType.Write);
 			console = subSession.getConsole();
-			// } else {
-			// console = session.getConsole();
-			// }
 
 			ISnapshot snapshot = machine.getCurrentSnapshot();
 			if (snapshot == null) {
