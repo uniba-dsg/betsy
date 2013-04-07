@@ -14,12 +14,7 @@ import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedPetalsEsbDepl
 
 public class VirtualizedEngineDeployers {
 
-	/**
-	 * Returns a list of all available deployable engines.
-	 * 
-	 * @return a list of all available deployable engines
-	 */
-	public static List<VirtualizedEngineDeployer> availableEngines() {
+	private static List<VirtualizedEngineDeployer> availableEngines() {
 		LinkedList<VirtualizedEngineDeployer> deployers = new LinkedList<>();
 		deployers.add(new VirtualizedActiveBpelDeployer());
 		deployers.add(new VirtualizedBpelgDeployer());
@@ -31,13 +26,13 @@ public class VirtualizedEngineDeployers {
 	}
 
 	/**
-	 * Find a virtualized engine by name.
+	 * Find the deployer for the virtualized engine by it's name.
 	 * 
 	 * @param name
 	 *            the name of a virtualized engine
-	 * @return the virtualized engine if it can be found
+	 * @return the deployer of the virtualized engine if it can be found
 	 * @throws IllegalArgumentException
-	 *             if the virtualized engine can not be found
+	 *             if the virtualized engine's deployer can not be found
 	 */
 	public static VirtualizedEngineDeployer build(final String name) {
 		if (StringUtils.isBlank(name)) {
@@ -54,14 +49,6 @@ public class VirtualizedEngineDeployers {
 		// no engine with matching name found
 		throw new IllegalArgumentException("passed deployer " + namet
 				+ " does not exist");
-	}
-
-	public static List<VirtualizedEngineDeployer> build(List<String> names) {
-		List<VirtualizedEngineDeployer> deployers = new LinkedList<>();
-		for (String name : names) {
-			deployers.add(VirtualizedEngineDeployers.build(name));
-		}
-		return deployers;
 	}
 
 }
