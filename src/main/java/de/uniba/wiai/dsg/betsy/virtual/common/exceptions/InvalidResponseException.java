@@ -1,30 +1,40 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.exceptions;
 
+/**
+ * The {@link InvalidResponseException} is thrown if the response on a
+ * communication request is unexpected. This means another answer (object type)
+ * has been expected.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class InvalidResponseException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public InvalidResponseException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public InvalidResponseException(String message) {
+	public InvalidResponseException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public InvalidResponseException(Throwable cause) {
+	public InvalidResponseException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public InvalidResponseException(String message, Throwable cause) {
+	public InvalidResponseException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public InvalidResponseException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public InvalidResponseException(final String message,
+			final Throwable cause, final boolean enableSuppression,
+			final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

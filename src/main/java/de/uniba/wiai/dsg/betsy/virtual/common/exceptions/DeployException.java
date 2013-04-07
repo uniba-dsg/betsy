@@ -1,31 +1,40 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.exceptions;
 
-//TODO JAVADOC
+import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
+
+/**
+ * The {@link DeployException} is thrown if the deployment of a
+ * {@link DeployOperation} failed.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class DeployException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DeployException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public DeployException(String message) {
+	public DeployException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public DeployException(Throwable cause) {
+	public DeployException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public DeployException(String message, Throwable cause) {
+	public DeployException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public DeployException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public DeployException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

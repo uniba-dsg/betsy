@@ -1,25 +1,41 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive;
 
-//TODO Javadoc
+/**
+ * The {@link ArchiveContentException} is thrown if an Archive could not be
+ * extracted properly. Causes can be interruptions, incomplete files or even a
+ * CRC failure.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ArchiveExtractionException extends ArchiveException {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ArchiveExtractionException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public ArchiveExtractionException(String s) {
-		super(s);
-		// TODO Auto-generated constructor stub
+	public ArchiveExtractionException(final String message) {
+		super(message);
 	}
 
-	public ArchiveExtractionException(Throwable cause) {
+	public ArchiveExtractionException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveExtractionException(String message, Throwable cause) {
+	public ArchiveExtractionException(final String message,
+			final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
+	}
+
+	public ArchiveExtractionException(final String message,
+			final Throwable cause, final boolean enableSuppression,
+			final boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 }

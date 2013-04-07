@@ -1,31 +1,39 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.exceptions;
 
-//TODO JAVADOC
+/**
+ * The {@link ChecksumException} is thrown if the comparison of the received and
+ * the expected data failed. Differences could be caused by network transport
+ * errors or similar operations.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ChecksumException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ChecksumException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public ChecksumException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public ChecksumException(final String message) {
+		super(message);
 	}
 
-	public ChecksumException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public ChecksumException(final Throwable cause) {
+		super(cause);
 	}
 
-	public ChecksumException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public ChecksumException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
-	public ChecksumException(String arg0, Throwable arg1, boolean arg2,
-			boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
-		// TODO Auto-generated constructor stub
+	public ChecksumException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 }

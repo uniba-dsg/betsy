@@ -1,5 +1,12 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions;
 
+/**
+ * The {@link PortUsageException} is thrown if a required port is already used
+ * by another application.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class PortUsageException extends Exception {
 
 	/**
@@ -8,28 +15,24 @@ public class PortUsageException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public PortUsageException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public PortUsageException(String message) {
+	public PortUsageException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public PortUsageException(Throwable cause) {
+	public PortUsageException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public PortUsageException(String message, Throwable cause) {
+	public PortUsageException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public PortUsageException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public PortUsageException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

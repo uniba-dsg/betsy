@@ -1,30 +1,40 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm;
 
-public class VirtualMachineNotFoundException extends VirtualMachineException {
+/**
+ * The {@link VirtualMachineNotFoundException} is thrown if the VirtualBox
+ * instance did not contain a virtual machine with the requested name or uuid.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
+public class VirtualMachineNotFoundException extends Exception {
+
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public VirtualMachineNotFoundException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public VirtualMachineNotFoundException(String message) {
+	public VirtualMachineNotFoundException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public VirtualMachineNotFoundException(Throwable cause) {
+	public VirtualMachineNotFoundException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public VirtualMachineNotFoundException(String message, Throwable cause) {
+	public VirtualMachineNotFoundException(final String message,
+			final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public VirtualMachineNotFoundException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public VirtualMachineNotFoundException(final String message,
+			final Throwable cause, final boolean enableSuppression,
+			final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -1,25 +1,38 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions;
 
-//TODO JavaDoc
+/**
+ * The {@link DownloadException} is thrown if downloading a file, usually from a
+ * remote source, failed.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class DownloadException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DownloadException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public DownloadException(String s) {
-		super(s);
-		// TODO Auto-generated constructor stub
+	public DownloadException(final String message) {
+		super(message);
 	}
 
-	public DownloadException(Throwable cause) {
+	public DownloadException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public DownloadException(String message, Throwable cause) {
+	public DownloadException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
+	}
+
+	public DownloadException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 }

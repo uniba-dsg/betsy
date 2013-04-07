@@ -1,31 +1,38 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive;
 
-//TODO Javadoc
+/**
+ * The {@link ArchiveContentException} is thrown if the archive did not contain
+ * a valid appliance that could be imported by VirtualBox.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ArchiveContentException extends ArchiveException {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ArchiveContentException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public ArchiveContentException(String message) {
+	public ArchiveContentException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveContentException(Throwable cause) {
+	public ArchiveContentException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveContentException(String message, Throwable cause) {
+	public ArchiveContentException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveContentException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public ArchiveContentException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

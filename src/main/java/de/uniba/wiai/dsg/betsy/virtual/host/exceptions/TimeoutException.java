@@ -1,30 +1,38 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions;
 
+/**
+ * The {@link TimeoutException} is thrown if an operation could not be performed
+ * in the given time.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class TimeoutException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TimeoutException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public TimeoutException(String message) {
+	public TimeoutException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public TimeoutException(Throwable cause) {
+	public TimeoutException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public TimeoutException(String message, Throwable cause) {
+	public TimeoutException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public TimeoutException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public TimeoutException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

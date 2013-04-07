@@ -1,36 +1,39 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.exceptions;
 
-//TODO
+/**
+ * The {@link ConnectionException} is thrown if the connection between a client
+ * and a server is interrupted or even lost.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ * 
+ */
 public class ConnectionException extends Exception {
 
 	/**
-	 * SerialVersioUID.
+	 * SerialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public ConnectionException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public ConnectionException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public ConnectionException(final String message) {
+		super(message);
 	}
 
-	public ConnectionException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public ConnectionException(final Throwable cause) {
+		super(cause);
 	}
 
-	public ConnectionException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public ConnectionException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
-	public ConnectionException(String arg0, Throwable arg1, boolean arg2,
-			boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
-		// TODO Auto-generated constructor stub
+	public ConnectionException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 }

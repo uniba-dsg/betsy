@@ -1,6 +1,14 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions;
 
-//TODO JAVADOC
+import de.uniba.wiai.dsg.betsy.Configuration;
+
+/**
+ * The {@link ConfigurationException} is thrown if the {@link Configuration}
+ * file did not contain mandatory information.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ConfigurationException extends IllegalStateException {
 
 	/**
@@ -9,22 +17,19 @@ public class ConfigurationException extends IllegalStateException {
 	private static final long serialVersionUID = 1L;
 
 	public ConfigurationException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public ConfigurationException(String s) {
-		super(s);
-		// TODO Auto-generated constructor stub
+	public ConfigurationException(final String message) {
+		super(message);
 	}
 
-	public ConfigurationException(Throwable cause) {
+	public ConfigurationException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ConfigurationException(String message, Throwable cause) {
+	public ConfigurationException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 }

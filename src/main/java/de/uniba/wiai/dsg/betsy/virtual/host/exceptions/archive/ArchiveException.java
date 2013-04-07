@@ -1,31 +1,38 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive;
 
-//TODO Javadoc
-public class ArchiveException extends Exception {
+/**
+ * The {@link ArchiveException} groups several errors that can occur if working
+ * with archives.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
+public abstract class ArchiveException extends Exception {
+
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ArchiveException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public ArchiveException(String message) {
+	public ArchiveException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveException(Throwable cause) {
+	public ArchiveException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveException(String message, Throwable cause) {
+	public ArchiveException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public ArchiveException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public ArchiveException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }

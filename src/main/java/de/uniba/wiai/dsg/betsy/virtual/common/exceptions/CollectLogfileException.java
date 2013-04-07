@@ -1,30 +1,38 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.exceptions;
 
+/**
+ * The {@link CollectLogfileException} is thrown if collecting the logfiles from
+ * a server failed.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class CollectLogfileException extends Exception {
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public CollectLogfileException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public CollectLogfileException(String message) {
+	public CollectLogfileException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public CollectLogfileException(Throwable cause) {
+	public CollectLogfileException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public CollectLogfileException(String message, Throwable cause) {
+	public CollectLogfileException(final String message, final Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public CollectLogfileException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	public CollectLogfileException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
 	}
 
 }
