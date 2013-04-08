@@ -9,39 +9,57 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * The {@link VirtualBoxWebService} offers methods to start and stop the
+ * VBoxWebSrv executable of VirtualBox. This service is mandatory for the usage
+ * of the JAXWS that is used by betsy to control the virtual machines.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualBoxWebService {
 
 	private final AntBuilder ant = new AntBuilder();
 	private final Logger log = Logger.getLogger(getClass());
 	private final String path;
 	private Process vboxServiceProcess;
-	
+
 	public VirtualBoxWebService(final String path) {
-		if(StringUtils.isBlank(path)) {
-			throw new IllegalArgumentException("Path to the VBoxWebSrv must not be null or empty!");
+		if (StringUtils.isBlank(path)) {
+			throw new IllegalArgumentException(
+					"Path to the VBoxWebSrv must not be null or empty!");
 		}
 		this.path = path;
 	}
-	
+
+	/**
+	 * Start the VBoxWebSrv and wait 3 seconds to assure it is running.
+	 * 
+	 * @throws IOException
+	 *             thrown if starting the VBoxWebSrv failed
+	 */
 	public void start() throws IOException {
 		// start VBoxService
 		ProcessBuilder pb = new ProcessBuilder(path);
 		vboxServiceProcess = pb.start();
 		// give the webSrv some time to start
 		log.debug("Waiting 3 seconds for the VBoxWebSrv to start...");
-		
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("seconds", 3);
 		ant.invokeMethod("sleep", map);
-		
+
 		log.debug("...VBoxWebSrv started!");
 	}
-	
+
+	/**
+	 * Destroy the process VBoxWebSrv is running in
+	 */
 	public void stop() {
 		log.debug("Stopping VBoxWebSrv...");
-		if(vboxServiceProcess != null) {
+		if (vboxServiceProcess != null) {
 			vboxServiceProcess.destroy();
 		}
 	}
-	
+
 }

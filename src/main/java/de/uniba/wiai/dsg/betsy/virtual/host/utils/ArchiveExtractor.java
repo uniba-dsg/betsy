@@ -27,13 +27,35 @@ import org.apache.log4j.Logger;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveExtractionException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.UnsupportedArchiveException;
 
-//TODO Javadoc
+/**
+ * The {@link ArchiveExtractor} offers methods to extract a File that represents
+ * an archive. Currently .tar.bz2, .zip and .ova archives are supported.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ArchiveExtractor {
 
 	private Logger log = Logger.getLogger(getClass());
 
+	/**
+	 * Extract the archive into the outputDir. Determine automatically which
+	 * algorithm should be used.
+	 * 
+	 * @param inputFile
+	 *            file to extract
+	 * @param outputDir
+	 *            where to extract the archive to
+	 * @return a {@link List} of all extracted files.
+	 * 
+	 * @throws UnsupportedArchiveException
+	 *             thrown if the file's extension indicated the archive is not
+	 *             supported
+	 * @throws ArchiveExtractionException
+	 *             thrown if the extraction failed
+	 */
 	public List<File> ectractArchive(final File inputFile, final File outputDir)
-			throws UnsupportedArchiveException, IOException, ArchiveExtractionException {
+			throws UnsupportedArchiveException, ArchiveExtractionException {
 		if (inputFile.getAbsolutePath().toLowerCase().endsWith(".tar.bz2")) {
 			return extractTarBz2(inputFile, outputDir);
 		} else if (inputFile.getAbsolutePath().toLowerCase().endsWith(".zip")) {
@@ -48,7 +70,20 @@ public class ArchiveExtractor {
 		}
 	}
 
-	public List<File> extractOva(final File inputFile, final File outputDir) throws ArchiveExtractionException {
+	/**
+	 * Extract the archive into the outputDir.
+	 * 
+	 * @param inputFile
+	 *            file to extract
+	 * @param outputDir
+	 *            where to extract the archive to
+	 * @return a {@link List} of all extracted files.
+	 * 
+	 * @throws ArchiveExtractionException
+	 *             thrown if the extraction failed
+	 */
+	public List<File> extractOva(final File inputFile, final File outputDir)
+			throws ArchiveExtractionException {
 		// validate file ends with .ova
 		if (!inputFile.getAbsolutePath().toLowerCase().endsWith(".ova")) {
 			throw new IllegalArgumentException("invalid archive: "
@@ -70,6 +105,18 @@ public class ArchiveExtractor {
 		}
 	}
 
+	/**
+	 * Extract the archive into the outputDir.
+	 * 
+	 * @param inputFile
+	 *            file to extract
+	 * @param outputDir
+	 *            where to extract the archive to
+	 * @return a {@link List} of all extracted files.
+	 * 
+	 * @throws ArchiveExtractionException
+	 *             thrown if the extraction failed
+	 */
 	public List<File> extractTarBz2(final File inputFile, final File outputDir)
 			throws ArchiveExtractionException {
 		// validate file ends with .tar.bz2
@@ -119,8 +166,20 @@ public class ArchiveExtractor {
 		}
 	}
 
+	/**
+	 * Extract the archive into the outputDir.
+	 * 
+	 * @param inputFile
+	 *            file to extract
+	 * @param outputDir
+	 *            where to extract the archive to
+	 * @return a {@link List} of all extracted files.
+	 * 
+	 * @throws ArchiveExtractionException
+	 *             thrown if the extraction failed
+	 */
 	public List<File> extractZip(final File inputFile, final File outputDir)
-			throws IOException, ArchiveExtractionException {
+			throws ArchiveExtractionException {
 		// validate file ends with .zip
 		if (!inputFile.getAbsolutePath().toLowerCase().endsWith(".zip")) {
 			throw new IllegalArgumentException("invalid archive: "
@@ -128,7 +187,7 @@ public class ArchiveExtractor {
 		}
 		// assure outputDir exists
 		outputDir.mkdirs();
-		
+
 		try {
 			List<File> extractedFiles = new LinkedList<>();
 			ZipFile zf = new ZipFile(inputFile);
@@ -141,8 +200,8 @@ public class ArchiveExtractor {
 
 			return extractedFiles;
 		} catch (IOException exception) {
-			log.error("Exception while extracting .zip archive");
-			throw exception;
+			throw new ArchiveExtractionException(
+					"Exception while extracting .zip archive", exception);
 		}
 	}
 

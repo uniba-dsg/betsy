@@ -120,6 +120,7 @@ public class VirtualMachine {
 				// ignore if was not locked
 			}
 		}
+		log.trace("finished stop method");
 	}
 
 	/**
@@ -179,7 +180,6 @@ public class VirtualMachine {
 			session.unlockMachine();
 		} catch (VBoxException exception) {
 			// ignore if was not locked
-			log.warn("Unlocking session after killing vm failed");
 		}
 	}
 

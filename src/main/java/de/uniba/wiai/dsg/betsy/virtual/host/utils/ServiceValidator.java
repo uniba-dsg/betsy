@@ -15,15 +15,39 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import betsy.data.engines.Engine;
+
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TimeoutException;
 
+/**
+ * The {@link ServiceValidator} validates a {@link ServiceAddress} and can
+ * therefore determine if an {@link Engine} is ready for usage.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ServiceValidator {
 
 	private final Logger log = Logger.getLogger(getClass());
 
+	/**
+	 * Check whether the {@link Engine} is ready for usage.
+	 * 
+	 * @param engineServices
+	 *            services to verify
+	 * @param secondsToWait
+	 *            maximum time to wait for the services to become available
+	 * @return true if all services are ready, false if not
+	 * 
+	 * @throws MalformedURLException
+	 *             thrown if one of the {@link ServiceAddress} did contain an
+	 *             invalid destination.
+	 * @throws InterruptedException
+	 *             thrown if waiting on the services was interrupted
+	 */
 	public boolean isEngineReady(final List<ServiceAddress> engineServices,
 			final int secondsToWait) throws MalformedURLException,
 			InterruptedException {
@@ -65,6 +89,13 @@ public class ServiceValidator {
 		return cdl.await(secondsToWait, TimeUnit.SECONDS);
 	}
 
+	/**
+	 * Check whether betsys endpoint is ready for usage.
+	 * 
+	 * @param timeoutInMs
+	 *            maximum time to wait for the server
+	 * @return true if the server is available
+	 */
 	public boolean isBetsyServerReady(final int timeoutInMs) {
 		CommClient cc = null;
 		try {

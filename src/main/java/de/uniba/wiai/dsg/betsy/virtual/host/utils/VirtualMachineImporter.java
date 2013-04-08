@@ -24,6 +24,21 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveExtractionException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.UnsupportedArchiveException;
 
+/**
+ * The {@link VirtualMachineImporter} offers several methods to prepare and
+ * finally execute the import of a VirtualBox appliance.<br>
+ * <br>
+ * The default import procedure involves:
+ * <ul>
+ * <li>Download the VM</li>
+ * <li>Extract the archive</li>
+ * <li>Import the Appliance</li>
+ * <li>Cleanup extraction path</li>
+ * </ul>
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualMachineImporter {
 
 	private final Logger log = Logger.getLogger(getClass());
@@ -62,6 +77,15 @@ public class VirtualMachineImporter {
 
 	}
 
+	/**
+	 * Default procedure to import a VirtualMachine.
+	 * 
+	 * @throws ArchiveException
+	 *             thrown if the Archive is corrupted or did not contain the
+	 *             required data
+	 * @throws DownloadException
+	 *             thrown if the download failed
+	 */
 	public void importVirtualMachine() throws ArchiveException,
 			DownloadException {
 		log.debug("Importing " + vmName + "...");
@@ -93,7 +117,7 @@ public class VirtualMachineImporter {
 		// VM's extraction folder must exist
 		if (extractFolder.isDirectory()) {
 			// and must have the required files in it
-			// --> check .ova OR .ovf
+			// --> check for .ova OR .ovf
 			return containsRequiredEngineFiles(extractFolder);
 		}
 		return false;
@@ -158,6 +182,17 @@ public class VirtualMachineImporter {
 		}
 	}
 
+	/**
+	 * Get the appliance file that should be used for the import. This is either
+	 * an .ova or an .ovf file. Nevertheless there must be only one appliance
+	 * file within the folder. If there is more than one file, we can't decide
+	 * which one to take.
+	 * 
+	 * @return the appliance file to use
+	 * @throws ArchiveContentException
+	 *             thrown if there was either none or there were more than one
+	 *             appliance files
+	 */
 	public File getVBoxImportFile() throws ArchiveContentException {
 		// return either .ova OR .ovf file
 		File vmDir = getEngineExtractPath();
@@ -196,7 +231,7 @@ public class VirtualMachineImporter {
 		}
 
 		if (!correctExtraction) {
-			log.debug("Extract " + vmName + "...");
+			log.debug("Extracting " + vmName + "...");
 			// extract
 			List<File> extractedFiles = new LinkedList<>();
 			try {
@@ -297,7 +332,8 @@ public class VirtualMachineImporter {
 				}
 			}
 		} else {
-			log.info("Archive was not wrapped into folder, now move all file into VM's subdir");
+			log.trace("Archive was not wrapped into folder, now move all "
+					+ "files into VM's subdir");
 			// no wrapping Folder --> must be moved to engine folder
 			File eVmFolder = getEngineExtractPath();
 			eVmFolder.mkdirs();
@@ -320,9 +356,7 @@ public class VirtualMachineImporter {
 
 	private void executeDownload() throws DownloadException {
 		if (!isDownloaded()) {
-			log.debug(String.format("VM '%s' is not downloaded yet.", vmName));
-
-			log.debug("Download " + vmName + "...");
+			log.debug("Downloading " + vmName + "...");
 			// download
 			try {
 				try {
@@ -342,5 +376,4 @@ public class VirtualMachineImporter {
 			log.trace("...download finished!");
 		}
 	}
-
 }
