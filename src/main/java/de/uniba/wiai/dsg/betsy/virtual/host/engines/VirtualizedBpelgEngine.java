@@ -8,44 +8,34 @@ import java.util.List;
 import java.util.Set;
 
 import betsy.data.Process;
-import betsy.data.engines.activeBpel.ActiveBpelEngine;
+import betsy.data.engines.bpelg.BpelgEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
-public class VirtualActiveBpelEngine extends VirtualEngine {
+public class VirtualizedBpelgEngine extends VirtualizedEngine {
 
-	private final ActiveBpelEngine defaultEngine;
 	private final Configuration config = Configuration.getInstance();
+	private final BpelgEngine defaultEngine;
 
-	public VirtualActiveBpelEngine(VirtualBoxController vbc) {
+	public VirtualizedBpelgEngine(VirtualBoxController vbc) {
 		super(vbc);
-		this.defaultEngine = new ActiveBpelEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
+		this.defaultEngine = new BpelgEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualizedEnginePackageBuilder());
 	}
 
 	@Override
 	public String getName() {
-		return "active_bpel_v";
+		return "bpelg_v";
 	}
 
 	@Override
 	public List<ServiceAddress> getVerifiableServiceAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
-		saList.add(new ServiceAddress(
-				"http://localhost:8080/active-bpel/services"));
-		saList.add(new ServiceAddress("http://localhost:8080/BpelAdmin/",
-				"Running"));
+		saList.add(new ServiceAddress("http://localhost:8080/bpel-g/services"));
 		return saList;
-	}
-
-	@Override
-	public String getEndpointUrl(Process process) {
-		return "http://localhost:8080/active-bpel/services/"
-				+ process.getBpelFileNameWithoutExtension()
-				+ "TestInterfaceService";
 	}
 
 	@Override
@@ -53,6 +43,13 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
 		Set<Integer> portList = new HashSet<>();
 		portList.add(8080);
 		return portList;
+	}
+
+	@Override
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8080/bpel-g/services/"
+				+ process.getBpelFileNameWithoutExtension()
+				+ "TestInterfaceService";
 	}
 
 	@Override
@@ -81,19 +78,19 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
 	@Override
 	public String getVMDeploymentDir() {
 		return config.getValueAsString(
-				"virtualisation.engines.active-bpel_v.deploymentDir",
-				"/usr/share/tomcat5.5/bpr");
+				"virtualisation.engines.bpelg_v.deploymentDir",
+				"/usr/share/tomcat7/bpr");
 	}
 
 	@Override
 	public String getVMLogfileDir() {
 		return config.getValueAsString(
-				"virtualisation.engines.active-bpel_v.logfileDir",
-				"/usr/share/tomcat5.5/logs");
+				"virtualisation.engines.bpelg_v.logfileDir",
+				"/var/lib/tomcat7/logs");
 	}
 
 	@Override
 	public Path getDeployableFilePath(Process process) {
-		return Paths.get(process.getTargetPackageFilePath("bpr"));
+		return Paths.get(process.getTargetPackageFilePath("zip"));
 	}
 }

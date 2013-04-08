@@ -15,19 +15,19 @@ import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
-public class VirtualOpenEsbEngine extends VirtualEngine {
+public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
 	private final Configuration config = Configuration.getInstance();
 	private final OpenEsbEngine defaultEngine;
 
-	public VirtualOpenEsbEngine(VirtualBoxController vbc) {
+	public VirtualizedOpenEsbEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OpenEsbEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
+		this.defaultEngine.setPackageBuilder(new VirtualizedEnginePackageBuilder());
 	}
 
 	@Override

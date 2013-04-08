@@ -35,11 +35,11 @@ import de.uniba.wiai.dsg.betsy.virtual.host.utils.PortVerifier;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.VirtualMachineImporter;
 
 //TODO Javadoc
-public abstract class VirtualEngine extends Engine implements
+public abstract class VirtualizedEngine extends Engine implements
 		VirtualizedEngineAPI {
 
 	public static final String VIRTUAL_NAME_PREFIX = "betsy-";
-	private static final Logger log = Logger.getLogger(VirtualEngine.class);
+	private static final Logger log = Logger.getLogger(VirtualizedEngine.class);
 
 	private final Configuration config = Configuration.getInstance();
 	private final VirtualBoxController vbController;
@@ -47,9 +47,9 @@ public abstract class VirtualEngine extends Engine implements
 
 	private VirtualMachine vm = null;
 
-	public VirtualEngine(VirtualBoxController vbc) {
+	public VirtualizedEngine(VirtualBoxController vbc) {
 		this.vbController = Objects.requireNonNull(vbc);
-		this.setPackageBuilder(new VirtualEnginePackageBuilder());
+		this.setPackageBuilder(new VirtualizedEnginePackageBuilder());
 		// create communication handler
 		comm = new TCPCommClient("127.0.0.1", 48888);
 	}
@@ -395,7 +395,7 @@ public abstract class VirtualEngine extends Engine implements
 			return false;
 		}
 
-		VirtualEngine engine = (VirtualEngine) o;
+		VirtualizedEngine engine = (VirtualizedEngine) o;
 
 		if (getName() != engine.getName()) {
 			return false;

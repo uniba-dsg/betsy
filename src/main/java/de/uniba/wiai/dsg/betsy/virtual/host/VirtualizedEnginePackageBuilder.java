@@ -9,12 +9,12 @@ import betsy.data.Process;
 import betsy.data.engines.EnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.Configuration;
 
-public class VirtualEnginePackageBuilder extends EnginePackageBuilder {
+public class VirtualizedEnginePackageBuilder extends EnginePackageBuilder {
 
 	private final AntBuilder ant = new AntBuilder();
 	private final Configuration config = Configuration.getInstance();
 
-	public VirtualEnginePackageBuilder() {
+	public VirtualizedEnginePackageBuilder() {
 		super();
 	}
 

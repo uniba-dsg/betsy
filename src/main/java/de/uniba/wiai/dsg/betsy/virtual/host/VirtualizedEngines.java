@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualActiveBpelEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualBpelgEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualOdeEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualOpenEsbEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualOrchestraEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualPetalsEsbEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualizedActiveBpelEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualizedBpelgEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualizedOdeEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualizedOpenEsbEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualizedOrchestraEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.engines.VirtualizedPetalsEsbEngine;
 
 public class VirtualizedEngines {
 
@@ -19,17 +19,17 @@ public class VirtualizedEngines {
 	 * 
 	 * @return a list of all available virtualized engines
 	 */
-	public static List<VirtualEngine> availableEngines() {
+	public static List<VirtualizedEngine> availableEngines() {
 		VirtualBoxController vbc = new VirtualBoxController();
 		vbc.init();
 
-		LinkedList<VirtualEngine> engines = new LinkedList<>();
-		engines.add(new VirtualOdeEngine(vbc));
-		engines.add(new VirtualBpelgEngine(vbc));
-		engines.add(new VirtualOpenEsbEngine(vbc));
-		engines.add(new VirtualPetalsEsbEngine(vbc));
-		engines.add(new VirtualOrchestraEngine(vbc));
-		engines.add(new VirtualActiveBpelEngine(vbc));
+		LinkedList<VirtualizedEngine> engines = new LinkedList<>();
+		engines.add(new VirtualizedOdeEngine(vbc));
+		engines.add(new VirtualizedBpelgEngine(vbc));
+		engines.add(new VirtualizedOpenEsbEngine(vbc));
+		engines.add(new VirtualizedPetalsEsbEngine(vbc));
+		engines.add(new VirtualizedOrchestraEngine(vbc));
+		engines.add(new VirtualizedActiveBpelEngine(vbc));
 
 		return engines;
 	}
@@ -43,13 +43,13 @@ public class VirtualizedEngines {
 	 * @throws IllegalArgumentException
 	 *             if the virtualized engine can not be found
 	 */
-	public static VirtualEngine build(final String name) {
+	public static VirtualizedEngine build(final String name) {
 		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("name must not be null or empty");
 		}
 		String namet = name.trim();
 
-		for (VirtualEngine ve : availableEngines()) {
+		for (VirtualizedEngine ve : availableEngines()) {
 			if (ve.getName().equals(namet)) {
 				return ve;
 			}
@@ -60,8 +60,8 @@ public class VirtualizedEngines {
 				+ " does not exist");
 	}
 
-	public static List<VirtualEngine> build(List<String> names) {
-		List<VirtualEngine> engines = new LinkedList<>();
+	public static List<VirtualizedEngine> build(List<String> names) {
+		List<VirtualizedEngine> engines = new LinkedList<>();
 		for (String name : names) {
 			engines.add(VirtualizedEngines.build(name));
 		}

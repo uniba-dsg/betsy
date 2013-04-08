@@ -8,49 +8,51 @@ import java.util.List;
 import java.util.Set;
 
 import betsy.data.Process;
-import betsy.data.engines.petalsEsb.PetalsEsbEngine;
+import betsy.data.engines.activeBpel.ActiveBpelEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
-public class VirtualPetalsEsbEngine extends VirtualEngine {
+public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 
+	private final ActiveBpelEngine defaultEngine;
 	private final Configuration config = Configuration.getInstance();
-	private final PetalsEsbEngine defaultEngine;
 
-	public VirtualPetalsEsbEngine(VirtualBoxController vbc) {
+	public VirtualizedActiveBpelEngine(VirtualBoxController vbc) {
 		super(vbc);
-		this.defaultEngine = new PetalsEsbEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
+		this.defaultEngine = new ActiveBpelEngine();
+		this.defaultEngine.setPackageBuilder(new VirtualizedEnginePackageBuilder());
 	}
 
 	@Override
 	public String getName() {
-		return "petalsesb_v";
+		return "active_bpel_v";
 	}
 
 	@Override
 	public List<ServiceAddress> getVerifiableServiceAddresses() {
 		List<ServiceAddress> saList = new LinkedList<>();
 		saList.add(new ServiceAddress(
-				"http://localhost:8084/petals/services/listServices"));
+				"http://localhost:8080/active-bpel/services"));
+		saList.add(new ServiceAddress("http://localhost:8080/BpelAdmin/",
+				"Running"));
 		return saList;
+	}
+
+	@Override
+	public String getEndpointUrl(Process process) {
+		return "http://localhost:8080/active-bpel/services/"
+				+ process.getBpelFileNameWithoutExtension()
+				+ "TestInterfaceService";
 	}
 
 	@Override
 	public Set<Integer> getRequiredPorts() {
 		Set<Integer> portList = new HashSet<>();
-		portList.add(8084);
+		portList.add(8080);
 		return portList;
-	}
-
-	@Override
-	public String getEndpointUrl(Process process) {
-		return "http://localhost:8084/petals/services/"
-				+ process.getBpelFileNameWithoutExtension()
-				+ "TestInterfaceService";
 	}
 
 	@Override
@@ -79,19 +81,19 @@ public class VirtualPetalsEsbEngine extends VirtualEngine {
 	@Override
 	public String getVMDeploymentDir() {
 		return config.getValueAsString(
-				"virtualisation.engines.petalsesb_v.deploymentDir",
-				"/opt/petalsesb/install");
+				"virtualisation.engines.active-bpel_v.deploymentDir",
+				"/usr/share/tomcat5.5/bpr");
 	}
 
 	@Override
 	public String getVMLogfileDir() {
 		return config.getValueAsString(
-				"virtualisation.engines.petalsesb_v.logfileDir",
-				"/opt/petalsesb/logs");
+				"virtualisation.engines.active-bpel_v.logfileDir",
+				"/usr/share/tomcat5.5/logs");
 	}
 
 	@Override
 	public Path getDeployableFilePath(Process process) {
-		return Paths.get(process.getTargetPackageCompositeFilePath());
+		return Paths.get(process.getTargetPackageFilePath("bpr"));
 	}
 }

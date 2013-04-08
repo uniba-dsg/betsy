@@ -11,19 +11,19 @@ import betsy.data.Process;
 import betsy.data.engines.ode.OdeEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEnginePackageBuilder;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
-public class VirtualOdeEngine extends VirtualEngine {
+public class VirtualizedOdeEngine extends VirtualizedEngine {
 
 	private final Configuration config = Configuration.getInstance();
 	private final OdeEngine defaultEngine;
 
-	public VirtualOdeEngine(VirtualBoxController vbc) {
+	public VirtualizedOdeEngine(VirtualBoxController vbc) {
 		super(vbc);
 		this.defaultEngine = new OdeEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualEnginePackageBuilder());
+		this.defaultEngine.setPackageBuilder(new VirtualizedEnginePackageBuilder());
 	}
 
 	@Override

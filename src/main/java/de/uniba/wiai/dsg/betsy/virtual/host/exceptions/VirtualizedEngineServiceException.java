@@ -1,12 +1,12 @@
 package de.uniba.wiai.dsg.betsy.virtual.host.exceptions;
 
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualEngine;
+import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualMachine;
 
 /**
  * The {@link VirtualizedEngineServiceException} is thrown if a necessary
  * service is not available on the {@link VirtualMachine} and the
- * {@link VirtualEngine} can't be tested.
+ * {@link VirtualizedEngine} can't be tested.
  * 
  * @author Cedric Roeck
  * @version 1.0

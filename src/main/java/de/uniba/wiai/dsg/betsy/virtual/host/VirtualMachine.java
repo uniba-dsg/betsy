@@ -681,7 +681,7 @@ public class VirtualMachine {
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
 
 			// take a snapshot of the started VM
-			String snapName = VirtualEngine.VIRTUAL_NAME_PREFIX + engineName
+			String snapName = VirtualizedEngine.VIRTUAL_NAME_PREFIX + engineName
 					+ "_import-snapshot";
 			String snapDesc = "Machine is in 'saved' state. Snapshot created during import on "
 					+ sdf.format(date);
