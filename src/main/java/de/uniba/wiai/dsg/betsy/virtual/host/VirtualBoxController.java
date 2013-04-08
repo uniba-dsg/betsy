@@ -19,7 +19,6 @@ import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 
 public class VirtualBoxController {
@@ -215,19 +214,12 @@ public class VirtualBoxController {
 		return new File("virtualmachines");
 	}
 
-	// TODO purpose? --> clean start
-	public void deleteMachine(final IMachine machine) {
+	private void deleteMachine(final IMachine machine) {
 		File logFolder = new File(machine.getLogFolder());
 		logFolder.delete();
 
 		List<IMedium> removableMediums = machine.unregister(CleanupMode.Full);
 		machine.delete(removableMediums);
-	}
-
-	public void deleteMachine(final String vmName)
-			throws VirtualMachineException {
-		IMachine machine = getMachine(vmName);
-		deleteMachine(machine);
 	}
 
 	private void setLinkUpDelay(int milliSeconds) {

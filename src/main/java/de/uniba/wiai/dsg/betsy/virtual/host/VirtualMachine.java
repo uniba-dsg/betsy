@@ -24,14 +24,12 @@ import org.virtualbox_4_2.ISnapshot;
 import org.virtualbox_4_2.LockType;
 import org.virtualbox_4_2.MachineState;
 import org.virtualbox_4_2.NATProtocol;
-import org.virtualbox_4_2.SessionState;
 import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortRedirectException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.engine.VirtualizedEngineServiceException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.PortRedirectException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualBoxExceptionCode;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceValidator;
@@ -137,6 +135,7 @@ public class VirtualMachine {
 	}
 
 	public void kill() {
+		log.debug("killing machine");
 		machine.launchVMProcess(session, "emergencystop", null);
 		try {
 			session.unlockMachine();
@@ -264,7 +263,7 @@ public class VirtualMachine {
 		} finally {
 			if (subSession != null) {
 				try {
-				subSession.unlockMachine();
+					subSession.unlockMachine();
 				} catch (VBoxException exception) {
 					// ignore if was not locked
 					log.warn("Unlocking subSession after restoration failed:",
@@ -363,9 +362,9 @@ public class VirtualMachine {
 
 			for (Integer port : forwardingPorts) {
 				try {
-				String[] cmd = { vbm.getAbsolutePath(), "modifyvm",
-						machine.getName(), "--natpf1",
-						",tcp,," + port + ",," + port };
+					String[] cmd = { vbm.getAbsolutePath(), "modifyvm",
+							machine.getName(), "--natpf1",
+							",tcp,," + port + ",," + port };
 					Process proc = r.exec(cmd);
 					InputStream inStr = proc.getInputStream();
 					BufferedReader buff = new BufferedReader(
@@ -481,8 +480,8 @@ public class VirtualMachine {
 	public void createRunningSnapshot(final String engineName,
 			final List<ServiceAddress> engineServices,
 			final Set<Integer> forwardingPorts, final boolean headless)
-			throws VirtualizedEngineServiceException, PortUsageException,
-			PortRedirectException, InterruptedException {
+			throws VirtualizedEngineServiceException, PortRedirectException,
+			InterruptedException {
 
 		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException("The name of the engine to "

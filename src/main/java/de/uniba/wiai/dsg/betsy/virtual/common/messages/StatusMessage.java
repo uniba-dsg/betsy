@@ -1,5 +1,6 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
+// TODO JavaDoc, inline comments
 public enum StatusMessage {
 
 	// Ask for availability
@@ -29,8 +30,8 @@ public enum StatusMessage {
 
 	private final String statusName;
 
-	StatusMessage(final String s) {
-		this.statusName = s;
+	StatusMessage(final String message) {
+		this.statusName = message;
 	}
 
 	@Override

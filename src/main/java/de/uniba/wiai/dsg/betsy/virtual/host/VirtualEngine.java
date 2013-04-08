@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import betsy.data.Process;
 import betsy.data.engines.Engine;
 import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ChecksumException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.ConnectionException;
@@ -26,12 +25,11 @@ import de.uniba.wiai.dsg.betsy.virtual.host.comm.CommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.comm.TCPCommClient;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.DownloadException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PermanentFailedTestException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortRedirectException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TemporaryFailedTestException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.engine.VirtualizedEngineServiceException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineException;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.PortRedirectException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.PortVerifier;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.VirtualMachineImporter;
@@ -88,7 +86,7 @@ public abstract class VirtualEngine extends Engine implements
 			try {
 				vm = vbController.getVirtualMachine(getVirtualMachineName());
 				return vm.hasRunningSnapshot();
-			} catch (VirtualMachineException e) {
+			} catch (VirtualMachineNotFoundException e) {
 				// should not happen as vm was already found
 			}
 		}
@@ -210,12 +208,14 @@ public abstract class VirtualEngine extends Engine implements
 
 			// reset to snapshot
 			this.vm.resetToLatestSnapshot();
+
+			// TODO formerly we catched the port usage exception. do we have to
+			// catch a testFailedexception now?
 		} catch (VirtualMachineNotFoundException
-				| VirtualizedEngineServiceException | PortUsageException
-				| ArchiveException | DownloadException exception) {
+				| VirtualizedEngineServiceException | ArchiveException
+				| DownloadException exception) {
 			// DownloadException: was not imported yet, nothing to delete
 			// ArchiveException: was not imported yet, nothing to delete
-			// PortException: was imported, can be kept in virtualBox
 			// VBServiceException: import can be kept, do NOT delete the VM
 			throw new PermanentFailedTestException("The VMs installation "
 					+ "could not be processed:", exception);
@@ -237,16 +237,17 @@ public abstract class VirtualEngine extends Engine implements
 		Path filenamePath = path.getFileName();
 		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
-		
+
 		DeployOperation operation = new DeployOperation();
 		FileMessage fm = new FileMessage(filename, data);
 		operation.setFileMessage(fm);
 		operation.setEngineName(getName());
-		operation.setBpelFileNameWithoutExtension(process.getBpelFileNameWithoutExtension());
+		operation.setBpelFileNameWithoutExtension(process
+				.getBpelFileNameWithoutExtension());
 		operation.setEngineLogDir(getVMLogfileDir());
 		operation.setDeploymentDir(getVMDeploymentDir());
 		operation.setDeployTimeout(getVMDeploymentTimeout());
-		
+
 		return operation;
 	}
 
