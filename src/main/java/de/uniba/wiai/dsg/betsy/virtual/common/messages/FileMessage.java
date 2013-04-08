@@ -7,7 +7,14 @@ import org.apache.commons.lang.StringUtils;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 
-//TODO JAVADOC
+/**
+ * A {@link FileMessage} contains the binary data and the name (with extension)
+ * of a file. Additionally a Checksum is created to verify the integrity of the
+ * data after sending this {@link FileMessage} over a network.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class FileMessage implements Serializable {
 
 	/**
@@ -34,7 +41,6 @@ public class FileMessage implements Serializable {
 		return data;
 	}
 
-	// +extension
 	public String getFilename() {
 		return filename;
 	}
@@ -43,6 +49,11 @@ public class FileMessage implements Serializable {
 		return checksum;
 	}
 
+	/**
+	 * Check whether the data is still equal to the time it was read.
+	 * 
+	 * @return true if data is valid, false if parts have been lost/changed
+	 */
 	public boolean isDataValid() {
 		return Checksum.isValid(getData(), getChecksum());
 	}

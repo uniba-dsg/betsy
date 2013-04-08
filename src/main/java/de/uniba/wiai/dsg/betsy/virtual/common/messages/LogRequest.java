@@ -4,6 +4,13 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * A {@link LogRequest} tells the server to collect all the Logfiles on the
+ * given location and return them to the client.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class LogRequest implements Serializable {
 
 	/**

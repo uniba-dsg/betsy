@@ -1,6 +1,12 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
-// TODO JavaDoc, inline comments
+/**
+ * {@link StatusMessage}s are exchanged between the client and the server. They
+ * can be used as a request or as an answer.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public enum StatusMessage {
 
 	// Ask for availability
@@ -15,7 +21,9 @@ public enum StatusMessage {
 	DEPLOYED("DEPLOYED"),
 	// exit connection
 	EXIT("EXIT"),
-	//
+	// answer to logfile request
+	NO_LOGFILE_AVAILABLE("No logfile was available to be sent."),
+	// if the request is not known. indicating incompatible versions.
 	ERROR_INVALID_REQUEST("Received request is unknown."),
 	//
 	ERROR_CHECKSUM("Checksum of received files did not match."),
@@ -24,9 +32,7 @@ public enum StatusMessage {
 	//
 	ERROR_ENGINE_EXPECTED("Server expected to receive the engine's type."),
 	//
-	ERROR_COLLECT_LOGFILES("Collecting logfiles failed."),
-
-	NO_LOGFILE_AVAILABLE("No logfile was available to be sent.");
+	ERROR_COLLECT_LOGFILES("Collecting logfiles failed.");
 
 	private final String statusName;
 

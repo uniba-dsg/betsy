@@ -4,7 +4,13 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-//TODO JAVADOC
+/**
+ * A {@link LogfileCollection} groups the engine's and betsy's logfiles. The
+ * collection is used to transport them to the client.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class LogfileCollection implements Serializable {
 
 	/**

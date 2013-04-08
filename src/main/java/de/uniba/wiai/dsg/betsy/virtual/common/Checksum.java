@@ -10,16 +10,30 @@ import java.util.zip.CRC32;
  * 
  * @author Cedric Roeck
  * @version 1.0
- * 
  */
 public class Checksum implements Serializable {
 
-	// TODO Javadoc
+	/**
+	 * Create a {@link Checksum} based on the given data.
+	 * 
+	 * @param data
+	 *            used to calculate the checksum
+	 * @return the calculated checksum
+	 */
 	public static Checksum createChecksum(final byte[] data) {
 		return new Checksum(data);
 	}
 
-	// TODO Javadoc
+	/**
+	 * Check whether the given data does match the given checksum.
+	 * 
+	 * @param data
+	 *            will be used to calculate a new checksum
+	 * @param checksum
+	 *            comparison reference, data must match this checksum
+	 * @return true if data matches checksum, false if checksum belongs to
+	 *         different data
+	 */
 	public static boolean isValid(final byte[] data, Checksum checksum) {
 		return checksum.equals(new Checksum(data));
 	}

@@ -25,7 +25,13 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
 
-//TODO JAVADOC
+/**
+ * The {@link TCPCommClient} is a implementation of the CommClient using a TCP
+ * end-to-end connection.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class TCPCommClient implements CommClient {
 
 	private final String serverName;
@@ -55,15 +61,12 @@ public class TCPCommClient implements CommClient {
 		log.debug("Reconnect to server...");
 		if (!isConnected()) {
 			// connect
-
-			// make tmp in case of possible timeout
 			this.socket = new Socket();
 			this.socket.connect(new InetSocketAddress(serverName, serverPort),
 					timeout);
-			log.debug("socket to " + serverName + " created");
 
 			if (timeout > 0) {
-				log.debug("Set socket timeout to: " + timeout);
+				log.trace("Set socket timeout to: " + timeout);
 				socket.setSoTimeout(timeout);
 			}
 			socket.setKeepAlive(true);
@@ -77,7 +80,7 @@ public class TCPCommClient implements CommClient {
 			BufferedInputStream bin = new BufferedInputStream(in);
 			ois = new ObjectInputStream(bin);
 
-			log.debug("... connection to server established!");
+			log.trace("... connection to server established!");
 		} else {
 			this.disconnect();
 			this.reconnect(timeout);
@@ -92,7 +95,7 @@ public class TCPCommClient implements CommClient {
 			Object o = ois.readObject();
 			if (o instanceof StatusMessage) {
 				StatusMessage sm = (StatusMessage) o;
-				log.debug("PING response received: '" + sm + "'");
+				log.trace("PING response received: '" + sm + "'");
 				if (o.equals(StatusMessage.PONG)) {
 					return true;
 				}
@@ -245,16 +248,15 @@ public class TCPCommClient implements CommClient {
 	public void sendDeploy(DeployOperation container) throws DeployException,
 			ChecksumException, ConnectionException, InvalidResponseException {
 		try {
+			log.debug("Send deployment instructions...");
 			this.sendMessage(container);
 
 			// wait for response
 			Object o = ois.readObject();
 			if (o instanceof StatusMessage) {
-
-				log.debug("RCV STATUS...");
 				StatusMessage sm = (StatusMessage) o;
 				if (sm.equals(StatusMessage.DEPLOYED)) {
-					log.debug("...DEPLOYED");
+					log.trace("...DEPLOYED");
 					// everything done, return
 					return;
 				} else if (sm.equals(StatusMessage.DEPLOY_FAILED)) {
@@ -262,7 +264,7 @@ public class TCPCommClient implements CommClient {
 					throw new DeployException(
 							"Could not deploy package, failed.");
 				} else if (sm.equals(StatusMessage.ERROR_CHECKSUM)) {
-					log.info("...DEPLOY CORRUPTED");
+					log.warn("...DEPLOY CORRUPTED");
 					throw new ChecksumException(
 							"Could not deploy package, package was corrupted");
 				} else {

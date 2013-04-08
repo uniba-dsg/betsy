@@ -1,10 +1,21 @@
 package de.uniba.wiai.dsg.betsy.virtual.common.messages;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 
-//TODO JAVADOC
+/**
+ * A {@link DeployOperation} contains all relevant information for the
+ * deployment of an Engine's {@link Process}.<br>
+ * The binaries are included as a {@link FileMessage}. Everything else, such as
+ * where to deploy, which executable to use and where the logs are located, can
+ * be set according to the engine the {@link Process} belongs to and the
+ * operating system the engine is installed on.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class DeployOperation implements Serializable {
 
 	/**
@@ -50,6 +61,12 @@ public class DeployOperation implements Serializable {
 		return deploymentExecutable;
 	}
 
+	/**
+	 * Set the engine name.
+	 * 
+	 * @param engineName
+	 *            name to set, must not be null or empty.
+	 */
 	public void setEngineName(String engineName) {
 		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException("serverType must not be null "
@@ -58,6 +75,12 @@ public class DeployOperation implements Serializable {
 		this.engineName = engineName;
 	}
 
+	/**
+	 * Set the name of the BPEL file.
+	 * 
+	 * @param bpelFileNameWithoutExtension
+	 *            name to set, must not be null or empty.
+	 */
 	public void setBpelFileNameWithoutExtension(
 			String bpelFileNameWithoutExtension) {
 		if (StringUtils.isBlank(bpelFileNameWithoutExtension)) {
@@ -67,6 +90,12 @@ public class DeployOperation implements Serializable {
 		this.bpelFileNameWithoutExtension = bpelFileNameWithoutExtension;
 	}
 
+	/**
+	 * Set how long the deployment may take at max.
+	 * 
+	 * @param deployTimeout
+	 *            maximum deployment duration, must be greater than 0
+	 */
 	public void setDeployTimeout(Integer deployTimeout) {
 		if (deployTimeout <= 0) {
 			throw new IllegalArgumentException("deployTimeout must be greater "
@@ -75,6 +104,12 @@ public class DeployOperation implements Serializable {
 		this.deployTimeout = deployTimeout;
 	}
 
+	/**
+	 * Set the directory to deploy the files to
+	 * 
+	 * @param deployDir
+	 *            dir to set, must not be null or empty.
+	 */
 	public void setDeploymentDir(String deployDir) {
 		if (StringUtils.isBlank(deployDir)) {
 			throw new IllegalArgumentException("deployDir must not be null "
@@ -83,6 +118,12 @@ public class DeployOperation implements Serializable {
 		this.deploymentDir = deployDir;
 	}
 
+	/**
+	 * Set the directory where the engine's logfiles are stored.
+	 * 
+	 * @param engineLogDir
+	 *            directory to set, must not be null or empty.
+	 */
 	public void setEngineLogDir(String engineLogDir) {
 		if (StringUtils.isBlank(engineLogDir)) {
 			throw new IllegalArgumentException("engineLogDir must not be null "
@@ -92,9 +133,16 @@ public class DeployOperation implements Serializable {
 	}
 
 	public void setFileMessage(FileMessage fileMessage) {
-		this.fileMessage = fileMessage;
+		this.fileMessage = Objects.requireNonNull(fileMessage);
 	}
 
+	/**
+	 * Set the path to the executable that must be used for deploying the
+	 * process.
+	 * 
+	 * @param deploymentExecutable
+	 *            path to set, must not be null or empty
+	 */
 	public void setDeploymentExecutable(String deploymentExecutable) {
 		if (StringUtils.isBlank(deploymentExecutable)) {
 			throw new IllegalArgumentException("deploymentExecutable must not "
