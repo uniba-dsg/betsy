@@ -12,6 +12,12 @@ import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOpenEsbDeploy
 import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOrchestraDeployer;
 import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedPetalsEsbDeployer;
 
+/**
+ * Offers a method to find a deployer for an engine.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualizedEngineDeployers {
 
 	private static List<VirtualizedEngineDeployer> availableEngines() {

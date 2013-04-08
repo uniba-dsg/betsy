@@ -6,7 +6,12 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-// TODO JavaDoc
+/**
+ * TCP implementation of the {@link CommServer}.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class TCPCommServer implements CommServer {
 
 	private final int port;

@@ -21,7 +21,14 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
 import de.uniba.wiai.dsg.betsy.virtual.server.LogfileCollector;
 
-//TODO JavaDoc
+/**
+ * The {@link ClientHandler} manages the connection to a previously connected
+ * client. The handler responds to the requests of the client. This includes
+ * requests deploy a process as well as to send logfiles to the client. server.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class ClientHandler implements Runnable {
 
 	private final Logger log = Logger.getLogger(getClass());
@@ -115,7 +122,7 @@ public class ClientHandler implements Runnable {
 			String message = (String) o;
 			deployer = VirtualizedEngineDeployers.build(message);
 			keepRunning = true;
-		}else if (o != null && o instanceof StatusMessage) {
+		} else if (o != null && o instanceof StatusMessage) {
 			StatusMessage message = (StatusMessage) o;
 			if (message.equals(StatusMessage.PING)) {
 				// test if connection is alive, respond:
@@ -187,6 +194,18 @@ public class ClientHandler implements Runnable {
 		return socket != null && !socket.isClosed();
 	}
 
+	/**
+	 * Send a message back to the client.
+	 * 
+	 * @param object
+	 *            message to send to the client
+	 * @throws IOException
+	 *             thrown if there was an issue with the connection to the
+	 *             client
+	 * @throws ConnectionException
+	 *             thrown if sending the message failed as there is no active
+	 *             connection
+	 */
 	public void sendMessage(Object object) throws IOException,
 			ConnectionException {
 		if (isConnected()) {
@@ -199,6 +218,9 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Disconnect the connection to the client and notify him.
+	 */
 	public void disconnect() {
 		log.debug("Properly disconnecting...");
 		if (isConnected()) {
@@ -214,6 +236,9 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Stop the message waiting loop.
+	 */
 	public void close() {
 		this.keepRunning = false;
 	}
