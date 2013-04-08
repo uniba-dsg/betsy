@@ -78,7 +78,7 @@ public class VirtualMachineImporter {
 	}
 
 	/**
-	 * Default procedure to import a VirtualMachine.
+	 * Default procedure to guide the import of a VirtualMachine.
 	 * 
 	 * @throws ArchiveException
 	 *             thrown if the Archive is corrupted or did not contain the
@@ -86,7 +86,7 @@ public class VirtualMachineImporter {
 	 * @throws DownloadException
 	 *             thrown if the download failed
 	 */
-	public void importVirtualMachine() throws ArchiveException,
+	public void executeVirtualMachineImport() throws ArchiveException,
 			DownloadException {
 		log.debug("Importing " + vmName + "...");
 		try {
@@ -94,7 +94,7 @@ public class VirtualMachineImporter {
 
 			executeExtraction();
 
-			vbc.importEngine(vmName, engineName, getVBoxImportFile());
+			vbc.importVirtualMachine(vmName, engineName, getVBoxImportFile());
 			log.trace("...import finished!");
 		} finally {
 			// always clean the extraction directory

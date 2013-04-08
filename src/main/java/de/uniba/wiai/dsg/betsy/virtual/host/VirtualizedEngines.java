@@ -60,6 +60,15 @@ public class VirtualizedEngines {
 				+ " does not exist");
 	}
 
+	/**
+	 * Find all virtualized engines by a list of names.
+	 * 
+	 * @param names
+	 *            the names of the virtualized engines
+	 * @return the virtualized engines if they could be found
+	 * @throws IllegalArgumentException
+	 *             if any virtualized engine could not be found
+	 */
 	public static List<VirtualizedEngine> build(List<String> names) {
 		List<VirtualizedEngine> engines = new LinkedList<>();
 		for (String name : names) {

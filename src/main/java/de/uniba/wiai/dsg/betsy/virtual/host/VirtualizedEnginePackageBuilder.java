@@ -9,6 +9,14 @@ import betsy.data.Process;
 import betsy.data.engines.EnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.Configuration;
 
+/**
+ * The {@link VirtualizedEnginePackageBuilder} extends the classic
+ * {@link EnginePackageBuilder} and replaces the partner IP and port with the
+ * host IP and port specified in the config for the virtualized testing.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualizedEnginePackageBuilder extends EnginePackageBuilder {
 
 	private final AntBuilder ant = new AntBuilder();

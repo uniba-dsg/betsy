@@ -87,7 +87,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public DeployOperation buildDeployContainer(Process process)
+	public DeployOperation buildDeployOperation(Process process)
 			throws IOException {
 		Path path = getDeployableFilePath(process);
 		Path filenamePath = path.getFileName();

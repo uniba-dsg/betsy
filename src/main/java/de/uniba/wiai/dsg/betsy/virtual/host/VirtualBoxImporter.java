@@ -22,6 +22,13 @@ import org.virtualbox_4_2.NetworkAttachmentType;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
 
+/**
+ * Offers methods to import an Appliance and adjust the settings of an imported
+ * {@link IMachine} to be compatible with betsy.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualBoxImporter {
 
 	private final Configuration config = Configuration.getInstance();
@@ -33,6 +40,13 @@ public class VirtualBoxImporter {
 		this.vBox = vBox;
 	}
 
+	/**
+	 * Import the appliance from the given {@link File}.
+	 * 
+	 * @param importFile
+	 *            file of the appliance to import
+	 * @return imported {@link IAppliance}
+	 */
 	public IAppliance importAppliance(final File importFile) {
 		IAppliance appliance = vBox.createAppliance();
 
@@ -57,6 +71,26 @@ public class VirtualBoxImporter {
 		return appliance;
 	}
 
+	/**
+	 * Adjust the settings of the given machine.<br>
+	 * <br>
+	 * This includes:
+	 * <ul>
+	 * <li>Setting name</li>
+	 * <li>Setting description</li>
+	 * <li>Setting group</li>
+	 * <li>Disable audio adapter</li>
+	 * <li>Remove shared folders</li>
+	 * <li>Setting NAT Adapter and it's MAC Address</li>
+	 * </ul>
+	 * 
+	 * @param lockedVM
+	 *            mutable {@link IMachine} to adjust
+	 * @param vmName
+	 *            desired name of the machine
+	 * @param engineName
+	 *            name of the engine the vm belongs to
+	 */
 	public void adjustMachineSettings(final IMachine lockedVM,
 			final String vmName, final String engineName) {
 		// set name and description

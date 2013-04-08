@@ -34,11 +34,20 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFound
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.PortVerifier;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.VirtualMachineImporter;
 
-//TODO Javadoc
+/**
+ * A {@link VirtualizedEngine} does not install and use an engine server on the
+ * current host, but does use an engine installed in a virtualized environment.
+ * It therefore offers the same functionality as the default {@link Engine} but
+ * also has some more functions to handle the virtualized surrounding.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public abstract class VirtualizedEngine extends Engine implements
 		VirtualizedEngineAPI {
 
 	public static final String VIRTUAL_NAME_PREFIX = "betsy-";
+
 	private static final Logger log = Logger.getLogger(VirtualizedEngine.class);
 
 	private final Configuration config = Configuration.getInstance();
@@ -62,25 +71,18 @@ public abstract class VirtualizedEngine extends Engine implements
 		return new File("vm_extraction");
 	}
 
-	public static void cleanAll() throws IOException {
-		log.info("Removing all virtualized engine content");
-
-		// File downloadFolder = getDownloadPath();
-		FileUtils.forceDelete(getDownloadPath());
-
-		// File extractionFolder = getExtractPath();
-		FileUtils.forceDelete(getExtractPath());
-
-		// TODO delete all imported machines of betsy
-	}
-
 	@Override
 	public String getVirtualMachineName() {
 		return VIRTUAL_NAME_PREFIX + this.getName();
 	}
 
-	@Override
-	public boolean isVirtualMachineReady() {
+	/**
+	 * Check if the VirtualMachine is imported and has at least one snapshot
+	 * that can be used to reset to.
+	 * 
+	 * @return true if VM is imported and has at least one Snapshot
+	 */
+	private boolean isVirtualMachineReady() {
 		if (isVMImported()) {
 			VirtualMachine vm;
 			try {
@@ -93,8 +95,12 @@ public abstract class VirtualizedEngine extends Engine implements
 		return false;
 	}
 
-	@Override
-	public boolean isVMImported() {
+	/**
+	 * Check if the Engine's VM is already imported.
+	 * 
+	 * @return true if VM is imported
+	 */
+	private boolean isVMImported() {
 		return vbController.containsMachine(this.getVirtualMachineName());
 	}
 
@@ -189,7 +195,7 @@ public abstract class VirtualizedEngine extends Engine implements
 							getDownloadPath(), getExtractPath(),
 							this.vbController);
 
-					importer.importVirtualMachine();
+					importer.executeVirtualMachineImport();
 				}
 				this.vm = vbController
 						.getVirtualMachine(getVirtualMachineName());
@@ -208,15 +214,9 @@ public abstract class VirtualizedEngine extends Engine implements
 
 			// reset to snapshot
 			this.vm.resetToLatestSnapshot();
-
-			// TODO formerly we catched the port usage exception. do we have to
-			// catch a testFailedexception now?
 		} catch (VirtualMachineNotFoundException
 				| VirtualizedEngineServiceException | ArchiveException
-				| DownloadException exception) {
-			// DownloadException: was not imported yet, nothing to delete
-			// ArchiveException: was not imported yet, nothing to delete
-			// VBServiceException: import can be kept, do NOT delete the VM
+				| PortUsageException | DownloadException exception) {
 			throw new PermanentFailedTestException("The VMs installation "
 					+ "could not be processed:", exception);
 		} catch (PortRedirectException exception) {
@@ -231,8 +231,9 @@ public abstract class VirtualizedEngine extends Engine implements
 	}
 
 	@Override
-	public DeployOperation buildDeployContainer(Process process)
+	public DeployOperation buildDeployOperation(Process process)
 			throws IOException {
+		// basic deploy operation, sufficient for most engines
 		Path path = getDeployableFilePath(process);
 		Path filenamePath = path.getFileName();
 		String filename = filenamePath.toString();
@@ -254,16 +255,30 @@ public abstract class VirtualizedEngine extends Engine implements
 	@Override
 	public void deploy(Process process) {
 		try {
-			log.debug("Deploy virtualized engine " + getName() + ", process: "
-					+ process.toString() + " ...");
+			log.debug("Deploying virtualized engine " + getName()
+					+ ", process: " + process.toString() + " ...");
 
 			// resend once in case of checksum exception
 			int attemptsLeft = 2;
 			while (attemptsLeft > 0) {
 				attemptsLeft--;
 				try {
-					executeDeploy(process);
-					log.info("...deploy done!");
+					if (comm.isConnected()) {
+						try {
+							DeployOperation container = buildDeployOperation(process);
+							comm.sendDeploy(container);
+						} catch (IOException | ConnectionException
+								| DeployException exception) {
+							throw new TemporaryFailedTestException(exception);
+						} catch (InvalidResponseException exception) {
+							throw new PermanentFailedTestException(exception);
+						}
+					} else {
+						throw new TemporaryFailedTestException("VirtualEngine "
+								+ "can only be deployed if the connection "
+								+ "to the server is alive.");
+					}
+					log.trace("...deploy done!");
 					return;
 				} catch (ChecksumException exception) {
 					if (attemptsLeft <= 0) {
@@ -275,32 +290,16 @@ public abstract class VirtualizedEngine extends Engine implements
 			try {
 				process.getEngine().storeLogs(process);
 			} catch (TemporaryFailedTestException exception2) {
-				log.info("Could not store logfiles for failed deployment:",
+				log.info("Could not store logfiles of the failed deployment:",
 						exception2);
 			}
 			throw exception;
 		}
 	}
 
-	private void executeDeploy(Process process) throws ChecksumException {
-		if (comm.isConnected()) {
-			try {
-				DeployOperation container = buildDeployContainer(process);
-				comm.sendDeploy(container);
-			} catch (IOException | ConnectionException | DeployException exception) {
-				throw new TemporaryFailedTestException(exception);
-			} catch (InvalidResponseException exception) {
-				throw new PermanentFailedTestException(exception);
-			}
-		} else {
-			throw new TemporaryFailedTestException("VirtualEngine can only be "
-					+ "deployed if the connection to the server is alive.");
-		}
-	}
-
 	@Override
 	public void storeLogs(Process process) {
-		log.debug("Store logs for engine " + getName() + " ...");
+		log.debug("Storing logs for engine " + getName() + " ...");
 		try {
 			LogfileCollection lfc = null;
 
@@ -385,6 +384,13 @@ public abstract class VirtualizedEngine extends Engine implements
 					+ "already running.");
 		}
 	}
+	
+	@Override
+	public Integer getVMDeploymentTimeout() {
+		Integer timeout = config.getValueAsInteger("virtualisation.engines."
+				+ getName() + ".deploymentTimeout", 20);
+		return timeout * 1000;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -400,6 +406,9 @@ public abstract class VirtualizedEngine extends Engine implements
 		if (getName() != engine.getName()) {
 			return false;
 		}
+		if (getVirtualMachineName() != engine.getVirtualMachineName()) {
+			return false;
+		}
 
 		return true;
 	}
@@ -411,13 +420,6 @@ public abstract class VirtualizedEngine extends Engine implements
 		result = prime * result
 				+ (getName() != null ? getName().hashCode() : 0);
 		return result;
-	}
-
-	@Override
-	public Integer getVMDeploymentTimeout() {
-		Integer timeout = config.getValueAsInteger("virtualisation.engines."
-				+ getName() + ".deploymentTimeout", 20);
-		return timeout * 1000;
 	}
 
 }

@@ -21,6 +21,13 @@ import org.virtualbox_4_2.VirtualBoxManager;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 
+/**
+ * The {@link VirtualBoxController} establishes the connection between betsy and
+ * VirtualBox. It can be used to resolve machines, import or delete them.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualBoxController {
 
 	public static final String BETSY_VBOX_GROUP = "/betsy-engines";
@@ -38,6 +45,9 @@ public class VirtualBoxController {
 		this.vbManager = VirtualBoxManager.createInstance(null);
 	}
 
+	/**
+	 * Initialize the controller and connect to the VBoxWebSrv.
+	 */
 	public void init() {
 		String host = config.getValueAsString("virtualisation.vboxwebsrv.host",
 				"http://127.0.0.1");
@@ -92,6 +102,14 @@ public class VirtualBoxController {
 		this.vBoxImporter = new VirtualBoxImporter(this.vBox);
 	}
 
+	/**
+	 * Check if VirtualBox contains a virtual machine with the given name inside
+	 * the group 'betsy-engines'.
+	 * 
+	 * @param vmName
+	 *            name of the VM to search
+	 * @return true if VirtualBox contains a name with the name
+	 */
 	public boolean containsMachine(final String vmName) {
 		if (StringUtils.isBlank(vmName)) {
 			throw new IllegalArgumentException(
@@ -111,13 +129,22 @@ public class VirtualBoxController {
 			if (vm.getName().equals(vmName)) {
 				return true;
 			}
-
 		}
 		return false;
 	}
 
-	public void importEngine(final String vmName, final String engineName,
-			final File importFile) {
+	/**
+	 * Import the Engine's virtualMachine from the given file.
+	 * 
+	 * @param vmName
+	 *            desired name of the virtualMachine
+	 * @param engineName
+	 *            name of the engine the new VM belongs to
+	 * @param importFile
+	 *            file of the appliance to import
+	 */
+	public void importVirtualMachine(final String vmName,
+			final String engineName, final File importFile) {
 
 		if (StringUtils.isBlank(vmName)) {
 			throw new IllegalArgumentException(
@@ -177,6 +204,15 @@ public class VirtualBoxController {
 		}
 	}
 
+	/**
+	 * Get the {@link VirtualMachine} of betsy with the given name.
+	 * 
+	 * @param name
+	 *            name of the VirtualMachine to get
+	 * @return VirtualMachine with the searched name
+	 * @throws VirtualMachineNotFoundException
+	 *             thrown if there is no VirtualMachine with this name
+	 */
 	public VirtualMachine getVirtualMachine(final String name)
 			throws VirtualMachineNotFoundException {
 		if (virtualMachines.containsKey(name)) {
@@ -188,6 +224,15 @@ public class VirtualBoxController {
 		}
 	}
 
+	/**
+	 * Get the {@link IMachine} of VirtualBox with the given name.
+	 * 
+	 * @param name
+	 *            name of the IMachine to get
+	 * @return IMachine with the searched name
+	 * @throws VirtualMachineNotFoundException
+	 *             thrown if there is no IMachine with this name
+	 */
 	public IMachine getMachine(final String name)
 			throws VirtualMachineNotFoundException {
 		List<String> groups = new LinkedList<>();
@@ -203,15 +248,14 @@ public class VirtualBoxController {
 				+ name + "' could not be found in betsy's VirtualBox group.");
 	}
 
+	/**
+	 * Get the directory where VirtualBox stores it's VirtualMachine files.
+	 * 
+	 * @return directory where VirtualBox stores it's VirtualMachine files.
+	 */
 	public File getVBoxVirtualMachineFolder() {
 		// get default vm folder
-		File defMachineFolder = new File(vBox.getSystemProperties()
-				.getDefaultMachineFolder());
-		if (defMachineFolder.isDirectory()) {
-			return defMachineFolder;
-		}
-		// backup solution, should not happen
-		return new File("virtualmachines");
+		return new File(vBox.getSystemProperties().getDefaultMachineFolder());
 	}
 
 	private void deleteMachine(final IMachine machine) {
@@ -222,12 +266,15 @@ public class VirtualBoxController {
 		machine.delete(removableMediums);
 	}
 
+	/**
+	 * The LinkUpDelay specifies how many milliseconds the network adapter of
+	 * the guest machine remains silent until he resumes his work stored in his
+	 * networkstack.
+	 * 
+	 * @param milliSeconds
+	 *            timeout to set in ms
+	 */
 	private void setLinkUpDelay(int milliSeconds) {
-		/*
-		 * The LinkUpDelay specifies how many milliseconds the network adapter
-		 * of the guest machine remains silent until he resumes his work stored
-		 * in his networkstack
-		 */
 		if (Integer.parseInt(vBox.getExtraData("VBoxInternal/Devices/e1000/0/"
 				+ "Config/LinkUpDelay")) != milliSeconds) {
 

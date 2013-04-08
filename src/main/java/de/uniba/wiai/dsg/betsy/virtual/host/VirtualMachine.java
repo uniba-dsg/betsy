@@ -30,13 +30,22 @@ import org.virtualbox_4_2.VirtualBoxManager;
 import betsy.data.engines.Engine;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.PortRedirectException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualBoxExceptionCode;
+import de.uniba.wiai.dsg.betsy.virtual.host.utils.PortVerifier;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceValidator;
 
-//TODO Javadoc
+/**
+ * The {@link VirtualMachine} represents a virtual machine running on
+ * VirtualBox. It can be started, stopped and snapshots may be created of its
+ * current state.
+ * 
+ * @author Cedric Roeck  
+ * @version 1.0
+ */
 public class VirtualMachine {
 
 	private final Configuration config = Configuration.getInstance();
@@ -616,12 +625,15 @@ public class VirtualMachine {
 	 *             thrown if a port could not be redirected
 	 * @throws InterruptedException
 	 *             thrown if waiting on the services was interrupted
+	 * @throws PortUsageException
+	 *             thrown if a required port is already in use by another
+	 *             application
 	 */
 	public void createRunningSnapshot(final String engineName,
 			final List<ServiceAddress> engineServices,
 			final Set<Integer> forwardingPorts, final boolean headless)
 			throws VirtualizedEngineServiceException, PortRedirectException,
-			InterruptedException {
+			InterruptedException, PortUsageException {
 
 		if (StringUtils.isBlank(engineName)) {
 			throw new IllegalArgumentException("The name of the engine to "
@@ -637,6 +649,8 @@ public class VirtualMachine {
 					+ "if the VM is already active. The VM should be "
 					+ "poweredOff!");
 		}
+
+		PortVerifier.verify(forwardingPorts);
 
 		log.debug("Create running-state snapshot");
 
@@ -681,8 +695,8 @@ public class VirtualMachine {
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
 
 			// take a snapshot of the started VM
-			String snapName = VirtualizedEngine.VIRTUAL_NAME_PREFIX + engineName
-					+ "_import-snapshot";
+			String snapName = VirtualizedEngine.VIRTUAL_NAME_PREFIX
+					+ engineName + "_import-snapshot";
 			String snapDesc = "Machine is in 'saved' state. Snapshot created during import on "
 					+ sdf.format(date);
 
