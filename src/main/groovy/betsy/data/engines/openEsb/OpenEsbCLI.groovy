@@ -1,13 +1,13 @@
 package betsy.data.engines.openEsb
 
 import betsy.data.Process
-import betsy.data.engines.Engine;
+import betsy.data.engines.LocalEngine
 
 
 class OpenEsbCLI {
 
     AntBuilder ant = new AntBuilder()
-    Engine engine
+    LocalEngine engine
 
     void stopDomain(){
         ant.exec(executable: "cmd", failOnError: "true") {
