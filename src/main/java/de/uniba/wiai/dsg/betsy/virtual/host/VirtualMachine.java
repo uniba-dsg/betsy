@@ -27,6 +27,8 @@ import org.virtualbox_4_2.NATProtocol;
 import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
+import betsy.data.engines.Engine;
+
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.PortRedirectException;
@@ -51,8 +53,19 @@ public class VirtualMachine {
 		this.session = vbManager.getSessionObject();
 	}
 
+	/**
+	 * Start the {@link IMachine}. VirtualBox currently supports three different
+	 * states. Two of them are showing the GUI, one is saving the resources,
+	 * hides the GUI and therefore is 'headless'.<br>
+	 * <br>
+	 * The {@link IMachine} should not be running before.
+	 * 
+	 * @param headless
+	 *            if true, the {@link VirtualMachine} will be running in the
+	 *            background and no GUI window will appear.
+	 */
 	public void start(final boolean headless) {
-		log.debug("VM state before start: " + machine.getState().toString());
+		log.trace("Starting VM");
 		if (!isActive()) {
 			IProgress startProgress = null;
 			if (headless) {
@@ -62,21 +75,29 @@ public class VirtualMachine {
 				startProgress = machine.launchVMProcess(session, "gui", null);
 			}
 			if (!startProgress.getCompleted()) {
-				log.debug("Waiting for VM start");
 				startProgress.waitForCompletion(15000);
 			}
 		} else {
-			log.warn("Can't start VM, is already running");
+			log.warn("Can't start VM, is already active");
 		}
 	}
 
+	/**
+	 * Stopping the {@link IMachine} and causing the VirtualBox's VM to be in
+	 * 'PoweredOff' state.<br>
+	 * If the VM is still running after the timeout, it will be killed using
+	 * VirtualBox's emergency kill switch.<br>
+	 * <br>
+	 * Should only be used of the {@link IMachine} is in a running state.
+	 */
 	public void stop() {
-		log.trace("Stop VM");
+		log.trace("Stopping VM");
 		try {
 			if (isRunning()) {
 				IConsole console = session.getConsole();
 				IProgress stopProgress = console.powerDown();
-				stopProgress.waitForCompletion(10000);
+				stopProgress.waitForCompletion(15000);
+				// if not stopped now it will be killed...
 			}
 		} catch (VBoxException exception) {
 			if (VirtualBoxExceptionCode.valueOf(exception).equals(
@@ -97,18 +118,28 @@ public class VirtualMachine {
 				session.unlockMachine();
 			} catch (VBoxException exception) {
 				// ignore if was not locked
-				log.warn("Unlocking session after stop vm failed");
 			}
 		}
 	}
 
+	/**
+	 * Save the current running state of the {@link IMachine}. After saving the
+	 * state the {@link IMachine} won't be running anymore.<br>
+	 * It can be used as an alternative to {@link #stop()} and is very helpful
+	 * while creating a new {@link Engine}. Nevertheless is also takes
+	 * significantly longer. <br>
+	 * <br>
+	 * Should only be used of the {@link IMachine} is in a running state.
+	 */
 	public void saveState() {
 		log.trace("Saving VM state");
 		try {
 			if (isRunning()) {
 				IConsole console = session.getConsole();
-				IProgress stopProgress = console.saveState();
-				stopProgress.waitForCompletion(30000);
+				IProgress saveProgress = console.saveState();
+				while (!saveProgress.getCompleted()) {
+					saveProgress.waitForCompletion(15000);
+				}
 			}
 		} catch (VBoxException exception) {
 			if (VirtualBoxExceptionCode.valueOf(exception).equals(
@@ -134,6 +165,13 @@ public class VirtualMachine {
 		}
 	}
 
+	/**
+	 * Killing the {@link IMachine} using the 'emergencystop'.<br>
+	 * Stops the VM in nearly every situation but might also cause data loss or
+	 * corrupted states. <br>
+	 * <br>
+	 * Should only be used of the {@link IMachine} is in a running state.
+	 */
 	public void kill() {
 		log.debug("killing machine");
 		machine.launchVMProcess(session, "emergencystop", null);
@@ -145,12 +183,17 @@ public class VirtualMachine {
 		}
 	}
 
-	// Running in sense of stoppable
+	/**
+	 * Check whether the {@link IMachine} is in an active running state.
+	 * Therefore the State must be either Running, Paused or Stuck (after an
+	 * severe error).<br>
+	 * If the VM is running it can be stopped.
+	 * 
+	 * @return true if the VM is running, paused or stuck
+	 */
 	public boolean isRunning() {
 		try {
 			MachineState state = this.machine.getState();
-			log.debug("Is VM running? State: " + state.toString());
-
 			if (state.equals(MachineState.Running)) {
 				return true;
 			}
@@ -162,12 +205,20 @@ public class VirtualMachine {
 			}
 		} catch (VBoxException exception) {
 			// in error cases the state can't be always read.
-			log.warn("Couldn't determine running state:", exception);
+			log.error("Couldn't determine running state:", exception);
 		}
 		return false;
 	}
 
-	// Every state where the gui is still opened
+	/**
+	 * Check whether the {@link IMachine} is in a running state.<br>
+	 * Even if this method is very similar to {@link #isRunning()}, the
+	 * difference is that every mid-state such as saving, powering-off, etc. is
+	 * still a running state, even if the VM is currently not responding to the
+	 * User's input.
+	 * 
+	 * @return true if the VM is active
+	 */
 	public boolean isActive() {
 		try {
 			MachineState state = this.machine.getState();
@@ -190,6 +241,12 @@ public class VirtualMachine {
 		return false;
 	}
 
+	/**
+	 * Check whether the VM has at least one {@link ISnapshot} that is marked as
+	 * 'online' and therefore contains an already started system.
+	 * 
+	 * @return true if VM contains at least one 'online' snapshot
+	 */
 	public boolean hasRunningSnapshot() {
 		ISnapshot snapshot = machine.getCurrentSnapshot();
 		if (snapshot != null) {
@@ -199,23 +256,33 @@ public class VirtualMachine {
 		return false;
 	}
 
+	/**
+	 * Taking a snapshot of this {@link VirtualMachine} based on the current
+	 * state.<br>
+	 * A bug in VirtualBox (https://www.virtualbox.org/ticket/9255) forces us to
+	 * pause the VM before taking the snapshot. Afterwards we will always resume
+	 * the VM, even if it was already paused before.
+	 * 
+	 * @param name
+	 *            the name of the snapshot to be created
+	 * @param desc
+	 *            the description of the snapshot to be created
+	 * @return the created snapshot
+	 */
 	public ISnapshot takeSnapshot(final String name, final String desc) {
+		log.debug("Taking VM snapshot");
 		IConsole console = session.getConsole();
 
-		// TODO must be in running state to pause
-		log.debug("Pause VM before taking snapshot");
+		log.debug("Pausing VM before taking a snapshot");
 		console.pause();
 
 		IProgress snapshotProgress = console.takeSnapshot(name, desc);
 		while (!snapshotProgress.getCompleted()) {
-			log.trace("wait for snapshot completion");
-			snapshotProgress.waitForCompletion(5000);
+			snapshotProgress.waitForCompletion(15000);
 		}
 
 		// before resuming make sure the snapshot has been saved
 		while (this.machine.getState().equals(MachineState.Saving)) {
-			log.trace("wait, VirtualBox is still saving... "
-					+ this.machine.getState().toString());
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -223,14 +290,18 @@ public class VirtualMachine {
 			}
 		}
 
-		// TODO why resume?
-		// TODO resume only if was in Running state
+		log.debug("Resuming VM after taking a snapshot");
 		console.resume();
 
 		// get latestSnapshot and return
 		return this.machine.getCurrentSnapshot();
 	}
 
+	/**
+	 * Resetting the {@link IMachine} to the latest {@link ISnapshot}.<br>
+	 * <br>
+	 * Requires the {@link IMachine} to have at least one {@link ISnapshot}.
+	 */
 	public void resetToLatestSnapshot() {
 		ISession subSession = null;
 		try {
@@ -250,16 +321,9 @@ public class VirtualMachine {
 			}
 
 			IProgress snapshotProgress = console.restoreSnapshot(snapshot);
-
-			// TODO include realistic timeout
 			while (!snapshotProgress.getCompleted()) {
-				log.trace("wait on restoring completion");
-				snapshotProgress.waitForCompletion(5000);
+				snapshotProgress.waitForCompletion(15000);
 			}
-
-			log.trace("Snapshot restored state: "
-					+ machine.getState().toString());
-
 		} finally {
 			if (subSession != null) {
 				try {
@@ -273,6 +337,20 @@ public class VirtualMachine {
 		}
 	}
 
+	/**
+	 * Setup port forwarding for all the given forwardingPorts. The port on the
+	 * host is always equal to the port on the guest system. All existing
+	 * redirections are deleted before applying the new redirections.<br>
+	 * <br>
+	 * This method is using the JAXWS methods which do have a severe issue until
+	 * version 4.2.11 if running VirtualBox on OS X.
+	 * (https://www.virtualbox.org/ticket/11635)
+	 * 
+	 * @param forwardingPorts
+	 *            all ports to create a forwarding for.
+	 * @throws PortRedirectException
+	 *             thrown if redirection could not be created
+	 */
 	public void applyPortForwardingWS(final Set<Integer> forwardingPorts)
 			throws PortRedirectException {
 		if (!isAlreadyRedirected(forwardingPorts)) {
@@ -310,36 +388,45 @@ public class VirtualMachine {
 	}
 
 	private boolean isAlreadyRedirected(final Set<Integer> forwardingPorts) {
+		// get existing redirects
+		INATEngine natEngine = getNATEngine();
+		List<String> redirects = natEngine.getRedirects();
 
-		// TODO use
+		int matchingForwards = 0;
 
-		// TODO verify
+		for (String redirect : redirects) {
+			// resolve host and guest port
+			String[] rds = redirect.split(",");
+			String hostPort = rds[3];
+			String guestPort = rds[5];
+			// verify both are equal, ignoring any other manually created
+			// redirection
+			if (hostPort.equals(guestPort)) {
+				// verify is in list
+				if (forwardingPorts.contains(hostPort)) {
+					// is ok, increase count
+					matchingForwards++;
+				}
+			}
+		}
 
-		return false;
-
-		// // get redirects
-		// INATEngine natEngine = getNATEngine();
-		// List<String> redirects = natEngine.getRedirects();
-		// for (String redirect : redirects) {
-		// // resolve host and guest port
-		// String[] rds = redirect.split(",");
-		// String hostPort = rds[3];
-		// String guestPort = rds[5];
-		// // verify both are equal
-		// if(hostPort.equals(guestPort)) {
-		// // verify is in list
-		// if(forwardingPorts.contains(hostPort)) {
-		// // is ok, test next redirect
-		// continue;
-		// }
-		// }
-		// return false;
-		// }
-		//
-		// // each required redirect is already created
-		// return true;
+		return matchingForwards == forwardingPorts.size();
 	}
 
+	/**
+	 * Setup port forwarding for all the given forwardingPorts. The port on the
+	 * host is always equal to the port on the guest system. All existing
+	 * redirections are deleted before applying the new redirections.<br>
+	 * <br>
+	 * This method is using a workaround using the CLI. The JAXWS methods do
+	 * have a severe issue until version 4.2.11 if running VirtualBox on OS X.
+	 * (https://www.virtualbox.org/ticket/11635)
+	 * 
+	 * @param forwardingPorts
+	 *            all ports to create a forwarding for.
+	 * @throws PortRedirectException
+	 *             thrown if redirection could not be created
+	 */
 	public void applyPortForwarding(final Set<Integer> forwardingPorts)
 			throws PortRedirectException {
 		if (!isAlreadyRedirected(forwardingPorts)) {
@@ -399,6 +486,15 @@ public class VirtualMachine {
 		}
 	}
 
+	/**
+	 * Delete all existing port redirections of the machines {@link INATEngine}. <br>
+	 * <br>
+	 * This method is using a workaround using the CLI. The JAXWS methods do
+	 * have a severe issue until version 4.2.11 if running VirtualBox on OS X.
+	 * 
+	 * @throws PortRedirectException
+	 *             thrown if a port redirection could not be deleted
+	 */
 	public void clearPortForwarding() throws PortRedirectException {
 		log.debug("Deleting all existing port redirections");
 
@@ -446,6 +542,16 @@ public class VirtualMachine {
 		}
 	}
 
+	/**
+	 * Delete all existing port redirections of the machines {@link INATEngine}. <br>
+	 * <br>
+	 * This method is using the JAXWS methods which do have a severe issue until
+	 * version 4.2.11 if running VirtualBox on OS X.
+	 * (https://www.virtualbox.org/ticket/11635)
+	 * 
+	 * @throws PortRedirectException
+	 *             thrown if a port redirection could not be deleted
+	 */
 	public void clearPortForwardingWS() throws PortRedirectException {
 		log.debug("Deleting all existing port redirections");
 		INATEngine natEngine = getNATEngine();
@@ -477,6 +583,40 @@ public class VirtualMachine {
 		return na.getNATEngine();
 	}
 
+	/**
+	 * Create a running snapshot of the {@link VirtualMachine}.<br>
+	 * To create a running snapshot the VM must not be active. Then, the
+	 * following steps are executed:
+	 * <ul>
+	 * <li>Apply port forwarding</li>
+	 * <li>Start the VM</li>
+	 * <li>Wait for the engines services to be ready</li>
+	 * <li>Wait for betsy's server on the VM to be ready</li>
+	 * <li>Take a snapshot</li>
+	 * <li>Stop the VM</li>
+	 * </ul>
+	 * <br>
+	 * The {@link VirtualMachine} will be stopped after creating the snapshot or
+	 * if an exception did occur.
+	 * 
+	 * @param engineName
+	 *            the name of the engine the VM belong to
+	 * @param engineServices
+	 *            a {@link List} of service addresses that are required by the
+	 *            engine. If they are available the VM is started and ready.
+	 * @param forwardingPorts
+	 *            the ports required by the engine
+	 * @param headless
+	 *            if true, the snapshot will be created without showing the
+	 *            VirtualBox GUI
+	 * 
+	 * @throws VirtualizedEngineServiceException
+	 *             thrown if a service of the engine was not available
+	 * @throws PortRedirectException
+	 *             thrown if a port could not be redirected
+	 * @throws InterruptedException
+	 *             thrown if waiting on the services was interrupted
+	 */
 	public void createRunningSnapshot(final String engineName,
 			final List<ServiceAddress> engineServices,
 			final Set<Integer> forwardingPorts, final boolean headless)
@@ -551,12 +691,9 @@ public class VirtualMachine {
 			// stops the VM again and unlocks session
 			this.stop();
 		} catch (MalformedURLException exception) {
-			throw new VirtualizedEngineServiceException(
-					"Could not verify engine "
-							+ "servies availability. One address is invalid: ",
+			throw new VirtualizedEngineServiceException("Could not verify "
+					+ "engine servies availability. One address is invalid: ",
 					exception);
-		} catch (InterruptedException exception) {
-			throw exception;
 		} finally {
 			// stop if vm is still running
 			if (this.isRunning()) {
