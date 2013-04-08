@@ -13,6 +13,12 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
+/**
+ * Deployer for the virtualized Orchestra engine.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 
 	private Logger log = Logger.getLogger(getClass());

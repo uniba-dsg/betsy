@@ -10,6 +10,12 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
+/**
+ * Deployer for the virtualized PetalsESB engine.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 
 	private Logger log = Logger.getLogger(getClass());
@@ -50,6 +56,7 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 		long start = -System.currentTimeMillis();
 		int deployTimeout = container.getDeployTimeout();
 
+		// Be careful: here the process is deployed if the file is missing!
 		while (fileAvailable
 				&& (System.currentTimeMillis() + start < deployTimeout)) {
 			try {
@@ -65,14 +72,15 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. The operation timed out.");
 		}
-		
+
 		log.debug("File deployment done");
 
 		// process is deployed, now wait for verification in logfile
 		boolean logVerification = false;
 		File logfile = new File(container.getEngineLogfileDir(), "petals.log");
 		String successMessage = "Service Assembly '"
-				+ container.getBpelFileNameWithoutExtension() + "' started";
+				+ container.getBpelFileNameWithoutExtension()
+				+ "Application' started";
 		int errorCount = 0;
 
 		if (logfile.isFile()) {
@@ -85,11 +93,11 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 					String fileContent = FileUtils.readFileToString(logfile);
 					// try positive case
 					logVerification = fileContent.contains(successMessage);
-					
+
 					if (!logVerification) {
 						// not available yet? wait a little...
 						try {
-							Thread.sleep(100);
+							Thread.sleep(500);
 						} catch (InterruptedException e) {
 							// ignore
 						}
@@ -102,9 +110,11 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 					}
 				}
 			}
+			log.trace("Timeout? "
+					+ (System.currentTimeMillis() + start > deployTimeout));
+			log.trace("Log verification? " + logVerification);
 		} else {
 			log.warn("petals.log not found, skip log verification");
 		}
-
 	}
 }

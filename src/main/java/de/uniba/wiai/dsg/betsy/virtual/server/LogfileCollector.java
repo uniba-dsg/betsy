@@ -10,16 +10,33 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.log4j.Logger;
 
-import de.uniba.wiai.dsg.betsy.virtual.common.Checksum;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.CollectLogfileException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.FileMessage;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 
+/**
+ * The {@link LogfileCollector} collects the logfiles of the engine and betsy
+ * server upon a received {@link LogRequest}.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class LogfileCollector {
 
 	private Logger log = Logger.getLogger(getClass());
 
+	/**
+	 * Collect the logfiles of an engine and the betsy server. The directories
+	 * where the logs can be collected from are submitted in the
+	 * {@link LogRequest}.
+	 * 
+	 * @param request
+	 *            request containing information where to collect the logs from
+	 * @return {@link LogfileCollection} containing all collected logs
+	 * @throws CollectLogfileException
+	 *             thrown if collecting the logs failed
+	 */
 	public LogfileCollection collectLogfiles(final LogRequest request)
 			throws CollectLogfileException {
 
