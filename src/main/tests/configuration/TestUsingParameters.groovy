@@ -24,8 +24,8 @@ class TestUsingParameters {
 		cli.s(longOpt:'skip-reinstallation',"skip reinstalling each engine for each process")
 		cli.o("Opens results in default browser")
 		cli.h("Print out usage information")
-		cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${config.getValueAsString('PARTNER_IP_AND_PORT')} for standard engines)")
 		cli.v("Use virtualized testing. Requires working VirtualBox installation, specified in 'Config.groovy'")
+		cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${IPAddress.getLocalAddress()} for standard engines)")
 
 		def options = cli.parse(args)
 		if (options == null || options == false || options.h) {
@@ -40,8 +40,11 @@ class TestUsingParameters {
 		}
 
 		if (options.p){
-			println "Setting Partner IP and Port to ${options.p} from previous setting ${config.getValueAsString('PARTNER_IP_AND_PORT')}"
+			println "Setting Partner IP and Port to ${options.p} from previous setting ${IPAddress.getLocalAddress()}:2000"
 			config.setValue("PARTNER_IP_AND_PORT", options.p);
+		}else {
+			println "Setting Partner IP and Port to ${IPAddress.getLocalAddress()}"
+			config.setValue("PARTNER_IP_AND_PORT", IPAddress.getLocalAddress()+":2000");
 		}
 
 		try {

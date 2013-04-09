@@ -10,9 +10,7 @@ import java.util.Set;
 import betsy.data.Process;
 import betsy.data.engines.bpelg.BpelgEngine;
 import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEnginePackageBuilder;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 
 public class VirtualizedBpelgEngine extends VirtualizedEngine {
@@ -20,10 +18,9 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
 	private final Configuration config = Configuration.getInstance();
 	private final BpelgEngine defaultEngine;
 
-	public VirtualizedBpelgEngine(VirtualBoxController vbc) {
-		super(vbc);
+	public VirtualizedBpelgEngine() {
+		super();
 		this.defaultEngine = new BpelgEngine();
-		this.defaultEngine.setPackageBuilder(new VirtualizedEnginePackageBuilder());
 	}
 
 	@Override

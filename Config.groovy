@@ -6,9 +6,6 @@ PARTNER_IP_AND_PORT = "0.0.0.0:2000"
 
 virtualisation {
 
-	partnerIp = "10.0.2.2"
-	partnerPort = "2000"
-
 	vbox {
 		// The folder containing the binary files
 		path = "/Applications/VirtualBox.app/Contents/MacOS/"
