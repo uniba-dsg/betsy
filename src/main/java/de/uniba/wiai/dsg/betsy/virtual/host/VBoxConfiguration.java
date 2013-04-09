@@ -5,11 +5,24 @@ import java.io.File;
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.ConfigurationException;
 
-//TODO Javadoc
+/**
+ * The {@link VBoxConfiguration} provides access to mandatory options required
+ * by virtualized testing using VirtualBox.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ */
 public class VBoxConfiguration {
 
 	private final Configuration config = Configuration.getInstance();
 
+	/**
+	 * Verify if all mandatory options are set.
+	 * 
+	 * @throws ConfigurationException
+	 *             thrown if at least one config setting is missing or contains
+	 *             invalid values
+	 */
 	public void verify() throws ConfigurationException {
 		String vboxPath = config.getValueAsString("virtualisation.vbox.path");
 		String vboxwebsrvPath = config
@@ -53,19 +66,33 @@ public class VBoxConfiguration {
 		}
 	}
 
+	/**
+	 * Get the File where VirtualBox is installed in.
+	 * 
+	 * @return directory file
+	 */
 	public File getVboxDir() {
 		String vboxPath = config.getValueAsString("virtualisation.vbox.path");
 		return new File(vboxPath);
 	}
 
-	public File getVBoxWebSrv() throws ConfigurationException {
+	/**
+	 * Get the VirtualBox WebService File
+	 * 
+	 * @return file of VirtualBox WebService
+	 */
+	public File getVBoxWebSrv() {
 		String vboxwebsrvPath = config
 				.getValueAsString("virtualisation.vbox.vboxwebsrv");
-
 		return new File(getVboxDir(), vboxwebsrvPath);
 	}
 
-	public File getVBoxManage() throws ConfigurationException {
+	/**
+	 * Get the VirtualBox VBoxManage File
+	 * 
+	 * @return file of VirtualBox VBoxManage
+	 */
+	public File getVBoxManage() {
 		String vboxManagePath = config
 				.getValueAsString("virtualisation.vbox.vboxmanage");
 		return new File(getVboxDir(), vboxManagePath);

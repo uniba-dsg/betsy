@@ -115,7 +115,7 @@ public class VirtualMachine {
 				log.warn("Could not power off, VM was in invalid state:",
 						exception);
 			} else {
-				// TODO COMMENT rethrow as unexpected VBoxException
+				// rethrow as unexpected VBoxException
 				throw exception;
 			}
 		} finally {
