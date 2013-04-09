@@ -1,6 +1,10 @@
 package de.uniba.wiai.dsg.betsy.virtual.host;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +23,7 @@ import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
+import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 
 /**
@@ -65,17 +70,37 @@ public class VirtualBoxController {
 					"reasonText argument for createFault was passed NULL")) {
 				log.warn("Connecting to vboxWebSrv failed, trying to deactivate websrvauthlibrary...");
 				// try to switch the auth mode of VirtualBox
-				String vbpath = config
+				String vboxPath = config
+						.getValueAsString("virtualisation.vbox.path");
+				String vboxManagePath = config
 						.getValueAsString("virtualisation.vbox.vboxmanage");
-				Runtime r = Runtime.getRuntime();
-				String cmd[] = { vbpath, "setproperty", "websrvauthlibrary",
-						"null" };
+				File vboxManageFile = new File(vboxPath, vboxManagePath);
+
+				Runtime runtime = Runtime.getRuntime();
+				String[] attributes = { vboxManageFile.getAbsolutePath(),
+						"setproperty", "websrvauthlibrary", "null" };
+
+				BufferedReader buffStart = null;
 				try {
-					r.exec(cmd);
+					Process proc = runtime.exec(attributes);
 					log.info("... set VirtualBox websrvauthlibrary to 'null'");
-				} catch (Exception e2) {
+					InputStream inStr = proc.getInputStream();
+					buffStart = new BufferedReader(new InputStreamReader(inStr));
+					String str;
+					log.debug("Null authlib console output:");
+					while ((str = buffStart.readLine()) != null) {
+						log.debug("--:" + str);
+					}
+				} catch (IOException exception2) {
 					log.warn("... couldn't null VirtualBox websrvauthlibrary:",
-							e2);
+							exception2);
+					if (buffStart != null) {
+						try {
+							buffStart.close();
+						} catch (IOException e) {
+							// ignore
+						}
+					}
 				}
 
 				this.vbManager.connect(host + ":" + port, username, password);

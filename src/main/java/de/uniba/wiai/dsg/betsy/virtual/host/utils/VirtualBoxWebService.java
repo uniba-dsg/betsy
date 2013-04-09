@@ -33,20 +33,21 @@ public class VirtualBoxWebService {
 	}
 
 	/**
-	 * Start the VBoxWebSrv and wait 3 seconds to assure it is running.
+	 * Start the VBoxWebSrv and wait 5 seconds to assure it is running. The
+	 * VBoxWebSrv is started with a disabled authentication library.
 	 * 
 	 * @throws IOException
 	 *             thrown if starting the VBoxWebSrv failed
 	 */
 	public void start() throws IOException {
 		// start VBoxService
-		ProcessBuilder pb = new ProcessBuilder(path);
+		ProcessBuilder pb = new ProcessBuilder(path, "-A", "null");
 		vboxServiceProcess = pb.start();
 		// give the webSrv some time to start
-		log.debug("Waiting 3 seconds for the VBoxWebSrv to start...");
+		log.debug("Waiting 5 seconds for the VBoxWebSrv to start...");
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("seconds", 3);
+		map.put("seconds", 5);
 		ant.invokeMethod("sleep", map);
 
 		log.debug("...VBoxWebSrv started!");
