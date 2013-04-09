@@ -29,14 +29,14 @@ import de.uniba.wiai.dsg.betsy.Configuration;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class VirtualBoxImporter {
+public class VBoxApplianceImporter {
 
 	private final Configuration config = Configuration.getInstance();
 	private final Logger log = Logger.getLogger(getClass());
 
 	private final IVirtualBox vBox;
 
-	public VirtualBoxImporter(final IVirtualBox vBox) {
+	public VBoxApplianceImporter(final IVirtualBox vBox) {
 		this.vBox = vBox;
 	}
 
@@ -72,7 +72,7 @@ public class VirtualBoxImporter {
 	}
 
 	/**
-	 * Adjust the settings of the given machine.<br>
+	 * Adjust the settings of the given appliance.<br>
 	 * <br>
 	 * This includes:
 	 * <ul>
@@ -91,7 +91,7 @@ public class VirtualBoxImporter {
 	 * @param engineName
 	 *            name of the engine the vm belongs to
 	 */
-	public void adjustMachineSettings(final IMachine lockedVM,
+	public void adjustApplianceSettings(final IMachine lockedVM,
 			final String vmName, final String engineName) {
 		// set name and description
 		lockedVM.setName(vmName);
@@ -106,7 +106,7 @@ public class VirtualBoxImporter {
 
 		// set group
 		List<String> groups = new LinkedList<>();
-		groups.add(VirtualBoxController.BETSY_VBOX_GROUP);
+		groups.add(VBoxController.BETSY_VBOX_GROUP);
 		lockedVM.setGroups(groups);
 
 		// disable the audio adapter, preventing driver issues

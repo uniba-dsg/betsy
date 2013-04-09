@@ -44,7 +44,7 @@ import org.virtualbox_4_2.jaxws.RuntimeFaultMsg;
  * 
  * @author Mattias Holmqvist
  */
-public enum VirtualBoxExceptionCode {
+public enum VBoxExceptionCode {
 
 	VBOX_E_OBJECT_NOT_FOUND(2159738881L), VBOX_E_INVALID_VM_STATE(2159738882L), VBOX_E_VM_ERROR(
 			2159738883L), VBOX_E_FILE_ERROR(2159738884L), VBOX_E_IPRT_ERROR(
@@ -59,14 +59,14 @@ public enum VirtualBoxExceptionCode {
 
 	private long code;
 
-	VirtualBoxExceptionCode(long code) {
+	VBoxExceptionCode(long code) {
 		this.code = code;
 	}
 
-	private static Map<Long, VirtualBoxExceptionCode> table = new HashMap<Long, VirtualBoxExceptionCode>();
+	private static Map<Long, VBoxExceptionCode> table = new HashMap<Long, VBoxExceptionCode>();
 
 	static {
-		for (VirtualBoxExceptionCode errorCode : VirtualBoxExceptionCode
+		for (VBoxExceptionCode errorCode : VBoxExceptionCode
 				.values()) {
 			table.put(errorCode.code, errorCode);
 		}
@@ -79,12 +79,12 @@ public enum VirtualBoxExceptionCode {
 	 *            the exception to get the error code from.
 	 * @return an ErrorCode representing the given fault code.
 	 */
-	public static VirtualBoxExceptionCode valueOf(VBoxException vboxException) {
+	public static VBoxExceptionCode valueOf(VBoxException vboxException) {
 		final Throwable wrapped = vboxException.getWrapped();
 		if (wrapped instanceof RuntimeFaultMsg) {
 			final RuntimeFaultMsg faultCode = (RuntimeFaultMsg) wrapped;
 			final int resultCode = faultCode.getFaultInfo().getResultCode();
-			final VirtualBoxExceptionCode errorCode = table
+			final VBoxExceptionCode errorCode = table
 					.get(unsignedIntToLong(resultCode));
 			if (errorCode != null) {
 				return errorCode;

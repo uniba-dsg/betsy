@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualBoxController;
+import de.uniba.wiai.dsg.betsy.virtual.host.VBoxController;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.DownloadException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveContentException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.ArchiveException;
@@ -50,7 +50,7 @@ public class VirtualMachineImporter {
 			+ "stored without or within a folder. If a folder is used it "
 			+ "should be named just as the engine.";
 
-	private final VirtualBoxController vbc;
+	private final VBoxController vbc;
 	private final String vmName;
 	private final String engineName;
 	private final File downloadPath;
@@ -58,7 +58,7 @@ public class VirtualMachineImporter {
 
 	public VirtualMachineImporter(final String vmName, final String engineName,
 			final File downloadPath, final File extractPath,
-			final VirtualBoxController vbc) {
+			final VBoxController vbc) {
 		if (StringUtils.isBlank(vmName)) {
 			throw new IllegalArgumentException("vmName must not be null or"
 					+ " empty");

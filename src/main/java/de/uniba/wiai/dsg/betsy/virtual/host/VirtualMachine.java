@@ -33,7 +33,7 @@ import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.PortRedirectException;
-import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualBoxExceptionCode;
+import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VBoxExceptionCode;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.PortVerifier;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceAddress;
 import de.uniba.wiai.dsg.betsy.virtual.host.utils.ServiceValidator;
@@ -109,8 +109,8 @@ public class VirtualMachine {
 				// if not stopped now it will be killed...
 			}
 		} catch (VBoxException exception) {
-			if (VirtualBoxExceptionCode.valueOf(exception).equals(
-					VirtualBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
+			if (VBoxExceptionCode.valueOf(exception).equals(
+					VBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
 				// ignore
 				log.warn("Could not power off, VM was in invalid state:",
 						exception);
@@ -152,8 +152,8 @@ public class VirtualMachine {
 				}
 			}
 		} catch (VBoxException exception) {
-			if (VirtualBoxExceptionCode.valueOf(exception).equals(
-					VirtualBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
+			if (VBoxExceptionCode.valueOf(exception).equals(
+					VBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
 				// ignore
 				log.warn("Could not save VM state, was in invalid state:",
 						exception);

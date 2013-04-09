@@ -1,10 +1,6 @@
 package de.uniba.wiai.dsg.betsy.virtual.host;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,109 +18,42 @@ import org.virtualbox_4_2.LockType;
 import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
-import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 
 /**
- * The {@link VirtualBoxController} establishes the connection between betsy and
- * VirtualBox. It can be used to resolve machines, import or delete them.
+ * The {@link VBoxController} establishes the connection between betsy and
+ * VirtualBox. It can be used to resolve machines, import or delete them and to
+ * adapt some settings of VirtualBox.
  * 
  * @author Cedric Roeck
  * @version 1.0
  */
-public class VirtualBoxController {
+public class VBoxController {
 
 	public static final String BETSY_VBOX_GROUP = "/betsy-engines";
 
 	private final Logger log = Logger.getLogger(getClass());
-	private final Configuration config = Configuration.getInstance();
 	private final Map<String, VirtualMachine> virtualMachines = new HashMap<>();
 
-	private final VirtualBoxManager vbManager;
-
 	private IVirtualBox vBox;
-	private VirtualBoxImporter vBoxImporter;
+	private VBoxApplianceImporter vBoxImporter;
+	private VirtualBoxManager vBoxManager;
 
-	public VirtualBoxController() {
-		this.vbManager = VirtualBoxManager.createInstance(null);
+	public VBoxController() {
 	}
 
 	/**
-	 * Initialize the controller and connect to the VBoxWebSrv.
+	 * Initialize the controller and connect to the VirtualBox interface.
 	 */
 	public void init() {
-		String host = config.getValueAsString("virtualisation.vboxwebsrv.host",
-				"http://127.0.0.1");
-		String port = config.getValueAsString("virtualisation.vboxwebsrv.port",
-				"18083");
-		String username = config.getValueAsString(
-				"virtualisation.vboxwebsrv.user", "user");
-		String password = config.getValueAsString(
-				"virtualisation.vboxwebsrv.password", "password");
-
-		try {
-			this.vbManager.connect(host + ":" + port, username, password);
-		} catch (org.virtualbox_4_2.VBoxException exception) {
-			if (exception.getMessage().contains(
-					"reasonText argument for createFault was passed NULL")) {
-				log.warn("Connecting to vboxWebSrv failed, trying to deactivate websrvauthlibrary...");
-				// try to switch the auth mode of VirtualBox
-				String vboxPath = config
-						.getValueAsString("virtualisation.vbox.path");
-				String vboxManagePath = config
-						.getValueAsString("virtualisation.vbox.vboxmanage");
-				File vboxManageFile = new File(vboxPath, vboxManagePath);
-
-				Runtime runtime = Runtime.getRuntime();
-				String[] attributes = { vboxManageFile.getAbsolutePath(),
-						"setproperty", "websrvauthlibrary", "null" };
-
-				BufferedReader buffStart = null;
-				try {
-					Process proc = runtime.exec(attributes);
-					log.info("... set VirtualBox websrvauthlibrary to 'null'");
-					InputStream inStr = proc.getInputStream();
-					buffStart = new BufferedReader(new InputStreamReader(inStr));
-					String str;
-					log.debug("Null authlib console output:");
-					while ((str = buffStart.readLine()) != null) {
-						log.debug("--:" + str);
-					}
-				} catch (IOException exception2) {
-					log.warn("... couldn't null VirtualBox websrvauthlibrary:",
-							exception2);
-					if (buffStart != null) {
-						try {
-							buffStart.close();
-						} catch (IOException e) {
-							// ignore
-						}
-					}
-				}
-
-				this.vbManager.connect(host + ":" + port, username, password);
-				log.info("Conneting to vboxWebSrv succeeded!");
-			} else if (exception.getMessage().equals(
-					"HTTP transport error: "
-							+ "java.net.ConnectException: Connection refused")) {
-				log.error("VBoxWebSrv does not seem to be running on the specified address!");
-				throw exception;
-			} else {
-				// unknown exception, can't solve situation
-				log.error("Unknown exception while connecting to vboxWebSrv");
-				throw exception;
-			}
-		}
-
-		this.vBox = vbManager.getVBox();
-		log.debug(String.format("Using VirtualBox version '%s'",
-				vBox.getVersion()));
+		VBoxConnector vBoxConn = VBoxConnector.getInstance();
+		this.vBox = vBoxConn.connect();
+		this.vBoxManager = vBoxConn.getVirtualBoxManager();
+		this.vBoxImporter = vBoxConn.getVirtualBoxImporter();
 
 		// no delay, continue with network usage immediately
 		this.setLinkUpDelay(0);
-
-		this.vBoxImporter = new VirtualBoxImporter(this.vBox);
+		log.trace("VirtualBoxController initialized");
 	}
 
 	/**
@@ -195,12 +124,12 @@ public class VirtualBoxController {
 				importedVm = vBox.findMachine(uuid);
 
 				// acquire session lock
-				session = vbManager.getSessionObject();
+				session = vBoxManager.getSessionObject();
 				importedVm.lockMachine(session, LockType.Write);
 				IMachine lockedVM = session.getMachine();
 
-				vBoxImporter
-						.adjustMachineSettings(lockedVM, vmName, engineName);
+				vBoxImporter.adjustApplianceSettings(lockedVM, vmName,
+						engineName);
 
 				try {
 					session.unlockMachine();
@@ -243,7 +172,8 @@ public class VirtualBoxController {
 		if (virtualMachines.containsKey(name)) {
 			return virtualMachines.get(name);
 		} else {
-			VirtualMachine vm = new VirtualMachine(vbManager, getMachine(name));
+			VirtualMachine vm = new VirtualMachine(vBoxManager,
+					getMachine(name));
 			virtualMachines.put(name, vm);
 			return vm;
 		}

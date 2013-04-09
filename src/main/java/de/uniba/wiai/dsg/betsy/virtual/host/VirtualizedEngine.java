@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -51,14 +50,14 @@ public abstract class VirtualizedEngine extends Engine implements
 	private static final Logger log = Logger.getLogger(VirtualizedEngine.class);
 
 	private final Configuration config = Configuration.getInstance();
-	private final VirtualBoxController vbController;
+	private final VBoxController vbController;
 	private final CommClient comm;
-
+	
+	private boolean initialized = false;
 	private VirtualMachine vm = null;
 
-	public VirtualizedEngine(VirtualBoxController vbc) {
-		this.vbController = Objects.requireNonNull(vbc);
-		this.setPackageBuilder(new VirtualizedEnginePackageBuilder());
+	public VirtualizedEngine() {
+		this.vbController = new VBoxController();
 		// create communication handler
 		comm = new TCPCommClient("127.0.0.1", 48888);
 	}
@@ -71,6 +70,21 @@ public abstract class VirtualizedEngine extends Engine implements
 		return new File("vm_extraction");
 	}
 
+	@Override
+	public void prepare() {
+		// ensure folder structure
+		super.prepare();
+		initialize();
+	}
+	
+	private void initialize() {
+		if(!initialized) {
+			// load VBox specific stuff
+			vbController.init();
+			initialized = true;
+		}
+	}
+	
 	@Override
 	public String getVirtualMachineName() {
 		return VIRTUAL_NAME_PREFIX + this.getName();
@@ -106,6 +120,9 @@ public abstract class VirtualizedEngine extends Engine implements
 
 	@Override
 	public void startup() {
+		// required for compatibility with EngineControl
+		initialize();
+		
 		log.debug("Startup virtualized engine " + getName() + " ...");
 
 		try {
@@ -165,6 +182,9 @@ public abstract class VirtualizedEngine extends Engine implements
 
 	@Override
 	public void shutdown() {
+		// required for compatibility with EngineControl
+		initialize();
+		
 		log.debug("Shutdown virtualized engine " + getName() + " ...");
 		// stop communication
 		comm.disconnect();
@@ -184,6 +204,9 @@ public abstract class VirtualizedEngine extends Engine implements
 
 	@Override
 	public void install() {
+		// required for compatibility with EngineControl
+		initialize();
+		
 		log.debug("Install virtualized engine " + getName() + " ...");
 		try {
 			if (!isVirtualMachineReady()) {
