@@ -61,12 +61,12 @@ public class VirtualBoxController {
 		try {
 			this.vbManager.connect(host + ":" + port, username, password);
 		} catch (org.virtualbox_4_2.VBoxException exception) {
-			if (exception.getMessage().equals(
+			if (exception.getMessage().contains(
 					"reasonText argument for createFault was passed NULL")) {
 				log.warn("Connecting to vboxWebSrv failed, trying to deactivate websrvauthlibrary...");
 				// try to switch the auth mode of VirtualBox
 				String vbpath = config
-						.getValueAsString("virtualisation.vboxmanage");
+						.getValueAsString("virtualisation.vbox.vboxmanage");
 				Runtime r = Runtime.getRuntime();
 				String cmd[] = { vbpath, "setproperty", "websrvauthlibrary",
 						"null" };
