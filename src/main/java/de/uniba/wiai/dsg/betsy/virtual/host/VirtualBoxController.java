@@ -275,9 +275,16 @@ public class VirtualBoxController {
 	 *            timeout to set in ms
 	 */
 	private void setLinkUpDelay(int milliSeconds) {
-		if (Integer.parseInt(vBox.getExtraData("VBoxInternal/Devices/e1000/0/"
-				+ "Config/LinkUpDelay")) != milliSeconds) {
+		int existingDelay = -1;
+		try {
+			existingDelay = Integer.parseInt(vBox
+					.getExtraData("VBoxInternal/Devices/e1000/0/"
+							+ "Config/LinkUpDelay"));
+		} catch (NumberFormatException exception) {
+			// ignore, usually was an empty value
+		}
 
+		if (existingDelay != milliSeconds) {
 			log.info("Disabling LinkUpDelay for this VirtualBox instance...");
 			vBox.setExtraData(
 					"VBoxInternal/Devices/e1000/0/Config/LinkUpDelay",
