@@ -28,7 +28,7 @@ public class DeployOperation implements Serializable {
 
 	private Integer deployTimeout;
 	private String deploymentDir;
-	private String deploymentExecutable;
+	private String deploymentFile;
 	private String engineLogDir;
 
 	private FileMessage fileMessage;
@@ -57,8 +57,8 @@ public class DeployOperation implements Serializable {
 		return fileMessage;
 	}
 
-	public String getDeploymentExecutable() {
-		return deploymentExecutable;
+	public String getDeploymentFile() {
+		return deploymentFile;
 	}
 
 	/**
@@ -137,18 +137,18 @@ public class DeployOperation implements Serializable {
 	}
 
 	/**
-	 * Set the path to the executable that must be used for deploying the
+	 * Set the path to the file that must be used for deploying the
 	 * process.
 	 * 
-	 * @param deploymentExecutable
+	 * @param deploymentFile
 	 *            path to set, must not be null or empty
 	 */
-	public void setDeploymentExecutable(String deploymentExecutable) {
-		if (StringUtils.isBlank(deploymentExecutable)) {
+	public void setDeploymentFile(String deploymentFile) {
+		if (StringUtils.isBlank(deploymentFile)) {
 			throw new IllegalArgumentException("deploymentExecutable must not "
 					+ "be null or empty");
 		}
-		this.deploymentExecutable = deploymentExecutable;
+		this.deploymentFile = deploymentFile;
 	}
 
 }

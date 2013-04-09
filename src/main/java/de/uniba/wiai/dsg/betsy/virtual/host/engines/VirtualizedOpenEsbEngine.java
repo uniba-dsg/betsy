@@ -101,7 +101,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 		operation.setBpelFileNameWithoutExtension(process
 				.getBpelFileNameWithoutExtension());
 		operation.setEngineLogDir(getVMLogfileDir());
-		operation.setDeploymentExecutable(getVMDeploymentExecutable());
+		operation.setDeploymentFile(getVMDeploymentFile());
 		operation.setDeployTimeout(getVMDeploymentTimeout());
 
 		return operation;
@@ -120,7 +120,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 				"/opt/openesb/glassfish/domains/domain1/logs");
 	}
 
-	public String getVMDeploymentExecutable() {
+	public String getVMDeploymentFile() {
 		return config.getValueAsString(
 				"virtualisation.engines.openesb_v.deploymentExecutable",
 				"/opt/openesb/glassfish/bin/asadmin");

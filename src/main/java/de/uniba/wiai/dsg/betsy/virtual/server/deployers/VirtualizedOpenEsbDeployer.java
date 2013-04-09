@@ -35,7 +35,7 @@ public class VirtualizedOpenEsbDeployer implements VirtualizedEngineDeployer {
 		createLocalDeployFile(tmpDeployFile, operation);
 		log.info("Temporary deploy file written to disk");
 
-		File deployTool = new File(operation.getDeploymentExecutable());
+		File deployTool = new File(operation.getDeploymentFile());
 		if (!deployTool.exists()) {
 			throw new DeployException("Deployment failed: Deployment tools "
 					+ "of OpenESB have not been found at '"
@@ -44,7 +44,7 @@ public class VirtualizedOpenEsbDeployer implements VirtualizedEngineDeployer {
 
 		Runtime runtime = Runtime.getRuntime();
 
-		String[] deployAtt = { operation.getDeploymentExecutable(),
+		String[] deployAtt = { operation.getDeploymentFile(),
 				"deploy-jbi-service-assembly",
 				tmpDeployFile.getAbsolutePath() };
 		BufferedReader buffDeploy = null;
@@ -69,7 +69,7 @@ public class VirtualizedOpenEsbDeployer implements VirtualizedEngineDeployer {
 					+ "unexpected exception:", exception);
 		}
 
-		String[] StartAtt = { operation.getDeploymentExecutable(),
+		String[] StartAtt = { operation.getDeploymentFile(),
 				"start-jbi-service-assembly",
 				operation.getBpelFileNameWithoutExtension() + "Application" };
 		BufferedReader buffStart = null;
