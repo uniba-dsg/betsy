@@ -134,7 +134,7 @@ class Process implements Cloneable {
      * @return the path <code>test/$engine/$process/pkg/$processId.jar</code>
      */
     String getTargetPackageJarFilePath() {
-        getTargetPackageFilePath("jar")
+        "${getTargetTmpPath()}/${bpelFileNameWithoutExtension}.jar"
     }
 
     /**

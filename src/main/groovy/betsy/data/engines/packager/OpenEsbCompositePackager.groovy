@@ -14,7 +14,7 @@ class OpenEsbCompositePackager {
 
     private void createComposite() {
         // create composite
-        String compositeDir = "${process.targetPath}/composite"
+        String compositeDir = "${process.targetTmpPath}/composite"
         String compositeMetaDir = "$compositeDir/META-INF"
         ant.mkdir dir: compositeMetaDir
         ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_composite_jbi_from_bpel.xsl")
@@ -28,10 +28,10 @@ class OpenEsbCompositePackager {
 
     private void createBinding() {
         // create jar file
-        ant.copy file: process.targetPackageFilePath, tofile: process.targetPackageJarFilePath
+        ant.move file: process.targetPackageFilePath, tofile: process.targetPackageJarFilePath
 
         // create http binding
-        String bindingDir = "${process.targetPath}/binding"
+        String bindingDir = "${process.targetTmpPath}/binding"
         String bindingMetaDir = "$bindingDir/META-INF"
         ant.mkdir dir: bindingDir
         ant.xslt(in: process.targetBpelFilePath, out: "$bindingMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_binding_jbi_from_bpel.xsl")
@@ -52,6 +52,6 @@ class OpenEsbCompositePackager {
     }
 
     private String getBindingArchive() {
-        "${process.targetPackagePath}/sun-http-binding.jar"
+        "${process.targetTmpPath}/sun-http-binding.jar"
     }
 }
