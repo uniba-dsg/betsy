@@ -79,10 +79,13 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void onPostDeployment(Process process) {
-        ant.waitfor(maxwait: "100", maxwaitunit: "second", checkevery: "1000") {
-            not() {
-                available(file: "$installationDir/${process.targetPackageCompositeFile}")
-            }
+        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
+			and {
+	            not() {
+	                available(file: "$installationDir/${process.targetPackageCompositeFile}")
+	            }
+				resourcecontains(resource: getPetalsLog(), substring: "Service Assembly '" + process.getBpelFileNameWithoutExtension() + "Application' started")
+			}
         }
     }
 
