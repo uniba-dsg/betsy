@@ -111,4 +111,10 @@ class PetalsEsbEngine extends Engine {
         }
     }
 
+    @Override
+    protected void bpelFolderToZipFile(Process process) {
+        ant.mkdir dir: process.targetPackagePath
+        ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
+    }
+
 }
