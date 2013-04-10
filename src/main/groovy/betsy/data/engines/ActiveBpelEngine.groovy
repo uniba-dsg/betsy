@@ -33,6 +33,13 @@ class ActiveBpelEngine extends Engine {
         ant.copy(todir: "${process.targetPath}/logs") {
             ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
         }
+		ant.copy(file: getAeDeploymentLog(), todir: "${process.targetPath}/logs")
+    }
+	
+	private File getAeDeploymentLog() {
+		String homeDir = System.getProperty("user.home");
+		homeDir = homeDir.endsWith(File.separator) ?: homeDir + File.separator;
+		return new File(homeDir+"AeBpelEngine"+File.separator+"deployment-logs"+File.separator+"aeDeployment.log")
     }
 
     @Override
