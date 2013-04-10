@@ -81,7 +81,7 @@ virtualisation {
 			serviceTimeout = 240
 			mac = "08:00:27:5a:9d:70"
 			deploymentDir = "/usr/share/tomcat7/bpr"
-			deploymentTimeout = 15
+			deploymentTimeout = 30
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
@@ -92,7 +92,7 @@ virtualisation {
 			serviceTimeout = 300
 			mac = "08:00:27:6f:6c:5a"
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
-			deploymentTimeout = 15
+			deploymentTimeout = 30
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
@@ -104,7 +104,7 @@ virtualisation {
 			mac = "08:00:27:ce:1e:55"
 
 			deploymentExecutable = "/opt/openesb/glassfish/bin/asadmin"
-			deploymentTimeout = 15
+			deploymentTimeout = 30
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
 			headless = true
 			shutdownSaveState = false
@@ -116,7 +116,7 @@ virtualisation {
 			mac = "08:00:27:5c:76:8a"
 
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
-			deploymentTimeout = 15
+			deploymentTimeout = 30
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
@@ -128,7 +128,7 @@ virtualisation {
 			mac = "08:00:27:eb:f4:c8"
 
 			deploymentDir = "/opt/petalsesb/install"
-			deploymentTimeout = 15
+			deploymentTimeout = 30
 			logfileDir = "/opt/petalsesb/logs"
 			headless = true
 			shutdownSaveState = false
