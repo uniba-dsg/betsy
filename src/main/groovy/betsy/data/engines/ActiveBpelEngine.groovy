@@ -90,7 +90,7 @@ class ActiveBpelEngine extends Engine {
         bpelFolderToZipFile(process)
 
         // create bpr file
-        ant.copy(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))
+        ant.move(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))
     }
 
     @Override
