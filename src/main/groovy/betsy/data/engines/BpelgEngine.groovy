@@ -87,8 +87,8 @@ class BpelgEngine extends Engine {
 
         // remove unimplemented methods
         Util.computeMatchingPattern(process).each { pattern ->
-            ant.copy(file:  "${process.targetBpelPath}/TestInterface.wsdl", tofile: "${process.targetBpelPath}/TestInterface.wsdl.before_removing_${pattern}")
-            ant.xslt(in: "${process.targetBpelPath}/TestInterface.wsdl.before_removing_${pattern}", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
+            ant.copy(file:  "${process.targetBpelPath}/TestInterface.wsdl", tofile: "${process.targetTmpPath}/TestInterface.wsdl.before_removing_${pattern}")
+            ant.xslt(in: "${process.targetTmpPath}/TestInterface.wsdl.before_removing_${pattern}", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
                 param(name: "deletePattern", expression: pattern)
             }
         }
