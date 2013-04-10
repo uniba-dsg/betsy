@@ -4,6 +4,7 @@ import betsy.data.Engine
 import betsy.data.Process
 import betsy.data.engines.packager.PetalsEsbCompositePackager
 
+import java.io.File;
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -21,9 +22,13 @@ class PetalsEsbEngine extends Engine {
         "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
+	File getPetalsLog() {
+		return new File("${getServerPath()}"+File.separator+"petals-esb-4.0"+File.separator+"logs"+File.separator+"petals.log");
+	}
+	
     @Override
     void storeLogs(Process process) {
-        // TODO not yet implemented
+        ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
 
     @Override
