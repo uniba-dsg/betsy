@@ -6,7 +6,6 @@ import betsy.data.Process
 import betsy.data.engines.Engine;
 import betsy.data.engines.LocalEngines
 import betsy.executables.CompositeSequential
-import betsy.util.IPAddress
 import configuration.processes.Processes
 
 import java.awt.Desktop
@@ -26,7 +25,7 @@ class TestUsingParameters {
 		cli.s(longOpt:'skip-reinstallation',"skip reinstalling each engine for each process")
 		cli.o("Opens results in default browser")
 		cli.h("Print out usage information")
-		cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${IPAddress.getLocalAddress()} for standard engines)")
+		cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${config.getValue('PARTNER_IP_AND_PORT')} for standard engines)")
 		cli.v("Use virtualized engines only. Requires working VirtualBox installation, specified in 'Config.groovy'")
 		cli.l("Use local engines only")
 
@@ -43,13 +42,9 @@ class TestUsingParameters {
 		}
 
 		if (options.p){
-			println "Setting Partner IP and Port to ${options.p} from previous setting ${IPAddress.getLocalAddress()}:2000"
+			println "Setting Partner IP and Port to ${options.p} from previous setting ${config.getValue('PARTNER_IP_AND_PORT')}"
 			config.setValue("PARTNER_IP_AND_PORT", options.p);
-		}else {
-			println "Setting Partner IP and Port to ${IPAddress.getLocalAddress()}"
-			config.setValue("PARTNER_IP_AND_PORT", IPAddress.getLocalAddress()+":2000");
 		}
-
 
 		List<Engine> engines = null
 		List<Process> processes = null
@@ -67,6 +62,12 @@ class TestUsingParameters {
 
 		for(Engine engine : engines) {
 			if(engine instanceof VirtualizedEngine) {
+				// verify IP set
+				def partner = config.getValue('PARTNER_IP_AND_PORT')
+				if(partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
+					throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. This can either be done via the -p option or directly in the Config.groovy file.")
+				}
+				
 				// verify all mandatory config options
 				new VBoxConfiguration().verify()
 				VBoxWebService.instance.install()
