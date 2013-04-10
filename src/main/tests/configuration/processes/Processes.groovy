@@ -1,6 +1,7 @@
 package configuration.processes
 
 import betsy.data.Process
+import betsy.data.assertions.ExitAssertion
 
 class Processes {
 
@@ -23,11 +24,17 @@ class Processes {
         process.testCases.any { it.notDeployable }
     }
 
+    public final List<Process> WITH_EXIT_ASSERTION = ALL.findAll { process ->
+        process.testCases.any { it.testSteps.any { it.assertions.any { it instanceof ExitAssertion }} }
+    }
+
     public List<Process> get(String name) {
-        if ("ALL" == name) {
+        if ("ALL" == name.toUpperCase()) {
             return ALL
-        } else if ("NOT_DEPLOYABLE" == name) {
+        } else if ("NOT_DEPLOYABLE" == name.toUpperCase()) {
             return NOT_DEPLOYABLE
+        } else if ("WITH_EXIT_ASSERTION" == name.toUpperCase()){
+            return WITH_EXIT_ASSERTION
         }
 
         List<Process> result = getBasicProcess(name)
