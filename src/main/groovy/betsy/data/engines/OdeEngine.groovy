@@ -64,10 +64,15 @@ class OdeEngine extends Engine {
     @Override
     void onPostDeployment(Process process) {
         ant.sequential() {
-            ant.waitfor(maxwait: "100", maxwaitunit: "second") {
+			ant.waitfor(maxwait: "30", maxwaitunit: "second") {
+				and {
                 available file: "$deploymentDir/${process.bpelFileNameWithoutExtension}.deployed"
+				 	or {
+						 resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of artifact " + process.bpelFileNameWithoutExtension + " successful")
+						 resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of " + process.bpelFileNameWithoutExtension + " failed")
+				 	}
+				}
             }
-            ant.sleep(milliseconds: 2000)
         }
     }
 
