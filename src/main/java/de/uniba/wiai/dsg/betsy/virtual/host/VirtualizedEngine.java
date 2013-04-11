@@ -156,8 +156,6 @@ public abstract class VirtualizedEngine extends Engine implements
 			comm.reconnect(timeout * 1000);
 			log.trace("...connected to bVMS");
 		} catch (IOException exception) {
-			// stop VM before doing anything else
-			shutdown();
 
 			throw new TemporaryFailedTestException("The VM was started, but "
 					+ "the communication to betsy's server could not be "
