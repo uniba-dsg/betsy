@@ -33,7 +33,8 @@ public class BetsyVirtualMachineServerDaemon implements Daemon, Runnable {
 	private volatile CommServer com;
 	private volatile boolean keepRunning = true;
 	private volatile Thread worker;
-	private volatile Logger log = Logger.getLogger(getClass());
+	
+	private static final Logger log = Logger.getLogger(BetsyVirtualMachineServerDaemon.class);
 
 	@Override
 	public void destroy() {

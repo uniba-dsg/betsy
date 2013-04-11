@@ -31,7 +31,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.TimeoutException;
  */
 public class ServiceValidator {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(ServiceValidator.class);
 
 	/**
 	 * Check whether the {@link Engine} is ready for usage.

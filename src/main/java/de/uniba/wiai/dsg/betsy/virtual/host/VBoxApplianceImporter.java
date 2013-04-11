@@ -31,9 +31,9 @@ import de.uniba.wiai.dsg.betsy.Configuration;
  */
 public class VBoxApplianceImporter {
 
+	private static final Logger log = Logger.getLogger(VBoxApplianceImporter.class);
+	
 	private final Configuration config = Configuration.getInstance();
-	private final Logger log = Logger.getLogger(getClass());
-
 	private final IVirtualBox vBox;
 
 	public VBoxApplianceImporter(final IVirtualBox vBox) {

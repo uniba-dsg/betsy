@@ -21,7 +21,7 @@ import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
  */
 public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 
-	private Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(VirtualizedOrchestraDeployer.class);
 
 	@Override
 	public String getName() {

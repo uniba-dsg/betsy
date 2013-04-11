@@ -54,7 +54,7 @@ public class VirtualMachine {
 	private final VirtualBoxManager vbManager;
 	private ISession session;
 
-	private final Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(VirtualMachine.class);
 
 	public VirtualMachine(VirtualBoxManager vbManager, IMachine machine) {
 		this.machine = Objects.requireNonNull(machine);

@@ -31,8 +31,8 @@ import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
  */
 public final class Configuration {
 
-	private static Logger log = Logger.getLogger(Configuration.class);
-	private static Configuration instance = new Configuration();
+	private static final Logger log = Logger.getLogger(Configuration.class);
+	private static final Configuration instance = new Configuration();
 
 	private Map<Object, Object> configMap = new HashMap<>();
 

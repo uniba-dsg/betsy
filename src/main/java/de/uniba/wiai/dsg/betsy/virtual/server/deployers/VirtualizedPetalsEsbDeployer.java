@@ -18,7 +18,7 @@ import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
  */
 public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 
-	private Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(VirtualizedPetalsEsbDeployer.class);
 
 	@Override
 	public String getName() {

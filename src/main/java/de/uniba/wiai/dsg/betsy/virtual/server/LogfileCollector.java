@@ -24,7 +24,7 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
  */
 public class LogfileCollector {
 
-	private Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(LogfileCollector.class);
 
 	/**
 	 * Collect the logfiles of an engine and the betsy server. The directories

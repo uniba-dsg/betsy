@@ -41,7 +41,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.UnsupportedArchiv
  */
 public class VirtualMachineImporter {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(VirtualMachineImporter.class);
 
 	private final String archiveRequirements = "Please verify to meet the "
 			+ "requirements of the archive structure. "

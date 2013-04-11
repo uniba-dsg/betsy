@@ -36,7 +36,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.UnsupportedArchiv
  */
 public class ArchiveExtractor {
 
-	private Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(ArchiveExtractor.class);
 
 	/**
 	 * Extract the archive into the outputDir. Determine automatically which

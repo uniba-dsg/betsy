@@ -31,7 +31,7 @@ import de.uniba.wiai.dsg.betsy.virtual.server.LogfileCollector;
  */
 public class ClientHandler implements Runnable {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(ClientHandler.class);
 	private final CommServer commServer;
 
 	private VirtualizedEngineDeployer deployer = null;

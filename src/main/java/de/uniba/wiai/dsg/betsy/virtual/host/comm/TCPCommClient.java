@@ -34,9 +34,10 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
  */
 public class TCPCommClient implements CommClient {
 
+	private static final Logger log = Logger.getLogger(TCPCommClient.class);
+	
 	private final String serverName;
 	private final int serverPort;
-	private final Logger log = Logger.getLogger(getClass());
 
 	private Socket socket;
 	private ObjectOutputStream oos;

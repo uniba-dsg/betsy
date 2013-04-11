@@ -19,7 +19,7 @@ public class TCPCommServer implements CommServer {
 	private ServerSocket serverSocket;
 	private ClientHandler clientHandler;
 
-	private final Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(TCPCommServer.class);
 
 	public TCPCommServer(final int port) {
 		if (port <= 0 || port > 65535) {

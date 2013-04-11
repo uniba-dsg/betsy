@@ -79,6 +79,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	
 	private void initialize() {
 		if(!initialized) {
+			log.trace("Initializing VirtualizedEngine");
 			// load VBox specific stuff
 			vbController.init();
 			initialized = true;

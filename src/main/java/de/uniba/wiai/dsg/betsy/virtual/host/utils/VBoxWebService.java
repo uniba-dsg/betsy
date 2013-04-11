@@ -21,6 +21,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.VBoxConfiguration;
 public class VBoxWebService {
 
 	private static VBoxWebService instance = null;
+	private static final Logger log = Logger.getLogger(VBoxWebService.class);
 
 	public static synchronized VBoxWebService getInstance() {
 		if (instance == null) {
@@ -30,14 +31,12 @@ public class VBoxWebService {
 	}
 
 	private final AntBuilder ant;
-	private final Logger log;
 	private final VBoxConfiguration vconfig;
 
 	private Process vboxServiceProcess;
 
 	private VBoxWebService() {
 		ant = new AntBuilder();
-		log = Logger.getLogger(getClass());
 		vconfig = new VBoxConfiguration();
 	}
 

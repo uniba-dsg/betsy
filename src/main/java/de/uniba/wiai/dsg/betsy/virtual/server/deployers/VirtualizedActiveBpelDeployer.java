@@ -18,7 +18,7 @@ import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
  */
 public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer {
 
-	private Logger log = Logger.getLogger(getClass());
+	private static final Logger log = Logger.getLogger(VirtualizedActiveBpelDeployer.class);
 
 	@Override
 	public String getName() {

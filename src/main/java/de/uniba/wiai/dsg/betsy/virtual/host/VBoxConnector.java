@@ -19,8 +19,9 @@ public class VBoxConnector {
 
 	private static VBoxConnector instance = null;
 
+	private static final Logger log = Logger.getLogger(VBoxConnector.class);
+	
 	private final Configuration config = Configuration.getInstance();
-	private final Logger log = Logger.getLogger(getClass());
 	private final VirtualBoxManager vBoxManager;
 
 	private IVirtualBox vBox = null;
@@ -61,6 +62,7 @@ public class VBoxConnector {
 	 */
 	public IVirtualBox connect() {
 		if (isNotConnected()) {
+			log.trace("Connecting in VBoxConnector");
 			String host = config.getValueAsString(
 					"virtualisation.vboxwebsrv.host", "http://127.0.0.1");
 			String port = config.getValueAsString(

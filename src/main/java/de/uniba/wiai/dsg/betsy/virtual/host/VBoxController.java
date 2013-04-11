@@ -31,8 +31,8 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.vm.VirtualMachineNotFound
 public class VBoxController {
 
 	public static final String BETSY_VBOX_GROUP = "/betsy-engines";
+	private static final Logger log = Logger.getLogger(VBoxController.class);
 
-	private final Logger log = Logger.getLogger(getClass());
 	private final Map<String, VirtualMachine> virtualMachines = new HashMap<>();
 
 	private IVirtualBox vBox;
@@ -46,6 +46,7 @@ public class VBoxController {
 	 * Initialize the controller and connect to the VirtualBox interface.
 	 */
 	public void init() {
+		log.trace("Initializing VBoxController");
 		VBoxConnector vBoxConn = VBoxConnector.getInstance();
 		this.vBox = vBoxConn.connect();
 		this.vBoxManager = vBoxConn.getVirtualBoxManager();
