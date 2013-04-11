@@ -28,7 +28,6 @@ import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
 import betsy.data.engines.Engine;
-
 import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.PortUsageException;
 import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
@@ -84,7 +83,7 @@ public class VirtualMachine {
 				startProgress = machine.launchVMProcess(session, "gui", null);
 			}
 			if (!startProgress.getCompleted()) {
-				startProgress.waitForCompletion(15000);
+				startProgress.waitForCompletion(60000);
 			}
 		} else {
 			log.warn("Can't start VM, is already active");
@@ -148,7 +147,7 @@ public class VirtualMachine {
 				IConsole console = session.getConsole();
 				IProgress saveProgress = console.saveState();
 				while (!saveProgress.getCompleted()) {
-					saveProgress.waitForCompletion(15000);
+					saveProgress.waitForCompletion(30000);
 				}
 			}
 		} catch (VBoxException exception) {
@@ -287,7 +286,7 @@ public class VirtualMachine {
 
 		IProgress snapshotProgress = console.takeSnapshot(name, desc);
 		while (!snapshotProgress.getCompleted()) {
-			snapshotProgress.waitForCompletion(15000);
+			snapshotProgress.waitForCompletion(30000);
 		}
 
 		// before resuming make sure the snapshot has been saved
@@ -317,7 +316,6 @@ public class VirtualMachine {
 			log.debug("Resetting " + machine.getName() + " to latest snapshot");
 
 			IConsole console = null;
-			log.info("Using subSession now");
 			subSession = vbManager.getSessionObject();
 			machine.lockMachine(subSession, LockType.Write);
 			console = subSession.getConsole();
@@ -331,7 +329,7 @@ public class VirtualMachine {
 
 			IProgress snapshotProgress = console.restoreSnapshot(snapshot);
 			while (!snapshotProgress.getCompleted()) {
-				snapshotProgress.waitForCompletion(15000);
+				snapshotProgress.waitForCompletion(30000);
 			}
 		} finally {
 			if (subSession != null) {
