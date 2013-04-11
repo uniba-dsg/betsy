@@ -72,6 +72,8 @@ public class VBoxWebService {
 		// start VBoxService
 		ProcessBuilder pb = new ProcessBuilder(vconfig.getVBoxWebSrv()
 				.getAbsolutePath(), "-A", "null");
+		log.debug("Starting '" + vconfig.getVBoxWebSrv().getAbsolutePath()
+				+ "' with arguments: '-A null'");
 		vboxServiceProcess = pb.start();
 		// give the webSrv some time to start
 		log.debug("Waiting 3 seconds for the VBoxWebSrv to start...");
@@ -90,6 +92,7 @@ public class VBoxWebService {
 		log.debug("Stopping VBoxWebSrv...");
 		if (vboxServiceProcess != null) {
 			vboxServiceProcess.destroy();
+			vboxServiceProcess = null;
 		}
 	}
 
