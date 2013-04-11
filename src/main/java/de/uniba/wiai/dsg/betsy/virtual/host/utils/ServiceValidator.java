@@ -137,27 +137,15 @@ public class ServiceValidator {
 	private void waitUntilAvailable(final URL url,
 			final String requiredContent, final int timeoutInMs)
 			throws TimeoutException {
+		
 		long start = -System.currentTimeMillis();
-		boolean urlAvailable = isAddressAvailable(url, 5000);
-		while (!urlAvailable
-				&& (start + System.currentTimeMillis()) < timeoutInMs) {
-			log.trace("Waiting for address '" + url.toString()
-					+ "' to be available");
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// ignore
-			}
-			urlAvailable = isAddressAvailable(url, 5000);
-		}
+		
+		// default url waiting
+		waitUntilAvailable(url, timeoutInMs);
 
-		if (!urlAvailable) {
-			throw new TimeoutException("URL '" + url.toString()
-					+ "' is not available, operation timed out.");
-		}
-
+		// now wait on required content
 		boolean contentAvailable = isAddressContentAvailable(url,
-				requiredContent, 5000);
+				requiredContent);
 		while (!contentAvailable
 				&& (start + System.currentTimeMillis()) < timeoutInMs) {
 			log.trace("Waiting for content of address'" + url.toString()
@@ -167,8 +155,7 @@ public class ServiceValidator {
 			} catch (InterruptedException e) {
 				// ignore
 			}
-			contentAvailable = isAddressContentAvailable(url, requiredContent,
-					5000);
+			contentAvailable = isAddressContentAvailable(url, requiredContent);
 		}
 
 		if (!contentAvailable) {
@@ -176,7 +163,6 @@ public class ServiceValidator {
 					+ url.toString()
 					+ "' is not available, operation timed out.");
 		}
-
 	}
 
 	private boolean isAddressAvailable(final URL url, int timeout) {
@@ -193,7 +179,7 @@ public class ServiceValidator {
 	}
 
 	private boolean isAddressContentAvailable(final URL url,
-			final String content, int timeout) {
+			final String content) {
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(url.toString());
