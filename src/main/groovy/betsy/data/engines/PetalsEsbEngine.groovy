@@ -28,6 +28,7 @@ class PetalsEsbEngine extends Engine {
 	
     @Override
     void storeLogs(Process process) {
+		ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
 
