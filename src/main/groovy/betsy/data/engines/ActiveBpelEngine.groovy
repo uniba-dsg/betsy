@@ -76,11 +76,17 @@ class ActiveBpelEngine extends Engine {
 
     @Override
     void onPostDeployment(Process process) {
+		// define custom condition
+		ant.typedef (name:"httpcontains", classname:"betsy.data.engines.util.HttpContains")
+		
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-                available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
+				and {
+					available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
+					resourcecontains(resource: getAeDeploymentLog(), substring: "[" + process.getBpelFileNameWithoutExtension() + ".pdd]")
+					httpcontains(contains:"Running", url:"http://localhost:8080/BpelAdmin/")
+				}
             }
-            ant.sleep(milliseconds: 10000)
         }
     }
 
