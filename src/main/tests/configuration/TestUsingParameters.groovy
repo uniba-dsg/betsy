@@ -60,22 +60,18 @@ class TestUsingParameters {
 		println "Engines: ${engines.collect {it.name}}"
 		println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
 
-		for(Engine engine : engines) {
-			if(engine instanceof VirtualizedEngine) {
-				// verify IP set
-				def partner = config.getValue('PARTNER_IP_AND_PORT')
-				if(partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
-					throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. This can either be done via the -p option or directly in the Config.groovy file.")
-				}
-				
-				// verify all mandatory config options
-				new VBoxConfiguration().verify()
-				VBoxWebService.instance.install()
-				// do this only once
-				break
+		if (engines.any { it instanceof VirtualizedEngine}) {
+			// verify IP set
+			def partner = config.getValue('PARTNER_IP_AND_PORT')
+			if(partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
+				throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. This can either be done via the -p option or directly in the Config.groovy file.")
 			}
+			
+			// verify all mandatory config options
+			new VBoxConfiguration().verify()
+			VBoxWebService.instance.install()
 		}
-
+		
 		try {
 			if (options.s) {
 				new Betsy(engines: engines, processes: processes).execute()
@@ -99,25 +95,21 @@ class TestUsingParameters {
 		}
 	}
 
-	private static List<Engine> parseEngines(def options, String[] args) {
-		if (args.length == 0 || "all" == args[0].toLowerCase()) {
-			if(options.l) {
-				return LocalEngines.availableEngines()
-			}else if(options.v) {
-				return VirtualizedEngines.availableEngines()
-			}else {
-				return VirtualizedEngines.availableEngines()
-				+ LocalEngines.availableEngines()
-			}
+	private static List<Engine> parseEngines(String[] args) {
+		if(args.length == 0){
+			// local engines are default
+			return LocalEngines.availableEngines()
+		}
+
+		if ("all" == args[0].toLowerCase()) {
+			VirtualizedEngines.availableEngines() + LocalEngines.availableEngines()
+		} else if ("vms" == args[0].toLowerCase()){
+			VirtualizedEngines.availableEngines()
+		} else if ("locals" == args[0].toLowerCase()) {
+			LocalEngines.availableEngines()
 		} else {
-			if(options.l) {
-				return LocalEngines.build(args[0].toLowerCase().split(",") as List<String>)
-			}else if(options.v) {
-				return VirtualizedEngines.build(args[0].toLowerCase().split(",") as List<String>)
-			}else {
-				return VirtualizedEngines.build(args[0].toLowerCase().split(",") as List<String>)
-				+ LocalEngines.build(args[0].toLowerCase().split(",") as List<String>)
-			}
+			List<String> engineNames = args[0].toLowerCase().split(",") as List<String>
+			VirtualizedEngines.build(engineNames) + LocalEngines.build(engineNames)
 		}
 	}
 
