@@ -49,8 +49,8 @@ virtualisation {
 			deploymentDir = "/usr/share/tomcat7/bpr"
 
 			// How long to wait on deployment process
-			// Default: 15
-			deploymentTimeout = 15
+			// Default: 45
+			deploymentTimeout = 45
 
 			// Where the engines logfiles can be collected from
 			// Default different per engine

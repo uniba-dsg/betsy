@@ -410,7 +410,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	@Override
 	public Integer getVMDeploymentTimeout() {
 		Integer timeout = config.getValueAsInteger("virtualisation.engines."
-				+ getName() + ".deploymentTimeout", 20);
+				+ getName() + ".deploymentTimeout", 45);
 		return timeout * 1000;
 	}
 
