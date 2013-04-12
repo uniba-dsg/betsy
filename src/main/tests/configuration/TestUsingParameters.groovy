@@ -26,8 +26,6 @@ class TestUsingParameters {
 		cli.o("Opens results in default browser")
 		cli.h("Print out usage information")
 		cli.p(args:1, argName:'ip-and-port', "Partner IP and Port (defaults to ${config.getValue('PARTNER_IP_AND_PORT')} for standard engines)")
-		cli.v("Use virtualized engines only. Requires working VirtualBox installation, specified in 'Config.groovy'")
-		cli.l("Use local engines only")
 
 		def options = cli.parse(args)
 		if (options == null || options == false || options.h) {
@@ -49,7 +47,7 @@ class TestUsingParameters {
 		List<Engine> engines = null
 		List<Process> processes = null
 		try {
-			engines = parseEngines(options, options.arguments() as String[]).unique()
+			engines = parseEngines(options.arguments() as String[]).unique()
 			processes = parseProcesses(options.arguments() as String[]).unique()
 		} catch (Exception e) {
 			println "----------------------"
