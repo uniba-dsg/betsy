@@ -72,13 +72,13 @@ class BpelgEngine extends Engine {
     void onPostDeployment(Process process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-				and {
-					available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_zip/deploy.xml"
-					or {
-						resourcecontains(resource: "${tomcat.tomcatDir}/logs/bpelg.log", substring: "Deployment successful")
-						resourcecontains(resource: "${tomcat.tomcatDir}/logs/bpelg.log", substring: "Deployment failed")
-					}
-				}
+                and {
+                    available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_zip/deploy.xml"
+                    or {
+                        resourcecontains(resource: "${tomcat.tomcatDir}/logs/bpelg.log", substring: "Deployment successful")
+                        resourcecontains(resource: "${tomcat.tomcatDir}/logs/bpelg.log", substring: "Deployment failed")
+                    }
+                }
             }
         }
     }

@@ -21,10 +21,10 @@ class OpenEsbEngine extends Engine {
 
     @Override
     void storeLogs(Process process) {
-		ant.mkdir(dir: "${process.targetPath}/logs")
-		ant.copy(todir: "${process.targetPath}/logs") {
-			ant.fileset(dir: "${serverPath}/glassfish/domains/domain1/logs/")
-		}
+        ant.mkdir(dir: "${process.targetPath}/logs")
+        ant.copy(todir: "${process.targetPath}/logs") {
+            ant.fileset(dir: "${serverPath}/glassfish/domains/domain1/logs/")
+        }
     }
 
     OpenEsbCLI getCli() {

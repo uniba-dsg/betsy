@@ -4,7 +4,6 @@ import betsy.data.Engine
 import betsy.data.Process
 import betsy.data.engines.packager.PetalsEsbCompositePackager
 
-import java.io.File;
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -22,13 +21,13 @@ class PetalsEsbEngine extends Engine {
         "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
-	File getPetalsLog() {
-		return new File("${getServerPath()}"+File.separator+"petals-esb-4.0"+File.separator+"logs"+File.separator+"petals.log");
-	}
-	
+    String getPetalsLog() {
+        "${getServerPath()}/petals-esb-4.0/logs/petals.log"
+    }
+
     @Override
     void storeLogs(Process process) {
-		ant.mkdir(dir: "${process.targetPath}/logs")
+        ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
 
@@ -40,7 +39,8 @@ class PetalsEsbEngine extends Engine {
                 arg(value: "petals-esb.bat")
             }
             waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-                resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log", substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
+                resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                        substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
             }
         }
     }
@@ -81,12 +81,11 @@ class PetalsEsbEngine extends Engine {
     @Override
     void onPostDeployment(Process process) {
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
-			and {
-	            not() {
-	                available(file: "$installationDir/${process.targetPackageCompositeFile}")
-	            }
-				resourcecontains(resource: getPetalsLog(), substring: "Service Assembly '" + process.getBpelFileNameWithoutExtension() + "Application' started")
-			}
+            and {
+                not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
+                resourcecontains(resource: getPetalsLog(),
+                        substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
+            }
         }
     }
 
@@ -99,10 +98,12 @@ class PetalsEsbEngine extends Engine {
         ant.mkdir(dir: metaDir)
         ant.xslt(in: process.targetBpelFilePath, out: "$metaDir/jbi.xml", style: "$xsltPath/create_jbi_from_bpel.xsl")
 
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService",
+                value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
         if (Files.exists(Paths.get("${process.targetBpelPath}/TestPartner.wsdl"))) {
-            ant.replace(file: "${process.targetBpelPath}/TestPartner.wsdl", token: "TestService", value: "${process.bpelFileNameWithoutExtension}TestService")
+            ant.replace(file: "${process.targetBpelPath}/TestPartner.wsdl", token: "TestService",
+                    value: "${process.bpelFileNameWithoutExtension}TestService")
         }
 
         replaceEndpointAndPartnerTokensWithValues(process)

@@ -33,13 +33,14 @@ class ActiveBpelEngine extends Engine {
         ant.copy(todir: "${process.targetPath}/logs") {
             ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
         }
-		ant.copy(file: getAeDeploymentLog(), todir: "${process.targetPath}/logs")
+        ant.copy(file: getAeDeploymentLog(), todir: "${process.targetPath}/logs")
     }
-	
-	private File getAeDeploymentLog() {
-		String homeDir = System.getProperty("user.home");
-		homeDir = homeDir.endsWith(File.separator) ?: homeDir + File.separator;
-		return new File(homeDir+"AeBpelEngine"+File.separator+"deployment-logs"+File.separator+"aeDeployment.log")
+
+    private String getAeDeploymentLog() {
+        String homeDir = System.getProperty("user.home");
+        homeDir = homeDir.endsWith(File.separator) ?: homeDir + File.separator;
+
+        "$homeDir/AeBpelEngine/deployment-logs/aeDeployment.log"
     }
 
     @Override
@@ -76,16 +77,17 @@ class ActiveBpelEngine extends Engine {
 
     @Override
     void onPostDeployment(Process process) {
-		// define custom condition
-		ant.typedef (name:"httpcontains", classname:"betsy.data.engines.util.HttpContains")
-		
+        // define custom condition
+        ant.typedef (name:"httpcontains", classname:"betsy.data.engines.util.HttpContains")
+
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-				and {
-					available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
-					resourcecontains(resource: getAeDeploymentLog(), substring: "[" + process.getBpelFileNameWithoutExtension() + ".pdd]")
-					httpcontains(contains:"Running", url:"http://localhost:8080/BpelAdmin/")
-				}
+                and {
+                    available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
+                    resourcecontains(resource: getAeDeploymentLog(),
+                            substring: "[${process.getBpelFileNameWithoutExtension()}.pdd]")
+                    httpcontains(contains:"Running", url:"http://localhost:8080/BpelAdmin/")
+                }
             }
         }
     }
