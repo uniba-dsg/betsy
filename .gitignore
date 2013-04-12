@@ -22,3 +22,5 @@ downloads/
 .classpath
 /.settings
 /classes
+vm_download/
+vm_extraction/
