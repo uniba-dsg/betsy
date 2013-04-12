@@ -25,7 +25,7 @@ virtualisation {
 	bvms {
 		installationDir = "/opt/betsy/"
 		// time in seconds, defaults to 120
-		requestTimeout = 60
+		requestTimeout = 120
 	}
 
 	engines {
@@ -58,81 +58,83 @@ virtualisation {
 
 			// Running vbox without the gui?
 			// Default: false
-			headless = true
+			headless = false
 
 			// Saving the vm's state instead of poweringOff?
 			// Default: false
-			shutdownSaveState = true
+			shutdownSaveState = false
 		}
 
 		active_bpel_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-activebpel_v.tar.bz2"
 			serviceTimeout = 300
-			mac = "08:00:27:e5:61:b6"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
 			deploymentTimeout = 30
 			logfileDir = "/usr/share/tomcat5.5/logs"
 			headless = true
 			shutdownSaveState = false
+
+			mac = "08:00:27:e5:61:b6"
 		}
 
 		bpelg_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-bpelg_v.ova"
 			serviceTimeout = 240
-			mac = "08:00:27:5a:9d:70"
 			deploymentDir = "/usr/share/tomcat7/bpr"
 			deploymentTimeout = 30
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
+
+			mac = "08:00:27:5a:9d:70"
 		}
 
 		ode_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-ode_v.tar.bz2"
 			serviceTimeout = 300
-			mac = "08:00:27:6f:6c:5a"
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
 			deploymentTimeout = 30
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
+
+			mac = "08:00:27:6f:6c:5a"
 		}
 
 		openesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-openesb_v.tar.bz2"
 			serviceTimeout = 300
-			mac = "08:00:27:ce:1e:55"
-
 			deploymentExecutable = "/opt/openesb/glassfish/bin/asadmin"
 			deploymentTimeout = 30
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
 			headless = true
 			shutdownSaveState = false
+
+			mac = "08:00:27:ce:1e:55"
 		}
 
 		orchestra_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-orchestra_v.tar.bz2"
 			serviceTimeout = 300
-			mac = "08:00:27:5c:76:8a"
-
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
 			deploymentTimeout = 30
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
+
+			mac = "08:00:27:5c:76:8a"
 		}
 
 		petalsesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-petalsesb_v.tar.bz2"
 			serviceTimeout = 300
-			mac = "08:00:27:eb:f4:c8"
-
 			deploymentDir = "/opt/petalsesb/install"
 			deploymentTimeout = 30
 			logfileDir = "/opt/petalsesb/logs"
 			headless = true
 			shutdownSaveState = false
 
+			mac = "08:00:27:eb:f4:c8"
 		}
 	}
 }
