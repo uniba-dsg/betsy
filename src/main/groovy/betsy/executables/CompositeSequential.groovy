@@ -17,14 +17,16 @@ class CompositeSequential extends Composite {
 					testProcess = false
 					testCount++
 
+					String[] durationLog = ["-1","-1","-1","-1","-1","-1","-1"]
+					
 					try {
 						String repeat = testCount > 1 ? "Repeating process" : "Process"
 						println "${repeat} ${engine.processes.indexOf(process) + 1} of ${engine.processes.size()}"
 
-						log "${process.targetPath}/all", {
+						durationLog[0] = log "${process.targetPath}/all", {
 							try {
 								// build
-								log "${process.targetPath}/build", {
+								durationLog[1] = log "${process.targetPath}/build", {
 
 		                            log "${process.targetPath}/build_package", {
 		                                engine.buildArchives(process)
@@ -40,22 +42,22 @@ class CompositeSequential extends Composite {
 								}
 
 								// setup infrastructure
-		                        log "${process.targetPath}/install", {
+		                        durationLog[2] = log "${process.targetPath}/install", {
 		                            engine.install()
 		                        }
 		
-		                        log "${process.targetPath}/startup", {
+		                        durationLog[3] = log "${process.targetPath}/startup", {
 		                            engine.startup()
 		                        }
 
-								log "${process.targetPath}/deploy", {
+								durationLog[4] = log "${process.targetPath}/deploy", {
 									ant.echo message: "Deploying process ${process} to engine ${this}"
 									engine.deploy(process)
 									engine.onPostDeployment(process)
 								}
 
 								context.testPartner.publish()
-								log "${process.targetPath}/test", {
+								durationLog[5] = log "${process.targetPath}/test", {
 									soapui "${process.targetPath}/soapui_test", {
 										new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
 												reportingDirectory: process.targetReportsPath, ant: ant).run()
@@ -67,11 +69,15 @@ class CompositeSequential extends Composite {
 
 							} finally {
 								// ensure shutdown
-		                        log "${engine.path}/shutdown", {
+								durationLog[6] = log "${engine.path}/shutdown", {
 		                            engine.shutdown()
 		                        }
 							}
 						}
+						
+						// log durations
+						ant.echo(message: "Total;Build;Installation;Startup;Deploy;Test;Shutdown\n", file: "${process.targetPath}/durations.csv", append: false, force: true)
+						ant.echo(message: durationLog.join(";"), file: "${process.targetPath}/durations.csv", append: true, force: true)
 					}catch(TemporaryFailedTestException exception) {
 						println("Process ${engine.processes.indexOf(process) + 1} test failed")
 						if(testCount <= 1) {

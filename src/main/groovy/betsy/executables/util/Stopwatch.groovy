@@ -6,15 +6,15 @@ class Stopwatch {
     private long start
     private long stop
 
-    static String benchmark(Closure closure) {
+    static Stopwatch benchmark(Closure closure) {
         Stopwatch stopwatch = new Stopwatch()
         stopwatch.start()
         closure.call()
         stopwatch.stop()
 
-        stopwatch.formattedDiff
+		return stopwatch
     }
-
+	
     public void start() {
         start = System.currentTimeMillis()
     }
@@ -38,6 +38,13 @@ class Stopwatch {
 
         "(${minutes}.${addLeadingZero(remainingSecondsInPercent)} min)"
     }
+	
+	/**
+	* @return raw diff in seconds seconds.
+	*/
+   public String getSecondsDiff() {
+	   diff / 1000
+   }
 
     static String addLeadingZero(long number) {
         if (number < 10) {

@@ -12,6 +12,7 @@ class Reporter  {
         new MessageExchangesIntoSoapUIReportsMerger(tests: tests, ant: ant).merge()
         new JUnitHtmlReports(path: tests.path, ant: ant).create()
         new TestCaseCsvReports(xml: tests.JUnitXMLFilePath, csv: tests.csvFilePath).create()
+		new TestStepDurationCsvReports(tests: tests, csv: tests.csvDurationFilePath).create()
     }
 
 }

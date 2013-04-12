@@ -149,18 +149,21 @@ class Composite {
 		}
 	}
 
-	void log(String name, Closure closure) {
+	String log(String name, Closure closure) {
 		ant.mkdir dir: new File(name).parent
 		ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
 
 		ant.echo message: name
 		println name
 
-		String result = "${name} ${Stopwatch.benchmark(closure)}"
+		Stopwatch stopwatch = Stopwatch.benchmark(closure)
+		String result = "${name} ${stopwatch.formattedDiff}"
 		ant.echo message: result
 		println result
 
 		ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+		
+		return stopwatch.secondsDiff
 	}
 
 	void soapui(String name, Closure closure) {
