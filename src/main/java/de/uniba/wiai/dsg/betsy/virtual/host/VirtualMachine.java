@@ -358,13 +358,13 @@ public class VirtualMachine {
 	 * @throws PortRedirectException
 	 *             thrown if redirection could not be created
 	 */
-	public void applyPortForwardingWS(final Set<Integer> forwardingPorts)
+	public void applyPortForwarding(final Set<Integer> forwardingPorts)
 			throws PortRedirectException {
 		if (!isAlreadyRedirected(forwardingPorts)) {
 			log.debug("Applying new port redirects...");
 
 			// remove old redirections first
-			clearPortForwardingWS();
+			clearPortForwarding();
 
 			// add bVMS port if not yet contained
 			forwardingPorts.add(48888);
@@ -434,7 +434,7 @@ public class VirtualMachine {
 	 * @throws PortRedirectException
 	 *             thrown if redirection could not be created
 	 */
-	public void applyPortForwarding(final Set<Integer> forwardingPorts)
+	public void applyPortForwardingWA(final Set<Integer> forwardingPorts)
 			throws PortRedirectException {
 		if (!isAlreadyRedirected(forwardingPorts)) {
 			log.debug("Applying new port redirects...");
@@ -443,7 +443,7 @@ public class VirtualMachine {
 			forwardingPorts.add(48888);
 
 			// remove old redirections first
-			clearPortForwarding();
+			clearPortForwardingWA();
 
 			INATEngine natEngine = getNATEngine();
 
@@ -502,7 +502,7 @@ public class VirtualMachine {
 	 * @throws PortRedirectException
 	 *             thrown if a port redirection could not be deleted
 	 */
-	public void clearPortForwarding() throws PortRedirectException {
+	public void clearPortForwardingWA() throws PortRedirectException {
 		log.debug("Deleting all existing port redirections");
 
 		INATEngine natEngine = getNATEngine();
@@ -559,7 +559,7 @@ public class VirtualMachine {
 	 * @throws PortRedirectException
 	 *             thrown if a port redirection could not be deleted
 	 */
-	public void clearPortForwardingWS() throws PortRedirectException {
+	public void clearPortForwarding() throws PortRedirectException {
 		log.debug("Deleting all existing port redirections");
 		INATEngine natEngine = getNATEngine();
 		for (String redirect : natEngine.getRedirects()) {

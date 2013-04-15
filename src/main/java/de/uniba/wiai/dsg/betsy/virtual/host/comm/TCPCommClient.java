@@ -79,7 +79,7 @@ public class TCPCommClient implements CommClient {
 
 			InputStream in = socket.getInputStream();
 			BufferedInputStream bin = new BufferedInputStream(in);
-			ois = new ObjectInputStream(bin);
+			this.ois = new ObjectInputStream(bin);
 
 			log.trace("... connection to server established!");
 		} else {

@@ -20,7 +20,7 @@ public class VBoxConnector {
 	private static VBoxConnector instance = null;
 
 	private static final Logger log = Logger.getLogger(VBoxConnector.class);
-	
+
 	private final Configuration config = Configuration.getInstance();
 	private final VirtualBoxManager vBoxManager;
 
@@ -53,6 +53,31 @@ public class VBoxConnector {
 	}
 
 	/**
+	 * The LinkUpDelay specifies how many milliseconds the network adapter of
+	 * the guest machine remains silent until he resumes his work stored in his
+	 * networkstack.
+	 * 
+	 * @param milliSeconds
+	 *            timeout to set in ms
+	 */
+	private void setLinkUpDelay(int milliSeconds) {
+		int existingDelay = -1;
+		try {
+			existingDelay = Integer.parseInt(vBox.getExtraData("VBoxInternal"
+					+ "/Devices/e1000/0/Config/LinkUpDelay"));
+		} catch (NumberFormatException exception) {
+			// ignore, usually was an empty value
+		}
+
+		if (existingDelay != milliSeconds) {
+			log.info("Disabling LinkUpDelay for this VirtualBox instance...");
+			vBox.setExtraData(
+					"VBoxInternal/Devices/e1000/0/Config/LinkUpDelay",
+					Integer.toString(milliSeconds));
+		}
+	}
+
+	/**
 	 * Establish the connection to the VirtualBox web service of not already
 	 * done.<br>
 	 * Creates also other important objects as the {@link VirtualBoxManager} and
@@ -80,6 +105,9 @@ public class VBoxConnector {
 				log.debug(String.format("Using VirtualBox version '%s'",
 						vBox.getVersion()));
 				vBoxImporter = new VBoxApplianceImporter(vBox);
+
+				// no delay, continue with network usage immediately
+				this.setLinkUpDelay(0);
 			} catch (org.virtualbox_4_2.VBoxException exception) {
 				if (exception.getMessage().contains(
 						"reasonText argument for "

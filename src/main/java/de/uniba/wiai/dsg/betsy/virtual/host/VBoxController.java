@@ -32,7 +32,7 @@ public class VBoxController {
 
 	public static final String BETSY_VBOX_GROUP = "/betsy-engines";
 	private static final Logger log = Logger.getLogger(VBoxController.class);
-
+	
 	private final Map<String, VirtualMachine> virtualMachines = new HashMap<>();
 
 	private IVirtualBox vBox;
@@ -52,8 +52,6 @@ public class VBoxController {
 		this.vBoxManager = vBoxConn.getVirtualBoxManager();
 		this.vBoxImporter = vBoxConn.getVirtualBoxImporter();
 
-		// no delay, continue with network usage immediately
-		this.setLinkUpDelay(0);
 		log.trace("VirtualBoxController initialized");
 	}
 
@@ -220,32 +218,6 @@ public class VBoxController {
 
 		List<IMedium> removableMediums = machine.unregister(CleanupMode.Full);
 		machine.delete(removableMediums);
-	}
-
-	/**
-	 * The LinkUpDelay specifies how many milliseconds the network adapter of
-	 * the guest machine remains silent until he resumes his work stored in his
-	 * networkstack.
-	 * 
-	 * @param milliSeconds
-	 *            timeout to set in ms
-	 */
-	private void setLinkUpDelay(int milliSeconds) {
-		int existingDelay = -1;
-		try {
-			existingDelay = Integer.parseInt(vBox
-					.getExtraData("VBoxInternal/Devices/e1000/0/"
-							+ "Config/LinkUpDelay"));
-		} catch (NumberFormatException exception) {
-			// ignore, usually was an empty value
-		}
-
-		if (existingDelay != milliSeconds) {
-			log.info("Disabling LinkUpDelay for this VirtualBox instance...");
-			vBox.setExtraData(
-					"VBoxInternal/Devices/e1000/0/Config/LinkUpDelay",
-					Integer.toString(milliSeconds));
-		}
 	}
 
 }
