@@ -21,9 +21,14 @@ class PetalsEsbEngine extends LocalEngine {
         "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
+	String getPetalsLog() {
+		"${getServerPath()}/petals-esb-4.0/logs/petals.log"
+	}
+	
     @Override
     void storeLogs(Process process) {
-        // TODO not yet implemented
+		ant.mkdir(dir: "${process.targetPath}/logs")
+		ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
 
     @Override
@@ -74,11 +79,14 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void onPostDeployment(Process process) {
-        ant.waitfor(maxwait: "100", maxwaitunit: "second", checkevery: "1000") {
-            not() {
-                available(file: "$installationDir/${process.targetPackageCompositeFile}")
-            }
-        }
+		ant.waitfor(maxwait: "100", maxwaitunit: "second", checkevery: "1000") {
+			and {
+				not() {
+					available(file: "$installationDir/${process.targetPackageCompositeFile}")
+				}
+				resourcecontains(resource: getPetalsLog(), substring: "Service Assembly '" + process.getBpelFileNameWithoutExtension() + "Application' started")
+			}
+		}
     }
 
     @Override
