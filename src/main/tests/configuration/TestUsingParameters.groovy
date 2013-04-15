@@ -107,7 +107,26 @@ class TestUsingParameters {
 			LocalEngines.availableEngines()
 		} else {
 			List<String> engineNames = args[0].toLowerCase().split(",") as List<String>
-			VirtualizedEngines.build(engineNames) + LocalEngines.build(engineNames)
+			List<Engine> all = []
+			
+			for(String name : engineNames) {
+				try {
+					all.add(LocalEngines.build(name))
+					continue
+				}catch(IllegalArgumentException exception) {
+					//ignore
+				}
+				
+				try {
+					all.add(VirtualizedEngines.build(name))
+					continue
+				}catch(IllegalArgumentException exception) {
+					//ignore
+				}
+				
+				throw new IllegalArgumentException("passed engine '${name}' does not exist, neither as local, nor as virtualized engine")
+			}
+			return all
 		}
 	}
 
