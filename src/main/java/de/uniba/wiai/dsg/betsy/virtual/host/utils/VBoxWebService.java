@@ -69,12 +69,32 @@ public class VBoxWebService {
 	 *             thrown if starting the VBoxWebSrv failed
 	 */
 	public void start() throws IOException {
+
 		// start VBoxService
-		ProcessBuilder pb = new ProcessBuilder(vconfig.getVBoxWebSrv()
-				.getAbsolutePath(), "-A", "null");
-		log.debug("Starting '" + vconfig.getVBoxWebSrv().getAbsolutePath()
-				+ "' with arguments: '-A null'");
-		vboxServiceProcess = pb.start();
+		Runtime r = Runtime.getRuntime();
+		String startArgs = vconfig.getVBoxWebSrv().getAbsolutePath()
+				+ " -A null";
+		log.debug("Starting '" + startArgs + "'");
+		vboxServiceProcess = r.exec(startArgs);
+
+		/*
+		 * By default, the created subprocess does not have its own terminal or
+		 * console. All its standard I/O operations will be redirected to the
+		 * parent process. Because some native platforms only provide limited
+		 * buffer size for standard input and output streams, failure to
+		 * promptly write the input stream or read the output stream of the
+		 * subprocess may cause the subprocess to block, or even deadlock.
+		 * 
+		 * --> Deadlock happened on Windows and OS X on each test run!
+		 */
+		InputStreamLogger inputStream = new InputStreamLogger(
+				vboxServiceProcess.getInputStream(), "INPUT_STREAM");
+		inputStream.start();
+		
+		InputStreamLogger errorStream = new InputStreamLogger(
+				vboxServiceProcess.getErrorStream(), "ERROR_STREAM");
+		errorStream.start();
+
 		// give the webSrv some time to start
 		log.debug("Waiting 3 seconds for the VBoxWebSrv to start...");
 
