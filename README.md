@@ -28,10 +28,10 @@ Requirements have to be fulfilled in order to execute any of these `gradlew` tas
 $ gradlew run -Pargs="<ARGS>"
 
 # usage: [options] <engines> <process>
-#  -s,--skip-reinstallation   skip reinstalling each engine for each process
-#  -h                         Print out usage information
-#  -o                         Opens results in default browser
-#  -p <ip-and-port>           Partner IP and Port (defaults to 0.0.0.0:2000)
+# -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
+# -o,--open-results-in-browser         Opens results in default browser
+# -s,--skip-reinstallation             skip reinstalling each engine for each process
+# -h,--help                            Print out usage information
 
 # Examples
 $ gradlew run # Running all tests for all engines
