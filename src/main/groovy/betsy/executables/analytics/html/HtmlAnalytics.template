@@ -31,17 +31,20 @@
 		<% report.nameToGroup.each { groupName, group -> %>
 			<table>
 				<tr class="engines">
-					<td></td><td></td><td></td><td class='result'><%= report.nameToEngine.keySet().join("</td><td class='result'>") %></td>
+					<td></td>
+					<td></td>
+					<% report.nameToEngine.keySet().each { engine -> %>
+					   <td class='result'><%= engine %></td>
+					<% } %>
 				</tr>
 
 	            <% group.tests.each { test -> %>
-	                <tr>
+	                <tr class="test-<%= test.fullName %> group-<%= group.name %>">
 	                <% if (group.tests.first() == test) { %>
 	                    <td class='group'>${group.name}</td>
 	                <% } else { %>
 	                    <td></td>
 	                <% } %>
-	                    <td></td>
 	                    <td class='${test.support}'>${test.fullName}</td>
 	                <% test.engineToResult.each {engine, result -> %>
                         <td class='${result.partial} result'>
