@@ -81,6 +81,9 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 		String successMessage = "Service Assembly '"
 				+ container.getBpelFileNameWithoutExtension()
 				+ "Application' started";
+		String errorMessage = "Service Assembly '"
+				+ container.getBpelFileNameWithoutExtension()
+				+ "Application' deployed with some SU deployment in failure";
 		int errorCount = 0;
 
 		if (logfile.isFile()) {
@@ -93,7 +96,10 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 					String fileContent = FileUtils.readFileToString(logfile);
 					// try positive case
 					logVerification = fileContent.contains(successMessage);
-
+					// try negative case
+					if (!logVerification) {
+						logVerification = fileContent.contains(errorMessage);
+					}
 					if (!logVerification) {
 						// not available yet? wait a little...
 						try {
