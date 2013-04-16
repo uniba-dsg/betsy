@@ -1,4 +1,4 @@
-# BETSY (BPEL Engine Test System)
+# betsy (BPEL Engine Test System)
 
 Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
 More information can be found in the [technical report](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/techrep-betsy-final.pdf).
