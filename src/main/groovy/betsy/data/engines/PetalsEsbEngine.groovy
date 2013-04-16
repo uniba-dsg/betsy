@@ -83,8 +83,12 @@ class PetalsEsbEngine extends Engine {
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
             and {
                 not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
-                resourcecontains(resource: getPetalsLog(),
+                or {
+                    resourcecontains(resource: getPetalsLog(),
                         substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
+                    resourcecontains(resource: getPetalsLog(),
+                        substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' deployed with some SU deployment in failure")
+                }
             }
         }
     }
