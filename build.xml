@@ -182,42 +182,6 @@
         <ant target="install" dir="${orchestra.dir}/${orchestra.name}"/>
     </target>
 
-    <target name="jbpmbpel" description="Install jBPM BPEL">
-
-        <get dest="${download.dir}" skipexisting="true">
-            <url url="https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/jbpm-bpel-1.1.1.zip"/>
-        </get>
-        <get dest="${download.dir}" skipexisting="true">
-            <url url="https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/jboss-4.2.3.GA.zip"/>
-        </get>
-
-        <delete dir="server/jbpmbpel"/>
-        <unzip src="${download.dir}/jboss-4.2.3.GA.zip" dest="server/jbpmbpel"/>
-        <unzip src="${download.dir}/jbpm-bpel-1.1.1.zip" dest="server/jbpmbpel"/>
-
-        <!-- set properties to custom tomcat installation (not the one included) -->
-        <propertyfile file="server/jbpmbpel/jbpm-bpel-1.1.1/config/build.properties">
-            <entry key="software.installation.dir" value="../../"/>
-        </propertyfile>
-
-        <ant target="deploy.ear" antfile="server/jbpmbpel/jbpm-bpel-1.1.1/deploy/build.xml" usenativebasedir="yes"/>
-
-        <echo file="server/jbpmbpel/startup.bat">
-            cd jboss-4.2.3.GA/bin &amp;&amp; start run.bat
-        </echo>
-
-        <copy file="server/jbpmbpel/jboss-4.2.3.GA/client/jaxb-api.jar"
-              todir="server/jbpmbpel/jboss-4.2.3.GA/lib/endorsed"/>
-        <copy file="server/jbpmbpel/jboss-4.2.3.GA/client/jboss-jaxrpc.jar"
-              todir="server/jbpmbpel/jboss-4.2.3.GA/lib/endorsed"/>
-        <copy file="server/jbpmbpel/jboss-4.2.3.GA/client/jboss-jaxws.jar"
-              todir="server/jbpmbpel/jboss-4.2.3.GA/lib/endorsed"/>
-        <copy file="server/jbpmbpel/jboss-4.2.3.GA/client/jboss-jaxws-ext.jar"
-              todir="server/jbpmbpel/jboss-4.2.3.GA/lib/endorsed"/>
-        <copy file="server/jbpmbpel/jboss-4.2.3.GA/client/jboss-saaj.jar"
-              todir="server/jbpmbpel/jboss-4.2.3.GA/lib/endorsed"/>
-    </target>
-
     <target name="active-bpel" description="Install active-bpel">
         <sequential>
             <mkdir dir="${download.dir}"/>
