@@ -56,7 +56,8 @@ class PetalsEsbEngine extends Engine {
                 }
             }
         } catch (Exception e){
-            ant.echo message: "SOAP BC Installation failed - reinstall and start petalsesb again"
+            ant.echo message: "SOAP BC Installation failed - shutdown, reinstall and start petalsesb again"
+            shutdown()
             install()
             startup()
         }
