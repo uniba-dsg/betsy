@@ -39,10 +39,28 @@ class PetalsEsbEngine extends Engine {
                 arg(value: "petals-esb.bat")
             }
             waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-                resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
-                        substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
+                and {
+                    resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                            substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
+                    resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                            substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
+                }
             }
         }
+
+        try {
+            ant.fail(message: "SOAP BC not installed correctly") {
+                condition() {
+                    resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                            substring: "[Petals.AutoLoaderService] : Error during the auto- installation of a component")
+                }
+            }
+        } catch (Exception e){
+            ant.echo message: "SOAP BC Installation failed - reinstall and start petalsesb again"
+            install()
+            startup()
+        }
+
     }
 
     @Override
