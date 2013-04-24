@@ -78,7 +78,8 @@ virtualisation {
 		}
 
 		bpelg_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-bpelg_v.ova"
+			// Only working from inside the University of Bamberg
+			download = "ftp://141.13.162.58/betsy-bpelg_v.ova"
 			serviceTimeout = 240
 			deploymentDir = "/usr/share/tomcat7/bpr"
 			deploymentTimeout = 30
@@ -90,7 +91,8 @@ virtualisation {
 		}
 
 		ode_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-ode_v.tar.bz2"
+			// Only working from inside the University of Bamberg
+			download = "ftp://141.13.162.58/betsy-ode_v.ova"
 			serviceTimeout = 300
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
 			deploymentTimeout = 30
@@ -102,7 +104,8 @@ virtualisation {
 		}
 
 		openesb_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-openesb_v.tar.bz2"
+			// Only working from inside the University of Bamberg
+			download = "ftp://141.13.162.58/betsy-openesb_v.ova"
 			serviceTimeout = 300
 			deploymentExecutable = "/opt/openesb/glassfish/bin/asadmin"
 			deploymentTimeout = 30
@@ -114,7 +117,8 @@ virtualisation {
 		}
 
 		orchestra_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-orchestra_v.tar.bz2"
+			// Only working from inside the University of Bamberg
+			download = "ftp://141.13.162.58/betsy-orchestra_v.ova"
 			serviceTimeout = 300
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
 			deploymentTimeout = 30
@@ -126,7 +130,8 @@ virtualisation {
 		}
 
 		petalsesb_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-petalsesb_v.tar.bz2"
+			// Only working from inside the University of Bamberg
+			download = "ftp://141.13.162.58/betsy-petalsesb_v.ova"
 			serviceTimeout = 300
 			deploymentDir = "/opt/petalsesb/install"
 			deploymentTimeout = 30
