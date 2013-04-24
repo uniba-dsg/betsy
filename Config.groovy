@@ -38,12 +38,6 @@ virtualisation {
 			// Default: 300
 			serviceTimeout = 300
 
-			// a valid MAC address, groups seperated with :
-			// NO DEFAULT !
-			// if set, the mac address will be applied to the first network adapter (eth0)
-			// --> /etc/udev/rules.d/70-persistent-net.rules must not be deleted manually
-			mac = "08:00:27:c9:86:06"
-
 			// Where the pkg files should be copied to
 			// Default different per engine
 			deploymentDir = "/usr/share/tomcat7/bpr"
@@ -73,8 +67,6 @@ virtualisation {
 			logfileDir = "/usr/share/tomcat5.5/logs"
 			headless = true
 			shutdownSaveState = false
-
-			mac = "08:00:27:e5:61:b6"
 		}
 
 		bpelg_v {
@@ -86,8 +78,6 @@ virtualisation {
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
-
-			mac = "08:00:27:5a:9d:70"
 		}
 
 		ode_v {
@@ -99,8 +89,6 @@ virtualisation {
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
-
-			mac = "08:00:27:6f:6c:5a"
 		}
 
 		openesb_v {
@@ -112,8 +100,6 @@ virtualisation {
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
 			headless = true
 			shutdownSaveState = false
-
-			mac = "08:00:27:ce:1e:55"
 		}
 
 		orchestra_v {
@@ -125,8 +111,6 @@ virtualisation {
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
-
-			mac = "08:00:27:5c:76:8a"
 		}
 
 		petalsesb_v {
@@ -138,8 +122,6 @@ virtualisation {
 			logfileDir = "/opt/petalsesb/logs"
 			headless = true
 			shutdownSaveState = false
-
-			mac = "08:00:27:eb:f4:c8"
 		}
 	}
 }

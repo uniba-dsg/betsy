@@ -5,22 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.virtualbox_4_2.ChipsetType;
 import org.virtualbox_4_2.IAppliance;
 import org.virtualbox_4_2.IMachine;
-import org.virtualbox_4_2.INetworkAdapter;
 import org.virtualbox_4_2.IProgress;
 import org.virtualbox_4_2.ISharedFolder;
-import org.virtualbox_4_2.ISystemProperties;
 import org.virtualbox_4_2.IVirtualBox;
-import org.virtualbox_4_2.NetworkAdapterType;
-import org.virtualbox_4_2.NetworkAttachmentType;
-
-import de.uniba.wiai.dsg.betsy.Configuration;
+import org.virtualbox_4_2.ImportOptions;
 
 /**
  * Offers methods to import an Appliance and adjust the settings of an imported
@@ -33,7 +25,6 @@ public class VBoxApplianceImporter {
 
 	private static final Logger log = Logger.getLogger(VBoxApplianceImporter.class);
 	
-	private final Configuration config = Configuration.getInstance();
 	private final IVirtualBox vBox;
 
 	public VBoxApplianceImporter(final IVirtualBox vBox) {
@@ -62,8 +53,10 @@ public class VBoxApplianceImporter {
 			log.warn("Import warning: " + warning);
 		}
 
-		// no special import options needed
-		IProgress importProgress = appliance.importMachines(null);
+		// keep NAT MAC addresses
+		List<ImportOptions> options = new LinkedList<>();
+		options.add(ImportOptions.KeepNATMACs);
+		IProgress importProgress = appliance.importMachines(options);
 		while (!importProgress.getCompleted()) {
 			importProgress.waitForCompletion(1000);
 		}
@@ -81,7 +74,6 @@ public class VBoxApplianceImporter {
 	 * <li>Setting group</li>
 	 * <li>Disable audio adapter</li>
 	 * <li>Remove shared folders</li>
-	 * <li>Setting NAT Adapter and it's MAC Address</li>
 	 * </ul>
 	 * 
 	 * @param lockedVM
@@ -119,55 +111,6 @@ public class VBoxApplianceImporter {
 		}
 
 		// save all settings and make them persistent
-		lockedVM.saveSettings();
-
-		ISystemProperties sprops = vBox.getSystemProperties();
-		ChipsetType chipset = lockedVM.getChipsetType();
-		Long maxNetworkAdapters = sprops.getMaxNetworkAdapters(chipset);
-
-		// boolean foundNAT = false;
-		String macRegex = "^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$";
-		Pattern macPattern = Pattern
-				.compile(macRegex, Pattern.CASE_INSENSITIVE);
-		String macAddress = config.getValueAsString("virtualisation.engines."
-				+ engineName + ".mac");
-		boolean validMACAddress = false;
-		Matcher matcher = macPattern.matcher(macAddress);
-		if (matcher.matches()) {
-			log.debug("Found valid MAC address to set in config");
-			validMACAddress = true;
-			macAddress = macAddress.replaceAll("-", "");
-			macAddress = macAddress.replaceAll(":", "");
-		} else {
-			log.info("No MAC address to apply found");
-		}
-
-		// if there is no NAT adapter, then make first adapter to it
-		// BUT: only if there is a MAC address to set, preventing
-		// network failure
-		if (validMACAddress) {
-			for (Long slot = 0l; slot < maxNetworkAdapters; slot++) {
-				INetworkAdapter na = lockedVM.getNetworkAdapter(slot);
-				if (slot == 0) {
-					// then set first adapter to NAT
-					na.setAdapterType(NetworkAdapterType.I82540EM);
-					na.setEnabled(true);
-					na.setAttachmentType(NetworkAttachmentType.NAT);
-					na.setMACAddress(macAddress);
-				} else {
-					// disable every other adapter
-					na.setEnabled(false);
-				}
-			}
-		} else {
-			// no MAC available, set to NAT only
-			INetworkAdapter na = lockedVM.getNetworkAdapter(0l);
-			na.setAdapterType(NetworkAdapterType.I82540EM);
-			na.setEnabled(true);
-			na.setAttachmentType(NetworkAttachmentType.NAT);
-		}
-
-		// save all network settings and make them persistent
 		lockedVM.saveSettings();
 	}
 
