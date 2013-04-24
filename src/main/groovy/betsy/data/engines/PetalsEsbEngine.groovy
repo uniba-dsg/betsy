@@ -9,7 +9,7 @@ import java.nio.file.Paths
 
 class PetalsEsbEngine extends Engine {
 
-    private static final String CHECK_URL = "http://localhost:8084"
+    public static final String CHECK_URL = "http://localhost:8084"
 
     @Override
     String getName() {
@@ -21,8 +21,12 @@ class PetalsEsbEngine extends Engine {
         "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
+    String getFolder() {
+        "petals-esb-4.0"
+    }
+
     String getPetalsLog() {
-        "${getServerPath()}/petals-esb-4.0/logs/petals.log"
+        "${getServerPath()}/${getFolder()}/logs/petals.log"
     }
 
     @Override
@@ -34,15 +38,15 @@ class PetalsEsbEngine extends Engine {
     @Override
     void startup() {
         ant.parallel() {
-            ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/petals-esb-4.0/bin") {
+            ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/${getFolder()}/bin") {
                 arg(value: "/c")
                 arg(value: "petals-esb.bat")
             }
             waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
                 and {
-                    resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
                             substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
-                    resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
                             substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
                 }
             }
@@ -51,7 +55,7 @@ class PetalsEsbEngine extends Engine {
         try {
             ant.fail(message: "SOAP BC not installed correctly") {
                 condition() {
-                    resourcecontains(resource: "${getServerPath()}/petals-esb-4.0/logs/petals.log",
+                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
                             substring: "[Petals.AutoLoaderService] : Error during the auto- installation of a component")
                 }
             }
@@ -84,8 +88,8 @@ class PetalsEsbEngine extends Engine {
         ant.copy(file: process.targetPackageCompositeFilePath, todir: installationDir)
     }
 
-    private String getInstallationDir() {
-        "${getServerPath()}/petals-esb-4.0/install"
+    String getInstallationDir() {
+        "${getServerPath()}/${getFolder()}/install"
     }
 
     @Override
