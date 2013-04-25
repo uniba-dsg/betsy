@@ -50,6 +50,10 @@
     <property name="petalsesb.file.name" value="petals-esb-distrib-4.0.zip"/>
     <property name="petalsesb.download.url" value="${download.base.url}${petalsesb.file.name}"/>
 
+    <property name="petalsesb41.dir" value="server/petalsesb41"/>
+    <property name="petalsesb41.file.name" value="petals-esb-distrib-4.1.0.zip"/>
+    <property name="petalsesb41.download.url" value="${download.base.url}${petalsesb41.file.name}"/>
+
     <macrodef name="install-tomcat" description="installs tomcat at a specific directory">
         <attribute name="dest"/>
         <attribute name="additional-vm-param" default=""/>
@@ -129,6 +133,26 @@
               todir="${petalsesb.dir}/petals-esb-4.0/install"/>
         <copy file="${petalsesb.dir}/petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip"
               todir="${petalsesb.dir}/petals-esb-4.0/install"/>
+    </target>
+
+    <target name="petalsesb41" description="Install Petals ESB 4.1">
+
+        <!-- delete petals esb dir fast and recreate afterwards-->
+        <delete dir="${petalsesb41.dir}"/>
+        <mkdir dir="${petalsesb41.dir}"/>
+
+        <get dest="${download.dir}" skipexisting="true">
+            <url url="${petalsesb41.download.url}"/>
+        </get>
+
+        <unzip src="${download.dir}/${petalsesb41.file.name}" dest="${petalsesb41.dir}"/>
+        <unzip src="${petalsesb41.dir}/petals-esb-distrib-4.1.0/esb/petals-esb-4.1.zip" dest="${petalsesb41.dir}"/>
+
+        <!-- install bpel service engine and binding connector for soap messages -->
+        <copy file="${petalsesb41.dir}/petals-esb-distrib-4.1.0/esb-components/petals-se-bpel-1.1.0.zip"
+              todir="${petalsesb41.dir}/petals-esb-4.1/install"/>
+        <copy file="${petalsesb41.dir}/petals-esb-distrib-4.1.0/esb-components/petals-bc-soap-4.2.0.zip"
+              todir="${petalsesb41.dir}/petals-esb-4.1/install"/>
     </target>
 
     <target name="ode" description="Install Apache ODE">
