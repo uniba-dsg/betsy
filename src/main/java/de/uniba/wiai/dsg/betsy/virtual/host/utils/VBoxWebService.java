@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.virtual.host.VBoxConfiguration;
 
 /**
@@ -29,6 +30,8 @@ public class VBoxWebService {
 		}
 		return instance;
 	}
+
+	private final Configuration config = Configuration.getInstance();
 
 	private final AntBuilder ant;
 	private final VBoxConfiguration vconfig;
@@ -90,16 +93,20 @@ public class VBoxWebService {
 		InputStreamLogger inputStream = new InputStreamLogger(
 				vboxServiceProcess.getInputStream(), "INPUT_STREAM");
 		inputStream.start();
-		
+
 		InputStreamLogger errorStream = new InputStreamLogger(
 				vboxServiceProcess.getErrorStream(), "ERROR_STREAM");
 		errorStream.start();
 
 		// give the webSrv some time to start
-		log.debug("Waiting 3 seconds for the VBoxWebSrv to start...");
+		Integer startHaltDuration = config.getValueAsInteger(
+				"virtualisation.vboxwebsrv.wait", 3);
+
+		log.debug("Waiting " + startHaltDuration + " seconds for the "
+				+ "VBoxWebSrv to start...");
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("seconds", 3);
+		map.put("seconds", startHaltDuration);
 		ant.invokeMethod("sleep", map);
 
 		log.debug("...VBoxWebSrv started!");
