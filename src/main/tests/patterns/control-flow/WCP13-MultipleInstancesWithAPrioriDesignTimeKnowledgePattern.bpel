@@ -33,16 +33,20 @@
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <forEach name="MultipleInstances" parallel="yes" counterName="counter">
-            <startCounterValue>0</startCounterValue>
-            <finalCounterValue>3</finalCounterValue>
-            <scope name="Scope">
-                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                        outputVariable="PartnerReplyData"/>
-            </scope>
-        </forEach>
-
+        <flow>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+        </flow>
         <assign name="AddReplyData">
             <copy>
                 <from>$InitData.inputPart</from>

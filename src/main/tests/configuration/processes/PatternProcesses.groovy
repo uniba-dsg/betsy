@@ -75,8 +75,26 @@ class PatternProcesses {
             ]
     )
 
+    public final Process MULTI_CHOICE_PATTERN_PARTIAL = buildPatternProcess(
+            "WCP06-MultiChoicePattern-Partial",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "ABC", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
     public final Process SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
             "WCP07-SynchronizingMergePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
+                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "ABC", operation: WsdlOperation.SYNC_STRING)])
+            ]
+    )
+
+    public final Process SYNCHRONIZING_MERGE_PATTERN_PARTIAL = buildPatternProcess(
+            "WCP07-SynchronizingMergePattern-Partial",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
@@ -193,7 +211,9 @@ class PatternProcesses {
             EXCLUSIVE_CHOICE_PATTERN,
             SIMPLE_MERGE_PATTERN,
             MULTI_CHOICE_PATTERN,
+            MULTI_CHOICE_PATTERN_PARTIAL,
             SYNCHRONIZING_MERGE_PATTERN,
+            SYNCHRONIZING_MERGE_PATTERN_PARTIAL,
             DISCRIMINATOR_PATTERN,
             ARBITRARY_CYCLES_PATTERN,
             IMPLICIT_TERMINATION_PATTERN,
