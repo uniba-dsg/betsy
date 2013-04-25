@@ -17,7 +17,7 @@ virtualisation {
 			user = "user"
 			password = "password"
 			// time in seconds to wait on VBoxWebSrv startup
-			wait = 5
+			wait = 3
 		}
 	}
 
