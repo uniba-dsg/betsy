@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="MultipleInstancesWithAPrioriRuntimeKnowledgePattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithAPrioriRuntimeKnowledge"
+        name="WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithAPrioriDesignTimeKnowledge"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
@@ -25,7 +25,7 @@
                  portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignInitData">
             <copy>
-                <from><literal>100</literal></from>
+                <from variable="InitData" part="inputPart" />
                 <to variable="PartnerInitData" part="inputPart"/>
             </copy>
             <copy>
@@ -35,7 +35,7 @@
         </assign>
         <forEach name="MultipleInstances" parallel="yes" counterName="counter">
             <startCounterValue>0</startCounterValue>
-            <finalCounterValue>$InitData.inputPart</finalCounterValue>
+            <finalCounterValue>3</finalCounterValue>
             <scope name="Scope">
                 <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
                         portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
@@ -53,4 +53,3 @@
                portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>
-

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="DiscriminatorPattern"
+        name="WCP09-DiscriminatorPattern"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/discriminator"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"

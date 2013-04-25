@@ -30,28 +30,28 @@ class PatternProcesses {
     }
 
     public final Process SEQUENCE_PATTERN = buildPatternProcess(
-            "SequencePattern",
+            "WCP01-SequencePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process PARALLEL_SPLIT_PATTERN = buildPatternProcess(
-            "ParallelSplitPattern",
+            "WCP02-ParallelSplitPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process SYNCHRONIZATION_PATTERN = buildPatternProcess(
-            "SynchronizationPattern",
+            "WCP03-SynchronizationPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process EXCLUSIVE_CHOICE_PATTERN = buildPatternProcess(
-            "ExclusiveChoicePattern",
+            "WCP04-ExclusiveChoicePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "11B", operation: WsdlOperation.SYNC_STRING)])
@@ -59,7 +59,7 @@ class PatternProcesses {
     )
 
     public final Process SIMPLE_MERGE_PATTERN = buildPatternProcess(
-            "SimpleMergePattern",
+            "WCP05-SimpleMergePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "11B", operation: WsdlOperation.SYNC_STRING)])
@@ -67,7 +67,7 @@ class PatternProcesses {
     )
 
     public final Process MULTI_CHOICE_PATTERN = buildPatternProcess(
-            "MultiChoicePattern",
+            "WCP06-MultiChoicePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
@@ -76,7 +76,7 @@ class PatternProcesses {
     )
 
     public final Process SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
-            "SynchronizingMergePattern",
+            "WCP07-SynchronizingMergePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
@@ -85,14 +85,14 @@ class PatternProcesses {
     )
 
     public final Process DISCRIMINATOR_PATTERN = buildPatternProcess(
-            "DiscriminatorPattern",
+            "WCP09-DiscriminatorPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
-            "ArbitraryCyclesPattern",
+            "WCP10-ArbitraryCyclesPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1ABC", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2BC", operation: WsdlOperation.SYNC_STRING)]),
@@ -101,14 +101,14 @@ class PatternProcesses {
     )
 
     public final Process IMPLICIT_TERMINATION_PATTERN = buildPatternProcess(
-            "ImplicitTerminationPattern",
+            "WCP11-ImplicitTerminationPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
             ]
     )
 
     public final Process DEFERRED_CHOICE_PATTERN = buildPatternProcess(
-            "DeferredChoicePattern",
+            "WCP16-DeferredChoicePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)]),
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
@@ -116,7 +116,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
-            "MultipleInstancesWithoutSynchronizationPattern",
+            "WCP12-MultipleInstancesWithoutSynchronizationPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CC", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCC", operation: WsdlOperation.SYNC_STRING)]),
@@ -125,7 +125,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
                             new TestStep(input: "100", operation: WsdlOperation.SYNC),
@@ -135,7 +135,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
+            "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
                             new TestStep(input: "1", operation: WsdlOperation.SYNC),
@@ -149,7 +149,7 @@ class PatternProcesses {
     )
 
     public final Process CANCEL_ACTIVITY_PATTERN = buildPatternProcess(
-            "CancelActivityPattern",
+            "WCP19-CancelActivityPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "0", stringOperationOutput: "0B", operation: WsdlOperation.SYNC_STRING)])
@@ -157,7 +157,7 @@ class PatternProcesses {
     )
 
     public final Process CANCEL_CASE_PATTERN = buildPatternProcess(
-            "CancelCasePattern",
+            "WCP20-CancelCasePattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
                     new TestCase(testSteps: [new TestStep(input: "0", assertions: [new ExitAssertion()], operation: WsdlOperation.SYNC_STRING)])
@@ -165,7 +165,7 @@ class PatternProcesses {
     )
 
     public final Process MILESTONE_PATTERN = buildPatternProcess(
-            "MilestonePattern",
+            "WCP18-MilestonePattern",
             [
                     new TestCase(name: "PickAsyncMessage", testSteps: [
                             new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC),
@@ -180,7 +180,7 @@ class PatternProcesses {
     )
 
     public final Process INTERLEAVED_PARALLEL_ROUTING_PATTERN = buildPatternProcess(
-            "InterleavedParallelRoutingPattern",
+            "WCP17-InterleavedParallelRoutingPattern",
             [
                     new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AW1ABW2B", operation: WsdlOperation.SYNC_STRING)])
             ]

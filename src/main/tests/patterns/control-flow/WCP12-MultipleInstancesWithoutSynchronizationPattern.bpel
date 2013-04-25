@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="MultipleInstancesWithAPrioriDesignTimeKnowledgePattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithAPrioriDesignTimeKnowledge"
+        name="WCP12-MultipleInstancesWithoutSynchronizationPattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithoutSynchronization"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
@@ -14,42 +14,40 @@
         <partnerLink name="TestPartnerLink" partnerLinkType="tp:TestPartnerLinkType" partnerRole="testPartnerRole"/>
     </partnerLinks>
     <variables>
-        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
-        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
-        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
     </variables>
     <sequence>
-
-        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
                  portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignInitData">
             <copy>
-                <from variable="InitData" part="inputPart" />
+                <from variable="InitData" part="inputPart"/>
                 <to variable="PartnerInitData" part="inputPart"/>
             </copy>
             <copy>
-                <from>0</from>
+                <from>concat('',$InitData.inputPart)</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <forEach name="MultipleInstances" parallel="yes" counterName="counter">
+        <forEach name="MultipleInstances" parallel="no" counterName="cCounter">
             <startCounterValue>0</startCounterValue>
-            <finalCounterValue>3</finalCounterValue>
+            <finalCounterValue>$InitData.inputPart</finalCounterValue>
             <scope name="Scope">
-                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                        outputVariable="PartnerReplyData"/>
+                <sequence>
+                    <invoke name="MultipleInstancesActivity" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                            portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
+                    <assign name="AddCallToOutput">
+                        <copy>
+                            <from>concat($ReplyData.outputPart, 'C')</from>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                </sequence>
             </scope>
         </forEach>
-
-        <assign name="AddReplyData">
-            <copy>
-                <from>$InitData.inputPart</from>
-                <to variable="ReplyData" part="outputPart"/>
-            </copy>
-        </assign>
-        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
                portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="ParallelSplitPattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/parallelSplit"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        name="WCP01-SequencePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/sequence"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
@@ -13,34 +12,19 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
-
-        <variable name="Branch1" type="xs:string"/>
-        <variable name="Branch2" type="xs:string"/>
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
                  portType="ti:TestInterfacePortType" variable="InitData"/>
-        <flow name="Flow">
-            <assign name="ParallelStep1">
-                <copy>
-                    <from>
-                        <literal>A</literal>
-                    </from>
-                    <to variable="Branch1"/>
-                </copy>
-            </assign>
-            <assign name="ParallelStep2">
-                <copy>
-                    <from>
-                        <literal>B</literal>
-                    </from>
-                    <to variable="Branch2"/>
-                </copy>
-            </assign>
-        </flow>
-        <assign name="Merge">
+        <assign name="SequenceFirstStep">
             <copy>
-                <from>concat($InitData.inputPart,$Branch1,$Branch2)</from>
+                <from>concat($InitData.inputPart,'A')</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <assign name="SequenceSecondStep">
+            <copy>
+                <from>concat($ReplyData.outputPart,'B')</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
