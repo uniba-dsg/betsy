@@ -46,6 +46,11 @@
     <property name="openesb.download.url"
               value="${download.base.url}${openesb.file.name}"/>
 
+    <property name="openesb23.dir" value="server/openesb23"/>
+    <property name="openesb23.file.name" value="openesb-v23-installer-windows.exe"/>
+    <property name="openesb23.download.url"
+              value="${download.base.url}${openesb23.file.name}"/>
+
     <property name="petalsesb.dir" value="server/petalsesb"/>
     <property name="petalsesb.file.name" value="petals-esb-distrib-4.0.zip"/>
     <property name="petalsesb.download.url" value="${download.base.url}${petalsesb.file.name}"/>
@@ -111,6 +116,36 @@
             <arg value="${basedir}/src/main/resources/openesb/reinstallGlassFish.bat"/>
             <arg value="${basedir}/${download.dir}/${openesb.file.name}"/>
             <arg value="${basedir}/${openesb.dir}/state.xml"/>
+        </exec>
+
+    </target>
+
+    <target name="openesb23" description="Install OpenESB">
+
+        <get dest="${download.dir}" skipexisting="true">
+            <url url="${openesb23.download.url}"/>
+        </get>
+
+        <delete dir="${openesb23.dir}"/>
+        <mkdir dir="${openesb23.dir}"/>
+        <property name="openesb23.dir.absolute" location="${openesb23.dir}"/>
+
+        <copy file="src/main/resources/openesb23/state.xml.template" tofile="${openesb23.dir}/state.xml">
+            <filterchain>
+                <replacetokens>
+                    <token key="INSTALL_PATH" value="${openesb23.dir.absolute}"/>
+                    <token key="JDK_LOCATION" value="${env.JAVA_HOME}"/>
+                    <token key="HTTP_PORT" value="8383"/>
+                    <token key="HTTPS_PORT" value="8384"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <exec executable="cmd">
+            <arg value="/c"/>
+            <arg value="${basedir}/src/main/resources/openesb23/reinstallGlassFish.bat"/>
+            <arg value="${basedir}/${download.dir}/${openesb23.file.name}"/>
+            <arg value="${basedir}/${openesb23.dir}/state.xml"/>
         </exec>
 
     </target>

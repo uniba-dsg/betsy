@@ -7,7 +7,7 @@ import betsy.data.engines.packager.OpenEsbCompositePackager
 
 class OpenEsbEngine extends Engine {
 
-    private static final String CHECK_URL = "http://localhost:18181"
+    static final String CHECK_URL = "http://localhost:18181"
 
     @Override
     String getName() {

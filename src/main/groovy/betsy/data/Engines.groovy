@@ -10,7 +10,10 @@ class Engines {
      * @return a list of all available engines
      */
     public static List<Engine> availableEngines() {
-        [new OdeEngine(), new BpelgEngine(), new OpenEsbEngine(), new PetalsEsbEngine(), new OrchestraEngine(), new ActiveBpelEngine(), new PetalsEsb41Engine()]
+        [new OdeEngine(), new BpelgEngine(), new OpenEsbEngine(), new PetalsEsbEngine(),
+                new OrchestraEngine(), new ActiveBpelEngine(), new PetalsEsb41Engine(),
+                new OpenEsb23Engine()
+        ]
     }
 
     /**
