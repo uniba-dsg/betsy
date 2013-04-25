@@ -22,7 +22,6 @@ virtualisation {
 	}
 
 	bvms {
-		installationDir = "/opt/betsy/"
 		// time in seconds, defaults to 120
 		requestTimeout = 120
 	}
@@ -46,8 +45,9 @@ virtualisation {
 			headless = false
 			// Saving the vm's state instead of poweringOff?
 			shutdownSaveState = false
+			// Where the bVMS application is installed
+			bvmsDir = "/opt/betsy/"
 		}
-
 		active_bpel_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-activebpel_v.tar.bz2"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
@@ -55,7 +55,6 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
 		}
-
 		bpelg_v {
 			// Only working from inside the University of Bamberg
 			download = "ftp://141.13.162.58/betsy-bpelg_v.ova"
@@ -64,7 +63,6 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
 		}
-
 		ode_v {
 			// Only working from inside the University of Bamberg
 			download = "ftp://141.13.162.58/betsy-ode_v.ova"
@@ -73,7 +71,6 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
 		}
-
 		openesb_v {
 			// Only working from inside the University of Bamberg
 			download = "ftp://141.13.162.58/betsy-openesb_v.ova"
@@ -82,7 +79,6 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
 		}
-
 		orchestra_v {
 			// Only working from inside the University of Bamberg
 			download = "ftp://141.13.162.58/betsy-orchestra_v.ova"
@@ -91,7 +87,6 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
 		}
-
 		petalsesb_v {
 			// Only working from inside the University of Bamberg
 			download = "ftp://141.13.162.58/betsy-petalsesb_v.ova"

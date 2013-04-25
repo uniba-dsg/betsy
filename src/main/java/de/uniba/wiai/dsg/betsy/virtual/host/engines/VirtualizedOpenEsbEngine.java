@@ -127,5 +127,15 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 	public Path getDeployableFilePath(Process process) {
 		return Paths.get(process.getTargetPackageCompositeFilePath());
 	}
+	
+	@Override
+	public String getVMbVMSDir() {
+		String bVMSDir = config.getValueAsString(
+				"virtualisation.engines.openesb_v.bvmsDir",
+				"/opt/betsy/");
+		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
+		bVMSDir += "log";
+		return bVMSDir;
+	}
 
 }

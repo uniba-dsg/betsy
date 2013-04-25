@@ -93,4 +93,14 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 	public Path getDeployableFilePath(Process process) {
 		return Paths.get(process.getTargetPackageFilePath("bpr"));
 	}
+
+	@Override
+	public String getVMbVMSDir() {
+		String bVMSDir = config.getValueAsString(
+				"virtualisation.engines.active-bpel_v.bvmsDir",
+				"/opt/betsy/");
+		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
+		bVMSDir += "log";
+		return bVMSDir;
+	}
 }

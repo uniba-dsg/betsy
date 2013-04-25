@@ -52,7 +52,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	private final Configuration config = Configuration.getInstance();
 	private final VBoxController vbController;
 	private final CommClient comm;
-	
+
 	private boolean initialized = false;
 	private VirtualMachine vm = null;
 
@@ -76,16 +76,16 @@ public abstract class VirtualizedEngine extends Engine implements
 		super.prepare();
 		initialize();
 	}
-	
+
 	private void initialize() {
-		if(!initialized) {
+		if (!initialized) {
 			log.trace("Initializing VirtualizedEngine");
 			// load VBox specific stuff
 			vbController.init();
 			initialized = true;
 		}
 	}
-	
+
 	@Override
 	public String getVirtualMachineName() {
 		return VIRTUAL_NAME_PREFIX + this.getName();
@@ -123,7 +123,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	public void startup() {
 		// required for compatibility with EngineControl
 		initialize();
-		
+
 		log.debug("Startup virtualized engine " + getName() + " ...");
 
 		try {
@@ -183,7 +183,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	public void shutdown() {
 		// required for compatibility with EngineControl
 		initialize();
-		
+
 		log.debug("Shutdown virtualized engine " + getName() + " ...");
 		// stop communication
 		comm.disconnect();
@@ -205,7 +205,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	public void install() {
 		// required for compatibility with EngineControl
 		initialize();
-		
+
 		log.debug("Install virtualized engine " + getName() + " ...");
 		try {
 			if (!isVirtualMachineReady()) {
@@ -328,15 +328,8 @@ public abstract class VirtualizedEngine extends Engine implements
 			// request once again in case of checksum exception
 			for (int attempt = 1; attempt < 3; attempt++) {
 				try {
-					// show where to get them from
-					String bVMSDir = config.getValueAsString(
-							"virtualisation.bvms.installationDir",
-							"/opt/betsy/");
-					bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-					bVMSDir += "log";
-
 					// collect logs from remote server
-					lfc = comm.getLogfilesFromServer(bVMSDir,
+					lfc = comm.getLogfilesFromServer(this.getVMbVMSDir(),
 							this.getVMLogfileDir());
 					break;
 				} catch (ChecksumException exception) {
@@ -406,7 +399,7 @@ public abstract class VirtualizedEngine extends Engine implements
 					+ "already running.");
 		}
 	}
-	
+
 	@Override
 	public Integer getVMDeploymentTimeout() {
 		Integer timeout = config.getValueAsInteger("virtualisation.engines."
