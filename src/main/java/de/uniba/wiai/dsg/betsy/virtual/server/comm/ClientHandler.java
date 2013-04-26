@@ -175,6 +175,7 @@ public class ClientHandler implements Runnable {
 			this.sendMessage(lfc);
 			log.info("Logfiles sent to client");
 		} catch (CollectLogfileException e) {
+			log.error("Error collecting logfiles:", e);
 			this.sendMessage(StatusMessage.ERROR_COLLECT_LOGFILES);
 		}
 	}
