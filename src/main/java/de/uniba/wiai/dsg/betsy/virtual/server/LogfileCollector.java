@@ -45,7 +45,7 @@ public class LogfileCollector {
 			throw new CollectLogfileException("The dir to collect the bVMS "
 					+ "logs from does not exist.");
 		}
-		File engineLogDirectory = new File(request.getEngineInstallDir());
+		File engineLogDirectory = new File(request.getEngineLogfileDir());
 		if (!engineLogDirectory.isDirectory()) {
 			throw new CollectLogfileException("The dir to collect the engines "
 					+ "logs from does not exist.");

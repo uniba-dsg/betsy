@@ -19,29 +19,29 @@ public class LogRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final String betsyInstallDir;
-	private final String engineInstallDir;
+	private final String engineLogfileDir;
 
 	public LogRequest(final String betsyInstallDir,
-			final String engineInstallDir) {
+			final String engineLogfileDir) {
 		if (StringUtils.isBlank(betsyInstallDir)) {
 			throw new IllegalArgumentException("betsyInstallDir must not be "
 					+ "null or empty");
 		}
-		if (StringUtils.isBlank(engineInstallDir)) {
-			throw new IllegalArgumentException("engineInstallDir must not be "
+		if (StringUtils.isBlank(engineLogfileDir)) {
+			throw new IllegalArgumentException("engineLogfileDir must not be "
 					+ "null or empty");
 		}
 
 		this.betsyInstallDir = betsyInstallDir;
-		this.engineInstallDir = engineInstallDir;
+		this.engineLogfileDir = engineLogfileDir;
 	}
 
 	public String getBetsyInstallDir() {
 		return betsyInstallDir;
 	}
 
-	public String getEngineInstallDir() {
-		return engineInstallDir;
+	public String getEngineLogfileDir() {
+		return engineLogfileDir;
 	}
 
 }
