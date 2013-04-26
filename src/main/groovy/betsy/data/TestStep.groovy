@@ -78,6 +78,18 @@ class TestStep {
         assertions.any {it instanceof NotDeployableAssertion }
     }
 
+    public static TestStep buildPartnerConcurrencySetup() {
+        new TestStep(input: "102", testPartner: true)
+    }
+
+    public static TestStep buildPartnerConcurrencyCheck() {
+        new TestStep(input: "101", testPartner: true, concurrencyTest: true)
+    }
+
+    public static TestStep buildPartnerValueCheck(String value) {
+        new TestStep(input: "102", testPartner: true, partnerOutput: value)
+    }
+
     @Override
     public String toString() {
         return "TestStep{" +

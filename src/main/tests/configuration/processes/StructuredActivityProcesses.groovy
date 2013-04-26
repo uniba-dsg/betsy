@@ -235,6 +235,18 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public final Process FOR_EACH_PARALLEL_INVOKE = builder.buildProcessWithPartner(
+            "structured-activities/ForEach-Parallel-Invoke", "A receive-reply pair with an intermediate forEach that executes its children in parallel.",
+            [
+                    new TestCase(name: "0plus1plus2-equals-3", testSteps: [
+                            TestStep.buildPartnerConcurrencySetup(),
+                            new TestStep(input: "2", output: "3", operation: WsdlOperation.SYNC),
+                            TestStep.buildPartnerConcurrencyCheck(),
+                            TestStep.buildPartnerValueCheck("3")
+					])
+            ]
+    )
+
     public final Process FOR_EACH_COMPLETION_CONDITION = builder.buildStructuredActivityProcess(
             "ForEach-CompletionCondition",   "A receive-reply pair with an intermediate forEach that should terminate given two of its children have terminated. N+1 children are scheduled for execution, where n is equal to the input. If N+1 is less than two, an invalidBranchConditionFault should be thrown.",
             [
@@ -250,7 +262,7 @@ class StructuredActivityProcesses {
                     new TestCase(name: "Cannot meet completion condition", testSteps: [new TestStep(input: "0", operation: WsdlOperation.SYNC, assertions: [new SoapFaultTestAssertion(faultString: "invalidBranchCondition")])])
             ]
     )
-
+	
     public final Process FOR_EACH_COMPLETION_CONDITION_SUCCESSFUL_BRANCHES_ONLY = builder.buildStructuredActivityProcess(
             "ForEach-CompletionCondition-SuccessfulBranchesOnly", "A receive-reply pair with an intermediate forEach that should terminate given two of its children have terminated successfully. Each child throws a fault, given the current counter value is even. N children are scheduled for execution, where n is equal to the input.",
             [
@@ -274,6 +286,7 @@ class StructuredActivityProcesses {
             FOR_EACH_COMPLETION_CONDITION_SUCCESSFUL_BRANCHES_ONLY,
             FOR_EACH_COMPLETION_CONDITION_FAILURE,
             FOR_EACH_PARALLEL,
+            FOR_EACH_PARALLEL_INVOKE,
             FOR_EACH_NEGATIVE_START_COUNTER,
             FOR_EACH_TOO_LARGE_START_COUNTER,
             FOR_EACH_COMPLETION_CONDITION_NEGATIVE_BRANCHES

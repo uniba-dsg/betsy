@@ -51,6 +51,9 @@ class SoapUiTestStepBuilder {
         String wsdlOperationName = "Sending ${portTypeName}.${operationName} Step #${testStepNumber}"
 
         WsdlInterface wsdlInterface = wsdlProject.getInterfaceByName(portTypeName) as WsdlInterface
+		if(wsdlInterface == null){
+			throw new RuntimeException("Cannot find WSDL Interface for PortType ${portTypeName}")
+		}
         com.eviware.soapui.impl.wsdl.WsdlOperation op = wsdlInterface.getOperationByName(operationName)
 
         if (op == null) {
