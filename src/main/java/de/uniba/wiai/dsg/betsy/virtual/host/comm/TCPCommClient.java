@@ -185,12 +185,12 @@ public class TCPCommClient implements CommClient {
 
 	@Override
 	public LogfileCollection getLogfilesFromServer(
-			final String betsyInstallDir, final String engineInstallDir)
+			final String betsyInstallDir, final String engineLogfileDir)
 			throws ChecksumException, ConnectionException,
 			InvalidResponseException, CollectLogfileException {
 		try {
 			// create request
-			LogRequest lrc = new LogRequest(betsyInstallDir, engineInstallDir);
+			LogRequest lrc = new LogRequest(betsyInstallDir, engineLogfileDir);
 			// send the request
 			this.sendMessage(lrc);
 
