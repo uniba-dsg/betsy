@@ -11,6 +11,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -90,43 +97,79 @@ public class VirtualMachine {
 		}
 	}
 
-	/**
-	 * Stopping the {@link IMachine} and causing the VirtualBox's VM to be in
-	 * 'PoweredOff' state.<br>
-	 * If the VM is still running after the timeout, it will be killed using
-	 * VirtualBox's emergency kill switch.<br>
-	 * <br>
-	 * Should only be used of the {@link IMachine} is in a running state.
-	 */
-	public void stop() {
-		log.trace("Stopping VM");
+	private Boolean executeStop() {
 		try {
 			if (isRunning()) {
 				IConsole console = session.getConsole();
 				IProgress stopProgress = console.powerDown();
-				stopProgress.waitForCompletion(15000);
-				// if not stopped now it will be killed...
+				stopProgress.waitForCompletion(10000);
 			}
 		} catch (VBoxException exception) {
 			if (VBoxExceptionCode.valueOf(exception).equals(
 					VBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
-				// ignore
 				log.warn("Could not power off, VM was in invalid state:",
 						exception);
 			} else {
-				// rethrow as unexpected VBoxException
-				throw exception;
+				log.fatal("Unexpected VBoxException while stopping VM:",
+						exception);
 			}
 		} finally {
-			// verify if stopped, else kill
-			if (isActive()) {
-				kill();
-			}
 			try {
 				session.unlockMachine();
 			} catch (VBoxException exception) {
 				// ignore if was not locked
 			}
+		}
+
+		// verify if stopped
+		if (isActive()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * 
+	 * Stopping the {@link IMachine} and causing the VirtualBox's VM to be in
+	 * 'PoweredOff' state.<br>
+	 * If the VM is still running after the timeout, for instance of the stop
+	 * caused a lock, it will be killed using VirtualBox's emergency kill
+	 * switch.<br>
+	 * <br>
+	 * Should only be used of the {@link IMachine} is in a running state.
+	 */
+	public void stop() {
+		log.trace("Stopping VM");
+
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Callable<Boolean> task = new Callable<Boolean>() {
+			public Boolean call() {
+				return VirtualMachine.this.executeStop();
+			}
+		};
+		Future<Boolean> future = executor.submit(task);
+		try {
+			Boolean result = future.get(12, TimeUnit.SECONDS);
+			log.trace("Stop-Future done? " + future.isDone());
+			log.debug("Stop-Future result: " + result);
+			if (!result) {
+				log.trace("Stop-Future negativ, killing now");
+				kill();
+			}
+		} catch (TimeoutException exception) {
+			// handle the timeout
+			log.warn("VM not stopped, operation timed out", exception);
+			kill();
+		} catch (ExecutionException | InterruptedException exception) {
+			// handle the interrupts
+			log.warn("VM not stopped: ", exception);
+			log.warn("Cause: " + exception.getCause());
+			kill();
+		} finally {
+			boolean canceled = future.cancel(true);
+			log.debug("Stop-Future canceled? " + canceled + " // "
+					+ future.isCancelled());
 		}
 		log.trace("finished stop method");
 	}
@@ -188,6 +231,7 @@ public class VirtualMachine {
 			session.unlockMachine();
 		} catch (VBoxException exception) {
 			// ignore if was not locked
+			log.trace("Unlocking session after kill failed:", exception);
 		}
 	}
 
@@ -331,7 +375,12 @@ public class VirtualMachine {
 			while (!snapshotProgress.getCompleted()) {
 				snapshotProgress.waitForCompletion(30000);
 			}
+			log.trace("State after restoration:"
+					+ machine.getState().toString());
+			log.trace("resetted to VM latest snapshot '" + snapshot.getName()
+					+ "'");
 		} finally {
+			log.trace("trigger finally block after reset snapshot");
 			if (subSession != null) {
 				try {
 					subSession.unlockMachine();
