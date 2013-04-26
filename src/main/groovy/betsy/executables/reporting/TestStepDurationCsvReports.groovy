@@ -37,13 +37,14 @@ public class TestStepDurationCsvReports {
 		tests.engines.each { Engine engine ->
 			engine.processes.each { process ->
 				File processDurationFile = new File("${process.getTargetPath()}/durations.csv")
-
-				new File(csv).withWriterAppend { w ->
-					ProcessCsvDuration csvRow = new ProcessCsvDuration(
-						csvFile: processDurationFile,
-						name: process.normalizedId,
-						engine: process.engine.toString())
-					w.println(csvRow.toRow())
+				if(processDurationFile.isFile()) {
+					new File(csv).withWriterAppend { w ->
+						ProcessCsvDuration csvRow = new ProcessCsvDuration(
+							csvFile: processDurationFile,
+							name: process.normalizedId,
+							engine: process.engine.toString())
+						w.println(csvRow.toRow())
+					}
 				}
 			}
 		}
