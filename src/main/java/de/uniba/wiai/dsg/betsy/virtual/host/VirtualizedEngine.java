@@ -434,6 +434,10 @@ public abstract class VirtualizedEngine extends Engine implements
 		int result = 1;
 		result = prime * result
 				+ (getName() != null ? getName().hashCode() : 0);
+		result = prime
+				* result
+				+ (getVirtualMachineName() != null ? getVirtualMachineName()
+						.hashCode() : 0);
 		return result;
 	}
 
