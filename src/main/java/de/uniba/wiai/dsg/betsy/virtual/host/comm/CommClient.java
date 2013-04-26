@@ -10,7 +10,6 @@ import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.InvalidResponseException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
-import de.uniba.wiai.dsg.betsy.virtual.server.comm.VirtualizedEngineDeployer;
 
 /**
  * The {@link CommClient} is running on the host and offers several methods to
@@ -94,7 +93,7 @@ public interface CommClient {
 
 	/**
 	 * Send the name of the current engine to the server so he knows which
-	 * {@link VirtualizedEngineDeployer} to use.
+	 * Deployer to use.
 	 * 
 	 * @param engineName
 	 *            name of the currently tested engine

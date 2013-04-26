@@ -1,16 +1,10 @@
-package de.uniba.wiai.dsg.betsy.virtual.server.comm;
+package de.uniba.wiai.dsg.betsy.virtual.server.deployers;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedActiveBpelDeployer;
-import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedBpelgDeployer;
-import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOdeDeployer;
-import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOpenEsbDeployer;
-import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedOrchestraDeployer;
-import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedPetalsEsbDeployer;
 
 /**
  * Offers a method to find a deployer for an engine.

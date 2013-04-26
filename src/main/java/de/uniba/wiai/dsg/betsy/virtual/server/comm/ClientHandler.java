@@ -20,6 +20,8 @@ import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogRequest;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.LogfileCollection;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.StatusMessage;
 import de.uniba.wiai.dsg.betsy.virtual.server.LogfileCollector;
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedEngineDeployer;
+import de.uniba.wiai.dsg.betsy.virtual.server.deployers.VirtualizedEngineDeployers;
 
 /**
  * The {@link ClientHandler} manages the connection to a previously connected

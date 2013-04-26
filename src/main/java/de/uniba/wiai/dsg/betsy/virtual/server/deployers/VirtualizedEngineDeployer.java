@@ -1,4 +1,4 @@
-package de.uniba.wiai.dsg.betsy.virtual.server.comm;
+package de.uniba.wiai.dsg.betsy.virtual.server.deployers;
 
 import de.uniba.wiai.dsg.betsy.virtual.common.exceptions.DeployException;
 import de.uniba.wiai.dsg.betsy.virtual.common.messages.DeployOperation;
