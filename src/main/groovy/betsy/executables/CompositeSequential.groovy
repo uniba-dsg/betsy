@@ -86,6 +86,7 @@ class CompositeSequential extends Composite {
 
 							def repeatedDir = "${process.engine.path}/failed_repeated_tests"
 							def destDir = "${repeatedDir}/${testCount}_${process.normalizedId}"
+							ant.sleep(milliseconds: 500)
 							ant.mkdir(dir: repeatedDir)
 							ant.move(file: process.targetPath, tofile: destDir, force: true, performGCOnFailedDelete: true)
 
