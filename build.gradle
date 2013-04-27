@@ -20,6 +20,7 @@ sourceSets {
 			srcDir 'src/main/java'
 			srcDir 'src/main/groovy'
 			srcDir 'src/main/tests'
+			exclude 'de/uniba/wiai/dsg/betsy/virtual/server/**'
 		}
 		resources {
 			srcDir 'src/main/resources'
