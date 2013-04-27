@@ -1,7 +1,7 @@
 package betsy.data.engines;
 
+import betsy.Configuration
 import betsy.data.Process;
-import de.uniba.wiai.dsg.betsy.Configuration;
 import groovy.util.AntBuilder;
 
 public class EnginePackageBuilder {

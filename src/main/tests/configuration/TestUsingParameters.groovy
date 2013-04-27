@@ -6,15 +6,13 @@ import betsy.data.Process
 import betsy.data.engines.Engine;
 import betsy.data.engines.LocalEngines
 import betsy.executables.CompositeSequential
+import betsy.virtual.host.VBoxConfiguration
+import betsy.virtual.host.VirtualizedEngine
+import betsy.virtual.host.VirtualizedEngines
+import betsy.virtual.host.utils.VBoxWebService
 import configuration.processes.Processes
 
 import java.awt.Desktop
-
-import de.uniba.wiai.dsg.betsy.Configuration;
-import de.uniba.wiai.dsg.betsy.virtual.host.VBoxConfiguration;
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngine
-import de.uniba.wiai.dsg.betsy.virtual.host.VirtualizedEngines;
-import de.uniba.wiai.dsg.betsy.virtual.host.utils.VBoxWebService;
 
 class TestUsingParameters {
 

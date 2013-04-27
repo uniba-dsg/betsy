@@ -1,6 +1,6 @@
 package betsy.data.engines.petalsEsb
 
-import de.uniba.wiai.dsg.betsy.Configuration;
+import betsy.Configuration
 import betsy.data.Process
 
 class PetalsEsbCompositePackager {

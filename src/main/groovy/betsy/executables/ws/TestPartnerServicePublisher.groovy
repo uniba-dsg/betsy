@@ -1,9 +1,10 @@
 package betsy.executables.ws
 
-import de.uniba.wiai.dsg.betsy.Configuration;
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
 
 import javax.xml.ws.Endpoint
+
+import betsy.Configuration
 
 class TestPartnerServicePublisher {
 

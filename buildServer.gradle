@@ -8,7 +8,7 @@ apply plugin: "application"
 buildDir = "build-bvms"
 
 // Main class of server
-mainClassName = "de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer"
+mainClassName = "betsy.virtual.server.BetsyVirtualMachineServer"
 
 repositories {
     mavenCentral()
@@ -19,10 +19,7 @@ sourceSets {
 		java {
 			srcDir 'src/main/java'
 			exclude 'de/uniba/wiai/dsg/betsy/activities/**'
-			exclude 'de/uniba/wiai/dsg/betsy/virtual/engines/**'
-			exclude 'de/uniba/wiai/dsg/betsy/virtual/host/**'
-			exclude 'de/uniba/wiai/dsg/betsy/virtual/deprecated/**'
-			exclude 'de/uniba/wiai/dsg/bpel_engine_comparison/**'
+			exclude 'betsy/virtual/host/**'
 		}
 		groovy {
 			srcDir 'src/main/groovy'
@@ -74,7 +71,7 @@ task jarServer(type: Jar, dependsOn: classes) {
 	baseName = 'betsy'
 	
 	manifest {
-		attributes 'Main-Class': 'de.uniba.wiai.dsg.betsy.virtual.server.BetsyVirtualMachineServer','Implementation-Title': 'Betsy-VirtualMachineServer','Built-Date': new Date()
+		attributes 'Main-Class': 'betsy.virtual.server.BetsyVirtualMachineServer','Implementation-Title': 'Betsy-VirtualMachineServer','Built-Date': new Date()
 	}
 	
 	doFirst {
