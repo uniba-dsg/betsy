@@ -3,23 +3,14 @@ package de.uniba.wiai.dsg.betsy.virtual.host.utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.compress.archivers.ArchiveException;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -29,7 +20,7 @@ import de.uniba.wiai.dsg.betsy.virtual.host.exceptions.archive.UnsupportedArchiv
 
 /**
  * The {@link ArchiveExtractor} offers methods to extract a File that represents
- * an archive. Currently .tar.bz2, .zip and .ova archives are supported.
+ * an archive. Currently .zip and .ova archives are supported.
  * 
  * @author Cedric Roeck
  * @version 1.0
@@ -56,17 +47,15 @@ public class ArchiveExtractor {
 	 */
 	public List<File> ectractArchive(final File inputFile, final File outputDir)
 			throws UnsupportedArchiveException, ArchiveExtractionException {
-		if (inputFile.getAbsolutePath().toLowerCase().endsWith(".tar.bz2")) {
-			return extractTarBz2(inputFile, outputDir);
-		} else if (inputFile.getAbsolutePath().toLowerCase().endsWith(".zip")) {
+		if (inputFile.getAbsolutePath().toLowerCase().endsWith(".zip")) {
 			return extractZip(inputFile, outputDir);
 		} else if (inputFile.getAbsolutePath().toLowerCase().endsWith(".ova")) {
 			return extractOva(inputFile, outputDir);
 		} else {
-			throw new UnsupportedArchiveException(
-					"Archive type is not supported and can't be extracted! "
-							+ "Either use another type or extract the archive manually. "
-							+ "Supported types are: '.tar.bz2 and .zip'");
+			throw new UnsupportedArchiveException("Archive type is not "
+					+ "supported and can't be extracted! Either use another "
+					+ "type or extract the archive manually. Supported types "
+					+ "are: '.ova and .zip'");
 		}
 	}
 
@@ -105,66 +94,6 @@ public class ArchiveExtractor {
 		}
 	}
 
-	/**
-	 * Extract the archive into the outputDir.
-	 * 
-	 * @param inputFile
-	 *            file to extract
-	 * @param outputDir
-	 *            where to extract the archive to
-	 * @return a {@link List} of all extracted files.
-	 * 
-	 * @throws ArchiveExtractionException
-	 *             thrown if the extraction failed
-	 */
-	public List<File> extractTarBz2(final File inputFile, final File outputDir)
-			throws ArchiveExtractionException {
-		// validate file ends with .tar.bz2
-		if (!inputFile.getAbsolutePath().toLowerCase().endsWith(".tar.bz2")) {
-			throw new IllegalArgumentException("invalid archive: "
-					+ "inputFile must end with file extension of '.tar.bz2'");
-		}
-		// assure outputDir exists
-		outputDir.mkdirs();
-
-		FileOutputStream out = null;
-		BZip2CompressorInputStream bzIn = null;
-		try {
-			FileInputStream fin = new FileInputStream(inputFile);
-			BufferedInputStream in = new BufferedInputStream(fin);
-			String fileName = inputFile.getName();
-			String tarFilePath = fileName.substring(0,
-					fileName.lastIndexOf(".tar.bz2"))
-					+ ".tar";
-			out = new FileOutputStream(tarFilePath);
-			bzIn = new BZip2CompressorInputStream(in);
-			final byte[] buffer = new byte[8192];
-			int n = 0;
-			while (-1 != (n = bzIn.read(buffer))) {
-				out.write(buffer, 0, n);
-			}
-
-			return this.extractTar(new File(tarFilePath), outputDir);
-		} catch (ArchiveExtractionException | IOException exception) {
-			throw new ArchiveExtractionException(
-					"Exception while extracting .tar.bz2 archive", exception);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					// ignore, is being closed anyway
-				}
-			}
-			if (bzIn != null) {
-				try {
-					bzIn.close();
-				} catch (IOException e) {
-					// ignore, is being closed anyway
-				}
-			}
-		}
-	}
 
 	/**
 	 * Extract the archive into the outputDir.
@@ -240,99 +169,4 @@ public class ArchiveExtractor {
 		}
 		return file;
 	}
-
-	/**
-	 * Untar the content of the input tar-file into an output folder.
-	 * 
-	 * @param inputFile
-	 *            the input tar-file.
-	 * @param outputDir
-	 *            the output directory.
-	 * 
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 *             thrown if inputFile could not be found.
-	 * @throws ArchiveException
-	 * 
-	 * @return The {@link List} of {@link File}s with the extracted content.
-	 */
-	public List<File> extractTar(final File inputFile, final File outputDir)
-			throws ArchiveExtractionException {
-		// validate file ends with .tar
-		if (!inputFile.getAbsolutePath().toLowerCase().endsWith(".tar")) {
-			throw new IllegalArgumentException("invalid archive: "
-					+ "inputFile must end with file extension of '.tar'");
-		}
-		// assure outputDir exists
-		outputDir.mkdirs();
-
-		InputStream inputStream = null;
-		TarArchiveInputStream tarInputStream = null;
-
-		try {
-			log.debug(String.format("Untaring %s into %s.",
-					inputFile.getAbsolutePath(), outputDir.getAbsolutePath()));
-
-			final List<File> extractedFiles = new LinkedList<File>();
-			inputStream = new FileInputStream(inputFile);
-			tarInputStream = (TarArchiveInputStream) new ArchiveStreamFactory()
-					.createArchiveInputStream("tar", inputStream);
-
-			TarArchiveEntry entry = null;
-			while ((entry = (TarArchiveEntry) tarInputStream.getNextEntry()) != null) {
-				// create a new file below the given directory
-				final File outFile = new File(outputDir, entry.getName());
-				if (entry.isDirectory()) {
-					if (!outFile.exists()) {
-						log.debug(String.format("Creating new directory %s.",
-								outFile.getAbsolutePath()));
-						if (!outFile.mkdirs()) {
-							throw new ArchiveExtractionException(String.format(
-									"Couldn't create directory %s.",
-									outFile.getAbsolutePath()));
-						}
-					}
-				} else {
-					log.debug(String.format("Creating new file %s.",
-							outFile.getAbsolutePath()));
-					OutputStream outputFileStream = null;
-					try {
-						outputFileStream = new FileOutputStream(outFile);
-						IOUtils.copy(tarInputStream, outputFileStream);
-					} finally {
-						if (outputFileStream != null) {
-							try {
-								outputFileStream.close();
-							} catch (IOException e) {
-								// ignore, is being closed anyway
-							}
-						}
-					}
-				}
-				extractedFiles.add(outFile);
-			}
-			// ... and done!
-			return extractedFiles;
-		} catch (ArchiveException | IOException exception) {
-			throw new ArchiveExtractionException(
-					"Exception while extracting .tar archive", exception);
-		} finally {
-			// close all resources if an exception is raised
-			if (tarInputStream != null) {
-				try {
-					tarInputStream.close();
-				} catch (IOException e) {
-					// ignore, is being closed anyway
-				}
-			}
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					// ignore, is being closed anyway
-				}
-			}
-		}
-	}
-
 }
