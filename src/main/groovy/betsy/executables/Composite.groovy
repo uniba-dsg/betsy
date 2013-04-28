@@ -12,7 +12,6 @@ import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
 
-// TODO apply catching TestFailedExceptions
 class Composite {
 
 	final AntBuilder ant = new AntBuilder()
@@ -150,20 +149,24 @@ class Composite {
 	}
 
 	String log(String name, Closure closure) {
-		ant.mkdir dir: new File(name).parent
-		ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
-
-		ant.echo message: name
-		println name
-
-		Stopwatch stopwatch = Stopwatch.benchmark(closure)
-		String result = "${name} ${stopwatch.formattedDiff}"
-		ant.echo message: result
-		println result
-
-		ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+		try {
+			ant.mkdir dir: new File(name).parent
+			ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
+	
+			ant.echo message: name
+			println name
+	
+			Stopwatch stopwatch = Stopwatch.benchmark(closure)
+			String result = "${name} ${stopwatch.formattedDiff}"
+			ant.echo message: result
+			println result
+			return stopwatch.secondsDiff
+		} finally {
+			ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+		}
 		
-		return stopwatch.secondsDiff
+		// invalid computation caused by thrown exception
+		return -1
 	}
 
 	void soapui(String name, Closure closure) {
