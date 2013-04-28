@@ -24,14 +24,10 @@ public enum StatusMessage {
 	// answer to logfile request
 	NO_LOGFILE_AVAILABLE("No logfile was available to be sent."),
 	// if the request is not known. indicating incompatible versions.
-	ERROR_INVALID_REQUEST("Received request is unknown."),
-	//
+	ERROR_INVALID_REQUEST("Received request is unknown, incompatible versions?"),
 	ERROR_CHECKSUM("Checksum of received files did not match."),
-	//
 	ERROR_INCOMPATIBLE_ENGINE("Incompatible engine, is not virtualized yet."),
-	//
 	ERROR_ENGINE_EXPECTED("Server expected to receive the engine's type."),
-	//
 	ERROR_COLLECT_LOGFILES("Collecting logfiles failed.");
 
 	private final String statusName;
