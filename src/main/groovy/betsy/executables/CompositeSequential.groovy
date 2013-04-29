@@ -45,16 +45,28 @@ class CompositeSequential extends Composite {
                             engine.onPostDeployment(process)
                         }
 
-                        context.testPartner.publish()
-                        log "${process.targetPath}/test", {
-                            soapui "${process.targetPath}/soapui_test", {
-                                new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
-                                        reportingDirectory: process.targetReportsPath, ant: ant).run()
+                        try {
+
+                            try {
+                                context.testPartner.publish()
+                            } catch (BindException e){
+                                context.testPartner.unpublish()
+                                ant.echo "Address already in use - waiting 2 seconds to get available"
+                                ant.sleep(milliseconds: 2000)
+                                context.testPartner.publish()
                             }
-                            ant.sleep(milliseconds: 500)
-                            engine.storeLogs(process)
+
+                            log "${process.targetPath}/test", {
+                                soapui "${process.targetPath}/soapui_test", {
+                                    new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
+                                            reportingDirectory: process.targetReportsPath, ant: ant).run()
+                                }
+                                ant.sleep(milliseconds: 500)
+                                engine.storeLogs(process)
+                            }
+                        } finally {
+                            context.testPartner.unpublish()
                         }
-                        context.testPartner.unpublish()
 
                     } finally {
                         // ensure shutdown
