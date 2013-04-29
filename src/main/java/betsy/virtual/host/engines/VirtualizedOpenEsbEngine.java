@@ -119,7 +119,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
 	public String getVMDeploymentFile() {
 		return config.getValueAsString(
-				"virtualisation.engines.openesb_v.deploymentExecutable",
+				"virtualisation.engines.openesb_v.deploymentFile",
 				"/opt/openesb/glassfish/bin/asadmin");
 	}
 

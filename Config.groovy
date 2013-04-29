@@ -74,7 +74,7 @@ virtualisation {
 		openesb_v {
 			// Only working from inside the University of Bamberg
 			download = "ftp://141.13.162.58/betsy-openesb_v.ova"
-			deploymentExecutable = "/opt/openesb/glassfish/bin/asadmin"
+			deploymentFile = "/opt/openesb/glassfish/bin/asadmin"
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
 			headless = true
 			shutdownSaveState = false
