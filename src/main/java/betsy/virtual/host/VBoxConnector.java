@@ -44,7 +44,7 @@ public class VBoxConnector {
 		return !isConnected;
 	}
 
-	public VirtualBoxManager getVirtualBoxManager() {
+	public VirtualBoxManager getVBoxManager() {
 		return this.vBoxManager;
 	}
 
