@@ -48,7 +48,7 @@ public class VBoxConnector {
 		return this.vBoxManager;
 	}
 
-	public VBoxApplianceImporter getVirtualBoxImporter() {
+	public VBoxApplianceImporter getVBoxImporter() {
 		return this.vBoxImporter;
 	}
 

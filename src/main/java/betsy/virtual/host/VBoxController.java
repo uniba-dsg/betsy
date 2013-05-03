@@ -51,7 +51,7 @@ public class VBoxController {
 		VBoxConnector vBoxConn = VBoxConnector.getInstance();
 		this.vBox = vBoxConn.connect();
 		this.vBoxManager = vBoxConn.getVirtualBoxManager();
-		this.vBoxImporter = vBoxConn.getVirtualBoxImporter();
+		this.vBoxImporter = vBoxConn.getVBoxImporter();
 
 		log.trace("VirtualBoxController initialized");
 	}
