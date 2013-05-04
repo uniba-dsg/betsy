@@ -328,44 +328,40 @@ public abstract class VirtualizedEngine extends Engine implements
 					}
 				}
 			}
+			if (lfc != null) {
+				// create log folders
+				File processLogFolder = new File(process.getTargetPath()
+						+ "/logs");
+				processLogFolder.mkdirs();
+				File engineLogFolder = new File(processLogFolder, "engine");
+				engineLogFolder.mkdir();
+				File betsyLogFolder = new File(processLogFolder,
+						"betsy-server");
+				betsyLogFolder.mkdir();
 
-			try {
-				if (lfc != null) {
-					// create log folders
-					File processLogFolder = new File(process.getTargetPath()
-							+ "/logs");
-					processLogFolder.mkdirs();
-					File engineLogFolder = new File(processLogFolder, "engine");
-					engineLogFolder.mkdir();
-					File betsyLogFolder = new File(processLogFolder,
-							"betsy-server");
-					betsyLogFolder.mkdir();
-
-					// save to disk...
-					for (FileMessage lf : lfc.getEngineLogfiles()) {
-						File f = new File(engineLogFolder, lf.getFilename());
-						FileUtils.writeByteArrayToFile(f, lf.getData());
-					}
-					for (FileMessage lf : lfc.getBetsyLogfiles()) {
-						File f = new File(betsyLogFolder, lf.getFilename());
-						FileUtils.writeByteArrayToFile(f, lf.getData());
-					}
+				// save to disk...
+				for (FileMessage lf : lfc.getEngineLogfiles()) {
+					File f = new File(engineLogFolder, lf.getFilename());
+					FileUtils.writeByteArrayToFile(f, lf.getData());
 				}
-			} catch (IOException exception) {
-				throw new TemporaryFailedTestException("Test failed as we "
-						+ "could not write the resulting logfiles to "
-						+ "the disk.", exception);
+				for (FileMessage lf : lfc.getBetsyLogfiles()) {
+					File f = new File(betsyLogFolder, lf.getFilename());
+					FileUtils.writeByteArrayToFile(f, lf.getData());
+				}
 			}
+		} catch (IOException exception) {
+			throw new TemporaryFailedTestException("Test failed as we "
+					+ "could not write the resulting logfiles to "
+					+ "the disk.", exception);
 		} catch (CollectLogfileException | ConnectionException exception) {
 			// usually temporary failures --> test can be repeated
 			throw new TemporaryFailedTestException("Test failed while "
-					+ "collecing the logfiles:", exception);
+					+ "collecting the logfiles:", exception);
 		} catch (InvalidResponseException exception) {
 			// permanent failure, maybe incompatible versions
 			throw new PermanentFailedTestException("Test failed while "
-					+ "collecing the logfiles:", exception);
+					+ "collecting the logfiles:", exception);
 		}
-
 		log.trace("...storing logs done!");
 	}
 
