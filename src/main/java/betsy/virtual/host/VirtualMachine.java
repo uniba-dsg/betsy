@@ -218,7 +218,7 @@ public class VirtualMachine {
 	 * Check whether the {@link IMachine} is in a running state.<br>
 	 * Even if this method is very similar to {@link #isRunning()}, the
 	 * difference is that every mid-state such as saving, powering-off, etc. is
-	 * still a running state, even if the VM is currently not responding to the
+	 * still an active state, even if the VM is currently not responding to the
 	 * User's input.
 	 * 
 	 * @return true if the VM is active
@@ -311,10 +311,9 @@ public class VirtualMachine {
 		try {
 			log.debug("Resetting " + machine.getName() + " to latest snapshot");
 
-			IConsole console = null;
 			subSession = vbManager.getSessionObject();
 			machine.lockMachine(subSession, LockType.Write);
-			console = subSession.getConsole();
+			IConsole console = subSession.getConsole();
 
 			ISnapshot snapshot = machine.getCurrentSnapshot();
 			if (snapshot == null) {
@@ -534,9 +533,7 @@ public class VirtualMachine {
 					"virtualisation.engines." + engineName + ".serviceTimeout",
 					300);
 			ServiceValidator sv = new ServiceValidator();
-			boolean ready = sv.isEngineReady(engineServices, secondsToWait);
-
-			if (!ready) {
+			if (!sv.isEngineReady(engineServices, secondsToWait)) {
 				log.warn("engine services not found withing " + secondsToWait
 						+ "s");
 				// timeout in CountDownLatch
@@ -552,8 +549,7 @@ public class VirtualMachine {
 								+ " with a valid snapshot in 'Running' state.");
 			}
 
-			ready = sv.isBetsyServerReady(15000);
-			if (!ready) {
+			if (!sv.isBetsyServerReady(15000)) {
 				log.warn("betsy server not found withing 15s");
 				throw new VirtualizedEngineServiceException(
 						"The required betsy server was "
@@ -576,8 +572,8 @@ public class VirtualMachine {
 			this.stop();
 		} catch (MalformedURLException exception) {
 			throw new VirtualizedEngineServiceException("Could not verify "
-					+ "engine servies availability. One address is invalid: ",
-					exception);
+					+ "engine service availability. At least one address is "
+					+ "invalid: ", exception);
 		} finally {
 			// stop if vm is still running
 			if (this.isRunning()) {
