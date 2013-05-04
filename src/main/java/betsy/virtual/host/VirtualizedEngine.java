@@ -121,49 +121,27 @@ public abstract class VirtualizedEngine extends Engine implements
 
 	@Override
 	public void startup() {
+		log.debug("Startup virtualized engine " + getName() + " ...");
 		// required for compatibility with EngineControl
 		initialize();
-
-		log.debug("Startup virtualized engine " + getName() + " ...");
-
 		try {
 			// verify port usage
 			Set<Integer> ports = getRequiredPorts();
 			// also verify the bVMS port
 			ports.add(48888);
 			PortVerifier.verify(ports);
-
 			// forward and verify used ports
-			this.vm.applyPortForwarding(getRequiredPorts());
-
+			this.vm.applyPortForwarding(ports);
 			// start headless?
 			boolean headless = config.getValueAsBoolean(
 					"virtualisation.engines." + getName() + ".headless", false);
 			this.vm.start(headless);
 			log.debug("...VM started");
-		} catch (PortUsageException exception) {
-			throw new PermanentFailedTestException("The VM could not be "
-					+ "started properly:", exception);
-		} catch (PortRedirectException exception) {
-			throw new TemporaryFailedTestException("The VM could not be "
-					+ "started properly:", exception);
-		}
-
-		// start communication client-part
-		try {
+			// start communication client-part
 			Integer timeout = config.getValueAsInteger(
 					"virtualisation.bvms.requestTimeout", 120);
 			comm.reconnect(timeout * 1000);
 			log.trace("...connected to bVMS");
-		} catch (IOException exception) {
-
-			throw new TemporaryFailedTestException("The VM was started, but "
-					+ "the communication to betsy's server could not be "
-					+ "established. Please verify the server is properly "
-					+ "installed.", exception);
-		}
-
-		try {
 			comm.sendEngineInformation(getName());
 			log.trace("...engine info sent to bVMS");
 		} catch (ConnectionException exception) {
@@ -174,8 +152,18 @@ public abstract class VirtualizedEngine extends Engine implements
 			throw new PermanentFailedTestException("The VM was started, but "
 					+ "the engine information could not be send properly.",
 					exception);
+		} catch (IOException exception) {
+			throw new TemporaryFailedTestException("The VM was started, but "
+					+ "the communication to betsy's server could not be "
+					+ "established. Please verify the server is properly "
+					+ "installed.", exception);
+		} catch (PortUsageException exception) {
+			throw new PermanentFailedTestException("The VM could not be "
+					+ "started properly:", exception);
+		} catch (PortRedirectException exception) {
+			throw new TemporaryFailedTestException("The VM could not be "
+					+ "started properly:", exception);
 		}
-
 		log.trace("...startup done!");
 	}
 
