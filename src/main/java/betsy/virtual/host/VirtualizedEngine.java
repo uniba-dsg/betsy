@@ -191,10 +191,9 @@ public abstract class VirtualizedEngine extends Engine implements
 
 	@Override
 	public void install() {
+		log.debug("Install virtualized engine " + getName() + " ...");
 		// required for compatibility with EngineControl
 		initialize();
-
-		log.debug("Install virtualized engine " + getName() + " ...");
 		try {
 			if (!isVirtualMachineReady()) {
 				if (!isVMImported()) {
