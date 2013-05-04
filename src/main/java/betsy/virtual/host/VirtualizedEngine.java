@@ -244,12 +244,10 @@ public abstract class VirtualizedEngine extends Engine implements
 			throws IOException {
 		// basic deploy operation, sufficient for most engines
 		Path path = getDeployableFilePath(process);
-		Path filenamePath = path.getFileName();
-		String filename = filenamePath.toString();
 		byte[] data = Files.readAllBytes(path);
 
 		DeployOperation operation = new DeployOperation();
-		FileMessage fm = new FileMessage(filename, data);
+		FileMessage fm = new FileMessage(path.getFileName().toString(), data);
 		operation.setFileMessage(fm);
 		operation.setEngineName(getName());
 		operation.setBpelFileNameWithoutExtension(process
