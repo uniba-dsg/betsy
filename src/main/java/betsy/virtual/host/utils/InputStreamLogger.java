@@ -16,8 +16,8 @@ import org.apache.log4j.Logger;
  */
 public class InputStreamLogger extends Thread {
 
-	private InputStream stream;
-	private String description;
+	private final InputStream stream;
+	private final String description;
 
 	private final static Logger log = Logger.getLogger(InputStreamLogger.class);
 
