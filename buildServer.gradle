@@ -33,12 +33,6 @@ sourceSets {
             include 'virtual/server/**'
         }
 	}
-	jarconfig {
-		resources {
-			srcDir "$projectDir"
-            include 'Config.groovy'
-		}
-	}
 }
 
 dependencies {
@@ -46,13 +40,12 @@ dependencies {
 	compile 'org.apache.ant:ant:1.8.4'
 	compile 'log4j:log4j:1.2.17'
 	compile 'commons-daemon:commons-daemon:1.0.12'
-	compile 'org.apache.commons:commons-compress:1.5'
 	compile 'org.apache.commons:commons-io:1.3.2'
 	compile 'commons-lang:commons-lang:2.4'
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.4'
+    gradleVersion = '1.5'
 }
 
 task jarServer(type: Jar, dependsOn: classes) {
@@ -60,9 +53,6 @@ task jarServer(type: Jar, dependsOn: classes) {
 		include '**/*.*'
 	}
 	from files(sourceSets.main.resources) {
-		include '**/*.*'
-	}
-	from files(sourceSets.jarconfig.resources) {
 		include '**/*.*'
 	}
 	
