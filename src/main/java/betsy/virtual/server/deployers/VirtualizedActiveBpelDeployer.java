@@ -72,8 +72,6 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 				"aeDeployment.log");
 		String successMessage = "["
 				+ container.getBpelFileNameWithoutExtension() + ".pdd]";
-		int errorCount = 0;
-
 		if (catalinaLog.isFile()) {
 			// verify deployment with engine log. Either until deployment
 			// result or until timeout is reached
@@ -95,10 +93,6 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 					}
 				} catch (IOException exception) {
 					log.error("Error while reading catalina.out:", exception);
-					if (errorCount > 3) {
-						log.error("Reading catalina.out failed several times"
-								+ ", skip log verification");
-					}
 				}
 			}
 			if (!logVerification) {
