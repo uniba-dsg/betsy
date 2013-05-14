@@ -9,7 +9,10 @@ class HtmlAnalytics {
     CsvReport report
 
     public static void main(String[] args) {
-        new HtmlAnalytics(report: new CsvReportLoader(csvFile: "test/reports/results.csv").load()).toHtmlReport("test/reports/myreport.html")
+        String input = args[0];
+        String output = new File(new File(input).parentFile, "myreport.html").getAbsolutePath()
+
+        new HtmlAnalytics(report: new CsvReportLoader(csvFile: input).load()).toHtmlReport(output)
     }
 
     void toHtmlReport(String filename) {
