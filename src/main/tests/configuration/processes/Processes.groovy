@@ -2,6 +2,7 @@ package configuration.processes
 
 import betsy.data.Process
 import betsy.data.assertions.ExitAssertion
+import betsy.data.assertions.SoapFaultTestAssertion
 
 class Processes {
 
@@ -24,8 +25,14 @@ class Processes {
         process.testCases.any { it.notDeployable }
     }
 
+    public final List<Process> FAULTS = ALL.findAll { process ->
+        process.testCases.any {
+            it.testSteps.any { it.assertions.any { it instanceof SoapFaultTestAssertion } }
+        }
+    }
+
     public final List<Process> WITH_EXIT_ASSERTION = ALL.findAll { process ->
-        process.testCases.any { it.testSteps.any { it.assertions.any { it instanceof ExitAssertion }} }
+        process.testCases.any { it.testSteps.any { it.assertions.any { it instanceof ExitAssertion } } }
     }
 
     public List<Process> get(String name) {
@@ -33,8 +40,10 @@ class Processes {
             return ALL
         } else if ("NOT_DEPLOYABLE" == name.toUpperCase()) {
             return NOT_DEPLOYABLE
-        } else if ("WITH_EXIT_ASSERTION" == name.toUpperCase()){
+        } else if ("WITH_EXIT_ASSERTION" == name.toUpperCase()) {
             return WITH_EXIT_ASSERTION
+        } else if ("FAULTS" == name.toUpperCase()) {
+            return FAULTS
         }
 
         List<Process> result = getBasicProcess(name)
