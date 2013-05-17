@@ -41,24 +41,22 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 	@Override
 	public void onPostDeployment(DeployOperation container)
 			throws DeployException {
-		boolean fileAvailable = isDeployedFileAvailable(container);
 		long start = -System.currentTimeMillis();
 		int deployTimeout = container.getDeployTimeout();
 
 		log.info("waiting for the active_bpel_v deployment process to fire for "
 				+ deployTimeout + " seconds");
 
-		while (!fileAvailable
+		while (!isDeployedFileAvailable(container)
 				&& (System.currentTimeMillis() + start < deployTimeout)) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// ignore
 			}
-			fileAvailable = isDeployedFileAvailable(container);
 		}
 
-		if (!fileAvailable) {
+		if (!isDeployedFileAvailable(container)) {
 			// timed out :/
 			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. The operation timed out.");

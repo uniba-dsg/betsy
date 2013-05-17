@@ -113,21 +113,19 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 			throws DeployException {
 		log.info("waiting for the ode_v deployment process to fire");
 
-		boolean deployedFileAvailable = isDeployedFileAvailable(container);
 		long start = -System.currentTimeMillis();
 		int deployTimeout = container.getDeployTimeout();
 
-		while (!deployedFileAvailable
+		while (!isDeployedFileAvailable(container)
 				&& (System.currentTimeMillis() + start < deployTimeout)) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// ignore
 			}
-			deployedFileAvailable = isDeployedFileAvailable(container);
 		}
 
-		if (!deployedFileAvailable) {
+		if (!isDeployedFileAvailable(container)) {
 			// timed out :/
 			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. .deployed not found. The "

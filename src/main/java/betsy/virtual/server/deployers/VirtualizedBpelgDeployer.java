@@ -30,21 +30,19 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 			throws DeployException {
 		log.info("waiting for the bpel-g_v deployment process to fire");
 
-		boolean fileAvailable = isDeployedFileAvailable(container);
 		long start = -System.currentTimeMillis();
 		int deployTimeout = container.getDeployTimeout();
 
-		while (!fileAvailable
+		while (!isDeployedFileAvailable(container)
 				&& (System.currentTimeMillis() + start < deployTimeout)) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// ignore
 			}
-			fileAvailable = isDeployedFileAvailable(container);
 		}
 
-		if (!fileAvailable) {
+		if (!isDeployedFileAvailable(container)) {
 			// timed out :/
 			throw new DeployException("Process could not be deployed within "
 					+ deployTimeout + "seconds. The operation timed out.");
