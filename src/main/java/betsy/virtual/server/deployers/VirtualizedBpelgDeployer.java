@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.DeployOperation;
 
-
 /**
  * Deployer for the virtualized BPEL-g engine.
  * 
@@ -18,7 +17,8 @@ import betsy.virtual.common.messages.DeployOperation;
  */
 public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 
-	private static final Logger log = Logger.getLogger(VirtualizedBpelgDeployer.class);
+	private static final Logger log = Logger
+			.getLogger(VirtualizedBpelgDeployer.class);
 
 	@Override
 	public String getName() {
@@ -49,44 +49,15 @@ public class VirtualizedBpelgDeployer implements VirtualizedEngineDeployer {
 		}
 
 		// process is deployed, now wait for verification in logfile
-		boolean logVerification = false;
 		File catalinaLog = new File(container.getEngineLogfileDir(),
 				"catalina.out");
 		String successMessage = "Deployment successful";
 		String errorMessage = "Deployment failed";
-		int errorCount = 0;
+		DeploymentLogVerificator dlv = new DeploymentLogVerificator(
+				catalinaLog, successMessage, errorMessage);
 
 		if (catalinaLog.isFile()) {
-			// verify deployment with engine log. Either until deployment
-			// result or until timeout is reached
-			while (!logVerification
-					&& (System.currentTimeMillis() + start < deployTimeout)) {
-				log.debug("try log verification...");
-				try {
-					String fileContent = FileUtils
-							.readFileToString(catalinaLog);
-					// try positive case
-					logVerification = fileContent.contains(successMessage);
-					// try negative case
-					if (!logVerification) {
-						logVerification = fileContent.contains(errorMessage);
-					}
-					if (!logVerification) {
-						// not available yet? wait a little...
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							// ignore
-						}
-					}
-				} catch (IOException exception) {
-					log.error("Error while reading catalina.out:", exception);
-					if (errorCount > 3) {
-						log.error("Reading catalina.out failed several times"
-								+ ", skip log verification");
-					}
-				}
-			}
+			dlv.waitForDeploymentCompletition(container.getDeployTimeout());
 		} else {
 			log.warn("Catalina.out not found, wait 1s for deployment");
 			try {

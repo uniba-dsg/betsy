@@ -65,39 +65,15 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 		log.info("Deploy catalog found");
 
 		// process is deployed, now wait for verification in logfile
-		boolean logVerification = false;
 		File catalinaLog = new File(container.getEngineLogfileDir(),
 				"aeDeployment.log");
 		String successMessage = "["
 				+ container.getBpelFileNameWithoutExtension() + ".pdd]";
+		DeploymentLogVerificator dlv = new DeploymentLogVerificator(
+				catalinaLog, successMessage);
+		
 		if (catalinaLog.isFile()) {
-			// verify deployment with engine log. Either until deployment
-			// result or until timeout is reached
-			while (!logVerification
-					&& (System.currentTimeMillis() + start < deployTimeout)) {
-				log.debug("try log verification, wait for: '" + successMessage
-						+ "'");
-				try {
-					String fileContent = FileUtils
-							.readFileToString(catalinaLog);
-					logVerification = fileContent.contains(successMessage);
-					if (!logVerification) {
-						// not available yet? wait a little...
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							// ignore
-						}
-					}
-				} catch (IOException exception) {
-					log.error("Error while reading catalina.out:", exception);
-				}
-			}
-			if (!logVerification) {
-				throw new DeployException("Process could not be deployed "
-						+ "within " + deployTimeout + "seconds. Log "
-						+ "verification failed. The operation timed out.");
-			}
+			dlv.waitForDeploymentCompletition(container.getDeployTimeout());
 		} else {
 			log.warn("aeDeployment.log not found, wait 1s for deployment");
 			try {

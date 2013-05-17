@@ -12,12 +12,10 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.DeployOperation;
-
 
 /**
  * Deployer for the virtualized Ode engine.
@@ -27,7 +25,8 @@ import betsy.virtual.common.messages.DeployOperation;
  */
 public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 
-	private static final Logger log = Logger.getLogger(VirtualizedOdeDeployer.class);
+	private static final Logger log = Logger
+			.getLogger(VirtualizedOdeDeployer.class);
 
 	@Override
 	public String getName() {
@@ -45,39 +44,38 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 	}
 
 	private void unzipContainer(DeployOperation container) throws IOException {
-		// String path = "";
-        ZipEntry entry;
+		ZipEntry entry;
 		File deployFolder = new File(container.getDeploymentDir(), container
 				.getFileMessage().getFilename().replace(".zip", ""));
 
-        try (ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(
-                container.getFileMessage().getData()))) {
-            boolean createdParent = deployFolder.mkdirs();
-            log.debug("Created parent dirs? " + createdParent);
-            if (createdParent) {
-                setPosixPermissions(deployFolder.toPath());
-            }
+		try (ZipInputStream zipStream = new ZipInputStream(
+				new ByteArrayInputStream(container.getFileMessage().getData()))) {
+			boolean createdParent = deployFolder.mkdirs();
+			log.debug("Created parent dirs? " + createdParent);
+			if (createdParent) {
+				setPosixPermissions(deployFolder.toPath());
+			}
 
-            // unzip the zip file stored in the deployContainer
-            while ((entry = zipStream.getNextEntry()) != null) {
-                // prepare
-                String entryName = entry.getName();
-                File outputFile = new File(deployFolder, entryName);
+			// unzip the zip file stored in the deployContainer
+			while ((entry = zipStream.getNextEntry()) != null) {
+				// prepare
+				String entryName = entry.getName();
+				File outputFile = new File(deployFolder, entryName);
 
-                // write content
-                FileOutputStream out = new FileOutputStream(outputFile);
-                byte[] buf = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = zipStream.read(buf)) != -1) {
-                    out.write(buf, 0, bytesRead);
-                }
-                out.close();
-                zipStream.closeEntry();
+				// write content
+				FileOutputStream out = new FileOutputStream(outputFile);
+				byte[] buf = new byte[4096];
+				int bytesRead;
+				while ((bytesRead = zipStream.read(buf)) != -1) {
+					out.write(buf, 0, bytesRead);
+				}
+				out.close();
+				zipStream.closeEntry();
 
-                // make file at least readable for every user
-                setPosixPermissions(outputFile.toPath());
-            }
-        }
+				// make file at least readable for every user
+				setPosixPermissions(outputFile.toPath());
+			}
+		}
 	}
 
 	private void setPosixPermissions(final Path path) {
@@ -130,53 +128,20 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 		}
 
 		// process is deployed, now wait for verification in logfile
-		boolean logVerification = false;
 		File catalinaLog = new File(container.getEngineLogfileDir(),
 				"catalina.out");
 		String successMessage = "Deployment of artifact "
 				+ container.getBpelFileNameWithoutExtension() + " successful";
 		String errorMessage = "Deployment of "
 				+ container.getBpelFileNameWithoutExtension() + " failed";
-		int errorCount = 0;
+		DeploymentLogVerificator dlv = new DeploymentLogVerificator(
+				catalinaLog, successMessage, errorMessage);
 
 		if (catalinaLog.isFile()) {
-			// verify deployment with engine log. Either until deployment
-			// result or until timeout is reached
-			while (!logVerification
-					&& (System.currentTimeMillis() + start < deployTimeout)) {
-				log.debug("try log verification...");
-				try {
-					String fileContent = FileUtils
-							.readFileToString(catalinaLog);
-					// try positive case
-					logVerification = fileContent.contains(successMessage);
-					// try negative case
-					if (!logVerification) {
-						logVerification = fileContent.contains(errorMessage);
-					}
-					if (!logVerification) {
-						// not available yet? wait a little...
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							// ignore
-						}
-					}
-				} catch (IOException exception) {
-					log.error("Error while reading catalina.out:", exception);
-					if (errorCount > 3) {
-						log.error("Reading catalina.out failed several times"
-								+ ", skip log verification");
-					}
-				}
-			}
-			if (!logVerification) {
-				throw new DeployException("Process could not be deployed "
-						+ "within " + deployTimeout + "seconds. Log "
-						+ "verification failed. The operation timed out.");
-			}
+			dlv.waitForDeploymentCompletition(container.getDeployTimeout());
 		} else {
-			log.warn("Catalina.out not found, wait 2s for deployment");
+			log.warn("Catalina.out not found, skip log verification and wait "
+					+ "2s for deployment");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
