@@ -12,6 +12,8 @@ class TestCase {
      */
     String name = "Good-Case"
 
+    boolean onlyDeploymentCheck
+
     boolean isNotDeployable() {
         testSteps.any {it.notDeployable }
     }

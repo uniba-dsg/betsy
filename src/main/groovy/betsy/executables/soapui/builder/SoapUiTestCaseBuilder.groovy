@@ -30,6 +30,11 @@ class SoapUiTestCaseBuilder {
 
         addDeploymentTestSteps(soapUITestCase, testCase)
 
+        if(testCase.onlyDeploymentCheck){
+            // abort when only checking deployment
+            return
+        }
+
         SoapUiTestStepBuilder testStepBuilder = new SoapUiTestStepBuilder(testCase, soapUITestCase, wsdlProject, requestTimeout)
         testCase.testSteps.each { testStep ->
            testStepBuilder.addTestStep(testStep)
