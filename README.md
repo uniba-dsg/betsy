@@ -16,6 +16,11 @@ This software is licensed under the LGPL Version 3 Open Source License.
 - Ant 1.8.3 or higher
   - `ANT_HOME` should point to the Ant directory
   - `PATH` should include `ANT_HOME/bin`
+  
+## Software Requirements (virtualised testing)
+- VirtualBox 4.2.12 or higher
+  - installation path shall be included in `Config.groovy`
+  - usage of a matching `vboxjws.jar` must be assured in the `build.gradle` file 
 
 ## Licensing
 LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
@@ -36,8 +41,11 @@ $ gradlew run -Pargs="<ARGS>"
 # Examples
 $ gradlew run # Running all tests for all engines
 $ gradlew run -Pargs="ode" # Running all tests for Apache ODE
+$ gradlew run -Pargs="ode_v" # Running all tests for the virtualised Apache ODE
 $ gradlew run -Pargs="ode,bpelg" # Running all tests for Apache ODE and bpel-g
 $ gradlew run -Pargs="ALL Sequence" # Running Sequence test for all engines
+$ gradlew run -Pargs="vms Sequence" # Running Sequence test for all local engines
+$ gradlew run -Pargs="locals Sequence" # Running Sequence test for all virtualised engines
 $ gradlew run -Pargs="ALL Sequence,While" # Running Sequence and While test for all engines
 $ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
 $ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
@@ -84,7 +92,7 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 
 # Authors (in alphabetical order)
 
-[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/) and [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/)
+[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/) and Cedric Röck
 
 # Contribution Guide
 
