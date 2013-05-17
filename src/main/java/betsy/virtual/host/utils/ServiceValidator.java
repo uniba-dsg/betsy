@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 
 import betsy.data.engines.Engine;
 import betsy.virtual.common.exceptions.InvalidResponseException;
-import betsy.virtual.host.comm.CommClient;
 import betsy.virtual.host.comm.TCPCommClient;
 import betsy.virtual.host.exceptions.TimeoutException;
 
@@ -97,18 +96,12 @@ public class ServiceValidator {
 	 * @return true if the server is available
 	 */
 	public boolean isBetsyServerReady(final int timeoutInMs) {
-		CommClient cc = null;
-		try {
-			cc = new TCPCommClient("127.0.0.1", 48888);
+		try (TCPCommClient cc = new TCPCommClient("127.0.0.1", 48888)){
 			cc.reconnect(timeoutInMs);
 			return cc.isConnectionAlive();
 		} catch (IOException | InvalidResponseException exception) {
 			// ignore
 			log.debug("Exception in bVMS availability test: ", exception);
-		} finally {
-			if (cc != null) {
-				cc.disconnect();
-			}
 		}
 		return false;
 	}
@@ -171,6 +164,7 @@ public class ServiceValidator {
 			conn.setConnectTimeout(timeout);
 			conn.setReadTimeout(timeout);
 			int serverResponseCode = conn.getResponseCode();
+            // do also accept redirections as valid response 
 			return (200 <= serverResponseCode && serverResponseCode <= 399);
 		} catch (IOException exception) {
 			// ignore exception

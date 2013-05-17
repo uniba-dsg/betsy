@@ -128,8 +128,7 @@ public class VBoxController {
 				importedVm.lockMachine(session, LockType.Write);
 				IMachine lockedVM = session.getMachine();
 
-				vBoxImporter.adjustApplianceSettings(lockedVM, vmName,
-						engineName);
+				vBoxImporter.adjustApplianceSettings(lockedVM, vmName);
 
 				try {
 					session.unlockMachine();

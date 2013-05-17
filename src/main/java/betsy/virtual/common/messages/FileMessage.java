@@ -58,4 +58,9 @@ public class FileMessage implements Serializable {
 	public boolean isDataValid() {
 		return Checksum.isValid(getData(), getChecksum());
 	}
+	
+	@Override
+	public String toString() {
+		return "FileMessage for '"+filename+"'";
+	}
 }

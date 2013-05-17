@@ -40,6 +40,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 
 	@Override
 	public String getEndpointUrl(Process process) {
+		// is not delegated because of the dependency to the local Tomcat
 		return "http://localhost:8080/active-bpel/services/"
 				+ process.getBpelFileNameWithoutExtension()
 				+ "TestInterfaceService";
@@ -60,7 +61,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 
 	@Override
 	public String getXsltPath() {
-		return "src/main/xslt/" + defaultEngine.getName();
+		return defaultEngine.getXsltPath();
 	}
 
 	@Override
@@ -97,8 +98,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 	@Override
 	public String getVMbVMSDir() {
 		String bVMSDir = config.getValueAsString(
-				"virtualisation.engines.active-bpel_v.bvmsDir",
-				"/opt/betsy/");
+				"virtualisation.engines.active-bpel_v.bvmsDir", "/opt/betsy/");
 		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
 		bVMSDir += "log";
 		return bVMSDir;

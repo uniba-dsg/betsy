@@ -17,16 +17,16 @@ import betsy.virtual.host.exceptions.PortUsageException;
  */
 public class PortVerifier {
 
-	private static boolean isPortAvailable(final int portNumber) {
+	private static boolean isPortUnreachable(final int portNumber) {
 		try (ServerSocket serverSocket = new ServerSocket(portNumber);
 				DatagramSocket datagramSocket = new DatagramSocket(portNumber)) {
 
 			serverSocket.setReuseAddress(true);
 			datagramSocket.setReuseAddress(true);
 			// both could be creates, port is unused!
-			return true;
-		} catch (final IOException e) {
 			return false;
+		} catch (final IOException e) {
+			return true;
 		}
 	}
 
@@ -42,10 +42,10 @@ public class PortVerifier {
 	public static void verify(Collection<Integer> ports)
 			throws PortUsageException {
 		for (Integer port : ports) {
-			if (!isPortAvailable(port)) {
+			if (isPortUnreachable(port)) {
 				throw new PortUsageException("Can't forward port '" + port
 						+ "'. The port is already in use by another"
-						+ " appliaction.");
+						+ " application.");
 			}
 		}
 	}

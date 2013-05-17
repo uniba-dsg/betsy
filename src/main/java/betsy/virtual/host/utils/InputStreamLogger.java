@@ -29,8 +29,8 @@ public class InputStreamLogger extends Thread {
 	@Override
 	public void run() {
 		try (InputStreamReader inpStrd = new InputStreamReader(stream);
-				BufferedReader buffRd = new BufferedReader(inpStrd);) {
-			String line = null;
+				BufferedReader buffRd = new BufferedReader(inpStrd)) {
+			String line;
 			while ((line = buffRd.readLine()) != null) {
 				log.info(description + ": " + line);
 			}

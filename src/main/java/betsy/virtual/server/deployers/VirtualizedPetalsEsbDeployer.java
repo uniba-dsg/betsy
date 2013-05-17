@@ -31,8 +31,7 @@ public class VirtualizedPetalsEsbDeployer implements VirtualizedEngineDeployer {
 	}
 
 	private boolean isDeployedFileAvailable(DeployOperation container) {
-		File file = getDeployDestination(container);
-		return file.isFile();
+        return getDeployDestination(container).isFile();
 	}
 
 	@Override

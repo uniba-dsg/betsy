@@ -125,34 +125,12 @@ public final class Configuration {
 	 * 
 	 * @param key
 	 *            Key in config to get value for
-	 * @return Value assigned to the key, or null if key is not set
-	 */
-	public Boolean getValueAsBoolean(final String key) {
-		return getValueAsBoolean(key, null);
-	}
-
-	/**
-	 * Get the value of the given key and cast it as boolean.
-	 * 
-	 * @param key
-	 *            Key in config to get value for
 	 * @return Value assigned to the key, or default value if key is not set
 	 */
 	public Boolean getValueAsBoolean(final String key,
 			final Boolean defaultValue) {
 		return DefaultTypeTransformation.castToBoolean(getValue(key,
 				defaultValue));
-	}
-
-	/**
-	 * Get the value of the given key and cast it as Integer.
-	 * 
-	 * @param key
-	 *            Key in config to get value for
-	 * @return Value assigned to the key, or null if key is not set
-	 */
-	public Integer getValueAsInteger(final String key) {
-		return getValueAsInteger(key, null);
 	}
 
 	/**

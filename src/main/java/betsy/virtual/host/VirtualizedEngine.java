@@ -97,17 +97,17 @@ public abstract class VirtualizedEngine extends Engine implements
 	 * 
 	 * @return true if VM is imported and has at least one Snapshot
 	 */
-	private boolean isVirtualMachineReady() {
+	private boolean isVirtualMachineUnavailable() {
 		if (isVMImported()) {
 			VirtualMachine vm;
 			try {
 				vm = vbController.getVirtualMachine(getVirtualMachineName());
-				return vm.hasRunningSnapshot();
+				return !vm.hasRunningSnapshot();
 			} catch (VirtualMachineNotFoundException e) {
 				// should not happen as vm was already found
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -195,7 +195,7 @@ public abstract class VirtualizedEngine extends Engine implements
 		// required for compatibility with EngineControl
 		initialize();
 		try {
-			if (!isVirtualMachineReady()) {
+			if (isVirtualMachineUnavailable()) {
 				if (!isVMImported()) {
 					log.debug(String.format("VM '%s' is not imported yet.",
 							getVirtualMachineName()));
@@ -386,40 +386,6 @@ public abstract class VirtualizedEngine extends Engine implements
 		Integer timeout = config.getValueAsInteger("virtualisation.engines."
 				+ getName() + ".deploymentTimeout", 30);
 		return timeout * 1000;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-
-		VirtualizedEngine engine = (VirtualizedEngine) o;
-
-		if (getName() != engine.getName()) {
-			return false;
-		}
-		if (getVirtualMachineName() != engine.getVirtualMachineName()) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ (getName() != null ? getName().hashCode() : 0);
-		result = prime
-				* result
-				+ (getVirtualMachineName() != null ? getVirtualMachineName()
-						.hashCode() : 0);
-		return result;
 	}
 
 }

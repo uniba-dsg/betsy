@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -48,7 +49,7 @@ public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 				"deploy", "-Dbar=" + tmpFile.getAbsolutePath() };
 
 		log.debug("Executing now:");
-		log.debug(attributes.toString());
+		log.debug(Arrays.toString(attributes));
 
 		BufferedReader buff = null;
 		try {

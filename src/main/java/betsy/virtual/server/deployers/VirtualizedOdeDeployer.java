@@ -46,41 +46,38 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 
 	private void unzipContainer(DeployOperation container) throws IOException {
 		// String path = "";
-		ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(
-				container.getFileMessage().getData()));
-		ZipEntry entry = null;
+        ZipEntry entry;
 		File deployFolder = new File(container.getDeploymentDir(), container
 				.getFileMessage().getFilename().replace(".zip", ""));
 
-		try {
-			boolean createdParent = deployFolder.mkdirs();
-			log.debug("Created parent dirs? " + createdParent);
-			if (createdParent) {
-				setPosixPermissions(deployFolder.toPath());
-			}
+        try (ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(
+                container.getFileMessage().getData()))) {
+            boolean createdParent = deployFolder.mkdirs();
+            log.debug("Created parent dirs? " + createdParent);
+            if (createdParent) {
+                setPosixPermissions(deployFolder.toPath());
+            }
 
-			// unzip the zip file stored in the deployContainer
-			while ((entry = zipStream.getNextEntry()) != null) {
-				// prepare
-				String entryName = entry.getName();
-				File outputFile = new File(deployFolder, entryName);
+            // unzip the zip file stored in the deployContainer
+            while ((entry = zipStream.getNextEntry()) != null) {
+                // prepare
+                String entryName = entry.getName();
+                File outputFile = new File(deployFolder, entryName);
 
-				// write content
-				FileOutputStream out = new FileOutputStream(outputFile);
-				byte[] buf = new byte[4096];
-				int bytesRead = 0;
-				while ((bytesRead = zipStream.read(buf)) != -1) {
-					out.write(buf, 0, bytesRead);
-				}
-				out.close();
-				zipStream.closeEntry();
+                // write content
+                FileOutputStream out = new FileOutputStream(outputFile);
+                byte[] buf = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = zipStream.read(buf)) != -1) {
+                    out.write(buf, 0, bytesRead);
+                }
+                out.close();
+                zipStream.closeEntry();
 
-				// make file at least readable for every user
-				setPosixPermissions(outputFile.toPath());
-			}
-		} finally {
-			zipStream.close();
-		}
+                // make file at least readable for every user
+                setPosixPermissions(outputFile.toPath());
+            }
+        }
 	}
 
 	private void setPosixPermissions(final Path path) {

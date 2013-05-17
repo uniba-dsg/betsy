@@ -70,7 +70,7 @@ public class VirtualMachine {
 	public void start(final boolean headless) {
 		log.trace("Starting VM");
 		if (!isActive()) {
-			IProgress startProgress = null;
+			IProgress startProgress;
 			if (headless) {
 				startProgress = machine.launchVMProcess(session, "headless",
 						null);
@@ -404,11 +404,11 @@ public class VirtualMachine {
 		for (String redirect : redirects) {
 			// resolve host and guest port
 			String[] rds = redirect.split(",");
-			String hostPort = rds[3];
-			String guestPort = rds[5];
+			int hostPort = Integer.parseInt(rds[3]);
+            int guestPort = Integer.parseInt(rds[5]);
 			// verify both are equal, ignoring any other manually created
 			// redirection
-			if (hostPort.equals(guestPort)) {
+			if (hostPort == guestPort) {
 				// verify is in list
 				if (forwardingPorts.contains(hostPort)) {
 					// is ok, increase count

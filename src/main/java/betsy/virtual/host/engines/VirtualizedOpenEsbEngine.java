@@ -56,8 +56,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
 	@Override
 	public String getEndpointUrl(Process process) {
-		return "http://localhost:18181/"
-				+ process.getBpelFileNameWithoutExtension() + "TestInterface";
+		return defaultEngine.getEndpointUrl(process);
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
 	@Override
 	public String getXsltPath() {
-		return "src/main/xslt/" + defaultEngine.getName();
+        return defaultEngine.getXsltPath();
 	}
 
 	@Override

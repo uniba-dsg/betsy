@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -54,7 +55,7 @@ public class VirtualMachineImporter {
 	private final String vmName;
 	private final String engineName;
 	private final File downloadPath;
-	private final File extractPath;
+	private final File extractDirFile;
 
 	public VirtualMachineImporter(final String vmName, final String engineName,
 			final File downloadPath, final File extractPath,
@@ -69,7 +70,7 @@ public class VirtualMachineImporter {
 		}
 
 		this.vbc = Objects.requireNonNull(vbc);
-		this.extractPath = Objects.requireNonNull(extractPath);
+		this.extractDirFile = Objects.requireNonNull(extractPath);
 		this.downloadPath = Objects.requireNonNull(downloadPath);
 
 		this.vmName = vmName;
@@ -106,14 +107,14 @@ public class VirtualMachineImporter {
 		}
 	}
 
-	private boolean isDownloaded() {
+	private boolean isDownloadRequired() {
 		File archive = getDownloadArchiveFile();
-		return archive.isFile();
+		return !archive.isFile();
 	}
 
 	private boolean isExtractedAndHasImportableFiles()
 			throws ArchiveContentException {
-		File extractFolder = getEngineExtractPath();
+		File extractFolder = getEngineExtractDirFile();
 		// VM's extraction folder must exist
 		if (extractFolder.isDirectory()) {
 			// and must have the required files in it
@@ -148,15 +149,12 @@ public class VirtualMachineImporter {
 				ovf = true;
 			}
 		}
-		if (ova || ovf) {
-			return true;
-		}
+        return ova || ovf;
 
-		return false;
-	}
+    }
 
-	public File getEngineExtractPath() {
-		return new File(this.extractPath, vmName);
+	public File getEngineExtractDirFile() {
+		return new File(this.extractDirFile, vmName);
 	}
 
 	public URL getDownloadAddress() throws URIException, MalformedURLException {
@@ -195,7 +193,7 @@ public class VirtualMachineImporter {
 	 */
 	public File getVBoxImportFile() throws ArchiveContentException {
 		// return either .ova OR .ovf file
-		File vmDir = getEngineExtractPath();
+		File vmDir = getEngineExtractDirFile();
 		Collection<?> collection = FileUtils.listFiles(vmDir, new String[] {
 				"ova", "ovf" }, true);
 
@@ -217,8 +215,8 @@ public class VirtualMachineImporter {
 	}
 
 	private void cleanVMExtractPath() throws IOException {
-		if (getEngineExtractPath().exists()) {
-			FileUtils.forceDelete(getEngineExtractPath());
+		if (getEngineExtractDirFile().exists()) {
+			FileUtils.forceDelete(getEngineExtractDirFile());
 		}
 	}
 
@@ -240,17 +238,23 @@ public class VirtualMachineImporter {
 
 				ArchiveExtractor ae = new ArchiveExtractor();
 				extractedFiles = ae.ectractArchive(getDownloadArchiveFile(),
-						this.extractPath);
+						this.extractDirFile);
 
-				File[] pathFiles = this.extractPath.listFiles();
-				List<File> pathFileList = Arrays.asList(pathFiles);
-
+				File[] pathFiles = this.extractDirFile.listFiles();
+				List<File> pathFilesList;
+				if(pathFiles == null) {
+					throw new ArchiveContentException("The extracted "
+							+ "archive either did not contain the "
+							+ "required files. " + archiveRequirements);
+				}
+				pathFilesList = Arrays.asList(pathFiles);
+				
 				/*
 				 * Try to handle archives in which there is no single folder
 				 * that wraps all the engine's files.
 				 */
-				if (isExtractedWithoutEngineDir(extractedFiles, pathFileList)) {
-					moveFilesIntoVmDir(extractedFiles, pathFileList);
+				if (isExtractedWithoutEngineDir(extractedFiles, pathFilesList)) {
+					moveFilesIntoVmDir(extractedFiles, pathFilesList);
 				}
 
 			} catch (UnsupportedArchiveException | IOException exception) {
@@ -267,8 +271,8 @@ public class VirtualMachineImporter {
 						// can be ignored
 					}
 				}
-				throw new ArchiveExtractionException(
-						"Could not extract the downloaded archive:", exception);
+				throw new ArchiveExtractionException("Could not extract the " +
+						"downloaded archive:", exception);
 			}
 			log.trace("...extraction finished!");
 
@@ -289,12 +293,7 @@ public class VirtualMachineImporter {
 		if (matchedFiles.size() == 1 && matchedFiles.get(0).isDirectory()) {
 			File eFile = matchedFiles.get(0);
 			// is directory - with engine name ? --> wrapping right
-			if (eFile.getName().equals(vmName)) {
-				return false;
-			} else {
-				// false wrapping, folder has different naming
-				return true;
-			}
+            return !eFile.getName().equals(vmName);
 		} else {
 			// if there is more than one file always wrap them into the engine
 			// dir. Also if extracted single file is no directory
@@ -335,9 +334,9 @@ public class VirtualMachineImporter {
 			log.trace("Archive was not wrapped into folder, now move all "
 					+ "files into VM's subdir");
 			// no wrapping Folder --> must be moved to engine folder
-			File eVmFolder = getEngineExtractPath();
-			eVmFolder.mkdirs();
-
+			File eVmFolder = getEngineExtractDirFile();
+			Files.createDirectory(eVmFolder.toPath());
+			
 			for (File eFile : extractedFiles) {
 				if (pathFileList.contains(eFile)) {
 					if (eFile.isDirectory()) {
@@ -355,7 +354,7 @@ public class VirtualMachineImporter {
 	}
 
 	private void executeDownload() throws DownloadException {
-		if (!isDownloaded()) {
+		if (isDownloadRequired()) {
 			log.debug("Downloading " + vmName + "...");
 			// download
 			try {

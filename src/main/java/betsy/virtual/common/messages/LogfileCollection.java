@@ -21,10 +21,6 @@ public class LogfileCollection implements Serializable {
 	private List<FileMessage> engineLogfiles = new LinkedList<>();
 	private List<FileMessage> betsyLogfiles = new LinkedList<>();
 
-	public void addBetsyLogfile(FileMessage logfile) {
-		this.betsyLogfiles.add(logfile);
-	}
-
 	public void addBetsyLogfiles(List<FileMessage> logfileCollection) {
 		for (FileMessage logfile : logfileCollection) {
 			this.betsyLogfiles.add(logfile);
@@ -33,10 +29,6 @@ public class LogfileCollection implements Serializable {
 
 	public List<FileMessage> getBetsyLogfiles() {
 		return this.betsyLogfiles;
-	}
-
-	public void addEngineLogfile(FileMessage logfile) {
-		this.engineLogfiles.add(logfile);
 	}
 
 	public void addEngineLogfiles(List<FileMessage> logfileCollection) {

@@ -44,6 +44,7 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
 
 	@Override
 	public String getEndpointUrl(Process process) {
+		// is not delegated because of the dependency to the local Tomcat
 		return "http://localhost:8080/bpel-g/services/"
 				+ process.getBpelFileNameWithoutExtension()
 				+ "TestInterfaceService";
@@ -57,7 +58,7 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
 
 	@Override
 	public String getXsltPath() {
-		return "src/main/xslt/" + defaultEngine.getName();
+        return defaultEngine.getXsltPath();
 	}
 
 	@Override

@@ -85,6 +85,11 @@ public class Checksum implements Serializable {
 		result = prime * result + Float.floatToIntBits(data);
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return Long.toString(getValue());
+	}
 
 	/**
 	 * Get the checksum value as primitive long representation.

@@ -44,4 +44,10 @@ public class LogRequest implements Serializable {
 		return engineLogfileDir;
 	}
 
+	@Override
+	public String toString() {
+		return "LogRequest for betsy at '" + betsyInstallDir
+				+ "' and the engine at'" + engineLogfileDir + "'";
+	}
+
 }

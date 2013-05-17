@@ -12,20 +12,4 @@ abstract class LocalEngine extends Engine implements LocalEngineAPI {
 		"server/${getName()}"
 	}
 
-	@Override
-	public boolean equals(o) {
-		if (this.is(o)) return true
-		if (getClass() != o.class) return false
-
-		LocalEngine engine = (LocalEngine) o
-
-		if (getName() != engine.getName()) return false
-
-		return true
-	}
-
-	@Override
-	public int hashCode() {
-		return (getName() != null ? getName().hashCode() : 0)
-	}
 }

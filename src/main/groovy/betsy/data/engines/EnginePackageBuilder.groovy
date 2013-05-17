@@ -9,9 +9,6 @@ public class EnginePackageBuilder {
 	private final AntBuilder ant = new AntBuilder()
 	private final Configuration config = Configuration.getInstance();
 
-	public EnginePackageBuilder() {
-	}
-
 	public void createFolderAndCopyProcessFilesToTarget(Process process) {
 		// engine independent package steps
 		ant.mkdir dir: process.targetPath

@@ -25,7 +25,6 @@ import betsy.virtual.common.messages.LogRequest;
 import betsy.virtual.common.messages.LogfileCollection;
 import betsy.virtual.common.messages.StatusMessage;
 
-
 /**
  * The {@link TCPCommClient} is a implementation of the CommClient using a TCP
  * end-to-end connection.
@@ -33,10 +32,10 @@ import betsy.virtual.common.messages.StatusMessage;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class TCPCommClient implements CommClient {
+public class TCPCommClient implements CommClient, AutoCloseable {
 
 	private static final Logger log = Logger.getLogger(TCPCommClient.class);
-	
+
 	private final String serverName;
 	private final int serverPort;
 
@@ -103,15 +102,14 @@ public class TCPCommClient implements CommClient {
 				}
 			}
 
-			throw new InvalidResponseException(
-					"Invalid response received upon PING request: '"
-							+ o.getClass().toString() + "'");
+			throw new InvalidResponseException("Invalid response received "
+					+ "upon PING request: '" + o.getClass().toString() + "'");
 		} catch (IOException | ConnectionException exception) {
 			log.error("Exception in client while PING server:", exception);
 			return false;
 		} catch (ClassNotFoundException exception) {
-			throw new InvalidResponseException(
-					"Invalid response received upon PING request:", exception);
+			throw new InvalidResponseException("Invalid response received "
+					+ "upon PING request:", exception);
 		}
 	}
 
@@ -128,25 +126,22 @@ public class TCPCommClient implements CommClient {
 				StatusMessage sm = (StatusMessage) o;
 				if (sm.equals(StatusMessage.OK)) {
 					// engine is available at the VM
-					return;
 				} else {
-					throw new InvalidResponseException(
-							"Invalid StatusMessage received upon sending engine name: '"
-									+ sm.toString() + "'");
+					throw new InvalidResponseException("Invalid StatusMessage "
+							+ "received upon sending engine name: '"
+							+ sm.toString() + "'");
 				}
 			} else {
-				throw new InvalidResponseException(
-						"Invalid response received upon sending engine name: '"
-								+ o.getClass().toString() + "'");
+				throw new InvalidResponseException("Invalid response received "
+						+ "upon sending engine name: '"
+						+ o.getClass().toString() + "'");
 			}
 		} catch (ConnectionException | IOException exception) {
-			throw new ConnectionException(
-					"Connection error in client while sending engine name:",
-					exception);
+			throw new ConnectionException("Connection error in client while "
+					+ "sending engine name:", exception);
 		} catch (ClassNotFoundException exception) {
-			throw new InvalidResponseException(
-					"Invalid response received upon sending engine name:",
-					exception);
+			throw new InvalidResponseException("Invalid response received "
+					+ "upon sending engine name:", exception);
 		}
 
 	}
@@ -226,22 +221,21 @@ public class TCPCommClient implements CommClient {
 					throw new CollectLogfileException("Couldn't collect "
 							+ "logfiles from server.");
 				} else {
-					throw new InvalidResponseException(
-							"Invalid StatusMessage received upon logfile request: '"
-									+ sm.toString() + "'");
+					throw new InvalidResponseException("Invalid StatusMessage "
+							+ "received upon logfile request: '"
+							+ sm.toString() + "'");
 				}
 			} else {
-				throw new InvalidResponseException(
-						"Invalid response received upon logfile request: '"
-								+ o.getClass().toString() + "'");
+				throw new InvalidResponseException("Invalid response received "
+						+ "upon logfile request: '" + o.getClass().toString()
+						+ "'");
 			}
 		} catch (IOException exception) {
-			throw new ConnectionException(
-					"Connection error in client while receiving logfile request answer",
-					exception);
+			throw new ConnectionException("Connection error in client while "
+					+ "receiving logfile request answer", exception);
 		} catch (ClassNotFoundException exception) {
-			throw new InvalidResponseException(
-					"Invalid response received upon logfile request: class could not be found'",
+			throw new InvalidResponseException("Invalid response received "
+					+ "upon logfile request: class could not be found'",
 					exception);
 		}
 	}
@@ -260,33 +254,31 @@ public class TCPCommClient implements CommClient {
 				if (sm.equals(StatusMessage.DEPLOYED)) {
 					log.trace("...DEPLOYED");
 					// everything done, return
-					return;
 				} else if (sm.equals(StatusMessage.DEPLOY_FAILED)) {
 					log.warn("...DEPLOY FAILED");
-					throw new DeployException(
-							"Could not deploy package, failed.");
+					throw new DeployException("Could not deploy package, "
+							+ "failed.");
 				} else if (sm.equals(StatusMessage.ERROR_CHECKSUM)) {
 					log.warn("...DEPLOY CORRUPTED");
-					throw new ChecksumException(
-							"Could not deploy package, package was corrupted");
+					throw new ChecksumException("Could not deploy package, "
+							+ "package was corrupted");
 				} else {
-					throw new InvalidResponseException(
-							"Invalid StatusMessage received upon sending deployment instructions: '"
-									+ sm.toString() + "'");
+					throw new InvalidResponseException("Invalid StatusMessage "
+							+ "received upon sending deployment "
+							+ "instructions: '" + sm.toString() + "'");
 				}
 			} else {
-				throw new InvalidResponseException(
-						"Invalid response received upon sending deployment instructions: '"
-								+ o.getClass().toString() + "'");
+				throw new InvalidResponseException("Invalid response received "
+						+ "upon sending deployment instructions: '"
+						+ o.getClass().toString() + "'");
 			}
 		} catch (IOException exception) {
-			throw new ConnectionException(
-					"Connection error in client while receiving answer to deployment instructions",
-					exception);
+			throw new ConnectionException("Connection error in client while "
+					+ "receiving answer to deployment instructions", exception);
 		} catch (ClassNotFoundException exception) {
-			throw new InvalidResponseException(
-					"Invalid response received upon sending deployment instructions: class could not be found'",
-					exception);
+			throw new InvalidResponseException("Invalid response received "
+					+ "upon sending deployment instructions: class "
+					+ "could not be found'", exception);
 		}
 	}
 
@@ -318,5 +310,10 @@ public class TCPCommClient implements CommClient {
 				socket = null;
 			}
 		}
+	}
+
+	@Override
+	public void close() {
+		this.disconnect();
 	}
 }

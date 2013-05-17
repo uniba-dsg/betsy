@@ -24,8 +24,7 @@ public class ServiceAddress {
 	}
 
 	public ServiceAddress(final String address) {
-		this.setAddress(address);
-		this.setRequiredHtmlContent(null);
+		this(address,null);
 	}
 
 	@Override

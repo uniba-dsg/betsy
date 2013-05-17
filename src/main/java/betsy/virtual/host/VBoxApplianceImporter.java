@@ -80,11 +80,9 @@ public class VBoxApplianceImporter {
 	 *            mutable {@link IMachine} to adjust
 	 * @param vmName
 	 *            desired name of the machine
-	 * @param engineName
-	 *            name of the engine the vm belongs to
 	 */
 	public void adjustApplianceSettings(final IMachine lockedVM,
-			final String vmName, final String engineName) {
+			final String vmName) {
 		// set name and description
 		lockedVM.setName(vmName);
 		String desc = lockedVM.getDescription();

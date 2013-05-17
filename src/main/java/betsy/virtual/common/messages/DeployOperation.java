@@ -33,10 +33,6 @@ public class DeployOperation implements Serializable {
 
 	private FileMessage fileMessage;
 
-	public String getEngineName() {
-		return this.engineName;
-	}
-
 	public String getBpelFileNameWithoutExtension() {
 		return this.bpelFileNameWithoutExtension;
 	}
@@ -137,8 +133,7 @@ public class DeployOperation implements Serializable {
 	}
 
 	/**
-	 * Set the path to the file that must be used for deploying the
-	 * process.
+	 * Set the path to the file that must be used for deploying the process.
 	 * 
 	 * @param deploymentFile
 	 *            path to set, must not be null or empty
@@ -149,6 +144,12 @@ public class DeployOperation implements Serializable {
 					+ "be null or empty");
 		}
 		this.deploymentFile = deploymentFile;
+	}
+
+	@Override
+	public String toString() {
+		return "DeployOperation for process '" + this.engineName
+				+ "' and engine '" + this.bpelFileNameWithoutExtension + "'";
 	}
 
 }

@@ -45,9 +45,7 @@ public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 
 	@Override
 	public String getEndpointUrl(Process process) {
-		return "http://localhost:8084/petals/services/"
-				+ process.getBpelFileNameWithoutExtension()
-				+ "TestInterfaceService";
+        return defaultEngine.getEndpointUrl(process);
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 
 	@Override
 	public String getXsltPath() {
-		return "src/main/xslt/" + defaultEngine.getName();
+        return defaultEngine.getXsltPath();
 	}
 
 	@Override
