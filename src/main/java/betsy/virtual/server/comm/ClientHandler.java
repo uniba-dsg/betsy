@@ -23,7 +23,6 @@ import betsy.virtual.server.LogfileCollector;
 import betsy.virtual.server.deployers.VirtualizedEngineDeployer;
 import betsy.virtual.server.deployers.VirtualizedEngineDeployers;
 
-
 /**
  * The {@link ClientHandler} manages the connection to a previously connected
  * client. The handler responds to the requests of the client. This includes

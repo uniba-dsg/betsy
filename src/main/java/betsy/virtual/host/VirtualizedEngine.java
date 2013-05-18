@@ -332,8 +332,7 @@ public abstract class VirtualizedEngine extends Engine implements
 				processLogFolder.mkdirs();
 				File engineLogFolder = new File(processLogFolder, "engine");
 				engineLogFolder.mkdir();
-				File betsyLogFolder = new File(processLogFolder,
-						"betsy-server");
+				File betsyLogFolder = new File(processLogFolder, "betsy-server");
 				betsyLogFolder.mkdir();
 
 				// save to disk...

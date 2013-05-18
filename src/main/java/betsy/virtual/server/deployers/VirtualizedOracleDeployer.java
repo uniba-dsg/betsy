@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.DeployOperation;
 
-
 public class VirtualizedOracleDeployer implements VirtualizedEngineDeployer {
 
-	private static final Logger log = Logger.getLogger(VirtualizedOracleDeployer.class);
+	private static final Logger log = Logger
+			.getLogger(VirtualizedOracleDeployer.class);
 
 	@Override
 	public String getName() {
@@ -25,7 +25,8 @@ public class VirtualizedOracleDeployer implements VirtualizedEngineDeployer {
 	@Override
 	public void deploy(DeployOperation operation) throws DeployException {
 		// write data to temp dir first
-		File tmpDeployFile = new File("tmp", operation.getFileMessage().getFilename());
+		File tmpDeployFile = new File("tmp", operation.getFileMessage()
+				.getFilename());
 		createLocalDeployFile(tmpDeployFile, operation);
 		log.info("Temporary deploy file written to disk");
 
@@ -35,16 +36,13 @@ public class VirtualizedOracleDeployer implements VirtualizedEngineDeployer {
 					+ "of Oracle have not been found at '"
 					+ deployTool.getAbsolutePath() + "'");
 		}
-		
+
 		Runtime runtime = Runtime.getRuntime();
 
-		String[] deployAtt = { "ant", "-f",
-				operation.getDeploymentFile(),
-				"-DserverURL=http://localhost:7001", 
-				"-DsarLocation="+tmpDeployFile.getAbsolutePath(),
-				"-Duser=weblogic",
-				"-Dpassword=welcome1",
-				"-Doverwrite=true",
+		String[] deployAtt = { "ant", "-f", operation.getDeploymentFile(),
+				"-DserverURL=http://localhost:7001",
+				"-DsarLocation=" + tmpDeployFile.getAbsolutePath(),
+				"-Duser=weblogic", "-Dpassword=welcome1", "-Doverwrite=true",
 				tmpDeployFile.getAbsolutePath() };
 		BufferedReader buffDeploy = null;
 		try {

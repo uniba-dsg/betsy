@@ -405,7 +405,7 @@ public class VirtualMachine {
 			// resolve host and guest port
 			String[] rds = redirect.split(",");
 			int hostPort = Integer.parseInt(rds[3]);
-            int guestPort = Integer.parseInt(rds[5]);
+			int guestPort = Integer.parseInt(rds[5]);
 			// verify both are equal, ignoring any other manually created
 			// redirection
 			if (hostPort == guestPort) {

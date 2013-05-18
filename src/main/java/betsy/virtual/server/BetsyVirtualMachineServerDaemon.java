@@ -14,7 +14,6 @@ import org.apache.log4j.PropertyConfigurator;
 import betsy.virtual.server.comm.CommServer;
 import betsy.virtual.server.comm.TCPCommServer;
 
-
 /**
  * The {@link BetsyVirtualMachineServerDaemon} can be used to start the server.
  * This can be done either by simply invoking the class / jar and running the

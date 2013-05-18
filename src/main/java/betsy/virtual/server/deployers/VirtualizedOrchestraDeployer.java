@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.DeployOperation;
 
-
 /**
  * Deployer for the virtualized Orchestra engine.
  * 
@@ -22,7 +21,8 @@ import betsy.virtual.common.messages.DeployOperation;
  */
 public class VirtualizedOrchestraDeployer implements VirtualizedEngineDeployer {
 
-	private static final Logger log = Logger.getLogger(VirtualizedOrchestraDeployer.class);
+	private static final Logger log = Logger
+			.getLogger(VirtualizedOrchestraDeployer.class);
 
 	@Override
 	public String getName() {

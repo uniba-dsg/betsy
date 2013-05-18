@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.DeployOperation;
 
-
 /**
  * Deployer for the virtualized OpenESB engine.
  * 
@@ -31,7 +30,8 @@ public class VirtualizedOpenEsbDeployer implements VirtualizedEngineDeployer {
 	@Override
 	public void deploy(DeployOperation operation) throws DeployException {
 		// write data to temp dir first
-		File tmpDeployFile = new File("tmp", operation.getFileMessage().getFilename());
+		File tmpDeployFile = new File("tmp", operation.getFileMessage()
+				.getFilename());
 		createLocalDeployFile(tmpDeployFile, operation);
 		log.info("Temporary deploy file written to disk");
 
@@ -45,8 +45,7 @@ public class VirtualizedOpenEsbDeployer implements VirtualizedEngineDeployer {
 		Runtime runtime = Runtime.getRuntime();
 
 		String[] deployAtt = { operation.getDeploymentFile(),
-				"deploy-jbi-service-assembly",
-				tmpDeployFile.getAbsolutePath() };
+				"deploy-jbi-service-assembly", tmpDeployFile.getAbsolutePath() };
 		BufferedReader buffDeploy = null;
 		try {
 			Process proc = runtime.exec(deployAtt);

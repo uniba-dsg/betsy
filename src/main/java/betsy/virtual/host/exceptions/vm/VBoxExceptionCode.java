@@ -66,8 +66,7 @@ public enum VBoxExceptionCode {
 	private static Map<Long, VBoxExceptionCode> table = new HashMap<Long, VBoxExceptionCode>();
 
 	static {
-		for (VBoxExceptionCode errorCode : VBoxExceptionCode
-				.values()) {
+		for (VBoxExceptionCode errorCode : VBoxExceptionCode.values()) {
 			table.put(errorCode.code, errorCode);
 		}
 	}

@@ -45,7 +45,7 @@ public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 
 	@Override
 	public String getEndpointUrl(Process process) {
-        return defaultEngine.getEndpointUrl(process);
+		return defaultEngine.getEndpointUrl(process);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 
 	@Override
 	public String getXsltPath() {
-        return defaultEngine.getXsltPath();
+		return defaultEngine.getXsltPath();
 	}
 
 	@Override
@@ -89,12 +89,11 @@ public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 	public Path getDeployableFilePath(Process process) {
 		return Paths.get(process.getTargetPackageCompositeFilePath());
 	}
-	
+
 	@Override
 	public String getVMbVMSDir() {
 		String bVMSDir = config.getValueAsString(
-				"virtualisation.engines.petalsesb_v.bvmsDir",
-				"/opt/betsy/");
+				"virtualisation.engines.petalsesb_v.bvmsDir", "/opt/betsy/");
 		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
 		bVMSDir += "log";
 		return bVMSDir;

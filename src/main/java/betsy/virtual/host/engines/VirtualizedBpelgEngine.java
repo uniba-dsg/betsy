@@ -58,7 +58,7 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
 
 	@Override
 	public String getXsltPath() {
-        return defaultEngine.getXsltPath();
+		return defaultEngine.getXsltPath();
 	}
 
 	@Override
@@ -91,12 +91,11 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
 	public Path getDeployableFilePath(Process process) {
 		return Paths.get(process.getTargetPackageFilePath("zip"));
 	}
-	
+
 	@Override
 	public String getVMbVMSDir() {
 		String bVMSDir = config.getValueAsString(
-				"virtualisation.engines.bpelg_v.bvmsDir",
-				"/opt/betsy/");
+				"virtualisation.engines.bpelg_v.bvmsDir", "/opt/betsy/");
 		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
 		bVMSDir += "log";
 		return bVMSDir;

@@ -20,7 +20,6 @@ import org.virtualbox_4_2.VirtualBoxManager;
 
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 
-
 /**
  * The {@link VBoxController} establishes the connection between betsy and
  * VirtualBox. It can be used to resolve machines, import or delete them and to
@@ -33,7 +32,7 @@ public class VBoxController {
 
 	public static final String BETSY_VBOX_GROUP = "/betsy-engines";
 	private static final Logger log = Logger.getLogger(VBoxController.class);
-	
+
 	private final Map<String, VirtualMachine> virtualMachines = new HashMap<>();
 
 	private IVirtualBox vBox;

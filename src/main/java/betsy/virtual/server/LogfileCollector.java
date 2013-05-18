@@ -15,7 +15,6 @@ import betsy.virtual.common.messages.FileMessage;
 import betsy.virtual.common.messages.LogRequest;
 import betsy.virtual.common.messages.LogfileCollection;
 
-
 /**
  * The {@link LogfileCollector} collects the logfiles of the engine and betsy
  * server upon a received {@link LogRequest}.

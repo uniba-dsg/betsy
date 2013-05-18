@@ -58,7 +58,7 @@ public final class Configuration {
 				ConfigObject co = new ConfigSlurper().parse(configURL);
 				Map<?, ?> rawMap = co.flatten();
 				Set<?> keys = rawMap.keySet();
-				for(Object key : keys) {
+				for (Object key : keys) {
 					Object value = rawMap.get(key);
 					this.configMap.put(key, value);
 				}

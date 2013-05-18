@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import betsy.virtual.common.Checksum;
 
-
 /**
  * A {@link FileMessage} contains the binary data and the name (with extension)
  * of a file. Additionally a Checksum is created to verify the integrity of the
@@ -58,9 +57,9 @@ public class FileMessage implements Serializable {
 	public boolean isDataValid() {
 		return Checksum.isValid(getData(), getChecksum());
 	}
-	
+
 	@Override
 	public String toString() {
-		return "FileMessage for '"+filename+"'";
+		return "FileMessage for '" + filename + "'";
 	}
 }

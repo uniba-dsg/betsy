@@ -60,7 +60,7 @@ public interface VirtualizedEngineAPI {
 	 * @return directory of the logfiles on the VM
 	 */
 	public String getVMLogfileDir();
-	
+
 	/**
 	 * Get the directory where the bVMS is installed on the VirtualMachine.
 	 * 

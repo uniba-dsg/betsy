@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import betsy.virtual.host.exceptions.archive.ArchiveExtractionException;
 import betsy.virtual.host.exceptions.archive.UnsupportedArchiveException;
 
-
 /**
  * The {@link ArchiveExtractor} offers methods to extract a File that represents
  * an archive. Currently .zip and .ova archives are supported.
@@ -94,7 +93,6 @@ public class ArchiveExtractor {
 					"Exception while extracting .ova archive", exception);
 		}
 	}
-
 
 	/**
 	 * Extract the archive into the outputDir.

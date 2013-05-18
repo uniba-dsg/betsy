@@ -42,7 +42,8 @@ import betsy.virtual.host.exceptions.archive.UnsupportedArchiveException;
  */
 public class VirtualMachineImporter {
 
-	private static final Logger log = Logger.getLogger(VirtualMachineImporter.class);
+	private static final Logger log = Logger
+			.getLogger(VirtualMachineImporter.class);
 
 	private final String archiveRequirements = "Please verify to meet the "
 			+ "requirements of the archive structure. "
@@ -149,9 +150,9 @@ public class VirtualMachineImporter {
 				ovf = true;
 			}
 		}
-        return ova || ovf;
+		return ova || ovf;
 
-    }
+	}
 
 	public File getEngineExtractDirFile() {
 		return new File(this.extractDirFile, vmName);
@@ -242,13 +243,13 @@ public class VirtualMachineImporter {
 
 				File[] pathFiles = this.extractDirFile.listFiles();
 				List<File> pathFilesList;
-				if(pathFiles == null) {
+				if (pathFiles == null) {
 					throw new ArchiveContentException("The extracted "
 							+ "archive either did not contain the "
 							+ "required files. " + archiveRequirements);
 				}
 				pathFilesList = Arrays.asList(pathFiles);
-				
+
 				/*
 				 * Try to handle archives in which there is no single folder
 				 * that wraps all the engine's files.
@@ -271,8 +272,8 @@ public class VirtualMachineImporter {
 						// can be ignored
 					}
 				}
-				throw new ArchiveExtractionException("Could not extract the " +
-						"downloaded archive:", exception);
+				throw new ArchiveExtractionException("Could not extract the "
+						+ "downloaded archive:", exception);
 			}
 			log.trace("...extraction finished!");
 
@@ -293,7 +294,7 @@ public class VirtualMachineImporter {
 		if (matchedFiles.size() == 1 && matchedFiles.get(0).isDirectory()) {
 			File eFile = matchedFiles.get(0);
 			// is directory - with engine name ? --> wrapping right
-            return !eFile.getName().equals(vmName);
+			return !eFile.getName().equals(vmName);
 		} else {
 			// if there is more than one file always wrap them into the engine
 			// dir. Also if extracted single file is no directory
@@ -336,7 +337,7 @@ public class VirtualMachineImporter {
 			// no wrapping Folder --> must be moved to engine folder
 			File eVmFolder = getEngineExtractDirFile();
 			Files.createDirectory(eVmFolder.toPath());
-			
+
 			for (File eFile : extractedFiles) {
 				if (pathFileList.contains(eFile)) {
 					if (eFile.isDirectory()) {

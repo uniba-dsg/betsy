@@ -11,7 +11,6 @@ import betsy.virtual.common.exceptions.InvalidResponseException;
 import betsy.virtual.common.messages.DeployOperation;
 import betsy.virtual.common.messages.LogfileCollection;
 
-
 /**
  * The {@link CommClient} is running on the host and offers several methods to
  * tell the server what has to be done next. This includes to send deployment

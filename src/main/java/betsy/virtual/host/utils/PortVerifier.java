@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import betsy.virtual.host.exceptions.PortUsageException;
 
-
 /**
  * The {@link PortVerifier} offers methods to verify if a port is free or
  * already in use.

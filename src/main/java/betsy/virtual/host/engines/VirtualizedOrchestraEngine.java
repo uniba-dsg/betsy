@@ -90,12 +90,11 @@ public class VirtualizedOrchestraEngine extends VirtualizedEngine {
 	public Path getDeployableFilePath(Process process) {
 		return Paths.get(process.getTargetPackageFilePath("zip"));
 	}
-	
+
 	@Override
 	public String getVMbVMSDir() {
 		String bVMSDir = config.getValueAsString(
-				"virtualisation.engines.orchestra_v.bvmsDir",
-				"/opt/betsy/");
+				"virtualisation.engines.orchestra_v.bvmsDir", "/opt/betsy/");
 		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
 		bVMSDir += "log";
 		return bVMSDir;

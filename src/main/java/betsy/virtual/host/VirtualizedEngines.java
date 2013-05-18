@@ -12,7 +12,6 @@ import betsy.virtual.host.engines.VirtualizedOpenEsbEngine;
 import betsy.virtual.host.engines.VirtualizedOrchestraEngine;
 import betsy.virtual.host.engines.VirtualizedPetalsEsbEngine;
 
-
 public class VirtualizedEngines {
 
 	/**

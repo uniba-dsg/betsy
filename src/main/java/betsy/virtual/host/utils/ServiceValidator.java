@@ -20,7 +20,6 @@ import betsy.virtual.common.exceptions.InvalidResponseException;
 import betsy.virtual.host.comm.TCPCommClient;
 import betsy.virtual.host.exceptions.TimeoutException;
 
-
 /**
  * The {@link ServiceValidator} validates a {@link ServiceAddress} and can
  * therefore determine if an {@link Engine} is ready for usage.
@@ -96,7 +95,7 @@ public class ServiceValidator {
 	 * @return true if the server is available
 	 */
 	public boolean isBetsyServerReady(final int timeoutInMs) {
-		try (TCPCommClient cc = new TCPCommClient("127.0.0.1", 48888)){
+		try (TCPCommClient cc = new TCPCommClient("127.0.0.1", 48888)) {
 			cc.reconnect(timeoutInMs);
 			return cc.isConnectionAlive();
 		} catch (IOException | InvalidResponseException exception) {
@@ -130,9 +129,9 @@ public class ServiceValidator {
 	private void waitUntilAvailable(final URL url,
 			final String requiredContent, final int timeoutInMs)
 			throws TimeoutException {
-		
+
 		long start = -System.currentTimeMillis();
-		
+
 		// default url waiting
 		waitUntilAvailable(url, timeoutInMs);
 
@@ -164,7 +163,7 @@ public class ServiceValidator {
 			conn.setConnectTimeout(timeout);
 			conn.setReadTimeout(timeout);
 			int serverResponseCode = conn.getResponseCode();
-            // do also accept redirections as valid response 
+			// do also accept redirections as valid response
 			return (200 <= serverResponseCode && serverResponseCode <= 399);
 		} catch (IOException exception) {
 			// ignore exception

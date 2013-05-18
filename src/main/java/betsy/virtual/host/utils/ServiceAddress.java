@@ -24,7 +24,7 @@ public class ServiceAddress {
 	}
 
 	public ServiceAddress(final String address) {
-		this(address,null);
+		this(address, null);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.DeployOperation;
 
-
 /**
  * Deployer for the virtualized Active-BPEL engine.
  * 
@@ -71,7 +70,7 @@ public class VirtualizedActiveBpelDeployer implements VirtualizedEngineDeployer 
 				+ container.getBpelFileNameWithoutExtension() + ".pdd]";
 		DeploymentLogVerificator dlv = new DeploymentLogVerificator(
 				catalinaLog, successMessage);
-		
+
 		if (catalinaLog.isFile()) {
 			dlv.waitForDeploymentCompletition(container.getDeployTimeout());
 		} else {
