@@ -47,6 +47,14 @@ run {
     if(project.hasProperty('args')){
         args project.args.split('\\s+')
     }
+
+    // delete the previous test results
+    def mainDir = new File('test')
+    if(mainDir.isDirectory()) {
+		def result = mainDir.deleteDir()
+		assert result
+		assert !mainDir.exists()
+	}
 }
 
 task enginecontrol (type: JavaExec, dependsOn: build){
