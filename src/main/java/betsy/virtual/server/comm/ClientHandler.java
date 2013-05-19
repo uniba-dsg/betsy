@@ -109,6 +109,8 @@ public class ClientHandler implements Runnable {
 			log.error("Connection lost:", exception);
 		} catch (ClassNotFoundException exception) {
 			log.error("Unknown class received:", exception);
+		} catch (Error | Exception exception) {
+			log.error("Unexpected error:", exception);
 		} finally {
 			// tidy up!
 			tidyUp();

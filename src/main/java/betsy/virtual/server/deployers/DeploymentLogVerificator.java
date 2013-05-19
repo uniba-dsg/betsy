@@ -40,8 +40,8 @@ public class DeploymentLogVerificator {
 			String fileContent = FileUtils.readFileToString(logfile);
 			// try positive case
 			logVerification = fileContent.contains(successMessage);
-			// not confirmed? try negative case
-			if (!logVerification) {
+			// not confirmed? try negative case if is supported by the engine
+			if (!logVerification && errorMessage != null) {
 				logVerification = fileContent.contains(errorMessage);
 			}
 		} catch (IOException exception) {
