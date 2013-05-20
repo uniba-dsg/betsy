@@ -88,7 +88,7 @@ public class DeploymentLogVerificator {
 		if (System.currentTimeMillis() + start > timeoutInMs) {
 			log.trace("Deployment verification timed out");
 		} else {
-			log.trace("Log verification succesful");
+			log.trace("Log verification successful");
 		}
 	}
 
