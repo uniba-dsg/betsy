@@ -7,6 +7,16 @@ import java.util.Objects;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * Verifies the deployment of a WS-BPEL process by checking the engine's log
+ * files. If the deployment has been processed, which also includes a failed
+ * deployment, the verification is completed.<br>
+ * In order to prevent deadlocks, a timeout defines the maximum time to wait.
+ * 
+ * @author Cedric Roeck
+ * @version 1.0
+ * 
+ */
 public class DeploymentLogVerificator {
 
 	private static final Logger log = Logger
@@ -16,20 +26,23 @@ public class DeploymentLogVerificator {
 	private final String successMessage;
 	private final String errorMessage;
 
-	public DeploymentLogVerificator(final File file, final String successMsg,
+	public DeploymentLogVerificator(final File fileToCheck, final String successMsg,
 			final String errorMsg) {
 		this.successMessage = Objects.requireNonNull(successMsg);
 		this.errorMessage = Objects.requireNonNull(errorMsg);
-		this.logfile = Objects.requireNonNull(file);
-		if (!file.isFile()) {
+		this.logfile = Objects.requireNonNull(fileToCheck);
+		if (!fileToCheck.isFile()) {
 			throw new IllegalArgumentException("File does not exist");
 		}
 	}
 
-	public DeploymentLogVerificator(final File file, final String successMsg) {
+	public DeploymentLogVerificator(final File fileToCheck, final String successMsg) {
 		this.successMessage = Objects.requireNonNull(successMsg);
 		this.errorMessage = null;
-		this.logfile = Objects.requireNonNull(file);
+		this.logfile = Objects.requireNonNull(fileToCheck);
+		if (!fileToCheck.isFile()) {
+			throw new IllegalArgumentException("File does not exist");
+		}
 	}
 
 	private boolean isDeploymentFinished() {
@@ -51,6 +64,13 @@ public class DeploymentLogVerificator {
 		return logVerification;
 	}
 
+	/**
+	 * Wait for the completion a processes deployment, but never wait longer
+	 * than the specified timeout.
+	 * 
+	 * @param timeoutInMs
+	 *            max time to wait for completion in milliseconds
+	 */
 	public void waitForDeploymentCompletition(final int timeoutInMs) {
 		final long start = -System.currentTimeMillis();
 		// verify deployment with engine log. Either until deployment
