@@ -3,6 +3,7 @@ package betsy.virtual.host.utils;
 import groovy.util.AntBuilder;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,9 +76,10 @@ public class VBoxWebService {
 
 		// start VBoxService
 		Runtime r = Runtime.getRuntime();
-		String startArgs = vconfig.getVBoxWebSrv().getAbsolutePath()
-				+ " -A null -t 0";
-		log.debug("Starting '" + startArgs + "'");
+		String[] startArgs = new String[] {
+				vconfig.getVBoxWebSrv().getAbsolutePath(), "-A", "null", "-t",
+				"0" };
+		log.debug("Starting '" + Arrays.toString(startArgs) + "'");
 		vboxServiceProcess = r.exec(startArgs);
 
 		/*
