@@ -49,7 +49,7 @@ virtualisation {
 			bvmsDir = "/opt/betsy/"
 		}
 		active_bpel_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/vms/betsy-activebpel_v.tar.bz2"
+			download = "ftp://141.13.162.58/betsy-active_bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
 			logfileDir = "/usr/share/tomcat5.5/logs"
 			headless = true
