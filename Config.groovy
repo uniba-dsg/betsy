@@ -7,9 +7,9 @@ PARTNER_IP_AND_PORT = "0.0.0.0:2000"
 virtualisation {
 	vbox {
 		// The folder containing the binary files
-		path = "/Applications/VirtualBox.app/Contents/MacOS/"
-		vboxmanage = "VBoxManage"
-		vboxwebsrv = "vboxwebsrv"
+		path = "C:\\Program Files\\Oracle\\VirtualBox\\"
+		vboxmanage = "VBoxManage.exe"
+		vboxwebsrv = "VBoxWebSrv.exe"
 
 		websrv {
 			host = "http://127.0.0.1"
