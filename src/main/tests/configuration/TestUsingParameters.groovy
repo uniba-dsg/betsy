@@ -5,6 +5,7 @@ import betsy.Configuration
 import betsy.data.Engine
 import betsy.data.Engines
 import betsy.data.Process
+import betsy.data.TestCase
 import betsy.executables.CompositeSequential
 import configuration.processes.Processes
 
@@ -18,6 +19,7 @@ class TestUsingParameters {
         cli.o(longOpt: 'open-results-in-browser', "Opens results in default browser")
         cli.h(longOpt: 'help', "Print out usage information")
         cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
+        cli.c(longOpt: 'check-deployment', "Verifies deployment instead of test success")
 
         def options = cli.parse(args)
         if (options == null || options == false || options.h) {
@@ -50,6 +52,14 @@ class TestUsingParameters {
 
         println "Engines: ${engines.collect {it.name}}"
         println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
+
+
+        if(options.c) {
+            // check only whether the processes can be deployed
+            processes.each { process ->
+                process.testCases = [new TestCase(onlyDeploymentCheck: true)]
+            }
+        }
 
         try {
             if (options.s) {

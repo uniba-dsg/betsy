@@ -45,12 +45,6 @@ class Processes {
             return WITH_EXIT_ASSERTION
         } else if ("FAULTS" == name.toUpperCase()) {
             return FAULTS
-        } else if ("ALL_CHECK_DEPLOYMENT") {
-            ALL.each { process ->
-                process.testCases = [new TestCase(onlyDeploymentCheck: true)]
-            }
-
-            return ALL
         }
 
         List<Process> result = getBasicProcess(name)
