@@ -34,35 +34,17 @@ class Composite {
         log "${context.testSuite.path}/all", {
 
             try {
-                // create reports
-                log "${context.testSuite.path}/prepare", {
-
-                    // ensure folder structure
-                    for(Engine engine : context.testSuite.engines){
-                        engine.prepare()
-                    }
-
-                    // ensure that no engine is currently running
-                    for(Engine engine : context.testSuite.engines){
-                        engine.failIfRunning()
-                    }
+                // fail fast
+                for(Engine engine : context.testSuite.engines){
+                    engine.prepare()
+                    engine.failIfRunning()
                 }
 
-                log "${context.testSuite.path}/execute", {
-                    // prepare folder structure
-                    executeEngines(context)
-                }
+                executeEngines(context)
 
-                // create reports
-                log "${context.testSuite.path}/report", {
-                    new Reporter(ant: ant, tests: context.testSuite).createReports()
-                }
-
-                // create reports
-                log "${context.testSuite.path}/analytics", {
-                    new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
+                new Reporter(ant: ant, tests: context.testSuite).createReports()
+                new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
                             reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
-                }
 
             } catch (Exception e) {
                 ant.echo message: IOUtil.getStackTrace(e), level: "error"
@@ -79,42 +61,40 @@ class Composite {
     }
 
     protected void executeEngine(Engine engine) {
-
         log "${context.testSuite.path}/${engine.name}", {
+            for(Process process : engine.processes) {
+                executeProcess(process)
+            }
+        }
+    }
+
+    protected void executeProcess(Process process) {
+        println "Process ${engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
+
+        log "${process.targetPath}/all", {
             try {
-                // build
-                log "${engine.path}/build", {
-                    for(Process process : engine.processes) {
-                        buildPackageAndTest(process)
-                    }
-                }
-
-                installAndStart(engine)
-
-                // deploy
-                log "${engine.path}/deploy", {
-                    for(Process process : engine.processes) {
-                        log "${process.targetPath}/deploy", {
-                            ant.echo message: "Deploying process ${process} to engine ${this}"
-                            engine.deploy(process)
-                        }
-                    }
-                    engine.onPostDeployment()
-                }
-
-                // test
-                log "${engine.path}/test", {
-                    for(Process process : engine.processes) {
-                        test(process)
-                    }
-                }
-
+                buildPackageAndTest(process)
+                installAndStart(process.engine)
+                deploy(process)
+                test(process)
             } finally {
                 // ensure shutdown
-                log "${engine.path}/shutdown", {
-                    engine.shutdown()
-                }
+                shutdown(process.engine)
             }
+        }
+    }
+
+    protected void shutdown(Engine engine) {
+        log "${engine.path}/shutdown", {
+            engine.shutdown()
+        }
+    }
+
+    protected void deploy(Process process) {
+        log "${process.targetPath}/deploy", {
+            ant.echo message: "Deploying process ${process} to engine ${process.engine}"
+            process.engine.deploy(process)
+            process.engine.onPostDeployment(process)
         }
     }
 

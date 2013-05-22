@@ -31,7 +31,6 @@ $ gradlew run -Pargs="<ARGS>"
 # usage: [options] <engines> <process>
 # -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
 # -o,--open-results-in-browser         Opens results in default browser
-# -s,--skip-reinstallation             skip reinstalling each engine for each process
 # -h,--help                            Print out usage information
 
 # Examples
@@ -42,8 +41,6 @@ $ gradlew run -Pargs="ALL Sequence" # Running Sequence test for all engines
 $ gradlew run -Pargs="ALL Sequence,While" # Running Sequence and While test for all engines
 $ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
 $ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
-$ gradlew run -Pargs="-s" # Running all tests for all engines installing engines only once
-$ gradlew run -Pargs="-s ode ALL" # Running all tests for Apache ODE installing engines only once
 $ gradlew run -Pargs="-o" # Opens the results in the default browser after a successful run
 
 # Other gradlew tasks

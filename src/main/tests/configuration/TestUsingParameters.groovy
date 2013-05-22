@@ -7,9 +7,8 @@ import betsy.data.Engines
 import betsy.data.Process
 import betsy.data.TestCase
 import betsy.executables.Composite
-import betsy.executables.CompositeSequential
+
 import configuration.processes.Processes
-import org.codehaus.groovy.runtime.StackTraceUtils
 
 import java.awt.Desktop
 
@@ -58,13 +57,7 @@ class TestUsingParameters {
 
         Betsy betsy = new Betsy(engines: engines, processes: processes)
 
-        if (parser.skipReinstallation()) {
-            println "Skipping reinstallation of engine for each process test"
-            betsy.composite = new Composite()
-        }
-
         try {
-
             // execute
             try{
                 betsy.execute()
