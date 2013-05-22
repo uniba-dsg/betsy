@@ -6,78 +6,82 @@ import betsy.data.Engine
 import betsy.data.Engines
 import betsy.data.Process
 import betsy.data.TestCase
+import betsy.executables.Composite
 import betsy.executables.CompositeSequential
 import configuration.processes.Processes
+import org.codehaus.groovy.runtime.StackTraceUtils
 
 import java.awt.Desktop
 
 class TestUsingParameters {
 
     public static void main(String[] args) {
-        CliBuilder cli = new CliBuilder(usage: "[options] <engines> <process>")
-        cli.s(longOpt: 'skip-reinstallation', "skip reinstalling each engine for each process")
-        cli.o(longOpt: 'open-results-in-browser', "Opens results in default browser")
-        cli.h(longOpt: 'help', "Print out usage information")
-        cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
-        cli.c(longOpt: 'check-deployment', "Verifies deployment instead of test success")
+        // parsing cli params
+        CliParser parser = new CliParser()
+        parser.parse(args)
 
-        def options = cli.parse(args)
-        if (options == null || options == false || options.h) {
-            println cli.usage()
-            return
+        // usage information if required
+        if(parser.showUsage()){
+            println parser.usage()
+            System.exit(0)
         }
 
-        if (options.s) {
-            println "Skipping reinstallation of engine for each process test"
-        } else {
-            println "Reinstalling engine per process test"
+        // setting partner address
+        if (parser.hasCustomPartnerAddress()) {
+            println "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.PARTNER_IP_AND_PORT}"
+            Configuration.PARTNER_IP_AND_PORT = parser.getCustomPartnerAddress()
         }
 
-        if (options.p) {
-            println "Setting Partner IP and Port to ${options.p} from previous setting ${Configuration.PARTNER_IP_AND_PORT}"
-            Configuration.PARTNER_IP_AND_PORT = options.p
-        }
-
-
+        // parsing processes and engines
         List<Engine> engines = null
         List<Process> processes = null
         try {
-            engines = parseEngines(options.arguments() as String[]).unique()
-            processes = parseProcesses(options.arguments() as String[]).unique()
+            engines = parseEngines(parser.arguments()).unique()
+            processes = parseProcesses(parser.arguments()).unique()
         } catch (Exception e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
             System.exit(0)
         }
 
+        // print selection of engines and processes
         println "Engines: ${engines.collect {it.name}}"
         println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
 
 
-        if(options.c) {
+        if(parser.checkDeployment()) {
             // check only whether the processes can be deployed
             processes.each { process ->
                 process.testCases = [new TestCase(onlyDeploymentCheck: true)]
             }
         }
 
+        Betsy betsy = new Betsy(engines: engines, processes: processes)
+
+        if (parser.skipReinstallation()) {
+            println "Skipping reinstallation of engine for each process test"
+            betsy.composite = new Composite()
+        }
+
         try {
-            if (options.s) {
-                new Betsy(engines: engines, processes: processes).execute()
-            } else {
-                new Betsy(engines: engines, processes: processes, composite: new CompositeSequential()).execute()
+
+            // execute
+            try{
+                betsy.execute()
+            } catch (Exception e) {
+                println "----------------------"
+                println "ERROR - ${e.message}"
             }
 
-            if (options.o) {
+            // open results in browser
+            if (parser.openResultsInBrowser()) {
                 try {
                     Desktop.getDesktop().browse(new File("test/reports/results.html").toURI())
                 } catch (Exception e) {
                     // ignore any exceptions
                 }
             }
-        } catch (Exception e) {
-            println "----------------------"
-            println "ERROR - ${e.message}"
+
         } finally {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily
             System.exit(0)
