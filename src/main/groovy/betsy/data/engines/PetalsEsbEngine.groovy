@@ -93,15 +93,6 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    void onPostDeployment() {
-        ant.parallel() {
-            processes.each { process ->
-                onPostDeployment(process)
-            }
-        }
-    }
-
-    @Override
     void onPostDeployment(Process process) {
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
             and {

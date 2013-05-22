@@ -43,12 +43,6 @@ interface EngineAPI {
     void deploy(Process process)
 
     /**
-     * Gets called after all deployments have been executed.
-     * Can be used to wait for the finish of deploy when using async deployment
-     */
-    void onPostDeployment()
-
-    /**
      * Gets called after executing deploy(process)
      * Can be used to wait for the finish of deploy when using async deployment
      */

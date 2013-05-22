@@ -58,17 +58,6 @@ class BpelgEngine extends Engine {
     }
 
     @Override
-    void onPostDeployment() {
-        ant.echo(message: "waiting for the bpel-g deployment process to fire")
-
-        ant.parallel() {
-            processes.each { process ->
-                onPostDeployment(process)
-            }
-        }
-    }
-
-    @Override
     void onPostDeployment(Process process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {

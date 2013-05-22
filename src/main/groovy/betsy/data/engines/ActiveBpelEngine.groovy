@@ -65,17 +65,6 @@ class ActiveBpelEngine extends Engine {
     }
 
     @Override
-    void onPostDeployment() {
-        ant.echo(message: "waiting for the active-bpel deployment process to fire")
-
-        ant.parallel() {
-            processes.each { process ->
-                onPostDeployment(process)
-            }
-        }
-    }
-
-    @Override
     void onPostDeployment(Process process) {
         // define custom condition
         ant.typedef (name:"httpcontains", classname:"betsy.data.engines.util.HttpContains")
