@@ -5,6 +5,7 @@
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
+    <!-- Partial support, because it replicates the definition of the invoke -->
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
             importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" location="../TestPartner.wsdl"
