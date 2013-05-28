@@ -69,7 +69,7 @@ class Composite {
     }
 
     protected void executeProcess(Process process) {
-        println "Process ${engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
+        println "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
 
         log "${process.targetPath}/all", {
             try {

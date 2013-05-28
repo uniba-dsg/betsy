@@ -136,9 +136,24 @@ class PatternProcesses {
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
             "WCP12-MultipleInstancesWithoutSynchronizationPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "1", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
+                            new TestStep(input: "102", testPartner: true, partnerOutput: 2)]),
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "2", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
+                            new TestStep(input: "102", testPartner: true, partnerOutput: 3)]),
+            ]
+    )
+
+    public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL = buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronizationPattern-Partial",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "100", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
+                            new TestStep(input: "102", testPartner: true, partnerOutput: 4)])
             ]
     )
 
@@ -219,6 +234,7 @@ class PatternProcesses {
             IMPLICIT_TERMINATION_PATTERN,
             DEFERRED_CHOICE_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
             CANCEL_ACTIVITY_PATTERN,
