@@ -1,4 +1,4 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -41,6 +41,7 @@ public class ServiceAddress {
 
 	public void setRequiredHtmlContent(final String requiredContent) {
 		if (StringUtils.isBlank(requiredContent)) {
+            // TODO warum hier keine exception, bei der Adresse aber schon?
 			this.requiredHtmlContent = "";
 		} else {
 			this.requiredHtmlContent = requiredContent;

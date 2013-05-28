@@ -1,4 +1,4 @@
-package betsy.virtual.host;
+package betsy.virtual.host.virtualbox;
 
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.IVirtualBox;
@@ -15,9 +15,7 @@ import betsy.Configuration;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class VBoxConnector {
-
-	private static VBoxConnector instance = null;
+class VBoxConnector {
 
 	private static final Logger log = Logger.getLogger(VBoxConnector.class);
 
@@ -29,15 +27,8 @@ public class VBoxConnector {
 
 	private boolean isConnected = false;
 
-	private VBoxConnector() {
+	public VBoxConnector() {
 		this.vBoxManager = VirtualBoxManager.createInstance(null);
-	}
-
-	public static synchronized VBoxConnector getInstance() {
-		if (instance == null) {
-			instance = new VBoxConnector();
-		}
-		return instance;
 	}
 
 	private boolean isNotConnected() {

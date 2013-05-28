@@ -1,5 +1,7 @@
 package betsy.virtual.host.exceptions;
 
+import betsy.virtual.host.VirtualBoxException;
+
 /**
  * The {@link DownloadException} is thrown if downloading a file, usually from a
  * remote source, failed.
@@ -7,7 +9,7 @@ package betsy.virtual.host.exceptions;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class DownloadException extends Exception {
+public class DownloadException extends VirtualBoxException {
 
 	/**
 	 * SerialVersionUID.

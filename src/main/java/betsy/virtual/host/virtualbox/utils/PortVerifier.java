@@ -1,4 +1,4 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host.virtualbox.utils;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -16,16 +16,17 @@ import betsy.virtual.host.exceptions.PortUsageException;
  */
 public class PortVerifier {
 
-	private static boolean isPortUnreachable(final int portNumber) {
+	private static void failForUnreachablePort(final int portNumber) throws PortUsageException{
 		try (ServerSocket serverSocket = new ServerSocket(portNumber);
 				DatagramSocket datagramSocket = new DatagramSocket(portNumber)) {
 
 			serverSocket.setReuseAddress(true);
 			datagramSocket.setReuseAddress(true);
 			// both could be creates, port is unused!
-			return false;
 		} catch (final IOException e) {
-			return true;
+            throw new PortUsageException("Can't forward port '" + portNumber
+                    + "'. The port is already in use by another"
+                    + " application.", e);
 		}
 	}
 
@@ -38,14 +39,10 @@ public class PortVerifier {
 	 * @throws PortUsageException
 	 *             thrown if any port is already used
 	 */
-	public static void verify(Collection<Integer> ports)
+	public static void failForUsedPorts(Collection<Integer> ports)
 			throws PortUsageException {
 		for (Integer port : ports) {
-			if (isPortUnreachable(port)) {
-				throw new PortUsageException("Can't forward port '" + port
-						+ "'. The port is already in use by another"
-						+ " application.");
-			}
+			failForUnreachablePort(port);
 		}
 	}
 

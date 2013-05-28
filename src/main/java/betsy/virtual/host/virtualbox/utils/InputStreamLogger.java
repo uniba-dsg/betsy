@@ -1,4 +1,4 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host.virtualbox.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

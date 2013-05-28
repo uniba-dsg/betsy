@@ -1,4 +1,4 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host.virtualbox.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -45,7 +45,7 @@ public class ArchiveExtractor {
 	 * @throws ArchiveExtractionException
 	 *             thrown if the extraction failed
 	 */
-	public List<File> ectractArchive(final File inputFile, final File outputDir)
+	public List<File> extractArchive(final File inputFile, final File outputDir)
 			throws UnsupportedArchiveException, ArchiveExtractionException {
 		if (inputFile.getAbsolutePath().toLowerCase().endsWith(".zip")) {
 			return extractZip(inputFile, outputDir);

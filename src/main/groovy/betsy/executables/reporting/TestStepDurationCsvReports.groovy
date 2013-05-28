@@ -18,7 +18,7 @@ public class TestStepDurationCsvReports {
 			String[] lines = csvFile.text.split('\n')
 			String durationLine = lines[1]
 			
-			return [engine,name].join(";") + ";" + durationLine
+			return [engine, name, durationLine].join(";")
 		}
 	}
 

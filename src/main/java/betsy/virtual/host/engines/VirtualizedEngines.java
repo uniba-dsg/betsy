@@ -1,16 +1,9 @@
-package betsy.virtual.host;
+package betsy.virtual.host.engines;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
-import betsy.virtual.host.engines.VirtualizedActiveBpelEngine;
-import betsy.virtual.host.engines.VirtualizedBpelgEngine;
-import betsy.virtual.host.engines.VirtualizedOdeEngine;
-import betsy.virtual.host.engines.VirtualizedOpenEsbEngine;
-import betsy.virtual.host.engines.VirtualizedOrchestraEngine;
-import betsy.virtual.host.engines.VirtualizedPetalsEsbEngine;
 
 public class VirtualizedEngines {
 
@@ -44,16 +37,16 @@ public class VirtualizedEngines {
 		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("name must not be null or empty");
 		}
-		String namet = name.trim();
+		String trimedName = name.trim();
 
 		for (VirtualizedEngine ve : availableEngines()) {
-			if (ve.getName().equals(namet)) {
+			if (ve.getName().equals(trimedName)) {
 				return ve;
 			}
 		}
 
 		// no engine with matching name found
-		throw new IllegalArgumentException("passed engine " + namet
+		throw new IllegalArgumentException("passed engine " + trimedName
 				+ " does not exist");
 	}
 

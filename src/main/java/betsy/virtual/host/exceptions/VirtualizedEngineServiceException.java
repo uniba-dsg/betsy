@@ -1,17 +1,17 @@
 package betsy.virtual.host.exceptions;
 
-import betsy.virtual.host.VirtualMachine;
-import betsy.virtual.host.VirtualizedEngine;
+import betsy.virtual.host.VirtualBoxException;
+import betsy.virtual.host.engines.VirtualizedEngine;
 
 /**
  * The {@link VirtualizedEngineServiceException} is thrown if a necessary
- * service is not available on the {@link VirtualMachine} and the
+ * service is not available on the {@link betsy.virtual.host.virtualbox.VirtualBoxMachineImpl} and the
  * {@link VirtualizedEngine} can't be tested.
  * 
  * @author Cedric Roeck
  * @version 1.0
  */
-public class VirtualizedEngineServiceException extends Exception {
+public class VirtualizedEngineServiceException extends VirtualBoxException {
 
 	/**
 	 * SerialVersionUID.

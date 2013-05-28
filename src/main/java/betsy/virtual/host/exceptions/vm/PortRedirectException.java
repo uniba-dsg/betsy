@@ -1,15 +1,15 @@
 package betsy.virtual.host.exceptions.vm;
 
-import betsy.virtual.host.VirtualMachine;
+import betsy.virtual.host.VirtualBoxException;
 
 /**
  * The {@link PortRedirectException} is thrown if a local port could not be
- * forwarded to the {@link VirtualMachine}.
+ * forwarded to the {@link betsy.virtual.host.virtualbox.VirtualBoxMachineImpl}.
  * 
  * @author Cedric Roeck
  * @version 1.0
  */
-public class PortRedirectException extends Exception {
+public class PortRedirectException extends VirtualBoxException {
 
 	/**
 	 * SerialVersionUID.

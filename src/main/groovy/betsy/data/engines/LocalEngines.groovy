@@ -39,9 +39,9 @@ class LocalEngines {
 
 		if (engine == null) {
 			throw new IllegalArgumentException("LocalEngine $name does not exist")
-		} else {
-			return engine
 		}
+
+        return engine
 	}
 
 	public static List<Engine> build(List<String> names) {

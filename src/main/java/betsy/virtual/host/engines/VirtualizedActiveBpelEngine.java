@@ -10,8 +10,7 @@ import java.util.Set;
 import betsy.Configuration;
 import betsy.data.Process;
 import betsy.data.engines.activeBpel.ActiveBpelEngine;
-import betsy.virtual.host.VirtualizedEngine;
-import betsy.virtual.host.utils.ServiceAddress;
+import betsy.virtual.host.ServiceAddress;
 
 public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 

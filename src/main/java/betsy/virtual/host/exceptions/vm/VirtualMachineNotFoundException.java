@@ -1,5 +1,7 @@
 package betsy.virtual.host.exceptions.vm;
 
+import betsy.virtual.host.VirtualBoxException;
+
 /**
  * The {@link VirtualMachineNotFoundException} is thrown if the VirtualBox
  * instance did not contain a virtual machine with the requested name or uuid.
@@ -7,7 +9,7 @@ package betsy.virtual.host.exceptions.vm;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class VirtualMachineNotFoundException extends Exception {
+public class VirtualMachineNotFoundException extends VirtualBoxException {
 
 	/**
 	 * SerialVersionUID.

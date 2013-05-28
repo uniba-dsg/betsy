@@ -7,16 +7,11 @@ package betsy.virtual.server.comm;
  * @author Cedric Roeck
  * @version 1.0
  */
-public interface CommServer {
+public interface CommServer extends AutoCloseable{
 
 	/**
 	 * Wait and listen until a new connection is established.
 	 */
-	public void waitForConnection();
-
-	/**
-	 * Close the {@link CommServer}.
-	 */
-	public void close();
+	public void handleNextConnection();
 
 }

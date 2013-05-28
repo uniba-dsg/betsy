@@ -1,11 +1,9 @@
-package betsy.virtual.host;
+package betsy.virtual.host.virtualbox;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import betsy.virtual.host.VirtualBoxMachine;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.CleanupMode;
@@ -33,57 +31,20 @@ public class VBoxController {
 	public static final String BETSY_VBOX_GROUP = "/betsy-engines";
 	private static final Logger log = Logger.getLogger(VBoxController.class);
 
-	private final Map<String, VirtualMachine> virtualMachines = new HashMap<>();
+	private final Map<String, VirtualBoxMachineImpl> virtualMachines = new HashMap<>();
 
 	private IVirtualBox vBox;
 	private VBoxApplianceImporter vBoxImporter;
 	private VirtualBoxManager vBoxManager;
 
 	public VBoxController() {
-	}
+        log.trace("Initializing VBoxController");
+        VBoxConnector vBoxConn = new VBoxConnector();
+        this.vBox = vBoxConn.connect();
+        this.vBoxManager = vBoxConn.getVBoxManager();
+        this.vBoxImporter = vBoxConn.getVBoxImporter();
 
-	/**
-	 * Initialize the controller and connect to the VirtualBox interface.
-	 */
-	public void init() {
-		log.trace("Initializing VBoxController");
-		VBoxConnector vBoxConn = VBoxConnector.getInstance();
-		this.vBox = vBoxConn.connect();
-		this.vBoxManager = vBoxConn.getVBoxManager();
-		this.vBoxImporter = vBoxConn.getVBoxImporter();
-
-		log.trace("VirtualBoxController initialized");
-	}
-
-	/**
-	 * Check if VirtualBox contains a virtual machine with the given name inside
-	 * the group 'betsy-engines'.
-	 * 
-	 * @param vmName
-	 *            name of the VM to search
-	 * @return true if VirtualBox contains a name with the name
-	 */
-	public boolean containsMachine(final String vmName) {
-		if (StringUtils.isBlank(vmName)) {
-			throw new IllegalArgumentException(
-					"vmName must not be null or empty");
-		}
-
-		List<String> groups = new LinkedList<>();
-		groups.add(BETSY_VBOX_GROUP);
-		List<IMachine> machines = vBox.getMachinesByGroups(groups);
-
-		if (machines.isEmpty()) {
-			log.info("VirtualBox does not contain any machines yet.");
-			return false;
-		}
-
-		for (IMachine vm : machines) {
-			if (vm.getName().equals(vmName)) {
-				return true;
-			}
-		}
-		return false;
+        log.trace("VirtualBoxController initialized");
 	}
 
 	/**
@@ -107,10 +68,7 @@ public class VBoxController {
 			throw new IllegalArgumentException(
 					"The name of the engine to import must not be null or empty");
 		}
-		if (importFile == null) {
-			throw new IllegalArgumentException(
-					"The file to import must not be null");
-		}
+        Objects.requireNonNull(importFile, "The file to import must not be null");
 
 		IMachine importedVm = null;
 		ISession session = null;
@@ -142,8 +100,8 @@ public class VBoxController {
 			if (session != null) {
 				try {
 					session.unlockMachine();
-				} catch (VBoxException exception2) {
-					log.debug("Failed to unlock session after import exception");
+				} catch (VBoxException ignore) {
+					log.debug("Failed to unlock session after import exception", ignore);
 					// ignore if was not locked
 				}
 			}
@@ -157,20 +115,21 @@ public class VBoxController {
 	}
 
 	/**
-	 * Get the {@link VirtualMachine} of betsy with the given name.
+	 * Get the {@link VirtualBoxMachineImpl} of betsy with the given name.
 	 * 
 	 * @param name
 	 *            name of the VirtualMachine to get
-	 * @return VirtualMachine with the searched name
+	 * @return VirtualBoxMachine with the searched name
 	 * @throws VirtualMachineNotFoundException
 	 *             thrown if there is no VirtualMachine with this name
 	 */
-	public VirtualMachine getVirtualMachine(final String name)
+	public VirtualBoxMachine getVirtualMachine(final String name)
 			throws VirtualMachineNotFoundException {
+        // TODO warum diese zwischenspeicherung der VMs? Ist dies aus Performanzgründen notwendig?
 		if (virtualMachines.containsKey(name)) {
 			return virtualMachines.get(name);
 		} else {
-			VirtualMachine vm = new VirtualMachine(vBoxManager,
+			VirtualBoxMachineImpl vm = new VirtualBoxMachineImpl(vBoxManager,
 					getMachine(name));
 			virtualMachines.put(name, vm);
 			return vm;
@@ -188,6 +147,12 @@ public class VBoxController {
 	 */
 	public IMachine getMachine(final String name)
 			throws VirtualMachineNotFoundException {
+
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException(
+                    "name of the virtual machine must not be null or empty");
+        }
+
 		List<String> groups = new LinkedList<>();
 		groups.add(BETSY_VBOX_GROUP);
 		List<IMachine> machines = vBox.getMachinesByGroups(groups);
@@ -201,19 +166,11 @@ public class VBoxController {
 				+ name + "' could not be found in betsy's VirtualBox group.");
 	}
 
-	/**
-	 * Get the directory where VirtualBox stores it's VirtualMachine files.
-	 * 
-	 * @return directory where VirtualBox stores it's VirtualMachine files.
-	 */
-	public File getVBoxVirtualMachineFolder() {
-		// get default vm folder
-		return new File(vBox.getSystemProperties().getDefaultMachineFolder());
-	}
-
 	private void deleteMachine(final IMachine machine) {
 		File logFolder = new File(machine.getLogFolder());
-		logFolder.delete();
+		if(!logFolder.delete()) {
+            throw new IllegalArgumentException("could not delete folder " + logFolder.getPath());
+        }
 
 		List<IMedium> removableMediums = machine.unregister(CleanupMode.Full);
 		machine.delete(removableMediums);

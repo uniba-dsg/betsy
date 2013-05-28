@@ -14,8 +14,7 @@ import betsy.data.Process;
 import betsy.data.engines.openEsb.OpenEsbEngine;
 import betsy.virtual.common.messages.DeployOperation;
 import betsy.virtual.common.messages.FileMessage;
-import betsy.virtual.host.VirtualizedEngine;
-import betsy.virtual.host.utils.ServiceAddress;
+import betsy.virtual.host.ServiceAddress;
 
 public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 

@@ -157,16 +157,12 @@ class Composite {
 			println name
 	
 			Stopwatch stopwatch = Stopwatch.benchmark(closure)
-			String result = "${name} ${stopwatch.formattedDiff}"
+			String result = "${name} | ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
 			ant.echo message: result
 			println result
-			return stopwatch.secondsDiff
 		} finally {
 			ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
 		}
-		
-		// invalid computation caused by thrown exception
-		return -1
 	}
 
 	void soapui(String name, Closure closure) {

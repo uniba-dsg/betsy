@@ -1,4 +1,4 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host.virtualbox.utils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import betsy.virtual.host.ServiceAddress;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -21,7 +22,7 @@ import betsy.virtual.host.comm.TCPCommClient;
 import betsy.virtual.host.exceptions.TimeoutException;
 
 /**
- * The {@link ServiceValidator} validates a {@link ServiceAddress} and can
+ * The {@link ServiceValidator} validates a {@link betsy.virtual.host.ServiceAddress} and can
  * therefore determine if an {@link Engine} is ready for usage.
  * 
  * @author Cedric Roeck
@@ -41,7 +42,7 @@ public class ServiceValidator {
 	 * @return true if all services are ready, false if not
 	 * 
 	 * @throws MalformedURLException
-	 *             thrown if one of the {@link ServiceAddress} did contain an
+	 *             thrown if one of the {@link betsy.virtual.host.ServiceAddress} did contain an
 	 *             invalid destination.
 	 * @throws InterruptedException
 	 *             thrown if waiting on the services was interrupted
@@ -88,7 +89,7 @@ public class ServiceValidator {
 	}
 
 	/**
-	 * Check whether betsys endpoint is ready for usage.
+	 * Check whether the betsy endpoint is ready for usage.
 	 * 
 	 * @param timeoutInMs
 	 *            maximum time to wait for the server

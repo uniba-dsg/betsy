@@ -1,5 +1,7 @@
 package betsy.virtual.host.exceptions.archive;
 
+import betsy.virtual.host.VirtualBoxException;
+
 /**
  * The {@link ArchiveException} groups several errors that can occur if working
  * with archives.
@@ -7,7 +9,7 @@ package betsy.virtual.host.exceptions.archive;
  * @author Cedric Roeck
  * @version 1.0
  */
-public abstract class ArchiveException extends Exception {
+public abstract class ArchiveException extends VirtualBoxException {
 
 	/**
 	 * SerialVersionUID.

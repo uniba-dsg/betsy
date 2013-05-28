@@ -1,7 +1,6 @@
 package betsy.virtual.host.comm;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 import betsy.virtual.common.exceptions.ChecksumException;
 import betsy.virtual.common.exceptions.CollectLogfileException;
@@ -27,12 +26,10 @@ public interface CommClient {
 	 * 
 	 * @param timeout
 	 *            max time to use while connecting to the client (in ms)
-	 * @throws UnknownHostException
-	 *             thrown if the host could not be found
 	 * @throws IOException
 	 *             thrown if the connection could not be established
 	 */
-	public void reconnect(int timeout) throws UnknownHostException, IOException;
+	public void reconnect(int timeout) throws IOException;
 
 	/**
 	 * Request the logfiles of the engine and of the server ifself from the

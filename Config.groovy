@@ -2,7 +2,7 @@
 //   ALL TIMES ARE IN SECONDS
 // #############################
 
-PARTNER_IP_AND_PORT = "0.0.0.0:2000"
+PARTNER_IP_AND_PORT = "141.13.4.93:2000"
 
 virtualisation {
 	vbox {

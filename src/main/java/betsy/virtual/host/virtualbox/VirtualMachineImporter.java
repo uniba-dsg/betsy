@@ -1,4 +1,4 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host.virtualbox;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import betsy.virtual.host.virtualbox.utils.ArchiveExtractor;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.io.FileUtils;
@@ -18,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import betsy.Configuration;
-import betsy.virtual.host.VBoxController;
 import betsy.virtual.host.exceptions.DownloadException;
 import betsy.virtual.host.exceptions.archive.ArchiveContentException;
 import betsy.virtual.host.exceptions.archive.ArchiveException;
@@ -88,16 +88,14 @@ public class VirtualMachineImporter {
 	 * @throws DownloadException
 	 *             thrown if the download failed
 	 */
-	public void executeVirtualMachineImport() throws ArchiveException,
+	public void makeVMAvailable() throws ArchiveException,
 			DownloadException {
 		log.debug("Importing " + vmName + "...");
 		try {
-			executeDownload();
-
-			executeExtraction();
-
-			vbc.importVirtualMachine(vmName, engineName, getVBoxImportFile());
-			log.trace("...import finished!");
+			downloadVM();
+			extractVM();
+            importVM();
+            log.trace("...import finished!");
 		} finally {
 			// always clean the extraction directory
 			try {
@@ -108,7 +106,11 @@ public class VirtualMachineImporter {
 		}
 	}
 
-	private boolean isDownloadRequired() {
+    private void importVM() throws ArchiveContentException {
+        vbc.importVirtualMachine(vmName, engineName, getVBoxImportFile());
+    }
+
+    private boolean isDownloadRequired() {
 		File archive = getDownloadArchiveFile();
 		return !archive.isFile();
 	}
@@ -154,11 +156,11 @@ public class VirtualMachineImporter {
 
 	}
 
-	public File getEngineExtractDirFile() {
+	private File getEngineExtractDirFile() {
 		return new File(this.extractDirFile, vmName);
 	}
 
-	public URL getDownloadAddress() throws URIException, MalformedURLException {
+	private URL getDownloadAddress() throws URIException, MalformedURLException {
 		Configuration config = Configuration.getInstance();
 		String address = config.getValueAsString("virtualisation.engines."
 				+ engineName + ".download",
@@ -167,7 +169,7 @@ public class VirtualMachineImporter {
 		return new URL(URIUtil.encodeQuery(address));
 	}
 
-	public File getDownloadArchiveFile() {
+	private File getDownloadArchiveFile() {
 		try {
 			String url = getDownloadAddress().toString();
 			// get only the filename + extension without the directory structure
@@ -192,7 +194,7 @@ public class VirtualMachineImporter {
 	 *             thrown if there was either none or there were more than one
 	 *             appliance files
 	 */
-	public File getVBoxImportFile() throws ArchiveContentException {
+	private File getVBoxImportFile() throws ArchiveContentException {
 		// return either .ova OR .ovf file
 		File vmDir = getEngineExtractDirFile();
 		Collection<?> collection = FileUtils.listFiles(vmDir, new String[] {
@@ -221,7 +223,7 @@ public class VirtualMachineImporter {
 		}
 	}
 
-	private void executeExtraction() throws ArchiveException {
+	private void extractVM() throws ArchiveException {
 		boolean correctExtraction = false;
 		try {
 			correctExtraction = isExtractedAndHasImportableFiles();
@@ -238,8 +240,8 @@ public class VirtualMachineImporter {
 				cleanVMExtractPath();
 
 				ArchiveExtractor ae = new ArchiveExtractor();
-				extractedFiles = ae.ectractArchive(getDownloadArchiveFile(),
-						this.extractDirFile);
+				extractedFiles = ae.extractArchive(getDownloadArchiveFile(),
+                        this.extractDirFile);
 
 				File[] pathFiles = this.extractDirFile.listFiles();
 				List<File> pathFilesList;
@@ -272,7 +274,7 @@ public class VirtualMachineImporter {
 						// can be ignored
 					}
 				}
-				throw new ArchiveExtractionException("Could not extract the "
+				throw new ArchiveExtractionException("Could not extractVM the "
 						+ "downloaded archive:", exception);
 			}
 			log.trace("...extraction finished!");
@@ -354,7 +356,7 @@ public class VirtualMachineImporter {
 		}
 	}
 
-	private void executeDownload() throws DownloadException {
+	private void downloadVM() throws DownloadException {
 		if (isDownloadRequired()) {
 			log.debug("Downloading " + vmName + "...");
 			// download

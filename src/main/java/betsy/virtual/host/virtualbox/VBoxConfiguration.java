@@ -1,4 +1,4 @@
-package betsy.virtual.host;
+package betsy.virtual.host.virtualbox;
 
 import java.io.File;
 
@@ -71,7 +71,7 @@ public class VBoxConfiguration {
 	 * 
 	 * @return directory file
 	 */
-	public File getVboxDir() {
+	File getVboxDir() {
 		String vboxPath = config.getValueAsString("virtualisation.vbox.path");
 		return new File(vboxPath);
 	}
@@ -81,7 +81,7 @@ public class VBoxConfiguration {
 	 * 
 	 * @return file of VirtualBox WebService
 	 */
-	public File getVBoxWebSrv() {
+	File getVBoxWebSrv() {
 		String vboxwebsrvPath = config
 				.getValueAsString("virtualisation.vbox.vboxwebsrv");
 		return new File(getVboxDir(), vboxwebsrvPath);
@@ -92,7 +92,7 @@ public class VBoxConfiguration {
 	 * 
 	 * @return file of VirtualBox VBoxManage
 	 */
-	public File getVBoxManage() {
+	File getVBoxManage() {
 		String vboxManagePath = config
 				.getValueAsString("virtualisation.vbox.vboxmanage");
 		return new File(getVboxDir(), vboxManagePath);

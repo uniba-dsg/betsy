@@ -6,10 +6,12 @@ import betsy.data.Process
 import betsy.data.engines.Engine;
 import betsy.data.engines.LocalEngines
 import betsy.executables.CompositeSequential
-import betsy.virtual.host.VBoxConfiguration
-import betsy.virtual.host.VirtualizedEngine
-import betsy.virtual.host.VirtualizedEngines
-import betsy.virtual.host.utils.VBoxWebService
+import betsy.virtual.host.VirtualBox
+import betsy.virtual.host.virtualbox.VBoxConfiguration
+import betsy.virtual.host.engines.VirtualizedEngine
+import betsy.virtual.host.engines.VirtualizedEngines
+import betsy.virtual.host.virtualbox.VBoxWebService
+import betsy.virtual.host.virtualbox.VirtualBoxImpl
 import configuration.processes.Processes
 
 import java.awt.Desktop
@@ -58,14 +60,21 @@ class TestUsingParameters {
 
 		if (engines.any { it instanceof VirtualizedEngine}) {
 			// verify IP set
-			def partner = config.getValue('PARTNER_IP_AND_PORT')
+			String partner = config.getValue('PARTNER_IP_AND_PORT')
 			if(partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
 				throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. This can either be done via the -p option or directly in the Config.groovy file.")
 			}
 			
 			// verify all mandatory config options
 			new VBoxConfiguration().verify()
-			VBoxWebService.instance.install()
+			new VBoxWebService().startAndInstall()
+
+            VirtualBox vb = new VirtualBoxImpl()
+            engines.each {
+                if(it instanceof VirtualizedEngine) {
+                    it.virtualBox = vb
+                }
+            }
 		}
 		
 		try {

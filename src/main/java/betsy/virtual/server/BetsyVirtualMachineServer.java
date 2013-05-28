@@ -1,6 +1,7 @@
 package betsy.virtual.server;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.net.URL;
@@ -23,53 +24,51 @@ import betsy.virtual.server.comm.TCPCommServer;
  */
 public class BetsyVirtualMachineServer {
 
-	private final static Logger log = Logger
+    public static void main(String[] args) throws Exception {
+        try {
+            System.out.println("Starting betsy Virtual Machine Server (bVMS)");
+            new BetsyVirtualMachineServer().start();
+        } catch (Exception exception) {
+            log.error("bVMS execution failed", exception);
+        }
+    }
+
+    private final static Logger log = Logger
 			.getLogger(BetsyVirtualMachineServer.class);
 
-	public static void main(String[] args) throws Exception {
-		try {
-			System.out.println("Starting 'Main' execution!");
-			BetsyVirtualMachineServer vms = new BetsyVirtualMachineServer();
-			vms.init();
-			vms.start();
-		} catch (Exception exception) {
-			log.error("bVMS execution failed:", exception);
-		}
+    private volatile boolean keepRunning = true;
+
+	public BetsyVirtualMachineServer() throws Exception {
+        log.info("bVMS: initializing");
+        logStandardErrorToFile();
+    }
+
+    private void logStandardErrorToFile() throws FileNotFoundException {
+        // Redirect error output
+        File logFolder = new File("log");
+        if(!logFolder.mkdirs()) {
+            throw new IllegalStateException("Could not create folder " + logFolder.getPath());
+        }
+        File errFile = new File(logFolder, "betsyVirtualMachineServer.err");
+        System.setErr(new PrintStream(new FileOutputStream(errFile), true));
+
+        URL log4jURL = BetsyVirtualMachineServer.class
+                .getResource("/virtual/server/log4j.properties");
+        PropertyConfigurator.configure(log4jURL);
+    }
+
+    public void start() throws Exception {
+		log.info("bVMS: starting");
+        try(CommServer com = new TCPCommServer(48888)) {
+            while (keepRunning) {
+                com.handleNextConnection();
+            }
+        }
 	}
 
-	private CommServer com;
-
-	/**
-	 * Used to read configuration files, create a trace file, create
-	 * ServerSockets, Threads, etc.
-	 * 
-	 * @param context
-	 *            the DaemonContext
-	 * @throws DaemonInitException
-	 *             on exception
-	 */
-	public void init() throws DaemonInitException, Exception {
-		// Redirect error output
-		File logFolder = new File("log");
-		logFolder.mkdirs();
-		File errFile = new File(logFolder, "betsyVirtualMachineServer.err");
-		System.setErr(new PrintStream(new FileOutputStream(errFile), true));
-
-		URL log4jURL = BetsyVirtualMachineServer.class
-				.getResource("/virtual/server/log4j.properties");
-		PropertyConfigurator.configure(log4jURL);
-
-		log.info("Initializing daemon instance: " + this.hashCode());
-
-		// initializing the TCP communicator
-		com = new TCPCommServer(48888);
-	}
-
-	public void start() {
-		log.info("bVMS: starting acceptor loop");
-		while (true) {
-			com.waitForConnection();
-		}
-	}
+    public void stop() {
+        log.info("bVMS: stopping");
+        keepRunning = false;
+    }
 
 }

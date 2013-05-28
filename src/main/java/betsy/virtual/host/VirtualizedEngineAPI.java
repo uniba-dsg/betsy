@@ -7,7 +7,6 @@ import java.util.Set;
 
 import betsy.data.Process;
 import betsy.virtual.common.messages.DeployOperation;
-import betsy.virtual.host.utils.ServiceAddress;
 
 /**
  * The {@link VirtualizedEngineAPI} offers methods that are required if dealing

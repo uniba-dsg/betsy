@@ -10,8 +10,7 @@ import java.util.Set;
 import betsy.Configuration;
 import betsy.data.Process;
 import betsy.data.engines.petalsEsb.PetalsEsbEngine;
-import betsy.virtual.host.VirtualizedEngine;
-import betsy.virtual.host.utils.ServiceAddress;
+import betsy.virtual.host.ServiceAddress;
 
 public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 
@@ -23,10 +22,10 @@ public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 		this.defaultEngine = new PetalsEsbEngine();
 	}
 
-	@Override
-	public String getName() {
-		return "petalsesb_v";
-	}
+    @Override
+    public String getName() {
+        return "petalsesb_v";
+    }
 
 	@Override
 	public List<ServiceAddress> getVerifiableServiceAddresses() {

@@ -1,5 +1,6 @@
-package betsy.virtual.host.utils;
+package betsy.virtual.host.virtualbox;
 
+import betsy.virtual.host.virtualbox.utils.InputStreamLogger;
 import groovy.util.AntBuilder;
 
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import betsy.Configuration;
-import betsy.virtual.host.VBoxConfiguration;
 
 /**
  * The {@link VBoxWebService} offers methods to start and stop the VBoxWebSrv
@@ -22,27 +22,14 @@ import betsy.virtual.host.VBoxConfiguration;
  */
 public class VBoxWebService {
 
-	private static VBoxWebService instance = null;
 	private static final Logger log = Logger.getLogger(VBoxWebService.class);
-
-	public static synchronized VBoxWebService getInstance() {
-		if (instance == null) {
-			instance = new VBoxWebService();
-		}
-		return instance;
-	}
 
 	private final Configuration config = Configuration.getInstance();
 
-	private final AntBuilder ant;
-	private final VBoxConfiguration vconfig;
+	private final AntBuilder ant = new AntBuilder();
+	private final VBoxConfiguration vconfig = new VBoxConfiguration();
 
 	private Process vboxServiceProcess;
-
-	private VBoxWebService() {
-		ant = new AntBuilder();
-		vconfig = new VBoxConfiguration();
-	}
 
 	/**
 	 * Installs the VBoxWebSrv by starting it and making sure it is terminated
@@ -52,7 +39,7 @@ public class VBoxWebService {
 	 * @throws IOException
 	 *             thrown if starting the VBoxWebSrv failed
 	 */
-	public void install() throws IOException {
+	public void startAndInstall() throws IOException {
 		this.start();
 		// install a ShutdownHook to terminate the service if the application
 		// is being closed

@@ -122,20 +122,23 @@ public class TCPCommClient implements CommClient, AutoCloseable {
 
 			// receive the answer
 			o = ois.readObject();
-			if (o instanceof StatusMessage) {
-				StatusMessage sm = (StatusMessage) o;
-				if (sm.equals(StatusMessage.OK)) {
-					// engine is available at the VM
-				} else {
-					throw new InvalidResponseException("Invalid StatusMessage "
-							+ "received upon sending engine name: '"
-							+ sm.toString() + "'");
-				}
-			} else {
-				throw new InvalidResponseException("Invalid response received "
-						+ "upon sending engine name: '"
-						+ o.getClass().toString() + "'");
-			}
+
+            // check message type
+			if (!(o instanceof StatusMessage)) {
+                throw new InvalidResponseException("Invalid response received "
+                        + "upon sending engine name: '"
+                        + o.getClass().toString() + "'");
+            }
+
+            // check message content
+			StatusMessage sm = (StatusMessage) o;
+            if (!sm.equals(StatusMessage.OK)) {
+                throw new InvalidResponseException("Invalid StatusMessage "
+                        + "received upon sending engine name: '"
+                        + sm.toString() + "'");
+            }
+
+            // engine is available at the VM
 		} catch (ConnectionException | IOException exception) {
 			throw new ConnectionException("Connection error in client while "
 					+ "sending engine name:", exception);
@@ -150,8 +153,7 @@ public class TCPCommClient implements CommClient, AutoCloseable {
 	public void disconnect() {
 		if (isConnected()) {
 			try {
-				StatusMessage exitMsg = StatusMessage.EXIT;
-				sendMessage(exitMsg);
+                sendMessage(StatusMessage.EXIT);
 			} catch (IOException | ConnectionException exception) {
 				// ignore, connection will be closed anyway
 			} finally {

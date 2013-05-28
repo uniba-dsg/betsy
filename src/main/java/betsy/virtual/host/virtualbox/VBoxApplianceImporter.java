@@ -1,4 +1,4 @@
-package betsy.virtual.host;
+package betsy.virtual.host.virtualbox;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -21,7 +21,7 @@ import org.virtualbox_4_2.ImportOptions;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class VBoxApplianceImporter {
+class VBoxApplianceImporter {
 
 	private static final Logger log = Logger.getLogger(VBoxApplianceImporter.class);
 	

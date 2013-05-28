@@ -30,13 +30,12 @@ import betsy.virtual.server.comm.TCPCommServer;
  */
 public class BetsyVirtualMachineServerDaemon implements Daemon, Runnable {
 
-	private volatile CommServer com;
-	private volatile boolean keepRunning = true;
-	private volatile Thread worker;
-	
 	private static final Logger log = Logger.getLogger(BetsyVirtualMachineServerDaemon.class);
 
-	@Override
+    private volatile Thread worker;
+    private BetsyVirtualMachineServer server;
+
+    @Override
 	public void destroy() {
 		log.info("Destroying daemon instance: " + this.hashCode());
 	}
@@ -54,40 +53,30 @@ public class BetsyVirtualMachineServerDaemon implements Daemon, Runnable {
 	public void init(DaemonContext context) throws DaemonInitException,
 			Exception {
 		// Redirect error output
-		File logFolder = new File("log");
-		logFolder.mkdirs();
-		File errFile = new File(logFolder, "betsyVirtualMachineServer.err");
-		System.setErr(new PrintStream(new FileOutputStream(errFile), true));
-
-		URL log4jURL = BetsyVirtualMachineServerDaemon.class
-				.getResource("/virtual/server/log4j.properties");
-		PropertyConfigurator.configure(log4jURL);
-
 		log.info("Initializing daemon instance: " + this.hashCode());
 
+        server  = new BetsyVirtualMachineServer();
+
 		// initializing the TCP communicator
-		com = new TCPCommServer(48888);
 		this.worker = new Thread(this);
 	}
 
 	@Override
 	public void start() throws Exception {
+        log.info("bVMS daemon: starting");
 		worker.start();
-		log.info("Starting daemon...");
 	}
 
 	@Override
 	public void stop() throws Exception {
-		log.info("Stopping daemon...");
-
-		this.keepRunning = false;
+        log.info("bVMS daemon: stopping");
 
 		/* Close the socket. Forces thread to terminate */
-		this.com.close();
+		this.server.stop();
 
 		/* Wait for the main thread to exit and dump a message */
 		this.worker.join(5000);
-		log.info("betsy-Daemon: stopped");
+        log.info("bVMS daemon: stopped");
 	}
 
 	/**
@@ -96,13 +85,11 @@ public class BetsyVirtualMachineServerDaemon implements Daemon, Runnable {
 	@Override
 	public void run() {
 		try {
-			log.info("betsy-Daemon: started acceptor loop");
-			while (keepRunning) {
-				com.waitForConnection();
-			}
-			log.info("betsy-Daemon: exiting acceptor loop");
+            log.info("bVMS daemon: starting");
+            server.start();
 		} catch (Exception exception) {
-			log.error("betsy-Daemon execution failed:", exception);
+			log.error("bVMS daemon: error", exception);
+            server.stop();
 		}
 	}
 

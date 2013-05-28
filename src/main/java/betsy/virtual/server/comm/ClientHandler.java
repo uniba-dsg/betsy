@@ -115,7 +115,7 @@ public class ClientHandler implements Runnable {
 			// tidy up!
 			tidyUp();
 			// start listening again...
-			commServer.waitForConnection();
+			commServer.handleNextConnection();
 		}
 	}
 

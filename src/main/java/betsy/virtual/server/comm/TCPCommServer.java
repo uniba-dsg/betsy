@@ -30,7 +30,7 @@ public class TCPCommServer implements CommServer {
 	}
 
 	@Override
-	public void waitForConnection() {
+	public void handleNextConnection() {
 		log.info("Server is now accepting a new connection");
 		// create server socket only once
 		if (serverSocket == null) {
@@ -58,7 +58,7 @@ public class TCPCommServer implements CommServer {
 	}
 
 	@Override
-	public void close() {
+	public void close() throws Exception {
 		if (clientHandler != null) {
 			clientHandler.close();
 		}
@@ -67,7 +67,7 @@ public class TCPCommServer implements CommServer {
 		if (serverSocket != null) {
 			try {
 				serverSocket.close();
-			} catch (IOException exception) {
+			} catch (IOException ignore) {
 				// ignore
 			} finally {
 				serverSocket = null;
