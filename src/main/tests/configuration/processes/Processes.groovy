@@ -22,10 +22,6 @@ class Processes {
             patternProcesses.CONTROL_FLOW_PATTERNS
     ].flatten() as List<Process>
 
-    public final List<Process> NOT_DEPLOYABLE = ALL.findAll { process ->
-        process.testCases.any { it.notDeployable }
-    }
-
     public final List<Process> FAULTS = ALL.findAll { process ->
         process.testCases.any {
             it.testSteps.any { it.assertions.any { it instanceof SoapFaultTestAssertion } }
@@ -39,8 +35,6 @@ class Processes {
     public List<Process> get(String name) {
         if ("ALL" == name.toUpperCase()) {
             return ALL
-        } else if ("NOT_DEPLOYABLE" == name.toUpperCase()) {
-            return NOT_DEPLOYABLE
         } else if ("WITH_EXIT_ASSERTION" == name.toUpperCase()) {
             return WITH_EXIT_ASSERTION
         } else if ("FAULTS" == name.toUpperCase()) {

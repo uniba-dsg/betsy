@@ -6,8 +6,6 @@ import betsy.data.Engine
 import betsy.data.Engines
 import betsy.data.Process
 import betsy.data.TestCase
-import betsy.executables.Composite
-
 import configuration.processes.Processes
 
 import java.awt.Desktop
@@ -40,6 +38,7 @@ class TestUsingParameters {
         } catch (Exception e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
+            e.printStackTrace()
             System.exit(0)
         }
 
@@ -51,7 +50,7 @@ class TestUsingParameters {
         if(parser.checkDeployment()) {
             // check only whether the processes can be deployed
             processes.each { process ->
-                process.testCases = [new TestCase(onlyDeploymentCheck: true)]
+                process.testCases = [new TestCase().checkDeployment()]
             }
         }
 

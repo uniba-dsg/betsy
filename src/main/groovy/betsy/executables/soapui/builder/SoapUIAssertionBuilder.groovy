@@ -5,7 +5,6 @@ import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.XpathTestAssertion
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
-import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequestStep
@@ -15,7 +14,6 @@ import com.eviware.soapui.impl.wsdl.teststeps.assertions.basic.XPathContainsAsse
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.NotSoapFaultAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapFaultAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapResponseAssertion
-import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
 
 
@@ -83,10 +81,7 @@ try {
         groovyScriptAssertion.scriptText = "assert 202 == messageExchange.responseStatusCode"
     }
 
-    public static void addDelayTime(WsdlTestCase soapUITestCase, TestStep testStep, int testStepNumber) {
-        WsdlDelayTestStep delay = soapUITestCase.addTestStep(DelayStepFactory.DELAY_TYPE, "Delay for Step #$testStepNumber") as WsdlDelayTestStep
-        delay.setDelay(testStep.timeToWaitAfterwards)
-    }
+
 
     public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestRequestStep soapUiRequestStep) {
         testStep.assertions.each {assertion ->

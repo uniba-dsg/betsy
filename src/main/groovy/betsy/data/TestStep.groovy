@@ -7,21 +7,6 @@ import betsy.data.assertions.NotDeployableAssertion
 class TestStep {
 
     /**
-     * The input value which is send using the <code>operation</code> to the system under test.
-     */
-    String input
-
-    /**
-     * The WSDL operation which is invoked in this test step
-     */
-    WsdlOperation operation
-
-    /**
-     * Time to wait/delay further test execution after processing this step in milliseconds.
-     */
-    Integer timeToWaitAfterwards
-
-    /**
      * List of assertions which are evaluated after the test step has been executed/the messages have been sent.
      */
     List<TestAssertion> assertions = []
@@ -31,21 +16,76 @@ class TestStep {
      */
     String description
 
-    boolean testPartner = false
 
-    boolean concurrencyTest = false
+    @Override
+    public java.lang.String toString() {
+        return "TestStep{" +
+                "timeToWaitAfterwards=" + timeToWaitAfterwards +
+                ", assertions=" + assertions +
+                ", description='" + description + '\'' +
+                '}';
+    }
+}
+
+class NotDeployableCheckTestStep extends TestStep {
+
+    @Override
+    public java.lang.String toString() {
+        return "NotDeployableCheckTestStep{" +
+                "timeToWaitAfterwards=" + timeToWaitAfterwards +
+                ", assertions=" + assertions +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+}
+
+class DelayTestStep extends TestStep {
+    /**
+     * Time to wait/delay further test execution after processing this step in milliseconds.
+     */
+    Integer timeToWaitAfterwards
+
+
+    @Override
+    public java.lang.String toString() {
+        return "DelayTestStep{" +
+                "timeToWaitAfterwards=" + timeToWaitAfterwards +
+                '}';
+    }
+}
+
+class DeployableCheckTestStep extends TestStep {
+
+    @Override
+    public java.lang.String toString() {
+        return "DeployableCheckTestStep{" +
+                "timeToWaitAfterwards=" + timeToWaitAfterwards +
+                ", assertions=" + assertions +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+}
+
+class SoapTestStep extends TestStep {
+
+    /**
+     * The input value which is send using the <code>operation</code> to the system under test.
+     */
+    String input
+
+    /**
+     * The WSDL operation which is invoked in this test step
+     */
+    WsdlOperation operation
 
     boolean isOneWay() {
         WsdlOperation.ASYNC == operation
     }
 
-    String getOperationType(){
-        if(isOneWay()){
-            "asynchronous"
-        } else {
-            "synchronous"
-        }
-    }
+    boolean testPartner = false
+    boolean concurrencyTest = false
 
     public void setOutput(String output) {
         assertions << new XpathTestAssertion(expectedOutput: output, xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer", output: output)
@@ -70,32 +110,13 @@ class TestStep {
         assertions << new XpathTestAssertion(expectedOutput: "true", xpathExpression: "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncResponse >= ${output}", output: "${output}")
     }
 
-    void setAssertions(List<TestAssertion> assertions) {
-        this.assertions.addAll(assertions)
-    }
-
-    boolean isNotDeployable() {
-        assertions.any {it instanceof NotDeployableAssertion }
-    }
-
-    public static TestStep buildPartnerConcurrencySetup() {
-        new TestStep(input: "102", testPartner: true)
-    }
-
-    public static TestStep buildPartnerConcurrencyCheck() {
-        new TestStep(input: "101", testPartner: true, concurrencyTest: true)
-    }
-
-    public static TestStep buildPartnerValueCheck(String value) {
-        new TestStep(input: "102", testPartner: true, partnerOutput: value)
-    }
-
     @Override
-    public String toString() {
-        return "TestStep{" +
+    public java.lang.String toString() {
+        return super.toString() + "SoapTestStep{" +
                 "input='" + input + '\'' +
                 ", operation=" + operation +
-                ", assertions=" + assertions +
+                ", testPartner=" + testPartner +
+                ", concurrencyTest=" + concurrencyTest +
                 '}';
     }
 }
