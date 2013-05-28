@@ -157,8 +157,8 @@ class PatternProcesses {
             ]
     )
 
-    public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
+    public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL = buildPatternProcessWithPartner(
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern-Partial",
             [
                     new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
                             new TestStep(input: "100", operation: WsdlOperation.SYNC),
@@ -166,6 +166,21 @@ class PatternProcesses {
                             new TestStep(input: "102", testPartner: true, partnerOutput: 4)])
             ]
     )
+
+    public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
+            [
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "1", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
+                            new TestStep(input: "102", testPartner: true, partnerOutput: 4)]),
+                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
+                            new TestStep(input: "2", operation: WsdlOperation.SYNC),
+                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
+                            new TestStep(input: "102", testPartner: true, partnerOutput: 4)]),
+            ]
+    )
+
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
@@ -236,6 +251,7 @@ class PatternProcesses {
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
+            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
             CANCEL_ACTIVITY_PATTERN,
             CANCEL_CASE_PATTERN,
