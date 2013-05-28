@@ -157,6 +157,16 @@ class PatternProcesses {
             ]
     )
 
+    public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL = buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronizationPattern-While-Partial",
+            [
+                    new TestCase(testSteps: [
+                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)]),
+                    new TestCase(testSteps: [
+                            new TestStep(input: "2", output: "2", operation: WsdlOperation.SYNC)])
+            ]
+    )
+
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL = buildPatternProcessWithPartner(
             "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern-Partial",
             [
@@ -250,6 +260,7 @@ class PatternProcesses {
             DEFERRED_CHOICE_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
