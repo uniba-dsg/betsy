@@ -8,8 +8,6 @@ class SoapFaultTestAssertion extends TestAssertion {
 
     @Override
     public String toString() {
-        return "SoapFaultTestAssertion{" +
-                "faultString='" + faultString + '\'' +
-                '}';
+        return "SoapFaultTestAssertion{faultString='${faultString}'}"
     }
 }

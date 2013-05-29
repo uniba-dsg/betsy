@@ -69,7 +69,7 @@ class SoapUiTestStepBuilder {
     public void addStepForTestPartner(SoapTestStep testStep, int testStepNumber) {
         WsdlTestRequestStep partnerRequestStep = createTestStepConfig(soapUiTestCase, testStepNumber, "TestPartnerPortTypeBinding","startProcessSync")
         WsdlTestRequest soapUiRequest = createSoapUiRequest(partnerRequestStep, testStep)
-        addTestPartnerAssertion(testStep, soapUiRequest, partnerRequestStep)
+        addTestPartnerAssertion(testStep, partnerRequestStep)
     }
 
     private WsdlTestRequestStep createTestStepConfig(WsdlTestCase soapUiTestCase, int testStepNumber, String portTypeName, String operationName) {
@@ -107,11 +107,10 @@ class SoapUiTestStepBuilder {
 
     public void addStepForTestInterface(SoapTestStep testStep, int testStepNumber) {
         WsdlTestRequestStep soapUiRequestStep = createTestStepConfig(soapUiTestCase, testStepNumber, "TestInterfacePortTypeBinding", testStep.operation.name)
-
         WsdlTestRequest soapUiRequest = createSoapUiRequest(soapUiRequestStep, testStep)
 
         if (!testStep.isOneWay()) {
-            addSynchronousAssertion(testStep, soapUiRequest, soapUiTestCase, soapUiRequestStep, testStepNumber)
+            addSynchronousAssertion(testStep, soapUiRequestStep, soapUiTestCase, testStepNumber)
         } else {
             addOneWayAssertion(soapUiRequest)
         }

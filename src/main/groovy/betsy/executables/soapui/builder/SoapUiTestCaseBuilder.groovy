@@ -1,5 +1,6 @@
 package betsy.executables.soapui.builder
 
+import betsy.data.TestStep
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite
 import betsy.data.TestCase
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
@@ -27,7 +28,7 @@ class SoapUiTestCaseBuilder {
         WsdlTestCase soapUITestCase = soapUiTestSuite.addNewTestCase(testCase.name)
 
         SoapUiTestStepBuilder testStepBuilder = new SoapUiTestStepBuilder(testCase, soapUITestCase, wsdlProject, requestTimeout, wsdlEndpoint)
-        testCase.testSteps.each { testStep ->
+        for(TestStep testStep : testCase.testSteps) {
            testStepBuilder.addTestStep(testStep)
         }
 

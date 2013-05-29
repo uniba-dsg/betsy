@@ -8,8 +8,6 @@ class NotDeployableAssertion extends TestAssertion {
 
     @Override
     public String toString() {
-        return "NotDeployableAssertion{" +
-                "reason='" + reason + '\'' +
-                '}';
+        return "NotDeployableAssertion{reason='${reason}'}"
     }
 }

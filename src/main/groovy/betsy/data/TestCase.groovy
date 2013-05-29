@@ -82,7 +82,7 @@ class TestCase {
     }
 
     public TestCase sendSync(int input, TestAssertion assertion) {
-        TestStep step = new SoapTestStep(input: "$input", assertions: [assertion], operation: WsdlOperation.SYNC)
+        TestStep step = new SoapTestStep(input: "$input", operation: WsdlOperation.SYNC)
         step.assertions.add(assertion)
         addStep(step)
     }

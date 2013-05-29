@@ -20,7 +20,6 @@ class TestStep {
     @Override
     public java.lang.String toString() {
         return "TestStep{" +
-                "timeToWaitAfterwards=" + timeToWaitAfterwards +
                 ", assertions=" + assertions +
                 ", description='" + description + '\'' +
                 '}';
@@ -48,7 +47,7 @@ class DelayTestStep extends TestStep {
 
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return "DelayTestStep{" +
                 "timeToWaitAfterwards=" + timeToWaitAfterwards +
                 '}';
@@ -58,9 +57,8 @@ class DelayTestStep extends TestStep {
 class DeployableCheckTestStep extends TestStep {
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return "DeployableCheckTestStep{" +
-                "timeToWaitAfterwards=" + timeToWaitAfterwards +
                 ", assertions=" + assertions +
                 ", description='" + description + '\'' +
                 '}';
