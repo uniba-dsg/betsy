@@ -1,15 +1,8 @@
 package betsy.data
 
 import betsy.data.assertions.XpathTestAssertion
-import betsy.data.assertions.NotDeployableAssertion
-
 
 class TestStep {
-
-    /**
-     * List of assertions which are evaluated after the test step has been executed/the messages have been sent.
-     */
-    List<TestAssertion> assertions = []
 
     /**
      * just for documentation purposes
@@ -18,23 +11,16 @@ class TestStep {
 
 
     @Override
-    public java.lang.String toString() {
-        return "TestStep{" +
-                ", assertions=" + assertions +
-                ", description='" + description + '\'' +
-                '}';
+    public String toString() {
+        return "TestStep{$description}"
     }
 }
 
 class NotDeployableCheckTestStep extends TestStep {
 
     @Override
-    public java.lang.String toString() {
-        return "NotDeployableCheckTestStep{" +
-                "timeToWaitAfterwards=" + timeToWaitAfterwards +
-                ", assertions=" + assertions +
-                ", description='" + description + '\'' +
-                '}';
+    public String toString() {
+        return "NotDeployableCheckTestStep{$description}"
     }
 
 }
@@ -48,9 +34,7 @@ class DelayTestStep extends TestStep {
 
     @Override
     public String toString() {
-        return "DelayTestStep{" +
-                "timeToWaitAfterwards=" + timeToWaitAfterwards +
-                '}';
+        return "DelayTestStep{description=$description, timeToWaitAfterwards=$timeToWaitAfterwards}"
     }
 }
 
@@ -58,15 +42,17 @@ class DeployableCheckTestStep extends TestStep {
 
     @Override
     public String toString() {
-        return "DeployableCheckTestStep{" +
-                ", assertions=" + assertions +
-                ", description='" + description + '\'' +
-                '}';
+        return "DeployableCheckTestStep{$description}"
     }
 
 }
 
 class SoapTestStep extends TestStep {
+
+    /**
+     * List of assertions which are evaluated after the test step has been executed/the messages have been sent.
+     */
+    List<TestAssertion> assertions = []
 
     /**
      * The input value which is send using the <code>operation</code> to the system under test.
@@ -109,12 +95,13 @@ class SoapTestStep extends TestStep {
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return super.toString() + "SoapTestStep{" +
                 "input='" + input + '\'' +
                 ", operation=" + operation +
                 ", testPartner=" + testPartner +
                 ", concurrencyTest=" + concurrencyTest +
+                ", assertions=" + assertions +
                 '}';
     }
 }

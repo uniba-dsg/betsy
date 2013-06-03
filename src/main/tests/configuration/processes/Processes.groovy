@@ -1,6 +1,7 @@
 package configuration.processes
 
 import betsy.data.Process
+import betsy.data.SoapTestStep
 import betsy.data.TestCase
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
@@ -24,12 +25,12 @@ class Processes {
 
     public final List<Process> FAULTS = ALL.findAll { process ->
         process.testCases.any {
-            it.testSteps.any { it.assertions.any { it instanceof SoapFaultTestAssertion } }
+            it.testSteps.any { it instanceof SoapTestStep && it.assertions.any { it instanceof SoapFaultTestAssertion } }
         }
     }
 
     public final List<Process> WITH_EXIT_ASSERTION = ALL.findAll { process ->
-        process.testCases.any { it.testSteps.any { it.assertions.any { it instanceof ExitAssertion } } }
+        process.testCases.any { it.testSteps.any { it instanceof SoapTestStep && it.assertions.any { it instanceof ExitAssertion } } }
     }
 
     public List<Process> get(String name) {
