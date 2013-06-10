@@ -26,7 +26,7 @@ import betsy.virtual.server.deployers.VirtualizedEngineDeployers;
 /**
  * The {@link ClientHandler} manages the connection to a previously connected
  * client. The handler responds to the requests of the client. This includes
- * requests deploy a process as well as to send logfiles to the client. server.
+ * requests deploy a process as well as to send log files to the client. server.
  * 
  * @author Cedric Roeck
  * @version 1.0
@@ -175,9 +175,9 @@ public class ClientHandler implements Runnable {
 			LogfileCollector collector = new LogfileCollector();
 			LogfileCollection lfc = collector.collectLogfiles(container);
 			this.sendMessage(lfc);
-			log.info("Logfiles sent to client");
+			log.info("Log files sent to client");
 		} catch (CollectLogfileException e) {
-			log.error("Error collecting logfiles:", e);
+			log.error("Error collecting log files:", e);
 			this.sendMessage(StatusMessage.ERROR_COLLECT_LOGFILES);
 		}
 	}

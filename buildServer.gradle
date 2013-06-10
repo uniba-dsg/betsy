@@ -36,7 +36,7 @@ sourceSets {
 }
 
 dependencies {
-	groovy 'org.codehaus.groovy:groovy-all:2.1.2'
+	groovy 'org.codehaus.groovy:groovy-all:2.1.4'
 	compile 'org.apache.ant:ant:1.8.4'
 	compile 'log4j:log4j:1.2.17'
 	compile 'commons-daemon:commons-daemon:1.0.12'
@@ -45,7 +45,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.5'
+    gradleVersion = '1.6'
 }
 
 task jarServer(type: Jar, dependsOn: classes) {

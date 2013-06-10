@@ -58,7 +58,7 @@ class PetalsEsbEngine extends LocalEngine {
                             substring: "[Petals.AutoLoaderService] : Error during the auto- installation of a component")
                 }
             }
-        } catch (Exception e){
+        } catch (Exception ignore){
             ant.echo message: "SOAP BC Installation failed - shutdown, reinstall and start petalsesb again"
             shutdown()
             install()
@@ -136,12 +136,6 @@ class PetalsEsbEngine extends LocalEngine {
                 http url: CHECK_URL
             }
         }
-    }
-
-    @Override
-    protected void bpelFolderToZipFile(Process process) {
-        ant.mkdir dir: process.targetPackagePath
-        ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
     }
 
 }

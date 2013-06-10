@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 public class DeployOperation implements Serializable {
 
 	/**
-	 * SerialVersioUID.
+	 * SerialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
 

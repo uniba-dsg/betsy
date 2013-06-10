@@ -81,7 +81,7 @@ public class VirtualizedOdeDeployer implements VirtualizedEngineDeployer {
 	private void setPosixPermissions(final Path path) {
 		try {
 			// using PosixFilePermission to set file permissions 777
-			Set<PosixFilePermission> permissions = new HashSet<PosixFilePermission>();
+			Set<PosixFilePermission> permissions = new HashSet<>();
 			// set owner
 			permissions.add(PosixFilePermission.OWNER_READ);
 			permissions.add(PosixFilePermission.OWNER_WRITE);

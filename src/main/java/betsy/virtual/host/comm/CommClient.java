@@ -13,7 +13,7 @@ import betsy.virtual.common.messages.LogfileCollection;
 /**
  * The {@link CommClient} is running on the host and offers several methods to
  * tell the server what has to be done next. This includes to send deployment
- * instructions as well as to gather logfiles from the remote server.
+ * instructions as well as to gather log files from the remote server.
  * 
  * @author Cedric Roeck
  * @version 1.0
@@ -32,17 +32,17 @@ public interface CommClient {
 	public void reconnect(int timeout) throws IOException;
 
 	/**
-	 * Request the logfiles of the engine and of the server ifself from the
+	 * Request the log files of the engine and of the server itself from the
 	 * server and wait until they have been received.
 	 * 
 	 * @param betsyInstallDir
-	 *            the dir where the server's logfiles are
+	 *            the dir where the server's log files are
 	 * @param engineInstallDir
-	 *            the dir where the engine's logfiles are
-	 * @return the received logfiles from the server
+	 *            the dir where the engine's log files are
+	 * @return the received log files from the server
 	 * 
 	 * @throws ChecksumException
-	 *             thrown if the received logfiles got corrupted by the network
+	 *             thrown if the received log files got corrupted by the network
 	 *             transmission
 	 * @throws ConnectionException
 	 *             thrown if the connection to the server was lost
@@ -50,7 +50,7 @@ public interface CommClient {
 	 *             thrown if the server did respond with an invalid message.
 	 *             Indicating incompatible versions.
 	 * @throws CollectLogfileException
-	 *             thrown if the logfiles could not be collected. Check the
+	 *             thrown if the log files could not be collected. Check the
 	 *             server manually to resolve the issue
 	 */
 	public LogfileCollection getLogfilesFromServer(

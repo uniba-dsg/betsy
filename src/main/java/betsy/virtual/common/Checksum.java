@@ -39,7 +39,7 @@ public class Checksum implements Serializable {
 	}
 
 	/**
-	 * SerialVersioUID.
+	 * SerialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
 

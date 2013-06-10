@@ -1,7 +1,7 @@
 package betsy.virtual.common.exceptions;
 
 /**
- * The {@link CollectLogfileException} is thrown if collecting the logfiles from
+ * The {@link CollectLogfileException} is thrown if collecting the log files from
  * a server failed.
  * 
  * @author Cedric Roeck

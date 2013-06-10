@@ -28,10 +28,10 @@ public class InputStreamLogger extends Thread {
 
 	@Override
 	public void run() {
-		try (InputStreamReader inpStrd = new InputStreamReader(stream);
-				BufferedReader buffRd = new BufferedReader(inpStrd)) {
+		try (InputStreamReader inputStreamReader = new InputStreamReader(stream);
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
 			String line;
-			while ((line = buffRd.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) {
 				log.info(description + ": " + line);
 			}
 		} catch (Exception exception) {
