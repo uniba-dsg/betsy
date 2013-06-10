@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="MultiChoicePattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multiChoice"
+        name="WCP07-SynchronizingMergePattern-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/synchronizingMerge/partial"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
@@ -28,58 +28,44 @@
                 <to variable="initValue"/>
             </copy>
         </assign>
-        <flow name="Choice" suppressJoinFailure="yes">
-            <links>
-                <link name="Choice1Condition"/>
-                <link name="Choice2Condition"/>
-            </links>
-            <assign name="ChoiceAssign">
-                <sources>
-                    <source linkName="Choice2Condition">
-                        <transitionCondition>$initValue > 2</transitionCondition>
-                    </source>
-                    <source linkName="Choice1Condition">
-                        <transitionCondition>$initValue > 1</transitionCondition>
-                    </source>
-                </sources>
-                <copy>
-                    <from>'A'</from>
-                    <to variable="Root" />
-                </copy>
-                <copy>
-                    <from>'Y'</from>
-                    <to variable="Branch1"/>
-                </copy>
-                <copy>
-                    <from>'Z'</from>
-                    <to variable="Branch2"/>
-                </copy>
-            </assign>
 
-            <sequence name="Choice1">
-                <targets>
-                    <target linkName="Choice1Condition"/>
-                </targets>
+        <assign name="ChoiceAssign">
+            <copy>
+                <from>'A'</from>
+                <to variable="Root" />
+            </copy>
+            <copy>
+                <from>'Y'</from>
+                <to variable="Branch1"/>
+            </copy>
+            <copy>
+                <from>'Z'</from>
+                <to variable="Branch2"/>
+            </copy>
+        </assign>
+
+        <flow name="Choice">
+            <if name="Choice1">
+                <condition>$initValue > 1</condition>
                 <assign name="Choice1Assign">
                     <copy>
                         <from>'B'</from>
                         <to variable="Branch1"/>
                     </copy>
                 </assign>
-            </sequence>
-            <sequence name="Choice2">
-                <targets>
-                    <target linkName="Choice2Condition"/>
-                </targets>
+            </if>
+            <if name="Choice2">
+                <condition>$initValue > 2</condition>
                 <assign name="Choice2Assign">
                     <copy>
                         <from>'C'</from>
                         <to variable="Branch2"/>
                     </copy>
                 </assign>
-            </sequence>
+            </if>
         </flow>
-        <assign name="Merge">
+
+        <assign name="SynchronizingMerge">
             <copy>
                 <from>concat($Root,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>

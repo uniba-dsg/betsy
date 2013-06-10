@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="DeferredChoicePattern"
+        name="WCP16-DeferredChoicePattern"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/deferredChoice"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">

@@ -54,11 +54,6 @@ class OrchestraEngine extends LocalEngine {
     }
 
     @Override
-    void onPostDeployment() {
-        // do nothing - as using synchronous deployment
-    }
-
-    @Override
     void onPostDeployment(Process process) {
         // do nothing - as using synchronous deployment
     }

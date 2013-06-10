@@ -1,6 +1,6 @@
 package betsy.executables.generator
 
-import betsy.executables.soapui.builder.SoapUiWrapper
+import betsy.executables.soapui.builder.SoapUiProjectBuilder
 import betsy.data.Process
 
 
@@ -18,6 +18,6 @@ class TestBuilder {
     public void buildTest() {
         ant.echo message: "Creating SoapUI TestSuite for Process ${process.bpelFileNameWithoutExtension}"
         ant.mkdir dir: process.targetSoapUIPath
-        new SoapUiWrapper(process: process, requestTimeout: requestTimeout).createSoapUIProject()
+        new SoapUiProjectBuilder(process: process, requestTimeout: requestTimeout).createSoapUIProject()
     }
 }

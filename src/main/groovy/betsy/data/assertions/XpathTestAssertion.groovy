@@ -13,6 +13,7 @@ class XpathTestAssertion extends TestAssertion {
         return "XpathTestAssertion{" +
                 "xpathExpression='" + xpathExpression + '\'' +
                 ", expectedOutput='" + expectedOutput + '\'' +
+                ", output='" + output + '\'' +
                 '}';
     }
 }

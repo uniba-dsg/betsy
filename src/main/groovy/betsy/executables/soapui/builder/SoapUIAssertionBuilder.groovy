@@ -1,11 +1,11 @@
 package betsy.executables.soapui.builder
 
+import betsy.data.TestAssertion
 import betsy.data.TestStep
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.XpathTestAssertion
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
-import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequestStep
@@ -15,36 +15,37 @@ import com.eviware.soapui.impl.wsdl.teststeps.assertions.basic.XPathContainsAsse
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.NotSoapFaultAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapFaultAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapResponseAssertion
-import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
 
 
 class SoapUIAssertionBuilder {
 
-    public static void addSynchronousAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestCase soapUITestCase, WsdlTestRequestStep soapUiRequestStep, int testStepNumber) {
-        testStep.assertions.each {assertion ->
+    public static void addSynchronousAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
+        for(TestAssertion assertion : testStep.assertions) {
 
             if (assertion instanceof XpathTestAssertion) {
-                addXpathTestAssertion(soapUiRequest, soapUiRequestStep, assertion)
+                addXpathTestAssertion(soapUiRequest, assertion)
             } else if (assertion instanceof SoapFaultTestAssertion) {
-                addSoapFaultTestAssertion(soapUiRequest, soapUiRequestStep, assertion)
+                addSoapFaultTestAssertion(soapUiRequest, assertion)
             } else if (assertion instanceof ExitAssertion) {
                 addExitAssertion(soapUITestCase, testStepNumber)
             }
         }
 
         if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
-            soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL)
+            Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create not soap fault assertion")
         }
     }
 
-    public static void addSoapFaultTestAssertion(WsdlTestRequest soapUiRequest, WsdlTestRequestStep soapUiRequestStep, SoapFaultTestAssertion assertion) {
+    public static void addSoapFaultTestAssertion(WsdlTestRequestStep soapUiRequest, SoapFaultTestAssertion assertion) {
         // validate result
-        soapUiRequest.addAssertion(SoapResponseAssertion.LABEL)
-        soapUiRequest.addAssertion(SoapFaultAssertion.LABEL)
+        Objects.requireNonNull(soapUiRequest.addAssertion(SoapResponseAssertion.LABEL), "Could not create Soap Response Assertion")
+        Objects.requireNonNull(soapUiRequest.addAssertion(SoapFaultAssertion.LABEL), "Could not create Soap Fault Assertion")
 
-        if (assertion.faultString) {
-            SimpleContainsAssertion simpleContainsAssertion = soapUiRequestStep.addAssertion(SimpleContainsAssertion.LABEL) as SimpleContainsAssertion
+        if (assertion.faultString != null) {
+            SimpleContainsAssertion simpleContainsAssertion = soapUiRequest.addAssertion(SimpleContainsAssertion.LABEL) as SimpleContainsAssertion
+            Objects.requireNonNull(simpleContainsAssertion,"Simple contains assertion could not be created for ${assertion}")
+
             simpleContainsAssertion.token = assertion.faultString
             simpleContainsAssertion.ignoreCase = false
         }
@@ -83,29 +84,25 @@ try {
         groovyScriptAssertion.scriptText = "assert 202 == messageExchange.responseStatusCode"
     }
 
-    public static void addDelayTime(WsdlTestCase soapUITestCase, TestStep testStep, int testStepNumber) {
-        WsdlDelayTestStep delay = soapUITestCase.addTestStep(DelayStepFactory.DELAY_TYPE, "Delay for Step #$testStepNumber") as WsdlDelayTestStep
-        delay.setDelay(testStep.timeToWaitAfterwards)
-    }
 
-    public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequest soapUiRequest, WsdlTestRequestStep soapUiRequestStep) {
-        testStep.assertions.each {assertion ->
 
+    public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
+        for(TestAssertion assertion : testStep.assertions) {
             if (assertion instanceof XpathTestAssertion) {
-                addXpathTestAssertion(soapUiRequest, soapUiRequestStep, assertion)
+                addXpathTestAssertion(soapUiRequest, assertion)
             }
         }
 
         if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
-            soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL)
+            Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create Not Soap Fault Assertion")
         }
     }
 
-    public static void addXpathTestAssertion(WsdlTestRequest soapUiRequest, WsdlTestRequestStep soapUiRequestStep, XpathTestAssertion assertion) {
+    public static void addXpathTestAssertion(WsdlTestRequestStep soapUiRequest, XpathTestAssertion assertion) {
         // validate result
-        soapUiRequest.addAssertion(SoapResponseAssertion.LABEL)
+        Objects.requireNonNull(soapUiRequest.addAssertion(SoapResponseAssertion.LABEL), "Could not create Soap Response Assertion");
 
-        XPathContainsAssertion xPathContainsAssertion = soapUiRequestStep.addAssertion(XPathContainsAssertion.LABEL) as XPathContainsAssertion
+        XPathContainsAssertion xPathContainsAssertion = soapUiRequest.addAssertion(XPathContainsAssertion.LABEL) as XPathContainsAssertion
         xPathContainsAssertion.path = assertion.xpathExpression
         xPathContainsAssertion.expectedContent = assertion.expectedOutput
     }

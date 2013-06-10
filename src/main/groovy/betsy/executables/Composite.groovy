@@ -1,6 +1,7 @@
 package betsy.executables
 
 import betsy.data.engines.Engine;
+import betsy.data.Process
 import betsy.executables.analytics.Analyzer
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
@@ -32,36 +33,18 @@ class Composite {
 
 		log "${context.testSuite.path}/all", {
 
-			try {
-				// create reports
-				log "${context.testSuite.path}/prepare", {
-
-					// ensure folder structure
-					context.testSuite.engines.each { engine ->
-						engine.prepare()
-					}
-
-					// ensure that no engine is currently running
-					context.testSuite.engines.each { engine ->
-						engine.failIfRunning()
-					}
-				}
-
-                log "${context.testSuite.path}/execute", {
-                    // prepare folder structure
-                    executeEngines(context)
+            try {
+                // fail fast
+                for(Engine engine : context.testSuite.engines){
+                    engine.prepare()
+                    engine.failIfRunning()
                 }
 
-				// create reports
-				log "${context.testSuite.path}/report", {
-					new Reporter(ant: ant, tests: context.testSuite).createReports()
-				}
+                executeEngines(context)
 
-				// create reports
-                log "${context.testSuite.path}/analytics", {
-                    new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
+                new Reporter(ant: ant, tests: context.testSuite).createReports()
+                new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
                             reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
-                }
 
 			} catch (Exception e) {
 				ant.echo message: IOUtil.getStackTrace(e), level: "error"
@@ -71,78 +54,102 @@ class Composite {
 		}
 	}
 
-	protected void executeEngines(ExecutionContext context) {
-        context.testSuite.engines.each { engine ->
+    protected void executeEngines(ExecutionContext context) {
+        for(Engine engine : context.testSuite.engines){
             executeEngine(engine)
         }
 	}
 
-	protected void executeEngine(Engine engine) {
+    protected void executeEngine(Engine engine) {
+        log engine.path, {
+            for(Process process : engine.processes) {
+                executeProcess(process)
+            }
+        }
+    }
 
-		log "${context.testSuite.path}/${engine.name}", {
-			try {
-				// build
-				log "${engine.path}/build", {
-					engine.processes.each { process ->
-						// deploy
-						log "${process.targetPath}/build", {
+    protected void executeProcess(Process process) {
+        println "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
 
-                            log "${process.targetPath}/build_package", {
-                                engine.buildArchives(process)
-                            }
-
-							log "${process.targetPath}/build_test", {
-								soapui "${process.targetPath}/soapui_generation", {
-									new TestBuilder(process: process,
-											requestTimeout: context.requestTimeout,
-											ant: ant).buildTest()
-								}
-							}
-						}
-					}
-				}
-
-				// setup infrastructure
-                log "${engine.path}/install", {
-                    engine.install()
+        new Retry(process: process, ant: ant).atMostThreeTimes {
+            log "${process.targetPath}/all", {
+                try {
+                    buildPackageAndTest(process)
+                    installAndStart(process.engine)
+                    deploy(process)
+                    test(process)
+                } finally {
+                    // ensure shutdown
+                    shutdown(process.engine)
                 }
+            }
+        }
+    }
 
-                log "${engine.path}/startup", {
-                    engine.startup()
+    protected void shutdown(Engine engine) {
+        log "${engine.path}/shutdown", {
+            engine.shutdown()
+        }
+    }
+
+    protected void deploy(Process process) {
+        log "${process.targetPath}/deploy", {
+            ant.echo message: "Deploying process ${process} to engine ${process.engine}"
+            process.engine.deploy(process)
+            process.engine.onPostDeployment(process)
+        }
+    }
+
+    protected void installAndStart(Engine engine) {
+        // setup infrastructure
+        log "${engine.path}/install", {
+            engine.install()
+        }
+
+        log "${engine.path}/startup", {
+            engine.startup()
+        }
+    }
+
+    protected void test(Process process) {
+        try {
+            try {
+                context.testPartner.publish()
+            } catch (BindException e) {
+                context.testPartner.unpublish()
+                ant.echo "Address already in use - waiting 2 seconds to get available"
+                ant.sleep(milliseconds: 2000)
+                context.testPartner.publish()
+            }
+
+            log "${process.targetPath}/test", {
+                soapui "${process.targetPath}/soapui_test", {
+                    new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
+                            reportingDirectory: process.targetReportsPath, ant: ant).run()
                 }
+                ant.sleep(milliseconds: 500)
+                process.engine.storeLogs(process)
+            }
+        } finally {
+            context.testPartner.unpublish()
+        }
+    }
 
-				// deploy
-				log "${engine.path}/deploy", {
-					engine.processes.each { process ->
-						log "${process.targetPath}/deploy", {
-							ant.echo message: "Deploying process ${process} to engine ${this}"
-							engine.deploy(process)
-						}
-					}
-					engine.onPostDeployment()
-				}
+    protected void buildPackageAndTest(Process process) {
+        log "${process.targetPath}/build", {
 
-				// test
-				log "${engine.path}/test", {
+            log "${process.targetPath}/build_package", {
+                String[] systemOuts = IOUtil.captureSystemOutAndErr { process.engine.buildArchives(process) }
 
-					engine.processes.each { process ->
-						context.testPartner.publish()
-						log "${process.targetPath}/test", {
-							soapui "${process.targetPath}/soapui_test", {
-								new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
-										reportingDirectory: process.targetReportsPath, ant: ant).run()
-							}
-							ant.sleep(milliseconds: 500)
-							engine.storeLogs(process)
-						}
-						context.testPartner.unpublish()
-					}
-				}
+                ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
+                ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
+            }
 
-			} finally {
-				// ensure shutdown
-                log "${engine.path}/shutdown", {
-                    engine.shutdown()
+            log "${process.targetPath}/build_test", {
+                soapui "${process.targetPath}/soapui_generation", {
+                    new TestBuilder(process: process,
+                            requestTimeout: context.requestTimeout,
+                            ant: ant).buildTest()
                 }
 			}
 		}

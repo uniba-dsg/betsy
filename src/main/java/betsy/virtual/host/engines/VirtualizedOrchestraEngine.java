@@ -60,12 +60,6 @@ public class VirtualizedOrchestraEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public void onPostDeployment() {
-		// not required. deploy is in sync and does not return before engine is
-		// deployed
-	}
-
-	@Override
 	public void onPostDeployment(Process process) {
 		// not required. deploy is in sync and does not return before process is
 		// deployed

@@ -2,8 +2,6 @@ package configuration.processes
 
 import betsy.data.Process
 import betsy.data.TestCase
-import betsy.data.TestStep
-import betsy.data.WsdlOperation
 import betsy.data.assertions.ExitAssertion
 
 /**
@@ -30,159 +28,194 @@ class PatternProcesses {
     }
 
     public final Process SEQUENCE_PATTERN = buildPatternProcess(
-            "SequencePattern",
+            "WCP01-SequencePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
     public final Process PARALLEL_SPLIT_PATTERN = buildPatternProcess(
-            "ParallelSplitPattern",
+            "WCP02-ParallelSplitPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
     public final Process SYNCHRONIZATION_PATTERN = buildPatternProcess(
-            "SynchronizationPattern",
+            "WCP03-SynchronizationPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1AB", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
     public final Process EXCLUSIVE_CHOICE_PATTERN = buildPatternProcess(
-            "ExclusiveChoicePattern",
+            "WCP04-ExclusiveChoicePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "11B", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"1A"),
+                    new TestCase().checkDeployment().sendSyncString(11,"11B")
             ]
     )
 
     public final Process SIMPLE_MERGE_PATTERN = buildPatternProcess(
-            "SimpleMergePattern",
+            "WCP05-SimpleMergePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "11", stringOperationOutput: "11B", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"1A"),
+                    new TestCase().checkDeployment().sendSyncString(11,"11B")
             ]
     )
 
     public final Process MULTI_CHOICE_PATTERN = buildPatternProcess(
-            "MultiChoicePattern",
+            "WCP06-MultiChoicePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "ABC", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
+            ]
+    )
+
+    public final Process MULTI_CHOICE_PATTERN_PARTIAL = buildPatternProcess(
+            "WCP06-MultiChoicePattern-Partial",
+            [
+                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
             ]
     )
 
     public final Process SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
-            "SynchronizingMergePattern",
+            "WCP07-SynchronizingMergePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AYZ", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "ABZ", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "ABC", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
+            ]
+    )
+
+    public final Process SYNCHRONIZING_MERGE_PATTERN_PARTIAL = buildPatternProcess(
+            "WCP07-SynchronizingMergePattern-Partial",
+            [
+                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
             ]
     )
 
     public final Process DISCRIMINATOR_PATTERN = buildPatternProcess(
-            "DiscriminatorPattern",
+            "WCP09-DiscriminatorPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"1")
             ]
     )
 
     public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
-            "ArbitraryCyclesPattern",
+            "WCP10-ArbitraryCyclesPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1ABC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2BC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3C", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"1ABC"),
+                    new TestCase().checkDeployment().sendSyncString(2,"2BC"),
+                    new TestCase().checkDeployment().sendSyncString(3,"3C")
             ]
     )
 
     public final Process IMPLICIT_TERMINATION_PATTERN = buildPatternProcess(
-            "ImplicitTerminationPattern",
+            "WCP11-ImplicitTerminationPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1, "1")
             ]
     )
 
     public final Process DEFERRED_CHOICE_PATTERN = buildPatternProcess(
-            "DeferredChoicePattern",
+            "WCP16-DeferredChoicePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC)]),
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSync(1, 1),
+                    new TestCase().checkDeployment().sendSyncString(1, "1")
             ]
     )
 
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
-            "MultipleInstancesWithoutSynchronizationPattern",
+            "WCP12-MultipleInstancesWithoutSynchronizationPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1CC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "2", stringOperationOutput: "2CCC", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "3", stringOperationOutput: "3CCCC", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(2),
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(3)
+            ]
+    )
+
+    public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL = buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronizationPattern-Partial",
+            [
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().
+                            sendSync(100).buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
+            ]
+    )
+
+    public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL = buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronizationPattern-While-Partial",
+            [
+                    new TestCase().checkDeployment().sendSync(1,1),
+                    new TestCase().checkDeployment().sendSync(2,2)
+            ]
+    )
+
+    public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL = buildPatternProcessWithPartner(
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern-Partial",
+            [
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(100).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
             ]
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
-                            new TestStep(input: "100", operation: WsdlOperation.SYNC),
-                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
-                            new TestStep(input: "102", testPartner: true, partnerOutput: 4)])
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(4),
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
             ]
     )
 
+
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
+            "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
-                            new TestStep(input: "1", operation: WsdlOperation.SYNC),
-                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
-                            new TestStep(input: "102", testPartner: true, partnerOutput: 2)]),
-                    new TestCase(testSteps: [new TestStep(input: "102", testPartner: true),
-                            new TestStep(input: "2", operation: WsdlOperation.SYNC),
-                            new TestStep(input: "101", testPartner: true, concurrencyTest: true),
-                            new TestStep(input: "102", testPartner: true, partnerOutput: 3)]),
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(2),
+                    new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
+                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(3)
             ]
     )
 
     public final Process CANCEL_ACTIVITY_PATTERN = buildPatternProcess(
-            "CancelActivityPattern",
+            "WCP19-CancelActivityPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1A", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "0", stringOperationOutput: "0B", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"1A"),
+                    new TestCase().checkDeployment().sendSyncString(0,"0B")
             ]
     )
 
     public final Process CANCEL_CASE_PATTERN = buildPatternProcess(
-            "CancelCasePattern",
+            "WCP20-CancelCasePattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "1", operation: WsdlOperation.SYNC_STRING)]),
-                    new TestCase(testSteps: [new TestStep(input: "0", assertions: [new ExitAssertion()], operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1,"1"),
+                    new TestCase().checkDeployment().sendSyncString(0, new ExitAssertion())
             ]
     )
 
     public final Process MILESTONE_PATTERN = buildPatternProcess(
-            "MilestonePattern",
+            "WCP18-MilestonePattern",
             [
-                    new TestCase(name: "PickAsyncMessage", testSteps: [
-                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC),
-                            new TestStep(input: "1", operation: WsdlOperation.ASYNC),
-                            new TestStep(input: "1", stringOperationOutput: "8", operation: WsdlOperation.SYNC_STRING),
-                    ]),
-                    new TestCase(name: "Pick3sTimeout", testSteps: [
-                            new TestStep(input: "1", output: "1", operation: WsdlOperation.SYNC, timeToWaitAfterwards: 4000),
-                            new TestStep(input: "1", stringOperationOutput: "9", operation: WsdlOperation.SYNC_STRING),
-                    ])
+                    new TestCase(name: "PickAsyncMessage").checkDeployment().sendSync(1, 1).
+                            sendAsync(1).sendSyncString(1, "8"),
+                    new TestCase(name: "Pick3sTimeout").checkDeployment().sendSync(1,1).
+                            waitFor(4000).sendSyncString(1,"9")
             ]
     )
 
     public final Process INTERLEAVED_PARALLEL_ROUTING_PATTERN = buildPatternProcess(
-            "InterleavedParallelRoutingPattern",
+            "WCP17-InterleavedParallelRoutingPattern",
             [
-                    new TestCase(testSteps: [new TestStep(input: "1", stringOperationOutput: "AW1ABW2B", operation: WsdlOperation.SYNC_STRING)])
+                    new TestCase().checkDeployment().sendSyncString(1, "AW1ABW2B")
             ]
     )
 
@@ -193,13 +226,18 @@ class PatternProcesses {
             EXCLUSIVE_CHOICE_PATTERN,
             SIMPLE_MERGE_PATTERN,
             MULTI_CHOICE_PATTERN,
+            MULTI_CHOICE_PATTERN_PARTIAL,
             SYNCHRONIZING_MERGE_PATTERN,
+            SYNCHRONIZING_MERGE_PATTERN_PARTIAL,
             DISCRIMINATOR_PATTERN,
             ARBITRARY_CYCLES_PATTERN,
             IMPLICIT_TERMINATION_PATTERN,
             DEFERRED_CHOICE_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
+            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
             CANCEL_ACTIVITY_PATTERN,
             CANCEL_CASE_PATTERN,

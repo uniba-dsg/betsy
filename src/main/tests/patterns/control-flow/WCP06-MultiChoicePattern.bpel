@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="SynchronizingMergePattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/synchronizingMerge"
+        name="WCP06-MultiChoicePattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multiChoice"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
@@ -79,7 +79,7 @@
                 </assign>
             </sequence>
         </flow>
-        <assign name="SynchronizingMerge">
+        <assign name="Merge">
             <copy>
                 <from>concat($Root,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>

@@ -5,7 +5,7 @@ import betsy.data.engines.LocalEngine;
 
 class OpenEsbEngine extends LocalEngine {
 
-    private static final String CHECK_URL = "http://localhost:18181"
+    static final String CHECK_URL = "http://localhost:18181"
 
     @Override
     String getName() {
@@ -52,11 +52,6 @@ class OpenEsbEngine extends LocalEngine {
     @Override
     void deploy(Process process) {
         cli.forceRedeploy(process)
-    }
-
-    @Override
-    void onPostDeployment() {
-        // do nothing - as using synchronous deployment
     }
 
     @Override

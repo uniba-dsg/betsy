@@ -16,10 +16,15 @@ public class FaultMessage
 {
 
     /**
-     * Java type that goes as soapenv:Fault detail element.
-     * 
-     */
-    private int faultInfo;
+	 * 
+	 */
+	private static final long serialVersionUID = -2622443132191938583L;
+
+	/**
+	 * Java type that goes as soapenv:Fault detail element.
+	 * 
+	 */
+    private final int faultInfo;
 
     /**
      * 

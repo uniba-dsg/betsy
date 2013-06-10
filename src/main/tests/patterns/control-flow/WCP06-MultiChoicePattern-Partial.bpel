@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="WCP06-MultiChoicePattern-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multiChoice/partial"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
+
+        <variable name="initValue" type="xs:int" />
+        <variable name="Root" type="xs:string" />
+        <variable name="Branch1" type="xs:string"/>
+        <variable name="Branch2" type="xs:string"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
+                 portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="StoreInput">
+            <copy>
+                <from variable="InitData" part="inputPart" />
+                <to variable="initValue"/>
+            </copy>
+        </assign>
+
+        <assign name="ChoiceAssign">
+            <copy>
+                <from>'A'</from>
+                <to variable="Root" />
+            </copy>
+            <copy>
+                <from>'Y'</from>
+                <to variable="Branch1"/>
+            </copy>
+            <copy>
+                <from>'Z'</from>
+                <to variable="Branch2"/>
+            </copy>
+        </assign>
+
+        <flow name="Choice">
+            <if name="If1">
+                <condition>$initValue > 1</condition>
+                <assign name="Choice1Assign">
+                    <copy>
+                        <from>'B'</from>
+                        <to variable="Branch1"/>
+                    </copy>
+                </assign>
+            </if>
+            <if name="If2">
+                <condition>$initValue > 2</condition>
+                <assign name="Choice2Assign">
+                    <copy>
+                        <from>'C'</from>
+                        <to variable="Branch2"/>
+                    </copy>
+                </assign>
+            </if>
+        </flow>
+        <assign name="Merge">
+            <copy>
+                <from>concat($Root,$Branch1,$Branch2)</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
+               portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

@@ -36,7 +36,7 @@ class Stopwatch {
         long remainingSeconds = seconds - (minutes * 60);
         long remainingSecondsInPercent = (remainingSeconds * 100) / 60
 
-        "(${minutes}.${addLeadingZero(remainingSecondsInPercent)} min)"
+        "(${minutes}.${addLeadingZero(remainingSecondsInPercent)} min / ${seconds} sec)"
     }
 	
 	/**

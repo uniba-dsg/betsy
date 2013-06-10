@@ -2,7 +2,6 @@ package betsy.data.engines.bpelg
 
 
 import betsy.data.Process
-import betsy.data.engines.EnginePackageBuilder;
 import betsy.data.engines.LocalEngine;
 import betsy.data.engines.Tomcat;
 import betsy.data.engines.Util;
@@ -56,15 +55,6 @@ class BpelgEngine extends LocalEngine {
 	}
 
 	@Override
-	void onPostDeployment() {
-		ant.echo(message: "waiting for the bpel-g deployment process to fire")
-
-		ant.parallel() {
-			processes.each { process -> onPostDeployment(process) }
-		}
-	}
-
-	@Override
 	void onPostDeployment(Process process) {
 		ant.sequential() {
 			ant.waitfor(maxwait: "100", maxwaitunit: "second") {
@@ -86,12 +76,12 @@ class BpelgEngine extends LocalEngine {
 		// deployment descriptor
 		ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "${getXsltPath()}/bpelg_bpel_to_deploy_xml.xsl")
 
-		// remove unimplemented methods
+        // remove unimplemented methods
         Util.computeMatchingPattern(process).each { pattern ->
-            ant.copy(file:  "${process.targetBpelPath}/TestInterface.wsdl", tofile: "${process.targetBpelPath}/TestInterface.wsdl.before_removing_${pattern}")
-            ant.xslt(in: "${process.targetBpelPath}/TestInterface.wsdl.before_removing_${pattern}", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
+            ant.copy(file:  "${process.targetBpelPath}/TestInterface.wsdl", tofile: "${process.targetTmpPath}/TestInterface.wsdl.before_removing_${pattern}")
+            ant.xslt(in: "${process.targetTmpPath}/TestInterface.wsdl.before_removing_${pattern}", out: "${process.targetBpelPath}/TestInterface.wsdl", style: "$xsltPath/bpelg_prepare_wsdl.xsl", force: "yes") {
                 param(name: "deletePattern", expression: pattern)
-             }
+            }
         }
 
 		// uniquify service name

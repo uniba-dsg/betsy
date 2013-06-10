@@ -16,11 +16,11 @@ class PetalsEsbCompositePackager {
 
     private void createComposite() {
         // create composite
-        String compositeDir = "${process.targetPath}/composite"
+        String compositeDir = "${process.targetTmpPath}/composite"
         String compositeMetaDir = "$compositeDir/META-INF"
         ant.mkdir dir: compositeMetaDir
         ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_composite_jbi_from_bpel.xsl")
-        ant.copy file: process.targetPackageFilePath, todir: compositeDir
+        ant.move file: process.targetPackageFilePath, todir: compositeDir
         ant.copy file: bindingArchive, todir: compositeDir
 
         ant.replace(dir: compositeDir, token: "PARTNER_IP_AND_PORT", value: config.getValueAsString('PARTNER_IP_AND_PORT'))
@@ -31,7 +31,7 @@ class PetalsEsbCompositePackager {
     }
 
     void createBinding() {
-        String bindingDir = "${process.targetPath}/binding"
+        String bindingDir = "${process.targetTmpPath}/binding"
         String bindingMetaDir = "$bindingDir/META-INF"
         ant.mkdir dir: bindingDir
         ant.mkdir(dir: bindingMetaDir)
@@ -48,7 +48,7 @@ class PetalsEsbCompositePackager {
     }
 
     private GString getBindingArchive() {
-        "${process.targetPackagePath}/${process.bpelFileNameWithoutExtension}Binding.zip"
+        "${process.targetTmpPath}/${process.bpelFileNameWithoutExtension}Binding.zip"
     }
 
 }

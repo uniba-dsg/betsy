@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="SynchronizationPattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/synchronization"
+        name="WCP02-ParallelSplitPattern"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/parallelSplit"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
@@ -38,7 +38,7 @@
                 </copy>
             </assign>
         </flow>
-        <assign name="Synchronization">
+        <assign name="Merge">
             <copy>
                 <from>concat($InitData.inputPart,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>

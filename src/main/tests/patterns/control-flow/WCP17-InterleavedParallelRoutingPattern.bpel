@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="InterleavedParallelRoutingPattern"
+        name="WCP17-InterleavedParallelRoutingPattern"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/InterleavedParallelRouting"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -30,6 +30,31 @@
             <links>
                 <link name="scopeLink"/>
             </links>
+			<scope name="Scope2" isolated="yes">
+                <targets>
+                    <target linkName="scopeLink"/>
+                </targets>
+                <sequence name="Sequence3">
+                    <assign name="Preprotocol2">
+                        <copy>
+                            <from>concat($result, 'B')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                    <assign name="Assign2">
+                        <copy>
+                            <from>concat($result, 'W2')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                    <assign name="Postprotocol2">
+                        <copy>
+                            <from>concat($result, 'B')</from>
+                            <to variable="result"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </scope>
             <scope name="Scope1" isolated="yes">
                 <sources>
                     <source linkName="scopeLink"/>
@@ -50,31 +75,6 @@
                     <assign name="Postprotocol1">
                         <copy>
                             <from>concat($result, 'A')</from>
-                            <to variable="result"/>
-                        </copy>
-                    </assign>
-                </sequence>
-            </scope>
-            <scope name="Scope2" isolated="yes">
-                <targets>
-                    <target linkName="scopeLink"/>
-                </targets>
-                <sequence name="Sequence3">
-                    <assign name="Preprotocol2">
-                        <copy>
-                            <from>concat($result, 'B')</from>
-                            <to variable="result"/>
-                        </copy>
-                    </assign>
-                    <assign name="Assign2">
-                        <copy>
-                            <from>concat($result, 'W2')</from>
-                            <to variable="result"/>
-                        </copy>
-                    </assign>
-                    <assign name="Postprotocol2">
-                        <copy>
-                            <from>concat($result, 'B')</from>
                             <to variable="result"/>
                         </copy>
                     </assign>

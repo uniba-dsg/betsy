@@ -1,6 +1,7 @@
 package betsy.data.engines
 
-import java.util.List;
+import betsy.data.engines.openEsb.OpenEsb23Engine
+import betsy.data.engines.petalsEsb.PetalsEsb41Engine
 
 import betsy.data.engines.activeBpel.ActiveBpelEngine
 import betsy.data.engines.bpelg.BpelgEngine;
@@ -23,7 +24,9 @@ class LocalEngines {
 			new OpenEsbEngine(),
 			new PetalsEsbEngine(),
 			new OrchestraEngine(),
-			new ActiveBpelEngine()
+			new ActiveBpelEngine(),
+            new OpenEsb23Engine(),
+            new PetalsEsb41Engine()
 		]
 	}
 

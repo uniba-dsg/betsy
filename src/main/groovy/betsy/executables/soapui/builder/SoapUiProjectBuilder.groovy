@@ -1,6 +1,7 @@
 package betsy.executables.soapui.builder
 
 import betsy.data.Process
+import betsy.data.TestCase
 import com.eviware.soapui.impl.WsdlInterfaceFactory
 import com.eviware.soapui.impl.wsdl.WsdlProject
 import com.eviware.soapui.impl.wsdl.WsdlProjectFactory
@@ -12,7 +13,7 @@ import com.eviware.soapui.impl.wsdl.WsdlTestSuite
  *
  * Not Thread-Safe!
  */
-class SoapUiWrapper {
+class SoapUiProjectBuilder {
 
     final WsdlProjectFactory projectFactory = new WsdlProjectFactory()
     final WsdlInterfaceFactory interfaceFactory = new WsdlInterfaceFactory()
@@ -35,7 +36,7 @@ class SoapUiWrapper {
     }
 
     private void importWsdlFiles() {
-        process.targetWsdlPaths.each {
+        for(String it : process.targetWsdlPaths) {
             interfaceFactory.importWsdl project, it, false
         }
     }
@@ -44,7 +45,7 @@ class SoapUiWrapper {
         WsdlTestSuite soapUiTestSuite = project.addNewTestSuite(process.targetSoapUIProjectName)
 
         SoapUiTestCaseBuilder testCaseBuilder = new SoapUiTestCaseBuilder(soapUiTestSuite,project,process.wsdlEndpoint,requestTimeout)
-        process.testCases.each { testCase ->
+        for(TestCase testCase : process.testCases) {
             testCaseBuilder.addTestCase(testCase)
         }
     }

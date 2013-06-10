@@ -1,8 +1,9 @@
-# BETSY (BPEL Engine Test System)
+# betsy (BPEL Engine Test System)
 
 Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
 More information can be found in the [technical report](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/techrep-betsy-final.pdf).
-A [sample output](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results.zip) of a run of betsy are also available. The tool has been subject to the paper [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/) for which the following [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
+A [sample output](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results.zip) of a run of betsy are also available.
+The tool has been subject to the paper [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/) and [presentation](https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-presentation-soca-2012.pdf) for which these [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
 
 This software is licensed under the LGPL Version 3 Open Source License.
 
@@ -33,10 +34,9 @@ Requirements have to be fulfilled in order to execute any of these `gradlew` tas
 $ gradlew run -Pargs="<ARGS>"
 
 # usage: [options] <engines> <process>
-#  -s,--skip-reinstallation   skip reinstalling each engine for each process
-#  -h                         Print out usage information
-#  -o                         Opens results in default browser
-#  -p <ip-and-port>           Partner IP and Port (defaults to 0.0.0.0:2000)
+# -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
+# -o,--open-results-in-browser         Opens results in default browser
+# -h,--help                            Print out usage information
 
 # Examples
 $ gradlew run # Running all tests for all engines
@@ -49,8 +49,6 @@ $ gradlew run -Pargs="locals Sequence" # Running Sequence test for all virtualis
 $ gradlew run -Pargs="ALL Sequence,While" # Running Sequence and While test for all engines
 $ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
 $ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
-$ gradlew run -Pargs="-s" # Running all tests for all engines installing engines only once
-$ gradlew run -Pargs="-s ode ALL" # Running all tests for Apache ODE installing engines only once
 $ gradlew run -Pargs="-o" # Opens the results in the default browser after a successful run
 
 # Other gradlew tasks

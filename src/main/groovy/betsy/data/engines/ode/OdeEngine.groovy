@@ -53,15 +53,6 @@ class OdeEngine extends LocalEngine {
     }
 
     @Override
-    void onPostDeployment() {
-        ant.parallel() {
-            processes.each { process ->
-                onPostDeployment(process)
-            }
-        }
-    }
-
-    @Override
     void onPostDeployment(Process process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {

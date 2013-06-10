@@ -49,6 +49,7 @@ class TestPartnerServicePublisher {
 			ant.echo "Cannot unpublish TestPartnerService from ${url} as it has not been published yed."
 		} else {
 			try {
+                ant.echo "Unpublishing TestPartnerService from ${url}"
 				endpoint.stop()
 				ant.echo "Unpublished TestPartnerService from ${url}"
 			} catch (NullPointerException ignore) {
