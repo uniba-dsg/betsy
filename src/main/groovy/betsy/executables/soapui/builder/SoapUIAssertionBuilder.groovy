@@ -1,5 +1,6 @@
 package betsy.executables.soapui.builder
 
+import betsy.data.SoapTestStep
 import betsy.data.TestAssertion
 import betsy.data.TestStep
 import betsy.data.assertions.ExitAssertion
@@ -20,7 +21,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
 
 class SoapUIAssertionBuilder {
 
-    public static void addSynchronousAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
+    public static void addSynchronousAssertion(SoapTestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
         for(TestAssertion assertion : testStep.assertions) {
 
             if (assertion instanceof XpathTestAssertion) {
@@ -39,7 +40,7 @@ class SoapUIAssertionBuilder {
 
     public static void addSoapFaultTestAssertion(WsdlTestRequestStep soapUiRequest, SoapFaultTestAssertion assertion) {
         // validate result
-        Objects.requireNonNull(soapUiRequest.addAssertion(SoapResponseAssertion.LABEL), "Could not create Soap Response Assertion")
+        //Objects.requireNonNull(soapUiRequest.addAssertion(SoapResponseAssertion.LABEL), "Could not create Soap Response Assertion")
         Objects.requireNonNull(soapUiRequest.addAssertion(SoapFaultAssertion.LABEL), "Could not create Soap Fault Assertion")
 
         if (assertion.faultString != null) {
