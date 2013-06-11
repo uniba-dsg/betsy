@@ -79,9 +79,7 @@ public class ArchiveExtractor {
 					+ "inputFile must end with file extension of '.ova'");
 		}
 		// assure outputDir exists
-		if(!outputDir.mkdirs()){
-            throw new ArchiveExtractionException("Folder " + outputDir + " could not be created");
-        }
+		outputDir.mkdirs();
 
 		// .ova mustn't be extracted, just copy the file into the outputDir
 		try {
@@ -116,9 +114,7 @@ public class ArchiveExtractor {
 					+ "inputFile must end with file extension of '.zip'");
 		}
 		// assure outputDir exists
-        if(!outputDir.mkdirs()){
-            throw new ArchiveExtractionException("Folder " + outputDir + " could not be created");
-        }
+        outputDir.mkdirs();
 
 		try {
 			List<File> extractedFiles = new LinkedList<>();
@@ -142,9 +138,7 @@ public class ArchiveExtractor {
 		File file = new File(target, ze.getName());
 		log.trace("++" + file.getAbsolutePath());
 		if (ze.isDirectory()) {
-            if(!file.mkdirs()){
-                throw new ArchiveExtractionException("Folder " + file + " could not be created");
-            }
+            file.mkdirs();
 		} else {
 			BufferedInputStream bis = null;
 			BufferedOutputStream bos = null;
