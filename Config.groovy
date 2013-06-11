@@ -49,47 +49,42 @@ virtualisation {
 			bvmsDir = "/opt/betsy/"
 		}
 		active_bpel_v {
-			download = "ftp://141.13.162.58/betsy-active_bpel_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-active_bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
 			logfileDir = "/usr/share/tomcat5.5/logs"
 			headless = true
 			shutdownSaveState = false
 		}
 		bpelg_v {
-			// Only working from inside the University of Bamberg
-			download = "ftp://141.13.162.58/betsy-bpelg_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-bpelg_v.ova"
 			deploymentDir = "/usr/share/tomcat7/bpr"
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
 		}
 		ode_v {
-			// Only working from inside the University of Bamberg
-			download = "ftp://141.13.162.58/betsy-ode_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-ode_v.ova"
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
 		}
 		openesb_v {
-			// Only working from inside the University of Bamberg
-			download = "ftp://141.13.162.58/betsy-openesb_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-openesb_v.ova"
 			deploymentFile = "/opt/openesb/glassfish/bin/asadmin"
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
 			headless = true
 			shutdownSaveState = false
 		}
 		orchestra_v {
-			// Only working from inside the University of Bamberg
-			download = "ftp://141.13.162.58/betsy-orchestra_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-orchestra_v.ova"
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
 			logfileDir = "/var/lib/tomcat7/logs"
 			headless = true
 			shutdownSaveState = false
 		}
 		petalsesb_v {
-			// Only working from inside the University of Bamberg
-			download = "ftp://141.13.162.58/betsy-petalsesb_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-petalsesb_v.ova"
 			deploymentDir = "/opt/petalsesb/install"
 			logfileDir = "/opt/petalsesb/logs"
 			headless = true
