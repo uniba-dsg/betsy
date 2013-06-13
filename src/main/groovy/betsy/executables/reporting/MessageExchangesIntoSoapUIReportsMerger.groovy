@@ -37,6 +37,9 @@ class MessageExchangesIntoSoapUIReportsMerger {
                 String previousText = failure.text()
                 String failureText = txt.toFile().readLines().join("""
 """)
+                // hack for bad encoding issues in jenkins
+                failureText = failureText.replaceAll("ü","ue").replaceAll("ä","ae").replaceAll("ö","oe")
+
                 String newText = """$previousText
 
 
