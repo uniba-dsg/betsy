@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP06-MultiChoicePattern"
+        name="WCP06-MultiChoice"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multiChoice"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"

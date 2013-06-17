@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP12-MultipleInstancesWithoutSynchronizationPattern-Partial"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization/partial"
+        name="WCP12-MultipleInstancesWithoutSynchronization-While-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization/while/partial"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
-        xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
-    <!-- Partial support, because it replicates the definition of the invoke -->
+        xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
-            importType="http://schemas.xmlsoap.org/wsdl/"/>
+                importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" location="../TestPartner.wsdl"
             importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
@@ -17,8 +17,8 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
-        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
+        <variable name="counter" type="xs:int"/>
     </variables>
     <sequence>
 
@@ -26,28 +26,32 @@
                  portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignInitData">
             <copy>
-                <from variable="InitData" part="inputPart" />
+                <from><literal>100</literal></from>
                 <to variable="PartnerInitData" part="inputPart"/>
             </copy>
             <copy>
                 <from>0</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
+            <copy>
+                <from>$InitData.inputPart</from>
+                <to variable="counter"/>
+            </copy>
         </assign>
-        <flow>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-        </flow>
+        <while>
+            <condition>$counter > 0</condition>
+            <sequence>
+                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData" />
+                <assign name="decrement">
+                    <copy>
+                        <from>$counter - 1</from>
+                        <to variable="counter"/>
+                    </copy>
+                </assign>
+            </sequence>
+        </while>
+
         <assign name="AddReplyData">
             <copy>
                 <from>$InitData.inputPart</from>

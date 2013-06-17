@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP12-MultipleInstancesWithoutSynchronizationPattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization"
+        name="WCP14-MultipleInstancesWithAPrioriRuntimeKnowledge"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithAPrioriRuntimeKnowledge"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
-                importType="http://schemas.xmlsoap.org/wsdl/"/>
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" location="../TestPartner.wsdl"
             importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
@@ -53,3 +53,4 @@
                portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>
+
