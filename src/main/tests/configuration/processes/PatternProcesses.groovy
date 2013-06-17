@@ -4,13 +4,7 @@ import betsy.data.Process
 import betsy.data.TestCase
 import betsy.data.assertions.ExitAssertion
 
-/**
- * Created with IntelliJ IDEA.
- * User: joerg
- * Date: 18.03.13
- * Time: 13:44
- * To change this template use File | Settings | File Templates.
- */
+
 class PatternProcesses {
 
     private Process buildPatternProcess(String name, List<TestCase> testCases) {
@@ -97,22 +91,6 @@ class PatternProcesses {
                     new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
                     new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
                     new TestCase().checkDeployment().sendSyncString(3,"ABC")
-            ]
-    )
-
-    public final Process DISCRIMINATOR_PATTERN = buildPatternProcess(
-            "WCP09-DiscriminatorPattern",
-            [
-                    new TestCase().checkDeployment().sendSyncString(1,"1")
-            ]
-    )
-
-    public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
-            "WCP10-ArbitraryCyclesPattern",
-            [
-                    new TestCase().checkDeployment().sendSyncString(1,"1ABC"),
-                    new TestCase().checkDeployment().sendSyncString(2,"2BC"),
-                    new TestCase().checkDeployment().sendSyncString(3,"3C")
             ]
     )
 
@@ -229,8 +207,6 @@ class PatternProcesses {
             MULTI_CHOICE_PATTERN_PARTIAL,
             SYNCHRONIZING_MERGE_PATTERN,
             SYNCHRONIZING_MERGE_PATTERN_PARTIAL,
-            DISCRIMINATOR_PATTERN,
-            ARBITRARY_CYCLES_PATTERN,
             IMPLICIT_TERMINATION_PATTERN,
             DEFERRED_CHOICE_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
