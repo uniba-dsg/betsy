@@ -34,23 +34,24 @@ class Processes {
     }
 
     public List<Process> get(String name) {
-        if ("ALL" == name.toUpperCase()) {
+        String upperCaseName = name.toUpperCase()
+        if ("ALL" == upperCaseName) {
             return ALL
-        } else if ("WITH_EXIT_ASSERTION" == name.toUpperCase()) {
+        } else if ("WITH_EXIT_ASSERTION" == upperCaseName) {
             return WITH_EXIT_ASSERTION
-        } else if ("FAULTS" == name.toUpperCase()) {
+        } else if ("FAULTS" == upperCaseName) {
             return FAULTS
         }
 
-        List<Process> result = getBasicProcess(name)
+        List<Process> result = getBasicProcess(upperCaseName)
         if (result == null) {
-            result = getStructuredProcess(name)
+            result = getStructuredProcess(upperCaseName)
             if (result == null) {
-                result = getScopeProcess(name)
+                result = getScopeProcess(upperCaseName)
                 if (result == null) {
-                    result = getPatternProcess(name)
+                    result = getPatternProcess(upperCaseName)
                     if (result == null) {
-                        result = ALL.findAll({ it.bpelFileNameWithoutExtension == name })
+                        result = ALL.findAll({ it.bpelFileNameWithoutExtension == upperCaseName })
                         if (result.isEmpty()) {
                             throw new IllegalArgumentException("Process ${name} does not exist")
                         }
