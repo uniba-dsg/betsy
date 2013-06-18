@@ -28,7 +28,7 @@ import betsy.virtual.host.comm.CommClient;
 import betsy.virtual.host.comm.TCPCommClient;
 import betsy.virtual.host.exceptions.DownloadException;
 import betsy.virtual.host.exceptions.PermanentFailedTestException;
-import betsy.virtual.host.exceptions.PortUsageException;
+import betsy.virtual.host.virtualbox.utils.port.PortUsageException;
 import betsy.virtual.host.exceptions.TemporaryFailedTestException;
 import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import betsy.virtual.host.exceptions.archive.ArchiveException;

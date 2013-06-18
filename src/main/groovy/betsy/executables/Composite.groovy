@@ -75,20 +75,20 @@ class Composite {
             log "${process.targetPath}/all", {
                 try {
                     buildPackageAndTest(process)
-                    installAndStart(process.engine)
+                    installAndStart(process)
                     deploy(process)
                     test(process)
                 } finally {
                     // ensure shutdown
-                    shutdown(process.engine)
+                    shutdown(process)
                 }
             }
         }
     }
 
-    protected void shutdown(Engine engine) {
-        log "${engine.path}/shutdown", {
-            engine.shutdown()
+    protected void shutdown(Process process) {
+        log "${process.path}/engine_shutdown", {
+            process.engine.shutdown()
         }
     }
 
@@ -100,38 +100,40 @@ class Composite {
         }
     }
 
-    protected void installAndStart(Engine engine) {
+    protected void installAndStart(Process process) {
         // setup infrastructure
-        log "${engine.path}/install", {
-            engine.install()
+        log "${process.path}/engine_install", {
+            process.engine.install()
         }
 
-        log "${engine.path}/startup", {
-            engine.startup()
+        log "${process.path}/engine_startup", {
+            process.engine.startup()
         }
     }
 
     protected void test(Process process) {
-        try {
+        log "${process.targetPath}/test", {
             try {
-                context.testPartner.publish()
-            } catch (BindException e) {
-                context.testPartner.unpublish()
-                ant.echo "Address already in use - waiting 2 seconds to get available"
-                ant.sleep(milliseconds: 2000)
-                context.testPartner.publish()
-            }
+                try {
+                    context.testPartner.publish()
+                } catch (BindException ignore) {
+                    context.testPartner.unpublish()
+                    ant.echo "Address already in use - waiting 2 seconds to get available"
+                    ant.sleep(milliseconds: 2000)
+                    context.testPartner.publish()
+                }
 
-            log "${process.targetPath}/test", {
-                soapui "${process.targetPath}/soapui_test", {
+                soapui "${process.targetPath}/test_soapui", {
                     new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
                             reportingDirectory: process.targetReportsPath, ant: ant).run()
                 }
+
                 ant.sleep(milliseconds: 500)
                 process.engine.storeLogs(process)
+
+            } finally {
+                context.testPartner.unpublish()
             }
-        } finally {
-            context.testPartner.unpublish()
         }
     }
 

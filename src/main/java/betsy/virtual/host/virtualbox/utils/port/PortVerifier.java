@@ -1,11 +1,9 @@
-package betsy.virtual.host.virtualbox.utils;
+package betsy.virtual.host.virtualbox.utils.port;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.util.Collection;
-
-import betsy.virtual.host.exceptions.PortUsageException;
 
 /**
  * The {@link PortVerifier} offers methods to verify if a port is free or

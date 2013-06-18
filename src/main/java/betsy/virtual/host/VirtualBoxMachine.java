@@ -22,7 +22,6 @@ public interface VirtualBoxMachine {
                                final Set<Integer> forwardingPorts, final boolean headless)
             throws VirtualBoxException, InterruptedException;
 
-    void clearPortForwarding() throws VirtualBoxException;
     void applyPortForwarding(final Set<Integer> forwardingPorts) throws VirtualBoxException;
 
 }

@@ -1,6 +1,4 @@
-package betsy.virtual.host.exceptions;
-
-import betsy.virtual.host.VirtualBoxException;
+package betsy.virtual.host.virtualbox.utils.port;
 
 /**
  * The {@link PortUsageException} is thrown if a required port is already used
@@ -9,7 +7,7 @@ import betsy.virtual.host.VirtualBoxException;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class PortUsageException extends VirtualBoxException {
+public class PortUsageException extends Exception {
 
 	/**
 	 * SerialVersionUID.

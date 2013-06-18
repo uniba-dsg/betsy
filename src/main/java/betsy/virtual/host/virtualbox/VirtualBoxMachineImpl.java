@@ -10,7 +10,7 @@ import java.util.Set;
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
 import betsy.virtual.host.engines.VirtualizedEngine;
-import betsy.virtual.host.virtualbox.utils.PortVerifier;
+import betsy.virtual.host.virtualbox.utils.port.PortVerifier;
 import betsy.virtual.host.virtualbox.utils.ServiceValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,8 +28,7 @@ import org.virtualbox_4_2.VBoxException;
 import org.virtualbox_4_2.VirtualBoxManager;
 
 import betsy.Configuration;
-import betsy.data.engines.Engine;
-import betsy.virtual.host.exceptions.PortUsageException;
+import betsy.virtual.host.virtualbox.utils.port.PortUsageException;
 import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VBoxExceptionCode;
@@ -63,7 +62,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 	/**
 	 * Start the {@link IMachine}. VirtualBox currently supports three different
 	 * states. Two of them are showing the GUI, one is saving the resources,
-	 * hides the GUI and therefore is 'headless'.<br>
+	 * hides the GUI and therefore is 'headless'.<br/>
 	 * <br>
 	 * The {@link IMachine} should not be running before.
 	 * 
@@ -139,8 +138,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 	/**
 	 * Save the current running state of the {@link IMachine}. After saving the
 	 * state the {@link IMachine} won't be running anymore.<br>
-	 * It can be used as an alternative to {@link #stop()} and is very helpful
-	 * while creating a new {@link Engine}. Nevertheless is also takes
+	 * It can be used as an alternative to {@link #stop()}. Nevertheless is also takes
 	 * significantly longer. <br>
 	 * <br>
 	 * Should only be used of the {@link IMachine} is in a running state.
@@ -369,13 +367,17 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 	 *             thrown if redirection could not be created
 	 */
 	public void applyPortForwarding(final Set<Integer> forwardingPorts)
-            throws PortRedirectException, PortUsageException {
+            throws VirtualBoxException {
 		if (!isAlreadyRedirected(forwardingPorts)) {
 			log.debug("Applying new port redirects...");
 
-            PortVerifier.failForUsedPorts(forwardingPorts);
+            try {
+                PortVerifier.failForUsedPorts(forwardingPorts);
+            } catch (PortUsageException e) {
+                throw new VirtualBoxException("ports could not be forwarded", e);
+            }
 
-			// remove old redirections first
+            // remove old redirections first
 			clearPortForwarding();
 
 			// add bVMS port if not yet contained
@@ -529,7 +531,11 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 					+ "poweredOff!");
 		}
 
-		PortVerifier.failForUsedPorts(forwardingPorts);
+        try {
+            PortVerifier.failForUsedPorts(forwardingPorts);
+        } catch (PortUsageException e) {
+            throw new VirtualBoxException("ports could not be forwarded", e);
+        }
 
 		log.debug("Create running-state snapshot");
 
