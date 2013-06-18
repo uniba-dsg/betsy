@@ -51,7 +51,7 @@ class Processes {
                 if (result == null) {
                     result = getPatternProcess(upperCaseName)
                     if (result == null) {
-                        result = ALL.findAll({ it.bpelFileNameWithoutExtension == upperCaseName })
+                        result = ALL.findAll({ it.bpelFileNameWithoutExtension.toUpperCase() == upperCaseName })
                         if (result.isEmpty()) {
                             throw new IllegalArgumentException("Process ${name} does not exist")
                         }
