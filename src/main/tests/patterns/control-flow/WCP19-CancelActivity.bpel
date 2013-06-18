@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP19-CancelActivityPattern"
+        name="WCP19-CancelActivity"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/cancelActivity"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP04-ExclusiveChoicePattern"
+        name="WCP04-ExclusiveChoice"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/exclusiveChoice"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">

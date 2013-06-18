@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP17-InterleavedParallelRoutingPattern"
+        name="WCP17-InterleavedParallelRouting"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/InterleavedParallelRouting"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"

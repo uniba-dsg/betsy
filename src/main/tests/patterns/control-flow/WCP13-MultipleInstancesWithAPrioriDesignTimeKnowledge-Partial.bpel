@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithADesignTimeKnowledge"
+        name="WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithAPrioriDesignTimeKnowledge/partial"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
+    <!-- Partial support, because it replicates the definition of the invoke -->
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
             importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" location="../TestPartner.wsdl"
@@ -25,7 +26,7 @@
                  portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignInitData">
             <copy>
-                <from><literal>100</literal></from>
+                <from variable="InitData" part="inputPart" />
                 <to variable="PartnerInitData" part="inputPart"/>
             </copy>
             <copy>
@@ -33,16 +34,20 @@
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <forEach name="MultipleInstances" parallel="yes" counterName="counter">
-            <startCounterValue>0</startCounterValue>
-            <finalCounterValue>3</finalCounterValue>
-            <scope name="Scope">
-                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                        outputVariable="PartnerReplyData"/>
-            </scope>
-        </forEach>
-
+        <flow>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+        </flow>
         <assign name="AddReplyData">
             <copy>
                 <from>$InitData.inputPart</from>
@@ -53,4 +58,3 @@
                portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>
 </process>
-

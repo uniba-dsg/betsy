@@ -36,8 +36,8 @@ dependencies {
 	compile 'org.virtualbox:vboxjws:4.2.8'
     compile 'commons-daemon:commons-daemon:1.0.12'
 	
-	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*']))
-	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.1\\bin', includes: ['*.jar']))
+	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*']))
+	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\bin', includes: ['*.jar']))
 }
 
 task wrapper(type: Wrapper) {
@@ -55,3 +55,4 @@ task enginecontrol (type: JavaExec, dependsOn: build){
     classpath = sourceSets.main.runtimeClasspath
     main = "betsy.tool.EngineControl"
 }
+

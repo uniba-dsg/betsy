@@ -4,13 +4,7 @@ import betsy.data.Process
 import betsy.data.TestCase
 import betsy.data.assertions.ExitAssertion
 
-/**
- * Created with IntelliJ IDEA.
- * User: joerg
- * Date: 18.03.13
- * Time: 13:44
- * To change this template use File | Settings | File Templates.
- */
+
 class PatternProcesses {
 
     private Process buildPatternProcess(String name, List<TestCase> testCases) {
@@ -28,28 +22,28 @@ class PatternProcesses {
     }
 
     public final Process SEQUENCE_PATTERN = buildPatternProcess(
-            "WCP01-SequencePattern",
+            "WCP01-Sequence",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
     public final Process PARALLEL_SPLIT_PATTERN = buildPatternProcess(
-            "WCP02-ParallelSplitPattern",
+            "WCP02-ParallelSplit",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
     public final Process SYNCHRONIZATION_PATTERN = buildPatternProcess(
-            "WCP03-SynchronizationPattern",
+            "WCP03-Synchronization",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
     public final Process EXCLUSIVE_CHOICE_PATTERN = buildPatternProcess(
-            "WCP04-ExclusiveChoicePattern",
+            "WCP04-ExclusiveChoice",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"1A"),
                     new TestCase().checkDeployment().sendSyncString(11,"11B")
@@ -57,7 +51,7 @@ class PatternProcesses {
     )
 
     public final Process SIMPLE_MERGE_PATTERN = buildPatternProcess(
-            "WCP05-SimpleMergePattern",
+            "WCP05-SimpleMerge",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"1A"),
                     new TestCase().checkDeployment().sendSyncString(11,"11B")
@@ -65,7 +59,7 @@ class PatternProcesses {
     )
 
     public final Process MULTI_CHOICE_PATTERN = buildPatternProcess(
-            "WCP06-MultiChoicePattern",
+            "WCP06-MultiChoice",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
                     new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
@@ -74,7 +68,7 @@ class PatternProcesses {
     )
 
     public final Process MULTI_CHOICE_PATTERN_PARTIAL = buildPatternProcess(
-            "WCP06-MultiChoicePattern-Partial",
+            "WCP06-MultiChoice-Partial",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
                     new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
@@ -83,7 +77,7 @@ class PatternProcesses {
     )
 
     public final Process SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
-            "WCP07-SynchronizingMergePattern",
+            "WCP07-SynchronizingMerge",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
                     new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
@@ -92,7 +86,7 @@ class PatternProcesses {
     )
 
     public final Process SYNCHRONIZING_MERGE_PATTERN_PARTIAL = buildPatternProcess(
-            "WCP07-SynchronizingMergePattern-Partial",
+            "WCP07-SynchronizingMerge-Partial",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
                     new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
@@ -100,31 +94,15 @@ class PatternProcesses {
             ]
     )
 
-    public final Process DISCRIMINATOR_PATTERN = buildPatternProcess(
-            "WCP09-DiscriminatorPattern",
-            [
-                    new TestCase().checkDeployment().sendSyncString(1,"1")
-            ]
-    )
-
-    public final Process ARBITRARY_CYCLES_PATTERN = buildPatternProcess(
-            "WCP10-ArbitraryCyclesPattern",
-            [
-                    new TestCase().checkDeployment().sendSyncString(1,"1ABC"),
-                    new TestCase().checkDeployment().sendSyncString(2,"2BC"),
-                    new TestCase().checkDeployment().sendSyncString(3,"3C")
-            ]
-    )
-
     public final Process IMPLICIT_TERMINATION_PATTERN = buildPatternProcess(
-            "WCP11-ImplicitTerminationPattern",
+            "WCP11-ImplicitTermination",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1")
             ]
     )
 
     public final Process DEFERRED_CHOICE_PATTERN = buildPatternProcess(
-            "WCP16-DeferredChoicePattern",
+            "WCP16-DeferredChoice",
             [
                     new TestCase().checkDeployment().sendSync(1, 1),
                     new TestCase().checkDeployment().sendSyncString(1, "1")
@@ -132,7 +110,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
-            "WCP12-MultipleInstancesWithoutSynchronizationPattern",
+            "WCP12-MultipleInstancesWithoutSynchronization",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
                             buildPartnerConcurrencyCheck().buildPartnerValueCheck(2),
@@ -142,7 +120,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL = buildPatternProcessWithPartner(
-            "WCP12-MultipleInstancesWithoutSynchronizationPattern-Partial",
+            "WCP12-MultipleInstancesWithoutSynchronization-Partial",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().
                             sendSync(100).buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
@@ -150,7 +128,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL = buildPatternProcessWithPartner(
-            "WCP12-MultipleInstancesWithoutSynchronizationPattern-While-Partial",
+            "WCP12-MultipleInstancesWithoutSynchronization-While-Partial",
             [
                     new TestCase().checkDeployment().sendSync(1,1),
                     new TestCase().checkDeployment().sendSync(2,2)
@@ -158,7 +136,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL = buildPatternProcessWithPartner(
-            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern-Partial",
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge-Partial",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(100).
                             buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
@@ -166,7 +144,7 @@ class PatternProcesses {
     )
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern",
+            "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
                             buildPartnerConcurrencyCheck().buildPartnerValueCheck(4),
@@ -177,7 +155,7 @@ class PatternProcesses {
 
 
     public final Process MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
-            "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledgePattern",
+            "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledge",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
                             buildPartnerConcurrencyCheck().buildPartnerValueCheck(2),
@@ -187,7 +165,7 @@ class PatternProcesses {
     )
 
     public final Process CANCEL_ACTIVITY_PATTERN = buildPatternProcess(
-            "WCP19-CancelActivityPattern",
+            "WCP19-CancelActivity",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"1A"),
                     new TestCase().checkDeployment().sendSyncString(0,"0B")
@@ -195,7 +173,7 @@ class PatternProcesses {
     )
 
     public final Process CANCEL_CASE_PATTERN = buildPatternProcess(
-            "WCP20-CancelCasePattern",
+            "WCP20-CancelCase",
             [
                     new TestCase().checkDeployment().sendSyncString(1,"1"),
                     new TestCase().checkDeployment().sendSyncString(0, new ExitAssertion())
@@ -203,7 +181,7 @@ class PatternProcesses {
     )
 
     public final Process MILESTONE_PATTERN = buildPatternProcess(
-            "WCP18-MilestonePattern",
+            "WCP18-Milestone",
             [
                     new TestCase(name: "PickAsyncMessage").checkDeployment().sendSync(1, 1).
                             sendAsync(1).sendSyncString(1, "8"),
@@ -213,7 +191,7 @@ class PatternProcesses {
     )
 
     public final Process INTERLEAVED_PARALLEL_ROUTING_PATTERN = buildPatternProcess(
-            "WCP17-InterleavedParallelRoutingPattern",
+            "WCP17-InterleavedParallelRouting",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "AW1ABW2B")
             ]
@@ -229,8 +207,6 @@ class PatternProcesses {
             MULTI_CHOICE_PATTERN_PARTIAL,
             SYNCHRONIZING_MERGE_PATTERN,
             SYNCHRONIZING_MERGE_PATTERN_PARTIAL,
-            DISCRIMINATOR_PATTERN,
-            ARBITRARY_CYCLES_PATTERN,
             IMPLICIT_TERMINATION_PATTERN,
             DEFERRED_CHOICE_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,

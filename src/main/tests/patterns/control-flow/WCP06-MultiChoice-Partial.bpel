@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP07-SynchronizingMergePattern-Partial"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/synchronizingMerge/partial"
+        name="WCP06-MultiChoice-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multiChoice/partial"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
@@ -45,7 +45,7 @@
         </assign>
 
         <flow name="Choice">
-            <if name="Choice1">
+            <if name="If1">
                 <condition>$initValue > 1</condition>
                 <assign name="Choice1Assign">
                     <copy>
@@ -54,7 +54,7 @@
                     </copy>
                 </assign>
             </if>
-            <if name="Choice2">
+            <if name="If2">
                 <condition>$initValue > 2</condition>
                 <assign name="Choice2Assign">
                     <copy>
@@ -64,8 +64,7 @@
                 </assign>
             </if>
         </flow>
-
-        <assign name="SynchronizingMerge">
+        <assign name="Merge">
             <copy>
                 <from>concat($Root,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>

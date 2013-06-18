@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP05-SimpleMergePattern"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/simpleMerge"
-        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        name="WCP02-ParallelSplit"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/parallelSplit"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
             importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -14,40 +14,33 @@
         <variable name="ReplyData" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncStringRequest"/>
 
-        <variable name="result" type="xs:string"/>
+        <variable name="Branch1" type="xs:string"/>
+        <variable name="Branch2" type="xs:string"/>
     </variables>
     <sequence>
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSyncString"
                  portType="ti:TestInterfacePortType" variable="InitData"/>
-
-        <assign>
-            <copy>
-                <from>concat('',$InitData.inputPart)</from>
-                <to variable="result"/>
-            </copy>
-        </assign>
-
-        <if name="If1">
-            <condition>$InitData.inputPart &lt; 10</condition>
-            <assign name="Choice1">
+        <flow name="Flow">
+            <assign name="ParallelStep1">
                 <copy>
-                    <from>concat($result,'A')</from>
-                    <to variable="result"/>
+                    <from>
+                        <literal>A</literal>
+                    </from>
+                    <to variable="Branch1"/>
                 </copy>
             </assign>
-            <else>
-                <assign name="Choice2">
-                    <copy>
-                        <from>concat($result,'B')</from>
-                        <to variable="result"/>
-                    </copy>
-                </assign>
-            </else>
-        </if>
-
-        <assign name="SimpleMerge">
+            <assign name="ParallelStep2">
+                <copy>
+                    <from>
+                        <literal>B</literal>
+                    </from>
+                    <to variable="Branch2"/>
+                </copy>
+            </assign>
+        </flow>
+        <assign name="Merge">
             <copy>
-                <from variable="result"/>
+                <from>concat($InitData.inputPart,$Branch1,$Branch2)</from>
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>

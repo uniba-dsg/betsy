@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledgePattern-Partial"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/multipleInstancesWithAPrioriDesignTimeKnowledge/partial"
+        name="WCP12-MultipleInstancesWithoutSynchronization-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization/partial"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
