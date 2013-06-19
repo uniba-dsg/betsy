@@ -122,9 +122,6 @@ public abstract class VirtualizedEngine extends Engine implements
 					+ "the communication to betsy's server could not be "
 					+ "established. Please verify the server is properly "
 					+ "installed.", exception);
-		} catch (PortUsageException exception) {
-			throw new PermanentFailedTestException("The VM could not be "
-					+ "started properly:", exception);
 		} catch (PortRedirectException exception) {
 			throw new TemporaryFailedTestException("The VM could not be "
 					+ "started properly:", exception);
@@ -162,7 +159,7 @@ public abstract class VirtualizedEngine extends Engine implements
             createAndResetToLatestSnapshot();
 		} catch (VirtualMachineNotFoundException
 				| VirtualizedEngineServiceException | ArchiveException
-				| PortUsageException | DownloadException exception) {
+				 | DownloadException exception) {
 			throw new PermanentFailedTestException("The VMs installation "
 					+ "could not be processed:", exception);
 		} catch (PortRedirectException |InterruptedException exception) {
