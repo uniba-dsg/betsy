@@ -21,7 +21,7 @@ sourceSets {
 }
 
 dependencies {
-    groovy 'org.codehaus.groovy:groovy-all:2.1.2'
+    compile 'org.codehaus.groovy:groovy-all:2.1.2'
     compile 'org.apache.ant:ant:1.8.4'
     compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\lib', includes: ['*.jar']))
     compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\bin', includes: ['*.jar']))
