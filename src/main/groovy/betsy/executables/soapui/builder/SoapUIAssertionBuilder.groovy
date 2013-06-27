@@ -3,6 +3,7 @@ package betsy.executables.soapui.builder
 import betsy.data.SoapTestStep
 import betsy.data.TestAssertion
 import betsy.data.TestStep
+import betsy.data.SoapTestStep
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.XpathTestAssertion
