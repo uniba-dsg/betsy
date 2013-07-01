@@ -87,7 +87,7 @@ class Composite {
     }
 
     protected void shutdown(Process process) {
-        log "${process.path}/engine_shutdown", {
+        log "${process.targetPath}/engine_shutdown", {
             process.engine.shutdown()
         }
     }
@@ -102,11 +102,11 @@ class Composite {
 
     protected void installAndStart(Process process) {
         // setup infrastructure
-        log "${process.path}/engine_install", {
+        log "${process.targetPath}/engine_install", {
             process.engine.install()
         }
 
-        log "${process.path}/engine_startup", {
+        log "${process.targetPath}/engine_startup", {
             process.engine.startup()
         }
     }
