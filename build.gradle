@@ -36,6 +36,8 @@ dependencies {
 	compile 'log4j:log4j:1.2.17'
 	compile 'org.virtualbox:vboxjws:4.2.8'
     compile 'commons-daemon:commons-daemon:1.0.12'
+
+    testCompile 'org.junit:junit:4.11'
 	
 	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*', 'groovy*']))
 	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\bin', includes: ['*.jar']))
