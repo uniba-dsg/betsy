@@ -12,6 +12,9 @@ import betsy.virtual.host.engines.VirtualizedEngines
 import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
+import configuration.cli.CliParser
+import configuration.cli.EngineParser
+import configuration.cli.ProcessParser
 import configuration.processes.Processes
 
 import java.awt.*
@@ -40,8 +43,8 @@ class TestUsingParameters {
         List<Engine> engines = null
         List<Process> processes = null
         try {
-            engines = parseEngines(parser.arguments()).unique()
-            processes = parseProcesses(parser.arguments()).unique()
+            engines = new EngineParser(args: parser.arguments()).parse()
+            processes = new ProcessParser(args: parser.arguments()).parse()
         } catch (Exception e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
@@ -103,51 +106,6 @@ class TestUsingParameters {
         } finally {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily
             System.exit(0)
-        }
-    }
-
-    private static List<Engine> parseEngines(String[] args) {
-        if(args.length == 0){
-            // local engines are default
-            return LocalEngines.availableEngines()
-        }
-
-        if ("all" == args[0].toLowerCase()) {
-            VirtualizedEngines.availableEngines() + LocalEngines.availableEngines()
-        } else if ("vms" == args[0].toLowerCase()){
-            VirtualizedEngines.availableEngines()
-        } else if ("locals" == args[0].toLowerCase()) {
-            LocalEngines.availableEngines()
-        } else {
-            List<String> engineNames = args[0].toLowerCase().split(",") as List<String>
-            List<Engine> all = []
-
-            for(String name : engineNames) {
-                try {
-                    all.add(LocalEngines.build(name))
-                    continue
-                }catch(IllegalArgumentException ignore) {
-                    //ignore
-                }
-
-                try {
-                    all.add(VirtualizedEngines.build(name))
-                    continue
-                }catch(IllegalArgumentException ignore) {
-                    //ignore
-                }
-
-                throw new IllegalArgumentException("passed engine '${name}' does not exist, neither as local, nor as virtualized engine")
-            }
-            return all
-        }
-    }
-
-    private static List<Process> parseProcesses(String[] args) {
-        if (args.length <= 1) {
-            ["ALL"].collect() { new Processes().get(it) }.flatten()
-        } else {
-            args[1].split(",").collect() { new Processes().get(it) }.flatten()
         }
     }
 

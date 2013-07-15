@@ -1,4 +1,4 @@
-package configuration
+package configuration.cli
 
 import betsy.Configuration
 
