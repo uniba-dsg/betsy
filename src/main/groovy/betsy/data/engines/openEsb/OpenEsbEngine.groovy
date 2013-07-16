@@ -1,6 +1,6 @@
 package betsy.data.engines.openEsb
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine;
 
 class OpenEsbEngine extends LocalEngine {
@@ -13,12 +13,12 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(Process process) {
+    String getEndpointUrl(BetsyProcess process) {
         "${CHECK_URL}/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
     @Override
-    void storeLogs(Process process) {
+    void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
 		ant.copy(todir: "${process.targetPath}/logs") {
 			ant.fileset(dir: "${serverPath}/glassfish/domains/domain1/logs/")
@@ -50,17 +50,17 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         cli.forceRedeploy(process)
     }
 
     @Override
-    void onPostDeployment(Process process) {
+    void onPostDeployment(BetsyProcess process) {
         // do nothing - as using synchronous deployment
     }
 
     @Override
-    public void buildArchives(Process process) {
+    public void buildArchives(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -74,7 +74,7 @@ class OpenEsbEngine extends LocalEngine {
         new OpenEsbCompositePackager(ant: ant, process: process).build()
     }
 
-    void buildDeploymentDescriptor(Process process) {
+    void buildDeploymentDescriptor(BetsyProcess process) {
         String metaDir = process.targetBpelPath + "/META-INF"
         String catalogFile = "$metaDir/catalog.xml"
         ant.mkdir(dir: metaDir)

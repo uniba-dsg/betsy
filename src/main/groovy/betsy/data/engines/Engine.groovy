@@ -1,7 +1,6 @@
 package betsy.data.engines
 
-import betsy.data.Process;
-import betsy.data.TestSuite;
+import betsy.data.BetsyProcess
 
 abstract class Engine implements EngineAPI {
 
@@ -10,7 +9,7 @@ abstract class Engine implements EngineAPI {
 
     String parentFolder
 
-    final List<Process> processes = []
+    final List<BetsyProcess> processes = []
 
     /**
      * The path <code>src/main/xslt/$engine</code>

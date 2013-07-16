@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
+import betsy.data.BetsyProcess;
 import betsy.virtual.host.VirtualBox;
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
@@ -14,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import betsy.Configuration;
-import betsy.data.Process;
 import betsy.data.engines.Engine;
 import betsy.virtual.common.exceptions.ChecksumException;
 import betsy.virtual.common.exceptions.CollectLogfileException;
@@ -28,7 +28,6 @@ import betsy.virtual.host.comm.CommClient;
 import betsy.virtual.host.comm.TCPCommClient;
 import betsy.virtual.host.exceptions.DownloadException;
 import betsy.virtual.host.exceptions.PermanentFailedTestException;
-import betsy.virtual.host.virtualbox.utils.port.PortUsageException;
 import betsy.virtual.host.exceptions.TemporaryFailedTestException;
 import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import betsy.virtual.host.exceptions.archive.ArchiveException;
@@ -190,7 +189,7 @@ public abstract class VirtualizedEngine extends Engine implements
     }
 
     @Override
-	public DeployOperation buildDeployOperation(Process process)
+	public DeployOperation buildDeployOperation(BetsyProcess process)
 			throws IOException {
 		// basic deploy operation, sufficient for most engines
 		Path path = getDeployableFilePath(process);
@@ -210,7 +209,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	}
 
 	@Override
-	public void deploy(Process process) {
+	public void deploy(BetsyProcess process) {
 		try {
 			log.debug("Deploying virtualized engine " + getName()
 					+ ", process: " + process.toString() + " ...");
@@ -255,7 +254,7 @@ public abstract class VirtualizedEngine extends Engine implements
 	}
 
 	@Override
-	public void storeLogs(Process process) {
+	public void storeLogs(BetsyProcess process) {
 		log.debug("Storing logs for engine " + getName() + " ...");
 		try {
 			LogfileCollection lfc = null;

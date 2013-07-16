@@ -1,6 +1,6 @@
 package betsy
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.TestSuite
 import betsy.data.engines.Engine;
 import betsy.executables.Composite
@@ -11,7 +11,7 @@ import betsy.executables.Validator
 class Betsy {
 
     List<Engine> engines
-    List<Process> processes
+    List<BetsyProcess> processes
 
     Composite composite = new Composite()
 

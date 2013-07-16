@@ -1,7 +1,7 @@
 package betsy.executables
 
 import betsy.data.engines.Engine;
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.executables.analytics.Analyzer
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
@@ -62,13 +62,13 @@ class Composite {
 
     protected void executeEngine(Engine engine) {
         log engine.path, {
-            for(Process process : engine.processes) {
+            for(BetsyProcess process : engine.processes) {
                 executeProcess(process)
             }
         }
     }
 
-    protected void executeProcess(Process process) {
+    protected void executeProcess(BetsyProcess process) {
         println "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
 
         new Retry(process: process, ant: ant).atMostThreeTimes {
@@ -86,13 +86,13 @@ class Composite {
         }
     }
 
-    protected void shutdown(Process process) {
+    protected void shutdown(BetsyProcess process) {
         log "${process.targetPath}/engine_shutdown", {
             process.engine.shutdown()
         }
     }
 
-    protected void deploy(Process process) {
+    protected void deploy(BetsyProcess process) {
         log "${process.targetPath}/deploy", {
             ant.echo message: "Deploying process ${process} to engine ${process.engine}"
             process.engine.deploy(process)
@@ -100,7 +100,7 @@ class Composite {
         }
     }
 
-    protected void installAndStart(Process process) {
+    protected void installAndStart(BetsyProcess process) {
         // setup infrastructure
         log "${process.targetPath}/engine_install", {
             process.engine.install()
@@ -111,7 +111,7 @@ class Composite {
         }
     }
 
-    protected void test(Process process) {
+    protected void test(BetsyProcess process) {
         log "${process.targetPath}/test", {
             try {
                 try {
@@ -137,7 +137,7 @@ class Composite {
         }
     }
 
-    protected void buildPackageAndTest(Process process) {
+    protected void buildPackageAndTest(BetsyProcess process) {
         log "${process.targetPath}/build", {
 
             log "${process.targetPath}/build_package", {

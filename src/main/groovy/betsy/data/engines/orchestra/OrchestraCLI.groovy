@@ -1,15 +1,13 @@
 package betsy.data.engines.orchestra
 
-import betsy.data.Process
-import betsy.data.engines.LocalEngine
-
+import betsy.data.BetsyProcess
 
 class OrchestraCLI {
 
     AntBuilder ant = new AntBuilder()
     String serverPath
 
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         ant.exec(executable: "cmd", dir: "${serverPath}/orchestra-cxf-tomcat-4.9.0") {
             arg(value: "/c")
             arg(value: "ant")

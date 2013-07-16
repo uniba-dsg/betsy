@@ -1,14 +1,14 @@
 package betsy.data.engines;
 
 import betsy.Configuration
-import betsy.data.Process
+import betsy.data.BetsyProcess
 
 public class EnginePackageBuilder {
 
 	private final AntBuilder ant = new AntBuilder()
 	private final Configuration config = Configuration.getInstance();
 
-	public void createFolderAndCopyProcessFilesToTarget(Process process) {
+	public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
 		// engine independent package steps
 		ant.mkdir dir: process.targetPath
 
@@ -26,17 +26,17 @@ public class EnginePackageBuilder {
 		}
 	}
 
-	public void bpelFolderToZipFile(Process process) {
+	public void bpelFolderToZipFile(BetsyProcess process) {
 		ant.mkdir dir: process.targetPackagePath
 		ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
 	}
 
-	public void replaceEndpointTokenWithValue(Process process) {
+	public void replaceEndpointTokenWithValue(BetsyProcess process) {
 		ant.echo message: "Setting Endpoint of wsdl IF for $process on ${process.engine.name} to ${process.endpoint}"
 		ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
 	}
 	
-	public void replacePartnerTokenWithValue(Process process) {
+	public void replacePartnerTokenWithValue(BetsyProcess process) {
 		ant.echo message: "Setting Partner Address of for $process on ${process.engine.name} to ${config.getValueAsString('PARTNER_IP_AND_PORT')}"
 		ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: config.getValueAsString('PARTNER_IP_AND_PORT'))
 	}

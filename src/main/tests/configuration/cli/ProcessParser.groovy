@@ -1,16 +1,17 @@
 package configuration.cli
 
+import betsy.data.BetsyProcess
 import configuration.processes.Processes
 
 class ProcessParser {
 
     String[] args
 
-    List<betsy.data.Process> parse() {
+    List<BetsyProcess> parse() {
         return parseWithDuplicates().unique()
     }
 
-    private List<betsy.data.Process> parseWithDuplicates() {
+    private List<BetsyProcess> parseWithDuplicates() {
         if (args.length <= 1) {
             ["ALL"].collect() { new Processes().get(it) }.flatten()
         } else {

@@ -1,13 +1,13 @@
 package betsy.data.engines.petalsEsb
 
 import betsy.Configuration
-import betsy.data.Process
+import betsy.data.BetsyProcess
 
 class PetalsEsbCompositePackager {
 
     AntBuilder ant = new AntBuilder()
 	Configuration config = Configuration.getInstance()
-    Process process
+    BetsyProcess process
 
     void build() {
         createBinding()

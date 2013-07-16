@@ -1,8 +1,6 @@
 package betsy.data.engines.openEsb
 
-import betsy.data.Process
-import betsy.data.engines.LocalEngine
-
+import betsy.data.BetsyProcess
 
 class OpenEsbCLI {
 
@@ -31,7 +29,7 @@ class OpenEsbCLI {
         new File("${serverPath}/glassfish/bin").absolutePath + "\\asadmin.bat"
     }
 
-    void forceRedeploy(Process process) {
+    void forceRedeploy(BetsyProcess process) {
 
         String deployCommands = process.targetPath + "/deploy_commands.txt"
 

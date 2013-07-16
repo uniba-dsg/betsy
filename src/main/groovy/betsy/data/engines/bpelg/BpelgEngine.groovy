@@ -1,7 +1,7 @@
 package betsy.data.engines.bpelg
 
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine;
 import betsy.data.engines.Tomcat;
 import betsy.data.engines.Util;
@@ -18,7 +18,7 @@ class BpelgEngine extends LocalEngine {
 	}
 
 	@Override
-	void storeLogs(Process process) {
+	void storeLogs(BetsyProcess process) {
 		ant.mkdir(dir: "${process.targetPath}/logs")
 		ant.copy(todir: "${process.targetPath}/logs") {
 			ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
@@ -50,12 +50,12 @@ class BpelgEngine extends LocalEngine {
 	}
 
 	@Override
-	void deploy(Process process) {
+	void deploy(BetsyProcess process) {
 		ant.copy(file: process.targetPackageFilePath, todir: deploymentDir)
 	}
 
 	@Override
-	void onPostDeployment(Process process) {
+	void onPostDeployment(BetsyProcess process) {
 		ant.sequential() {
 			ant.waitfor(maxwait: "100", maxwaitunit: "second") {
 				 and {
@@ -70,7 +70,7 @@ class BpelgEngine extends LocalEngine {
 	}
 
 	@Override
-	void buildArchives(Process process) {
+	void buildArchives(BetsyProcess process) {
 		packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
 		// deployment descriptor
@@ -94,7 +94,7 @@ class BpelgEngine extends LocalEngine {
 	}
 
 	@Override
-	String getEndpointUrl(Process process) {
+	String getEndpointUrl(BetsyProcess process) {
 		"${tomcat.tomcatUrl}/bpel-g/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
 	}
 

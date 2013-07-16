@@ -14,11 +14,11 @@ class TestSuite {
      * @param processes a list of processes to be included in the test suite
      * @return a test suite where each engine tests all passed processes
      */
-    public static TestSuite createTests(List<Engine> engines, List<Process> processes) {
+    public static TestSuite createTests(List<Engine> engines, List<BetsyProcess> processes) {
         TestSuite test = new TestSuite(path: "test")
 
         engines.each { engine ->
-            engine.processes.addAll(processes.collect() { p -> p.clone() as Process})
+            engine.processes.addAll(processes.collect() { p -> p.clone() as BetsyProcess})
             // set engine
             engine.processes.each { process -> process.engine = engine}
             // set parentFolder

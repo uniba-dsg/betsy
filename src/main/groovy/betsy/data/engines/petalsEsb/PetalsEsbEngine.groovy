@@ -1,6 +1,6 @@
 package betsy.data.engines.petalsEsb
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine;
 
 import java.nio.file.Files
@@ -16,12 +16,12 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(Process process) {
+    String getEndpointUrl(BetsyProcess process) {
         "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
     @Override
-    void storeLogs(Process process) {
+    void storeLogs(BetsyProcess process) {
 		ant.mkdir(dir: "${process.targetPath}/logs")
 		ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
@@ -82,7 +82,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         ant.copy(file: process.targetPackageCompositeFilePath, todir: installationDir)
     }
 
@@ -91,7 +91,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void onPostDeployment(Process process) {
+    void onPostDeployment(BetsyProcess process) {
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
             and {
                 not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
@@ -106,7 +106,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void buildArchives(Process process) {
+    void buildArchives(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps

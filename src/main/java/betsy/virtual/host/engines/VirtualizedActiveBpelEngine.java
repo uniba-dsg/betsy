@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import betsy.Configuration;
-import betsy.data.Process;
+import betsy.data.BetsyProcess;
 import betsy.data.engines.activeBpel.ActiveBpelEngine;
 import betsy.virtual.host.ServiceAddress;
 
@@ -38,7 +38,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public String getEndpointUrl(Process process) {
+	public String getEndpointUrl(BetsyProcess process) {
 		// is not delegated because of the dependency to the local Tomcat
 		return "http://localhost:8080/active-bpel/services/"
 				+ process.getBpelFileNameWithoutExtension()
@@ -53,7 +53,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public void buildArchives(Process process) {
+	public void buildArchives(BetsyProcess process) {
 		// use default engine's operations
 		defaultEngine.buildArchives(process);
 	}
@@ -64,7 +64,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public void onPostDeployment(Process process) {
+	public void onPostDeployment(BetsyProcess process) {
 		// not required. deploy is in sync and does not return before process is
 		// deployed
 	}
@@ -84,7 +84,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public Path getDeployableFilePath(Process process) {
+	public Path getDeployableFilePath(BetsyProcess process) {
 		return Paths.get(process.getTargetPackageFilePath("bpr"));
 	}
 

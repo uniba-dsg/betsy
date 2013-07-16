@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import betsy.Configuration;
-import betsy.data.Process;
+import betsy.data.BetsyProcess;
 import betsy.data.engines.openEsb.OpenEsbEngine;
 import betsy.virtual.common.messages.DeployOperation;
 import betsy.virtual.common.messages.FileMessage;
@@ -54,12 +54,12 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public String getEndpointUrl(Process process) {
+	public String getEndpointUrl(BetsyProcess process) {
 		return defaultEngine.getEndpointUrl(process);
 	}
 
 	@Override
-	public void buildArchives(Process process) {
+	public void buildArchives(BetsyProcess process) {
 		// use default engine's operations
 		defaultEngine.buildArchives(process);
 	}
@@ -70,13 +70,13 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public void onPostDeployment(Process process) {
+	public void onPostDeployment(BetsyProcess process) {
 		// not required. deploy is in sync and does not return before process is
 		// deployed
 	}
 
 	@Override
-	public DeployOperation buildDeployOperation(Process process)
+	public DeployOperation buildDeployOperation(BetsyProcess process)
 			throws IOException {
 		Path path = getDeployableFilePath(process);
 		Path filenamePath = path.getFileName();
@@ -116,7 +116,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 	}
 
 	@Override
-	public Path getDeployableFilePath(Process process) {
+	public Path getDeployableFilePath(BetsyProcess process) {
 		return Paths.get(process.getTargetPackageCompositeFilePath());
 	}
 

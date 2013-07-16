@@ -1,11 +1,12 @@
 package betsy.executables
 
+import betsy.data.BetsyProcess
 import betsy.virtual.host.exceptions.TemporaryFailedTestException
 
 class Retry {
 
     AntBuilder ant
-    betsy.data.Process process
+    BetsyProcess process
 
     public void atMostThreeTimes(Closure closure) {
         boolean testProcess = true

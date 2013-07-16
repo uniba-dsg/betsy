@@ -1,13 +1,13 @@
 package betsy.executables
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 
 /**
  * Validates a list of processes
  */
 class Validator {
 
-    List<Process> processes
+    List<BetsyProcess> processes
 
     public void validate() {
         // checks for two processes referencing the same BPEL file

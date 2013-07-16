@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
-import betsy.data.Process;
+import betsy.data.BetsyProcess;
 import betsy.virtual.common.messages.DeployOperation;
 
 /**
@@ -50,7 +50,7 @@ public interface VirtualizedEngineAPI {
 	 * @throws IOException
 	 *             thrown if the files of the process could not be read
 	 */
-	public DeployOperation buildDeployOperation(Process process)
+	public DeployOperation buildDeployOperation(BetsyProcess process)
 			throws IOException;
 
 	/**
@@ -90,6 +90,6 @@ public interface VirtualizedEngineAPI {
 	 *            process to get deployable file path for
 	 * @return path to the deployable file of the given process.
 	 */
-	public Path getDeployableFilePath(Process process);
+	public Path getDeployableFilePath(BetsyProcess process);
 
 }

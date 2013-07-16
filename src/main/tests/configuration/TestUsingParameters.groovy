@@ -2,20 +2,17 @@ package configuration
 
 import betsy.Betsy
 import betsy.Configuration
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import betsy.data.engines.Engine
-import betsy.data.engines.LocalEngines
 import betsy.virtual.host.VirtualBox
 import betsy.virtual.host.engines.VirtualizedEngine
-import betsy.virtual.host.engines.VirtualizedEngines
 import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
 import configuration.cli.CliParser
 import configuration.cli.EngineParser
 import configuration.cli.ProcessParser
-import configuration.processes.Processes
 
 import java.awt.*
 import java.util.List
@@ -41,7 +38,7 @@ class TestUsingParameters {
 
         // parsing processes and engines
         List<Engine> engines = null
-        List<Process> processes = null
+        List<BetsyProcess> processes = null
         try {
             engines = new EngineParser(args: parser.arguments()).parse()
             processes = new ProcessParser(args: parser.arguments()).parse()
