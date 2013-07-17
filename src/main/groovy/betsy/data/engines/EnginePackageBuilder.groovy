@@ -5,8 +5,8 @@ import betsy.data.BetsyProcess
 
 public class EnginePackageBuilder {
 
-    private final AntBuilder ant = new AntBuilder()
-    private final Configuration config = Configuration.getInstance();
+    protected final AntBuilder ant = new AntBuilder()
+    protected final Configuration config = Configuration.getInstance();
 
     public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
         // engine independent package steps

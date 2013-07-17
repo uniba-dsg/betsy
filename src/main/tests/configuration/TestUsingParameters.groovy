@@ -2,9 +2,11 @@ package configuration
 
 import betsy.Betsy
 import betsy.Configuration
+import betsy.corebpel.CoreBPELEngineExtension
 import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import betsy.data.engines.Engine
+import betsy.data.engines.LocalEngine
 import betsy.virtual.host.VirtualBox
 import betsy.virtual.host.engines.VirtualizedEngine
 import betsy.virtual.host.virtualbox.VBoxConfiguration
@@ -58,6 +60,16 @@ class TestUsingParameters {
             // check only whether the processes can be deployed
             processes.each { process ->
                 process.testCases = [new TestCase().checkDeployment()]
+            }
+        }
+
+        if(parser.transformToCoreBpel()){
+            for(Engine engine : engines) {
+                if(engine instanceof VirtualizedEngine) {
+                    CoreBPELEngineExtension.extendEngine(engine.defaultEngine)
+                } else if(engine instanceof LocalEngine) {
+                    CoreBPELEngineExtension.extendEngine(engine)
+                }
             }
         }
 

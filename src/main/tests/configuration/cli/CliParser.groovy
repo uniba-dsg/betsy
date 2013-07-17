@@ -16,6 +16,7 @@ class CliParser {
         cli.h(longOpt: 'help', "Print out usage information")
         cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.getInstance().getValue("PARTNER_IP_AND_PORT")})")
         cli.c(longOpt: 'check-deployment', "Verifies deployment instead of test success")
+        cli.t(longOpt: 'to-core-bpel', "Transform to Core BPEL")
     }
 
     /**
@@ -48,6 +49,10 @@ class CliParser {
 
     public boolean hasCustomPartnerAddress() {
         options.p != null && options.p != false
+    }
+
+    public boolean transformToCoreBpel() {
+        options.t != null && options.t != false
     }
 
     public String getCustomPartnerAddress() {

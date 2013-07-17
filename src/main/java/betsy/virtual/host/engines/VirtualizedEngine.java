@@ -53,6 +53,8 @@ public abstract class VirtualizedEngine extends Engine implements
 	private VirtualBox virtualBox;
 	private final CommClient comm =  new TCPCommClient("127.0.0.1", 48888);
 
+    public Engine defaultEngine;
+
 	private VirtualBoxMachine vm = null;
 
 	private static File getDownloadPath() {

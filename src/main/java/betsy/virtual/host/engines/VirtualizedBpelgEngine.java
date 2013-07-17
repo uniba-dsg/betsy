@@ -15,7 +15,6 @@ import betsy.virtual.host.ServiceAddress;
 public class VirtualizedBpelgEngine extends VirtualizedEngine {
 
 	private final Configuration config = Configuration.getInstance();
-	private final BpelgEngine defaultEngine;
 
 	public VirtualizedBpelgEngine() {
 		super();
