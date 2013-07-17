@@ -46,8 +46,6 @@ import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 public abstract class VirtualizedEngine extends Engine implements
         VirtualizedEngineAPI {
 
-	public static final String VIRTUAL_NAME_PREFIX = "betsy-";
-
     private static final Logger log = Logger.getLogger(VirtualizedEngine.class);
     public static final int SECOND = 1000;
 
@@ -81,7 +79,7 @@ public abstract class VirtualizedEngine extends Engine implements
 
 	@Override
 	public String getVirtualMachineName() {
-		return VIRTUAL_NAME_PREFIX + this.getName();
+		return EngineNamingConstants.VIRTUAL_NAME_PREFIX + this.getName();
 	}
 
 	@Override

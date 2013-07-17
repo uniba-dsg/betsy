@@ -9,7 +9,7 @@ import java.util.Set;
 
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
-import betsy.virtual.host.engines.VirtualizedEngine;
+import betsy.virtual.host.engines.EngineNamingConstants;
 import betsy.virtual.host.virtualbox.utils.port.PortVerifier;
 import betsy.virtual.host.virtualbox.utils.ServiceValidator;
 import org.apache.commons.lang.StringUtils;
@@ -577,7 +577,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
 
 			// take a snapshot of the started VM
-			String snapName = VirtualizedEngine.VIRTUAL_NAME_PREFIX
+			String snapName = EngineNamingConstants.VIRTUAL_NAME_PREFIX
 					+ engineName + "_import-snapshot";
 			String snapDesc = "Machine is in 'saved' state. Snapshot created during import on "
 					+ sdf.format(date);
