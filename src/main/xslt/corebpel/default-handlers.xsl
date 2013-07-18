@@ -62,17 +62,17 @@
       </xsl:if>
     
       <xsl:apply-templates select="bpel:eventHandlers" />
-      
-      <xsl:apply-templates select="*[not(
-        self::bpel:targets or 
-        self::bpel:sources or 
-        self::bpel:partnerLinks or 
-        self::bpel:messageExchanges or 
-        self::bpel:variables or 
-        self::bpel:candrelationSets or 
-        self::bpel:faultHandlers or 
-        self::bpel:compensationHandler or 
-        self::bpel:terminationHandler or 
+
+        <xsl:apply-templates select="child::*[not(
+        self::bpel:targets or
+        self::bpel:sources or
+        self::bpel:partnerLinks or
+        self::bpel:messageExchanges or
+        self::bpel:variables or
+        self::bpel:correlationSets or
+        self::bpel:faultHandlers or
+        self::bpel:compensationHandler or
+        self::bpel:terminationHandler or
         self::bpel:eventHandlers
       )]" />
     </xsl:copy>   

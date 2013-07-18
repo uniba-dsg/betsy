@@ -61,13 +61,15 @@ class CoreBPEL {
     }
 
     public void toCoreBPEL(String xslSheet) {
-        String temporaryBpelFilePath = getTemporaryBpelFilePath("before_${xslSheet}")
+        String temporaryBeforeBpelFilePath = getTemporaryBpelFilePath("before_${xslSheet}")
+        String temporaryAfterBpelFilePath = getTemporaryBpelFilePath("after_${xslSheet}")
 
-        ant.copy(file: bpelFilePath, tofile: temporaryBpelFilePath)
-        ant.xslt(in: temporaryBpelFilePath, out: bpelFilePath, style: "src/main/xslt/corebpel/${xslSheet}", force: "yes") {
+        ant.copy(file: bpelFilePath, tofile: temporaryBeforeBpelFilePath)
+        ant.xslt(in: bpelFilePath, out: temporaryAfterBpelFilePath, style: "src/main/xslt/corebpel/${xslSheet}", force: "yes") {
             // QUESTION which characters are allowed for a prefix? we use lower case letters to be safe!
             param(name: "freshPrefix", expression: "newprefix")
         }
+        ant.copy(file: temporaryAfterBpelFilePath, tofile: bpelFilePath)
     }
 
 }

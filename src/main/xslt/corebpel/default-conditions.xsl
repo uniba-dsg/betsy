@@ -41,9 +41,11 @@
   <xsl:template match="bpel:forEach[not(bpel:completionCondition)]">
     <xsl:copy>
       <xsl:copy-of select="@*" />
-      <xsl:apply-templates />
-      <bpel:completionCondition />        
+        <xsl:apply-templates select="child::bpel:startCounterValue" />
+        <xsl:apply-templates select="child::bpel:finalCounterValue" />
+        <bpel:completionCondition/>
+        <xsl:apply-templates select="child::bpel:scope" />
     </xsl:copy>
   </xsl:template>
-  
+
 </xsl:stylesheet>
