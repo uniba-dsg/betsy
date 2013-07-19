@@ -28,7 +28,7 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess VALIDATE = builder.buildProcessWithXsd(
-            "basic-activities/Validate", "A receive-reply pair with an intermediate variable validation. The variable to be validated describes a month, so only values in the range of 1 and 12 should validate successfully.",
+            "basic/Validate", "A receive-reply pair with an intermediate variable validation. The variable to be validated describes a month, so only values in the range of 1 and 12 should validate successfully.",
             [
                     new TestCase(name: "Input Value 13 should return validation fault").
                             checkDeployment().
@@ -37,7 +37,7 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess VALIDATE_INVALID_VARIABLES = builder.buildProcessWithXsd(
-            "basic-activities/Validate-InvalidVariables", "A receive-reply pair with an intermediate variable validation. The variable to be validated is of type xs:int and xs:boolean is copied into it.",
+            "basic/Validate-InvalidVariables", "A receive-reply pair with an intermediate variable validation. The variable to be validated is of type xs:int and xs:boolean is copied into it.",
             [
                     new TestCase().
                             checkDeployment().
@@ -55,7 +55,7 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess VARIABLES_UNINITIALIZED_VARIABLE_FAULT_INVOKE = builder.buildProcessWithPartner(
-            "basic-activities/Variables-UninitializedVariableFault-Invoke", "A receive-reply pair with intermediate invoke. The inputVariable of the invoke is not initialized.",
+            "basic/Variables-UninitializedVariableFault-Invoke", "A receive-reply pair with intermediate invoke. The inputVariable of the invoke is not initialized.",
             [
                     new TestCase().
                             checkDeployment().
@@ -266,7 +266,7 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess RECEIVE_REPLY_CORRELATION_VIOLATION_JOIN = builder.buildProcessWithPartner(
-            "basic-activities/ReceiveReply-CorrelationViolation-Join", "A receive-reply pair that initates a correlationSet with an intermediate invoke that tries to join the correlationSet. The join operation should only work if the correlationSet was initiate with a certain value.",
+            "basic/ReceiveReply-CorrelationViolation-Join", "A receive-reply pair that initates a correlationSet with an intermediate invoke that tries to join the correlationSet. The join operation should only work if the correlationSet was initiate with a certain value.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "correlationViolation")),
                     new TestCase().checkDeployment().sendSync(2, 2)
@@ -314,84 +314,84 @@ class BasicActivityProcesses {
     ]
 
     public final BetsyProcess INVOKE_ASYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Async",  "A receive-reply pair with an intermediate asynchronous invoke.",
+            "basic/Invoke-Async",  "A receive-reply pair with an intermediate asynchronous invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess INVOKE_SYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Sync", "A receive-reply pair with an intermediate synchronous invoke.",
+            "basic/Invoke-Sync", "A receive-reply pair with an intermediate synchronous invoke.",
             [
                     new TestCase().checkDeployment().sendSync(1, 1)
             ]
     )
 
     public final BetsyProcess INVOKE_SYNC_FAULT = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
+            "basic/Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             [
                     new TestCase().checkDeployment().sendSync(-5, new SoapFaultTestAssertion(faultString: "CustomFault"))
             ]
     )
 
     public final BetsyProcess INVOKE_TO_PARTS = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-ToParts","A receive-reply pair with an intermediate synchronous invoke that uses the toParts syntax.",
+            "basic/Invoke-ToParts","A receive-reply pair with an intermediate synchronous invoke that uses the toParts syntax.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess INVOKE_FROM_PARTS = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-FromParts", "A receive-reply pair with an intermediate synchronous invoke that uses the fromParts syntax.",
+            "basic/Invoke-FromParts", "A receive-reply pair with an intermediate synchronous invoke that uses the fromParts syntax.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess INVOKE_EMPTY = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Empty", "A receive-reply pair with an intermediate invoke of an operation that has no message associated with it. No definition of inputVariable or outputVariable is required.",
+            "basic/Invoke-Empty", "A receive-reply pair with an intermediate invoke of an operation that has no message associated with it. No definition of inputVariable or outputVariable is required.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess INVOKE_CORRELATION_PATTERN_INIT_ASYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-Pattern-InitAsync",  "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
+            "basic/Invoke-Correlation-Pattern-InitAsync",  "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             [
                     new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendSync(1, 1)
             ]
     )
 
     public final BetsyProcess INVOKE_CORRELATION_PATTERN_INIT_SYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-Pattern-InitSync",  "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
+            "basic/Invoke-Correlation-Pattern-InitSync",  "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             [
                     new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendSync(1,1)
             ]
     )
 
     public final BetsyProcess INVOKE_CATCH = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Catch",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
+            "basic/Invoke-Catch",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
                     new TestCase().checkDeployment().sendSync(-5, 0)
             ]
     )
 
     public final BetsyProcess INVOKE_CATCH_EXPLICIT_FAULT = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Catch-ExplicitFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is declared in the Web Service Definition of the partner service.",
+            "basic/Invoke-Catch-ExplicitFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is declared in the Web Service Definition of the partner service.",
             [
                     new TestCase().checkDeployment().sendSync(-6, 0)
             ]
     )
 
     public final BetsyProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
+            "basic/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
                     new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-5, 0)
             ]
     )
 
     public final BetsyProcess INVOKE_COMPENSATION_HANDLER = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-CompensationHandler",  "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
+            "basic/Invoke-CompensationHandler",  "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
             [
                     new TestCase().checkDeployment().sendSync(1, 0)
             ]
@@ -414,7 +414,7 @@ class BasicActivityProcesses {
 
 
     public final BetsyProcess ASSIGN_VALIDATE = builder.buildProcessWithXsd(
-            "basic-activities/Assign-Validate",  "A receive-reply pair with an intermediate assign that has validate set to yes. The assign copies to a variable that represents a month and the validation should fail for values not in the range of one to twelve.",
+            "basic/Assign-Validate",  "A receive-reply pair with an intermediate assign that has validate set to yes. The assign copies to a variable that represents a month and the validation should fail for values not in the range of one to twelve.",
             [
                     new TestCase(name: "Input Value 13 should return validation fault").checkDeployment().
                             sendSync(13, new SoapFaultTestAssertion(faultString: "invalidVariables"))
@@ -429,14 +429,14 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess ASSIGN_PARTNERLINK = builder.buildProcessWithPartner(
-            "basic-activities/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
+            "basic/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 0)
             ]
     )
 
     public final BetsyProcess ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
-            "basic-activities/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus refernce to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
+            "basic/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus refernce to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "unsupportedReference"))
             ]
@@ -471,7 +471,7 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess ASSIGN_INT = builder.buildProcessWithPartner(
-            "basic-activities/Assign-Int",  "A receive-reply pair combined with an assign and an invoke inbetween. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
+            "basic/Assign-Int",  "A receive-reply pair combined with an assign and an invoke inbetween. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
             [
                     new TestCase().checkDeployment().sendSync(1, 10)
             ]
@@ -513,35 +513,35 @@ class BasicActivityProcesses {
     )
 
     public final BetsyProcess ASSIGN_COPY_DO_XSL_TRANSFORM = builder.buildProcessWithXslt(
-            "basic-activities/Assign-Copy-DoXslTransform", "A receive-reply pair with an intermediate assign that uses the doXslTransform function.",
+            "basic/Assign-Copy-DoXslTransform", "A receive-reply pair with an intermediate assign that uses the doXslTransform function.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess ASSIGN_COPY_DO_XSL_TRANSFORM_INVALID_SOURCE_FAULT = builder.buildProcessWithXslt(
-            "basic-activities/Assign-Copy-DoXslTransform-InvalidSourceFault",  "A receive-reply pair with an intermediate assign that uses the doXslTransform function without a proper source for the script.",
+            "basic/Assign-Copy-DoXslTransform-InvalidSourceFault",  "A receive-reply pair with an intermediate assign that uses the doXslTransform function without a proper source for the script.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "xsltInvalidSource"))
             ]
     )
 
     public final BetsyProcess ASSIGN_COPY_DO_XSL_TRANSFORM_STYLESHEET_NOT_FOUND = builder.buildProcessWithXslt(
-            "basic-activities/Assign-Copy-DoXslTransform-XsltStylesheetNotFound", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the stylesheet does not exist.",
+            "basic/Assign-Copy-DoXslTransform-XsltStylesheetNotFound", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the stylesheet does not exist.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "xsltStylesheetNotFound"))
             ]
     )
 
     public final BetsyProcess ASSIGN_COPY_DO_XSL_TRANSFORM_SUB_LANGUAGE_EXECUTION_FAULT = builder.buildProcessWithXslt(
-            "basic-activities/Assign-Copy-DoXslTransform-SubLanguageExecutionFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the actual stylesheet has errors.",
+            "basic/Assign-Copy-DoXslTransform-SubLanguageExecutionFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the actual stylesheet has errors.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "subLanguageExecutionFault"))
             ]
     )
 
     public final BetsyProcess ASSIGN_VARIABLES_UNCHANGED_INSPITE_OF_FAULT = builder.buildProcessWithXslt(
-            "basic-activities/Assign-VariablesUnchangedInspiteOfFault", "A receive-reply pair with two intermediate assigns, the second of which produces a fault that is handled by the process-level faultHandler to send the response. Because of the fault, the second assign should have no impact on the response.",
+            "basic/Assign-VariablesUnchangedInspiteOfFault", "A receive-reply pair with two intermediate assigns, the second of which produces a fault that is handled by the process-level faultHandler to send the response. Because of the fault, the second assign should have no impact on the response.",
             [
                     new TestCase().checkDeployment().sendSync(1, -1)
             ]

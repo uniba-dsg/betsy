@@ -26,7 +26,7 @@ sourceSets {
 			srcDir 'src/main/tests'
 			exclude 'betsy/**'
 			exclude 'configuration/**'
-			exclude 'language-features/**'
+			exclude 'files/**'
 		}
 		resources {
 			srcDir 'src/main/resources'

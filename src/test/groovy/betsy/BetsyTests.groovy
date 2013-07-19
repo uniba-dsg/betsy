@@ -5,6 +5,7 @@ import betsy.data.engines.Engine
 import betsy.data.engines.EnginePackageBuilder
 import betsy.executables.Composite
 import configuration.processes.BasicActivityProcesses
+import configuration.processes.Processes
 import configuration.processes.StructuredActivityProcesses
 import org.junit.Test
 
@@ -49,7 +50,8 @@ class BetsyTests {
     @Test
     public void simulateATestRun() {
         Engine engine = new MockEngine()
-        Betsy betsy = new Betsy(engines: [engine], processes: [new StructuredActivityProcesses().SEQUENCE, new BasicActivityProcesses().INVOKE_SYNC], composite: new MockComposite())
+        ArrayList<BetsyProcess> processes = new Processes().ALL
+        Betsy betsy = new Betsy(engines: [engine], processes: processes, composite: new MockComposite())
         betsy.execute()
     }
 

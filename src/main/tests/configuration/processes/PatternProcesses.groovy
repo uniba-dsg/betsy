@@ -8,15 +8,15 @@ import betsy.data.assertions.ExitAssertion
 class PatternProcesses {
 
     private BetsyProcess buildPatternProcess(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "patterns/control-flow/${name}.bpel",
-                wsdls: ["language-features/TestInterface.wsdl"],
+        new BetsyProcess(bpel: "files/cfpatterns/${name}.bpel",
+                wsdls: ["files/TestInterface.wsdl"],
                 testCases: testCases
         )
     }
 
     private BetsyProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "patterns/control-flow/${name}.bpel",
-                wsdls: ["language-features/TestInterface.wsdl", "language-features/TestPartner.wsdl"],
+        new BetsyProcess(bpel: "files/cfpatterns/${name}.bpel",
+                wsdls: ["files/TestInterface.wsdl", "files/TestPartner.wsdl"],
                 testCases: testCases
         )
     }

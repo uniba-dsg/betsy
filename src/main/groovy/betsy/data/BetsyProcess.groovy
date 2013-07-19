@@ -42,8 +42,8 @@ class BetsyProcess implements Cloneable {
     List<String> additionalFiles = []
 
     String getId() {
-        // without .bpel extension
-        bpel.substring(0, bpel.length() - 5)
+        // without .bpel extension and without files/
+        bpel.substring(6, bpel.length() - 5)
     }
 
     @Override
@@ -176,7 +176,7 @@ class BetsyProcess implements Cloneable {
     }
 
     String getTargetSoapUIProjectName() {
-        "${engine}.${this.toString().substring(19)}".replaceAll("__", ".")
+        "${engine}.${getId()}".replaceAll("__", ".")
     }
 
     /**

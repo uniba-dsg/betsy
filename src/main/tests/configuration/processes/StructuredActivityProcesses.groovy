@@ -234,7 +234,7 @@ class StructuredActivityProcesses {
     )
 
     public final BetsyProcess FOR_EACH_PARALLEL_INVOKE = builder.buildProcessWithPartner(
-            "structured-activities/ForEach-Parallel-Invoke", "A receive-reply pair with an intermediate forEach that executes its children in parallel.",
+            "structured/ForEach-Parallel-Invoke", "A receive-reply pair with an intermediate forEach that executes its children in parallel.",
             [
                     new TestCase(name: "0plus1plus2-equals-3").checkDeployment().buildPartnerConcurrencySetup().
                             sendSync(2,3).

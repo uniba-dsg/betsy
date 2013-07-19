@@ -6,37 +6,37 @@ import betsy.data.TestCase
 class ProcessBuilder {
 
     public BetsyProcess buildProcess(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "language-features/${name}.bpel",
-                wsdls: ["language-features/TestInterface.wsdl"],
+        new BetsyProcess(bpel: "files/${name}.bpel",
+                wsdls: ["files/TestInterface.wsdl"],
                 testCases: testCases
         )
     }
 
     public BetsyProcess buildProcessWithXsd(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "language-features/${name}.bpel",
-                wsdls: ["language-features/TestInterface.wsdl"],
+        new BetsyProcess(bpel: "files/${name}.bpel",
+                wsdls: ["files/TestInterface.wsdl"],
                 testCases: testCases    ,
-                additionalFiles: ["language-features/basic-activities/months.xsd"],
+                additionalFiles: ["files/basic/months.xsd"],
         )
     }
 
     public BetsyProcess buildProcessWithPartner(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "language-features/${name}.bpel",
-                wsdls: ["language-features/TestInterface.wsdl", "language-features/TestPartner.wsdl"],
+        new BetsyProcess(bpel: "files/${name}.bpel",
+                wsdls: ["files/TestInterface.wsdl", "files/TestPartner.wsdl"],
                 testCases: testCases
         )
     }
 
     public BetsyProcess buildProcessWithXslt(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "language-features/${name}.bpel",
-                wsdls: ["language-features/TestInterface.wsdl"],
-                additionalFiles: ["language-features/basic-activities/echo.xslt", "language-features/basic-activities/notCompileable.xslt"],
+        new BetsyProcess(bpel: "files/${name}.bpel",
+                wsdls: ["files/TestInterface.wsdl"],
+                additionalFiles: ["files/basic/echo.xslt", "files/basic/notCompileable.xslt"],
                 testCases: testCases
         )
     }
 
     public BetsyProcess buildStructuredActivityProcess(String name, List<TestCase> testCases) {
-        buildProcess("structured-activities/${name}", testCases)
+        buildProcess("structured/${name}", testCases)
     }
 
     public BetsyProcess buildScopeProcess(String name, List<TestCase> testCases) {
@@ -44,7 +44,7 @@ class ProcessBuilder {
     }
 
     public BetsyProcess buildBasicActivityProcess(String name, List<TestCase> testCases) {
-        buildProcess("basic-activities/${name}", testCases)
+        buildProcess("basic/${name}", testCases)
     }
 
     public BetsyProcess buildStructuredActivityProcess(String name, String description, List<TestCase> testCases) {
