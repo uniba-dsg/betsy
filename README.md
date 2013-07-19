@@ -33,15 +33,19 @@ Requirements have to be fulfilled in order to execute any of these `gradlew` tas
 ```bash
 $ gradlew run -Pargs="<ARGS>"
 
-# usage: [options] <engines> <process>
-# -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
-# -o,--open-results-in-browser         Opens results in default browser
-# -h,--help                            Print out usage information
+#usage: [options] <engines> <process>
+# -p,--partner-address <ip-and-port>    Partner IP and Port (defaults to 141.13.4.93:2000)
+# -t,--to-core-bpel <transformations>   Transform to Core BPEL
+# -o,--open-results-in-browser          Opens results in default browser
+# -c,--check-deployment                 Verifies deployment instead of testsuccess
+# -h,--help                             Print out usage information
 
 # Examples
 $ gradlew run # Running all tests for all engines
 $ gradlew run -Pargs="ode" # Running all tests for Apache ODE
 $ gradlew run -Pargs="ode_v" # Running all tests for the virtualised Apache ODE
+$ gradlew run -Pargs="-t ALL ode_v" # Running all tests for the virtualised Apache ODE with all CoreBPEL transformations
+$ gradlew run -Pargs="-t sequence.xsl,pick.xsl ode_v" # Running all tests for the virtualised Apache ODE with sequence.xsl and pick.xsl CoreBPEL transformations
 $ gradlew run -Pargs="ode,bpelg" # Running all tests for Apache ODE and bpel-g
 $ gradlew run -Pargs="ALL Sequence" # Running Sequence test for all engines
 $ gradlew run -Pargs="vms Sequence" # Running Sequence test for all local engines
