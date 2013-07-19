@@ -64,13 +64,29 @@ class TestUsingParameters {
         }
 
         if(parser.transformToCoreBpel()){
-            for(Engine engine : engines) {
-                if(engine instanceof VirtualizedEngine) {
-                    CoreBPELEngineExtension.extendEngine(engine.defaultEngine)
-                } else if(engine instanceof LocalEngine) {
-                    CoreBPELEngineExtension.extendEngine(engine)
+
+            String transformations = parser.getCoreBPELTransformations()
+            if(transformations == "ALL") {
+                for(Engine engine : engines) {
+                    if(engine instanceof VirtualizedEngine) {
+                        CoreBPELEngineExtension.extendEngine(engine.defaultEngine)
+                    } else if(engine instanceof LocalEngine) {
+                        CoreBPELEngineExtension.extendEngine(engine)
+                    }
+                }
+            } else {
+                String[] xsls = transformations.split(",")
+
+                for(Engine engine : engines) {
+                    if(engine instanceof VirtualizedEngine) {
+                        CoreBPELEngineExtension.extendEngine(engine.defaultEngine, xsls)
+                    } else if(engine instanceof LocalEngine) {
+                        CoreBPELEngineExtension.extendEngine(engine, xsls)
+                    }
                 }
             }
+
+
         }
 
         if (engines.any { it instanceof VirtualizedEngine}) {
