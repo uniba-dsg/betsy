@@ -66,6 +66,7 @@ class TestUsingParameters {
         if(parser.transformToCoreBpel()){
 
             String transformations = parser.getCoreBPELTransformations()
+
             if(transformations == "ALL") {
                 for(Engine engine : engines) {
                     if(engine instanceof VirtualizedEngine) {
@@ -74,6 +75,8 @@ class TestUsingParameters {
                         CoreBPELEngineExtension.extendEngine(engine)
                     }
                 }
+            } else if(transformations == "NONE") {
+                // do nothing - default value
             } else {
                 String[] xsls = transformations.split(",")
 
