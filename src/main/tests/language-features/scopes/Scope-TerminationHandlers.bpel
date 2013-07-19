@@ -40,11 +40,7 @@
                                 <sequence>
                                     <assign name="AssignTerminationReplyData">
                                         <copy>
-                                            <from>
-                                                <literal>
-                                                    -1
-                                                </literal>
-                                            </from>
+                                            <from>-1</from>
                                             <to variable="ReplyData" part="outputPart"/>
                                         </copy>
                                     </assign>
