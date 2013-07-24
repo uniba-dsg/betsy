@@ -53,6 +53,18 @@ class CsvReport {
         }
     }
 
+    int getNumberOfSuccessfulTestsPer(Engine engine){
+        int successfulTests = 0
+        for(Test test : tests){
+           Result result = test.engineToResult.get(engine)
+            if(result.isSuccessful()){
+                successfulTests++
+            }
+        }
+
+        successfulTests
+    }
+
     String getRelativePath(Group group, Engine engine, Test test) {
         try {
             String path = new FileNameFinder().getFileNames("test/reports/html/soapui/${engine.name}/${group.name}", "*_${test.fullName}.html").first()

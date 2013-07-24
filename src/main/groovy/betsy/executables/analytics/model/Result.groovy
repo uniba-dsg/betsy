@@ -30,6 +30,10 @@ class Result {
         }
     }
 
+    boolean isSuccessful() {
+        return failed == 0
+    }
+
     @Override
     public String toString() {
         return "Result{" +

@@ -63,6 +63,10 @@ class BetsyProcess implements Cloneable {
         getEndpoint() + "?wsdl"
     }
 
+    String getGroup() {
+        getId().split("/").first()
+    }
+
     /**
      * An id as "language_features/structured_activities/Sequence" is transformed to
      * "language_features__structured_activities__Sequence"
@@ -176,7 +180,7 @@ class BetsyProcess implements Cloneable {
     }
 
     String getTargetSoapUIProjectName() {
-        "${engine}.${getId()}".replaceAll("__", ".")
+        "${engine}.${getGroup()}.${getBpelFileNameWithoutExtension()}".replaceAll("__", ".")
     }
 
     /**
@@ -185,7 +189,7 @@ class BetsyProcess implements Cloneable {
      * @return the file name <code>test_$engine_$process_soapui.xml</code>
      */
     String getTargetSoapUIFileName() {
-        "test_${engine}_${this}_soapui.xml"
+        "test_${engine}_${getGroup()}_${getBpelFileNameWithoutExtension()}_soapui.xml"
     }
 
     String getTargetSoapUIFilePath() {
