@@ -18,7 +18,6 @@ class Analyzer {
 
         // analytics
         new HtmlAnalytics(report: csvModel).toHtmlReport("${reportsFolderPath}/results.html")
-        new LatexAnalytics(report: csvModel).toLatexReport("${reportsFolderPath}/results.tex")
     }
 
 }
