@@ -4,9 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.Engine
 import betsy.data.engines.EnginePackageBuilder
 import betsy.executables.Composite
-import configuration.processes.BasicActivityProcesses
 import configuration.processes.Processes
-import configuration.processes.StructuredActivityProcesses
 import org.junit.Test
 
 class BetsyTests {
@@ -37,7 +35,7 @@ class BetsyTests {
 
         String getName() { "mock" }
 
-        String getXsltPath() { "unused_path"}
+        String getXsltPath() { "unused_path" }
     }
 
     class MockComposite extends Composite {
