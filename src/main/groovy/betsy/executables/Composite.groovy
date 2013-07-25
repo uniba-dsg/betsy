@@ -157,7 +157,7 @@ class Composite {
 		}
 	}
 
-	String log(String name, Closure closure) {
+	void log(String name, Closure closure) {
 		try {
 			ant.mkdir dir: new File(name).parent
 			ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
