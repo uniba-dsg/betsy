@@ -1,7 +1,5 @@
 package corebpel
 
-import betsy.data.BetsyProcess
-
 class CoreBPEL {
 
     // COPIED FROM src/com/beepell/deployment/transform/Transform.java
