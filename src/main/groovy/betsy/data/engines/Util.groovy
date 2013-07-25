@@ -34,4 +34,5 @@ class Util {
 
         return new String(canon.canonicalize(text.bytes));
     }
+
 }

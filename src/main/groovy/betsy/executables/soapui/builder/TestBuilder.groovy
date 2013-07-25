@@ -1,4 +1,4 @@
-package betsy.executables.generator
+package betsy.executables.soapui.builder
 
 import betsy.executables.soapui.builder.SoapUiProjectBuilder
 import betsy.data.BetsyProcess
