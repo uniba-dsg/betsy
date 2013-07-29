@@ -1,9 +1,13 @@
 package betsy.executables.reporting
 
-class TestCaseCsvReports {
+class JUnitXmlResultToCsvRow {
 
     /**
      * Represents one row in the resulting csv file
+     *
+     * TEST NAME; ENGINE NAME; GROUP NAME; SUCCESS FLAG; NUMBER OF FAILURES; NUMBER OF TESTS
+     *
+     * SUCCESS FLAG: 1 for successful, 0 for not successful
      */
     static class CsvRow {
         String name
