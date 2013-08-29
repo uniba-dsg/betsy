@@ -181,6 +181,13 @@ class ScopeProcesses {
             ]
     )
 
+    public final Process SCOPE_FAULT_HANDLER_INVOKE = builder.buildProcessWithPartner(
+            "scopes/Scope-FaultHandlers-Invoke",   "A scope with a receive followed by a intermediate invoke of a service which replies with a fault. The fault that is returned from the invocation is caught by the scope-level faultHandler by its faultName. Inside this faultHandler is the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(-5,-5)
+            ]
+    )
+
     public final List<Process> SCOPE_FAULT_HANDLERS = [
             SCOPE_FAULT_HANDLER,
             SCOPE_FAULT_HANDLERS_CATCH_ALL,
@@ -189,7 +196,8 @@ class ScopeProcesses {
             SCOPE_EXIT_ON_STANDARD_FAULT,
             SCOPE_EXIT_ON_STANDARD_FAULT_JOIN_FAILURE,
             SCOPE_FAULT_HANDLERS_CATCH_ORDER,
-            SCOPE_FAULT_HANDLERS_FAULT_VARIABLE_DATA
+            SCOPE_FAULT_HANDLERS_FAULT_VARIABLE_DATA,
+            SCOPE_FAULT_HANDLER_INVOKE
     ].flatten() as List<Process>
 
     public final Process SCOPE_PARTNER_LINKS = builder.buildProcessWithPartner(
