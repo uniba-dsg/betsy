@@ -46,7 +46,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Throwing CustomFault"
 
             SOAPFactory fac = SOAPFactory.newInstance();
-            SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "CustomFault"))
+            SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"))
             throw new SOAPFaultException(sf)
         }
 
