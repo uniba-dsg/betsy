@@ -10,6 +10,8 @@ import javax.xml.ws.soap.SOAPFaultException
 
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
 import java.util.concurrent.atomic.AtomicInteger
+import javax.xml.soap.Detail
+import javax.xml.soap.DetailEntry
 
 @WebService(
 name = "TestPartnerPortType",
@@ -47,6 +49,8 @@ class TestPartnerServiceMock implements TestPartnerPortType {
 
             SOAPFactory fac = SOAPFactory.newInstance();
             SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"))
+            Detail detail = sf.addDetail()
+            DetailEntry detailEntry = detail.addDetailEntry(new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "Error"))
             throw new SOAPFaultException(sf)
         }
 

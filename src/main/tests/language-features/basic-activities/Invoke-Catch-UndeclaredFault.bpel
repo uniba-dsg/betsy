@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="Invoke-Catch-ExplicitFault"
+        name="Invoke-Catch-UndeclaredFault"
         targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/invokeCatchDeclaredFault"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
@@ -26,7 +26,7 @@
             </copy>
         </assign>
         <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync" portType="tp:TestPartnerPortType" inputVariable="PartnerInitData" outputVariable="PartnerReplyData">
-            <catch faultName="tp:CustomFault">
+            <catch faultName="tp:Error">
                 <sequence>
                     <assign name="AssignReplyDataInsideCatch">
                         <copy>

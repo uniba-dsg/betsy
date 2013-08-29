@@ -379,10 +379,10 @@ class BasicActivityProcesses {
             ]
     )
 
-    public final Process INVOKE_CATCH_EXPLICIT_FAULT = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Catch-ExplicitFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is declared in the Web Service Definition of the partner service.",
+    public final Process INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
+            "basic-activities/Invoke-Catch-UndeclaredFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             [
-                    new TestCase().checkDeployment().sendSync(-6, 0)
+                    new TestCase().checkDeployment().sendSync(-5, 0)
             ]
     )
 
@@ -410,7 +410,7 @@ class BasicActivityProcesses {
             INVOKE_CORRELATION_PATTERN_INIT_ASYNC,
             INVOKE_CORRELATION_PATTERN_INIT_SYNC,
             INVOKE_CATCH,
-            INVOKE_CATCH_EXPLICIT_FAULT,
+            INVOKE_CATCH_UNDECLARED_FAULT,
             INVOKE_CATCHALL,
             INVOKE_COMPENSATION_HANDLER
     ]
