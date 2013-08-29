@@ -333,7 +333,7 @@ class BasicActivityProcesses {
     public final Process INVOKE_SYNC_FAULT = builder.buildProcessWithPartner(
             "basic-activities/Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             [
-                    new TestCase().checkDeployment().sendSync(-5, new SoapFaultTestAssertion(faultString: "CustomFault"))
+                    new TestCase().checkDeployment().sendSync(-6, new SoapFaultTestAssertion(faultString: "CustomFault"))
             ]
     )
 
@@ -389,7 +389,7 @@ class BasicActivityProcesses {
     public final Process INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-6, 0)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-5, 0)
             ]
     )
 
