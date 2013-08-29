@@ -184,7 +184,7 @@ class ScopeProcesses {
     public final Process SCOPE_FAULT_HANDLER_INVOKE = builder.buildProcessWithPartner(
             "scopes/Scope-FaultHandlers-Invoke",   "A scope with a receive followed by a intermediate invoke of a service which replies with a fault. The fault that is returned from the invocation is caught by the scope-level faultHandler by its faultName. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new TestCase().checkDeployment().sendSync(-6,-6)
+                    new TestCase().checkDeployment().sendSync(builder.DECLARED_FAULT_CODE,builder.DECLARED_FAULT_CODE)
             ]
     )
 

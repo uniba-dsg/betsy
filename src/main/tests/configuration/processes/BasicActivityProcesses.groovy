@@ -333,7 +333,7 @@ class BasicActivityProcesses {
     public final Process INVOKE_SYNC_FAULT = builder.buildProcessWithPartner(
             "basic-activities/Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             [
-                    new TestCase().checkDeployment().sendSync(-6, new SoapFaultTestAssertion(faultString: "CustomFault"))
+                    new TestCase().checkDeployment().sendSync(builder.DECLARED_FAULT_CODE, new SoapFaultTestAssertion(faultString: "CustomFault"))
             ]
     )
 
@@ -375,21 +375,21 @@ class BasicActivityProcesses {
     public final Process INVOKE_CATCH = builder.buildProcessWithPartner(
             "basic-activities/Invoke-Catch",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
-                    new TestCase().checkDeployment().sendSync(-6, 0)
+                    new TestCase().checkDeployment().sendSync(builder.DECLARED_FAULT_CODE, 0)
             ]
     )
 
     public final Process INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic-activities/Invoke-Catch-UndeclaredFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             [
-                    new TestCase().checkDeployment().sendSync(-5, 0)
+                    new TestCase().checkDeployment().sendSync(builder.UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
     public final Process INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-5, 0)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(builder.UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
