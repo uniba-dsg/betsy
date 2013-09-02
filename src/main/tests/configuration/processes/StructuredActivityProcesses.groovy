@@ -294,7 +294,7 @@ class StructuredActivityProcesses {
     public final Process PICK_CORRELATIONS_INIT_ASYNC = builder.buildStructuredActivityProcess(
             "Pick-Correlations-InitAsync", "An asynchronous receive that initiates a correlationSet, followed by a pick with a synchronous onMessage that correlates on this set.",
             [
-                    new TestCase().checkDeployment().sendAsync(1).sendSync(1,2)
+                    new TestCase().checkDeployment().sendAsync(1).sendSync(1,1)
             ]
     )
 
