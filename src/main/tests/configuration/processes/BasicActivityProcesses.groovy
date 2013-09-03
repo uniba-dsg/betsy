@@ -386,7 +386,14 @@ class BasicActivityProcesses {
     )
 
     public final Process INVOKE_CATCHALL = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
+            "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault that has been declard in the WSDL of the invoked service, but catches all faults and replies.",
+            [
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(builder.DECLARED_FAULT_CODE, 0)
+            ]
+    )
+
+    public final Process INVOKE_CATCHALL_UNDECLARED_FAULT = builder.buildProcessWithPartner(
+            "basic-activities/Invoke-CatchAll-UndeclaredFault",  "A receive-reply pair with an intermediate invoke that results in a fault that has not been declared in the WSDL of the invoked service, but catches all faults and replies.",
             [
                     new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(builder.UNDECLARED_FAULT_CODE, 0)
             ]
@@ -411,6 +418,7 @@ class BasicActivityProcesses {
             INVOKE_CATCH,
             INVOKE_CATCH_UNDECLARED_FAULT,
             INVOKE_CATCHALL,
+            INVOKE_CATCHALL_UNDECLARED_FAULT,
             INVOKE_COMPENSATION_HANDLER
     ]
 
