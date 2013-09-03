@@ -1,11 +1,6 @@
 package betsy.executables.analytics
 
-import betsy.executables.analytics.model.CsvReport
-import betsy.executables.analytics.model.Engine
-import betsy.executables.analytics.model.Group
-import betsy.executables.analytics.model.Result
-import betsy.executables.analytics.model.Test
-
+import betsy.executables.analytics.model.*
 
 class CsvReportLoader {
 
@@ -21,10 +16,11 @@ class CsvReportLoader {
             String testGroup = fields[2]
             Integer failedTests = fields[4] as Integer
             Integer totalTests = fields[5] as Integer
+            Boolean deployable = fields[6] == "1"
 
             Group group = report.getGroup(testGroup)
             Engine engine = report.getEngine(engineName)
-            Result result = new Result(failed: failedTests, total: totalTests)
+            Result result = new Result(failed: failedTests, total: totalTests, deployable: deployable)
             Test test = report.getTest(testName)
             test.engineToResult.put(engine, result)
             group.tests.add(test)
