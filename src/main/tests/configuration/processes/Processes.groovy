@@ -40,6 +40,8 @@ class Processes {
             return WITH_EXIT_ASSERTION
         } else if ("FAULTS" == upperCaseName) {
             return FAULTS
+        } else if ("SA" == upperCaseName) {
+            return StaticAnalysisProcesses.getStaticAnalysisProcesses()
         }
 
         List<Process> result = []
