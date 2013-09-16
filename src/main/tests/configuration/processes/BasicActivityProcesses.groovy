@@ -2,11 +2,8 @@ package configuration.processes
 
 import betsy.data.Process
 import betsy.data.TestCase
-
-import betsy.data.TestStep
-import betsy.data.WsdlOperation
-import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.ExitAssertion
+import betsy.data.assertions.SoapFaultTestAssertion
 
 class BasicActivityProcesses {
 
@@ -17,7 +14,7 @@ class BasicActivityProcesses {
             [
                     new TestCase().
                             checkDeployment().
-                            sendSync(5,5)
+                            sendSync(5, 5)
             ]
     )
 
@@ -26,7 +23,7 @@ class BasicActivityProcesses {
             [
                     new TestCase().
                             checkDeployment().
-                            sendSync(1,new ExitAssertion())
+                            sendSync(1, new ExitAssertion())
             ]
     )
 
@@ -69,19 +66,19 @@ class BasicActivityProcesses {
     public final Process VARIABLES_DEFAULT_INITIALIZATION = builder.buildBasicActivityProcess(
             "Variables-DefaultInitialization", "A receive-reply pair where the variable of the reply is assigned with a default value.",
             [
-                    new TestCase(name: "DefaultValue-10-Should-Be-Returned").checkDeployment().sendSync(5,10)
+                    new TestCase(name: "DefaultValue-10-Should-Be-Returned").checkDeployment().sendSync(5, 10)
             ]
     )
 
     public final Process WAIT_FOR = builder.buildBasicActivityProcess(
             "Wait-For", "A receive-reply pair with an intermediate wait that pauses execution for five seconds.",
             [
-                    new TestCase().checkDeployment().sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final Process WAIT_FOR_INVALID_EXPRESSION_VALUE = builder.buildBasicActivityProcess(
-            "Wait-For-InvalidExpressionValue",  "A receive-reply pair with an intermediate wait. The for element is assigned a value of xs:int, but only xs:duration is allowed.",
+            "Wait-For-InvalidExpressionValue", "A receive-reply pair with an intermediate wait. The for element is assigned a value of xs:int, but only xs:duration is allowed.",
             [
                     new TestCase().checkDeployment().sendSync(5, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
             ]
@@ -101,7 +98,7 @@ class BasicActivityProcesses {
     ]
 
     public final Process THROW = builder.buildBasicActivityProcess(
-            "Throw",  "A receive-reply pair with an intermediate throw. The response should a soap fault containing the bpel fault.",
+            "Throw", "A receive-reply pair with an intermediate throw. The response should a soap fault containing the bpel fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "completionConditionFailure"))
             ]
@@ -122,14 +119,14 @@ class BasicActivityProcesses {
     )
 
     public final Process THROW_CUSTOM_FAULT_IN_WSDL = builder.buildBasicActivityProcess(
-            "Throw-CustomFaultInWsdl",  "A receive-reply pair with an intermediate throw that throws a custom fault defined in the myRole WSDL. The response should be a soap fault containing the custom fault.",
+            "Throw-CustomFaultInWsdl", "A receive-reply pair with an intermediate throw that throws a custom fault defined in the myRole WSDL. The response should be a soap fault containing the custom fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "syncFault"))
             ]
     )
 
     public final Process THROW_FAULT_DATA = builder.buildBasicActivityProcess(
-            "Throw-FaultData",  "A receive-reply pair with an intermediate throw that also uses a faultVariable. The content of the faultVariable should be contained in the response.",
+            "Throw-FaultData", "A receive-reply pair with an intermediate throw that also uses a faultVariable. The content of the faultVariable should be contained in the response.",
             [
                     new TestCase().
                             checkDeployment().
@@ -179,35 +176,35 @@ class BasicActivityProcesses {
     ]
 
     public final Process RECEIVE = builder.buildBasicActivityProcess(
-            "Receive",  "A single asynchronous receive.",
+            "Receive", "A single asynchronous receive.",
             [
                     new TestCase().checkDeployment().sendAsync(1)
             ]
     )
 
     public final Process RECEIVE_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
-            "Receive-Correlation-InitAsync",  "Two asynchronous receives, followed by a receive-reply pair, and bound to a single correlationSet.",
+            "Receive-Correlation-InitAsync", "Two asynchronous receives, followed by a receive-reply pair, and bound to a single correlationSet.",
             [
-                    new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1,1)
+                    new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1, 1)
             ]
     )
 
     public final Process RECEIVE_CORRELATION_INIT_SYNC = builder.buildBasicActivityProcess(
-            "Receive-Correlation-InitSync",  "One synchronous receive, one asynchronous receive, followed by a receive-reply pair, and bound to a single correlationSet.",
+            "Receive-Correlation-InitSync", "One synchronous receive, one asynchronous receive, followed by a receive-reply pair, and bound to a single correlationSet.",
             [
-                    new TestCase().checkDeployment().sendSync(1,0).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1, 1)
             ]
     )
 
     public final Process RECEIVE_AMBIGUOUS_RECEIVE_FAULT = builder.buildBasicActivityProcess(
-            "Receive-AmbiguousReceiveFault",  "An asynchronous receive that initiates two correlationSets, followed by a flow with two sequences that contain synchronous receive-reply pairs for the same operation but differnet correlationSets. Should trigger an ambiguousReceive fault." ,
+            "Receive-AmbiguousReceiveFault", "An asynchronous receive that initiates two correlationSets, followed by a flow with two sequences that contain synchronous receive-reply pairs for the same operation but differnet correlationSets. Should trigger an ambiguousReceive fault.",
             [
                     new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendSync(1, new SoapFaultTestAssertion(faultString: "ambiguousReceive"))
             ]
     )
 
     public final Process RECEIVE_CONFLICTING_RECEIVE_FAULT = builder.buildBasicActivityProcess(
-            "Receive-ConflictingReceiveFault",  "An asynchronous receive that initiates a correlationSet, followed by a flow with two sequences that contain synchronous receive-reply pair for the same operation and correlationSet. Should trigger a conflictingReceive fault.",
+            "Receive-ConflictingReceiveFault", "An asynchronous receive that initiates a correlationSet, followed by a flow with two sequences that contain synchronous receive-reply pair for the same operation and correlationSet. Should trigger a conflictingReceive fault.",
             [
                     // TODO muss das hier nicht ein sendAsync sein als erstes?
                     new TestCase().checkDeployment().sendSync(1).waitFor(1000).sendSync(1, new SoapFaultTestAssertion(faultString: "conflictingReceive"))
@@ -218,7 +215,7 @@ class BasicActivityProcesses {
             "ReceiveReply-ConflictingRequestFault", "A synchronous interaction, followed by intermediate while that subsequently enables multiple receives that correspond to a single synchronous message exchange. Should trigger a conflictingRequest fault.",
             [
                     new TestCase().checkDeployment().
-                            sendSync(1,1).waitFor(1000). // start up, should complete normally
+                            sendSync(1, 1).waitFor(1000). // start up, should complete normally
                             sendSyncString(1).waitFor(1000). // no reply, also normal, we need to open the message exchange
                             sendSyncString(1, new SoapFaultTestAssertion(faultString: "conflictingRequest")) // now, there should be the fault
             ]
@@ -227,35 +224,35 @@ class BasicActivityProcesses {
     public final Process RECEIVE_REPLY = builder.buildBasicActivityProcess(
             "ReceiveReply", "A simple receive-reply pair.",
             [
-                    new TestCase().checkDeployment().sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final Process RECEIVE_REPLY_MESSAGE_EXCHANGES = builder.buildBasicActivityProcess(
-            "ReceiveReply-MessageExchanges",  "A simple receive-reply pair that uses a messageExchange.",
+            "ReceiveReply-MessageExchanges", "A simple receive-reply pair that uses a messageExchange.",
             [
-                    new TestCase().checkDeployment().sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 1)
             ]
     )
 
     public final Process RECEIVE_REPLY_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
-                    new TestCase().checkDeployment().sendAsync(5).waitFor(1000).sendSync(5,5)
+                    new TestCase().checkDeployment().sendAsync(5).waitFor(1000).sendSync(5, 5)
             ]
     )
 
     public final Process RECEIVE_REPLY_CORRELATION_INIT_SYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitSync", "A synchronous recieve that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
-                    new TestCase().checkDeployment().sendSync(5,0).waitFor(1000).sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 0).waitFor(1000).sendSync(5, 5)
             ]
     )
 
     public final Process RECEIVE_REPLY_CORRELATION_VIOLATION_NO = builder.buildBasicActivityProcess(
             "ReceiveReply-CorrelationViolation-No", "A receive-reply pair that uses an uninitiated correlationSet and sets initiate to no. Should trigger a correlationViolation fault.",
             [
-                    new TestCase().checkDeployment().sendSync(1,new SoapFaultTestAssertion(faultString: "correlationViolation"))
+                    new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "correlationViolation"))
             ]
     )
 
@@ -263,7 +260,7 @@ class BasicActivityProcesses {
             "ReceiveReply-CorrelationViolation-Yes", "Two subsequent receive-reply pairs which share a correlationSet and where both receives have initiate set to yes.",
             [
                     new TestCase().checkDeployment().
-                            sendSync(1,1).waitFor(1000).
+                            sendSync(1, 1).waitFor(1000).
                             sendSync(1, new SoapFaultTestAssertion(faultString: "correlationViolation"))
             ]
     )
@@ -286,7 +283,7 @@ class BasicActivityProcesses {
     public final Process RECEIVE_REPLY_TO_PARTS = builder.buildBasicActivityProcess(
             "ReceiveReply-ToParts", "A receive-reply pair that uses the toPart syntax instead of a variable.",
             [
-                    new TestCase().checkDeployment().sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 1)
             ]
     )
 
@@ -317,7 +314,7 @@ class BasicActivityProcesses {
     ]
 
     public final Process INVOKE_ASYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Async",  "A receive-reply pair with an intermediate asynchronous invoke.",
+            "basic-activities/Invoke-Async", "A receive-reply pair with an intermediate asynchronous invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
@@ -338,7 +335,7 @@ class BasicActivityProcesses {
     )
 
     public final Process INVOKE_TO_PARTS = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-ToParts","A receive-reply pair with an intermediate synchronous invoke that uses the toParts syntax.",
+            "basic-activities/Invoke-ToParts", "A receive-reply pair with an intermediate synchronous invoke that uses the toParts syntax.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
@@ -359,42 +356,42 @@ class BasicActivityProcesses {
     )
 
     public final Process INVOKE_CORRELATION_PATTERN_INIT_ASYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-Pattern-InitAsync",  "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
+            "basic-activities/Invoke-Correlation-Pattern-InitAsync", "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             [
                     new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendSync(1, 1)
             ]
     )
 
     public final Process INVOKE_CORRELATION_PATTERN_INIT_SYNC = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Correlation-Pattern-InitSync",  "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
+            "basic-activities/Invoke-Correlation-Pattern-InitSync", "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             [
-                    new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendSync(1, 1)
             ]
     )
 
     public final Process INVOKE_CATCH = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Catch",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
+            "basic-activities/Invoke-Catch", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
                     new TestCase().checkDeployment().sendSync(-5, 0)
             ]
     )
 
     public final Process INVOKE_CATCH_EXPLICIT_FAULT = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-Catch-ExplicitFault",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is declared in the Web Service Definition of the partner service.",
+            "basic-activities/Invoke-Catch-ExplicitFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is declared in the Web Service Definition of the partner service.",
             [
                     new TestCase().checkDeployment().sendSync(-6, 0)
             ]
     )
 
     public final Process INVOKE_CATCHALL = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-CatchAll",  "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
+            "basic-activities/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
                     new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-5, 0)
             ]
     )
 
     public final Process INVOKE_COMPENSATION_HANDLER = builder.buildProcessWithPartner(
-            "basic-activities/Invoke-CompensationHandler",  "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
+            "basic-activities/Invoke-CompensationHandler", "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
             [
                     new TestCase().checkDeployment().sendSync(1, 0)
             ]
@@ -417,7 +414,7 @@ class BasicActivityProcesses {
 
 
     public final Process ASSIGN_VALIDATE = builder.buildProcessWithXsd(
-            "basic-activities/Assign-Validate",  "A receive-reply pair with an intermediate assign that has validate set to yes. The assign copies to a variable that represents a month and the validation should fail for values not in the range of one to twelve.",
+            "basic-activities/Assign-Validate", "A receive-reply pair with an intermediate assign that has validate set to yes. The assign copies to a variable that represents a month and the validation should fail for values not in the range of one to twelve.",
             [
                     new TestCase(name: "Input Value 13 should return validation fault").checkDeployment().
                             sendSync(13, new SoapFaultTestAssertion(faultString: "invalidVariables"))
@@ -425,9 +422,9 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_PROPERTY = builder.buildBasicActivityProcess(
-            "Assign-Property", "A receive-reply pair with an intermediate assign that copies from a property instead of a variable." ,
+            "Assign-Property", "A receive-reply pair with an intermediate assign that copies from a property instead of a variable.",
             [
-                    new TestCase().checkDeployment().sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
@@ -474,7 +471,7 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_INT = builder.buildProcessWithPartner(
-            "basic-activities/Assign-Int",  "A receive-reply pair combined with an assign and an invoke inbetween. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
+            "basic-activities/Assign-Int", "A receive-reply pair combined with an assign and an invoke inbetween. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
             [
                     new TestCase().checkDeployment().sendSync(1, 10)
             ]
@@ -488,7 +485,7 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_COPY_QUERY = builder.buildBasicActivityProcess(
-            "Assign-Copy-Query",  "A process with a receive-reply pair with an intermediate assign that uses a query in a from element.",
+            "Assign-Copy-Query", "A process with a receive-reply pair with an intermediate assign that uses a query in a from element.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
@@ -502,7 +499,7 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_COPY_IGNORE_MISSING_FROM_DATA = builder.buildBasicActivityProcess(
-            "Assign-Copy-IgnoreMissingFromData",  "A receive-reply pair with an intermediate assign with a copy that has ignoreMissingFromData set to yes and contains a from element with an erroneous xpath statement. Therefore, the assign should be ignored.",
+            "Assign-Copy-IgnoreMissingFromData", "A receive-reply pair with an intermediate assign with a copy that has ignoreMissingFromData set to yes and contains a from element with an erroneous xpath statement. Therefore, the assign should be ignored.",
             [
                     new TestCase().checkDeployment().sendSync(5, -1)
             ]
@@ -523,7 +520,7 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_COPY_DO_XSL_TRANSFORM_INVALID_SOURCE_FAULT = builder.buildProcessWithXslt(
-            "basic-activities/Assign-Copy-DoXslTransform-InvalidSourceFault",  "A receive-reply pair with an intermediate assign that uses the doXslTransform function without a proper source for the script.",
+            "basic-activities/Assign-Copy-DoXslTransform-InvalidSourceFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function without a proper source for the script.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "xsltInvalidSource"))
             ]

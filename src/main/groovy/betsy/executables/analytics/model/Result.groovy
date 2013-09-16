@@ -20,6 +20,8 @@ class Result {
     Integer failed
     Integer total
 
+    Boolean deployable
+
     Support getPartial() {
         if (failed == 0) {
             Support.TOTAL

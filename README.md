@@ -14,7 +14,7 @@ This software is licensed under the LGPL Version 3 Open Source License.
   - `PATH` should include `JAVA_HOME/bin`
 - SoapUI 4.5.2 (64 bit)
   - installed path should be `C:\Program Files\SmartBear\soapUI-4.5.2`
-- Ant 1.8.3 or higher
+- Ant 1.8.3 or higher (also verified with ant 1.9.2) 
   - `ANT_HOME` should point to the Ant directory
   - `PATH` should include `ANT_HOME/bin`
   

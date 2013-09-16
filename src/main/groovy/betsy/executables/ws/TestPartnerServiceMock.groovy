@@ -1,23 +1,24 @@
 package betsy.executables.ws
 
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
 
 import javax.jws.WebService
+import javax.xml.namespace.QName
+import javax.xml.soap.Detail
+import javax.xml.soap.DetailEntry
 import javax.xml.soap.SOAPFactory
 import javax.xml.soap.SOAPFault
-import javax.xml.namespace.QName
 import javax.xml.ws.soap.SOAPFaultException
-
-import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
 import java.util.concurrent.atomic.AtomicInteger
 
 @WebService(
-name = "TestPartnerPortType",
-serviceName = "TestService",
-portName = "TestPort",
-targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
-endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
-wsdlLocation = "TestPartner.wsdl")
+        name = "TestPartnerPortType",
+        serviceName = "TestService",
+        portName = "TestPort",
+        targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
+        endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
+        wsdlLocation = "TestPartner.wsdl")
 class TestPartnerServiceMock implements TestPartnerPortType {
 
     public static final int CONCURRENCY_TIMEOUT = 1000
@@ -46,7 +47,9 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Throwing CustomFault"
 
             SOAPFactory fac = SOAPFactory.newInstance();
-            SOAPFault sf = fac.createFault("expected Error", new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "CustomFault"))
+            SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"))
+            Detail detail = sf.addDetail()
+            DetailEntry detailEntry = detail.addDetailEntry(new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "Error"))
             throw new SOAPFaultException(sf)
         }
 

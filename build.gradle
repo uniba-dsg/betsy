@@ -12,49 +12,55 @@ repositories {
 }
 
 sourceSets {
-	main {
-		java {
-			srcDirs = []
-		}
-		groovy {
-			srcDir 'src/main/java'
-			srcDir 'src/main/groovy'
-			srcDir 'src/main/tests'
-			exclude 'betsy/virtual/server/**'
-		}
-		resources {
-			srcDir 'src/main/resources'
+    main {
+        java {
+            srcDirs = []
+        }
+        groovy {
+            srcDir 'src/main/java'
+            srcDir 'src/main/groovy'
+            srcDir 'src/main/tests'
+            exclude 'betsy/virtual/server/**'
+        }
+        resources {
+            srcDir 'src/main/resources'
             exclude 'virtual/server/**'
         }
-	}
+    }
 }
 
 dependencies {
-	compile 'org.codehaus.groovy:groovy-all:2.1.5'
+    compile 'org.codehaus.groovy:groovy-all:2.1.5'
 
-	compile 'org.apache.ant:ant:1.9.1'
-	compile 'log4j:log4j:1.2.17'
-	compile 'org.virtualbox:vboxjws:4.2.8'
+    compile 'org.apache.ant:ant:1.9.1'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.virtualbox:vboxjws:4.2.8'
     compile 'commons-daemon:commons-daemon:1.0.12'
 
     testCompile 'org.junit:junit:4.11'
-	
-	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*', 'groovy*']))
-	compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\bin', includes: ['*.jar']))
+
+    compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\lib', includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*', 'groovy*']))
+    compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.5.2\\bin', includes: ['*.jar']))
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.6'
+    gradleVersion = '1.7'
 }
 
 run {
-    if(project.hasProperty('args')){
+    if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }
 }
 
-task enginecontrol (type: JavaExec, dependsOn: build){
+task enginecontrol(type: JavaExec, dependsOn: build) {
     description = 'Starts Engine Control GUI'
     classpath = sourceSets.main.runtimeClasspath
     main = "betsy.tool.EngineControl"
+}
+
+task partnerservice(type: JavaExec, dependsOn: build) {
+    description = 'Starts test case partner service only'
+    classpath = sourceSets.main.runtimeClasspath
+    main = "betsy.tool.PartnerServiceControl"
 }
