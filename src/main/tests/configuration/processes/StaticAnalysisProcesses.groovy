@@ -14,9 +14,9 @@ class StaticAnalysisProcesses {
         List<betsy.data.Process> result = []
 
         new File(path).eachDirRecurse { dir ->
-            boolean isTestDirectory = dir.list().contains({ String elem -> elem.endsWith(".bpel") })
+            boolean isTestDirectory = dir.list().any({ String elem -> elem.endsWith(".bpel") })
             if (isTestDirectory) {
-                String testDir = dir.path.replace("src/main/tests/", "")
+                String testDir = dir.path.replace("\\","/").replace("src/main/tests/", "")
 
                 List<String> wsdls = []
                 dir.list().each { elem ->
