@@ -1,2 +1,2 @@
-echo "Starting betsy with the following parameters: $*"
+echo "Starting with the following parameters: $*"
 gradlew run -Pargs="$*"
