@@ -23,27 +23,27 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
 ## Usage
 
-Requirements have to be fulfilled in order to execute any of these `gradlew` tasks.
+Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
 
 ```bash
-$ gradlew run -Pargs="<ARGS>"
-
-# usage: [options] <engines> <process>
+# betsy [options] <engines> <process>
+#
 # -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
 # -o,--open-results-in-browser         Opens results in default browser
+# -c,--check-deployment                Verifies deployment instead of test success
 # -h,--help                            Print out usage information
 
 # Examples
-$ gradlew run # Running all tests for all engines
-$ gradlew run -Pargs="ode" # Running all tests for Apache ODE
-$ gradlew run -Pargs="ode,bpelg" # Running all tests for Apache ODE and bpel-g
-$ gradlew run -Pargs="ALL Sequence" # Running Sequence test for all engines
-$ gradlew run -Pargs="ALL Sequence,While" # Running Sequence and While test for all engines
-$ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
-$ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
-$ gradlew run -Pargs="-o" # Opens the results in the default browser after a successful run
+$ betsy # Running all tests for all engines
+$ betsy ode # Running all tests for Apache ODE
+$ betsy ode,bpelg # Running all tests for Apache ODE and bpel-g
+$ betsy ALL Sequence # Running Sequence test for all engines
+$ betsy ALL Sequence,While # Running Sequence and While test for all engines
+$ betsy ode Sequence # Running Sequence test for Apache ODE
+$ betsy ode Invoke-Catch # Running Invoke-Catch test for Apache ODE
+$ betsy -o # Opens the results in the default browser after a successful run
 
-# Other gradlew tasks
+# Administrative gradlew tasks
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
