@@ -11,6 +11,9 @@
                  .TOTAL {
                     background-color: green;
                  }
+                 .UNDEPLOYABLE {
+                    background-color: orange;
+                 }
                  .result {
                      text-align: center;
                      width: 60px;
@@ -47,7 +50,7 @@
 	                <% } %>
 	                    <td class='${test.support}'>${test.fullName}</td>
 	                <% test.engineToResult.each {engine, result -> %>
-                        <td class='${result.partial} result'>
+                        <td class='${result.partial} result ${result.deployable ? "" : "UNDEPLOYABLE"}'>
                             <a href='${report.getRelativePath(group,engine,test)}'>${result.partial.toNormalizedSymbol()}</a>
                         </td>
                     <% } %>

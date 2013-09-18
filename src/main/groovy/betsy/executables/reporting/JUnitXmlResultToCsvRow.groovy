@@ -15,13 +15,14 @@ class JUnitXmlResultToCsvRow {
         String group
         String totalFailures
         String tests
+        String deployable
 
         String getBinaryResult() {
             totalFailures == "0" ? "1" : "0"
         }
 
         String toRow() {
-            [name, engine, group, binaryResult, totalFailures, tests].join(";")
+            [name, engine, group, binaryResult, totalFailures, tests, deployable].join(";")
         }
     }
 
@@ -48,7 +49,8 @@ class JUnitXmlResultToCsvRow {
                         engine: pkg.replaceAll("soapui.", "").tokenize(".").first(),
                         group: pkg.tokenize(".").last(),
                         tests: testSuite.@tests.text(),
-                        totalFailures: testSuite.@failures.text()
+                        totalFailures: testSuite.@failures.text(),
+                        deployable: testSuite.testcase.failure.text().contains("Test Availabilty of WSDL Failed") ? 0 : 1
                 )
 
                 w.println(csvRow.toRow())

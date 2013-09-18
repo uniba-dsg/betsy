@@ -158,13 +158,29 @@ class StructuredActivityProcesses {
     public final BetsyProcess IF_INVALID_EXPRESSION_VALUE = builder.buildStructuredActivityProcess(
             "If-InvalidExpressionValue", "A receive-reply pair with an intermediate if that should throw an invalidExpressionValue fault because of an invalid condition.",
             [
-                    new TestCase(name: "SelectionFailure").checkDeployment().
+                    new TestCase(name: "InvalidExpressionValue").checkDeployment().
+                            sendSync(1, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
+            ]
+    )
+
+    public final BetsyProcess IF_INVALID_EXPRESSION_VALUE_EMPTY_CONDITION = builder.buildStructuredActivityProcess(
+            "If-InvalidExpressionValue-EmptyCondition", "A receive-reply pair with an intermediate if that should throw an invalidExpressionValue fault because of an empty condition.",
+            [
+                    new TestCase(name: "InvalidExpressionValue").checkDeployment().
+                            sendSync(1, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
+            ]
+    )
+
+    public final BetsyProcess IF_INVALID_EXPRESSION_VALUE_UNDECLARED_NAMESPACE = builder.buildStructuredActivityProcess(
+            "If-InvalidExpressionValue-UndeclaredNamespace", "A receive-reply pair with an intermediate if that should throw an invalidExpressionValue fault because of an invalid condition.",
+            [
+                    new TestCase(name: "InvalidExpressionValue").checkDeployment().
                             sendSync(1, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
             ]
     )
 
     public final List<BetsyProcess> STRUCTURED_ACTIVITIES_IF = [
-            IF, IF_ELSE, IF_ELSE_IF, IF_ELSE_IF_ELSE, IF_INVALID_EXPRESSION_VALUE
+            IF, IF_ELSE, IF_ELSE_IF, IF_ELSE_IF_ELSE, IF_INVALID_EXPRESSION_VALUE, IF_INVALID_EXPRESSION_VALUE_EMPTY_CONDITION, IF_INVALID_EXPRESSION_VALUE_UNDECLARED_NAMESPACE
     ]
 
     public final BetsyProcess WHILE = builder.buildStructuredActivityProcess(
@@ -294,7 +310,7 @@ class StructuredActivityProcesses {
     public final BetsyProcess PICK_CORRELATIONS_INIT_ASYNC = builder.buildStructuredActivityProcess(
             "Pick-Correlations-InitAsync", "An asynchronous receive that initiates a correlationSet, followed by a pick with a synchronous onMessage that correlates on this set.",
             [
-                    new TestCase().checkDeployment().sendAsync(1).sendSync(1,2)
+                    new TestCase().checkDeployment().sendAsync(1).sendSync(1,1)
             ]
     )
 

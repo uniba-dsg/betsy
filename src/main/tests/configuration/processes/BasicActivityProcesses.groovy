@@ -4,6 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.ExitAssertion
+import betsy.data.assertions.SoapFaultTestAssertion
 
 class BasicActivityProcesses {
 
@@ -14,7 +15,7 @@ class BasicActivityProcesses {
             [
                     new TestCase().
                             checkDeployment().
-                            sendSync(5,5)
+                            sendSync(5, 5)
             ]
     )
 
@@ -23,7 +24,7 @@ class BasicActivityProcesses {
             [
                     new TestCase().
                             checkDeployment().
-                            sendSync(1,new ExitAssertion())
+                            sendSync(1, new ExitAssertion())
             ]
     )
 
@@ -66,14 +67,14 @@ class BasicActivityProcesses {
     public final BetsyProcess VARIABLES_DEFAULT_INITIALIZATION = builder.buildBasicActivityProcess(
             "Variables-DefaultInitialization", "A receive-reply pair where the variable of the reply is assigned with a default value.",
             [
-                    new TestCase(name: "DefaultValue-10-Should-Be-Returned").checkDeployment().sendSync(5,10)
+                    new TestCase(name: "DefaultValue-10-Should-Be-Returned").checkDeployment().sendSync(5, 10)
             ]
     )
 
     public final BetsyProcess WAIT_FOR = builder.buildBasicActivityProcess(
             "Wait-For", "A receive-reply pair with an intermediate wait that pauses execution for five seconds.",
             [
-                    new TestCase().checkDeployment().sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
@@ -185,14 +186,14 @@ class BasicActivityProcesses {
     public final BetsyProcess RECEIVE_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
             "Receive-Correlation-InitAsync",  "Two asynchronous receives, followed by a receive-reply pair, and bound to a single correlationSet.",
             [
-                    new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1,1)
+                    new TestCase().checkDeployment().sendAsync(1).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1, 1)
             ]
     )
 
     public final BetsyProcess RECEIVE_CORRELATION_INIT_SYNC = builder.buildBasicActivityProcess(
             "Receive-Correlation-InitSync",  "One synchronous receive, one asynchronous receive, followed by a receive-reply pair, and bound to a single correlationSet.",
             [
-                    new TestCase().checkDeployment().sendSync(1,0).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendAsync(1).waitFor(1000).sendSync(1, 1)
             ]
     )
 
@@ -215,7 +216,7 @@ class BasicActivityProcesses {
             "ReceiveReply-ConflictingRequestFault", "A synchronous interaction, followed by intermediate while that subsequently enables multiple receives that correspond to a single synchronous message exchange. Should trigger a conflictingRequest fault.",
             [
                     new TestCase().checkDeployment().
-                            sendSync(1,1).waitFor(1000). // start up, should complete normally
+                            sendSync(1, 1).waitFor(1000). // start up, should complete normally
                             sendSyncString(1).waitFor(1000). // no reply, also normal, we need to open the message exchange
                             sendSyncString(1, new SoapFaultTestAssertion(faultString: "conflictingRequest")) // now, there should be the fault
             ]
@@ -224,35 +225,35 @@ class BasicActivityProcesses {
     public final BetsyProcess RECEIVE_REPLY = builder.buildBasicActivityProcess(
             "ReceiveReply", "A simple receive-reply pair.",
             [
-                    new TestCase().checkDeployment().sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess RECEIVE_REPLY_MESSAGE_EXCHANGES = builder.buildBasicActivityProcess(
             "ReceiveReply-MessageExchanges",  "A simple receive-reply pair that uses a messageExchange.",
             [
-                    new TestCase().checkDeployment().sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 1)
             ]
     )
 
     public final BetsyProcess RECEIVE_REPLY_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
-                    new TestCase().checkDeployment().sendAsync(5).waitFor(1000).sendSync(5,5)
+                    new TestCase().checkDeployment().sendAsync(5).waitFor(1000).sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess RECEIVE_REPLY_CORRELATION_INIT_SYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitSync", "A synchronous recieve that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
-                    new TestCase().checkDeployment().sendSync(5,0).waitFor(1000).sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 0).waitFor(1000).sendSync(5, 5)
             ]
     )
 
     public final BetsyProcess RECEIVE_REPLY_CORRELATION_VIOLATION_NO = builder.buildBasicActivityProcess(
             "ReceiveReply-CorrelationViolation-No", "A receive-reply pair that uses an uninitiated correlationSet and sets initiate to no. Should trigger a correlationViolation fault.",
             [
-                    new TestCase().checkDeployment().sendSync(1,new SoapFaultTestAssertion(faultString: "correlationViolation"))
+                    new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "correlationViolation"))
             ]
     )
 
@@ -260,7 +261,7 @@ class BasicActivityProcesses {
             "ReceiveReply-CorrelationViolation-Yes", "Two subsequent receive-reply pairs which share a correlationSet and where both receives have initiate set to yes.",
             [
                     new TestCase().checkDeployment().
-                            sendSync(1,1).waitFor(1000).
+                            sendSync(1, 1).waitFor(1000).
                             sendSync(1, new SoapFaultTestAssertion(faultString: "correlationViolation"))
             ]
     )
@@ -283,7 +284,7 @@ class BasicActivityProcesses {
     public final BetsyProcess RECEIVE_REPLY_TO_PARTS = builder.buildBasicActivityProcess(
             "ReceiveReply-ToParts", "A receive-reply pair that uses the toPart syntax instead of a variable.",
             [
-                    new TestCase().checkDeployment().sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 1)
             ]
     )
 
@@ -365,7 +366,7 @@ class BasicActivityProcesses {
     public final BetsyProcess INVOKE_CORRELATION_PATTERN_INIT_SYNC = builder.buildProcessWithPartner(
             "basic/Invoke-Correlation-Pattern-InitSync",  "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             [
-                    new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendSync(1,1)
+                    new TestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendSync(1, 1)
             ]
     )
 
@@ -424,7 +425,7 @@ class BasicActivityProcesses {
     public final BetsyProcess ASSIGN_PROPERTY = builder.buildBasicActivityProcess(
             "Assign-Property", "A receive-reply pair with an intermediate assign that copies from a property instead of a variable." ,
             [
-                    new TestCase().checkDeployment().sendSync(5,5)
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 

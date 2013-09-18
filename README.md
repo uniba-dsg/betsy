@@ -14,7 +14,7 @@ This software is licensed under the LGPL Version 3 Open Source License.
   - `PATH` should include `JAVA_HOME/bin`
 - SoapUI 4.5.2 (64 bit)
   - installed path should be `C:\Program Files\SmartBear\soapUI-4.5.2`
-- Ant 1.8.3 or higher
+- Ant 1.8.3 or higher (also verified with ant 1.9.2) 
   - `ANT_HOME` should point to the Ant directory
   - `PATH` should include `ANT_HOME/bin`
   
@@ -28,34 +28,32 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
 ## Usage
 
-Requirements have to be fulfilled in order to execute any of these `gradlew` tasks.
+Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
 
 ```bash
-$ gradlew run -Pargs="<ARGS>"
-
-#usage: [options] <engines> <process>
-# -p,--partner-address <ip-and-port>    Partner IP and Port (defaults to 141.13.4.93:2000)
+# betsy [options] <engines> <process>
+# <engines> ALL,vms,locals,ode,ode_v,bpelg,bpelg_v,...
+# <process> ALL,BASIC_ACTIVITIES,STRUCTURED_ACTIVITIES,SCOPES,SA,Sequence,...
+#
+# -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
 # -t,--to-core-bpel <transformations>   Transform to Core BPEL
-# -o,--open-results-in-browser          Opens results in default browser
-# -c,--check-deployment                 Verifies deployment instead of testsuccess
-# -h,--help                             Print out usage information
+# <transformations> ALL,NONE,sequence.xsl,pick.xsl,...
+# -o,--open-results-in-browser         Opens results in default browser
+# -c,--check-deployment                Verifies deployment instead of test success
+# -h,--help                            Print out usage information
 
 # Examples
-$ gradlew run # Running all tests for all engines
-$ gradlew run -Pargs="ode" # Running all tests for Apache ODE
-$ gradlew run -Pargs="ode_v" # Running all tests for the virtualised Apache ODE
-$ gradlew run -Pargs="-t ALL ode_v" # Running all tests for the virtualised Apache ODE with all CoreBPEL transformations
-$ gradlew run -Pargs="-t sequence.xsl,pick.xsl ode_v" # Running all tests for the virtualised Apache ODE with sequence.xsl and pick.xsl CoreBPEL transformations
-$ gradlew run -Pargs="ode,bpelg" # Running all tests for Apache ODE and bpel-g
-$ gradlew run -Pargs="ALL Sequence" # Running Sequence test for all engines
-$ gradlew run -Pargs="vms Sequence" # Running Sequence test for all local engines
-$ gradlew run -Pargs="locals Sequence" # Running Sequence test for all virtualised engines
-$ gradlew run -Pargs="ALL Sequence,While" # Running Sequence and While test for all engines
-$ gradlew run -Pargs="ode Sequence" # Running Sequence test for Apache ODE
-$ gradlew run -Pargs="ode Invoke-Catch" # Running Invoke-Catch test for Apache ODE
-$ gradlew run -Pargs="-o" # Opens the results in the default browser after a successful run
+$ betsy # Running all tests for all engines
+$ betsy ode # Running all tests for Apache ODE
+$ betsy ode,bpelg # Running all tests for Apache ODE and bpel-g
+$ betsy ALL Sequence # Running Sequence test for all engines
+$ betsy ALL Sequence,While # Running Sequence and While test for all engines
+$ betsy ode Sequence # Running Sequence test for Apache ODE
+$ betsy ode Invoke-Catch # Running Invoke-Catch test for Apache ODE
+$ betsy -t sequence.xsl,pick.xsl ode_v # Running all tests for the virtualised Apache ODE with sequence.xsl and pick.xsl CoreBPEL transformations
+$ betsy -o # Opens the results in the default browser after a successful run
 
-# Other gradlew tasks
+# Administrative gradlew tasks
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc

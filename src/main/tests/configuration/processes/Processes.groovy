@@ -40,48 +40,46 @@ class Processes {
             return WITH_EXIT_ASSERTION
         } else if ("FAULTS" == upperCaseName) {
             return FAULTS
+        } else if ("SA" == upperCaseName) {
+            return StaticAnalysisProcesses.getStaticAnalysisProcesses()
         }
 
-        List<BetsyProcess> result = getBasicProcess(upperCaseName)
-        if (result == null) {
-            result = getStructuredProcess(upperCaseName)
-            if (result == null) {
-                result = getScopeProcess(upperCaseName)
-                if (result == null) {
-                    result = getPatternProcess(upperCaseName)
-                    if (result == null) {
-                        result = ALL.findAll({ it.bpelFileNameWithoutExtension.toUpperCase() == upperCaseName })
-                        if (result.isEmpty()) {
-                            throw new IllegalArgumentException("Process ${name} does not exist")
-                        }
-                    }
-                }
-            }
+        List<BetsyProcess> result = []
+
+        result.addAll(getBasicProcess(upperCaseName))
+        result.addAll(getStructuredProcess(upperCaseName))
+        result.addAll(getScopeProcess(upperCaseName))
+        result.addAll(getPatternProcess(upperCaseName))
+        result.addAll(ALL.findAll({ it.bpelFileNameWithoutExtension.toUpperCase() == upperCaseName }))
+
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("Process ${name} does not exist")
         }
+
         return result
     }
 
     List<BetsyProcess> getBasicProcess(String name) {
         try {
             return [basicActivityProcesses."$name"]
-        } catch (MissingPropertyException e) {
-            return null
+        } catch (MissingPropertyException ignore) {
+            return []
         }
     }
 
     List<BetsyProcess> getStructuredProcess(String name) {
         try {
             return [structuredActivityProcesses."$name"]
-        } catch (MissingPropertyException e) {
-            return null
+        } catch (MissingPropertyException ignore) {
+            return []
         }
     }
 
     List<BetsyProcess> getPatternProcess(String name) {
         try {
             return [patternProcesses."$name"]
-        } catch (MissingPropertyException e) {
-            return null
+        } catch (MissingPropertyException ignore) {
+            return []
         }
     }
 
@@ -89,8 +87,8 @@ class Processes {
     List<BetsyProcess> getScopeProcess(String name) {
         try {
             return [scopeProcesses."$name"]
-        } catch (MissingPropertyException e) {
-            return null
+        } catch (MissingPropertyException ignore) {
+            return []
         }
     }
 

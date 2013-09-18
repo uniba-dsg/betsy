@@ -44,7 +44,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.6'
+    gradleVersion = '1.7'
 }
 
 run {
@@ -53,8 +53,14 @@ run {
     }
 }
 
-task enginecontrol (type: JavaExec, dependsOn: build){
+task enginecontrol(type: JavaExec, dependsOn: build) {
     description = 'Starts Engine Control GUI'
     classpath = sourceSets.main.runtimeClasspath
     main = "betsy.tool.EngineControl"
+}
+
+task partnerservice(type: JavaExec, dependsOn: build) {
+    description = 'Starts test case partner service only'
+    classpath = sourceSets.main.runtimeClasspath
+    main = "betsy.tool.PartnerServiceControl"
 }

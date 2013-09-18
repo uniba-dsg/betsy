@@ -5,6 +5,10 @@ import betsy.data.TestCase
 
 class ProcessBuilder {
 
+    public final int DECLARED_FAULT_CODE = -6
+
+    public final int UNDECLARED_FAULT_CODE = -5
+
     public BetsyProcess buildProcess(String name, List<TestCase> testCases) {
         new BetsyProcess(bpel: "files/${name}.bpel",
                 wsdls: ["files/TestInterface.wsdl"],
