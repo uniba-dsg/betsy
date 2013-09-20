@@ -27,7 +27,7 @@ class TestUsingParameters {
         parser.parse(args)
 
         // usage information if required
-        if(parser.showUsage()){
+        if (parser.showUsage()) {
             println parser.usage()
             System.exit(0)
         }
@@ -52,50 +52,49 @@ class TestUsingParameters {
         }
 
         // print selection of engines and processes
-        println "Engines: ${engines.collect {it.name}}"
-        println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
+        println "Engines: ${engines.collect { it.name }}"
+        println "Processes: ${processes.size() < 10 ? processes.collect { it.bpelFileNameWithoutExtension } : processes.size()}"
 
 
-        if(parser.checkDeployment()) {
+        if (parser.checkDeployment()) {
             // check only whether the processes can be deployed
             processes.each { process ->
                 process.testCases = [new TestCase().checkDeployment()]
             }
         }
 
-        if(parser.transformToCoreBpel()){
+        if (parser.transformToCoreBpel()) {
 
             String transformations = parser.getCoreBPELTransformations()
 
-            if(transformations == "ALL") {
-                for(Engine engine : engines) {
-                    if(engine instanceof VirtualizedEngine) {
+            if (transformations == "ALL") {
+                for (Engine engine : engines) {
+                    if (engine instanceof VirtualizedEngine) {
                         CoreBPELEngineExtension.extendEngine(engine.defaultEngine)
-                    } else if(engine instanceof LocalEngine) {
+                    } else if (engine instanceof LocalEngine) {
                         CoreBPELEngineExtension.extendEngine(engine)
                     }
                 }
-            } else if(transformations == "NONE") {
+            } else if (transformations == "NONE") {
                 // do nothing - default value
             } else {
                 String[] xsls = transformations.split(",")
 
-                for(Engine engine : engines) {
-                    if(engine instanceof VirtualizedEngine) {
+                for (Engine engine : engines) {
+                    if (engine instanceof VirtualizedEngine) {
                         CoreBPELEngineExtension.extendEngine(engine.defaultEngine, xsls)
-                    } else if(engine instanceof LocalEngine) {
+                    } else if (engine instanceof LocalEngine) {
                         CoreBPELEngineExtension.extendEngine(engine, xsls)
                     }
                 }
             }
 
-
         }
 
-        if (engines.any { it instanceof VirtualizedEngine}) {
+        if (engines.any { it instanceof VirtualizedEngine }) {
             // verify IP set
             String partner = Configuration.getInstance().getValue('PARTNER_IP_AND_PORT')
-            if(partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
+            if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
                 throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. This can either be done via the -p option or directly in the Config.groovy file.")
             }
 
@@ -105,7 +104,7 @@ class TestUsingParameters {
 
             VirtualBox vb = new VirtualBoxImpl()
             engines.each {
-                if(it instanceof VirtualizedEngine) {
+                if (it instanceof VirtualizedEngine) {
                     it.virtualBox = vb
                 }
             }
@@ -115,7 +114,7 @@ class TestUsingParameters {
 
         try {
             // execute
-            try{
+            try {
                 betsy.execute()
             } catch (Exception e) {
                 println "----------------------"

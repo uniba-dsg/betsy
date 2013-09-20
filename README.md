@@ -30,17 +30,29 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
 Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
 
-```bash
-# betsy [options] <engines> <process>
-# <engines> ALL,vms,locals,ode,ode_v,bpelg,bpelg_v,...
-# <process> ALL,BASIC_ACTIVITIES,STRUCTURED_ACTIVITIES,SCOPES,SA,Sequence,...
-#
-# -p,--partner-address <ip-and-port>   Partner IP and Port (defaults to 0.0.0.0:2000)
-# -t,--to-core-bpel <transformations>   Transform to Core BPEL
-# <transformations> ALL,NONE,sequence.xsl,pick.xsl,...
-# -o,--open-results-in-browser         Opens results in default browser
-# -c,--check-deployment                Verifies deployment instead of test success
-# -h,--help                            Print out usage information
+```
+usage: betsy [options] <engines> <processes>
+
+Options:
+ -p,--partner-address <ip-and-port>    Partner IP and Port (defaults to
+                                       141.13.4.93:2000)
+ -t,--to-core-bpel <transformations>   Transform to Core BPEL
+ -o,--open-results-in-browser          Opens results in default browser
+ -c,--check-deployment                 Verifies deployment instead of test
+                                       success
+ -h,--help                             Print out usage information
+
+GROUPS for <engines> and <processes> are in CAPITAL LETTERS.
+<engines>: LOCALS, VMS, ALL, ode, bpelg, openesb, petalsesb, orchestra,
+active-bpel, openesb23, petalsesb41, ode_v, bpelg_v, openesb_v,
+petalsesb_v, orchestra_v, active_bpel_v
+<processes>: ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
+BASIC_ACTIVITIES_RECEIVE, BASIC_ACTIVITIES_INVOKE,
+BASIC_ACTIVITIES_ASSIGN, BASIC_ACTIVITIES, SCOPES_EVENT_HANDLERS,
+SCOPES_FAULT_HANDLERS, SCOPES, STRUCTURED_ACTIVITIES_FLOW,
+STRUCTURED_ACTIVITIES_IF, STRUCTURED_ACTIVITIES_FOR_EACH,
+STRUCTURED_ACTIVITIES_PICK, STRUCTURED_ACTIVITIES, CONTROL_FLOW_PATTERNS,
+STATIC_ANALYSIS, FAULTS, WITH_EXIT_ASSERTION
 
 # Examples
 $ betsy # Running all tests for all engines

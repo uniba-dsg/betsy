@@ -1,6 +1,8 @@
 package configuration.cli
 
 import betsy.Configuration
+import configuration.engines.EngineRepository
+import configuration.processes.ProcessRepository
 
 /**
  * Parses the command line options and provides a stable interface for handling the options.
@@ -11,7 +13,11 @@ class CliParser {
     private def options
 
     public CliParser() {
-        cli = new CliBuilder(usage: "[options] <engines> <process>")
+        cli = new CliBuilder(
+                usage: "betsy [options] <engines> <processes>",
+                header: "\nOptions:\n",
+                footer: "\nGROUPS for <engines> and <processes> are in CAPITAL LETTERS.\n<engines>: ${new EngineRepository().names.join(", ")}\n\n\n<processes>: ${new ProcessRepository().names.join(", ")}"
+        )
         cli.o(longOpt: 'open-results-in-browser', "Opens results in default browser")
         cli.h(longOpt: 'help', "Print out usage information")
         cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.getInstance().getValue("PARTNER_IP_AND_PORT")})")

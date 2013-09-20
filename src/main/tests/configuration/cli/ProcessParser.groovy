@@ -1,21 +1,18 @@
 package configuration.cli
 
 import betsy.data.BetsyProcess
-import configuration.processes.Processes
+import configuration.processes.ProcessRepository
 
 class ProcessParser {
 
     String[] args
 
     List<BetsyProcess> parse() {
-        return parseWithDuplicates().unique()
-    }
-
-    private List<BetsyProcess> parseWithDuplicates() {
+        ProcessRepository repository = new ProcessRepository()
         if (args.length <= 1) {
-            ["ALL"].collect() { new Processes().get(it) }.flatten()
+            repository.getByName("ALL")
         } else {
-            args[1].split(",").collect() { new Processes().get(it) }.flatten()
+            repository.getByNames(args[1].split(","))
         }
     }
 }

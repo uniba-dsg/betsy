@@ -4,7 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.Engine
 import betsy.data.engines.EnginePackageBuilder
 import betsy.executables.Composite
-import configuration.processes.Processes
+import configuration.processes.ProcessRepository
 import org.junit.Test
 
 class BetsyTests {
@@ -48,7 +48,7 @@ class BetsyTests {
     @Test
     public void simulateATestRun() {
         Engine engine = new MockEngine()
-        ArrayList<BetsyProcess> processes = new Processes().ALL
+        ArrayList<BetsyProcess> processes = new ProcessRepository().getByName("ALL")
         Betsy betsy = new Betsy(engines: [engine], processes: processes, composite: new MockComposite())
         betsy.execute()
     }

@@ -7,101 +7,101 @@ import betsy.data.assertions.ExitAssertion
 
 class PatternProcesses {
 
-    private BetsyProcess buildPatternProcess(String name, List<TestCase> testCases) {
+    private static BetsyProcess buildPatternProcess(String name, List<TestCase> testCases) {
         new BetsyProcess(bpel: "files/cfpatterns/${name}.bpel",
                 wsdls: ["files/TestInterface.wsdl"],
                 testCases: testCases
         )
     }
 
-    private BetsyProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
+    private static BetsyProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
         new BetsyProcess(bpel: "files/cfpatterns/${name}.bpel",
                 wsdls: ["files/TestInterface.wsdl", "files/TestPartner.wsdl"],
                 testCases: testCases
         )
     }
 
-    public final BetsyProcess SEQUENCE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess SEQUENCE_PATTERN = buildPatternProcess(
             "WCP01-Sequence",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
-    public final BetsyProcess PARALLEL_SPLIT_PATTERN = buildPatternProcess(
+    public static final BetsyProcess PARALLEL_SPLIT_PATTERN = buildPatternProcess(
             "WCP02-ParallelSplit",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
-    public final BetsyProcess SYNCHRONIZATION_PATTERN = buildPatternProcess(
+    public static final BetsyProcess SYNCHRONIZATION_PATTERN = buildPatternProcess(
             "WCP03-Synchronization",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1AB")
             ]
     )
 
-    public final BetsyProcess EXCLUSIVE_CHOICE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess EXCLUSIVE_CHOICE_PATTERN = buildPatternProcess(
             "WCP04-ExclusiveChoice",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"1A"),
-                    new TestCase().checkDeployment().sendSyncString(11,"11B")
+                    new TestCase().checkDeployment().sendSyncString(1, "1A"),
+                    new TestCase().checkDeployment().sendSyncString(11, "11B")
             ]
     )
 
-    public final BetsyProcess SIMPLE_MERGE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess SIMPLE_MERGE_PATTERN = buildPatternProcess(
             "WCP05-SimpleMerge",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"1A"),
-                    new TestCase().checkDeployment().sendSyncString(11,"11B")
+                    new TestCase().checkDeployment().sendSyncString(1, "1A"),
+                    new TestCase().checkDeployment().sendSyncString(11, "11B")
             ]
     )
 
-    public final BetsyProcess MULTI_CHOICE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess MULTI_CHOICE_PATTERN = buildPatternProcess(
             "WCP06-MultiChoice",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
-                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
-                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
+                    new TestCase().checkDeployment().sendSyncString(1, "AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2, "ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3, "ABC")
             ]
     )
 
-    public final BetsyProcess MULTI_CHOICE_PATTERN_PARTIAL = buildPatternProcess(
+    public static final BetsyProcess MULTI_CHOICE_PATTERN_PARTIAL = buildPatternProcess(
             "WCP06-MultiChoice-Partial",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
-                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
-                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
+                    new TestCase().checkDeployment().sendSyncString(1, "AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2, "ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3, "ABC")
             ]
     )
 
-    public final BetsyProcess SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess SYNCHRONIZING_MERGE_PATTERN = buildPatternProcess(
             "WCP07-SynchronizingMerge",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
-                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
-                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
+                    new TestCase().checkDeployment().sendSyncString(1, "AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2, "ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3, "ABC")
             ]
     )
 
-    public final BetsyProcess SYNCHRONIZING_MERGE_PATTERN_PARTIAL = buildPatternProcess(
+    public static final BetsyProcess SYNCHRONIZING_MERGE_PATTERN_PARTIAL = buildPatternProcess(
             "WCP07-SynchronizingMerge-Partial",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"AYZ"),
-                    new TestCase().checkDeployment().sendSyncString(2,"ABZ"),
-                    new TestCase().checkDeployment().sendSyncString(3,"ABC")
+                    new TestCase().checkDeployment().sendSyncString(1, "AYZ"),
+                    new TestCase().checkDeployment().sendSyncString(2, "ABZ"),
+                    new TestCase().checkDeployment().sendSyncString(3, "ABC")
             ]
     )
 
-    public final BetsyProcess IMPLICIT_TERMINATION_PATTERN = buildPatternProcess(
+    public static final BetsyProcess IMPLICIT_TERMINATION_PATTERN = buildPatternProcess(
             "WCP11-ImplicitTermination",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "1")
             ]
     )
 
-    public final BetsyProcess DEFERRED_CHOICE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess DEFERRED_CHOICE_PATTERN = buildPatternProcess(
             "WCP16-DeferredChoice",
             [
                     new TestCase().checkDeployment().sendSync(1, 1),
@@ -109,7 +109,7 @@ class PatternProcesses {
             ]
     )
 
-    public final BetsyProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
+    public static final BetsyProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN = buildPatternProcessWithPartner(
             "WCP12-MultipleInstancesWithoutSynchronization",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
@@ -119,7 +119,7 @@ class PatternProcesses {
             ]
     )
 
-    public final BetsyProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL = buildPatternProcessWithPartner(
+    public static final BetsyProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL = buildPatternProcessWithPartner(
             "WCP12-MultipleInstancesWithoutSynchronization-Partial",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().
@@ -127,15 +127,15 @@ class PatternProcesses {
             ]
     )
 
-    public final BetsyProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL = buildPatternProcessWithPartner(
+    public static final BetsyProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL = buildPatternProcessWithPartner(
             "WCP12-MultipleInstancesWithoutSynchronization-While-Partial",
             [
-                    new TestCase().checkDeployment().sendSync(1,1),
-                    new TestCase().checkDeployment().sendSync(2,2)
+                    new TestCase().checkDeployment().sendSync(1, 1),
+                    new TestCase().checkDeployment().sendSync(2, 2)
             ]
     )
 
-    public final BetsyProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL = buildPatternProcessWithPartner(
+    public static final BetsyProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL = buildPatternProcessWithPartner(
             "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge-Partial",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(100).
@@ -143,7 +143,7 @@ class PatternProcesses {
             ]
     )
 
-    public final BetsyProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
+    public static final BetsyProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
@@ -154,7 +154,7 @@ class PatternProcesses {
     )
 
 
-    public final BetsyProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
+    public static final BetsyProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN = buildPatternProcessWithPartner(
             "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledge",
             [
                     new TestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
@@ -164,40 +164,40 @@ class PatternProcesses {
             ]
     )
 
-    public final BetsyProcess CANCEL_ACTIVITY_PATTERN = buildPatternProcess(
+    public static final BetsyProcess CANCEL_ACTIVITY_PATTERN = buildPatternProcess(
             "WCP19-CancelActivity",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"1A"),
-                    new TestCase().checkDeployment().sendSyncString(0,"0B")
+                    new TestCase().checkDeployment().sendSyncString(1, "1A"),
+                    new TestCase().checkDeployment().sendSyncString(0, "0B")
             ]
     )
 
-    public final BetsyProcess CANCEL_CASE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess CANCEL_CASE_PATTERN = buildPatternProcess(
             "WCP20-CancelCase",
             [
-                    new TestCase().checkDeployment().sendSyncString(1,"1"),
+                    new TestCase().checkDeployment().sendSyncString(1, "1"),
                     new TestCase().checkDeployment().sendSyncString(0, new ExitAssertion())
             ]
     )
 
-    public final BetsyProcess MILESTONE_PATTERN = buildPatternProcess(
+    public static final BetsyProcess MILESTONE_PATTERN = buildPatternProcess(
             "WCP18-Milestone",
             [
                     new TestCase(name: "PickAsyncMessage").checkDeployment().sendSync(1, 1).
                             sendAsync(1).sendSyncString(1, "8"),
-                    new TestCase(name: "Pick3sTimeout").checkDeployment().sendSync(1,1).
-                            waitFor(4000).sendSyncString(1,"9")
+                    new TestCase(name: "Pick3sTimeout").checkDeployment().sendSync(1, 1).
+                            waitFor(4000).sendSyncString(1, "9")
             ]
     )
 
-    public final BetsyProcess INTERLEAVED_PARALLEL_ROUTING_PATTERN = buildPatternProcess(
+    public static final BetsyProcess INTERLEAVED_PARALLEL_ROUTING_PATTERN = buildPatternProcess(
             "WCP17-InterleavedParallelRouting",
             [
                     new TestCase().checkDeployment().sendSyncString(1, "AW1ABW2B")
             ]
     )
 
-    public final List<BetsyProcess> CONTROL_FLOW_PATTERNS = [
+    public static final List<BetsyProcess> CONTROL_FLOW_PATTERNS = [
             SEQUENCE_PATTERN,
             PARALLEL_SPLIT_PATTERN,
             SYNCHRONIZATION_PATTERN,
