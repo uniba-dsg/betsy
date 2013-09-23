@@ -376,6 +376,13 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
+            "basic/Invoke-Catch-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
+            [
+                    new TestCase().checkDeployment().sendSync(builder.UNDECLARED_FAULT_CODE, 0)
+            ]
+    )
+
     public static final BetsyProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
@@ -400,6 +407,7 @@ class BasicActivityProcesses {
             INVOKE_CORRELATION_PATTERN_INIT_ASYNC,
             INVOKE_CORRELATION_PATTERN_INIT_SYNC,
             INVOKE_CATCH,
+            INVOKE_CATCH_UNDECLARED_FAULT,
             INVOKE_CATCHALL,
             INVOKE_COMPENSATION_HANDLER
     ]
