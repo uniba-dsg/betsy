@@ -1,5 +1,10 @@
 package betsy.virtual.host.engines;
 
+import betsy.Configuration;
+import betsy.data.BetsyProcess;
+import betsy.data.engines.petalsEsb.PetalsEsbEngine;
+import betsy.virtual.host.ServiceAddress;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -7,88 +12,83 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import betsy.Configuration;
-import betsy.data.BetsyProcess;
-import betsy.data.engines.petalsEsb.PetalsEsbEngine;
-import betsy.virtual.host.ServiceAddress;
-
 public class VirtualizedPetalsEsbEngine extends VirtualizedEngine {
 
-	private final Configuration config = Configuration.getInstance();
-	private final PetalsEsbEngine defaultEngine;
+    private final Configuration config = Configuration.getInstance();
+    private final PetalsEsbEngine defaultEngine;
 
-	public VirtualizedPetalsEsbEngine() {
-		super();
-		this.defaultEngine = new PetalsEsbEngine();
-	}
+    public VirtualizedPetalsEsbEngine() {
+        super();
+        this.defaultEngine = new PetalsEsbEngine();
+    }
 
     @Override
     public String getName() {
         return "petalsesb_v";
     }
 
-	@Override
-	public List<ServiceAddress> getVerifiableServiceAddresses() {
-		List<ServiceAddress> saList = new LinkedList<>();
-		saList.add(new ServiceAddress(
-				"http://localhost:8084/petals/services/listServices"));
-		return saList;
-	}
+    @Override
+    public List<ServiceAddress> getVerifiableServiceAddresses() {
+        List<ServiceAddress> saList = new LinkedList<>();
+        saList.add(new ServiceAddress(
+                "http://localhost:8084/petals/services/listServices"));
+        return saList;
+    }
 
-	@Override
-	public Set<Integer> getRequiredPorts() {
-		Set<Integer> portList = new HashSet<>();
-		portList.add(8084);
-		return portList;
-	}
+    @Override
+    public Set<Integer> getRequiredPorts() {
+        Set<Integer> portList = new HashSet<>();
+        portList.add(8084);
+        return portList;
+    }
 
-	@Override
-	public String getEndpointUrl(BetsyProcess process) {
-		return defaultEngine.getEndpointUrl(process);
-	}
+    @Override
+    public String getEndpointUrl(BetsyProcess process) {
+        return defaultEngine.getEndpointUrl(process);
+    }
 
-	@Override
-	public void buildArchives(BetsyProcess process) {
-		// use default engine's operations
-		defaultEngine.buildArchives(process);
-	}
+    @Override
+    public void buildArchives(BetsyProcess process) {
+        // use default engine's operations
+        defaultEngine.buildArchives(process);
+    }
 
-	@Override
-	public String getXsltPath() {
-		return defaultEngine.getXsltPath();
-	}
+    @Override
+    public String getXsltPath() {
+        return defaultEngine.getXsltPath();
+    }
 
-	@Override
-	public void onPostDeployment(BetsyProcess process) {
-		// not required. deploy is in sync and does not return before process is
-		// deployed
-	}
+    @Override
+    public void onPostDeployment(BetsyProcess process) {
+        // not required. deploy is in sync and does not return before process is
+        // deployed
+    }
 
-	@Override
-	public String getVMDeploymentDir() {
-		return config.getValueAsString(
-				"virtualisation.engines.petalsesb_v.deploymentDir",
-				"/opt/petalsesb/install");
-	}
+    @Override
+    public String getVMDeploymentDir() {
+        return config.getValueAsString(
+                "virtualisation.engines.petalsesb_v.deploymentDir",
+                "/opt/petalsesb/install");
+    }
 
-	@Override
-	public String getVMLogfileDir() {
-		return config.getValueAsString(
-				"virtualisation.engines.petalsesb_v.logfileDir",
-				"/opt/petalsesb/logs");
-	}
+    @Override
+    public String getVMLogfileDir() {
+        return config.getValueAsString(
+                "virtualisation.engines.petalsesb_v.logfileDir",
+                "/opt/petalsesb/logs");
+    }
 
-	@Override
-	public Path getDeployableFilePath(BetsyProcess process) {
-		return Paths.get(process.getTargetPackageCompositeFilePath());
-	}
+    @Override
+    public Path getDeployableFilePath(BetsyProcess process) {
+        return Paths.get(process.getTargetPackageCompositeFilePath());
+    }
 
-	@Override
-	public String getVMbVMSDir() {
-		String bVMSDir = config.getValueAsString(
-				"virtualisation.engines.petalsesb_v.bvmsDir", "/opt/betsy/");
-		bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-		bVMSDir += "log";
-		return bVMSDir;
-	}
+    @Override
+    public String getVMbVMSDir() {
+        String bVMSDir = config.getValueAsString(
+                "virtualisation.engines.petalsesb_v.bvmsDir", "/opt/betsy/");
+        bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
+        bVMSDir += "log";
+        return bVMSDir;
+    }
 }
