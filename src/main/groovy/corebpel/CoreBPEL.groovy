@@ -42,7 +42,10 @@ class CoreBPEL {
             "default-attribute-values-global.xsl",       // Make the global default attribute values explicit
             "default-attribute-values-inherited.xsl",    // Make the inherited default attribute values explicit
             "standard-attributes-elements.xsl",          // Move standard attributes and elements to wrapper <flow>s
-            "remove-redundant-attributes.xsl"            // Remove redundant attributes
+            "remove-redundant-attributes.xsl",            // Remove redundant attributes
+
+            //improved versions
+            "repeatUntil-improved.xsl" //without variable definition and initialization in one step
     ]
 
     private static Map<String, Templates> nameToTransformation = [:]
@@ -83,6 +86,7 @@ class CoreBPEL {
         String temporaryBeforeBpelFilePath = getTemporaryBpelFilePath("before_${xslSheet}.bpel")
         String temporaryAfterBpelFilePath = getTemporaryBpelFilePath("after_${xslSheet}.bpel")
 
+        Files.createDirectories(Paths.get(temporaryDirectory))
         Files.copy(Paths.get(bpelFilePath), Paths.get(temporaryBeforeBpelFilePath))
 
         Transformer transformer = getTransformerByName("src/main/xslt/corebpel/${xslSheet}")
