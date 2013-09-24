@@ -1,41 +1,41 @@
 package betsy.executables
 
-import betsy.data.engines.Engine;
 import betsy.data.BetsyProcess
+import betsy.data.engines.Engine
 import betsy.executables.analytics.Analyzer
-import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.reporting.Reporter
-import soapui.SoapUiRunner
+import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.IOUtil
 import betsy.executables.util.Stopwatch
 import org.apache.log4j.FileAppender
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
+import soapui.SoapUiRunner
 
 class Composite {
 
-	final AntBuilder ant = new AntBuilder()
-	ExecutionContext context
+    final AntBuilder ant = new AntBuilder()
+    ExecutionContext context
 
-	public void execute() {
-		// use same ant builder in every class
-		context.testSuite.ant = ant
-		context.testSuite.engines.each { engine -> engine.ant = ant }
-		context.testPartner.ant = ant
+    public void execute() {
+        // use same ant builder in every class
+        context.testSuite.ant = ant
+        context.testSuite.engines.each { engine -> engine.ant = ant }
+        context.testPartner.ant = ant
 
-		// set output level to ERROR for console
-		ant.project.getBuildListeners().get(0).setMessageOutputLevel(0)
+        // set output level to ERROR for console
+        ant.project.getBuildListeners().get(0).setMessageOutputLevel(0)
 
-		// prepare test suite
-		// MUST BE OUTSITE OF LOG -> as it deletes whole file tree
-		context.testSuite.prepare()
+        // prepare test suite
+        // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
+        context.testSuite.prepare()
 
-		log "${context.testSuite.path}/all", {
+        log "${context.testSuite.path}/all", {
 
             try {
                 // fail fast
-                for(Engine engine : context.testSuite.engines){
+                for (Engine engine : context.testSuite.engines) {
                     engine.prepare()
                     engine.failIfRunning()
                 }
@@ -44,25 +44,25 @@ class Composite {
 
                 new Reporter(ant: ant, tests: context.testSuite).createReports()
                 new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
-                            reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
+                        reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
 
-			} catch (Exception e) {
-				ant.echo message: IOUtil.getStackTrace(e), level: "error"
-				throw e
-			}
+            } catch (Exception e) {
+                ant.echo message: IOUtil.getStackTrace(e), level: "error"
+                throw e
+            }
 
-		}
-	}
+        }
+    }
 
     protected void executeEngines(ExecutionContext context) {
-        for(Engine engine : context.testSuite.engines){
+        for (Engine engine : context.testSuite.engines) {
             executeEngine(engine)
         }
-	}
+    }
 
     protected void executeEngine(Engine engine) {
         log engine.path, {
-            for(BetsyProcess process : engine.processes) {
+            for (BetsyProcess process : engine.processes) {
                 executeProcess(process)
             }
         }
@@ -153,39 +153,38 @@ class Composite {
                             requestTimeout: context.requestTimeout,
                             ant: ant).buildTest()
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	void log(String name, Closure closure) {
-		try {
-			ant.mkdir dir: new File(name).parent
-			ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
-	
-			ant.echo message: name
-			println name
-	
-			Stopwatch stopwatch = Stopwatch.benchmark(closure)
-			String result = "${name} | ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
-			ant.echo message: result
-			println result
-		} finally {
-			ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
-		}
-	}
+    void log(String name, Closure closure) {
+        try {
+            ant.mkdir dir: new File(name).parent
+            ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
 
-	void soapui(String name, Closure closure) {
-		Logger root = Logger.getRootLogger();
-		root.removeAllAppenders()
-		root.setLevel(Level.INFO)
-		root.addAppender(new FileAppender(
-				new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN), "${name}.log", true));
+            ant.echo message: name
+            println name
 
-		String[] systemOuts = IOUtil.captureSystemOutAndErr closure
+            Stopwatch stopwatch = Stopwatch.benchmark(closure)
+            String result = "${name} | ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
+            ant.echo message: result
+            println result
+        } finally {
+            ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+        }
+    }
 
-		ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
-		ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
-	}
+    void soapui(String name, Closure closure) {
+        Logger root = Logger.getRootLogger();
+        root.removeAllAppenders()
+        root.setLevel(Level.INFO)
+        root.addAppender(new FileAppender(
+                new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN), "${name}.log", true));
 
+        String[] systemOuts = IOUtil.captureSystemOutAndErr closure
+
+        ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
+        ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
+    }
 
 }
