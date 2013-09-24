@@ -1,7 +1,7 @@
 package betsy.data.engines.petalsEsb
 
 import betsy.data.BetsyProcess
-import betsy.data.engines.LocalEngine;
+import betsy.data.engines.LocalEngine
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -22,8 +22,8 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-		ant.mkdir(dir: "${process.targetPath}/logs")
-		ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
+        ant.mkdir(dir: "${process.targetPath}/logs")
+        ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
 
     String getFolder() {
@@ -36,18 +36,16 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void startup() {
-        ant.parallel() {
-            ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/${getFolder()}/bin") {
-                arg(value: "/c")
-                arg(value: "petals-esb.bat")
-            }
-            waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-                and {
-                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
-                            substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
-                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
-                            substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
-                }
+        ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/${getFolder()}/bin") {
+            arg(value: "/c")
+            arg(value: "petals-esb.bat")
+        }
+        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
+            and {
+                resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                        substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
+                resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                        substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
             }
         }
 
@@ -58,7 +56,7 @@ class PetalsEsbEngine extends LocalEngine {
                             substring: "[Petals.AutoLoaderService] : Error during the auto- installation of a component")
                 }
             }
-        } catch (Exception ignore){
+        } catch (Exception ignore) {
             ant.echo message: "SOAP BC Installation failed - shutdown, reinstall and start petalsesb again"
             shutdown()
             install()
@@ -97,9 +95,9 @@ class PetalsEsbEngine extends LocalEngine {
                 not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
                 or {
                     resourcecontains(resource: getPetalsLog(),
-                        substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
+                            substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
                     resourcecontains(resource: getPetalsLog(),
-                        substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' deployed with some SU deployment in failure")
+                            substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' deployed with some SU deployment in failure")
                 }
             }
         }
@@ -123,7 +121,7 @@ class PetalsEsbEngine extends LocalEngine {
         }
 
         packageBuilder.replaceEndpointTokenWithValue(process)
-		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
         new PetalsEsbCompositePackager(process: process, ant: ant).build()

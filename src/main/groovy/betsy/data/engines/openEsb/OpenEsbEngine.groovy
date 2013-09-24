@@ -20,9 +20,9 @@ class OpenEsbEngine extends LocalEngine {
     @Override
     void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
-		ant.copy(todir: "${process.targetPath}/logs") {
-			ant.fileset(dir: "${serverPath}/glassfish/domains/domain1/logs/")
-		}
+        ant.copy(todir: "${process.targetPath}/logs") {
+            ant.fileset(dir: "${serverPath}/glassfish/domains/domain1/logs/")
+        }
     }
 
     OpenEsbCLI getCli() {
@@ -31,11 +31,9 @@ class OpenEsbEngine extends LocalEngine {
 
     @Override
     void startup() {
-        ant.parallel() {
-            cli.startDomain()
-            waitfor(maxwait: "15", maxwaitunit: "second", checkevery: "500") {
-                http url: CHECK_URL
-            }
+        cli.startDomain()
+        ant.waitfor(maxwait: "15", maxwaitunit: "second", checkevery: "500") {
+            http url: CHECK_URL
         }
     }
 
@@ -68,7 +66,7 @@ class OpenEsbEngine extends LocalEngine {
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
-		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
         new OpenEsbCompositePackager(ant: ant, process: process).build()
