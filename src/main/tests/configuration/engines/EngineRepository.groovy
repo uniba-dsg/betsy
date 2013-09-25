@@ -3,6 +3,7 @@ package configuration.engines
 import betsy.data.engines.Engine
 import betsy.data.engines.LocalEngines
 import betsy.virtual.host.engines.VirtualizedEngines
+import configuration.util.Repository
 
 
 /**
@@ -10,53 +11,33 @@ import betsy.virtual.host.engines.VirtualizedEngines
  */
 class EngineRepository {
 
-    private Map<String, Engine[]> repository = [:]
+    private Repository<Engine> repo = new Repository<>();
 
     public EngineRepository() {
-        repository.put("LOCALS", LocalEngines.availableEngines() as Engine[])
-        repository.put("VMS", VirtualizedEngines.availableEngines() as Engine[])
-        repository.put("ALL", repository.get("LOCALS") + repository.get("VMS"))
+        List<Engine> locals = LocalEngines.availableEngines()
+        List<Engine> vms = VirtualizedEngines.availableEngines().collect { it as Engine }
+        List<Engine> all = [locals, vms].flatten()
+
+        repo.put("ALL", all)
+        repo.put("LOCALS", locals)
+        repo.put("VMS", vms)
 
         // insert every engine into the map
-        repository.get("ALL").each { Engine engine ->
-            repository.put(engine.name, [engine] as Engine[])
+        repo.getByName("ALL").each { Engine engine ->
+            repo.put(engine.name, [engine])
         }
     }
 
     public List<Engine> getByName(String name) {
-        String trimmedName = name.trim()
-        String key = repository.keySet().find { it.toUpperCase() == trimmedName.toUpperCase() }
-        if (key == null) {
-            key = trimmedName
-        }
-
-        List<Engine> result = repository.get(key)
-
-        if (result == null) {
-            throw new IllegalArgumentException("Name '${trimmedName}' does not exist in repository.")
-        }
-
-        return result
+        return repo.getByName(name);
     }
 
     public List<Engine> getByNames(String[] names) {
-        List<Engine> result = []
-
-        for (String name : names) {
-            result << getByName(name)
-        }
-
-        result = result.flatten().unique()
-
-        if (result.isEmpty()) {
-            throw new IllegalArgumentException("Names ${names.join(",")} do not exist in repository.")
-        }
-
-        return result
+        return repo.getByNames(names);
     }
 
     public List<String> getNames() {
-        return new ArrayList<String>(repository.keySet())
+        return repo.getNames();
     }
 
 }
