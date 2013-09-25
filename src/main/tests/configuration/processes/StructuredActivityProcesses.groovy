@@ -328,6 +328,13 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess PICK_CREATE_INSTANCE_FROM_PARTS = builder.buildStructuredActivityProcess(
+            "Pick-CreateInstance-FromParts", "A pick with a synchronous onMessage that has createInstance set to yes using fromParts.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
     public static final BetsyProcess PICK_ON_ALARM_UNTIL = builder.buildStructuredActivityProcess(
             "Pick-OnAlarm-Until", "A receive-reply pair that initiates a correlationSet and an intermediate pick that contains an onMessage and an onAlarm with an until element. The onAlarm should fire immediately.",
             [
@@ -346,6 +353,7 @@ class StructuredActivityProcesses {
             PICK_CORRELATIONS_INIT_ASYNC,
             PICK_CORRELATIONS_INIT_SYNC,
             PICK_CREATE_INSTANCE,
+            PICK_CREATE_INSTANCE_FROM_PARTS,
             PICK_ON_ALARM_FOR,
             PICK_ON_ALARM_UNTIL
     ]

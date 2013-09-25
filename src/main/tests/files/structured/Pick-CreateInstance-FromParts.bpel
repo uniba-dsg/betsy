@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Pick-CreateInstance-FromParts"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/pick-createInstance-fromParts"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="TempInt" type="xs:int"/>
+    </variables>
+    <sequence>
+        <pick name="Pick" createInstance="yes">
+            <onMessage partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType">
+                <fromParts>
+                    <fromPart part="inputPart" toVariable="TempInt"/>
+                </fromParts>
+                <sequence name="Sequence">
+                    <assign>
+                        <copy>
+                            <from variable="TempInt"/>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                    <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync"
+                           portType="ti:TestInterfacePortType" variable="ReplyData"/>
+                </sequence>
+            </onMessage>
+        </pick>
+    </sequence>
+</process>
