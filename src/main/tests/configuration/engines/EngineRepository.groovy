@@ -23,7 +23,7 @@ class EngineRepository {
         repo.put("VMS", vms)
 
         // insert every engine into the map
-        repo.getByName("ALL").each { Engine engine ->
+        for (Engine engine : repo.getByName("ALL")) {
             repo.put(engine.name, [engine])
         }
     }

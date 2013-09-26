@@ -20,7 +20,7 @@ class Repository<T> {
         }
 
         List<T> result = []
-        result << repository.get(key)
+        result.addAll(repository.get(key))
 
         return result
     }
@@ -29,10 +29,10 @@ class Repository<T> {
         List<T> result = []
 
         for (String name : names) {
-            result << getByName(name)
+            result.addAll(getByName(name))
         }
 
-        result = result.flatten().unique()
+        result = result.unique()
 
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Names ${names.join(",")} do not exist in repository.")
