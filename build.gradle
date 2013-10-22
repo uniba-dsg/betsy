@@ -31,6 +31,8 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.8'
 }
 
+// TODO check for correct soapUI version
+
 run {
     if(project.hasProperty('args')){
         args project.args.split('\\s+')

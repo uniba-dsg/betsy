@@ -3,6 +3,7 @@ package betsy.data.engines
 import betsy.data.Engine
 import betsy.data.Process
 import betsy.data.engines.cli.OrchestraCLI
+import betsy.data.engines.installer.OrchestraInstaller
 import betsy.data.engines.server.Tomcat
 
 class OrchestraEngine extends Engine {
@@ -18,7 +19,7 @@ class OrchestraEngine extends Engine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new OrchestraInstaller().install()
     }
 
     @Override

@@ -2,6 +2,7 @@ package betsy.data.engines
 
 import betsy.data.Engine
 import betsy.data.Process
+import betsy.data.engines.installer.OdeInstaller
 import betsy.data.engines.server.Tomcat
 
 class OdeEngine extends Engine {
@@ -44,7 +45,7 @@ class OdeEngine extends Engine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new OdeInstaller().install()
     }
 
     @Override

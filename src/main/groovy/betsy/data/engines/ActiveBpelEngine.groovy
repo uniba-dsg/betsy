@@ -2,6 +2,7 @@ package betsy.data.engines
 
 import betsy.data.Engine
 import betsy.data.Process
+import betsy.data.engines.installer.ActiveBpelInstaller
 import betsy.data.engines.server.Tomcat
 
 /*
@@ -55,7 +56,7 @@ class ActiveBpelEngine extends Engine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new ActiveBpelInstaller().install()
     }
 
 

@@ -3,6 +3,7 @@ package betsy.data.engines
 import betsy.data.Engine
 import betsy.data.Process
 import betsy.data.engines.cli.OpenEsbCLI
+import betsy.data.engines.installer.OpenEsbInstaller
 import betsy.data.engines.packager.OpenEsbCompositePackager
 
 class OpenEsbEngine extends Engine {
@@ -48,7 +49,7 @@ class OpenEsbEngine extends Engine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new OpenEsbInstaller().install()
     }
 
     @Override

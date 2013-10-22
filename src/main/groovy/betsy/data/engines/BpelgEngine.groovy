@@ -2,6 +2,7 @@ package betsy.data.engines
 
 import betsy.data.Engine
 import betsy.data.Process
+import betsy.data.engines.installer.BpelgInstaller
 import betsy.data.engines.server.Tomcat
 
 class BpelgEngine extends Engine {
@@ -49,7 +50,7 @@ class BpelgEngine extends Engine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new BpelgInstaller().install()
     }
 
     @Override
