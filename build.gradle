@@ -21,7 +21,7 @@ sourceSets {
 }
 
 ext {
-    soapui = "C:\\Program Files\\SmartBear\\soapUI-4.6.0"
+    soapui = "C:\\Program Files\\SmartBear\\soapUI-4.6.1"
 }
 
 dependencies {
