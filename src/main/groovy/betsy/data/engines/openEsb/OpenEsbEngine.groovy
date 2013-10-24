@@ -1,7 +1,8 @@
 package betsy.data.engines.openEsb
 
 import betsy.data.BetsyProcess
-import betsy.data.engines.LocalEngine;
+import betsy.data.engines.LocalEngine
+import betsy.data.engines.installer.OpenEsbInstaller;
 
 class OpenEsbEngine extends LocalEngine {
 
@@ -44,7 +45,7 @@ class OpenEsbEngine extends LocalEngine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new OpenEsbInstaller().install()
     }
 
     @Override

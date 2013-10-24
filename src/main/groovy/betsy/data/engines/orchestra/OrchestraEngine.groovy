@@ -1,8 +1,9 @@
 package betsy.data.engines.orchestra
 
 import betsy.data.BetsyProcess
-import betsy.data.engines.LocalEngine;
-import betsy.data.engines.Tomcat;
+import betsy.data.engines.LocalEngine
+import betsy.data.engines.Tomcat
+import betsy.data.engines.installer.OrchestraInstaller
 
 class OrchestraEngine extends LocalEngine {
 
@@ -17,7 +18,7 @@ class OrchestraEngine extends LocalEngine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new OrchestraInstaller().install()
     }
 
     @Override
@@ -63,7 +64,7 @@ class OrchestraEngine extends LocalEngine {
 
         // engine specific steps
         packageBuilder.replaceEndpointTokenWithValue(process)
-		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
     }
 

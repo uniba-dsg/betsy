@@ -1,13 +1,14 @@
 package betsy.data.engines.activeBpel
 
 import betsy.data.BetsyProcess
-import betsy.data.engines.LocalEngine;
-import betsy.data.engines.Tomcat;
+import betsy.data.engines.LocalEngine
+import betsy.data.engines.Tomcat
+import betsy.data.engines.installer.ActiveBpelInstaller
 
 /*
 * Currently using in-memory mode for the engine
  */
-class ActiveBpelEngine extends LocalEngine{
+class ActiveBpelEngine extends LocalEngine {
 
     @Override
     String getName() {
@@ -55,7 +56,7 @@ class ActiveBpelEngine extends LocalEngine{
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new ActiveBpelInstaller().install()
     }
 
 
@@ -66,16 +67,16 @@ class ActiveBpelEngine extends LocalEngine{
 
     @Override
     void onPostDeployment(BetsyProcess process) {
-		// define custom condition
-		ant.typedef (name:"httpcontains", classname:"betsy.ant.tasks.HttpContains")
-		
+        // define custom condition
+        ant.typedef(name: "httpcontains", classname: "betsy.ant.tasks.HttpContains")
+
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
                 and {
                     available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
                     resourcecontains(resource: getAeDeploymentLog(),
                             substring: "[${process.getBpelFileNameWithoutExtension()}.pdd]")
-                    httpcontains(contains:"Running", url:"http://localhost:8080/BpelAdmin/")
+                    httpcontains(contains: "Running", url: "http://localhost:8080/BpelAdmin/")
                 }
             }
         }
@@ -91,7 +92,7 @@ class ActiveBpelEngine extends LocalEngine{
         ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
-		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
         // create bpr file

@@ -2,6 +2,7 @@ package betsy.data.engines.petalsEsb
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
+import betsy.data.engines.installer.PetalsEsbInstaller
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -76,7 +77,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new PetalsEsbInstaller().install()
     }
 
     @Override

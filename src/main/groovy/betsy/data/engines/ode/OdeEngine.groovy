@@ -1,8 +1,9 @@
 package betsy.data.engines.ode
 
 import betsy.data.BetsyProcess
-import betsy.data.engines.LocalEngine;
-import betsy.data.engines.Tomcat;
+import betsy.data.engines.LocalEngine
+import betsy.data.engines.Tomcat
+import betsy.data.engines.installer.OdeInstaller
 
 class OdeEngine extends LocalEngine {
 
@@ -44,7 +45,7 @@ class OdeEngine extends LocalEngine {
 
     @Override
     void install() {
-        ant.ant(antfile: "build.xml", target: getName())
+        new OdeInstaller().install()
     }
 
     @Override
@@ -56,14 +57,14 @@ class OdeEngine extends LocalEngine {
     void onPostDeployment(BetsyProcess process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-				and {
-					available file: "$deploymentDir/${process.bpelFileNameWithoutExtension}.deployed"
-					or {
-						resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of artifact " + process.bpelFileNameWithoutExtension + " successful")
-						resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of " + process.bpelFileNameWithoutExtension + " failed")
-					}
-				}
-			}
+                and {
+                    available file: "$deploymentDir/${process.bpelFileNameWithoutExtension}.deployed"
+                    or {
+                        resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of artifact " + process.bpelFileNameWithoutExtension + " successful")
+                        resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of " + process.bpelFileNameWithoutExtension + " failed")
+                    }
+                }
+            }
         }
     }
 
@@ -77,7 +78,7 @@ class OdeEngine extends LocalEngine {
         ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
-		packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
 
         packageBuilder.bpelFolderToZipFile(process)
     }
