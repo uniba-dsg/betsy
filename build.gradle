@@ -57,6 +57,7 @@ task wrapper(type: Wrapper) {
 }
 
 task installSoapUI << {
+    ant.mkdir dir: downloadsDir
     ant.get dest: downloadsDir, skipexisting: true, {
         ant.url url: soapuiDownloadUrl
     }
