@@ -20,18 +20,40 @@ sourceSets {
     }
 }
 
+ext {
+    soapui = "C:\\Program Files\\SmartBear\\soapUI-4.6.0"
+}
+
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.1.2'
     compile 'org.apache.ant:ant:1.8.4'
-    compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.6.0\\lib', includes: ['*.jar']))
-    compile files(fileTree(dir: 'C:\\Program Files\\SmartBear\\soapUI-4.6.0\\bin', includes: ['*.jar']))
+    compile files(fileTree(dir: "${soapui}\\lib", includes: ['*.jar']))
+    compile files(fileTree(dir: "${soapui}\\bin", includes: ['*.jar']))
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.8'
 }
 
-// TODO check for correct soapUI version
+
+task checkBuildRequirements << {
+    // check soapui existence
+    File soapuiPath = new File(soapui)
+    if(!(soapuiPath.isDirectory() && soapuiPath.exists())) {
+        throw new IllegalStateException("soapUI should be installed to path ${soapui}")
+    }
+}
+classes.dependsOn checkBuildRequirements
+
+task checkRunRequirements << {
+    // check ant existence
+    try {
+        "ant.bat -v".execute()
+    } catch (IOException e){
+        throw new IllegalStateException("ant is not available on the PATH", e)
+    }
+}
+run.dependsOn checkRunRequirements
 
 run {
     if(project.hasProperty('args')){
