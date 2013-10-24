@@ -21,29 +21,36 @@ sourceSets {
 }
 
 ext {
-    soapui = "C:\\Program Files\\SmartBear\\soapUI-4.6.1"
+    downloadsDir = "downloads"
+    soapuiArchiveName = "SoapUI-4.6.1-windows-bin.zip"
+    soapuiDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${soapuiArchiveName}"
+    soapuiDownloadedFile = "${downloadsDir}/${soapuiArchiveName}"
+    soapuiDir = "soapui"
+    soapuiInstallDir = "${soapuiDir}/SoapUI-4.6.1"
 }
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.1.2'
     compile 'org.apache.ant:ant:1.8.4'
-    compile files(fileTree(dir: "${soapui}\\lib", includes: ['*.jar']))
-    compile files(fileTree(dir: "${soapui}\\bin", includes: ['*.jar']))
+    compile files(fileTree(dir: "${soapuiInstallDir}\\lib", includes: ['*.jar']))
+    compile files(fileTree(dir: "${soapuiInstallDir}\\bin", includes: ['*.jar']))
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.8'
 }
 
+task installSoapUI << {
+    ant.get dest: downloadsDir, skipexisting: true, {
+        ant.url url: soapuiDownloadUrl
+    }
 
-task checkBuildRequirements << {
-    // check soapui existence
-    File soapuiPath = new File(soapui)
-    if(!(soapuiPath.isDirectory() && soapuiPath.exists())) {
-        throw new IllegalStateException("soapUI should be installed to path ${soapui}")
+    if(!new File(soapuiInstallDir).exists()) {
+        ant.mkdir dir: soapuiDir
+        ant.unzip src: soapuiDownloadedFile, dest: soapuiDir
     }
 }
-classes.dependsOn checkBuildRequirements
+compileJava.dependsOn installSoapUI
 
 task checkRunRequirements << {
     // check ant existence
