@@ -8,7 +8,8 @@ import betsy.data.Process
 import betsy.data.TestCase
 import configuration.processes.Processes
 
-import java.awt.Desktop
+import java.awt.*
+import java.util.List
 
 class TestUsingParameters {
 
@@ -18,7 +19,7 @@ class TestUsingParameters {
         parser.parse(args)
 
         // usage information if required
-        if(parser.showUsage()){
+        if (parser.showUsage()) {
             println parser.usage()
             System.exit(0)
         }
@@ -43,11 +44,11 @@ class TestUsingParameters {
         }
 
         // print selection of engines and processes
-        println "Engines: ${engines.collect {it.name}}"
-        println "Processes: ${processes.size() < 10 ? processes.collect {it.bpelFileNameWithoutExtension} : processes.size()}"
+        println "Engines: ${engines.collect { it.name }}"
+        println "Processes: ${processes.size() < 10 ? processes.collect { it.bpelFileNameWithoutExtension } : processes.size()}"
 
 
-        if(parser.checkDeployment()) {
+        if (parser.checkDeployment()) {
             // check only whether the processes can be deployed
             processes.each { process ->
                 process.testCases = [new TestCase().checkDeployment()]
@@ -58,7 +59,7 @@ class TestUsingParameters {
 
         try {
             // execute
-            try{
+            try {
                 betsy.execute()
             } catch (Exception e) {
                 println "----------------------"
@@ -69,13 +70,15 @@ class TestUsingParameters {
             if (parser.openResultsInBrowser()) {
                 try {
                     Desktop.getDesktop().browse(new File("test/reports/results.html").toURI())
-                } catch (Exception e) {
+                } catch (Exception ignore) {
                     // ignore any exceptions
                 }
             }
 
         } finally {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily
+            // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
+            // SOLUTION remove exit line for testing purposes
             System.exit(0)
         }
     }
