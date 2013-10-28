@@ -10,7 +10,7 @@ class Ode136Engine extends OdeEngine {
     }
 
     String getXsltPath() {
-        "src/main/xslt/${Object.getName()}"
+        "src/main/xslt/${super.getName()}"
     }
 
     @Override
