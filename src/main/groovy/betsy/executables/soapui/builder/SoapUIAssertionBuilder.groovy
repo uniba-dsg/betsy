@@ -18,11 +18,10 @@ import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapFaultAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapResponseAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
 
-
 class SoapUIAssertionBuilder {
 
     public static void addSynchronousAssertion(SoapTestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
-        for(TestAssertion assertion : testStep.assertions) {
+        for (TestAssertion assertion : testStep.assertions) {
 
             if (assertion instanceof XpathTestAssertion) {
                 addXpathTestAssertion(soapUiRequest, assertion)

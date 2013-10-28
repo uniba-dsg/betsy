@@ -52,6 +52,14 @@ class TestSuite {
         "${getReportsPath()}/${getCsvFile()}"
     }
 
+	String getCsvDurationFile() {
+		"durations.csv"
+	}
+
+	String getCsvDurationFilePath() {
+		"${getReportsPath()}/${getCsvDurationFile()}"
+	}
+
     String getJUnitXMLFilePath() {
         "${getReportsPath()}/TESTS-TestSuites.xml"
     }

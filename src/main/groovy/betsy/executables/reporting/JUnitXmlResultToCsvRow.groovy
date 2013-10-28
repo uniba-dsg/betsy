@@ -1,6 +1,6 @@
 package betsy.executables.reporting
 
-class TestCaseCsvReports {
+class JUnitXmlResultToCsvRow {
 
     /**
      * Represents one row in the resulting csv file
