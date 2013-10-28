@@ -1,8 +1,8 @@
 package betsy.executables.soapui.builder
 
+import betsy.data.SoapTestStep
 import betsy.data.TestAssertion
 import betsy.data.TestStep
-import betsy.data.SoapTestStep
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 import betsy.data.assertions.XpathTestAssertion
@@ -18,7 +18,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapFaultAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapResponseAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
 
-class SoapUIAssertionBuilder {
+class SoapUiAssertionBuilder {
 
     public static void addSynchronousAssertion(SoapTestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
         for (TestAssertion assertion : testStep.assertions) {
@@ -32,7 +32,7 @@ class SoapUIAssertionBuilder {
             }
         }
 
-        if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
+        if (!testStep.assertions.any { it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion }) {
             Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create not soap fault assertion")
         }
     }
@@ -44,7 +44,7 @@ class SoapUIAssertionBuilder {
 
         if (assertion.faultString != null) {
             SimpleContainsAssertion simpleContainsAssertion = soapUiRequest.addAssertion(SimpleContainsAssertion.LABEL) as SimpleContainsAssertion
-            Objects.requireNonNull(simpleContainsAssertion,"Simple contains assertion could not be created for ${assertion}")
+            Objects.requireNonNull(simpleContainsAssertion, "Simple contains assertion could not be created for ${assertion}")
 
             simpleContainsAssertion.token = assertion.faultString
             simpleContainsAssertion.ignoreCase = false
@@ -87,13 +87,13 @@ try {
 
 
     public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
-        for(TestAssertion assertion : testStep.assertions) {
+        for (TestAssertion assertion : testStep.assertions) {
             if (assertion instanceof XpathTestAssertion) {
                 addXpathTestAssertion(soapUiRequest, assertion)
             }
         }
 
-        if (!testStep.assertions.any {it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion}) {
+        if (!testStep.assertions.any { it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion }) {
             Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create Not Soap Fault Assertion")
         }
     }

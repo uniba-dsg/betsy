@@ -19,7 +19,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory
 import com.eviware.soapui.impl.wsdl.teststeps.registry.WsdlTestRequestStepFactory
-import static SoapUIAssertionBuilder.*
+import static SoapUiAssertionBuilder.*
 
 class SoapUiTestStepBuilder {
 
