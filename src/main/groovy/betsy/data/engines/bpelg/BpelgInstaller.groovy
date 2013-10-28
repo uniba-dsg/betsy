@@ -20,17 +20,17 @@ class BpelgInstaller {
                 additionalVmParam: "-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl")
         tomcatInstaller.install()
 
-        ant.get(dest: Configuration.DOWNLOADS_DIR, skipexisting: true) {
+        ant.get(dest: Configuration.config.downloads.dir, skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: "${Configuration.DOWNLOADS_DIR}/${fileName}", dest: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/bpel-g"
+        ant.unzip src: "${Configuration.config.downloads.dir}/${fileName}", dest: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/bpel-g"
         ant.copy file: "src/main/resources/bpelg/log4j.properties", todir: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/bpel-g/WEB-INF", overwrite: true
 
-        ant.get(dest: Configuration.DOWNLOADS_DIR, skipexisting: true) {
+        ant.get(dest: Configuration.config.downloads.dir, skipexisting: true) {
             ant.url url: databaseDownloadUrl
         }
-        ant.copy file: "${Configuration.DOWNLOADS_DIR}/${databaseName}", tofile: "${serverDir}/${tomcatInstaller.tomcatName}/lib/${databaseName}"
+        ant.copy file: "${Configuration.config.downloads.dir}/${databaseName}", tofile: "${serverDir}/${tomcatInstaller.tomcatName}/lib/${databaseName}"
     }
 
 }

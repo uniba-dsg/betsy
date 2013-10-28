@@ -14,7 +14,7 @@ class CliParser {
         cli = new CliBuilder(usage: "[options] <engines> <process>")
         cli.o(longOpt: 'open-results-in-browser', "Opens results in default browser")
         cli.h(longOpt: 'help', "Print out usage information")
-        cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.PARTNER_IP_AND_PORT})")
+        cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.config.PARTNER_IP_AND_PORT})")
         cli.c(longOpt: 'check-deployment', "Verifies deployment instead of test success")
     }
 

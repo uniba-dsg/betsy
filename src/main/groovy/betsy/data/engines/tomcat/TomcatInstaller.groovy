@@ -1,6 +1,6 @@
 package betsy.data.engines.tomcat
 
-import static betsy.Configuration.DOWNLOADS_DIR
+import betsy.Configuration
 
 class TomcatInstaller {
 
@@ -14,13 +14,13 @@ class TomcatInstaller {
     String tomcatName = "apache-tomcat-7.0.26"
 
     public void install() {
-        ant.mkdir dir: DOWNLOADS_DIR
-        ant.get dest: DOWNLOADS_DIR, skipexisting: true, {
+        ant.mkdir dir: Configuration.config.downloads.dir
+        ant.get dest: Configuration.config.downloads.dir, skipexisting: true, {
             ant.url url: downloadUrl
         }
         ant.delete dir: destinationDir
         ant.mkdir dir: destinationDir
-        ant.unzip src: "${DOWNLOADS_DIR}/${tomcatFileName}", dest: destinationDir
+        ant.unzip src: "${Configuration.config.downloads.dir}/${tomcatFileName}", dest: destinationDir
 
         ant.echo file: "${destinationDir}/tomcat_startup.bat", message: getStartupScript()
         ant.echo file: "${destinationDir}/tomcat_shutdown.bat", message: getShutdownScript()

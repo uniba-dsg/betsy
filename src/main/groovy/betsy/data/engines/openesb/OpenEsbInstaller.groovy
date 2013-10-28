@@ -12,7 +12,7 @@ class OpenEsbInstaller {
     String stateXmlTemplate = "src/main/resources/openesb/state.xml.template"
 
     public void install() {
-        ant.get(dest: Configuration.DOWNLOADS_DIR, skipexisting: true) {
+        ant.get(dest: Configuration.config.downloads.dir, skipexisting: true) {
             ant.url url: downloadUrl
         }
 
@@ -33,7 +33,7 @@ class OpenEsbInstaller {
         ant.exec executable: "cmd", {
             arg value: "/c"
             arg value: new File("src/main/resources/openesb/reinstallGlassFish.bat").absolutePath
-            arg value: new File("${Configuration.DOWNLOADS_DIR}/${fileName}").absolutePath
+            arg value: new File("${Configuration.config.downloads.dir}/${fileName}").absolutePath
             arg value: new File("${serverDir}/state.xml").absolutePath
         }
     }

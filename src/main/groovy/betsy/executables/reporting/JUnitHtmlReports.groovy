@@ -12,7 +12,7 @@ class JUnitHtmlReports {
     String path
 
     public void create() {
-        String antPath = "${Configuration.ANT_HOME}/bin/ant.bat"
+        String antPath = "${Configuration.config.ant.home}/bin/ant.bat"
 
         ant.echo(message: "creating reporting ant scripts")
         ant.echo(message: createAntReportFile(), file: "${path}/build.xml")

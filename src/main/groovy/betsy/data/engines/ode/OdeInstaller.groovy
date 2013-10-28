@@ -16,11 +16,11 @@ class OdeInstaller {
         TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir)
         tomcatInstaller.install()
 
-        ant.get(dest: Configuration.DOWNLOADS_DIR, skipexisting: true) {
+        ant.get(dest: Configuration.config.downloads.dir, skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: "${Configuration.DOWNLOADS_DIR}/${fileName}", dest: serverDir
+        ant.unzip src: "${Configuration.config.downloads.dir}/${fileName}", dest: serverDir
         ant.unzip src: odeWar, dest: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/ode"
         ant.copy file: "src/main/resources/ode/log4j.properties", todir: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/ode/WEB-INF/classes", overwrite: true
     }

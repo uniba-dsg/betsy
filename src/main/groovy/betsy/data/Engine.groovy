@@ -69,8 +69,8 @@ abstract class Engine implements EngineAPI {
     protected void replaceEndpointAndPartnerTokensWithValues(BetsyProcess process) {
         ant.echo message: "Setting Endpoint of wsdl IF for $process on ${this} to ${process.endpoint}"
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
-        ant.echo message: "Setting Partner Address of for $process on ${this} to ${Configuration.PARTNER_IP_AND_PORT}"
-        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
+        ant.echo message: "Setting Partner Address of for $process on ${this} to ${Configuration.config.PARTNER_IP_AND_PORT}"
+        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.config.PARTNER_IP_AND_PORT)
     }
 
     void prepare() {
