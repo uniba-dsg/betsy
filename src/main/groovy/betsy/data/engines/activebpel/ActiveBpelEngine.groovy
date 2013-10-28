@@ -1,9 +1,8 @@
-package betsy.data.engines
+package betsy.data.engines.activebpel
 
 import betsy.data.Engine
 import betsy.data.BetsyProcess
-import betsy.data.engines.installer.ActiveBpelInstaller
-import betsy.data.engines.server.Tomcat
+import betsy.data.engines.tomcat.Tomcat
 
 /*
 * Currently using in-memory mode for the engine

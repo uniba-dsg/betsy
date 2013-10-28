@@ -1,6 +1,4 @@
-package betsy.data.engines
-
-import betsy.data.engines.installer.OdeInstaller
+package betsy.data.engines.ode
 
 class Ode136Engine extends OdeEngine {
 

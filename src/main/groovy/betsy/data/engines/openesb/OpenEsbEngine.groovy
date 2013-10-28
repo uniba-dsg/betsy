@@ -1,10 +1,7 @@
-package betsy.data.engines
+package betsy.data.engines.openesb
 
 import betsy.data.Engine
 import betsy.data.BetsyProcess
-import betsy.data.engines.cli.OpenEsbCLI
-import betsy.data.engines.installer.OpenEsbInstaller
-import betsy.data.engines.packager.OpenEsbCompositePackager
 
 class OpenEsbEngine extends Engine {
 

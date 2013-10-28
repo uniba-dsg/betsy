@@ -1,10 +1,8 @@
-package betsy.data.engines
+package betsy.data.engines.orchestra
 
 import betsy.data.Engine
 import betsy.data.BetsyProcess
-import betsy.data.engines.cli.OrchestraCLI
-import betsy.data.engines.installer.OrchestraInstaller
-import betsy.data.engines.server.Tomcat
+import betsy.data.engines.tomcat.Tomcat
 
 class OrchestraEngine extends Engine {
 

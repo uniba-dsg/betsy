@@ -3,7 +3,7 @@ package configuration
 import betsy.Betsy
 import betsy.Configuration
 import betsy.data.Engine
-import betsy.data.Engines
+import betsy.data.engines.Engines
 import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import configuration.processes.Processes

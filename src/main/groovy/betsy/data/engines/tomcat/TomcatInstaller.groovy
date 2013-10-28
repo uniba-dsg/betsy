@@ -1,4 +1,4 @@
-package betsy.data.engines.installer
+package betsy.data.engines.tomcat
 
 import static betsy.Configuration.DOWNLOADS_DIR
 

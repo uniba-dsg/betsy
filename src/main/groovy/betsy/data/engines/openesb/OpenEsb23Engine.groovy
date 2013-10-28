@@ -1,6 +1,4 @@
-package betsy.data.engines
-
-import betsy.data.engines.installer.OpenEsbInstaller
+package betsy.data.engines.openesb
 
 class OpenEsb23Engine extends OpenEsbEngine {
 
@@ -10,7 +8,7 @@ class OpenEsb23Engine extends OpenEsbEngine {
     }
 
     String getXsltPath() {
-        "src/main/xslt/${super.getName()}"
+        "src/main/xslt/${Object.getName()}"
     }
 
     @Override

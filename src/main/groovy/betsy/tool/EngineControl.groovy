@@ -1,7 +1,7 @@
 package betsy.tool
 
 import betsy.data.EngineAPI
-import betsy.data.Engines
+import betsy.data.engines.Engines
 
 import javax.swing.*
 import java.awt.*

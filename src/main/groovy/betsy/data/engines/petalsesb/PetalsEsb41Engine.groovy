@@ -1,6 +1,4 @@
-package betsy.data.engines
-
-import betsy.data.engines.installer.PetalsEsbInstaller
+package betsy.data.engines.petalsesb
 
 class PetalsEsb41Engine extends PetalsEsbEngine {
 

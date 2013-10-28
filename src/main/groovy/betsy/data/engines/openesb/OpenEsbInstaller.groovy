@@ -1,4 +1,4 @@
-package betsy.data.engines.installer
+package betsy.data.engines.openesb
 
 import betsy.Configuration
 

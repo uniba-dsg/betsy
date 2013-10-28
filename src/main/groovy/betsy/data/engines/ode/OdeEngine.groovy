@@ -1,9 +1,8 @@
-package betsy.data.engines
+package betsy.data.engines.ode
 
 import betsy.data.Engine
 import betsy.data.BetsyProcess
-import betsy.data.engines.installer.OdeInstaller
-import betsy.data.engines.server.Tomcat
+import betsy.data.engines.tomcat.Tomcat
 
 class OdeEngine extends Engine {
 

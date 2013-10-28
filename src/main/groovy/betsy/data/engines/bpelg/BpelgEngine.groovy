@@ -1,9 +1,9 @@
-package betsy.data.engines
+package betsy.data.engines.bpelg
 
 import betsy.data.Engine
 import betsy.data.BetsyProcess
-import betsy.data.engines.installer.BpelgInstaller
-import betsy.data.engines.server.Tomcat
+import betsy.data.engines.Util
+import betsy.data.engines.tomcat.Tomcat
 
 class BpelgEngine extends Engine {
 
