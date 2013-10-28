@@ -1,7 +1,7 @@
 package betsy.data.engines
 
 import betsy.data.Engine
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.cli.OrchestraCLI
 import betsy.data.engines.installer.OrchestraInstaller
 import betsy.data.engines.server.Tomcat
@@ -38,12 +38,12 @@ class OrchestraEngine extends Engine {
     }
 
     @Override
-    String getEndpointUrl(Process process) {
+    String getEndpointUrl(BetsyProcess process) {
         "${tomcat.tomcatUrl}/orchestra/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
     @Override
-    void storeLogs(Process process) {
+    void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(todir: "${process.targetPath}/logs") {
             ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
@@ -51,16 +51,16 @@ class OrchestraEngine extends Engine {
     }
 
     @Override
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         new OrchestraCLI(serverPath: getServerPath(), ant: ant).deploy(process)
     }
 
     @Override
-    void onPostDeployment(Process process) {
+    void onPostDeployment(BetsyProcess process) {
         // do nothing - as using synchronous deployment
     }
 
-    public void buildArchives(Process process) {
+    public void buildArchives(BetsyProcess process) {
         createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps

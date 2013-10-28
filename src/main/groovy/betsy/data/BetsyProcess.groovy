@@ -1,6 +1,6 @@
 package betsy.data
 
-class Process implements Cloneable {
+class BetsyProcess implements Cloneable {
 
     public static String PATH_PREFIX = "src/main/tests"
 
@@ -46,7 +46,7 @@ class Process implements Cloneable {
 
     @Override
     protected Object clone() {
-        return new Process(bpel: bpel, wsdls: wsdls, additionalFiles: additionalFiles, testCases: testCases)
+        return new BetsyProcess(bpel: bpel, wsdls: wsdls, additionalFiles: additionalFiles, testCases: testCases)
     }
 
     String toString() {
@@ -223,7 +223,7 @@ class Process implements Cloneable {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
 
-        Process process = (Process) o
+        BetsyProcess process = (BetsyProcess) o
 
         if (bpel != process.bpel) return false
 

@@ -1,7 +1,7 @@
 package betsy.data.engines
 
 import betsy.data.Engine
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.installer.PetalsEsbInstaller
 import betsy.data.engines.packager.PetalsEsbCompositePackager
 
@@ -18,7 +18,7 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    String getEndpointUrl(Process process) {
+    String getEndpointUrl(BetsyProcess process) {
         "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
@@ -31,7 +31,7 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    void storeLogs(Process process) {
+    void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
     }
@@ -85,7 +85,7 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         ant.copy(file: process.targetPackageCompositeFilePath, todir: installationDir)
     }
 
@@ -94,7 +94,7 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    void onPostDeployment(Process process) {
+    void onPostDeployment(BetsyProcess process) {
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
             and {
                 not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
@@ -109,7 +109,7 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    void buildArchives(Process process) {
+    void buildArchives(BetsyProcess process) {
         createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -141,7 +141,7 @@ class PetalsEsbEngine extends Engine {
     }
 
     @Override
-    protected void bpelFolderToZipFile(Process process) {
+    protected void bpelFolderToZipFile(BetsyProcess process) {
         ant.mkdir dir: process.targetPackagePath
         ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
     }

@@ -40,20 +40,20 @@ interface EngineAPI {
      *
      * @param process to be deployed
      */
-    void deploy(Process process)
+    void deploy(BetsyProcess process)
 
     /**
      * Gets called after executing deploy(process)
      * Can be used to wait for the finish of deploy when using async deployment
      */
-    void onPostDeployment(Process process)
+    void onPostDeployment(BetsyProcess process)
 
     /**
      * Build archives required for deployment.
      *
      * @param process the process for which the archives are being built
      */
-    void buildArchives(Process process)
+    void buildArchives(BetsyProcess process)
 
     /**
      * Gets endpoint url of requested endpoint url. This url is used for testing the process later on.
@@ -61,14 +61,14 @@ interface EngineAPI {
      * @param process the process
      * @return the url of the endpoint
      */
-    String getEndpointUrl(Process process)
+    String getEndpointUrl(BetsyProcess process)
 
     /**
      * Store logs used for a specific process. This is required for analysis in case of error.
      *
      * @param process the process for which to store the logs.
      */
-    void storeLogs(Process process)
+    void storeLogs(BetsyProcess process)
 
 
 }

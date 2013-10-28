@@ -1,7 +1,7 @@
 package betsy.data.engines
 
 import betsy.data.Engine
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.installer.ActiveBpelInstaller
 import betsy.data.engines.server.Tomcat
 
@@ -16,7 +16,7 @@ class ActiveBpelEngine extends Engine {
     }
 
     @Override
-    String getEndpointUrl(Process process) {
+    String getEndpointUrl(BetsyProcess process) {
         "${tomcat.tomcatUrl}/active-bpel/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
@@ -29,7 +29,7 @@ class ActiveBpelEngine extends Engine {
     }
 
     @Override
-    void storeLogs(Process process) {
+    void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(todir: "${process.targetPath}/logs") {
             ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
@@ -61,12 +61,12 @@ class ActiveBpelEngine extends Engine {
 
 
     @Override
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         ant.copy(file: process.getTargetPackageFilePath("bpr"), todir: deploymentDir)
     }
 
     @Override
-    void onPostDeployment(Process process) {
+    void onPostDeployment(BetsyProcess process) {
         // define custom condition
         ant.typedef (name:"httpcontains", classname:"betsy.data.engines.util.HttpContains")
 
@@ -82,7 +82,7 @@ class ActiveBpelEngine extends Engine {
         }
     }
 
-    public void buildArchives(Process process) {
+    public void buildArchives(BetsyProcess process) {
         createFolderAndCopyProcessFilesToTarget(process)
 
         // create deployment descriptor

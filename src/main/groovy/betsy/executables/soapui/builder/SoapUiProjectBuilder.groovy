@@ -1,6 +1,6 @@
 package betsy.executables.soapui.builder
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import com.eviware.soapui.impl.WsdlInterfaceFactory
 import com.eviware.soapui.impl.wsdl.WsdlProject
@@ -18,7 +18,7 @@ class SoapUiProjectBuilder {
     final WsdlProjectFactory projectFactory = new WsdlProjectFactory()
     final WsdlInterfaceFactory interfaceFactory = new WsdlInterfaceFactory()
 
-    Process process
+    BetsyProcess process
     int requestTimeout
 
     private WsdlProject project

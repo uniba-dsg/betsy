@@ -8,7 +8,7 @@ abstract class Engine implements EngineAPI {
 
     String parentFolder
 
-    final List<Process> processes = []
+    final List<BetsyProcess> processes = []
 
     /**
      * The path <code>src/main/xslt/$engine</code>
@@ -41,7 +41,7 @@ abstract class Engine implements EngineAPI {
         getName()
     }
 
-    protected void createFolderAndCopyProcessFilesToTarget(Process process) {
+    protected void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
         Engine engine = this
 
         // engine independent package steps
@@ -61,12 +61,12 @@ abstract class Engine implements EngineAPI {
         }
     }
 
-    protected void bpelFolderToZipFile(Process process) {
+    protected void bpelFolderToZipFile(BetsyProcess process) {
         ant.mkdir dir: process.targetPackagePath
         ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
     }
 
-    protected void replaceEndpointAndPartnerTokensWithValues(Process process) {
+    protected void replaceEndpointAndPartnerTokensWithValues(BetsyProcess process) {
         ant.echo message: "Setting Endpoint of wsdl IF for $process on ${this} to ${process.endpoint}"
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
         ant.echo message: "Setting Partner Address of for $process on ${this} to ${Configuration.PARTNER_IP_AND_PORT}"

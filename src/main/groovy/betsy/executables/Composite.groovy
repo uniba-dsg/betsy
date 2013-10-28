@@ -1,7 +1,7 @@
 package betsy.executables
 
 import betsy.data.Engine
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.executables.analytics.Analyzer
 import betsy.executables.generator.TestBuilder
 import betsy.executables.reporting.Reporter
@@ -62,13 +62,13 @@ class Composite {
 
     protected void executeEngine(Engine engine) {
         log "${context.testSuite.path}/${engine.name}", {
-            for(Process process : engine.processes) {
+            for(BetsyProcess process : engine.processes) {
                 executeProcess(process)
             }
         }
     }
 
-    protected void executeProcess(Process process) {
+    protected void executeProcess(BetsyProcess process) {
         println "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
 
         log "${process.targetPath}/all", {
@@ -90,7 +90,7 @@ class Composite {
         }
     }
 
-    protected void deploy(Process process) {
+    protected void deploy(BetsyProcess process) {
         log "${process.targetPath}/deploy", {
             ant.echo message: "Deploying process ${process} to engine ${process.engine}"
             process.engine.deploy(process)
@@ -109,7 +109,7 @@ class Composite {
         }
     }
 
-    protected void test(Process process) {
+    protected void test(BetsyProcess process) {
         try {
             try {
                 context.testPartner.publish()
@@ -133,7 +133,7 @@ class Composite {
         }
     }
 
-    protected void buildPackageAndTest(Process process) {
+    protected void buildPackageAndTest(BetsyProcess process) {
         log "${process.targetPath}/build", {
 
             log "${process.targetPath}/build_package", {

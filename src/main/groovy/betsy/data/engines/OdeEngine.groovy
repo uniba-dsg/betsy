@@ -1,7 +1,7 @@
 package betsy.data.engines
 
 import betsy.data.Engine
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.engines.installer.OdeInstaller
 import betsy.data.engines.server.Tomcat
 
@@ -13,7 +13,7 @@ class OdeEngine extends Engine {
     }
 
     @Override
-    String getEndpointUrl(Process process) {
+    String getEndpointUrl(BetsyProcess process) {
         "${tomcat.tomcatUrl}/ode/processes/${process.bpelFileNameWithoutExtension}TestInterface"
     }
 
@@ -36,7 +36,7 @@ class OdeEngine extends Engine {
     }
 
     @Override
-    void storeLogs(Process process) {
+    void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(todir: "${process.targetPath}/logs") {
             ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
@@ -49,12 +49,12 @@ class OdeEngine extends Engine {
     }
 
     @Override
-    void deploy(Process process) {
+    void deploy(BetsyProcess process) {
         ant.unzip src: process.targetPackageFilePath, dest: "$deploymentDir/${process.bpelFileNameWithoutExtension}"
     }
 
     @Override
-    void onPostDeployment(Process process) {
+    void onPostDeployment(BetsyProcess process) {
         ant.sequential() {
             ant.waitfor(maxwait: "30", maxwaitunit: "second") {
                 and {
@@ -69,7 +69,7 @@ class OdeEngine extends Engine {
     }
 
     @Override
-    void buildArchives(Process process) {
+    void buildArchives(BetsyProcess process) {
         createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps

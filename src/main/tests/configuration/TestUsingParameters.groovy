@@ -4,7 +4,7 @@ import betsy.Betsy
 import betsy.Configuration
 import betsy.data.Engine
 import betsy.data.Engines
-import betsy.data.Process
+import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import configuration.processes.Processes
 
@@ -32,7 +32,7 @@ class TestUsingParameters {
 
         // parsing processes and engines
         List<Engine> engines = null
-        List<Process> processes = null
+        List<BetsyProcess> processes = null
         try {
             engines = parseEngines(parser.arguments()).unique()
             processes = parseProcesses(parser.arguments()).unique()
@@ -91,7 +91,7 @@ class TestUsingParameters {
         }
     }
 
-    private static List<Process> parseProcesses(String[] args) {
+    private static List<BetsyProcess> parseProcesses(String[] args) {
         if (args.length <= 1) {
             ["ALL"].collect() { new Processes().get(it) }.flatten()
         } else {

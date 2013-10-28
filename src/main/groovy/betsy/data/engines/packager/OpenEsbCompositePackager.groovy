@@ -1,11 +1,11 @@
 package betsy.data.engines.packager
 
-import betsy.data.Process
+import betsy.data.BetsyProcess
 
 class OpenEsbCompositePackager {
 
     AntBuilder ant = new AntBuilder()
-    Process process
+    BetsyProcess process
 
     void build() {
         createBinding()

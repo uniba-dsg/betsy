@@ -1,17 +1,18 @@
 package configuration.processes
 
+import betsy.data.BetsyProcess
 import betsy.data.TestCase
 
 class StaticAnalysisProcesses {
 
-    static List<betsy.data.Process> getStaticAnalysisProcesses() {
+    static List<BetsyProcess> getStaticAnalysisProcesses() {
         String path = "src/main/tests/sa-rules"
 
         if (!new File(path).exists()) {
             return []
         }
 
-        List<betsy.data.Process> result = []
+        List<BetsyProcess> result = []
 
         new File(path).eachDirRecurse { dir ->
             boolean isTestDirectory = dir.list().any({ String elem -> elem.endsWith(".bpel") })
@@ -25,7 +26,7 @@ class StaticAnalysisProcesses {
                     }
                 }
 
-                result.add(new betsy.data.Process(
+                result.add(new BetsyProcess(
                         bpel: "${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}",
                         wsdls: wsdls,
                         testCases: [new TestCase().checkFailedDeployment()]

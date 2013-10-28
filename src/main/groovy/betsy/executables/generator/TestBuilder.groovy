@@ -1,14 +1,14 @@
 package betsy.executables.generator
 
 import betsy.executables.soapui.builder.SoapUiProjectBuilder
-import betsy.data.Process
+import betsy.data.BetsyProcess
 
 
 class TestBuilder {
 
     AntBuilder ant = new AntBuilder()
 
-    Process process
+    BetsyProcess process
 
     /**
      * timeout for pending response in milliseconds

@@ -5,7 +5,7 @@ import betsy.data.TestSuite
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import betsy.data.Process
+import betsy.data.BetsyProcess
 
 
 class MessageExchangesIntoSoapUIReportsMerger {
@@ -21,7 +21,7 @@ class MessageExchangesIntoSoapUIReportsMerger {
         }
     }
 
-    private void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(Process process) {
+    private void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(BetsyProcess process) {
         Path junitXml = findFileInReports(process.targetReportsPath, "*.xml")
         if(junitXml == null){
             ant.echo message: "Cannot merge xml report from process ${process.bpelFileNameWithoutExtension} as there is no xml report"
