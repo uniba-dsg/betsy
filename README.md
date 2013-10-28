@@ -12,14 +12,6 @@ This software is licensed under the LGPL Version 3 Open Source License.
 - JDK 1.7.0_03 (64 Bit) or higher
   - `JAVA_HOME` should point to the jdk directory
   - `PATH` should include `JAVA_HOME/bin`
-- Ant 1.8.3 or higher (also verified with ant 1.9.2)
-  - `ANT_HOME` should point to the Ant directory
-  - `PATH` should include `ANT_HOME/bin`
-  
-## Software Requirements (virtualised testing)
-- VirtualBox 4.2.12 or higher
-  - installation path shall be included in `Config.groovy`
-  - usage of a matching `vboxjws.jar` must be assured in the `build.gradle` file 
 
 ## Licensing
 LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html

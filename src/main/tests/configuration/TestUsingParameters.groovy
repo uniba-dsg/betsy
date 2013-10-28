@@ -132,6 +132,8 @@ class TestUsingParameters {
 
         } finally {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily
+            // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
+            // SOLUTION remove exit line for testing purposes
             System.exit(0)
         }
     }

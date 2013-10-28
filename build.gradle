@@ -1,5 +1,4 @@
 apply plugin: "groovy"
-apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "application"
@@ -17,9 +16,7 @@ sourceSets {
             srcDirs = []
         }
         groovy {
-            srcDir 'src/main/java'
-            srcDir 'src/main/groovy'
-            srcDir 'src/main/tests'
+            srcDirs = ['src/main/groovy', 'src/main/tests', 'src/main/java']
             exclude 'betsy/virtual/server/**'
         }
         resources {
@@ -31,25 +28,34 @@ sourceSets {
 
 ext {
     downloadsDir = "downloads"
+
+    // soapui parameter
     soapuiArchiveName = "SoapUI-4.6.1-windows-bin.zip"
     soapuiDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${soapuiArchiveName}"
     soapuiDownloadedFile = "${downloadsDir}/${soapuiArchiveName}"
     soapuiDir = "soapui"
     soapuiInstallDir = "${soapuiDir}/SoapUI-4.6.1"
+
+    // ant parameter
+    antArchiveName = "apache-ant-1.9.2-bin.zip"
+    antDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${antArchiveName}"
+    antDownloadedFile = "${downloadsDir}/${antArchiveName}"
+    antDir = "ant"
+    antInstallDir = "${antDir}/apache-ant-1.9.2"
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.1.5'
+    compile 'org.codehaus.groovy:groovy-all:2.1.8'
 
-    compile 'org.apache.ant:ant:1.9.1'
+    compile 'org.apache.ant:ant:1.9.2'
     compile 'log4j:log4j:1.2.17'
     compile 'org.virtualbox:vboxjws:4.2.8'
     compile 'commons-daemon:commons-daemon:1.0.12'
 
     testCompile 'junit:junit:4.11'
 
-    compile files(fileTree(dir: "${soapuiInstallDir}\\lib", includes: ['*.jar'], exclude: ['log4j-*', 'xml-apis-*', 'groovy*']))
     compile files(fileTree(dir: "${soapuiInstallDir}\\bin", includes: ['*.jar']))
+    compile files(fileTree(dir: "${soapuiInstallDir}\\lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*']))
 }
 
 task wrapper(type: Wrapper) {
@@ -62,22 +68,26 @@ task installSoapUI << {
         ant.url url: soapuiDownloadUrl
     }
 
-    if(!new File(soapuiInstallDir).exists()) {
+    if (!new File(soapuiInstallDir as String).exists()) {
         ant.mkdir dir: soapuiDir
         ant.unzip src: soapuiDownloadedFile, dest: soapuiDir
     }
 }
-compileJava.dependsOn installSoapUI
 
-task checkRunRequirements << {
-    // check ant existence
-    try {
-        "ant.bat -v".execute()
-    } catch (IOException e){
-        throw new IllegalStateException("ant is not available on the PATH", e)
+task installAnt << {
+    ant.mkdir dir: downloadsDir
+    ant.get dest: downloadsDir, skipexisting: true, {
+        ant.url url: antDownloadUrl
+    }
+
+    if (!new File(antInstallDir as String).exists()) {
+        ant.mkdir dir: antDir
+        ant.unzip src: antDownloadedFile, dest: antDir
     }
 }
-run.dependsOn checkRunRequirements
+
+compileGroovy.dependsOn installSoapUI
+installSoapUI.dependsOn installAnt
 
 run {
     if (project.hasProperty('args')) {

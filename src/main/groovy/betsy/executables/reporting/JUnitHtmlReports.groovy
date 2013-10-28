@@ -1,5 +1,7 @@
 package betsy.executables.reporting
 
+import betsy.Configuration
+
 class JUnitHtmlReports {
 
     AntBuilder ant = new AntBuilder()
@@ -10,13 +12,15 @@ class JUnitHtmlReports {
     String path
 
     public void create() {
+        String antPath = "${Constants.ANT_HOME}/bin/ant.bat"
+
         ant.echo(message: "creating reporting ant scripts")
         ant.echo(message: createAntReportFile(), file: "${path}/build.xml")
 
         ant.echo(message: "executing reporting ant scripts")
         ant.exec(executable: "cmd", dir: path, osfamily: "windows") {
             arg(value: "/c")
-            arg(value: "ant")
+            arg(value: new File(antPath).absolutePath)
         }
 
         ant.exec(executable: "ant", dir: path, osfamily: "unix")
