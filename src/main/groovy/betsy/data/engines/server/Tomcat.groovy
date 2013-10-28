@@ -32,14 +32,12 @@ class Tomcat {
      * Start tomcat and wait until it responds to the <code>tomcatUrl</code>
      */
     void startup() {
-        ant.parallel() {
-            exec(executable: "cmd", dir: engineDir) {
-                arg(value: "/c")
-                arg(value: new File("tomcat_startup.bat"))
-            }
-            waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-                http url: tomcatUrl
-            }
+        ant.exec(executable: "cmd", dir: engineDir) {
+            arg(value: "/c")
+            arg(value: new File("tomcat_startup.bat"))
+        }
+        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
+            http url: tomcatUrl
         }
     }
 
