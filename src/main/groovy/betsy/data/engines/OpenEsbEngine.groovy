@@ -34,11 +34,9 @@ class OpenEsbEngine extends Engine {
 
     @Override
     void startup() {
-        ant.parallel() {
-            cli.startDomain()
-            waitfor(maxwait: "15", maxwaitunit: "second", checkevery: "500") {
-                http url: CHECK_URL
-            }
+        cli.startDomain()
+        ant.waitfor(maxwait: "15", maxwaitunit: "second", checkevery: "500") {
+            http url: CHECK_URL
         }
     }
 

@@ -37,7 +37,7 @@ class ActiveBpelEngine extends Engine {
         ant.copy(file: getAeDeploymentLog(), todir: "${process.targetPath}/logs")
     }
 
-    private String getAeDeploymentLog() {
+    private static String getAeDeploymentLog() {
         String homeDir = System.getProperty("user.home");
         homeDir = homeDir.endsWith(File.separator) ?: homeDir + File.separator;
 
@@ -76,7 +76,7 @@ class ActiveBpelEngine extends Engine {
                     available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
                     resourcecontains(resource: getAeDeploymentLog(),
                             substring: "[${process.getBpelFileNameWithoutExtension()}.pdd]")
-                    httpcontains(contains:"Running", url:"http://localhost:8080/BpelAdmin/")
+                    httpcontains(contains: "Running", url: "http://localhost:8080/BpelAdmin/")
                 }
             }
         }

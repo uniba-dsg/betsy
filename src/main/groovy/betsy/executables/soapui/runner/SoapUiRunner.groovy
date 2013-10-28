@@ -2,6 +2,9 @@ package betsy.executables.soapui.runner
 
 import com.eviware.soapui.tools.SoapUITestCaseRunner
 
+/**
+ * Runs soap ui tests programmatically within the current JVM. Requires soapUI to be present in the class path.
+ */
 class SoapUiRunner {
 
     AntBuilder ant = new AntBuilder()

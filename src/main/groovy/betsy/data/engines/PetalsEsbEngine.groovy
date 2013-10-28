@@ -38,18 +38,16 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void startup() {
-        ant.parallel() {
-            ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/${getFolder()}/bin") {
-                arg(value: "/c")
-                arg(value: "petals-esb.bat")
-            }
-            waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-                and {
-                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
-                            substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
-                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
-                            substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
-                }
+        ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/${getFolder()}/bin") {
+            arg(value: "/c")
+            arg(value: "petals-esb.bat")
+        }
+        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
+            and {
+                resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                        substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
+                resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                        substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
             }
         }
 
@@ -60,13 +58,12 @@ class PetalsEsbEngine extends Engine {
                             substring: "[Petals.AutoLoaderService] : Error during the auto- installation of a component")
                 }
             }
-        } catch (Exception e){
+        } catch (Exception ignore) {
             ant.echo message: "SOAP BC Installation failed - shutdown, reinstall and start petalsesb again"
             shutdown()
             install()
             startup()
         }
-
     }
 
     @Override
@@ -100,9 +97,9 @@ class PetalsEsbEngine extends Engine {
                 not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
                 or {
                     resourcecontains(resource: getPetalsLog(),
-                        substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
+                            substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
                     resourcecontains(resource: getPetalsLog(),
-                        substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' deployed with some SU deployment in failure")
+                            substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' deployed with some SU deployment in failure")
                 }
             }
         }
