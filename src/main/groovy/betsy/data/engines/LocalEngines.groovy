@@ -2,6 +2,7 @@ package betsy.data.engines
 
 import betsy.data.engines.activeBpel.ActiveBpelEngine
 import betsy.data.engines.bpelg.BpelgEngine
+import betsy.data.engines.ode.Ode136Engine
 import betsy.data.engines.ode.OdeEngine
 import betsy.data.engines.openEsb.OpenEsb23Engine
 import betsy.data.engines.openEsb.OpenEsbEngine
@@ -25,7 +26,8 @@ class LocalEngines {
                 new OrchestraEngine(),
                 new ActiveBpelEngine(),
                 new OpenEsb23Engine(),
-                new PetalsEsb41Engine()
+                new PetalsEsb41Engine(),
+                new Ode136Engine()
         ]
     }
 
