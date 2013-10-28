@@ -35,7 +35,7 @@ class Composite {
 
             try {
                 // fail fast
-                for(Engine engine : context.testSuite.engines){
+                for (Engine engine : context.testSuite.engines) {
                     engine.prepare()
                     engine.failIfRunning()
                 }
@@ -44,7 +44,7 @@ class Composite {
 
                 new Reporter(ant: ant, tests: context.testSuite).createReports()
                 new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
-                            reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
+                        reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
 
             } catch (Exception e) {
                 ant.echo message: IOUtil.getStackTrace(e), level: "error"
@@ -55,14 +55,14 @@ class Composite {
     }
 
     protected void executeEngines(ExecutionContext context) {
-        for(Engine engine : context.testSuite.engines){
+        for (Engine engine : context.testSuite.engines) {
             executeEngine(engine)
         }
     }
 
     protected void executeEngine(Engine engine) {
-        log "${context.testSuite.path}/${engine.name}", {
-            for(BetsyProcess process : engine.processes) {
+        log engine.path, {
+            for (BetsyProcess process : engine.processes) {
                 executeProcess(process)
             }
         }
@@ -74,19 +74,19 @@ class Composite {
         log "${process.targetPath}/all", {
             try {
                 buildPackageAndTest(process)
-                installAndStart(process.engine)
+                installAndStart(process)
                 deploy(process)
                 test(process)
             } finally {
                 // ensure shutdown
-                shutdown(process.engine)
+                shutdown(process)
             }
         }
     }
 
-    protected void shutdown(Engine engine) {
-        log "${engine.path}/shutdown", {
-            engine.shutdown()
+    protected void shutdown(BetsyProcess process) {
+        log "${process.targetPath}/engine_shutdown", {
+            process.engine.shutdown()
         }
     }
 
@@ -98,38 +98,40 @@ class Composite {
         }
     }
 
-    protected void installAndStart(Engine engine) {
+    protected void installAndStart(BetsyProcess process) {
         // setup infrastructure
-        log "${engine.path}/install", {
-            engine.install()
+        log "${process.targetPath}/engine_install", {
+            process.engine.install()
         }
 
-        log "${engine.path}/startup", {
-            engine.startup()
+        log "${process.targetPath}/engine_startup", {
+            process.engine.startup()
         }
     }
 
     protected void test(BetsyProcess process) {
-        try {
+        log "${process.targetPath}/test", {
             try {
-                context.testPartner.publish()
-            } catch (BindException e) {
-                context.testPartner.unpublish()
-                ant.echo "Address already in use - waiting 2 seconds to get available"
-                ant.sleep(milliseconds: 2000)
-                context.testPartner.publish()
-            }
+                try {
+                    context.testPartner.publish()
+                } catch (BindException ignore) {
+                    context.testPartner.unpublish()
+                    ant.echo "Address already in use - waiting 2 seconds to get available"
+                    ant.sleep(milliseconds: 2000)
+                    context.testPartner.publish()
+                }
 
-            log "${process.targetPath}/test", {
-                soapui "${process.targetPath}/soapui_test", {
+                soapui "${process.targetPath}/test_soapui", {
                     new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
                             reportingDirectory: process.targetReportsPath, ant: ant).run()
                 }
+
                 ant.sleep(milliseconds: 500)
                 process.engine.storeLogs(process)
+
+            } finally {
+                context.testPartner.unpublish()
             }
-        } finally {
-            context.testPartner.unpublish()
         }
     }
 
