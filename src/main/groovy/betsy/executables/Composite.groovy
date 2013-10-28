@@ -154,17 +154,20 @@ class Composite {
     }
 
     void log(String name, Closure closure) {
-        ant.mkdir dir: new File(name).parent
-        ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
+        try {
+            ant.mkdir dir: new File(name).parent
+            ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
 
-        ant.echo message: name
-        println name
+            ant.echo message: name
+            println name
 
-        String result = "${name} ${Stopwatch.benchmark(closure)}"
-        ant.echo message: result
-        println result
-
-        ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+            Stopwatch stopwatch = Stopwatch.benchmark(closure)
+            String result = "${name} | ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
+            ant.echo message: result
+            println result
+        } finally {
+            ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+        }
     }
 
     void soapui(String name, Closure closure) {
@@ -179,6 +182,5 @@ class Composite {
         ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
         ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
     }
-
 
 }
