@@ -23,6 +23,11 @@ class MessageExchangesIntoSoapUIReportsMerger {
 
     private void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(Process process) {
         Path junitXml = findFileInReports(process.targetReportsPath, "*.xml")
+        if(junitXml == null){
+            ant.echo message: "Cannot merge xml report from process ${process.bpelFileNameWithoutExtension} as there is no xml report"
+            return
+        }
+
         def testsuites = new XmlParser().parse(junitXml.toFile())
 
         testsuites.testcase.each { testcase ->
@@ -37,6 +42,9 @@ class MessageExchangesIntoSoapUIReportsMerger {
                 String previousText = failure.text()
                 String failureText = txt.toFile().readLines().join("""
 """)
+                // hack for bad encoding issues in jenkins
+                failureText = failureText.replaceAll("ü","ue").replaceAll("ä","ae").replaceAll("ö","oe")
+
                 String newText = """$previousText
 
 
@@ -50,6 +58,13 @@ $failureText"""
 
     private Path findFileInReports(String dir, String glob) {
         ant.echo message: "Finding files in dir ${dir} with pattern ${glob}"
-        Files.newDirectoryStream(Paths.get(dir), glob).iterator().next()
+        Path reportsDirectory = Paths.get(dir)
+        if(!Files.exists(reportsDirectory)) {
+            ant.echo message: "Folder ${dir} does not exist"
+
+            return null
+        }
+
+        Files.newDirectoryStream(reportsDirectory, glob).iterator().next()
     }
 }
