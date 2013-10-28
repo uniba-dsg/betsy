@@ -36,8 +36,8 @@
 				<tr class="engines">
 					<td></td>
 					<td></td>
-					<% report.nameToEngine.keySet().each { engine -> %>
-					   <td class='result'><%= engine %></td>
+					<% report.nameToEngine.each { name, engine -> %>
+					   <td class='result'><%= name %> (<%= report.getNumberOfSuccessfulTestsPer(engine) %>)</td>
 					<% } %>
 				</tr>
 
