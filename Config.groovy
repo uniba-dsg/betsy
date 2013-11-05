@@ -1,4 +1,6 @@
-PARTNER_IP_AND_PORT = "0.0.0.0:2000"
+partner {
+    ipAndPort = "0.0.0.0:2000"
+}
 
 downloads {
     dir = "downloads"

@@ -1,7 +1,7 @@
 package betsy.data.engines.petalsesb
 
-import betsy.data.Engine
 import betsy.data.BetsyProcess
+import betsy.data.Engine
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -105,7 +105,7 @@ class PetalsEsbEngine extends Engine {
 
     @Override
     void buildArchives(BetsyProcess process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         String metaDir = "${process.targetBpelPath}/META-INF"
@@ -120,8 +120,9 @@ class PetalsEsbEngine extends Engine {
                     value: "${process.bpelFileNameWithoutExtension}TestService")
         }
 
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
 
         new PetalsEsbCompositePackager(process: process, ant: ant).build()
     }
@@ -133,12 +134,6 @@ class PetalsEsbEngine extends Engine {
                 http url: CHECK_URL
             }
         }
-    }
-
-    @Override
-    protected void bpelFolderToZipFile(BetsyProcess process) {
-        ant.mkdir dir: process.targetPackagePath
-        ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
     }
 
 }

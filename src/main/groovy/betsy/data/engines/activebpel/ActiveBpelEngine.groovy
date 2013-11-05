@@ -82,7 +82,7 @@ class ActiveBpelEngine extends Engine {
     }
 
     public void buildArchives(BetsyProcess process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // create deployment descriptor
         String metaDir = process.targetBpelPath + "/META-INF"
@@ -90,8 +90,9 @@ class ActiveBpelEngine extends Engine {
         ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.bpelFileNameWithoutExtension}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
         ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
 
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
 
         // create bpr file
         ant.move(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))

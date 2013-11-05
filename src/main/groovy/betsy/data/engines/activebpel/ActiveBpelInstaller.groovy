@@ -24,7 +24,7 @@ class ActiveBpelInstaller {
 
         ant.unzip src: "${Configuration.config.downloads.dir}/${fileName}", dest: serverDir
 
-        ant.exec(executable: "cmd", dir: "${serverDir}//activebpel-5.0.2/") {
+        ant.exec(executable: "cmd", dir: "${serverDir}/activebpel-5.0.2/") {
             arg value: "/c install.bat"
             env key: "CATALINA_HOME", path: tomcatInstaller.tomcatDestinationDir
         }

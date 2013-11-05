@@ -75,7 +75,7 @@ class BpelgEngine extends Engine {
 
     @Override
     void buildArchives(BetsyProcess process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // deployment descriptor
         ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "${getXsltPath()}/bpelg_bpel_to_deploy_xml.xsl")
@@ -92,8 +92,9 @@ class BpelgEngine extends Engine {
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
         ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
     }
 
 }

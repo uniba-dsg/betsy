@@ -1,10 +1,12 @@
 package betsy.data
 
-import betsy.Configuration
+import betsy.data.engines.EnginePackageBuilder
 
 abstract class Engine implements EngineAPI {
 
     AntBuilder ant = new AntBuilder()
+
+    EnginePackageBuilder packageBuilder = new EnginePackageBuilder()
 
     String parentFolder
 
@@ -39,38 +41,6 @@ abstract class Engine implements EngineAPI {
 
     String toString() {
         getName()
-    }
-
-    protected void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
-        Engine engine = this
-
-        // engine independent package steps
-        ant.mkdir dir: process.targetPath
-
-        ant.echo message: "Copying files for ${process} for engine ${engine}"
-
-        ant.copy file: process.bpelFilePath, todir: process.targetBpelPath
-        ant.replace(file: process.targetBpelFilePath, token: "../", value: "")
-
-        process.wsdlPaths.each { wsdlPath ->
-            ant.copy file: wsdlPath, todir: process.targetBpelPath
-        }
-
-        process.additionalFilePaths.each {additionalPath ->
-            ant.copy file: additionalPath, todir: process.targetBpelPath
-        }
-    }
-
-    protected void bpelFolderToZipFile(BetsyProcess process) {
-        ant.mkdir dir: process.targetPackagePath
-        ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
-    }
-
-    protected void replaceEndpointAndPartnerTokensWithValues(BetsyProcess process) {
-        ant.echo message: "Setting Endpoint of wsdl IF for $process on ${this} to ${process.endpoint}"
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
-        ant.echo message: "Setting Partner Address of for $process on ${this} to ${Configuration.config.PARTNER_IP_AND_PORT}"
-        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.config.PARTNER_IP_AND_PORT)
     }
 
     void prepare() {

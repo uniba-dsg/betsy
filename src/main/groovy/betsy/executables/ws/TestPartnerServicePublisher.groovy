@@ -8,10 +8,10 @@ import javax.xml.ws.Endpoint
 class TestPartnerServicePublisher {
 
     Endpoint regularEndpoint
-    String regularUrl = "http://${Configuration.config.PARTNER_IP_AND_PORT}/bpel-testpartner"
+    String regularUrl = "http://${Configuration.config.partner.ipAndPort}/bpel-testpartner"
 
     Endpoint partnerLinkAssignmentEndpoint
-    String partnerLinkAssignmentUrl = "http://${Configuration.config.PARTNER_IP_AND_PORT}/bpel-assigned-testpartner"
+    String partnerLinkAssignmentUrl = "http://${Configuration.config.partner.ipAndPort}/bpel-assigned-testpartner"
 
     AntBuilder ant = new AntBuilder()
 

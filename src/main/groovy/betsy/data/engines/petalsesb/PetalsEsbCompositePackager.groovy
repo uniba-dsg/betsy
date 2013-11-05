@@ -22,8 +22,8 @@ class PetalsEsbCompositePackager {
         ant.move file: process.targetPackageFilePath, todir: compositeDir
         ant.copy file: bindingArchive, todir: compositeDir
 
-        ant.replace(dir: compositeDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
-        ant.replace(dir: compositeMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
+        ant.replace(dir: compositeDir, token: "PARTNER_IP_AND_PORT", value: Configuration.config.partner.ipAndPort)
+        ant.replace(dir: compositeMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.config.partner.ipAndPort)
 
         // build composite
         ant.zip file: process.targetPackageCompositeFilePath, basedir: compositeDir
@@ -40,8 +40,8 @@ class PetalsEsbCompositePackager {
             fileset(dir: process.targetBpelPath, includes: "*.wsdl")
         }
 
-        ant.replace(dir: bindingDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
-        ant.replace(dir: bindingMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.PARTNER_IP_AND_PORT)
+        ant.replace(dir: bindingDir, token: "PARTNER_IP_AND_PORT", value: Configuration.config.partner.ipAndPort)
+        ant.replace(dir: bindingMetaDir, token: "PARTNER_IP_AND_PORT", value: Configuration.config.partner.ipAndPort)
 
         ant.zip(file: bindingArchive, basedir: bindingDir)
     }

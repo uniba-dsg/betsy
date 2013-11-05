@@ -59,11 +59,12 @@ class OrchestraEngine extends Engine {
     }
 
     public void buildArchives(BetsyProcess process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
     }
 
 }

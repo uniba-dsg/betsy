@@ -59,14 +59,15 @@ class OpenEsbEngine extends Engine {
 
     @Override
     public void buildArchives(BetsyProcess process) {
-        createFolderAndCopyProcessFilesToTarget(process)
+        packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         buildDeploymentDescriptor(process)
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
 
-        replaceEndpointAndPartnerTokensWithValues(process)
-        bpelFolderToZipFile(process)
+        packageBuilder.replaceEndpointTokenWithValue(process)
+        packageBuilder.replacePartnerTokenWithValue(process)
+        packageBuilder.bpelFolderToZipFile(process)
 
         new OpenEsbCompositePackager(ant: ant, process: process).build()
     }
