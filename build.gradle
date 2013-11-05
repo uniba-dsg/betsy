@@ -1,4 +1,5 @@
 apply plugin: "groovy"
+apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "application"
@@ -12,9 +13,6 @@ repositories {
 
 sourceSets {
     main {
-        java {
-            srcDirs = []
-        }
         groovy {
             srcDirs = ['src/main/groovy', 'src/main/tests', 'src/main/java']
             exclude 'betsy/virtual/server/**'
@@ -27,21 +25,7 @@ sourceSets {
 }
 
 ext {
-    downloadsDir = "downloads"
-
-    // soapui parameter
-    soapuiArchiveName = "SoapUI-4.6.1-windows-bin.zip"
-    soapuiDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${soapuiArchiveName}"
-    soapuiDownloadedFile = "${downloadsDir}/${soapuiArchiveName}"
-    soapuiDir = "soapui"
-    soapuiInstallDir = "${soapuiDir}/SoapUI-4.6.1"
-
-    // ant parameter
-    antArchiveName = "apache-ant-1.9.2-bin.zip"
-    antDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${antArchiveName}"
-    antDownloadedFile = "${downloadsDir}/${antArchiveName}"
-    antDir = "ant"
-    antInstallDir = "${antDir}/apache-ant-1.9.2"
+    config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
 }
 
 dependencies {
@@ -54,8 +38,8 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
 
-    compile files(fileTree(dir: "${soapuiInstallDir}\\bin", includes: ['*.jar']))
-    compile files(fileTree(dir: "${soapuiInstallDir}\\lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*']))
+    compile files(fileTree(dir: "${config.soapui.home}/bin", includes: ['*.jar']))
+    compile files(fileTree(dir: "${config.soapui.home}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*']))
 }
 
 task wrapper(type: Wrapper) {
@@ -63,26 +47,26 @@ task wrapper(type: Wrapper) {
 }
 
 task installSoapUI << {
-    ant.mkdir dir: downloadsDir
-    ant.get dest: downloadsDir, skipexisting: true, {
-        ant.url url: soapuiDownloadUrl
+    ant.mkdir dir: config.downloads.dir
+    ant.get dest: config.downloads.dir, skipexisting: true, {
+        ant.url url: config.soapui.download.url
     }
 
-    if (!new File(soapuiInstallDir as String).exists()) {
-        ant.mkdir dir: soapuiDir
-        ant.unzip src: soapuiDownloadedFile, dest: soapuiDir
+    if (!new File(config.soapui.home as String).exists()) {
+        ant.mkdir dir: config.soapui.container
+        ant.unzip src: "${config.downloads.dir}/${config.soapui.download.filename}", dest: config.soapui.container
     }
 }
 
 task installAnt << {
-    ant.mkdir dir: downloadsDir
-    ant.get dest: downloadsDir, skipexisting: true, {
-        ant.url url: antDownloadUrl
+    ant.mkdir dir: config.downloads.dir
+    ant.get dest: config.downloads.dir, skipexisting: true, {
+        ant.url url: config.ant.download.url
     }
 
-    if (!new File(antInstallDir as String).exists()) {
-        ant.mkdir dir: antDir
-        ant.unzip src: antDownloadedFile, dest: antDir
+    if (!new File(config.ant.home as String).exists()) {
+        ant.mkdir dir: config.ant.container
+        ant.unzip src: "${config.downloads.dir}/${config.ant.download.filename}", dest: config.ant.container
     }
 }
 

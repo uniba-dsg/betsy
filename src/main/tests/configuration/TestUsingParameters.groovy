@@ -34,8 +34,8 @@ class TestUsingParameters {
 
         // setting partner address
         if (parser.hasCustomPartnerAddress()) {
-            println "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.getInstance().getValue("PARTNER_IP_AND_PORT")}"
-            Configuration.getInstance().setValue("PARTNER_IP_AND_PORT", parser.getCustomPartnerAddress());
+            println "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.config.partner.ipAndPort}"
+            Configuration.config.partner.ipAndPort = parser.getCustomPartnerAddress()
         }
 
         // parsing processes and engines
@@ -93,7 +93,7 @@ class TestUsingParameters {
 
         if (engines.any { it instanceof VirtualizedEngine }) {
             // verify IP set
-            String partner = Configuration.getInstance().getValue('PARTNER_IP_AND_PORT')
+            String partner = Configuration.config.partner.ipAndPort
             if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
                 throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. This can either be done via the -p option or directly in the Config.groovy file.")
             }

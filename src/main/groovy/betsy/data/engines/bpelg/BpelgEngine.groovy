@@ -2,9 +2,8 @@ package betsy.data.engines.bpelg
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
-import betsy.data.engines.Tomcat
 import betsy.data.engines.Util
-import betsy.data.engines.installer.BpelgInstaller
+import betsy.data.engines.tomcat.Tomcat
 
 class BpelgEngine extends LocalEngine {
 
@@ -28,6 +27,11 @@ class BpelgEngine extends LocalEngine {
     @Override
     void failIfRunning() {
         tomcat.checkIfIsRunning()
+    }
+
+    @Override
+    String getEndpointUrl(BetsyProcess process) {
+        "${tomcat.tomcatUrl}/bpel-g/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
     Tomcat getTomcat() {
@@ -91,11 +95,6 @@ class BpelgEngine extends LocalEngine {
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
-    }
-
-    @Override
-    String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/bpel-g/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
     }
 
 }

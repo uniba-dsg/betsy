@@ -1,7 +1,5 @@
 package betsy.data.engines.ode
 
-import betsy.data.engines.installer.OdeInstaller
-
 class Ode136Engine extends OdeEngine {
 
     @Override

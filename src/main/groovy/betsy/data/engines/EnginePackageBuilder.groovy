@@ -6,7 +6,6 @@ import betsy.data.BetsyProcess
 public class EnginePackageBuilder {
 
     protected final AntBuilder ant = new AntBuilder()
-    protected final Configuration config = Configuration.getInstance();
 
     public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
         // engine independent package steps
@@ -37,8 +36,8 @@ public class EnginePackageBuilder {
     }
 
     public void replacePartnerTokenWithValue(BetsyProcess process) {
-        ant.echo message: "Setting Partner Address of for $process on ${process.engine.name} to ${config.getValueAsString('PARTNER_IP_AND_PORT')}"
-        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: config.getValueAsString('PARTNER_IP_AND_PORT'))
+        ant.echo message: "Setting Partner Address of for $process on ${process.engine.name} to ${Configuration.config.partner.ipAndPort}"
+        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.config.partner.ipAndPort)
     }
 
 }

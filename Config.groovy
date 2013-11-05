@@ -1,15 +1,33 @@
-// #############################
-//   ALL TIMES ARE IN SECONDS
-// #############################
+partner {
+    ipAndPort = "0.0.0.0:2000"
+}
 
-PARTNER_IP_AND_PORT = "141.13.4.93:2000"
+downloads {
+    dir = "downloads"
+}
+
+soapui {
+    container = "soapui"
+    home = "soapui/SoapUI-4.6.1"
+    download {
+        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/SoapUI-4.6.1-windows-bin.zip"
+        filename = "SoapUI-4.6.1-windows-bin.zip"
+    }
+}
+
+ant {
+    container = "ant"
+    home = "ant/apache-ant-1.9.2"
+    download {
+        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-ant-1.9.2-bin.zip"
+        filename = "apache-ant-1.9.2-bin.zip"
+    }
+}
 
 virtualisation {
 	vbox {
 		// The folder containing the binary files
-		path = "C:\\Program Files\\Oracle\\VirtualBox\\"
-		vboxmanage = "VBoxManage.exe"
-		vboxwebsrv = "VBoxWebSrv.exe"
+		home = "C:\\Program Files\\Oracle\\VirtualBox\\"
 
 		websrv {
 			host = "http://127.0.0.1"
@@ -52,43 +70,55 @@ virtualisation {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-active_bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
 			logfileDir = "/usr/share/tomcat5.5/logs"
+            deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
+            bvmsDir = "/opt/betsy/"
 		}
 		bpelg_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-bpelg_v.ova"
 			deploymentDir = "/usr/share/tomcat7/bpr"
 			logfileDir = "/var/lib/tomcat7/logs"
+            deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
+            bvmsDir = "/opt/betsy/"
 		}
 		ode_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-ode_v.ova"
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
 			logfileDir = "/var/lib/tomcat7/logs"
+            deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
+            bvmsDir = "/opt/betsy/"
 		}
 		openesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-openesb_v.ova"
 			deploymentFile = "/opt/openesb/glassfish/bin/asadmin"
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
+            deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
+            bvmsDir = "/opt/betsy/"
 		}
 		orchestra_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-orchestra_v.ova"
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
 			logfileDir = "/var/lib/tomcat7/logs"
+            deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
+            bvmsDir = "/opt/betsy/"
 		}
 		petalsesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-petalsesb_v.ova"
 			deploymentDir = "/opt/petalsesb/install"
 			logfileDir = "/opt/petalsesb/logs"
+            deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
+            bvmsDir = "/opt/betsy/"
 		}
 	}
 }

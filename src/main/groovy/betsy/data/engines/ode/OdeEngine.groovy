@@ -2,8 +2,7 @@ package betsy.data.engines.ode
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
-import betsy.data.engines.Tomcat
-import betsy.data.engines.installer.OdeInstaller
+import betsy.data.engines.tomcat.Tomcat
 
 class OdeEngine extends LocalEngine {
 
