@@ -20,6 +20,8 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
 Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
 
+See `Config.groovy` for more detailed configuration options.
+
 ```bash
 # betsy [options] <engines> <process>
 #
