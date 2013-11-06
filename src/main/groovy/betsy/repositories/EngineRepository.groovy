@@ -3,8 +3,11 @@ package betsy.repositories
 import betsy.data.engines.Engine
 import betsy.data.engines.activebpel.ActiveBpelEngine
 import betsy.data.engines.bpelg.BpelgEngine
+import betsy.data.engines.bpelg.BpelgInMemoryEngine
 import betsy.data.engines.ode.Ode136Engine
+import betsy.data.engines.ode.Ode136InMemoryEngine
 import betsy.data.engines.ode.OdeEngine
+import betsy.data.engines.ode.OdeInMemoryEngine
 import betsy.data.engines.openesb.OpenEsb23Engine
 import betsy.data.engines.openesb.OpenEsbEngine
 import betsy.data.engines.orchestra.OrchestraEngine
@@ -36,7 +39,10 @@ class EngineRepository {
                 new ActiveBpelEngine(),
                 new OpenEsb23Engine(),
                 new PetalsEsb41Engine(),
-                new Ode136Engine()
+                new Ode136Engine(),
+                new OdeInMemoryEngine(),
+                new Ode136InMemoryEngine(),
+                new BpelgInMemoryEngine()
         ]
         List<Engine> vms = [
                 new VirtualizedOdeEngine(),
