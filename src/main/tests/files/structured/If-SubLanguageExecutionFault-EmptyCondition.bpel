@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="If-InvalidExpressionValue-UndeclaredNamespace"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/ifInvalidExpressionValueEmptyConditionUndeclaredNamespace"
+        name="If-SubLanguageExecutionFault-EmptyCondition"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/ifSubLanguageExecutionFaultEmptyCondition"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
@@ -23,7 +23,7 @@
             </copy>
         </assign>
         <if name="TestIfInputIsEven">
-            <condition>x:UnknownNamespace</condition>
+            <condition></condition>
             <assign name="AssignTrueToReplyData">
                 <copy>
                     <from>1</from>

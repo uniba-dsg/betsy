@@ -155,32 +155,24 @@ class StructuredActivityProcesses {
             ]
     )
 
-    public static final BetsyProcess IF_INVALID_EXPRESSION_VALUE = builder.buildStructuredActivityProcess(
-            "If-InvalidExpressionValue", "A receive-reply pair with an intermediate if that should throw an invalidExpressionValue fault because of an invalid condition.",
+    public static final BetsyProcess IF_SUBLANGUAGE_EXECUTION_FAULT = builder.buildStructuredActivityProcess(
+            "If-SubLanguageExecutionFault", "A receive-reply pair with an intermediate if that should throw an subLanguageExecutionFault because of an invalid condition.",
             [
-                    new TestCase(name: "InvalidExpressionValue").checkDeployment().
-                            sendSync(1, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
+                    new TestCase(name: "SubLanguageExecutionFault").checkDeployment().
+                            sendSync(1, new SoapFaultTestAssertion(faultString: "subLanguageExecutionFault"))
             ]
     )
 
-    public static final BetsyProcess IF_INVALID_EXPRESSION_VALUE_EMPTY_CONDITION = builder.buildStructuredActivityProcess(
-            "If-InvalidExpressionValue-EmptyCondition", "A receive-reply pair with an intermediate if that should throw an invalidExpressionValue fault because of an empty condition.",
+    public static final BetsyProcess IF_SUBLANGUAGE_EXECUTION_FAULT_EMPTY_CONDITION = builder.buildStructuredActivityProcess(
+            "If-SubLanguageExecutionFault-EmptyCondition", "A receive-reply pair with an intermediate if that should throw an subLanguageExecutionFault because of an empty condition.",
             [
-                    new TestCase(name: "InvalidExpressionValue").checkDeployment().
-                            sendSync(1, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
-            ]
-    )
-
-    public static final BetsyProcess IF_INVALID_EXPRESSION_VALUE_UNDECLARED_NAMESPACE = builder.buildStructuredActivityProcess(
-            "If-InvalidExpressionValue-UndeclaredNamespace", "A receive-reply pair with an intermediate if that should throw an invalidExpressionValue fault because of an invalid condition.",
-            [
-                    new TestCase(name: "InvalidExpressionValue").checkDeployment().
-                            sendSync(1, new SoapFaultTestAssertion(faultString: "invalidExpressionValue"))
+                    new TestCase(name: "SubLanguageExecutionFault").checkDeployment().
+                            sendSync(1, new SoapFaultTestAssertion(faultString: "subLanguageExecutionFault"))
             ]
     )
 
     public static final List<BetsyProcess> STRUCTURED_ACTIVITIES_IF = [
-            IF, IF_ELSE, IF_ELSE_IF, IF_ELSE_IF_ELSE, IF_INVALID_EXPRESSION_VALUE, IF_INVALID_EXPRESSION_VALUE_EMPTY_CONDITION, IF_INVALID_EXPRESSION_VALUE_UNDECLARED_NAMESPACE
+            IF, IF_ELSE, IF_ELSE_IF, IF_ELSE_IF_ELSE, IF_SUBLANGUAGE_EXECUTION_FAULT, IF_SUBLANGUAGE_EXECUTION_FAULT_EMPTY_CONDITION
     ]
 
     public static final BetsyProcess WHILE = builder.buildStructuredActivityProcess(
