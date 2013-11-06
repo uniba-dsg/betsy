@@ -82,14 +82,7 @@ class PetalsEsbEngine extends Engine {
     @Override
     void deploy(BetsyProcess process) {
         ant.copy(file: process.targetPackageCompositeFilePath, todir: installationDir)
-    }
 
-    String getInstallationDir() {
-        "${getServerPath()}/${getFolder()}/install"
-    }
-
-    @Override
-    void onPostDeployment(BetsyProcess process) {
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
             and {
                 not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
@@ -101,6 +94,10 @@ class PetalsEsbEngine extends Engine {
                 }
             }
         }
+    }
+
+    String getInstallationDir() {
+        "${getServerPath()}/${getFolder()}/install"
     }
 
     @Override

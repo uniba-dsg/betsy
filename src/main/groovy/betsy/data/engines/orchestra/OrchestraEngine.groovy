@@ -53,11 +53,6 @@ class OrchestraEngine extends Engine {
         new OrchestraCLI(serverPath: getServerPath(), ant: ant).deploy(process)
     }
 
-    @Override
-    void onPostDeployment(BetsyProcess process) {
-        // do nothing - as using synchronous deployment
-    }
-
     public void buildArchives(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 

@@ -62,10 +62,7 @@ class ActiveBpelEngine extends Engine {
     @Override
     void deploy(BetsyProcess process) {
         ant.copy(file: process.getTargetPackageFilePath("bpr"), todir: deploymentDir)
-    }
 
-    @Override
-    void onPostDeployment(BetsyProcess process) {
         // define custom condition
         ant.typedef (name:"httpcontains", classname:"ant.tasks.HttpContains")
 
