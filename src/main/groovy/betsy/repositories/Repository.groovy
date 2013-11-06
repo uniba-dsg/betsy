@@ -1,4 +1,4 @@
-package configuration.util
+package betsy.repositories
 
 class Repository<T> {
 

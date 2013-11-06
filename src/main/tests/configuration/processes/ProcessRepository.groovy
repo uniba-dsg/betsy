@@ -4,7 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.steps.SoapTestStep
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
-import configuration.util.Repository
+import betsy.repositories.Repository
 
 import java.lang.reflect.Field
 

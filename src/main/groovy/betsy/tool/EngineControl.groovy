@@ -1,8 +1,7 @@
 package betsy.tool;
 
 import betsy.data.engines.EngineAPI;
-import betsy.data.engines.LocalEngines;
-
+import betsy.repositories.EngineRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +18,7 @@ public class EngineControl extends JFrame {
 	}
 
 	public EngineControl() {
-		this.engines = LocalEngines.availableEngines();
+		this.engines = new EngineRepository().getByName("LOCALS");
 
 		this.setLayout(new GridLayout(engines.size() + 1,4,0,10));
 		this.setSize(400, 300);

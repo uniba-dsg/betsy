@@ -1,7 +1,7 @@
 package configuration.cli
 
 import betsy.data.engines.Engine
-import configuration.engines.EngineRepository
+import betsy.repositories.EngineRepository
 
 class EngineParser {
 
