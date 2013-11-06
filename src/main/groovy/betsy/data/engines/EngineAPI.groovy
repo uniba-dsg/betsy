@@ -38,17 +38,11 @@ interface EngineAPI {
 
     /**
      * Deploy the given <code>process</code> to the current engine.
-     * Deployment may be synchronous or asynchronous. When asynchronous, refer to the onPostDeployment methods.
+     * Deployment is always synchronous.
      *
      * @param process to be deployed
      */
     void deploy(BetsyProcess process)
-
-    /**
-     * Gets called after executing deploy(process)
-     * Can be used to wait for the finish of deploy when using async deployment
-     */
-    void onPostDeployment(BetsyProcess process)
 
     /**
      * Build archives required for deployment.

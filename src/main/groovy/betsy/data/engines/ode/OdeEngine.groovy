@@ -50,10 +50,7 @@ class OdeEngine extends LocalEngine {
     @Override
     void deploy(BetsyProcess process) {
         ant.unzip src: process.targetPackageFilePath, dest: "$deploymentDir/${process.bpelFileNameWithoutExtension}"
-    }
 
-    @Override
-    void onPostDeployment(BetsyProcess process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
                 and {

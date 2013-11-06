@@ -53,11 +53,6 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    void onPostDeployment(BetsyProcess process) {
-        // do nothing - as using synchronous deployment
-    }
-
-    @Override
     public void buildArchives(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 

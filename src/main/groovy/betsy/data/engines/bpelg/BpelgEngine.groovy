@@ -56,10 +56,7 @@ class BpelgEngine extends LocalEngine {
     @Override
     void deploy(BetsyProcess process) {
         ant.copy(file: process.targetPackageFilePath, todir: deploymentDir)
-    }
 
-    @Override
-    void onPostDeployment(BetsyProcess process) {
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {
                 and {
