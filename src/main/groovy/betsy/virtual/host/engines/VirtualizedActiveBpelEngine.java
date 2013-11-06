@@ -71,13 +71,13 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
     @Override
     public String getVMDeploymentDir() {
         return Configuration.getValueAsString(
-                "virtualisation.engines.active-bpel_v.deploymentDir");
+                "virtualisation.engines.active_bpel_v.deploymentDir");
     }
 
     @Override
     public String getVMLogfileDir() {
         return Configuration.getValueAsString(
-                "virtualisation.engines.active-bpel_v.logfileDir");
+                "virtualisation.engines.active_bpel_v.logfileDir");
     }
 
     @Override
@@ -88,7 +88,7 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
     @Override
     public String getVMbVMSDir() {
         String bVMSDir = Configuration.getValueAsString(
-                "virtualisation.engines.active-bpel_v.bvmsDir");
+                "virtualisation.engines.active_bpel_v.bvmsDir");
         bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
         bVMSDir += "log";
         return bVMSDir;
