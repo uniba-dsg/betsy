@@ -1,6 +1,6 @@
 package betsy.executables.soapui.builder
 
-import betsy.data.SoapTestStep
+import betsy.data.steps.SoapTestStep
 import betsy.data.TestAssertion
 import betsy.data.TestStep
 import betsy.data.assertions.ExitAssertion

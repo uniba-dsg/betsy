@@ -8,7 +8,7 @@ class OpenEsb23Engine extends OpenEsbEngine {
     }
 
     String getXsltPath() {
-        "src/main/xslt/${Object.getName()}"
+        "src/main/xslt/openesb"
     }
 
     @Override
