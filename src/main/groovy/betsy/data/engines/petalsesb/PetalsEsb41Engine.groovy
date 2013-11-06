@@ -12,7 +12,7 @@ class PetalsEsb41Engine extends PetalsEsbEngine {
     }
 
     String getXsltPath() {
-        "src/main/xslt/${super.getName()}"
+        "src/main/xslt/petalsesb"
     }
 
     @Override
