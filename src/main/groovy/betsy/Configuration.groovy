@@ -5,7 +5,7 @@ import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation
 
 class Configuration {
 
-    public static ConfigObject config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
+    private static ConfigObject config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
 
     /**
      * Get the value of the given key.
@@ -59,6 +59,10 @@ class Configuration {
 
     public static String get(final String key) {
         return getValueAsString(key);
+    }
+
+    public static void set(final String key, final Object value) {
+        setValue(key, value);
     }
 
     public static void setValue(final String key, final Object value) {

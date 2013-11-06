@@ -35,7 +35,7 @@ class TestUsingParameters {
         // setting partner address
         if (parser.hasCustomPartnerAddress()) {
             println "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.get("partner.ipAndPort")}"
-            Configuration.config.partner.ipAndPort = parser.getCustomPartnerAddress()
+            Configuration.set("partner.ipAndPort", parser.getCustomPartnerAddress())
         }
 
         // parsing processes and engines
