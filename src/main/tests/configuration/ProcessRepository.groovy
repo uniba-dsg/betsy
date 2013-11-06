@@ -1,4 +1,4 @@
-package configuration.processes
+package configuration
 
 import betsy.data.BetsyProcess
 import betsy.data.steps.SoapTestStep
@@ -8,18 +8,15 @@ import betsy.repositories.Repository
 
 import java.lang.reflect.Field
 
-import static configuration.processes.BasicActivityProcesses.BASIC_ACTIVITIES
-import static configuration.processes.PatternProcesses.CONTROL_FLOW_PATTERNS
-import static configuration.processes.ScopeProcesses.SCOPES
-import static configuration.processes.StaticAnalysisProcesses.STATIC_ANALYSIS
-import static configuration.processes.StructuredActivityProcesses.STRUCTURED_ACTIVITIES
+import static BasicActivityProcesses.BASIC_ACTIVITIES
+import static PatternProcesses.CONTROL_FLOW_PATTERNS
 
 class ProcessRepository {
 
     private Repository<BetsyProcess> repo = new Repository<>();
 
     public ProcessRepository() {
-        repo.put("ALL", BASIC_ACTIVITIES + SCOPES + STRUCTURED_ACTIVITIES + CONTROL_FLOW_PATTERNS + STATIC_ANALYSIS as List<BetsyProcess>)
+        repo.put("ALL", BASIC_ACTIVITIES + configuration.ScopeProcesses.SCOPES + configuration.StructuredActivityProcesses.STRUCTURED_ACTIVITIES + CONTROL_FLOW_PATTERNS + configuration.StaticAnalysisProcesses.STATIC_ANALYSIS as List<BetsyProcess>)
 
         Field[] fields = [
                 BasicActivityProcesses.class.declaredFields +

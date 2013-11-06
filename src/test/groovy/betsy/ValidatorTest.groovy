@@ -1,7 +1,7 @@
 package betsy
 
 import betsy.executables.Validator
-import configuration.processes.ProcessRepository
+import configuration.ProcessRepository
 import org.junit.Test
 
 class ValidatorTest {

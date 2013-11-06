@@ -5,7 +5,7 @@ apply plugin: "eclipse"
 apply plugin: "application"
 
 // Main class of betsy
-mainClassName = "configuration.TestUsingParameters"
+mainClassName = "betsy.Main"
 
 repositories {
     mavenCentral()

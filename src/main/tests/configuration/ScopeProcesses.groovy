@@ -1,4 +1,4 @@
-package configuration.processes
+package configuration
 
 import betsy.data.BetsyProcess
 import betsy.data.TestCase

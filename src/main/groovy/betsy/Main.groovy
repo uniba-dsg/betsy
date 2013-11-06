@@ -1,7 +1,5 @@
-package configuration
+package betsy
 
-import betsy.Betsy
-import betsy.Configuration
 import betsy.corebpel.CoreBPELEngineExtension
 import betsy.data.BetsyProcess
 import betsy.data.TestCase
@@ -12,14 +10,14 @@ import betsy.virtual.host.engines.VirtualizedEngine
 import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
-import configuration.cli.CliParser
-import configuration.cli.EngineParser
-import configuration.cli.ProcessParser
+import betsy.cli.CliParser
+import betsy.cli.EngineParser
+import betsy.cli.ProcessParser
 
 import java.awt.*
 import java.util.List
 
-class TestUsingParameters {
+class Main {
 
     public static void main(String[] args) {
         // parsing cli params

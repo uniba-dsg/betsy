@@ -4,7 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.Engine
 import betsy.data.engines.EnginePackageBuilder
 import betsy.executables.Composite
-import configuration.processes.ProcessRepository
+import configuration.ProcessRepository
 import org.junit.Test
 
 class BetsyTests {

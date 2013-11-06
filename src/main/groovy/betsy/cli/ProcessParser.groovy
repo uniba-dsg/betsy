@@ -1,7 +1,7 @@
-package configuration.cli
+package betsy.cli
 
 import betsy.data.BetsyProcess
-import configuration.processes.ProcessRepository
+import configuration.ProcessRepository
 
 class ProcessParser {
 

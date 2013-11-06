@@ -1,4 +1,4 @@
-package configuration.cli
+package betsy.cli
 
 import betsy.data.engines.Engine
 import betsy.repositories.EngineRepository

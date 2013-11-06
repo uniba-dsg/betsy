@@ -1,7 +1,7 @@
 package betsy.tool
 
 import betsy.data.BetsyProcess
-import configuration.processes.ProcessRepository
+import configuration.ProcessRepository
 import corebpel.CoreBPEL
 
 import java.nio.file.*

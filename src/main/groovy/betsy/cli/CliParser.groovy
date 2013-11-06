@@ -1,8 +1,8 @@
-package configuration.cli
+package betsy.cli
 
 import betsy.Configuration
 import betsy.repositories.EngineRepository
-import configuration.processes.ProcessRepository
+import configuration.ProcessRepository
 
 /**
  * Parses the command line options and provides a stable interface for handling the options.
