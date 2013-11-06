@@ -57,6 +57,10 @@ class Configuration {
         return getValue(key).toString();
     }
 
+    public static String get(final String key) {
+        return getValueAsString(key);
+    }
+
     public static void setValue(final String key, final Object value) {
         config.put(key, value);
     }

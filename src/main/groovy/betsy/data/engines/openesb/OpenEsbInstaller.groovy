@@ -1,5 +1,7 @@
 package betsy.data.engines.openesb
 
+import betsy.Configuration
+
 class OpenEsbInstaller {
 
     AntBuilder ant = new AntBuilder()

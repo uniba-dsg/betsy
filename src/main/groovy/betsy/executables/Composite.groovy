@@ -96,7 +96,6 @@ class Composite {
         log "${process.targetPath}/deploy", {
             ant.echo message: "Deploying process ${process} to engine ${process.engine}"
             process.engine.deploy(process)
-            process.engine.onPostDeployment(process)
         }
     }
 

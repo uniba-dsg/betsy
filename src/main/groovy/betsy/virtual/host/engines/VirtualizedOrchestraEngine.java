@@ -14,8 +14,6 @@ import java.util.Set;
 
 public class VirtualizedOrchestraEngine extends VirtualizedEngine {
 
-    private final OrchestraEngine defaultEngine;
-
     public VirtualizedOrchestraEngine() {
         super();
         this.defaultEngine = new OrchestraEngine();
@@ -59,21 +57,13 @@ public class VirtualizedOrchestraEngine extends VirtualizedEngine {
     }
 
     @Override
-    public void onPostDeployment(BetsyProcess process) {
-        // not required. deploy is in sync and does not return before process is
-        // deployed
-    }
-
-    @Override
     public String getVMLogfileDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.orchestra_v.logfileDir");
+        return Configuration.get("virtualisation.engines.orchestra_v.logfileDir");
     }
 
     @Override
     public String getVMDeploymentDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.orchestra_v.deploymentDir");
+        return Configuration.get("virtualisation.engines.orchestra_v.deploymentDir");
     }
 
     @Override
@@ -83,10 +73,6 @@ public class VirtualizedOrchestraEngine extends VirtualizedEngine {
 
     @Override
     public String getVMbVMSDir() {
-        String bVMSDir = Configuration.getValueAsString(
-                "virtualisation.engines.orchestra_v.bvmsDir");
-        bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-        bVMSDir += "log";
-        return bVMSDir;
+        return Configuration.get("virtualisation.engines.orchestra_v.bvmsDir") + "/log";
     }
 }

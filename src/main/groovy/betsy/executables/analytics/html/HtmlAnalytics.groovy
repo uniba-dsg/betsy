@@ -1,7 +1,5 @@
 package betsy.executables.analytics.html
 
-import org.apache.commons.io.IOUtils;
-
 import betsy.executables.analytics.CsvReportLoader
 import betsy.executables.analytics.model.CsvReport
 import groovy.text.SimpleTemplateEngine

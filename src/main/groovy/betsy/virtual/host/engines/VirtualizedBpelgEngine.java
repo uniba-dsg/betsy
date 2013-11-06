@@ -58,21 +58,13 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
     }
 
     @Override
-    public void onPostDeployment(BetsyProcess process) {
-        // not required. deploy is in sync and does not return before process is
-        // deployed
-    }
-
-    @Override
     public String getVMDeploymentDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.bpelg_v.deploymentDir");
+        return Configuration.get("virtualisation.engines.bpelg_v.deploymentDir");
     }
 
     @Override
     public String getVMLogfileDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.bpelg_v.logfileDir");
+        return Configuration.get("virtualisation.engines.bpelg_v.logfileDir");
     }
 
     @Override
@@ -82,10 +74,6 @@ public class VirtualizedBpelgEngine extends VirtualizedEngine {
 
     @Override
     public String getVMbVMSDir() {
-        String bVMSDir = Configuration.getValueAsString(
-                "virtualisation.engines.bpelg_v.bvmsDir");
-        bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-        bVMSDir += "log";
-        return bVMSDir;
+        return Configuration.get("virtualisation.engines.bpelg_v.bvmsDir") + "/log";
     }
 }

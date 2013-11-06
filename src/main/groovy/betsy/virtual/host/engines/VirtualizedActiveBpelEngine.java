@@ -14,8 +14,6 @@ import java.util.Set;
 
 public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 
-    private final ActiveBpelEngine defaultEngine;
-
     public VirtualizedActiveBpelEngine() {
         super();
         this.defaultEngine = new ActiveBpelEngine();
@@ -63,21 +61,13 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
     }
 
     @Override
-    public void onPostDeployment(BetsyProcess process) {
-        // not required. deploy is in sync and does not return before process is
-        // deployed
-    }
-
-    @Override
     public String getVMDeploymentDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.active_bpel_v.deploymentDir");
+        return Configuration.get("virtualisation.engines.active_bpel_v.deploymentDir");
     }
 
     @Override
     public String getVMLogfileDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.active_bpel_v.logfileDir");
+        return Configuration.get("virtualisation.engines.active_bpel_v.logfileDir");
     }
 
     @Override
@@ -87,10 +77,6 @@ public class VirtualizedActiveBpelEngine extends VirtualizedEngine {
 
     @Override
     public String getVMbVMSDir() {
-        String bVMSDir = Configuration.getValueAsString(
-                "virtualisation.engines.active_bpel_v.bvmsDir");
-        bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-        bVMSDir += "log";
-        return bVMSDir;
+        return Configuration.get("virtualisation.engines.active_bpel_v.bvmsDir") + "/log";
     }
 }

@@ -18,8 +18,6 @@ import java.util.Set;
 
 public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
-    private final OpenEsbEngine defaultEngine;
-
     public VirtualizedOpenEsbEngine() {
         super();
         this.defaultEngine = new OpenEsbEngine();
@@ -69,12 +67,6 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
     }
 
     @Override
-    public void onPostDeployment(BetsyProcess process) {
-        // not required. deploy is in sync and does not return before process is
-        // deployed
-    }
-
-    @Override
     public DeployOperation buildDeployOperation(BetsyProcess process)
             throws IOException {
         Path path = getDeployableFilePath(process);
@@ -103,13 +95,11 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
     @Override
     public String getVMLogfileDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.openesb_v.logfileDir");
+        return Configuration.get("virtualisation.engines.openesb_v.logfileDir");
     }
 
     public String getVMDeploymentFile() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.openesb_v.deploymentFile");
+        return Configuration.get("virtualisation.engines.openesb_v.deploymentFile");
     }
 
     @Override
@@ -119,11 +109,7 @@ public class VirtualizedOpenEsbEngine extends VirtualizedEngine {
 
     @Override
     public String getVMbVMSDir() {
-        String bVMSDir = Configuration.getValueAsString(
-                "virtualisation.engines.openesb_v.bvmsDir");
-        bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-        bVMSDir += "log";
-        return bVMSDir;
+        return Configuration.get("virtualisation.engines.openesb_v.bvmsDir") + "/log";
     }
 
 }

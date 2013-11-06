@@ -64,7 +64,7 @@ virtualisation {
 			// Saving the vm's state instead of poweringOff?
 			shutdownSaveState = false
 			// Where the bVMS application is installed
-			bvmsDir = "/opt/betsy/"
+			bvmsDir = "/opt/betsy"
 		}
 		active_bpel_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-active_bpel_v.ova"
@@ -73,7 +73,7 @@ virtualisation {
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
-            bvmsDir = "/opt/betsy/"
+            bvmsDir = "/opt/betsy"
 		}
 		bpelg_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-bpelg_v.ova"
@@ -82,7 +82,7 @@ virtualisation {
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
-            bvmsDir = "/opt/betsy/"
+            bvmsDir = "/opt/betsy"
 		}
 		ode_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-ode_v.ova"
@@ -91,7 +91,7 @@ virtualisation {
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
-            bvmsDir = "/opt/betsy/"
+            bvmsDir = "/opt/betsy"
 		}
 		openesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-openesb_v.ova"
@@ -100,7 +100,7 @@ virtualisation {
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
-            bvmsDir = "/opt/betsy/"
+            bvmsDir = "/opt/betsy"
 		}
 		orchestra_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-orchestra_v.ova"
@@ -118,7 +118,7 @@ virtualisation {
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
-            bvmsDir = "/opt/betsy/"
+            bvmsDir = "/opt/betsy"
 		}
 	}
 }

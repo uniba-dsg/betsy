@@ -14,8 +14,6 @@ import java.util.Set;
 
 public class VirtualizedOdeEngine extends VirtualizedEngine {
 
-    private final OdeEngine defaultEngine;
-
     public VirtualizedOdeEngine() {
         super();
         this.defaultEngine = new OdeEngine();
@@ -59,21 +57,13 @@ public class VirtualizedOdeEngine extends VirtualizedEngine {
     }
 
     @Override
-    public void onPostDeployment(BetsyProcess process) {
-        // not required. deploy is in sync and does not return before process is
-        // deployed
-    }
-
-    @Override
     public String getVMDeploymentDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.ode_v.deploymentDir");
+        return Configuration.get("virtualisation.engines.ode_v.deploymentDir");
     }
 
     @Override
     public String getVMLogfileDir() {
-        return Configuration.getValueAsString(
-                "virtualisation.engines.ode_v.logfileDir");
+        return Configuration.get("virtualisation.engines.ode_v.logfileDir");
     }
 
     @Override
@@ -83,10 +73,6 @@ public class VirtualizedOdeEngine extends VirtualizedEngine {
 
     @Override
     public String getVMbVMSDir() {
-        String bVMSDir = Configuration.getValueAsString(
-                "virtualisation.engines.ode_v.bvmsDir");
-        bVMSDir = bVMSDir.endsWith("/") ? bVMSDir : bVMSDir + "/";
-        bVMSDir += "log";
-        return bVMSDir;
+        return Configuration.get("virtualisation.engines.ode_v.bvmsDir") + "/log";
     }
 }
