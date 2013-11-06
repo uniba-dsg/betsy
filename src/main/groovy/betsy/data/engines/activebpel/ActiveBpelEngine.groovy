@@ -67,7 +67,7 @@ class ActiveBpelEngine extends Engine {
     @Override
     void onPostDeployment(BetsyProcess process) {
         // define custom condition
-        ant.typedef (name:"httpcontains", classname:"betsy.ant.tasks.HttpContains")
+        ant.typedef (name:"httpcontains", classname:"tasks.HttpContains")
 
         ant.sequential() {
             ant.waitfor(maxwait: "100", maxwaitunit: "second") {

@@ -1,4 +1,4 @@
-package betsy.ant.tasks;
+package tasks;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
