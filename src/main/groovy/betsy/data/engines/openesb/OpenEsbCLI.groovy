@@ -1,47 +1,44 @@
 package betsy.data.engines.openesb
 
-import betsy.data.BetsyProcess
-
-
 class OpenEsbCLI {
 
     AntBuilder ant = new AntBuilder()
 
-    String serverPath
+    String glassfishHome
 
-    void stopDomain(){
+    void stopDomain() {
         ant.exec(executable: "cmd", failOnError: "true") {
             arg(value: "/c")
-            arg(value: cliToolPath)
+            arg(value: asAdmin)
             arg(value: "stop-domain")
             arg(value: "domain1")
         }
     }
 
-    void startDomain(){
+    void startDomain() {
         ant.exec(executable: "cmd", failOnError: "true") {
             arg(value: "/c")
-            arg(value: cliToolPath)
+            arg(value: asAdmin)
             arg(value: "start-domain")
             arg(value: "domain1")
         }
     }
 
-    private String getCliToolPath() {
-        new File("${serverPath}/glassfish/bin").absolutePath + "\\asadmin.bat"
+    private String getAsAdmin() {
+        new File("${glassfishHome}/bin").absolutePath + "\\asadmin.bat"
     }
 
-    void forceRedeploy(BetsyProcess process) {
+    void forceRedeploy(String processName, String packageFilePath, String tmpFolder) {
 
-        String deployCommands = process.targetPath + "/deploy_commands.txt"
+        String deployCommands = tmpFolder + "/deploy_commands.txt"
 
         ant.sequential() {
-            ant.echo(message: """deploy-jbi-service-assembly ${process.targetPackageCompositeFilePath}
-start-jbi-service-assembly ${process.bpelFileNameWithoutExtension}Application""", file: deployCommands)
+            ant.echo(message: """deploy-jbi-service-assembly ${packageFilePath}
+start-jbi-service-assembly ${processName}Application""", file: deployCommands)
 
             ant.exec(executable: "cmd") {
                 arg(value: "/c")
-                arg(value: cliToolPath)
+                arg(value: asAdmin)
                 arg(value: "multimode")
                 arg(value: "--file")
                 arg(value: new File(deployCommands).absolutePath)

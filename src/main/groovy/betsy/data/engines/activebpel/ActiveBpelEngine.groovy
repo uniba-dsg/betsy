@@ -58,24 +58,12 @@ class ActiveBpelEngine extends LocalEngine {
         new ActiveBpelInstaller().install()
     }
 
-
     @Override
     void deploy(BetsyProcess process) {
-        ant.copy(file: process.getTargetPackageFilePath("bpr"), todir: deploymentDir)
-
-        // define custom condition
-        ant.typedef (name:"httpcontains", classname:"ant.tasks.HttpContains")
-
-        ant.sequential() {
-            ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-                and {
-                    available file: "${deploymentDir}/work/ae_temp_${process.bpelFileNameWithoutExtension}_bpr/META-INF/catalog.xml"
-                    resourcecontains(resource: getAeDeploymentLog(),
-                            substring: "[${process.getBpelFileNameWithoutExtension()}.pdd]")
-                    httpcontains(contains: "Running", url: "http://localhost:8080/BpelAdmin/")
-                }
-            }
-        }
+        new ActiveBpelDeployer(deploymentDirPath: getDeploymentDir(),
+                logFilePath: getAeDeploymentLog(),
+                processName: process.bpelFileNameWithoutExtension,
+                packageFilePath: process.getTargetPackageFilePath("bpr")).deploy()
     }
 
     public void buildArchives(BetsyProcess process) {

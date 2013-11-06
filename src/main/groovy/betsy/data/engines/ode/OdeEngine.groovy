@@ -49,19 +49,11 @@ class OdeEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        ant.unzip src: process.targetPackageFilePath, dest: "$deploymentDir/${process.bpelFileNameWithoutExtension}"
-
-        ant.sequential() {
-            ant.waitfor(maxwait: "100", maxwaitunit: "second") {
-                and {
-                    available file: "$deploymentDir/${process.bpelFileNameWithoutExtension}.deployed"
-                    or {
-                        resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of artifact " + process.bpelFileNameWithoutExtension + " successful")
-                        resourcecontains(resource: "${tomcat.tomcatDir}/logs/ode.log", substring: "Deployment of " + process.bpelFileNameWithoutExtension + " failed")
-                    }
-                }
-            }
-        }
+        new OdeDeployer(processName: process.bpelFileNameWithoutExtension,
+                logFilePath: "${tomcat.tomcatDir}/logs/ode.log",
+                deploymentDirPath: getDeploymentDir(),
+                packageFilePath: process.targetPackageFilePath
+        ).deploy()
     }
 
     @Override

@@ -81,19 +81,11 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        ant.copy(file: process.targetPackageCompositeFilePath, todir: installationDir)
-
-        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "1000") {
-            and {
-                not() { available(file: "$installationDir/${process.targetPackageCompositeFile}") }
-                or {
-                    resourcecontains(resource: getPetalsLog(),
-                            substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' started")
-                    resourcecontains(resource: getPetalsLog(),
-                            substring: "Service Assembly '${process.getBpelFileNameWithoutExtension()}Application' deployed with some SU deployment in failure")
-                }
-            }
-        }
+        new PetalsEsbDeployer(processName: process.bpelFileNameWithoutExtension,
+                packageFilePath: process.targetPackageCompositeFilePath,
+                logFilePath: getPetalsLog(),
+                deploymentDirPath: getInstallationDir()
+        ).deploy()
     }
 
     String getInstallationDir() {

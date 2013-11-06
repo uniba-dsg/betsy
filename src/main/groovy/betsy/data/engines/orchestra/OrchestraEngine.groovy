@@ -50,7 +50,10 @@ class OrchestraEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        new OrchestraCLI(serverPath: getServerPath(), ant: ant).deploy(process)
+        new OrchestraDeployer(
+                orchestraHome: "${serverPath}/orchestra-cxf-tomcat-4.9.0",
+                packageFilePath: process.targetPackageFilePath,
+                ant: ant).deploy()
     }
 
     public void buildArchives(BetsyProcess process) {

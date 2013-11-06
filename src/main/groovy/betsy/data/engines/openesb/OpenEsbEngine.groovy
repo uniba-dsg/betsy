@@ -21,12 +21,16 @@ class OpenEsbEngine extends LocalEngine {
     void storeLogs(BetsyProcess process) {
         ant.mkdir(dir: "${process.targetPath}/logs")
         ant.copy(todir: "${process.targetPath}/logs") {
-            ant.fileset(dir: "${serverPath}/glassfish/domains/domain1/logs/")
+            ant.fileset(dir: "${glassfishHome}/domains/domain1/logs/")
         }
     }
 
     OpenEsbCLI getCli() {
-        new OpenEsbCLI(ant: ant, serverPath: getServerPath())
+        new OpenEsbCLI(ant: ant, glassfishHome: getGlassfishHome())
+    }
+
+    private String getGlassfishHome() {
+        "${serverPath}/glassfish"
     }
 
     @Override
@@ -49,7 +53,10 @@ class OpenEsbEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        cli.forceRedeploy(process)
+        new OpenEsbDeployer(cli: cli,
+                processName: process.bpelFileNameWithoutExtension,
+                packageFilePath: process.targetPackageCompositeFilePath,
+                tmpFolder: process.targetPath).deploy()
     }
 
     @Override
