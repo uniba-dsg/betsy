@@ -14,13 +14,13 @@ class TomcatInstaller {
     String tomcatName = "apache-tomcat-7.0.26"
 
     public void install() {
-        ant.mkdir dir: Configuration.config.downloads.dir
-        ant.get dest: Configuration.config.downloads.dir, skipexisting: true, {
+        ant.mkdir dir: Configuration.get("downloads.dir")
+        ant.get dest: Configuration.get("downloads.dir"), skipexisting: true, {
             ant.url url: downloadUrl
         }
         ant.delete dir: destinationDir
         ant.mkdir dir: destinationDir
-        ant.unzip src: "${Configuration.config.downloads.dir}/${tomcatFileName}", dest: destinationDir
+        ant.unzip src: "${Configuration.get("downloads.dir")}/${tomcatFileName}", dest: destinationDir
 
         ant.echo file: "${destinationDir}/tomcat_startup.bat", message: getStartupScript()
         ant.echo file: "${destinationDir}/tomcat_shutdown.bat", message: getShutdownScript()

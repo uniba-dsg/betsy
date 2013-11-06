@@ -18,11 +18,11 @@ class ActiveBpelInstaller {
                 downloadUrl: "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-5.5.36.zip")
         tomcatInstaller.install()
 
-        ant.get(dest: Configuration.config.downloads.dir, skipexisting: true) {
+        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: "${Configuration.config.downloads.dir}/${fileName}", dest: serverDir
+        ant.unzip src: "${Configuration.get("downloads.dir")}/${fileName}", dest: serverDir
 
         ant.exec(executable: "cmd", dir: "${serverDir}/activebpel-5.0.2/") {
             arg value: "/c install.bat"

@@ -36,8 +36,8 @@ public class EnginePackageBuilder {
     }
 
     public void replacePartnerTokenWithValue(BetsyProcess process) {
-        ant.echo message: "Setting Partner Address of for $process on ${process.engine.name} to ${Configuration.config.partner.ipAndPort}"
-        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.config.partner.ipAndPort)
+        ant.echo message: "Setting Partner Address of for $process on ${process.engine.name} to ${Configuration.get("partner.ipAndPort")}"
+        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.get("partner.ipAndPort"))
     }
 
 }

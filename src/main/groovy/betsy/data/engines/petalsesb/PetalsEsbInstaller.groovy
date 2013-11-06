@@ -1,5 +1,7 @@
 package betsy.data.engines.petalsesb
 
+import betsy.Configuration
+
 class PetalsEsbInstaller {
 
     AntBuilder ant = new AntBuilder()
@@ -18,11 +20,11 @@ class PetalsEsbInstaller {
         ant.delete dir: serverDir
         ant.mkdir dir: serverDir
 
-        ant.get(dest: Configuration.config.downloads.dir, skipexisting: true) {
+        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: "${Configuration.config.downloads.dir}/${fileName}", dest: serverDir
+        ant.unzip src: "${Configuration.get("downloads.dir")}/${fileName}", dest: serverDir
         ant.unzip src: sourceFile, dest: serverDir
 
         // install bpel service engine and binding connector for soap messages

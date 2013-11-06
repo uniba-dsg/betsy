@@ -9,10 +9,10 @@ import betsy.Configuration
 class TestPartnerServicePublisher {
 
     Endpoint regularEndpoint
-    String regularUrl = "http://${Configuration.config.partner.ipAndPort}/bpel-testpartner"
+    String regularUrl = "http://${Configuration.get("partner.ipAndPort")}/bpel-testpartner"
 
     Endpoint partnerLinkAssignmentEndpoint
-    String partnerLinkAssignmentUrl = "http://${Configuration.config.partner.ipAndPort}/bpel-assigned-testpartner"
+    String partnerLinkAssignmentUrl = "http://${Configuration.get("partner.ipAndPort")}/bpel-assigned-testpartner"
 
     AntBuilder ant = new AntBuilder()
 
