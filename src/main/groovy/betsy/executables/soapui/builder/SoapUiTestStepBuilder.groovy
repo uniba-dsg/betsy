@@ -1,12 +1,12 @@
 package betsy.executables.soapui.builder
 
-import betsy.data.DelayTestStep
-import betsy.data.DeployableCheckTestStep
-import betsy.data.NotDeployableCheckTestStep
-import betsy.data.SoapTestStep
+import betsy.data.steps.DelayTestStep
+import betsy.data.steps.DeployableCheckTestStep
+import betsy.data.steps.NotDeployableCheckTestStep
+import betsy.data.steps.SoapTestStep
 import betsy.data.TestCase
 import betsy.data.TestStep
-import betsy.data.WsdlOperation
+import betsy.data.steps.WsdlOperation
 import com.eviware.soapui.config.TestStepConfig
 import com.eviware.soapui.impl.wsdl.WsdlInterface
 import com.eviware.soapui.impl.wsdl.WsdlProject

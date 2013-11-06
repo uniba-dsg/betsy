@@ -1,7 +1,7 @@
 package betsy.data.engines
 
 import betsy.data.BetsyProcess
-import betsy.data.WsdlOperation
+import betsy.data.steps.WsdlOperation
 import com.sun.org.apache.xml.internal.security.Init
 import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer
 

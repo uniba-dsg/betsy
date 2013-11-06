@@ -1,7 +1,7 @@
 package configuration.processes
 
 import betsy.data.BetsyProcess
-import betsy.data.SoapTestStep
+import betsy.data.steps.SoapTestStep
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 

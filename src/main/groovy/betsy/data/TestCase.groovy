@@ -1,5 +1,11 @@
 package betsy.data
 
+import betsy.data.steps.DelayTestStep
+import betsy.data.steps.DeployableCheckTestStep
+import betsy.data.steps.NotDeployableCheckTestStep
+import betsy.data.steps.SoapTestStep
+import betsy.data.steps.WsdlOperation
+
 /**
  * TestCase implements the builder pattern using a fluent interface.
  */

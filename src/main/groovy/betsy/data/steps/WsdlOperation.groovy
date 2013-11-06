@@ -1,4 +1,4 @@
-package betsy.data
+package betsy.data.steps
 
 /**
  * A WSDL operation of the TestInterface.wsdl file.
