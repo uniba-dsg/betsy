@@ -43,31 +43,58 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.8'
 }
 
-task installSoapUI << {
-    ant.mkdir dir: config.downloads.dir
-    ant.get dest: config.downloads.dir, skipexisting: true, {
-        ant.url url: config.soapui.download.url
-    }
+task downloadSoapUI {
+    outputs.file new File("${config.downloads.dir}/${config.soapui.download.filename}")
 
-    if (!new File(config.soapui.home as String).exists()) {
-        ant.mkdir dir: config.soapui.container
-        ant.unzip src: "${config.downloads.dir}/${config.soapui.download.filename}", dest: config.soapui.container
-    }
-}
-
-task installAnt << {
-    ant.mkdir dir: config.downloads.dir
-    ant.get dest: config.downloads.dir, skipexisting: true, {
-        ant.url url: config.ant.download.url
-    }
-
-    if (!new File(config.ant.home as String).exists()) {
-        ant.mkdir dir: config.ant.container
-        ant.unzip src: "${config.downloads.dir}/${config.ant.download.filename}", dest: config.ant.container
+    doLast {
+        ant.mkdir dir: config.downloads.dir
+        ant.get dest: config.downloads.dir, {
+            ant.url url: config.soapui.download.url
+        }
     }
 }
 
+task installSoapUI {
+    ext.srcFile = new File("${config.downloads.dir}/${config.soapui.download.filename}")
+    ext.destDir = new File(config.soapui.container)
+
+    inputs.file srcFile
+    outputs.dir destDir
+
+    doLast {
+        ant.mkdir dir: destDir
+        ant.unzip src: srcFile, dest: destDir
+    }
+}
+
+task downloadAnt {
+    outputs.file new File("${config.downloads.dir}/${config.ant.download.filename}")
+
+    doLast {
+        ant.mkdir dir: config.downloads.dir
+        ant.get dest: config.downloads.dir, {
+            ant.url url: config.ant.download.url
+        }
+    }
+}
+
+task installAnt {
+    ext.srcFile = new File("${config.downloads.dir}/${config.ant.download.filename}")
+    ext.destDir = new File(config.ant.container)
+
+    inputs.file srcFile
+    outputs.dir destDir
+
+    doLast {
+        ant.mkdir dir: destDir
+        ant.unzip src: srcFile, dest: destDir
+    }
+
+}
+
+installSoapUI.dependsOn downloadSoapUI
 compileGroovy.dependsOn installSoapUI
+installAnt.dependsOn downloadAnt
 installSoapUI.dependsOn installAnt
 
 run {
