@@ -232,19 +232,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 	 */
 	public boolean isActive() {
 		try {
-			MachineState state = this.machine.getState();
-			log.debug("Is VM active? State: " + state.toString());
-
-			if (state.equals(MachineState.Aborted)) {
-				return false;
-			} else if (state.equals(MachineState.PoweredOff)) {
-				return false;
-			} else if (state.equals(MachineState.Saved)) {
-				return false;
-			} else {
-				// in every other state the VM is active
-				return true;
-			}
+			return !isInactive();
 		} catch (VBoxException exception) {
 			// in error cases the state can't be always read.
 			log.warn("Couldn't determine active state:", exception);
@@ -252,7 +240,13 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 		return false;
 	}
 
-	/**
+    private boolean isInactive() {
+        MachineState state = this.machine.getState();
+        log.debug("Current VM State: " + state.toString());
+        return MachineState.Aborted.equals(state) || MachineState.PoweredOff.equals(state) || MachineState.Saved.equals(state);
+    }
+
+    /**
 	 * Check whether the VM has at least one {@link ISnapshot} that is marked as
 	 * 'online' and therefore contains an already started system.
 	 * 
