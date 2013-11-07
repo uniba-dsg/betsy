@@ -23,20 +23,28 @@ ext {
     config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
 }
 
-dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.1.8'
+configurations {
+    internal
+    external
+}
 
-    compile 'org.apache.ant:ant:1.9.2'
-    compile 'log4j:log4j:1.2.17'
-    compile 'org.virtualbox:vboxjws:4.2.8'
-    compile 'commons-daemon:commons-daemon:1.0.12'
-    compile 'org.apache.commons:commons-io:1.3.2'
-    compile 'commons-lang:commons-lang:2.4'
+dependencies {
+    internal 'org.codehaus.groovy:groovy-all:2.1.8'
+
+    internal 'org.apache.ant:ant:1.9.2'
+    internal 'log4j:log4j:1.2.17'
+    internal 'org.virtualbox:vboxjws:4.2.8'
+    internal 'commons-daemon:commons-daemon:1.0.12'
+    internal 'org.apache.commons:commons-io:1.3.2'
+    internal 'commons-lang:commons-lang:2.4'
 
     testCompile 'junit:junit:4.11'
 
-    compile files(fileTree(dir: "${config.soapui.home}/bin", includes: ['*.jar']))
-    compile files(fileTree(dir: "${config.soapui.home}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
+    external files(fileTree(dir: "${config.soapui.home}/bin", includes: ['*.jar']))
+    external files(fileTree(dir: "${config.soapui.home}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
+
+    compile configurations.internal
+    compile configurations.external
 }
 
 task wrapper(type: Wrapper) {
@@ -140,7 +148,7 @@ task jarServer(type: Jar, dependsOn: classes) {
 
     // remove MANIFEST.MF files previously inserted
     doFirst {
-        from(configurations.runtime.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
+        from(configurations.internal.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
             exclude 'META-INF/MANIFEST.MF'
         }
     }
