@@ -12,7 +12,7 @@ import betsy.virtual.host.VirtualBoxMachine;
 import betsy.virtual.host.engines.EngineNamingConstants;
 import betsy.virtual.host.virtualbox.utils.port.PortVerifier;
 import betsy.virtual.host.virtualbox.utils.ServiceValidator;
-import betsy.virtual.server.comm.Constants;
+import betsy.virtual.common.Constants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.IConsole;

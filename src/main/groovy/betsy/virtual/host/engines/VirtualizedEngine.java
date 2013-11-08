@@ -20,7 +20,7 @@ import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import betsy.virtual.host.exceptions.archive.ArchiveException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
-import betsy.virtual.server.comm.Constants;
+import betsy.virtual.common.Constants;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 

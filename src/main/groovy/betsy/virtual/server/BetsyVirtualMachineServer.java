@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 
-import betsy.virtual.server.comm.Constants;
+import betsy.virtual.common.Constants;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 

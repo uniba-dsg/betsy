@@ -4,7 +4,7 @@ import betsy.data.engines.Engine
 import betsy.virtual.common.exceptions.InvalidResponseException
 import betsy.virtual.host.ServiceAddress
 import betsy.virtual.host.comm.TCPCommClient
-import betsy.virtual.server.comm.Constants
+import betsy.virtual.common.Constants
 import org.apache.log4j.Logger
 
 /**
