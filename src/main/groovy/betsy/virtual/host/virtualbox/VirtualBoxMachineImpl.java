@@ -540,8 +540,8 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 
 			final int secondsToWait = Configuration.getValueAsInteger(
 					"virtualisation.engines." + engineName + ".serviceTimeout");
-			ServiceValidator sv = new ServiceValidator();
-			if (!sv.isEngineReady(engineServices, secondsToWait)) {
+
+			if (!ServiceValidator.isEngineReady(engineServices, secondsToWait)) {
 				log.warn("engine services not found withing " + secondsToWait
 						+ "s");
 				// timeout in CountDownLatch
@@ -557,7 +557,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 								+ " with a valid snapshot in 'Running' state.");
 			}
 
-			if (!sv.isBetsyServerReady(15 * SECOND)) {
+			if (!ServiceValidator.isBetsyServerReady(15 * SECOND)) {
 				log.warn("betsy server not found withing 15s");
 				throw new VirtualizedEngineServiceException(
 						"The required betsy server was "
