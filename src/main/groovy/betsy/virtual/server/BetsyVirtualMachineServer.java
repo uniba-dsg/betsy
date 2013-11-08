@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 
+import betsy.virtual.server.comm.Constants;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -58,7 +59,7 @@ public class BetsyVirtualMachineServer {
 
     public void start() throws Exception {
 		log.info("bVMS: starting");
-        try(CommServer com = new TCPCommServer(48888)) {
+        try(CommServer com = new TCPCommServer(Constants.SERVER_PORT)) {
             while (keepRunning) {
                 com.handleNextConnection();
             }

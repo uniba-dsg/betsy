@@ -20,6 +20,7 @@ import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import betsy.virtual.host.exceptions.archive.ArchiveException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
+import betsy.virtual.server.comm.Constants;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -45,7 +46,7 @@ public abstract class VirtualizedEngine extends Engine implements
     public static final int SECOND = 1000;
 
     private VirtualBox virtualBox;
-    private final CommClient comm = new TCPCommClient("127.0.0.1", 48888);
+    private final CommClient comm = new TCPCommClient("127.0.0.1", Constants.SERVER_PORT);
 
     public Engine defaultEngine;
 
@@ -76,7 +77,7 @@ public abstract class VirtualizedEngine extends Engine implements
             // verify port usage
             Set<Integer> ports = getRequiredPorts();
             // also verify the bVMS port
-            ports.add(48888);
+            ports.add(Constants.SERVER_PORT);
 
             // forward and verify used ports
             this.vm.applyPortForwarding(ports);

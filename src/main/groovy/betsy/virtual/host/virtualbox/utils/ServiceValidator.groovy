@@ -4,6 +4,7 @@ import betsy.data.engines.Engine
 import betsy.virtual.common.exceptions.InvalidResponseException
 import betsy.virtual.host.ServiceAddress
 import betsy.virtual.host.comm.TCPCommClient
+import betsy.virtual.server.comm.Constants
 import org.apache.log4j.Logger
 
 /**
@@ -60,7 +61,7 @@ public class ServiceValidator {
     public static boolean isBetsyServerReady(final int timeoutInMs) {
         TCPCommClient cc;
         try {
-            cc = new TCPCommClient("127.0.0.1", 48888)
+            cc = new TCPCommClient("127.0.0.1", Constants.SERVER_PORT)
             cc.reconnect(timeoutInMs);
             return cc.isConnectionAlive();
         } catch (IOException | InvalidResponseException exception) {
