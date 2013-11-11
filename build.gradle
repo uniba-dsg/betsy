@@ -126,16 +126,8 @@ task partnerservice(type: JavaExec, dependsOn: build) {
  * Creates jar file for the virtual machines.
  */
 task jarServer(type: Jar, dependsOn: classes) {
-
-    // include all .class files
-    from files(sourceSets.main.output.classesDir) {
-        include '**/*.*'
-    }
-
-    // include all resources
-    from files(sourceSets.main.resources) {
-        include '**/*.*'
-    }
+    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.resources)
 
     // results in betsy-vms.jar
     classifier = 'vms'
