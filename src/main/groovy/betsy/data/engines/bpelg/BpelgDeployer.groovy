@@ -8,12 +8,13 @@ class BpelgDeployer {
     String processName
     String packageFilePath
     String logFilePath
+    int timeoutInSeconds = 100
 
     public void deploy() {
         ant.copy(file: packageFilePath, todir: deploymentDirPath)
 
         ant.sequential() {
-            ant.waitfor(maxwait: "100", maxwaitunit: "second") {
+            ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second") {
                 and {
                     available file: "${deploymentDirPath}/work/ae_temp_${processName}_zip/deploy.xml"
                     or {

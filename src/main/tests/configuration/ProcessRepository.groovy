@@ -52,7 +52,7 @@ class ProcessRepository {
 
         // insert every process into the map
         repo.getByName("ALL").each { BetsyProcess process ->
-            repo.put(process.bpelFileNameWithoutExtension, [process])
+            repo.put(process.name, [process])
         }
     }
 

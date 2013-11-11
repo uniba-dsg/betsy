@@ -21,7 +21,7 @@ public class VBoxConfiguration {
      *                                invalid values
      */
     public void verify() throws ConfigurationException {
-        Configuration.assertDirectory("virtualisation.vbox.home", "Path to virtualbox directory");
+        Configuration.assertDirectory("virtual.vbox.home", "Path to virtualbox directory");
     }
 
     /**
@@ -30,7 +30,7 @@ public class VBoxConfiguration {
      * @return directory file
      */
     File getVboxDir() {
-        return new File(Configuration.getValueAsString("virtualisation.vbox.home"));
+        return new File(Configuration.getValueAsString("virtual.vbox.home"));
     }
 
     /**

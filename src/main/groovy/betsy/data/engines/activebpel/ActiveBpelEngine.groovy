@@ -16,7 +16,7 @@ class ActiveBpelEngine extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/active-bpel/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
+        "${tomcat.tomcatUrl}/active-bpel/services/${process.name}TestInterfaceService"
     }
 
     Tomcat getTomcat() {
@@ -62,7 +62,7 @@ class ActiveBpelEngine extends LocalEngine {
     void deploy(BetsyProcess process) {
         new ActiveBpelDeployer(deploymentDirPath: getDeploymentDir(),
                 logFilePath: getAeDeploymentLog(),
-                processName: process.bpelFileNameWithoutExtension,
+                processName: process.name,
                 packageFilePath: process.getTargetPackageFilePath("bpr")).deploy()
     }
 
@@ -72,7 +72,7 @@ class ActiveBpelEngine extends LocalEngine {
         // create deployment descriptor
         String metaDir = process.targetBpelPath + "/META-INF"
         ant.echo file: "$metaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
-        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.bpelFileNameWithoutExtension}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
+        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.name}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
         ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
 
         packageBuilder.replaceEndpointTokenWithValue(process)

@@ -14,7 +14,7 @@ class OpenEsbEngine extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        "${CHECK_URL}/${process.bpelFileNameWithoutExtension}TestInterface"
+        "${CHECK_URL}/${process.name}TestInterface"
     }
 
     @Override
@@ -54,7 +54,7 @@ class OpenEsbEngine extends LocalEngine {
     @Override
     void deploy(BetsyProcess process) {
         new OpenEsbDeployer(cli: cli,
-                processName: process.bpelFileNameWithoutExtension,
+                processName: process.name,
                 packageFilePath: process.targetPackageCompositeFilePath,
                 tmpFolder: process.targetPath).deploy()
     }
@@ -65,7 +65,7 @@ class OpenEsbEngine extends LocalEngine {
 
         // engine specific steps
         buildDeploymentDescriptor(process)
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

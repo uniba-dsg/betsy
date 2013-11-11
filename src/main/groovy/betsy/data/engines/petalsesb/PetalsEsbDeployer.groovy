@@ -8,11 +8,12 @@ class PetalsEsbDeployer {
     String processName
     String packageFilePath
     String logFilePath
+    int timeoutInSeconds = 100
 
     public void deploy() {
         ant.copy(file: packageFilePath, todir: deploymentDirPath)
 
-        ant.waitfor(maxwait: "100", maxwaitunit: "second") {
+        ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second") {
             and {
                 not() { available(file: "$deploymentDirPath/${processName}Application.zip") }
                 or {

@@ -1,28 +1,27 @@
 package betsy.virtual.server;
 
+import betsy.virtual.common.Constants;
+import betsy.virtual.server.comm.VirtualMachineTcpServer;
+import betsy.virtual.server.logic.ProtocolImpl;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 
-import betsy.virtual.common.Constants;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-
-import betsy.virtual.server.comm.CommServer;
-import betsy.virtual.server.comm.TCPCommServer;
-
 /**
  * The {@link BetsyVirtualMachineServer} can be used to start the server.<br>
  * <br>
- * The {@link CommServer} gets initialized and waits for new connections in a
- * permanent loop.
- * 
+ *
  * @author Cedric Roeck
  * @version 1.0
  */
 public class BetsyVirtualMachineServer {
+
+    private VirtualMachineTcpServer server;
 
     public static void main(String[] args) throws Exception {
         try {
@@ -33,42 +32,28 @@ public class BetsyVirtualMachineServer {
         }
     }
 
-    private final static Logger log = Logger
-			.getLogger(BetsyVirtualMachineServer.class);
+    private final static Logger log = Logger.getLogger(BetsyVirtualMachineServer.class);
 
-    private volatile boolean keepRunning = true;
-
-	public BetsyVirtualMachineServer() throws Exception {
+    public BetsyVirtualMachineServer() throws Exception {
         log.info("bVMS: initializing");
         logStandardErrorToFile();
     }
 
     private void logStandardErrorToFile() throws FileNotFoundException {
-        // Redirect error output
-        File logFolder = new File("log");
-        if(!logFolder.mkdirs()) {
-            throw new IllegalStateException("Could not create folder " + logFolder.getPath());
-        }
-        File errFile = new File(logFolder, "betsyVirtualMachineServer.err");
-        System.setErr(new PrintStream(new FileOutputStream(errFile), true));
-
-        URL log4jURL = BetsyVirtualMachineServer.class
-                .getResource("/virtual/server/log4j.properties");
+        URL log4jURL = BetsyVirtualMachineServer.class.getResource("/virtual/server/log4j.properties");
         PropertyConfigurator.configure(log4jURL);
     }
 
     public void start() throws Exception {
-		log.info("bVMS: starting");
-        try(CommServer com = new TCPCommServer(Constants.SERVER_PORT)) {
-            while (keepRunning) {
-                com.handleNextConnection();
-            }
-        }
-	}
+        log.info("bVMS: starting");
+        server = new VirtualMachineTcpServer(Constants.SERVER_PORT, new ProtocolImpl());
+        server.start();
+    }
 
     public void stop() {
         log.info("bVMS: stopping");
-        keepRunning = false;
+        server.shutdown();
+        server.close();
     }
 
 }

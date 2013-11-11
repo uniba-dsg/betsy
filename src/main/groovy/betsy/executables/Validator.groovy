@@ -40,8 +40,8 @@ class Validator {
     private void assertBpelProcessNameEqualToFileName() {
         processes.each { process ->
             String attributeName = new XmlSlurper(false, false).parse(process.bpelFilePath).@name.text()
-            if (attributeName != process.bpelFileNameWithoutExtension) {
-                throw new IllegalStateException("The configuration does not correspond with the BPEL process. Names differ. BPEL uses " + attributeName + " while " + process.bpelFileNameWithoutExtension + " is the given filename")
+            if (attributeName != process.name) {
+                throw new IllegalStateException("The configuration does not correspond with the BPEL process. Names differ. BPEL uses " + attributeName + " while " + process.name + " is the given filename")
             }
         }
     }

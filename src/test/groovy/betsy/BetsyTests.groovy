@@ -23,8 +23,6 @@ class BetsyTests {
 
         void storeLogs(BetsyProcess process) {}
 
-        void onPostDeployment(BetsyProcess process) {}
-
         @Override
         void buildArchives(BetsyProcess process) {
             new EnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process)

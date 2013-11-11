@@ -45,7 +45,7 @@ class CoreBPELEnumerator {
 
             processes.each { process ->
 
-                Path processDirectory = transformationDirectory.resolve(process.bpelFileNameWithoutExtension)
+                Path processDirectory = transformationDirectory.resolve(process.name)
                 Files.createDirectories(processDirectory)
 
                 Path bpelDirectory = processDirectory.resolve("bpel")

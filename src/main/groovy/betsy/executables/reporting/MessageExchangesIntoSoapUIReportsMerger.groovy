@@ -24,7 +24,7 @@ class MessageExchangesIntoSoapUIReportsMerger {
     private void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(BetsyProcess process) {
         Path junitXml = findFileInReports(process.targetReportsPath, "*.xml")
         if(junitXml == null){
-            ant.echo message: "Cannot merge xml report from process ${process.bpelFileNameWithoutExtension} as there is no xml report"
+            ant.echo message: "Cannot merge xml report from process ${process.name} as there is no xml report"
             return
         }
 

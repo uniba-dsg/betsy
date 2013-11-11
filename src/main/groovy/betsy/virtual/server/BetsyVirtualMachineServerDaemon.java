@@ -5,8 +5,6 @@ import org.apache.commons.daemon.DaemonContext;
 import org.apache.commons.daemon.DaemonInitException;
 import org.apache.log4j.Logger;
 
-import betsy.virtual.server.comm.CommServer;
-
 /**
  * The {@link BetsyVirtualMachineServerDaemon} can be used to start the server.
  * This can be done either by simply invoking the class / jar and running the
@@ -15,8 +13,6 @@ import betsy.virtual.server.comm.CommServer;
  * Daemon interface and thus provides methods to start, stop and destroy the
  * daemon.<br>
  * <br>
- * The {@link CommServer} gets initialized and waits for new connections in a
- * permanent loop.
  * 
  * @author Cedric Roeck
  * @version 1.0
@@ -47,16 +43,15 @@ public class BetsyVirtualMachineServerDaemon implements Daemon, Runnable {
 			Exception {
 		// Redirect error output
 		log.info("Initializing daemon instance: " + this.hashCode());
-
-        server  = new BetsyVirtualMachineServer();
-
-		// initializing the TCP communicator
-		this.worker = new Thread(this);
 	}
 
 	@Override
 	public void start() throws Exception {
         log.info("bVMS daemon: starting");
+        server  = new BetsyVirtualMachineServer();
+
+        // initializing the TCP communicator
+        this.worker = new Thread(this);
 		worker.start();
 	}
 

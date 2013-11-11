@@ -86,6 +86,10 @@ class BetsyProcess implements Cloneable {
         bpel.split("/").last()
     }
 
+    String getName() {
+        getBpelFileNameWithoutExtension()
+    }
+
     String getBpelFileNameWithoutExtension() {
         getBpelFileName().substring(0, getBpelFileName().length() - 5)
     }
@@ -131,7 +135,7 @@ class BetsyProcess implements Cloneable {
     }
 
     String getTargetPackageFilePath(String extension) {
-        "${getTargetPackagePath()}/${bpelFileNameWithoutExtension}.${extension}"
+        "${getTargetPackagePath()}/${name}.${extension}"
     }
 
     /**
@@ -140,7 +144,7 @@ class BetsyProcess implements Cloneable {
      * @return the path <code>test/$engine/$process/pkg/$processId.jar</code>
      */
     String getTargetPackageJarFilePath() {
-        "${getTargetTmpPath()}/${bpelFileNameWithoutExtension}.jar"
+        "${getTargetTmpPath()}/${name}.jar"
     }
 
     /**
@@ -149,7 +153,7 @@ class BetsyProcess implements Cloneable {
      * @return the path <code>test/$engine/$process/pkg/${processId}Application.zip</code>
      */
     String getTargetPackageCompositeFilePath() {
-        "${getTargetPackagePath()}/${bpelFileNameWithoutExtension}Application.zip"
+        "${getTargetPackagePath()}/${name}Application.zip"
     }
 
     /**
@@ -158,7 +162,7 @@ class BetsyProcess implements Cloneable {
      * @return the file name <code>${processId}Application.zip</code>
      */
     String getTargetPackageCompositeFile() {
-        "${bpelFileNameWithoutExtension}Application.zip"
+        "${name}Application.zip"
     }
 
     /**
@@ -180,7 +184,7 @@ class BetsyProcess implements Cloneable {
     }
 
     String getTargetSoapUIProjectName() {
-        "${engine}.${getGroup()}.${getBpelFileNameWithoutExtension()}".replaceAll("__", ".")
+        "${engine}.${getGroup()}.${getName()}".replaceAll("__", ".")
     }
 
     /**
@@ -189,7 +193,7 @@ class BetsyProcess implements Cloneable {
      * @return the file name <code>test_$engine_$process_soapui.xml</code>
      */
     String getTargetSoapUIFileName() {
-        "test_${engine}_${getGroup()}_${getBpelFileNameWithoutExtension()}_soapui.xml"
+        "test_${engine}_${getGroup()}_${getName()}_soapui.xml"
     }
 
     String getTargetSoapUIFilePath() {

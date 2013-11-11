@@ -37,7 +37,7 @@ class OrchestraEngine extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/orchestra/${process.bpelFileNameWithoutExtension}TestInterface"
+        "${tomcat.tomcatUrl}/orchestra/${process.name}TestInterface"
     }
 
     @Override

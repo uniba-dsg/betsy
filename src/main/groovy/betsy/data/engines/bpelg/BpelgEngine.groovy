@@ -31,7 +31,7 @@ class BpelgEngine extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/bpel-g/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
+        "${tomcat.tomcatUrl}/bpel-g/services/${process.name}TestInterfaceService"
     }
 
     Tomcat getTomcat() {
@@ -55,7 +55,7 @@ class BpelgEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        new BpelgDeployer(processName: process.bpelFileNameWithoutExtension,
+        new BpelgDeployer(processName: process.name,
                 packageFilePath: process.targetPackageFilePath,
                 deploymentDirPath: getDeploymentDir(),
                 logFilePath: "${tomcat.tomcatDir}/logs/bpelg.log"
@@ -78,8 +78,8 @@ class BpelgEngine extends LocalEngine {
         }
 
         // uniquify service name
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
-        ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

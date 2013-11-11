@@ -49,7 +49,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             SOAPFactory fac = SOAPFactory.newInstance();
             SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"))
             Detail detail = sf.addDetail()
-            DetailEntry detailEntry = detail.addDetailEntry(new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "Error"))
+            detail.addDetailEntry(new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "Error"))
             throw new SOAPFaultException(sf)
         }
 

@@ -13,7 +13,7 @@ class OdeEngine extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/ode/processes/${process.bpelFileNameWithoutExtension}TestInterface"
+        "${tomcat.tomcatUrl}/ode/processes/${process.name}TestInterface"
     }
 
     String getDeploymentDir() {
@@ -49,7 +49,7 @@ class OdeEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        new OdeDeployer(processName: process.bpelFileNameWithoutExtension,
+        new OdeDeployer(processName: process.name,
                 logFilePath: "${tomcat.tomcatDir}/logs/ode.log",
                 deploymentDirPath: getDeploymentDir(),
                 packageFilePath: process.targetPackageFilePath
@@ -62,8 +62,8 @@ class OdeEngine extends LocalEngine {
 
         // engine specific steps
         ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "$xsltPath/bpel_to_ode_deploy_xml.xsl")
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
-        ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

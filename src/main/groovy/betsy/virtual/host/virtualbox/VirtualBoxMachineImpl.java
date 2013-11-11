@@ -540,7 +540,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 			this.start(headless);
 
 			final int secondsToWait = Configuration.getValueAsInteger(
-					"virtualisation.engines." + engineName + ".serviceTimeout");
+					"virtual.engines." + engineName + ".serviceTimeout");
 
 			if (!ServiceValidator.isEngineReady(engineServices, secondsToWait)) {
 				log.warn("engine services not found withing " + secondsToWait

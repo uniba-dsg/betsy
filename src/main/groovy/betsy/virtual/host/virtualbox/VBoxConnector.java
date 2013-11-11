@@ -76,14 +76,10 @@ class VBoxConnector {
     public IVirtualBox connect() {
         if (isNotConnected()) {
             log.trace("Connecting in VBoxConnector");
-            String host = Configuration.getValueAsString(
-                    "virtualisation.vbox.websrv.host");
-            String port = Configuration.getValueAsString(
-                    "virtualisation.vbox.websrv.port");
-            String username = Configuration.getValueAsString(
-                    "virtualisation.vbox.websrv.user");
-            String password = Configuration.getValueAsString(
-                    "virtualisation.vbox.websrv.password");
+            String host = Configuration.get("virtual.vbox.websrv.host");
+            String port = Configuration.get("virtual.vbox.websrv.port");
+            String username = Configuration.get("virtual.vbox.websrv.user");
+            String password = Configuration.get("virtual.vbox.websrv.password");
 
             try {
                 this.vBoxManager.connect(host + ":" + port, username, password);

@@ -8,7 +8,7 @@ package betsy.virtual.common.exceptions;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class ChecksumException extends Exception {
+public class ChecksumException extends CommunicationException {
 
     /**
      * SerialVersionUID.

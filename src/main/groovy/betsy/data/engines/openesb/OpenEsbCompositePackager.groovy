@@ -43,7 +43,7 @@ class OpenEsbCompositePackager {
         """
         ant.echo file: "$bindingMetaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
 
-        ant.copy(todir: "$bindingDir/${process.bpelFileNameWithoutExtension}") {
+        ant.copy(todir: "$bindingDir/${process.name}") {
             fileset(dir: process.targetBpelPath, includes: "*.xsd")
             fileset(dir: process.targetBpelPath, includes: "*.wsdl")
         }

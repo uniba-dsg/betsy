@@ -17,7 +17,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        "$CHECK_URL/petals/services/${process.bpelFileNameWithoutExtension}TestInterfaceService"
+        "$CHECK_URL/petals/services/${process.name}TestInterfaceService"
     }
 
     String getFolder() {
@@ -81,7 +81,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        new PetalsEsbDeployer(processName: process.bpelFileNameWithoutExtension,
+        new PetalsEsbDeployer(processName: process.name,
                 packageFilePath: process.targetPackageCompositeFilePath,
                 logFilePath: getPetalsLog(),
                 deploymentDirPath: getInstallationDir()
@@ -102,11 +102,11 @@ class PetalsEsbEngine extends LocalEngine {
         ant.xslt(in: process.targetBpelFilePath, out: "$metaDir/jbi.xml", style: "$xsltPath/create_jbi_from_bpel.xsl")
 
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService",
-                value: "${process.bpelFileNameWithoutExtension}TestInterfaceService")
+                value: "${process.name}TestInterfaceService")
 
         if (Files.exists(Paths.get("${process.targetBpelPath}/TestPartner.wsdl"))) {
             ant.replace(file: "${process.targetBpelPath}/TestPartner.wsdl", token: "TestService",
-                    value: "${process.bpelFileNameWithoutExtension}TestService")
+                    value: "${process.name}TestService")
         }
 
         packageBuilder.replaceEndpointTokenWithValue(process)

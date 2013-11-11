@@ -1,9 +1,9 @@
 package betsy.virtual.host.virtualbox.utils
 
 import betsy.data.engines.Engine
-import betsy.virtual.common.exceptions.InvalidResponseException
+import betsy.virtual.common.exceptions.CommunicationException
 import betsy.virtual.host.ServiceAddress
-import betsy.virtual.host.comm.TCPCommClient
+import betsy.virtual.host.comm.HostTcpClient
 import betsy.virtual.common.Constants
 import org.apache.log4j.Logger
 
@@ -59,12 +59,12 @@ public class ServiceValidator {
      * @return true if the server is available
      */
     public static boolean isBetsyServerReady(final int timeoutInMs) {
-        TCPCommClient cc;
+        HostTcpClient cc;
         try {
-            cc = new TCPCommClient("127.0.0.1", Constants.SERVER_PORT)
+            cc = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT)
             cc.reconnect(timeoutInMs);
             return cc.isConnectionAlive();
-        } catch (IOException | InvalidResponseException exception) {
+        } catch (IOException | CommunicationException exception) {
             // ignore
             log.debug("Exception in bVMS availability test: ", exception);
         } finally {

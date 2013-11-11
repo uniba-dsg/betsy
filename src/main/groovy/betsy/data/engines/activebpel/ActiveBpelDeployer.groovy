@@ -8,6 +8,7 @@ class ActiveBpelDeployer {
     String deploymentDirPath
     String logFilePath
     String processName
+    int timeoutInSeconds = 100
 
     public void deploy() {
         ant.copy(file: packageFilePath, todir: deploymentDirPath)
@@ -16,7 +17,7 @@ class ActiveBpelDeployer {
         ant.typedef (name:"httpcontains", classname:"ant.tasks.HttpContains")
 
         ant.sequential() {
-            ant.waitfor(maxwait: "100", maxwaitunit: "second") {
+            ant.waitfor(maxwait: timeout, maxwaitunit: "second") {
                 and {
                     available file: "${deploymentDirPath}/work/ae_temp_${processName}_bpr/META-INF/catalog.xml"
                     resourcecontains(resource: logFilePath,

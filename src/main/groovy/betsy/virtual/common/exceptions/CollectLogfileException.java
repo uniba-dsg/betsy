@@ -7,7 +7,7 @@ package betsy.virtual.common.exceptions;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class CollectLogfileException extends Exception {
+public class CollectLogfileException extends CommunicationException {
 
 	/**
 	 * SerialVersionUID.

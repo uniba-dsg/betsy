@@ -45,7 +45,7 @@ class TestSuite {
         "${getPath()}/reports"
     }
 
-    String getCsvFile() {
+    static String getCsvFile() {
         "results.csv"
     }
 
@@ -53,7 +53,7 @@ class TestSuite {
         "${getReportsPath()}/${getCsvFile()}"
     }
 
-	String getCsvDurationFile() {
+	static String getCsvDurationFile() {
 		"durations.csv"
 	}
 

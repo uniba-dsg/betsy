@@ -1,15 +1,13 @@
 package betsy.virtual.common.exceptions;
 
-import betsy.virtual.common.messages.DeployOperation;
-
 /**
  * The {@link DeployException} is thrown if the deployment of a
- * {@link DeployOperation} failed.
+ * {@link betsy.virtual.common.messages.deploy.DeployRequest} failed.
  * 
  * @author Cedric Roeck
  * @version 1.0
  */
-public class DeployException extends Exception {
+public class DeployException extends CommunicationException {
 
 	/**
 	 * SerialVersionUID.

@@ -13,15 +13,12 @@ import betsy.data.engines.openesb.OpenEsbEngine
 import betsy.data.engines.orchestra.OrchestraEngine
 import betsy.data.engines.petalsesb.PetalsEsb41Engine
 import betsy.data.engines.petalsesb.PetalsEsbEngine
-import betsy.virtual.host.engines.VirtualizedActiveBpelEngine
-import betsy.virtual.host.engines.VirtualizedBpelgEngine
-import betsy.virtual.host.engines.VirtualizedOdeEngine
-import betsy.virtual.host.engines.VirtualizedOpenEsbEngine
-import betsy.virtual.host.engines.VirtualizedOrchestraEngine
-import betsy.virtual.host.engines.VirtualizedPetalsEsbEngine
-import betsy.repositories.Repository
-
-
+import betsy.virtual.host.engines.VirtualActiveBpelEngine
+import betsy.virtual.host.engines.VirtualBpelgEngine
+import betsy.virtual.host.engines.VirtualOdeEngine
+import betsy.virtual.host.engines.VirtualOpenEsbEngine
+import betsy.virtual.host.engines.VirtualOrchestraEngine
+import betsy.virtual.host.engines.VirtualPetalsEsbEngine
 /**
  * CAPITAL LETTERS for GROUPS of engines, lower case letters for engines
  */
@@ -45,12 +42,12 @@ class EngineRepository {
                 new BpelgInMemoryEngine()
         ]
         List<Engine> vms = [
-                new VirtualizedOdeEngine(),
-                new VirtualizedBpelgEngine(),
-                new VirtualizedOpenEsbEngine(),
-                new VirtualizedPetalsEsbEngine(),
-                new VirtualizedOrchestraEngine(),
-                new VirtualizedActiveBpelEngine()
+                new VirtualOdeEngine(),
+                new VirtualBpelgEngine(),
+                new VirtualOpenEsbEngine(),
+                new VirtualPetalsEsbEngine(),
+                new VirtualOrchestraEngine(),
+                new VirtualActiveBpelEngine()
         ]
         List<Engine> all = [locals, vms].flatten()
 

@@ -35,7 +35,7 @@ class PartnerServiceControl extends JFrame {
         this.setLayout(new FlowLayout())
         this.setSize(300, 75)
         this.setTitle("Partner Service Control Center")
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE)
     }
 
     private void createStartButton() {

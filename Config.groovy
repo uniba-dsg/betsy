@@ -24,7 +24,7 @@ ant {
     }
 }
 
-virtualisation {
+virtual {
 	vbox {
 		// The folder containing the binary files
 		home = "C:\\Program Files\\Oracle\\VirtualBox\\"
@@ -44,6 +44,8 @@ virtualisation {
 		requestTimeout = 120
 	}
 
+    useRunningVM = true
+
 	engines {
 		example_engine {
 			// supported formats are .ova, .zip and .tar.bz2
@@ -58,7 +60,7 @@ virtualisation {
 			deploymentTimeout = 30
 			// Where the engines logfiles can be collected from
 			// Default different per engine
-			logfileDir = "/var/lib/tomcat7/logs"
+            logfileDir = "/var/log/tomcat7"
 			// Running vbox without the gui?
 			headless = false
 			// Saving the vm's state instead of poweringOff?
@@ -71,32 +73,35 @@ virtualisation {
 		active_bpel_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-active_bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
+            deploymentLogFile = "~/AeBpelEngine/deployment-logs/aeDeployment.log"
 			logfileDir = "/usr/share/tomcat5.5/logs"
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy"
-            serviceTimeout = 300
+            serviceTimeout = 30
 		}
 		bpelg_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-bpelg_v.ova"
 			deploymentDir = "/usr/share/tomcat7/bpr"
-			logfileDir = "/var/lib/tomcat7/logs"
+            deploymentLogFile = "/var/log/tomcat7/bpelg.log"
+            logfileDir = "/var/log/tomcat7"
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy"
-            serviceTimeout = 300
+            serviceTimeout = 30
 		}
 		ode_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-ode_v.ova"
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
-			logfileDir = "/var/lib/tomcat7/logs"
+            deploymentLogFile = "/var/log/tomcat7/ode.log"
+            logfileDir = "/var/log/tomcat7"
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy"
-            serviceTimeout = 300
+            serviceTimeout = 30
 		}
 		openesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-openesb_v.ova"
@@ -106,17 +111,17 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy"
-            serviceTimeout = 300
+            serviceTimeout = 30
 		}
 		orchestra_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-orchestra_v.ova"
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
-			logfileDir = "/var/lib/tomcat7/logs"
+			logfileDir = "/var/log/tomcat7"
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy/"
-            serviceTimeout = 300
+            serviceTimeout = 30
 		}
 		petalsesb_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-petalsesb_v.ova"
@@ -126,7 +131,7 @@ virtualisation {
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy"
-            serviceTimeout = 300
+            serviceTimeout = 30
 		}
 	}
 }

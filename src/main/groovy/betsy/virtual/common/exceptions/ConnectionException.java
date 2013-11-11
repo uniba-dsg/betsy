@@ -7,7 +7,7 @@ package betsy.virtual.common.exceptions;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class ConnectionException extends Exception {
+public class ConnectionException extends CommunicationException {
 
     /**
      * SerialVersionUID.

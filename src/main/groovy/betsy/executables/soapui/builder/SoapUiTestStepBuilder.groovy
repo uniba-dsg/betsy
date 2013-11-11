@@ -68,7 +68,7 @@ class SoapUiTestStepBuilder {
 
     public void addStepForTestPartner(SoapTestStep testStep, int testStepNumber) {
         WsdlTestRequestStep partnerRequestStep = createTestStepConfig(soapUiTestCase, testStepNumber, "TestPartnerPortTypeBinding","startProcessSync")
-        WsdlTestRequest soapUiRequest = createSoapUiRequest(partnerRequestStep, testStep)
+        createSoapUiRequest(partnerRequestStep, testStep)
         addTestPartnerAssertion(testStep, partnerRequestStep)
     }
 

@@ -1,4 +1,4 @@
-package betsy.virtual.common;
+package betsy.virtual.common.messages.deploy;
 
 import java.io.Serializable;
 import java.util.zip.CRC32;

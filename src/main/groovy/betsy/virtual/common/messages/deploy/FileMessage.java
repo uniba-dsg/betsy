@@ -1,9 +1,12 @@
-package betsy.virtual.common.messages;
+package betsy.virtual.common.messages.deploy;
 
-import betsy.virtual.common.Checksum;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
@@ -24,6 +27,12 @@ public class FileMessage implements Serializable {
     private final byte[] data;
     private final String filename;
     private final Checksum checksum;
+
+    public static FileMessage build(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        byte[] data = Files.readAllBytes(path);
+        return new FileMessage(path.getFileName().toString(), data);
+    }
 
     public FileMessage(final String filename, final byte[] data) {
         if (StringUtils.isBlank(filename)) {
@@ -53,8 +62,8 @@ public class FileMessage implements Serializable {
      *
      * @return true if data is valid, false if parts have been lost/changed
      */
-    public boolean isDataValid() {
-        return Checksum.isValid(getData(), getChecksum());
+    public boolean isInvalid() {
+        return !Checksum.isValid(getData(), getChecksum());
     }
 
     @Override

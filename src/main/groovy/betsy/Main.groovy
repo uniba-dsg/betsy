@@ -9,13 +9,15 @@ import betsy.data.TestCase
 import betsy.data.engines.Engine
 import betsy.data.engines.LocalEngine
 import betsy.virtual.host.VirtualBox
-import betsy.virtual.host.engines.VirtualizedEngine
+import betsy.virtual.host.engines.VirtualEngine
 import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
+import com.eviware.soapui.SoapUI
 
 import java.awt.*
 import java.util.List
+import java.util.concurrent.TimeUnit
 
 class Main {
 
@@ -75,14 +77,14 @@ class Main {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily
             // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
             // SOLUTION remove exit line for testing purposes
-            System.exit(0)
+            System.exit(0);
         }
     }
 
     protected static void printSelectedEnginesAndProcesses(List<Engine> engines, List<BetsyProcess> processes) {
         // print selection of engines and processes
         println "Engines: ${engines.collect { it.name }}"
-        println "Processes: ${processes.size() < 10 ? processes.collect { it.bpelFileNameWithoutExtension } : processes.size()}"
+        println "Processes: ${processes.size() < 10 ? processes.collect { it.name } : processes.size()}"
     }
 
     protected static void customPartnerAddress(CliParser parser) {
@@ -103,7 +105,7 @@ class Main {
     }
 
     protected static void virtualEngines(List<Engine> engines) {
-        if (engines.any { it instanceof VirtualizedEngine }) {
+        if (engines.any { it instanceof VirtualEngine }) {
             // verify IP set
             String partner = Configuration.get("partner.ipAndPort")
             if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
@@ -117,7 +119,7 @@ class Main {
 
             VirtualBox vb = new VirtualBoxImpl()
             engines.each {
-                if (it instanceof VirtualizedEngine) {
+                if (it instanceof VirtualEngine) {
                     it.virtualBox = vb
                 }
             }
@@ -131,7 +133,7 @@ class Main {
 
             if (transformations == "ALL") {
                 for (Engine engine : engines) {
-                    if (engine instanceof VirtualizedEngine) {
+                    if (engine instanceof VirtualEngine) {
                         CoreBPELEngineExtension.extendEngine(engine.defaultEngine)
                     } else if (engine instanceof LocalEngine) {
                         CoreBPELEngineExtension.extendEngine(engine)
@@ -143,7 +145,7 @@ class Main {
                 String[] xsls = transformations.split(",")
 
                 for (Engine engine : engines) {
-                    if (engine instanceof VirtualizedEngine) {
+                    if (engine instanceof VirtualEngine) {
                         CoreBPELEngineExtension.extendEngine(engine.defaultEngine, xsls)
                     } else if (engine instanceof LocalEngine) {
                         CoreBPELEngineExtension.extendEngine(engine, xsls)

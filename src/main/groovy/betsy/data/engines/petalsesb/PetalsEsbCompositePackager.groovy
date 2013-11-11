@@ -47,7 +47,7 @@ class PetalsEsbCompositePackager {
     }
 
     private GString getBindingArchive() {
-        "${process.targetTmpPath}/${process.bpelFileNameWithoutExtension}Binding.zip"
+        "${process.targetTmpPath}/${process.name}Binding.zip"
     }
 
 }
