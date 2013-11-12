@@ -6,21 +6,14 @@ class Stopwatch {
     private long start
     private long stop
 
-    static Stopwatch benchmark(Closure closure) {
-        Stopwatch stopwatch = new Stopwatch()
-        stopwatch.start()
-        closure.call()
-        stopwatch.stop()
-
-		return stopwatch
-    }
-	
     public void start() {
         start = System.currentTimeMillis()
     }
 
     public void stop() {
-        stop = System.currentTimeMillis()
+        if (stop != null) {
+            stop = System.currentTimeMillis()
+        }
     }
 
     public long getDiff() {
@@ -33,13 +26,13 @@ class Stopwatch {
     public String getFormattedDiff() {
         "${getSecondsDiff()}s"
     }
-	
-	/**
-	* @return raw diff in seconds seconds.
-	*/
-   public String getSecondsDiff() {
-	   diff / 1000
-   }
+
+    /**
+     * @return raw diff in seconds seconds.
+     */
+    public String getSecondsDiff() {
+        diff / 1000
+    }
 
     public String toString() {
         "Duration: $formattedDiff"

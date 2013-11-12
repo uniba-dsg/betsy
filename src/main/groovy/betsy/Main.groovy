@@ -16,6 +16,7 @@ import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
 import org.apache.log4j.Logger
 import org.apache.log4j.xml.DOMConfigurator
+import org.codehaus.groovy.runtime.StackTraceUtils
 
 import java.awt.*
 import java.util.List
@@ -45,10 +46,9 @@ class Main {
         try {
             engines = new EngineParser(args: parser.arguments()).parse()
             processes = new ProcessParser(args: parser.arguments()).parse()
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
-            e.printStackTrace()
             System.exit(0)
         }
 
@@ -65,8 +65,8 @@ class Main {
             try {
                 betsy.execute()
             } catch (Exception e) {
-                log.info "----------------------"
-                log.info "ERROR - ${e.message}"
+                Throwable cleanedException = StackTraceUtils.deepSanitize(e)
+                log.error cleanedException
             }
 
             // open results in browser

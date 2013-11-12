@@ -22,6 +22,7 @@ import betsy.virtual.host.exceptions.archive.ArchiveException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import org.apache.log4j.Logger;
+import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -175,13 +176,12 @@ public abstract class VirtualEngine extends Engine implements
             comm.deployOperation(container);
             log.info("...deploy done!");
         } catch (Exception exception) {
-            log.info("error during deployment - collecting logs", exception);
+            log.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
             try {
                 storeLogs(process);
                 throw new RuntimeException(exception);
             } catch (Exception exception2) {
-                log.info("Could not store logfiles of the failed deployment:", exception2);
-                throw new RuntimeException(exception);
+                throw new RuntimeException("Could not store logfiles of the failed deployment.", exception);
             }
         }
     }
@@ -198,7 +198,7 @@ public abstract class VirtualEngine extends Engine implements
             LogFilesResponse response = comm.collectLogFilesOperation(request);
 
             // create log folders
-            File processLogFolder = new File(process.getTargetPath() + "/logs");
+            File processLogFolder = new File(process.getTargetLogsPath());
             processLogFolder.mkdirs();
 
             // save to disk...

@@ -107,6 +107,10 @@ class BetsyProcess implements Cloneable {
         "$engine.path/${normalizedId}"
     }
 
+    String getTargetLogsPath() {
+        "${getTargetPath()}/logs"
+    }
+
     /**
      * The path <code>test/$engine/$process/pkg</code>
      *

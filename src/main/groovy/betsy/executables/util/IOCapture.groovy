@@ -1,9 +1,13 @@
 package betsy.executables.util
 
+import org.apache.log4j.Logger
 
-class IOUtil {
 
-    static String[] captureSystemOutAndErr(Closure closure) {
+class IOCapture {
+
+    private static final Logger log = Logger.getLogger(IOCapture)
+
+    public static void captureIO(Closure closure) {
         //stdout
         ByteArrayOutputStream bufOut = new ByteArrayOutputStream()
         PrintStream newOut = new PrintStream(bufOut)
@@ -19,22 +23,14 @@ class IOUtil {
         System.err = newErr
 
         try {
-            closure.call()
+            closure.run()
         } finally {
             System.out = saveOut
             System.err = saveOErr
         }
 
-        [bufOut.toString(), bufErr.toString()] as String[]
-    }
-
-    public static String getStackTrace(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw, true);
-        t.printStackTrace(pw);
-        pw.flush();
-        sw.flush();
-        return sw.toString();
+        log.trace "System.out Output:\n\n${bufOut}"
+        log.trace "System.err Output:\n\n${bufErr}"
     }
 
 }
