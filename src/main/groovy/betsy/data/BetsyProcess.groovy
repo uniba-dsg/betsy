@@ -1,10 +1,13 @@
 package betsy.data
 
-import betsy.data.engines.Engine;
+import betsy.data.engines.Engine
+
+import java.nio.file.Path
+import java.nio.file.Paths;
 
 class BetsyProcess implements Cloneable {
 
-    public static String PATH_PREFIX = "src/main/tests"
+    public static Path PATH_PREFIX = Paths.get("src/main/tests")
 
     String bpel
 
@@ -95,7 +98,7 @@ class BetsyProcess implements Cloneable {
     }
 
     String getBpelFilePath() {
-        "$PATH_PREFIX/$bpel"
+        PATH_PREFIX.resolve(bpel)
     }
 
     /**
@@ -103,12 +106,12 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process</code>
      */
-    String getTargetPath() {
-        "$engine.path/${normalizedId}"
+    Path getTargetPath() {
+        engine.path.resolve(normalizedId)
     }
 
-    String getTargetLogsPath() {
-        "${getTargetPath()}/logs"
+    Path getTargetLogsPath() {
+        targetPath.resolve("logs")
     }
 
     /**
@@ -116,8 +119,8 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/pkg</code>
      */
-    String getTargetPackagePath() {
-        "${getTargetPath()}/pkg"
+    Path getTargetPackagePath() {
+        targetPath.resolve("pkg")
     }
 
     /**
@@ -125,8 +128,8 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/tmp</code>
      */
-    String getTargetTmpPath() {
-        "${getTargetPath()}/tmp"
+    Path getTargetTmpPath() {
+        targetPath.resolve("tmp")
     }
 
     /**
@@ -134,12 +137,12 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/pkg/$processId.zip</code>
      */
-    String getTargetPackageFilePath() {
+    Path getTargetPackageFilePath() {
         getTargetPackageFilePath("zip")
     }
 
-    String getTargetPackageFilePath(String extension) {
-        "${getTargetPackagePath()}/${name}.${extension}"
+    Path getTargetPackageFilePath(String extension) {
+        targetPackagePath.resolve("${name}.${extension}")
     }
 
     /**
@@ -147,8 +150,8 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/pkg/$processId.jar</code>
      */
-    String getTargetPackageJarFilePath() {
-        "${getTargetTmpPath()}/${name}.jar"
+    Path getTargetPackageJarFilePath() {
+        getTargetPackageFilePath("jar")
     }
 
     /**
@@ -156,8 +159,8 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/pkg/${processId}Application.zip</code>
      */
-    String getTargetPackageCompositeFilePath() {
-        "${getTargetPackagePath()}/${name}Application.zip"
+    Path getTargetPackageCompositeFilePath() {
+        targetPackagePath.resolve(targetPackageCompositeFile)
     }
 
     /**
@@ -174,8 +177,8 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/soapui</code>
      */
-    String getTargetSoapUIPath() {
-        "${getTargetPath()}/soapui"
+    Path getTargetSoapUIPath() {
+        targetPath.resolve("soapui")
     }
 
     /**
@@ -183,8 +186,8 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/reports</code>
      */
-    String getTargetReportsPath() {
-        "${getTargetPath()}/reports"
+    Path getTargetReportsPath() {
+        targetPath.resolve("reports")
     }
 
     String getTargetSoapUIProjectName() {
@@ -200,8 +203,8 @@ class BetsyProcess implements Cloneable {
         "test_${engine}_${getGroup()}_${getName()}_soapui.xml"
     }
 
-    String getTargetSoapUIFilePath() {
-        "${getTargetSoapUIPath()}/${getTargetSoapUIFileName()}"
+    Path getTargetSoapUIFilePath() {
+        targetSoapUIPath.resolve(targetSoapUIFileName)
     }
 
     /**
@@ -209,28 +212,28 @@ class BetsyProcess implements Cloneable {
      *
      * @return the path <code>test/$engine/$process/bpel</code>
      */
-    String getTargetBpelPath() {
-        "${getTargetPath()}/bpel"
+    Path getTargetBpelPath() {
+        targetPath.resolve("bpel")
     }
 
-    String getTargetBpelFilePath() {
-        "${getTargetBpelPath()}/$bpelFileName"
+    Path getTargetBpelFilePath() {
+        targetBpelPath.resolve(bpelFileName)
     }
 
-    List<String> getWsdlPaths() {
-        getWsdls().collect { wsdl -> "$PATH_PREFIX/$wsdl"}
+    List<Path> getWsdlPaths() {
+        getWsdls().collect { wsdl -> PATH_PREFIX.resolve(wsdl)}
     }
 
-    List<String> getTargetWsdlPaths() {
-        getWsdlFileNames().collect {wsdl -> "${getTargetBpelPath()}/$wsdl"}
+    List<Path> getTargetWsdlPaths() {
+        getWsdlFileNames().collect {wsdl -> targetBpelPath.resolve(wsdl)}
     }
 
     List<String> getWsdlFileNames() {
         wsdls.collect { wsdl -> wsdl.split("/").last()}
     }
 
-    List<String> getAdditionalFilePaths() {
-        additionalFiles.collect { additionalFile -> "$PATH_PREFIX/$additionalFile"}
+    List<Path> getAdditionalFilePaths() {
+        additionalFiles.collect { additionalFile -> PATH_PREFIX.resolve(additionalFile)}
     }
 
     boolean equals(o) {

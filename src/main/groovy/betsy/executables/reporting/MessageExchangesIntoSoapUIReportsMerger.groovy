@@ -60,11 +60,10 @@ $failureText"""
         new XmlNodePrinter(new PrintWriter(new FileWriter(junitXml.toFile()))).print(testsuites)
     }
 
-    private Path findFileInReports(String dir, String glob) {
-        log.info "Finding files in dir ${dir} with pattern ${glob}"
-        Path reportsDirectory = Paths.get(dir)
+    private Path findFileInReports(Path reportsDirectory, String glob) {
+        log.info "Finding files in dir ${reportsDirectory} with pattern ${glob}"
         if(!Files.exists(reportsDirectory)) {
-            log.warn "Folder ${dir} does not exist"
+            log.warn "Folder ${reportsDirectory} does not exist"
 
             return null
         }

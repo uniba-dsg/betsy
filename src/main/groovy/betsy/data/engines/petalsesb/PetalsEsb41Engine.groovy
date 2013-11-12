@@ -1,5 +1,8 @@
 package betsy.data.engines.petalsesb
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class PetalsEsb41Engine extends PetalsEsbEngine {
 
     @Override
@@ -11,8 +14,8 @@ class PetalsEsb41Engine extends PetalsEsbEngine {
         "petals-esb-4.1"
     }
 
-    String getXsltPath() {
-        "src/main/xslt/petalsesb"
+    Path getXsltPath() {
+        Paths.get("src/main/xslt/petalsesb")
     }
 
     @Override

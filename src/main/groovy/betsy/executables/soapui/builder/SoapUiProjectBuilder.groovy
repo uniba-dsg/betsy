@@ -51,7 +51,7 @@ class SoapUiProjectBuilder {
     }
 
     private void saveProject() {
-        project.saveAs(process.targetSoapUIFilePath)
+        project.saveAs(process.targetSoapUIFilePath.toString())
     }
 
 }

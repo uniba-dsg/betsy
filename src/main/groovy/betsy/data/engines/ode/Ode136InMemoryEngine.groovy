@@ -1,5 +1,8 @@
 package betsy.data.engines.ode
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class Ode136InMemoryEngine extends Ode136Engine {
 
     @Override
@@ -7,8 +10,8 @@ class Ode136InMemoryEngine extends Ode136Engine {
         "ode136-in-memory"
     }
 
-    String getXsltPath() {
-        "src/main/xslt/ode-in-memory"
+    Path getXsltPath() {
+        Paths.get("src/main/xslt/ode-in-memory")
     }
 
 }

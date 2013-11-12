@@ -198,15 +198,17 @@ public abstract class VirtualEngine extends Engine implements
             LogFilesResponse response = comm.collectLogFilesOperation(request);
 
             // create log folders
-            File processLogFolder = new File(process.getTargetLogsPath());
-            processLogFolder.mkdirs();
+            Files.createDirectories(process.getTargetLogsPath());
 
             // save to disk...
             for (LogFiles logFiles : response.getLogFiles()) {
-                File folder = new File(processLogFolder, logFiles.getFolder().replaceAll("/", "_"));
-                folder.mkdirs();
+
+                String normalizedFolderPath = logFiles.getFolder().replaceAll("/", "_");
+                Path folder = process.getTargetLogsPath().resolve(normalizedFolderPath);
+                Files.createDirectories(folder);
+
                 for (LogFile logFile : logFiles.getLogFiles()) {
-                    Path path = new File(folder, logFile.getFilename()).toPath();
+                    Path path = folder.resolve(logFile.getFilename());
                     try {
                         Files.write(path, logFile.getContent(), StandardCharsets.UTF_8);
                     } catch (IOException e) {

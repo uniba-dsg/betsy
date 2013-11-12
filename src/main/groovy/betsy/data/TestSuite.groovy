@@ -4,6 +4,9 @@ import ant.tasks.AntUtil
 import betsy.data.engines.Engine;
 import betsy.executables.ExecutionContext
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class TestSuite {
 
     AntBuilder ant = AntUtil.builder()
@@ -16,7 +19,7 @@ class TestSuite {
      * @return a test suite where each engine tests all passed processes
      */
     public static TestSuite createTests(List<Engine> engines, List<BetsyProcess> processes) {
-        TestSuite test = new TestSuite(path: "test")
+        TestSuite test = new TestSuite(path: Paths.get("test"))
 
         engines.each { engine ->
             engine.processes.addAll(processes.collect() { p -> p.clone() as BetsyProcess})
@@ -34,7 +37,7 @@ class TestSuite {
     /**
      * Base directory for the whole test suite.
      */
-    String path
+    Path path
 
     /**
      * List of engines to be tested in this test suite. The engines contain their own TestCases.
@@ -42,28 +45,28 @@ class TestSuite {
     List<Engine> engines = []
 
 
-    String getReportsPath() {
-        "${getPath()}/reports"
+    Path getReportsPath() {
+        path.resolve("reports")
     }
 
     static String getCsvFile() {
         "results.csv"
     }
 
-    String getCsvFilePath() {
-        "${getReportsPath()}/${getCsvFile()}"
+    Path getCsvFilePath() {
+        reportsPath.resolve(csvFile)
     }
 
 	static String getCsvDurationFile() {
 		"durations.csv"
 	}
 
-	String getCsvDurationFilePath() {
-		"${getReportsPath()}/${getCsvDurationFile()}"
+    Path getCsvDurationFilePath() {
+		reportsPath.resolve(csvDurationFile)
 	}
 
-    String getJUnitXMLFilePath() {
-        "${getReportsPath()}/TESTS-TestSuites.xml"
+    Path getJUnitXMLFilePath() {
+        reportsPath.resolve("TESTS-TestSuites.xml")
     }
 
     public void prepare() {

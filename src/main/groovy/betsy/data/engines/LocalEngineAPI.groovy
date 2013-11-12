@@ -1,5 +1,7 @@
 package betsy.data.engines
 
+import java.nio.file.Path
+
 interface LocalEngineAPI {
 
 	/**
@@ -7,5 +9,5 @@ interface LocalEngineAPI {
 	 *
 	 * @return the path <code>server/$engine</code>
 	 */
-	String getServerPath()
+	Path getServerPath()
 }

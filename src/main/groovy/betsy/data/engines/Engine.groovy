@@ -3,12 +3,15 @@ package betsy.data.engines
 import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 abstract class Engine implements EngineAPI {
 
     AntBuilder ant = AntUtil.builder()
 	EnginePackageBuilder packageBuilder = new EnginePackageBuilder()
 
-    String parentFolder
+    Path parentFolder
 
     final List<BetsyProcess> processes = []
 
@@ -17,8 +20,8 @@ abstract class Engine implements EngineAPI {
      *
      * @return the path <code>src/main/xslt/$engine</code>
      */
-    String getXsltPath() {
-        "src/main/xslt/${getName()}"
+    Path getXsltPath() {
+        Paths.get("src/main/xslt").resolve(name)
     }
 
     /**
@@ -26,8 +29,8 @@ abstract class Engine implements EngineAPI {
      *
      * @return the path <code>test/$engine</code>
      */
-    String getPath() {
-        "${parentFolder}/${getName()}"
+    Path getPath() {
+        parentFolder.resolve(name)
     }
 
 	@Override

@@ -7,6 +7,9 @@ import betsy.executables.Composite
 import configuration.ProcessRepository
 import org.junit.Test
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class BetsyTests {
 
     class MockEngine extends Engine {
@@ -33,7 +36,7 @@ class BetsyTests {
 
         String getName() { "mock" }
 
-        String getXsltPath() { "unused_path" }
+        Path getXsltPath() { Paths.get("unused_path") }
     }
 
     class MockComposite extends Composite {

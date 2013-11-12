@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
@@ -28,8 +27,7 @@ public class FileMessage implements Serializable {
     private final String filename;
     private final Checksum checksum;
 
-    public static FileMessage build(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
+    public static FileMessage build(Path path) throws IOException {
         byte[] data = Files.readAllBytes(path);
         return new FileMessage(path.getFileName().toString(), data);
     }

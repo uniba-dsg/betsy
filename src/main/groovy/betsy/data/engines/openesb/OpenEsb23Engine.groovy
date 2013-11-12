@@ -1,5 +1,8 @@
 package betsy.data.engines.openesb
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class OpenEsb23Engine extends OpenEsbEngine {
 
     @Override
@@ -7,8 +10,8 @@ class OpenEsb23Engine extends OpenEsbEngine {
         "openesb23"
     }
 
-    String getXsltPath() {
-        "src/main/xslt/openesb"
+    Path getXsltPath() {
+        Paths.get("src/main/xslt/openesb")
     }
 
     @Override

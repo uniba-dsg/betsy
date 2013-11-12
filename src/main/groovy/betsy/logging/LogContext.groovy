@@ -16,7 +16,7 @@ class LogContext {
     }
 
     public static void setContext(String context) {
-        MDC.put(CONTEXT_KEY_PATH, context);
+        MDC.put(CONTEXT_KEY_PATH.replace("\\", "/"), context);
     }
 
 }

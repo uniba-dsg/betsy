@@ -8,6 +8,7 @@ import betsy.virtual.common.messages.deploy.FileMessage;
 import betsy.virtual.host.ServiceAddress;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
     }
 
     @Override
-    public String getXsltPath() {
+    public Path getXsltPath() {
         return defaultEngine.getXsltPath();
     }
 

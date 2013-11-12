@@ -1,5 +1,8 @@
 package betsy.data.engines
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 abstract class LocalEngine extends Engine implements LocalEngineAPI {
 
     /**
@@ -8,8 +11,8 @@ abstract class LocalEngine extends Engine implements LocalEngineAPI {
      * @return the path <code>server/$engine</code>
      */
     @Override
-    public String getServerPath() {
-        "server/${getName()}"
+    public Path getServerPath() {
+        Paths.get("server").resolve(name)
     }
 
 }

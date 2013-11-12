@@ -12,6 +12,8 @@ import betsy.logging.LogContext
 import org.apache.log4j.Logger
 import soapui.SoapUiRunner
 
+import java.nio.file.Path
+
 import static betsy.executables.util.IOCapture.captureIO
 
 class Composite {
@@ -55,7 +57,7 @@ class Composite {
 
     }
 
-    protected static void executeProcess(BetsyProcess process) {
+    protected void executeProcess(BetsyProcess process) {
         log.info "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
 
         new Retry(process: process).atMostThreeTimes {
@@ -73,20 +75,20 @@ class Composite {
         }
     }
 
-    protected static void shutdown(BetsyProcess process) {
+    protected void shutdown(BetsyProcess process) {
         log "${process.targetPath}/engine_shutdown", {
             process.engine.shutdown()
         }
     }
 
-    protected static void deploy(BetsyProcess process) {
+    protected void deploy(BetsyProcess process) {
         log "${process.targetPath}/deploy", {
             log.info "Deploying process ${process} to engine ${process.engine}"
             process.engine.deploy(process)
         }
     }
 
-    protected static void installAndStart(BetsyProcess process) {
+    protected void installAndStart(BetsyProcess process) {
         // setup infrastructure
         log "${process.targetPath}/engine_install", {
             process.engine.install()
@@ -97,7 +99,7 @@ class Composite {
         }
     }
 
-    protected static void test(BetsyProcess process) {
+    protected void test(BetsyProcess process) {
         log "${process.targetPath}/test", {
             try {
                 try {
@@ -125,7 +127,7 @@ class Composite {
         }
     }
 
-    protected static void buildPackageAndTest(BetsyProcess process) {
+    protected void buildPackageAndTest(BetsyProcess process) {
         log "${process.targetPath}/build", {
 
             log "${process.targetPath}/build_package", {
@@ -160,6 +162,10 @@ class Composite {
             LogContext.context = previous
         }
 
+    }
+
+    private static log(Path path, Closure closure) {
+        log(path.toString(), closure)
     }
 
 }
