@@ -10,7 +10,7 @@ class Util {
 
     public static String[] computeMatchingPattern(BetsyProcess process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
-        String text = new File(process.bpelFilePath).getText()
+        String text = process.bpelFilePath.toFile().getText()
         String canonicalText = canonicalizeXML(text)
 
         def operations = [WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC]

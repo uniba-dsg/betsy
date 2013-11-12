@@ -10,6 +10,7 @@ import java.util.Set;
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
 import betsy.virtual.host.engines.EngineNamingConstants;
+import betsy.virtual.host.exceptions.VirtualEngineServiceException;
 import betsy.virtual.host.virtualbox.utils.port.PortVerifier;
 import betsy.virtual.host.virtualbox.utils.ServiceValidator;
 import betsy.virtual.common.Constants;
@@ -30,7 +31,6 @@ import org.virtualbox_4_2.VirtualBoxManager;
 
 import betsy.Configuration;
 import betsy.virtual.host.virtualbox.utils.port.PortUsageException;
-import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VBoxExceptionCode;
 import betsy.virtual.host.ServiceAddress;
@@ -546,7 +546,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 				log.warn("engine services not found withing " + secondsToWait
 						+ "s");
 				// timeout in CountDownLatch
-				throw new VirtualizedEngineServiceException(
+				throw new VirtualEngineServiceException(
 						"The required services for the engine were "
 								+ "not available within " + secondsToWait
 								+ "s after starting the vm. If using a debian/"
@@ -560,7 +560,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 
 			if (!ServiceValidator.isBetsyServerReady(15 * SECOND)) {
 				log.warn("betsy server not found withing 15s");
-				throw new VirtualizedEngineServiceException(
+				throw new VirtualEngineServiceException(
 						"The required betsy server was "
 								+ "not available within 15s "
 								+ "after having found all other services. ");
@@ -580,7 +580,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 			// stops the VM again and unlocks session
 			this.stop();
 		} catch (MalformedURLException exception) {
-			throw new VirtualizedEngineServiceException("Could not verify "
+			throw new VirtualEngineServiceException("Could not verify "
 					+ "engine service availability. At least one address is "
 					+ "invalid: ", exception);
 		} finally {

@@ -19,6 +19,7 @@ import org.apache.log4j.xml.DOMConfigurator
 import org.codehaus.groovy.runtime.StackTraceUtils
 
 import java.awt.*
+import java.nio.file.Paths
 import java.util.List
 
 class Main {
@@ -72,7 +73,7 @@ class Main {
             // open results in browser
             if (parser.openResultsInBrowser()) {
                 try {
-                    Desktop.getDesktop().browse(new File("test/reports/results.html").toURI())
+                    Desktop.getDesktop().browse(Paths.get("test/reports/results.html").toUri())
                 } catch (Exception ignore) {
                     // ignore any exceptions
                 }
@@ -121,7 +122,7 @@ class Main {
             // verify IP set
             String partner = Configuration.get("partner.ipAndPort")
             if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
-                throw new IllegalStateException("VirtualizedEngines require your local IP-Address to be set. " +
+                throw new IllegalStateException("Virtual engines require your local IP-Address to be set. " +
                         "This can either be done via the -p option or directly in the Config.groovy file.")
             }
 

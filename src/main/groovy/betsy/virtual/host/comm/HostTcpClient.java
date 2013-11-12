@@ -54,9 +54,18 @@ public class HostTcpClient implements Protocol, AutoCloseable {
         }
     }
 
-    private void ensureConnection() {
+    public boolean isReachable(int timeout) {
         try {
-            client.reconnect(Constants.TIMEOUT);
+            client.reconnect(timeout);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public void ensureConnection() {
+        try {
+            client.reconnect();
         } catch (IOException e) {
             throw new ConnectionException("could not reconnect", e);
         }

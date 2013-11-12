@@ -97,7 +97,7 @@ class BetsyProcess implements Cloneable {
         getBpelFileName().substring(0, getBpelFileName().length() - 5)
     }
 
-    String getBpelFilePath() {
+    Path getBpelFilePath() {
         PATH_PREFIX.resolve(bpel)
     }
 

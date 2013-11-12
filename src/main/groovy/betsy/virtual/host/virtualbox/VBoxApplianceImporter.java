@@ -1,6 +1,7 @@
 package betsy.virtual.host.virtualbox;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -38,10 +39,10 @@ class VBoxApplianceImporter {
 	 *            file of the appliance to import
 	 * @return imported {@link IAppliance}
 	 */
-	public IAppliance importAppliance(final File importFile) {
+	public IAppliance importAppliance(final Path importFile) {
 		IAppliance appliance = vBox.createAppliance();
 
-		IProgress readProgress = appliance.read(importFile.getAbsolutePath());
+		IProgress readProgress = appliance.read(importFile.toAbsolutePath().toString());
 		while (!readProgress.getCompleted()) {
 			readProgress.waitForCompletion(1000);
 		}

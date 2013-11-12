@@ -14,21 +14,19 @@ import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
 import betsy.virtual.host.VirtualizedEngineAPI;
 import betsy.virtual.host.comm.HostTcpClient;
-import betsy.virtual.host.exceptions.DownloadException;
 import betsy.virtual.host.exceptions.PermanentFailedTestException;
 import betsy.virtual.host.exceptions.TemporaryFailedTestException;
-import betsy.virtual.host.exceptions.VirtualizedEngineServiceException;
-import betsy.virtual.host.exceptions.archive.ArchiveException;
+import betsy.virtual.host.exceptions.VirtualEngineServiceException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 
 /**
@@ -53,12 +51,8 @@ public abstract class VirtualEngine extends Engine implements
 
     private VirtualBoxMachine vm = null;
 
-    private static File getDownloadPath() {
-        return new File("vm_download");
-    }
-
-    private static File getExtractPath() {
-        return new File("vm_extraction");
+    private static Path getDownloadPath() {
+        return Paths.get("vm_download");
     }
 
     public void setVirtualBox(VirtualBox virtualBox) {
@@ -76,7 +70,7 @@ public abstract class VirtualEngine extends Engine implements
             return;
         }
 
-        log.debug("Startup virtualized engine " + getName() + " ...");
+        log.debug("Startup virtual engine " + getName() + " ...");
         // required for compatibility with EngineControl
         try {
             // verify port usage
@@ -134,10 +128,9 @@ public abstract class VirtualEngine extends Engine implements
             this.vm = getOrImportVirtualMachine();
             createAndResetToLatestSnapshot();
         } catch (VirtualMachineNotFoundException
-                | VirtualizedEngineServiceException | ArchiveException
-                | DownloadException exception) {
+                | VirtualEngineServiceException e) {
             throw new PermanentFailedTestException("The VMs installation "
-                    + "could not be processed:", exception);
+                    + "could not be processed:", e);
         } catch (PortRedirectException | InterruptedException exception) {
             throw new TemporaryFailedTestException("The VMs installation "
                     + "could not be processed:", exception);
@@ -162,7 +155,7 @@ public abstract class VirtualEngine extends Engine implements
 
     private VirtualBoxMachine getOrImportVirtualMachine() throws VirtualBoxException {
         return virtualBox.importVirtualMachine(getVirtualMachineName(), getName(),
-                getDownloadPath(), getExtractPath());
+                getDownloadPath());
     }
 
     @Override

@@ -58,7 +58,7 @@ public class VBoxWebService {
 
         // start VBoxService
         Runtime r = Runtime.getRuntime();
-        String[] startArgs = new String[]{vBoxConfiguration.getVBoxWebSrv().getAbsolutePath(), "-A", "null", "-t", "0"};
+        String[] startArgs = new String[]{vBoxConfiguration.getVBoxWebSrv().toAbsolutePath().toString(), "-A", "null", "-t", "0"};
         log.debug("Starting '" + Arrays.toString(startArgs) + "'");
         vboxServiceProcess = r.exec(startArgs);
 

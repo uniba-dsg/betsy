@@ -50,7 +50,7 @@ public class CollectLogFilesOperation {
         // collect
         List<LogFiles> logFilesList = new LinkedList<>();
         for (String path : request.getPaths()) {
-            List<LogFile> logFiles = collectLogFiles(new File(path));
+            List<LogFile> logFiles = collectLogFiles(path);
             LogFiles logFilesClass = new LogFiles(path);
             logFilesClass.getLogFiles().addAll(logFiles);
             logFilesList.add(logFilesClass);
@@ -61,10 +61,10 @@ public class CollectLogFilesOperation {
         return new LogFilesResponse(logFilesList);
     }
 
-    private static List<LogFile> collectLogFiles(final File directory) {
+    private static List<LogFile> collectLogFiles(final String directory) {
         List<LogFile> list = new LinkedList<>();
 
-        File[] files = directory.listFiles();
+        File[] files = new File(directory).listFiles();
 
         if (files == null) {
             return list;

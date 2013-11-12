@@ -2,12 +2,11 @@ package betsy.virtual.host.virtualbox.utils
 
 import ant.tasks.AntUtil
 import betsy.data.engines.Engine
+import betsy.virtual.common.Constants
 import betsy.virtual.common.exceptions.CommunicationException
 import betsy.virtual.host.ServiceAddress
 import betsy.virtual.host.comm.HostTcpClient
-import betsy.virtual.common.Constants
 import org.apache.log4j.Logger
-
 /**
  * The {@link ServiceValidator} validates a {@link ServiceAddress} and can
  * therefore determine if an {@link Engine} is ready for usage.
@@ -60,20 +59,14 @@ public class ServiceValidator {
      * @return true if the server is available
      */
     public static boolean isBetsyServerReady(final int timeoutInMs) {
-        HostTcpClient cc;
+        HostTcpClient cc = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT)
         try {
-            cc = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT)
-            cc.reconnect(timeoutInMs);
-            return cc.isConnectionAlive();
-        } catch (IOException | CommunicationException exception) {
-            // ignore
-            log.debug("Exception in bVMS availability test: ", exception);
+            return cc.isReachable(timeoutInMs);
+        } catch (IOException | CommunicationException e) {
+            throw new RuntimeException("Error during BVMS availability check", e);
         } finally {
-            if (cc != null) {
-                cc.close()
-            }
+            cc.close();
         }
-        return false;
     }
 
 }

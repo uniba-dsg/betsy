@@ -2,6 +2,9 @@ package betsy.executables
 
 import betsy.data.BetsyProcess
 
+import java.nio.file.Files
+import java.nio.file.Path
+
 /**
  * Validates a list of processes
  */
@@ -25,7 +28,7 @@ class Validator {
 
     private void assertBpelTargetNamespacesAreUnique() {
         List<String> namespaces = processes.collect { process ->
-            def bpel = new XmlSlurper(false, false).parse(process.bpelFilePath)
+            def bpel = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile())
             [bpel.@name.text(), bpel.@targetNamespace.text()]
         }
         namespaces.each { n1 ->
@@ -39,7 +42,7 @@ class Validator {
 
     private void assertBpelProcessNameEqualToFileName() {
         processes.each { process ->
-            String attributeName = new XmlSlurper(false, false).parse(process.bpelFilePath).@name.text()
+            String attributeName = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile()).@name.text()
             if (attributeName != process.name) {
                 throw new IllegalStateException("The configuration does not correspond with the BPEL process. Names differ. BPEL uses " + attributeName + " while " + process.name + " is the given filename")
             }
@@ -48,10 +51,13 @@ class Validator {
 
     private void assertAllFilesPerProcessExists() {
         processes.each { process ->
-            List<String> paths = [process.bpelFilePath, process.wsdlPaths, process.additionalFilePaths].flatten()
+            List<Path> paths = new LinkedList<>()
+            paths.add(process.bpelFilePath)
+            paths.addAll(process.wsdlPaths)
+            paths.addAll(process.additionalFilePaths)
 
             paths.each { path ->
-                if (!new File(path).exists()) {
+                if (!Files.isRegularFile(path)) {
                     throw new IllegalStateException("process " + process + " references not existing file " + path)
                 }
             }

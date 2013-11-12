@@ -3,7 +3,8 @@ package betsy.virtual.host.virtualbox;
 import betsy.Configuration;
 import betsy.virtual.host.exceptions.ConfigurationException;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * The {@link VBoxConfiguration} provides access to mandatory options required
@@ -29,8 +30,8 @@ public class VBoxConfiguration {
      *
      * @return directory file
      */
-    File getVboxDir() {
-        return new File(Configuration.getValueAsString("virtual.vbox.home"));
+    Path getVboxDir() {
+        return Paths.get(Configuration.getValueAsString("virtual.vbox.home"));
     }
 
     /**
@@ -38,8 +39,8 @@ public class VBoxConfiguration {
      *
      * @return file of VirtualBox WebService
      */
-    File getVBoxWebSrv() {
-        return new File(getVboxDir(), "VBoxWebSrv.exe");
+    Path getVBoxWebSrv() {
+        return getVboxDir().resolve("VBoxWebSrv.exe");
     }
 
 }

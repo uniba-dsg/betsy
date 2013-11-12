@@ -53,6 +53,10 @@ public class HostLowLevelTcpClient implements AutoCloseable {
         }
     }
 
+    public void reconnect() throws IOException {
+        reconnect(0);
+    }
+
     public void reconnect(int timeout) throws IOException {
         if (!isConnected()) {
             log.info("Connecting to server");
@@ -61,7 +65,7 @@ public class HostLowLevelTcpClient implements AutoCloseable {
             this.socket.connect(new InetSocketAddress(host, port),
                     timeout);
 
-            //socket.setSoTimeout(timeout);
+            socket.setSoTimeout(timeout);
             socket.setKeepAlive(true);
 
             OutputStream out = socket.getOutputStream();

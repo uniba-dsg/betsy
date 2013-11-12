@@ -2,11 +2,9 @@ package betsy.virtual.host.virtualbox;
 
 import betsy.virtual.host.VirtualBox;
 import betsy.virtual.host.VirtualBoxMachine;
-import betsy.virtual.host.exceptions.DownloadException;
-import betsy.virtual.host.exceptions.archive.ArchiveException;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 
-import java.io.File;
+import java.nio.file.Path;
 
 public class VirtualBoxImpl implements VirtualBox {
 
@@ -18,8 +16,8 @@ public class VirtualBoxImpl implements VirtualBox {
     }
 
     @Override
-    public VirtualBoxMachine importVirtualMachine(String vmName, String engineName, File downloadPath, File extractPath)
-            throws VirtualMachineNotFoundException, ArchiveException, DownloadException {
+    public VirtualBoxMachine importVirtualMachine(String vmName, String engineName, Path downloadPath)
+            throws VirtualMachineNotFoundException {
 
         try {
             return getVirtualMachineByName(vmName);
@@ -27,11 +25,7 @@ public class VirtualBoxImpl implements VirtualBox {
             // not imported - proceed
         }
 
-        VirtualMachineImporter importer = new VirtualMachineImporter(
-                vmName, engineName,
-                downloadPath, extractPath,
-                controller);
-
+        VirtualMachineImporter importer = new VirtualMachineImporter(vmName, engineName, downloadPath, controller);
         importer.makeVMAvailable();
 
         return getVirtualMachineByName(vmName);
