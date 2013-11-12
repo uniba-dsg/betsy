@@ -1,6 +1,8 @@
 package betsy.executables.reporting
 
+import ant.tasks.AntUtil
 import betsy.data.TestSuite
+import org.apache.log4j.Logger
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -10,7 +12,9 @@ import betsy.data.BetsyProcess
 
 class MessageExchangesIntoSoapUIReportsMerger {
 
-    AntBuilder ant = new AntBuilder()
+    private static final Logger log = Logger.getLogger(MessageExchangesIntoSoapUIReportsMerger.class)
+
+    final AntBuilder ant = AntUtil.builder()
     TestSuite tests
 
     public void merge() {
@@ -24,7 +28,7 @@ class MessageExchangesIntoSoapUIReportsMerger {
     private void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(BetsyProcess process) {
         Path junitXml = findFileInReports(process.targetReportsPath, "*.xml")
         if(junitXml == null){
-            ant.echo message: "Cannot merge xml report from process ${process.name} as there is no xml report"
+            log.warn "Cannot merge xml report from process ${process.name} as there is no xml report"
             return
         }
 
@@ -57,10 +61,10 @@ $failureText"""
     }
 
     private Path findFileInReports(String dir, String glob) {
-        ant.echo message: "Finding files in dir ${dir} with pattern ${glob}"
+        log.info "Finding files in dir ${dir} with pattern ${glob}"
         Path reportsDirectory = Paths.get(dir)
         if(!Files.exists(reportsDirectory)) {
-            ant.echo message: "Folder ${dir} does not exist"
+            log.warn "Folder ${dir} does not exist"
 
             return null
         }

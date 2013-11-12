@@ -1,6 +1,8 @@
 package betsy.executables.ws
 
+import ant.tasks.AntUtil
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
+import org.apache.log4j.Logger
 
 import javax.xml.ws.Endpoint
 
@@ -8,13 +10,15 @@ import betsy.Configuration
 
 class TestPartnerServicePublisher {
 
+    private static final Logger log = Logger.getLogger(TestPartnerServicePublisher.class)
+
     Endpoint regularEndpoint
     String regularUrl = "http://${Configuration.get("partner.ipAndPort")}/bpel-testpartner"
 
     Endpoint partnerLinkAssignmentEndpoint
     String partnerLinkAssignmentUrl = "http://${Configuration.get("partner.ipAndPort")}/bpel-assigned-testpartner"
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     public static void main(String[] args) {
         new TestPartnerServicePublisher().publish()
@@ -28,13 +32,13 @@ class TestPartnerServicePublisher {
     private void publishRegularEndpoint(String url) {
         TestPartnerPortType portType = new TestPartnerServiceMock(true)
         regularEndpoint = Endpoint.publish(url, portType)
-        ant.echo message: "Published regular TestPartnerService to ${url}"
+        log.info "Published regular TestPartnerService to ${url}"
     }
 
     private void publishPartnerLinkAssignmentEndpoint(String url) {
         TestPartnerPortType portType = new TestPartnerServiceMock(false)
         partnerLinkAssignmentEndpoint = Endpoint.publish(url, portType)
-        ant.echo message: "Published regular TestPartnerService to ${url}"
+        log.info "Published regular TestPartnerService to ${url}"
     }
 
     void unpublish() {
@@ -44,12 +48,12 @@ class TestPartnerServicePublisher {
 
     private void unpublishEndpoint(Endpoint endpoint, String url) {
         if (endpoint == null) {
-            ant.echo "Cannot unpublish TestPartnerService from ${url} as it has not been published yed."
+            log.info "Cannot unpublish TestPartnerService from ${url} as it has not been published yed."
         } else {
             try {
-                ant.echo "Unpublishing TestPartnerService from ${url}"
+                log.info "Unpublishing TestPartnerService from ${url}"
 				endpoint.stop()
-				ant.echo "Unpublished TestPartnerService from ${url}"
+                log.info "Unpublished TestPartnerService from ${url}"
 			} catch (NullPointerException ignore) {
 				// do nothing, as this expected
 			}

@@ -1,10 +1,14 @@
 package betsy.executables.reporting
 
+import ant.tasks.AntUtil
 import betsy.Configuration
+import org.apache.log4j.Logger
 
 class JUnitHtmlReports {
 
-    AntBuilder ant = new AntBuilder()
+    private static final Logger log = Logger.getLogger(JUnitHtmlReports.class)
+
+    AntBuilder ant = AntUtil.builder()
 
     /**
      * tests folder
@@ -14,10 +18,10 @@ class JUnitHtmlReports {
     public void create() {
         String antPath = "${Configuration.get("ant.home")}/bin/ant.bat"
 
-        ant.echo(message: "creating reporting ant scripts")
+        log.info "creating reporting ant scripts"
         ant.echo(message: createAntReportFile(), file: "${path}/build.xml")
 
-        ant.echo(message: "executing reporting ant scripts")
+        log.info "executing reporting ant scripts"
         ant.exec(executable: "cmd", dir: path, osfamily: "windows") {
             arg(value: "/c")
             arg(value: new File(antPath).absolutePath)

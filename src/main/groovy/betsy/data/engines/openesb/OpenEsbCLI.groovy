@@ -1,8 +1,10 @@
 package betsy.data.engines.openesb
 
+import ant.tasks.AntUtil
+
 class OpenEsbCLI {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String glassfishHome
 

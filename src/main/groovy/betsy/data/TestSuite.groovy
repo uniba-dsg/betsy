@@ -1,11 +1,12 @@
 package betsy.data
 
+import ant.tasks.AntUtil
 import betsy.data.engines.Engine;
 import betsy.executables.ExecutionContext
 
 class TestSuite {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     /**
      * Factory method for a list of engines and processes.

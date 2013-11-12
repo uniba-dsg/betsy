@@ -1,5 +1,6 @@
 package betsy.executables
 
+import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 import betsy.data.engines.Engine
 import betsy.executables.analytics.Analyzer
@@ -7,31 +8,25 @@ import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.IOUtil
 import betsy.executables.util.Stopwatch
-import org.apache.log4j.FileAppender
-import org.apache.log4j.Level
+import betsy.logging.LogContext
 import org.apache.log4j.Logger
-import org.apache.log4j.PatternLayout
 import soapui.SoapUiRunner
 
 class Composite {
 
-    final AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
+
+    private static Logger log = Logger.getLogger(Composite.class);
+
     ExecutionContext context
 
     public void execute() {
-        // use same ant builder in every class
-        context.testSuite.ant = ant
-        context.testSuite.engines.each { engine -> engine.ant = ant }
-        context.testPartner.ant = ant
-
-        // set output level to ERROR for console
-        ant.project.getBuildListeners().get(0).setMessageOutputLevel(0)
 
         // prepare test suite
         // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
         context.testSuite.prepare()
 
-        log "${context.testSuite.path}/all", {
+        log context.testSuite.path, {
 
             try {
                 // fail fast
@@ -42,12 +37,14 @@ class Composite {
 
                 executeEngines(context)
 
-                new Reporter(ant: ant, tests: context.testSuite).createReports()
-                new Analyzer(ant: ant, csvFilePath: context.testSuite.csvFilePath,
-                        reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
+                log context.testSuite.reportsPath, {
+                    new Reporter(tests: context.testSuite).createReports()
+                    new Analyzer(csvFilePath: context.testSuite.csvFilePath,
+                            reportsFolderPath: context.testSuite.reportsPath).createAnalytics()
+                }
 
             } catch (Exception e) {
-                ant.echo message: IOUtil.getStackTrace(e), level: "error"
+                log.error e
                 throw e
             }
 
@@ -69,10 +66,10 @@ class Composite {
     }
 
     protected void executeProcess(BetsyProcess process) {
-        println "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
+        log.info "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
 
-        new Retry(process: process, ant: ant).atMostThreeTimes {
-            log "${process.targetPath}/all", {
+        new Retry(process: process).atMostThreeTimes {
+            log process.targetPath, {
                 try {
                     buildPackageAndTest(process)
                     installAndStart(process)
@@ -94,7 +91,7 @@ class Composite {
 
     protected void deploy(BetsyProcess process) {
         log "${process.targetPath}/deploy", {
-            ant.echo message: "Deploying process ${process} to engine ${process.engine}"
+            log.info "Deploying process ${process} to engine ${process.engine}"
             process.engine.deploy(process)
         }
     }
@@ -117,14 +114,14 @@ class Composite {
                     context.testPartner.publish()
                 } catch (BindException ignore) {
                     context.testPartner.unpublish()
-                    ant.echo "Address already in use - waiting 2 seconds to get available"
+                    log.debug "Address already in use - waiting 2 seconds to get available"
                     ant.sleep(milliseconds: 2000)
                     context.testPartner.publish()
                 }
 
                 soapui "${process.targetPath}/test_soapui", {
                     new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
-                            reportingDirectory: process.targetReportsPath, ant: ant).run()
+                            reportingDirectory: process.targetReportsPath).run()
                 }
 
                 ant.sleep(milliseconds: 500)
@@ -139,51 +136,38 @@ class Composite {
     protected void buildPackageAndTest(BetsyProcess process) {
         log "${process.targetPath}/build", {
 
-            log "${process.targetPath}/build_package", {
-                String[] systemOuts = IOUtil.captureSystemOutAndErr { process.engine.buildArchives(process) }
-
-                ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
-                ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
+            soapui "${process.targetPath}/build_package", {
+                process.engine.buildArchives(process)
             }
 
-            log "${process.targetPath}/build_test", {
-                soapui "${process.targetPath}/soapui_generation", {
-                    new TestBuilder(process: process,
-                            requestTimeout: context.requestTimeout,
-                            ant: ant).buildTest()
-                }
+            soapui "${process.targetPath}/build_test", {
+                new TestBuilder(process: process,
+                        requestTimeout: context.requestTimeout).buildTest()
             }
         }
     }
 
     void log(String name, Closure closure) {
+        String previous = LogContext.context;
         try {
+            LogContext.context = name;
+
             ant.mkdir dir: new File(name).parent
-            ant.record(name: name + ".log", action: "start", loglevel: "info", append: true)
-
-            ant.echo message: name
-            println name
-
+            log.info "Start ..."
             Stopwatch stopwatch = Stopwatch.benchmark(closure)
-            String result = "${name} | ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
-            ant.echo message: result
-            println result
+            log.info "... finished in ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
         } finally {
-            ant.record(name: name + ".log", action: "stop", loglevel: "info", append: true)
+            LogContext.context = previous;
         }
     }
 
     void soapui(String name, Closure closure) {
-        Logger root = Logger.getRootLogger();
-        root.removeAllAppenders()
-        root.setLevel(Level.INFO)
-        root.addAppender(new FileAppender(
-                new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN), "${name}.log", true));
+        log name, {
+            String[] systemOuts = IOUtil.captureSystemOutAndErr closure
 
-        String[] systemOuts = IOUtil.captureSystemOutAndErr closure
-
-        ant.echo message: "SoapUI System.out Output:\n\n${systemOuts[0]}"
-        ant.echo message: "SoapUI System.err Output:\n\n${systemOuts[1]}"
+            log.trace "SoapUI System.out Output:\n\n${systemOuts[0]}"
+            log.trace "SoapUI System.err Output:\n\n${systemOuts[1]}"
+        }
     }
 
 }

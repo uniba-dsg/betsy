@@ -1,17 +1,21 @@
 package betsy.data.engines
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.BetsyProcess
+import org.apache.log4j.Logger
 
 public class EnginePackageBuilder {
 
-    protected final AntBuilder ant = new AntBuilder()
+    private static final Logger log = Logger.getLogger(EnginePackageBuilder)
+
+    protected final AntBuilder ant = AntUtil.builder()
 
     public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
         // engine independent package steps
         ant.mkdir dir: process.targetPath
 
-        ant.echo message: "Copying files for ${process} for engine ${process.engine.name}"
+        log.info "Copying BPEL, WSDL and additional files to target directory"
 
         ant.copy file: process.bpelFilePath, todir: process.targetBpelPath
         ant.replace(file: process.targetBpelFilePath, token: "../", value: "")
@@ -31,12 +35,12 @@ public class EnginePackageBuilder {
     }
 
     public void replaceEndpointTokenWithValue(BetsyProcess process) {
-        ant.echo message: "Setting Endpoint of wsdl IF for $process on ${process.engine.name} to ${process.endpoint}"
+        log.info "Setting WSDL endpoint to ${process.endpoint}"
         ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
     }
 
     public void replacePartnerTokenWithValue(BetsyProcess process) {
-        ant.echo message: "Setting Partner Address of for $process on ${process.engine.name} to ${Configuration.get("partner.ipAndPort")}"
+        log.info "Setting Partner Address to ${Configuration.get("partner.ipAndPort")}"
         ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.get("partner.ipAndPort"))
     }
 

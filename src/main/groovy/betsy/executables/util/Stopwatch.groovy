@@ -31,12 +31,7 @@ class Stopwatch {
      * @return formatted diff using format XXX minutes and YYY.ZZZ seconds.
      */
     public String getFormattedDiff() {
-        long seconds = (diff / 1000);
-        long minutes = (seconds / 60);
-        long remainingSeconds = seconds - (minutes * 60);
-        long remainingSecondsInPercent = (remainingSeconds * 100) / 60
-
-        "(${minutes}.${addLeadingZero(remainingSecondsInPercent)} min / ${seconds} sec)"
+        "${getSecondsDiff()}s"
     }
 	
 	/**
@@ -45,14 +40,6 @@ class Stopwatch {
    public String getSecondsDiff() {
 	   diff / 1000
    }
-
-    static String addLeadingZero(long number) {
-        if (number < 10) {
-            "0$number"
-        } else {
-            "$number"
-        }
-    }
 
     public String toString() {
         "Duration: $formattedDiff"

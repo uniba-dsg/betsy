@@ -1,5 +1,6 @@
 package betsy.virtual.host.virtualbox;
 
+import ant.tasks.AntUtil;
 import betsy.Configuration;
 import betsy.virtual.host.virtualbox.utils.InputStreamLogger;
 import groovy.util.AntBuilder;
@@ -22,7 +23,7 @@ public class VBoxWebService {
 
     private static final Logger log = Logger.getLogger(VBoxWebService.class);
 
-    private final AntBuilder ant = new AntBuilder();
+    private final AntBuilder ant = AntUtil.builder();
     private final VBoxConfiguration vBoxConfiguration = new VBoxConfiguration();
 
     private Process vboxServiceProcess;

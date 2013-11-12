@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <appender name="FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="betsy.log"/>
+        <param name="Threshold" value="TRACE"/>
+        <param name="Append" value="false"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy.MM.dd HH:mm:ss} %-5p [%X{path}] [%c] %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="FILE_TIME" class="org.apache.log4j.FileAppender">
+        <param name="File" value="betsy_time.log"/>
+        <param name="Threshold" value="INFO"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%X{path}] %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="FILE_CONSOLE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="betsy_console.log"/>
+        <param name="Threshold" value="DEBUG"/>
+        <param name="Append" value="false"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%X{path}] %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="DEBUG"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%X{path}] %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.apache.tools.ant">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="com.eviware.soapui">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="org.apache.http">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="betsy.virtual.host.utils.InputStreamLogger">
+        <level value="TRACE"/>
+    </logger>
+
+    <logger name="betsy.executables.Composite">
+        <appender-ref ref="FILE_TIME"/>
+    </logger>
+
+    <root>
+        <level value="TRACE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE_CONSOLE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</log4j:configuration>

@@ -1,8 +1,10 @@
 package betsy.data.engines.activebpel
 
+import ant.tasks.AntUtil
+
 class ActiveBpelDeployer {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String packageFilePath
     String deploymentDirPath

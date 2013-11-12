@@ -1,10 +1,11 @@
 package betsy.data.engines.petalsesb
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 
 class PetalsEsbInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String serverDir = "server/petalsesb"
 

@@ -1,11 +1,12 @@
 package betsy.data.engines.orchestra
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 
 class OrchestraInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String serverDir = "server/orchestra"
     String fileName = "orchestra-cxf-tomcat-4.9.0.zip"

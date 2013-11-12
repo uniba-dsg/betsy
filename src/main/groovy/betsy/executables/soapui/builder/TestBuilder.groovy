@@ -1,11 +1,15 @@
 package betsy.executables.soapui.builder
 
+import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
+import org.apache.log4j.Logger
 
 
 class TestBuilder {
 
-    AntBuilder ant = new AntBuilder()
+    private static final Logger log = Logger.getLogger(TestBuilder.class)
+
+    final AntBuilder ant = AntUtil.builder()
 
     BetsyProcess process
 
@@ -15,7 +19,7 @@ class TestBuilder {
     int requestTimeout
 
     public void buildTest() {
-        ant.echo message: "Creating SoapUI TestSuite for Process ${process.name}"
+        log.info "Creating SoapUI TestSuite"
         ant.mkdir dir: process.targetSoapUIPath
         new SoapUiProjectBuilder(process: process, requestTimeout: requestTimeout).createSoapUIProject()
     }

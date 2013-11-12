@@ -1,11 +1,12 @@
 package betsy.data.engines.bpelg
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 
 class BpelgInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String serverDir = "server/bpelg"
 

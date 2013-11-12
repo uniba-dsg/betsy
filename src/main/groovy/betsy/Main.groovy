@@ -8,20 +8,25 @@ import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import betsy.data.engines.Engine
 import betsy.data.engines.LocalEngine
+import betsy.logging.LogContext
 import betsy.virtual.host.VirtualBox
 import betsy.virtual.host.engines.VirtualEngine
 import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
-import com.eviware.soapui.SoapUI
+import org.apache.log4j.Logger
+import org.apache.log4j.xml.DOMConfigurator
 
 import java.awt.*
 import java.util.List
-import java.util.concurrent.TimeUnit
 
 class Main {
 
+    private static final Logger log = Logger.getLogger(Main.class)
+
     public static void main(String[] args) {
+        activeLogging();
+
         // parsing cli params
         CliParser parser = new CliParser()
         parser.parse(args)
@@ -60,8 +65,8 @@ class Main {
             try {
                 betsy.execute()
             } catch (Exception e) {
-                println "----------------------"
-                println "ERROR - ${e.message}"
+                log.info "----------------------"
+                log.info "ERROR - ${e.message}"
             }
 
             // open results in browser
@@ -81,16 +86,23 @@ class Main {
         }
     }
 
+    protected static String activeLogging() {
+        LogContext.init();
+        DOMConfigurator.configure("src/main/resources/log4j.xml");
+        // set log4j property to avoid conflicts with soapUIs
+        System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml")
+    }
+
     protected static void printSelectedEnginesAndProcesses(List<Engine> engines, List<BetsyProcess> processes) {
         // print selection of engines and processes
-        println "Engines: ${engines.collect { it.name }}"
-        println "Processes: ${processes.size() < 10 ? processes.collect { it.name } : processes.size()}"
+        log.info "Engines: ${engines.collect { it.name }}"
+        log.info "Processes: ${processes.size() < 10 ? processes.collect { it.name } : processes.size()}"
     }
 
     protected static void customPartnerAddress(CliParser parser) {
         // setting partner address
         if (parser.hasCustomPartnerAddress()) {
-            println "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.get("partner.ipAndPort")}"
+            log.info "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.get("partner.ipAndPort")}"
             Configuration.set("partner.ipAndPort", parser.getCustomPartnerAddress())
         }
     }

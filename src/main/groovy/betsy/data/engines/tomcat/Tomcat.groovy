@@ -1,11 +1,13 @@
 package betsy.data.engines.tomcat
 
+import ant.tasks.AntUtil
+
 /**
  * Responsible for starting and stopping tomcat as well as all tomcat related paths and properties.
  */
 class Tomcat {
 
-    AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
 
     /**
      * the port of the tomcat

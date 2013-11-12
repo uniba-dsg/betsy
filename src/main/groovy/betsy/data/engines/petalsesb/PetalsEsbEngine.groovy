@@ -2,11 +2,14 @@ package betsy.data.engines.petalsesb
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
+import org.apache.log4j.Logger
 
 import java.nio.file.Files
 import java.nio.file.Paths
 
 class PetalsEsbEngine extends LocalEngine {
+
+    private static final Logger log = Logger.getLogger(PetalsEsbEngine)
 
     public static final String CHECK_URL = "http://localhost:8084"
 
@@ -57,7 +60,7 @@ class PetalsEsbEngine extends LocalEngine {
                 }
             }
         } catch (Exception ignore) {
-            ant.echo message: "SOAP BC Installation failed - shutdown, reinstall and start petalsesb again"
+            log.warn "SOAP BC Installation failed - shutdown, reinstall and start petalsesb again"
             shutdown()
             install()
             startup()
@@ -113,7 +116,7 @@ class PetalsEsbEngine extends LocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
-        new PetalsEsbCompositePackager(process: process, ant: ant).build()
+        new PetalsEsbCompositePackager(process: process).build()
     }
 
     @Override

@@ -1,11 +1,12 @@
 package betsy.data.engines.petalsesb
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.BetsyProcess
 
 class PetalsEsbCompositePackager {
 
-    AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
     BetsyProcess process
 
     void build() {

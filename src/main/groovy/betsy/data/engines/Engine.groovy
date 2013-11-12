@@ -1,10 +1,11 @@
 package betsy.data.engines
 
+import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 
 abstract class Engine implements EngineAPI {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 	EnginePackageBuilder packageBuilder = new EnginePackageBuilder()
 
     String parentFolder

@@ -35,7 +35,7 @@ class BpelgEngine extends LocalEngine {
     }
 
     Tomcat getTomcat() {
-        new Tomcat(ant: ant, engineDir: serverPath)
+        new Tomcat(engineDir: serverPath)
     }
 
     @Override

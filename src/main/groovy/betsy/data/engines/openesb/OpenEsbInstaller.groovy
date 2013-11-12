@@ -1,10 +1,11 @@
 package betsy.data.engines.openesb
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 
 class OpenEsbInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
 
     String serverDir = "server/openesb"
     String fileName = "glassfishesb-v2.2-full-installer-windows.exe"

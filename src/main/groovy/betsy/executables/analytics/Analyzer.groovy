@@ -1,12 +1,13 @@
 package betsy.executables.analytics
 
+import ant.tasks.AntUtil
 import betsy.executables.analytics.html.HtmlAnalytics
 import betsy.executables.analytics.model.CsvReport
 
 
 class Analyzer {
 
-    AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
 
     String csvFilePath
     String reportsFolderPath

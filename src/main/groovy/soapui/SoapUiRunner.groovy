@@ -1,13 +1,17 @@
 package soapui
 
+import ant.tasks.AntUtil
 import com.eviware.soapui.tools.SoapUITestCaseRunner
+import org.apache.log4j.Logger
 
 /**
  * Runs soap ui tests programmatically within the current JVM. Requires soapUI to be present in the class path.
  */
 class SoapUiRunner {
 
-    AntBuilder ant = new AntBuilder()
+    private static final Logger log = Logger.getLogger(SoapUiRunner.class)
+
+    final AntBuilder ant = AntUtil.builder()
 
     String soapUiProjectFile
     String reportingDirectory
@@ -24,7 +28,7 @@ class SoapUiRunner {
         try {
             runner.run()
         } catch (Exception ignore) {
-            ant.echo message: "Exception occured during Test ${reportingDirectory}. See test results for more information.", level: "error"
+            log.error  "Exception occured during Test ${reportingDirectory}. See test results for more information."
         }
     }
 }

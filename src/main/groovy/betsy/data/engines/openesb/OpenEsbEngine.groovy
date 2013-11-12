@@ -26,7 +26,7 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     OpenEsbCLI getCli() {
-        new OpenEsbCLI(ant: ant, glassfishHome: getGlassfishHome())
+        new OpenEsbCLI(glassfishHome: getGlassfishHome())
     }
 
     private String getGlassfishHome() {
@@ -71,7 +71,7 @@ class OpenEsbEngine extends LocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
-        new OpenEsbCompositePackager(ant: ant, process: process).build()
+        new OpenEsbCompositePackager(process: process).build()
     }
 
     void buildDeploymentDescriptor(BetsyProcess process) {

@@ -1,11 +1,12 @@
 package betsy.data.engines.ode
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 
 class OdeInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String fileName = "apache-ode-war-1.3.5.zip"
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"

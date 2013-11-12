@@ -1,11 +1,12 @@
 package betsy.data.engines.activebpel
 
+import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 
 class ActiveBpelInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String serverDir = "server/active-bpel"
     String fileName = "activebpel-5.0.2-bin.zip"

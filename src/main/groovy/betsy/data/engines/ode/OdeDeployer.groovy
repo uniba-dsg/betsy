@@ -1,8 +1,13 @@
 package betsy.data.engines.ode
 
+import ant.tasks.AntUtil
+import org.apache.log4j.Logger
+
 class OdeDeployer implements Deployer{
 
-    AntBuilder ant = new AntBuilder()
+    private static final Logger log = Logger.getLogger(OdeDeployer.class)
+
+    AntBuilder ant = AntUtil.builder()
 
     String packageFilePath
     String deploymentDirPath
@@ -12,7 +17,7 @@ class OdeDeployer implements Deployer{
 
     @Override
     public void deploy() {
-        ant.echo message: this.toString()
+        log.info this.toString()
 
         ant.unzip src: packageFilePath, dest: "$deploymentDirPath/$processName"
 

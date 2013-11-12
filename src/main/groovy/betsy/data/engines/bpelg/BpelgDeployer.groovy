@@ -1,8 +1,10 @@
 package betsy.data.engines.bpelg
 
+import ant.tasks.AntUtil
+
 class BpelgDeployer {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String deploymentDirPath
     String processName

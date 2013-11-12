@@ -1,5 +1,6 @@
 package betsy.virtual.host.virtualbox.utils
 
+import ant.tasks.AntUtil
 import betsy.data.engines.Engine
 import betsy.virtual.common.exceptions.CommunicationException
 import betsy.virtual.host.ServiceAddress
@@ -37,7 +38,7 @@ public class ServiceValidator {
                                         final int secondsToWait) throws MalformedURLException,
             InterruptedException {
 
-        AntBuilder ant = new AntBuilder()
+        AntBuilder ant = AntUtil.builder()
         ant.typedef(name: "httpcontains", classname: "ant.tasks.HttpContains")
 
         ant.waitfor maxwait: secondsToWait, maxwaitunit: "second", checkevery: 500, {

@@ -3,11 +3,14 @@ package betsy.data.engines.activebpel
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
+import org.apache.log4j.Logger
 
 /*
 * Currently using in-memory mode for the engine
  */
 class ActiveBpelEngine extends LocalEngine {
+
+    private static final Logger log = Logger.getLogger(ActiveBpelEngine.class)
 
     @Override
     String getName() {
@@ -20,7 +23,7 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     Tomcat getTomcat() {
-        new Tomcat(ant: ant, engineDir: serverPath, tomcatName: "apache-tomcat-5.5.36")
+        new Tomcat(engineDir: serverPath, tomcatName: "apache-tomcat-5.5.36")
     }
 
     String getDeploymentDir() {

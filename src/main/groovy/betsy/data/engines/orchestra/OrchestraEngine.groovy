@@ -12,7 +12,7 @@ class OrchestraEngine extends LocalEngine {
     }
 
     Tomcat getTomcat() {
-        new Tomcat(ant: ant, engineDir: serverPath)
+        new Tomcat(engineDir: serverPath)
     }
 
     @Override
@@ -52,8 +52,7 @@ class OrchestraEngine extends LocalEngine {
     void deploy(BetsyProcess process) {
         new OrchestraDeployer(
                 orchestraHome: "${serverPath}/orchestra-cxf-tomcat-4.9.0",
-                packageFilePath: process.targetPackageFilePath,
-                ant: ant).deploy()
+                packageFilePath: process.targetPackageFilePath).deploy()
     }
 
     public void buildArchives(BetsyProcess process) {

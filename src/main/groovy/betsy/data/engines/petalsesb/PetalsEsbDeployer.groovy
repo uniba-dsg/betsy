@@ -1,8 +1,10 @@
 package betsy.data.engines.petalsesb
 
+import ant.tasks.AntUtil
+
 class PetalsEsbDeployer {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String deploymentDirPath
     String processName

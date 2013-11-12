@@ -1,8 +1,10 @@
 package betsy.data.engines.orchestra
 
+import ant.tasks.AntUtil
+
 class OrchestraDeployer {
 
-    AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
 
     String orchestraHome
     String packageFilePath

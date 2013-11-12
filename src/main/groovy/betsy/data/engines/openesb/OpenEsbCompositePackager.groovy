@@ -1,10 +1,11 @@
 package betsy.data.engines.openesb
 
+import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 
 class OpenEsbCompositePackager {
 
-    AntBuilder ant = new AntBuilder()
+    final AntBuilder ant = AntUtil.builder()
     BetsyProcess process
 
     void build() {

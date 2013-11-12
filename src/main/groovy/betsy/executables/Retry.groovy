@@ -2,10 +2,13 @@ package betsy.executables
 
 import betsy.data.BetsyProcess
 import betsy.virtual.host.exceptions.TemporaryFailedTestException
+import org.apache.log4j.Logger
 
 class Retry {
 
-    AntBuilder ant
+    private static Logger log = Logger.getLogger(Retry)
+
+    final AntBuilder ant
     BetsyProcess process
 
     public void atMostThreeTimes(Closure closure) {
@@ -16,11 +19,9 @@ class Retry {
             testCount++
 
             try {
-                String repeat = testCount > 1 ? "Repeating process" : "Process"
-                println repeat
                 closure.run()
             } catch(TemporaryFailedTestException exception) {
-                println("Process ${process} failed on engine ${process.engine}")
+                log.info "Process ${process} failed on engine ${process.engine}"
                 if(testCount <= 1) {
                     testProcess = true
                     // delete old log output by moving to failed tests

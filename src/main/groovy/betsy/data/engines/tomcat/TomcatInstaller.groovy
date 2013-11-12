@@ -1,10 +1,12 @@
 package betsy.data.engines.tomcat
 
+import ant.tasks.AntUtil
 import betsy.Configuration
+import org.apache.log4j.Logger
 
 class TomcatInstaller {
 
-    AntBuilder ant = new AntBuilder()
+    AntBuilder ant = AntUtil.builder()
 
     String destinationDir
     String additionalVmParam = ""
