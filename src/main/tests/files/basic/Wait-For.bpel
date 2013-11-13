@@ -21,7 +21,7 @@
             </copy>
         </assign>
         <wait name="Wait">
-            <for>'P0Y0M0DT0H0M1.0S'</for>
+            <for>concat('P0Y0M0DT0H0M', $InitData.inputPart, '.0S')</for>
         </wait>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
     </sequence>

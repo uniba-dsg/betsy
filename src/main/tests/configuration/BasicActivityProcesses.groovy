@@ -73,7 +73,7 @@ class BasicActivityProcesses {
     public static final BetsyProcess WAIT_FOR = builder.buildBasicActivityProcess(
             "Wait-For", "A receive-reply pair with an intermediate wait that pauses execution for five seconds.",
             [
-                    new TestCase().checkDeployment().sendSync(5, 5)
+                    new TestCase().checkDeployment().sendSync(1, 1)
             ]
     )
 
