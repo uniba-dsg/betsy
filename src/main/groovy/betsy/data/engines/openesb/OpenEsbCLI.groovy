@@ -2,11 +2,13 @@ package betsy.data.engines.openesb
 
 import ant.tasks.AntUtil
 
+import java.nio.file.Path
+
 class OpenEsbCLI {
 
     AntBuilder ant = AntUtil.builder()
 
-    String glassfishHome
+    Path glassfishHome
 
     void stopDomain() {
         ant.exec(executable: "cmd", failOnError: "true") {
@@ -26,8 +28,8 @@ class OpenEsbCLI {
         }
     }
 
-    private String getAsAdmin() {
-        new File("${glassfishHome}/bin").absolutePath + "\\asadmin.bat"
+    private Path getAsAdmin() {
+        glassfishHome.resolve("bin").resolve("asadmin.bat").toAbsolutePath()
     }
 
     void forceRedeploy(String processName, String packageFilePath, String tmpFolder) {

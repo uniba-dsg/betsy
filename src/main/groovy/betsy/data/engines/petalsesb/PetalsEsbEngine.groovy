@@ -5,7 +5,7 @@ import betsy.data.engines.LocalEngine
 import org.apache.log4j.Logger
 
 import java.nio.file.Files
-import java.nio.file.Paths
+import java.nio.file.Path
 
 class PetalsEsbEngine extends LocalEngine {
 
@@ -100,16 +100,19 @@ class PetalsEsbEngine extends LocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
-        String metaDir = "${process.targetBpelPath}/META-INF"
+        Path metaDir = process.targetBpelPath.resolve("META-INF")
         ant.mkdir(dir: metaDir)
-        ant.xslt(in: process.targetBpelFilePath, out: "$metaDir/jbi.xml", style: "$xsltPath/create_jbi_from_bpel.xsl")
+        ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"),
+                style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
 
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService",
+        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
+                token: "TestInterfaceService",
                 value: "${process.name}TestInterfaceService")
 
-        if (Files.exists(Paths.get("${process.targetBpelPath}/TestPartner.wsdl"))) {
-            ant.replace(file: "${process.targetBpelPath}/TestPartner.wsdl", token: "TestService",
-                    value: "${process.name}TestService")
+
+        Path testPartnerWsdl = process.targetBpelPath.resolve("TestPartner.wsdl")
+        if (Files.exists(testPartnerWsdl)) {
+            ant.replace(file: testPartnerWsdl, token: "TestService", value: "${process.name}TestService")
         }
 
         packageBuilder.replaceEndpointTokenWithValue(process)

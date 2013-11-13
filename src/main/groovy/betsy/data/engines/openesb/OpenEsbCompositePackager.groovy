@@ -3,6 +3,8 @@ package betsy.data.engines.openesb
 import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 
+import java.nio.file.Path
+
 class OpenEsbCompositePackager {
 
     final AntBuilder ant = AntUtil.builder()
@@ -15,11 +17,11 @@ class OpenEsbCompositePackager {
 
     private void createComposite() {
         // create composite
-        String compositeDir = "${process.targetTmpPath}/composite"
-        String compositeMetaDir = "$compositeDir/META-INF"
+        Path compositeDir = process.targetTmpPath.resolve("composite")
+        Path compositeMetaDir = compositeDir.resolve("META-INF")
         ant.mkdir dir: compositeMetaDir
-        ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_composite_jbi_from_bpel.xsl")
-        ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/MANIFEST.MF", style: "${process.engine.xsltPath}/create_composite_manifest_from_bpel.xsl")
+        ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_composite_jbi_from_bpel.xsl"))
+        ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("MANIFEST.MF"), style: process.engine.xsltPath.resolve("create_composite_manifest_from_bpel.xsl"))
         ant.copy file: process.targetPackageJarFilePath, todir: compositeDir
         ant.copy file: bindingArchive, todir: compositeDir
 
@@ -32,19 +34,19 @@ class OpenEsbCompositePackager {
         ant.move file: process.targetPackageFilePath, tofile: process.targetPackageJarFilePath
 
         // create http binding
-        String bindingDir = "${process.targetTmpPath}/binding"
-        String bindingMetaDir = "$bindingDir/META-INF"
+        Path bindingDir = process.targetTmpPath.resolve("binding")
+        Path bindingMetaDir = bindingDir.resolve("META-INF")
         ant.mkdir dir: bindingDir
-        ant.xslt(in: process.targetBpelFilePath, out: "$bindingMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_binding_jbi_from_bpel.xsl")
-        String catalogFile = "$bindingMetaDir/catalog.xml"
+        ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
+        Path catalogFile = bindingMetaDir.resolve("catalog.xml")
         ant.mkdir(dir: bindingMetaDir)
         ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
 </catalog>
         """
-        ant.echo file: "$bindingMetaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
+        ant.echo file: bindingMetaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
 
-        ant.copy(todir: "$bindingDir/${process.name}") {
+        ant.copy(todir: bindingDir.resolve(process.name)) {
             fileset(dir: process.targetBpelPath, includes: "*.xsd")
             fileset(dir: process.targetBpelPath, includes: "*.wsdl")
         }
@@ -52,7 +54,7 @@ class OpenEsbCompositePackager {
         ant.zip(file: bindingArchive, basedir: bindingDir)
     }
 
-    private String getBindingArchive() {
-        "${process.targetTmpPath}/sun-http-binding.jar"
+    private Path getBindingArchive() {
+        process.targetTmpPath.resolve("sun-http-binding.jar")
     }
 }

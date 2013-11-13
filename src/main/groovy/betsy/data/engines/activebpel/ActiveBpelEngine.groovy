@@ -5,6 +5,8 @@ import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
 import org.apache.log4j.Logger
 
+import java.nio.file.Path
+
 /*
 * Currently using in-memory mode for the engine
  */
@@ -73,10 +75,10 @@ class ActiveBpelEngine extends LocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // create deployment descriptor
-        String metaDir = process.targetBpelPath + "/META-INF"
-        ant.echo file: "$metaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
-        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.name}.pdd", style: "${getXsltPath()}/active-bpel_to_deploy_xml.xsl")
-        ant.xslt(in: process.bpelFilePath, out: "$metaDir/catalog.xml", style: "${getXsltPath()}/active-bpel_to_catalog.xsl")
+        Path metaDir = process.targetBpelPath.resolve("META-INF")
+        ant.echo file: metaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
+        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.name}.pdd", style: xsltPath.resolve("active-bpel_to_deploy_xml.xsl"))
+        ant.xslt(in: process.bpelFilePath, out: metaDir.resolve("catalog.xml"), style: xsltPath.resolve("active-bpel_to_catalog.xsl"))
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

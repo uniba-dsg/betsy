@@ -22,4 +22,5 @@ class OpenEsb23Engine extends OpenEsbEngine {
                 stateXmlTemplate: "src/main/resources/openesb23/state.xml.template"
         ).install()
     }
+
 }

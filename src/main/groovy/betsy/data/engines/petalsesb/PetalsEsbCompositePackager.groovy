@@ -4,6 +4,8 @@ import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.BetsyProcess
 
+import java.nio.file.Path
+
 class PetalsEsbCompositePackager {
 
     final AntBuilder ant = AntUtil.builder()
@@ -16,10 +18,10 @@ class PetalsEsbCompositePackager {
 
     private void createComposite() {
         // create composite
-        String compositeDir = "${process.targetTmpPath}/composite"
-        String compositeMetaDir = "$compositeDir/META-INF"
+        Path compositeDir = process.targetTmpPath.resolve("composite")
+        Path compositeMetaDir = compositeDir.resolve("META-INF")
         ant.mkdir dir: compositeMetaDir
-        ant.xslt(in: process.targetBpelFilePath, out: "$compositeMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_composite_jbi_from_bpel.xsl")
+        ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_composite_jbi_from_bpel.xsl"))
         ant.move file: process.targetPackageFilePath, todir: compositeDir
         ant.copy file: bindingArchive, todir: compositeDir
 
@@ -31,11 +33,11 @@ class PetalsEsbCompositePackager {
     }
 
     void createBinding() {
-        String bindingDir = "${process.targetTmpPath}/binding"
-        String bindingMetaDir = "$bindingDir/META-INF"
+        Path bindingDir = process.targetTmpPath.resolve("binding")
+        Path bindingMetaDir = bindingDir.resolve("META-INF")
         ant.mkdir dir: bindingDir
         ant.mkdir(dir: bindingMetaDir)
-        ant.xslt(in: process.targetBpelFilePath, out: "$bindingMetaDir/jbi.xml", style: "${process.engine.xsltPath}/create_binding_jbi_from_bpel.xsl")
+        ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
         ant.copy(todir: bindingDir) {
             fileset(dir: process.targetBpelPath, includes: "*.xsd")
             fileset(dir: process.targetBpelPath, includes: "*.wsdl")
@@ -47,8 +49,8 @@ class PetalsEsbCompositePackager {
         ant.zip(file: bindingArchive, basedir: bindingDir)
     }
 
-    private GString getBindingArchive() {
-        "${process.targetTmpPath}/${process.name}Binding.zip"
+    private Path getBindingArchive() {
+        process.targetTmpPath.resolve("${process.name}Binding.zip")
     }
 
 }

@@ -3,6 +3,8 @@ package betsy.data.engines.openesb
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 
+import java.nio.file.Path
+
 class OpenEsbEngine extends LocalEngine {
 
     static final String CHECK_URL = "http://localhost:18181"
@@ -19,9 +21,10 @@ class OpenEsbEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: "${process.targetPath}/logs")
-        ant.copy(todir: "${process.targetPath}/logs") {
-            ant.fileset(dir: "${glassfishHome}/domains/domain1/logs/")
+        Path logsFolder = process.targetPath.resolve("logs")
+        ant.mkdir(dir: logsFolder)
+        ant.copy(todir: logsFolder) {
+            ant.fileset(dir: glassfishHome.resolve("domains/domain1/logs/"))
         }
     }
 
@@ -29,8 +32,8 @@ class OpenEsbEngine extends LocalEngine {
         new OpenEsbCLI(glassfishHome: getGlassfishHome())
     }
 
-    private String getGlassfishHome() {
-        "${serverPath}/glassfish"
+    private Path getGlassfishHome() {
+        serverPath.resolve("glassfish")
     }
 
     @Override
@@ -65,7 +68,7 @@ class OpenEsbEngine extends LocalEngine {
 
         // engine specific steps
         buildDeploymentDescriptor(process)
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"), token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
@@ -75,15 +78,15 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     void buildDeploymentDescriptor(BetsyProcess process) {
-        String metaDir = process.targetBpelPath + "/META-INF"
-        String catalogFile = "$metaDir/catalog.xml"
+        Path metaDir = process.targetBpelPath.resolve("META-INF")
+        Path catalogFile = metaDir.resolve("catalog.xml")
         ant.mkdir(dir: metaDir)
         ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
 </catalog>
         """
-        ant.echo file: "$metaDir/MANIFEST.MF", message: "Manifest-Version: 1.0"
-        ant.xslt(in: process.targetBpelFilePath, out: "$metaDir/jbi.xml", style: "$xsltPath/create_jbi_from_bpel.xsl")
+        ant.echo file: metaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
+        ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"), style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
     }
 
 
