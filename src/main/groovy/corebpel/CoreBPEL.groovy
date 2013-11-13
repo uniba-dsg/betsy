@@ -7,7 +7,7 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
 import java.nio.file.Files
-import java.nio.file.Paths
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
 class CoreBPEL {
@@ -65,15 +65,15 @@ class CoreBPEL {
         tmpl
     }
 
-    String temporaryDirectory
-    String bpelFilePath
+    Path temporaryDirectory
+    Path bpelFilePath
 
     String getBpelFileName() {
-        Paths.get(bpelFilePath).last().toString()
+        bpelFilePath.last().toString()
     }
 
-    String getTemporaryBpelFilePath(String suffix) {
-        "${temporaryDirectory}/${bpelFileName}.${suffix}"
+    Path getTemporaryBpelFilePath(String suffix) {
+        temporaryDirectory.resolve("${bpelFileName}.${suffix}")
     }
 
     public void toCoreBPEL(String[] xslSheets) {
@@ -83,17 +83,17 @@ class CoreBPEL {
     }
 
     public void toCoreBPEL(String xslSheet) {
-        String temporaryBeforeBpelFilePath = getTemporaryBpelFilePath("before_${xslSheet}.bpel")
-        String temporaryAfterBpelFilePath = getTemporaryBpelFilePath("after_${xslSheet}.bpel")
+        Path temporaryBeforeBpelFilePath = getTemporaryBpelFilePath("before_${xslSheet}.bpel")
+        Path temporaryAfterBpelFilePath = getTemporaryBpelFilePath("after_${xslSheet}.bpel")
 
-        Files.createDirectories(Paths.get(temporaryDirectory))
-        Files.copy(Paths.get(bpelFilePath), Paths.get(temporaryBeforeBpelFilePath))
+        Files.createDirectories(temporaryDirectory)
+        Files.copy(bpelFilePath, temporaryBeforeBpelFilePath)
 
         Transformer transformer = getTransformerByName("src/main/xslt/corebpel/${xslSheet}")
         transformer.setParameter("freshPrefix", "newprefix")
-        transformer.transform(new StreamSource(new File(bpelFilePath)), new StreamResult(new File(temporaryAfterBpelFilePath)))
+        transformer.transform(new StreamSource(bpelFilePath.toFile()), new StreamResult(temporaryAfterBpelFilePath.toFile()))
 
-        Files.copy(Paths.get(temporaryAfterBpelFilePath), Paths.get(bpelFilePath), StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(temporaryAfterBpelFilePath, bpelFilePath, StandardCopyOption.REPLACE_EXISTING)
     }
 
 }
