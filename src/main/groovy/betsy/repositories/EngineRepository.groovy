@@ -24,23 +24,40 @@ import betsy.virtual.host.engines.VirtualPetalsEsbEngine
  */
 class EngineRepository {
 
+    private static final BpelgEngine BPELG = new BpelgEngine()
+    private static final OrchestraEngine ORCHESTRA = new OrchestraEngine()
+    private static final ActiveBpelEngine ACTIVE_BPEL = new ActiveBpelEngine()
+    private static final OpenEsb23Engine OPENESB_23 = new OpenEsb23Engine()
+    private static final PetalsEsb41Engine PETALS_41 = new PetalsEsb41Engine()
+    private static final Ode136Engine ODE_136 = new Ode136Engine()
+
     private Repository<Engine> repo = new Repository<>();
 
     public EngineRepository() {
         List<Engine> locals = [
                 new OdeEngine(),
-                new BpelgEngine(),
+                BPELG,
                 new OpenEsbEngine(),
                 new PetalsEsbEngine(),
-                new OrchestraEngine(),
-                new ActiveBpelEngine(),
-                new OpenEsb23Engine(),
-                new PetalsEsb41Engine(),
-                new Ode136Engine(),
+                ORCHESTRA,
+                ACTIVE_BPEL,
+                OPENESB_23,
+                PETALS_41,
+                ODE_136,
                 new OdeInMemoryEngine(),
                 new Ode136InMemoryEngine(),
                 new BpelgInMemoryEngine()
         ]
+
+        List<Engine> recent = [
+                BPELG,
+                ORCHESTRA,
+                ACTIVE_BPEL,
+                OPENESB_23,
+                PETALS_41,
+                ODE_136,
+        ]
+
         List<Engine> vms = [
                 new VirtualOdeEngine(),
                 new VirtualBpelgEngine(),
@@ -54,6 +71,7 @@ class EngineRepository {
         repo.put("ALL", all)
         repo.put("LOCALS", locals)
         repo.put("VMS", vms)
+        repo.put("RECENT", recent)
 
         // insert every engine into the map
         for (Engine engine : repo.getByName("ALL")) {

@@ -35,9 +35,15 @@ Options:
  -h,--help                             Print out usage information
 
 GROUPS for <engines> and <processes> are in CAPITAL LETTERS.
-<engines>: LOCALS, VMS, ALL, ode, bpelg, openesb, petalsesb, orchestra,
+<engines>:
+LOCALS (install and execute all engines locally),
+RECENT (install and execute all engines, in their most recent versions only, locally)
+VMS (install and execute all engines in virtual machines),
+ALL (install and execute all engines, in all versions supported, locally and in virtual machines),
+ode, bpelg, openesb, petalsesb, orchestra,
 active-bpel, openesb23, petalsesb41, ode_v, bpelg_v, openesb_v,
 petalsesb_v, orchestra_v, active_bpel_v
+
 <processes>: ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
 BASIC_ACTIVITIES_RECEIVE, BASIC_ACTIVITIES_INVOKE,
 BASIC_ACTIVITIES_ASSIGN, BASIC_ACTIVITIES, SCOPES_EVENT_HANDLERS,
