@@ -48,7 +48,7 @@ class CoreBPEL {
             "repeatUntil-improved.xsl" //without variable definition and initialization in one step
     ]
 
-    private static Map<String, Templates> nameToTransformation = [:]
+    private static Map<String, Templates> nameToTransformation = new HashMap<>()
 
     private static Transformer getTransformerByName(String name) {
         getTemplatesByName(name).newTransformer()
