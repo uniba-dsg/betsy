@@ -1,6 +1,5 @@
 package soapui
 
-import ant.tasks.AntUtil
 import com.eviware.soapui.tools.SoapUITestCaseRunner
 import org.apache.log4j.Logger
 
@@ -10,8 +9,6 @@ import org.apache.log4j.Logger
 class SoapUiRunner {
 
     private static final Logger log = Logger.getLogger(SoapUiRunner.class)
-
-    final AntBuilder ant = AntUtil.builder()
 
     String soapUiProjectFile
     String reportingDirectory
@@ -28,7 +25,7 @@ class SoapUiRunner {
         try {
             runner.run()
         } catch (Exception ignore) {
-            log.error  "Exception occured during Test ${reportingDirectory}. See test results for more information."
+            log.error "Exception occured during Test ${reportingDirectory}. See test results for more information."
         }
     }
 }
