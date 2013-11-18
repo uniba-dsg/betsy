@@ -1,14 +1,12 @@
 package betsy.executables.reporting
 
 import ant.tasks.AntUtil
+import betsy.data.BetsyProcess
 import betsy.data.TestSuite
 import org.apache.log4j.Logger
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
-import betsy.data.BetsyProcess
-
 
 class MessageExchangesIntoSoapUIReportsMerger {
 
@@ -27,7 +25,7 @@ class MessageExchangesIntoSoapUIReportsMerger {
 
     private void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(BetsyProcess process) {
         Path junitXml = findFileInReports(process.targetReportsPath, "*.xml")
-        if(junitXml == null){
+        if (junitXml == null) {
             log.warn "Cannot merge xml report from process ${process.name} as there is no xml report"
             return
         }
@@ -44,10 +42,9 @@ class MessageExchangesIntoSoapUIReportsMerger {
                 Path txt = findFileInReports(process.targetReportsPath, "*${testcase_name_normalized}*FAILED.txt")
 
                 String previousText = failure.text()
-                String failureText = txt.toFile().readLines().join("""
-""")
+                String failureText = txt.toFile().text
                 // hack for bad encoding issues in jenkins
-                failureText = failureText.replaceAll("ü","ue").replaceAll("ä","ae").replaceAll("ö","oe")
+                failureText = failureText.replaceAll("ü", "ue").replaceAll("ä", "ae").replaceAll("ö", "oe")
 
                 String newText = """$previousText
 
@@ -62,7 +59,7 @@ $failureText"""
 
     private Path findFileInReports(Path reportsDirectory, String glob) {
         log.info "Finding files in dir ${reportsDirectory} with pattern ${glob}"
-        if(!Files.exists(reportsDirectory)) {
+        if (!Files.exists(reportsDirectory)) {
             log.warn "Folder ${reportsDirectory} does not exist"
 
             return null

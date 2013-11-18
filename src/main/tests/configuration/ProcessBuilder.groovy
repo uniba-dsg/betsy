@@ -5,8 +5,6 @@ import betsy.data.TestCase
 
 class ProcessBuilder {
 
-    public final int DECLARED_FAULT_CODE = -6
-
     public final int UNDECLARED_FAULT_CODE = -5
 
     public static BetsyProcess buildProcess(String name, List<TestCase> testCases) {
@@ -51,7 +49,8 @@ class ProcessBuilder {
         buildProcess("basic/${name}", testCases)
     }
 
-    public static BetsyProcess buildStructuredActivityProcess(String name, String description, List<TestCase> testCases) {
+    public
+    static BetsyProcess buildStructuredActivityProcess(String name, String description, List<TestCase> testCases) {
         BetsyProcess process = buildStructuredActivityProcess(name, testCases)
         process.description = description
         return process

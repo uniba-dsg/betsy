@@ -1,9 +1,6 @@
 package ant.tasks
 
-import org.apache.log4j.Logger
-import org.apache.log4j.MDC
 import org.apache.tools.ant.BuildEvent
-import org.apache.tools.ant.Project
 import org.apache.tools.ant.Task
 import org.apache.tools.ant.listener.Log4jListener
 
@@ -12,7 +9,7 @@ class AntUtil {
     private static AntBuilder ant
 
     public static AntBuilder builder() {
-        if(ant == null) {
+        if (ant == null) {
             ant = new AntBuilder()
 
             //removing all registered build listeners, including default (that writes to console)
@@ -65,5 +62,6 @@ class AntUtil {
 
         return ant
     }
+
 
 }

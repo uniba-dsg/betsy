@@ -2,14 +2,16 @@ package betsy.data.engines.bpelg
 
 import ant.tasks.AntUtil
 
+import java.nio.file.Path
+
 class BpelgDeployer {
 
-    AntBuilder ant = AntUtil.builder()
+    private static final AntBuilder ant = AntUtil.builder()
 
-    String deploymentDirPath
+    Path deploymentDirPath
     String processName
-    String packageFilePath
-    String logFilePath
+    Path packageFilePath
+    Path logFilePath
     int timeoutInSeconds = 100
 
     public void deploy() {
@@ -18,7 +20,7 @@ class BpelgDeployer {
         ant.sequential() {
             ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second") {
                 and {
-                    available file: "${deploymentDirPath}/work/ae_temp_${processName}_zip/deploy.xml"
+                    available file: deploymentDirPath.resolve("work/ae_temp_${processName}_zip/deploy.xml")
                     or {
                         resourcecontains(resource: logFilePath, substring: "Deployment successful")
                         resourcecontains(resource: logFilePath, substring: "Deployment failed")
@@ -26,5 +28,17 @@ class BpelgDeployer {
                 }
             }
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return "BpelgDeployer{" +
+                "deploymentDirPath='" + deploymentDirPath + '\'' +
+                ", processName='" + processName + '\'' +
+                ", packageFilePath='" + packageFilePath + '\'' +
+                ", logFilePath='" + logFilePath + '\'' +
+                ", timeoutInSeconds=" + timeoutInSeconds +
+                '}';
     }
 }

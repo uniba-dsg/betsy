@@ -16,8 +16,8 @@ class HtmlAnalytics {
     }
 
     void toHtmlReport(String filename) {
-        def engine = new SimpleTemplateEngine()
-		File file = new File("src" + File.separator + "main" + File.separator + "groovy" + File.separator + "betsy" + File.separator + "executables" + File.separator + "analytics" + File.separator + "html" + File.separator + "HtmlAnalytics.template")
+        SimpleTemplateEngine engine = new SimpleTemplateEngine()
+        File file = new File("src" + File.separator + "main" + File.separator + "groovy" + File.separator + "betsy" + File.separator + "executables" + File.separator + "analytics" + File.separator + "html" + File.separator + "HtmlAnalytics.template")
         def template = engine.createTemplate(file.text).make([
                 "report": report
         ])

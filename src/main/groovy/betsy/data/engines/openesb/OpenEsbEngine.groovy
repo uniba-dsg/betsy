@@ -32,7 +32,7 @@ class OpenEsbEngine extends LocalEngine {
         new OpenEsbCLI(glassfishHome: getGlassfishHome())
     }
 
-    private Path getGlassfishHome() {
+    protected Path getGlassfishHome() {
         serverPath.resolve("glassfish")
     }
 
@@ -68,7 +68,8 @@ class OpenEsbEngine extends LocalEngine {
 
         // engine specific steps
         buildDeploymentDescriptor(process)
-        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"), token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
+                token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
@@ -86,7 +87,8 @@ class OpenEsbEngine extends LocalEngine {
 </catalog>
         """
         ant.echo file: metaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
-        ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"), style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
+        ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"),
+                style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
     }
 
 

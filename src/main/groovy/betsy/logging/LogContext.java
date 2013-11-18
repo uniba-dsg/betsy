@@ -1,10 +1,8 @@
-package betsy.logging
+package betsy.logging;
 
-import org.apache.log4j.MDC
+import org.apache.log4j.MDC;
 
-class LogContext {
-
-    public static final String CONTEXT_KEY_PATH = "path"
+public class LogContext {
 
     public static void init() {
         // default log context is BETSY
@@ -12,11 +10,12 @@ class LogContext {
     }
 
     public static String getContext() {
-        return MDC.get(CONTEXT_KEY_PATH);
+        return MDC.get(CONTEXT_KEY_PATH).toString();
     }
 
     public static void setContext(String context) {
         MDC.put(CONTEXT_KEY_PATH, context.replace("\\", "/"));
     }
 
+    public static final String CONTEXT_KEY_PATH = "path";
 }

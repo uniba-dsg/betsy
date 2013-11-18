@@ -2,14 +2,16 @@ package betsy.data.engines.petalsesb
 
 import ant.tasks.AntUtil
 
+import java.nio.file.Path
+
 class PetalsEsbDeployer {
 
     AntBuilder ant = AntUtil.builder()
 
-    String deploymentDirPath
+    Path deploymentDirPath
     String processName
-    String packageFilePath
-    String logFilePath
+    Path packageFilePath
+    Path logFilePath
     int timeoutInSeconds = 100
 
     public void deploy() {
@@ -17,7 +19,7 @@ class PetalsEsbDeployer {
 
         ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second") {
             and {
-                not() { available(file: "$deploymentDirPath/${processName}Application.zip") }
+                not() { available(file: deploymentDirPath.resolve("${processName}Application.zip")) }
                 or {
                     resourcecontains(resource: logFilePath,
                             substring: "Service Assembly '${processName}Application' started")

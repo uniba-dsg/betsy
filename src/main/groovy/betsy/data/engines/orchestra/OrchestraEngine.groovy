@@ -42,16 +42,16 @@ class OrchestraEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: "${process.targetPath}/logs")
-        ant.copy(todir: "${process.targetPath}/logs") {
-            ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
+        ant.mkdir(dir: process.targetLogsPath)
+        ant.copy(todir: process.targetLogsPath) {
+            ant.fileset(dir: tomcat.tomcatLogsDir)
         }
     }
 
     @Override
     void deploy(BetsyProcess process) {
         new OrchestraDeployer(
-                orchestraHome: "${serverPath}/orchestra-cxf-tomcat-4.9.0",
+                orchestraHome: serverPath.resolve("orchestra-cxf-tomcat-4.9.0"),
                 packageFilePath: process.targetPackageFilePath).deploy()
     }
 

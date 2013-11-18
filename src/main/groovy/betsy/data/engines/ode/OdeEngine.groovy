@@ -4,6 +4,8 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
 
+import java.nio.file.Path
+
 class OdeEngine extends LocalEngine {
 
     @Override
@@ -16,8 +18,8 @@ class OdeEngine extends LocalEngine {
         "${tomcat.tomcatUrl}/ode/processes/${process.name}TestInterface"
     }
 
-    String getDeploymentDir() {
-        "${tomcat.tomcatDir}/webapps/ode/WEB-INF/processes"
+    Path getDeploymentDir() {
+        tomcat.tomcatDir.resolve("webapps/ode/WEB-INF/processes")
     }
 
     Tomcat getTomcat() {
@@ -36,9 +38,9 @@ class OdeEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: "${process.targetPath}/logs")
-        ant.copy(todir: "${process.targetPath}/logs") {
-            ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
+        ant.mkdir(dir: process.targetLogsPath)
+        ant.copy(todir: process.targetLogsPath) {
+            ant.fileset(dir: tomcat.tomcatLogsDir)
         }
     }
 
@@ -50,7 +52,7 @@ class OdeEngine extends LocalEngine {
     @Override
     void deploy(BetsyProcess process) {
         new OdeDeployer(processName: process.name,
-                logFilePath: "${tomcat.tomcatDir}/logs/ode.log",
+                logFilePath: tomcat.tomcatLogsDir.resolve("ode.log"),
                 deploymentDirPath: getDeploymentDir(),
                 packageFilePath: process.targetPackageFilePath
         ).deploy()
@@ -61,9 +63,9 @@ class OdeEngine extends LocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
-        ant.xslt(in: process.bpelFilePath, out: "${process.targetBpelPath}/deploy.xml", style: "$xsltPath/bpel_to_ode_deploy_xml.xsl")
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
-        ant.replace(file: "${process.targetBpelPath}/deploy.xml", token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        ant.xslt(in: process.bpelFilePath, out: process.targetBpelPath.resolve("deploy.xml"), style: xsltPath.resolve("bpel_to_ode_deploy_xml.xsl"))
+        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"), token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        ant.replace(file: process.targetBpelPath.resolve("deploy.xml"), token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

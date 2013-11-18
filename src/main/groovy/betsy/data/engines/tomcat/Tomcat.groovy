@@ -1,7 +1,9 @@
 package betsy.data.engines.tomcat
 
 import ant.tasks.AntUtil
+import betsy.tasks.ConsoleTasks
 
+import java.nio.file.Path
 /**
  * Responsible for starting and stopping tomcat as well as all tomcat related paths and properties.
  */
@@ -18,12 +20,16 @@ class Tomcat {
      * The directory in which the tomcat has its directory.
      * Should contain a directory called <code>apache-tomcat-7.0.26</code>
      */
-    String engineDir
+    Path engineDir
 
     String tomcatName = "apache-tomcat-7.0.26"
 
-    String getTomcatDir() {
-        "$engineDir/$tomcatName"
+    Path getTomcatDir() {
+        engineDir.resolve(tomcatName)
+    }
+
+    Path getTomcatLogsDir() {
+        tomcatDir.resolve("logs")
     }
 
     String getTomcatUrl() {
@@ -34,26 +40,19 @@ class Tomcat {
      * Start tomcat and wait until it responds to the <code>tomcatUrl</code>
      */
     void startup() {
-        ant.exec(executable: "cmd", dir: engineDir) {
-            arg(value: "/c")
-            arg(value: new File("tomcat_startup.bat"))
-        }
+        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(engineDir, "tomcat_startup.bat"))
+
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             http url: tomcatUrl
         }
+
     }
 
     /**
      * Shutdown the tomcat if running.
      */
     void shutdown() {
-        // force shutdown
-        ant.exec(executable: "cmd") {
-            arg(value: "/c")
-            arg(value: "taskkill")
-            arg(value: '/FI')
-            arg(value: "WINDOWTITLE eq Tomcat")
-        }
+        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"))
     }
 
     /**

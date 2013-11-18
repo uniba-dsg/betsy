@@ -36,14 +36,15 @@ class CoreBPELEnumerator {
         }
         Files.createDirectories(outputFolder)
 
-        List<BetsyProcess> processes = new ProcessRepository().getByNames(["BASIC_ACTIVITIES", "SCOPES", "STRUCTURED_ACTIVITIES"] as String[])
+        String[] groups = ["BASIC_ACTIVITIES", "SCOPES", "STRUCTURED_ACTIVITIES"]
+        List<BetsyProcess> processes = new ProcessRepository().getByNames(groups)
 
-        CoreBPEL.XSL_SHEETS.each { transformation ->
+        for (String transformation : CoreBPEL.XSL_SHEETS) {
 
             Path transformationDirectory = outputFolder.resolve(transformation)
             Files.createDirectories(transformationDirectory)
 
-            processes.each { process ->
+            for (BetsyProcess process : processes) {
 
                 Path processDirectory = transformationDirectory.resolve(process.name)
                 Files.createDirectories(processDirectory)
@@ -53,18 +54,17 @@ class CoreBPELEnumerator {
 
                 // copy BPEL file
                 Path targetBpelFilePath = bpelDirectory.resolve(process.bpelFileName)
-                Files.copy(Paths.get(process.bpelFilePath), targetBpelFilePath)
+                Files.copy(process.bpelFilePath, targetBpelFilePath)
 
                 // copy WSDL files and XSD files
-                process.wsdlPaths.each { wsdl ->
-                    Path wsdlPath = Paths.get(wsdl)
-                    Files.copy(wsdlPath, processDirectory.resolve(wsdlPath.last().toString()))
+                for (Path wsdl : process.wsdlPaths) {
+                    Files.copy(wsdl, processDirectory.resolve(wsdl.last().toString()))
                 }
 
                 Path tmpDirectory = processDirectory.resolve("tmp")
                 Files.createDirectories(tmpDirectory)
 
-                new CoreBPEL(temporaryDirectory: tmpDirectory.toFile(), bpelFilePath: targetBpelFilePath).toCoreBPEL([transformation])
+                new CoreBPEL(temporaryDirectory: tmpDirectory, bpelFilePath: targetBpelFilePath).toCoreBPEL([transformation])
             }
 
         }

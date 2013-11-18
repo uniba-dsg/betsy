@@ -3,6 +3,9 @@ package betsy
 import betsy.virtual.host.exceptions.ConfigurationException
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class Configuration {
 
     private static ConfigObject config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
@@ -59,6 +62,10 @@ class Configuration {
 
     public static String get(final String key) {
         return getValueAsString(key);
+    }
+
+    public static Path getPath(final String key) {
+        return Paths.get(get(key));
     }
 
     public static void set(final String key, final Object value) {

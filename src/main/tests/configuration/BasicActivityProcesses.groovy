@@ -206,7 +206,6 @@ class BasicActivityProcesses {
     public static final BetsyProcess RECEIVE_CONFLICTING_RECEIVE_FAULT = builder.buildBasicActivityProcess(
             "Receive-ConflictingReceiveFault", "An asynchronous receive that initiates a correlationSet, followed by a flow with two sequences that contain synchronous receive-reply pair for the same operation and correlationSet. Should trigger a conflictingReceive fault.",
             [
-                    // TODO muss das hier nicht ein sendAsync sein als erstes?
                     new TestCase().checkDeployment().sendSync(1).waitFor(1000).sendSync(1, new SoapFaultTestAssertion(faultString: "conflictingReceive"))
             ]
     )
@@ -533,7 +532,8 @@ class BasicActivityProcesses {
             ]
     )
 
-    public static final BetsyProcess ASSIGN_COPY_DO_XSL_TRANSFORM_SUB_LANGUAGE_EXECUTION_FAULT = builder.buildProcessWithXslt(
+    public static
+    final BetsyProcess ASSIGN_COPY_DO_XSL_TRANSFORM_SUB_LANGUAGE_EXECUTION_FAULT = builder.buildProcessWithXslt(
             "basic/Assign-Copy-DoXslTransform-SubLanguageExecutionFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the actual stylesheet has errors.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "subLanguageExecutionFault"))

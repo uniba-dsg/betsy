@@ -1,21 +1,23 @@
 package betsy.data.engines.orchestra
 
 import ant.tasks.AntUtil
+import betsy.Configuration
+import betsy.tasks.ConsoleTasks
+
+import java.nio.file.Path
 
 class OrchestraDeployer {
 
     final AntBuilder ant = AntUtil.builder()
 
-    String orchestraHome
-    String packageFilePath
+    Path orchestraHome
+    Path packageFilePath
 
     void deploy() {
-        ant.exec(executable: "cmd", dir: orchestraHome) {
-            arg(value: "/c")
-            arg(value: "ant")
-            arg(value: "deploy")
-            arg(value: "-Dbar=${new File(packageFilePath).absolutePath}")
-        }
+        Path antBinFolder = Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
+        Path antBat = antBinFolder.resolve("ant.bat")
+
+        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(orchestraHome, antBat).values("deploy", "-Dbar=${packageFilePath.toAbsolutePath()}"))
     }
 
 }

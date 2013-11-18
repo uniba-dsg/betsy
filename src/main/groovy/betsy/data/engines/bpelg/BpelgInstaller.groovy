@@ -4,11 +4,14 @@ import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class BpelgInstaller {
 
-    AntBuilder ant = AntUtil.builder()
+    private static final AntBuilder ant = AntUtil.builder()
 
-    String serverDir = "server/bpelg"
+    Path serverDir = Paths.get("server/bpelg")
 
     String fileName = "bpel-g-5.3.war"
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
@@ -25,13 +28,27 @@ class BpelgInstaller {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: "${Configuration.get("downloads.dir")}/${fileName}", dest: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/bpel-g"
-        ant.copy file: "src/main/resources/bpelg/log4j.properties", todir: "${serverDir}/${tomcatInstaller.tomcatName}/webapps/bpel-g/WEB-INF", overwrite: true
+        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
+                dest: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps").resolve("bpel-g")
+        ant.copy file: "src/main/resources/bpelg/log4j.properties",
+                todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/bpel-g/WEB-INF"), overwrite: true
 
         ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: databaseDownloadUrl
         }
-        ant.copy file: "${Configuration.get("downloads.dir")}/${databaseName}", tofile: "${serverDir}/${tomcatInstaller.tomcatName}/lib/${databaseName}"
+        ant.copy file: Configuration.getPath("downloads.dir").resolve(databaseName),
+                tofile: serverDir.resolve(tomcatInstaller.tomcatName).resolve("lib").resolve(databaseName)
     }
 
+
+    @Override
+    public String toString() {
+        return "BpelgInstaller{" +
+                "serverDir='" + serverDir + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", downloadUrl='" + downloadUrl + '\'' +
+                ", databaseName='" + databaseName + '\'' +
+                ", databaseDownloadUrl='" + databaseDownloadUrl + '\'' +
+                '}';
+    }
 }

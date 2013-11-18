@@ -2,16 +2,17 @@ package betsy.data.engines.tomcat
 
 import ant.tasks.AntUtil
 import betsy.Configuration
-import org.apache.log4j.Logger
+
+import java.nio.file.Path
 
 class TomcatInstaller {
 
     AntBuilder ant = AntUtil.builder()
 
-    String destinationDir
+    Path destinationDir
     String additionalVmParam = ""
 
-    String tomcatFileName = "apache-tomcat-7.0.26-windows-x64.zip"
+    String tomcatArchiveFileName = "apache-tomcat-7.0.26-windows-x64.zip"
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-7.0.26-windows-x64.zip"
     String tomcatName = "apache-tomcat-7.0.26"
 
@@ -22,23 +23,28 @@ class TomcatInstaller {
         }
         ant.delete dir: destinationDir
         ant.mkdir dir: destinationDir
-        ant.unzip src: "${Configuration.get("downloads.dir")}/${tomcatFileName}", dest: destinationDir
 
-        ant.echo file: "${destinationDir}/tomcat_startup.bat", message: getStartupScript()
-        ant.echo file: "${destinationDir}/tomcat_shutdown.bat", message: getShutdownScript()
+        ant.unzip src: Configuration.getPath("downloads.dir").resolve(tomcatArchiveFileName), dest: destinationDir
+
+        ant.echo file: destinationDir.resolve("tomcat_startup.bat"), message: getStartupScript()
+        ant.echo file: destinationDir.resolve("tomcat_shutdown.bat"), message: getShutdownScript()
     }
 
-    public String getTomcatDestinationDir() {
-        "${destinationDir}/${tomcatName}"
+    public Path getTomcatDestinationDir() {
+        destinationDir.resolve(tomcatName)
+    }
+
+    public Path getTomcatBinFolder() {
+        tomcatDestinationDir.resolve("bin")
     }
 
     public String getStartupScript() {
         """SET "CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
-cd ${tomcatName}/bin && call startup.bat"""
+cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat"""
     }
 
     public String getShutdownScript() {
-        "cd ${tomcatName}/bin && call shutdown.bat"
+        "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat"
     }
 
 }

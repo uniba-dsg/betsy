@@ -2,7 +2,7 @@ package betsy.repositories
 
 class Repository<T> {
 
-    private Map<String, List<T>> repository = [:]
+    private Map<String, List<T>> repository = new HashMap<>()
 
     public void put(String key, List<T> values) {
         repository.put(key, values);

@@ -13,11 +13,12 @@ import betsy.virtual.common.exceptions.ConnectionException;
 import betsy.virtual.common.exceptions.DeployException;
 import betsy.virtual.common.messages.deploy.DeployRequest;
 import betsy.virtual.common.messages.deploy.DeployResponse;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class DeployOperation {
 
@@ -29,44 +30,46 @@ public class DeployOperation {
         }
         log.info("Received file is valid");
 
-        String pathToPackageFile = saveFileToDisk(request);
+        Path pathToPackageFile = saveFileToDisk(request);
 
         log.info("Calling deployer for engine " + request.getEngineName());
+        Path deploymentDirPath = Paths.get(request.getDeploymentDir());
+        Path engineLogfileDirPath = Paths.get(request.getEngineLogfileDir());
         if ("petalsesb_v".equals(request.getEngineName())) {
             PetalsEsbDeployer deployer = new PetalsEsbDeployer();
-            deployer.setDeploymentDirPath(request.getDeploymentDir());
+            deployer.setDeploymentDirPath(deploymentDirPath);
             deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(request.getEngineLogfileDir());
+            deployer.setLogFilePath(engineLogfileDirPath);
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.setTimeoutInSeconds(request.getDeployTimeout());
             deployer.deploy();
         } else if ("ode_v".equals(request.getEngineName())) {
             OdeDeployer deployer = new OdeDeployer();
-            deployer.setDeploymentDirPath(request.getDeploymentDir());
+            deployer.setDeploymentDirPath(deploymentDirPath);
             deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(request.getEngineLogfileDir());
+            deployer.setLogFilePath(engineLogfileDirPath);
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.setTimeoutInSeconds(request.getDeployTimeout());
             deployer.deploy();
         } else if ("bpelg_v".equals(request.getEngineName())) {
             BpelgDeployer deployer = new BpelgDeployer();
-            deployer.setDeploymentDirPath(request.getDeploymentDir());
+            deployer.setDeploymentDirPath(deploymentDirPath);
             deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(request.getEngineLogfileDir());
+            deployer.setLogFilePath(engineLogfileDirPath);
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.setTimeoutInSeconds(request.getDeployTimeout());
             deployer.deploy();
         } else if ("active_bpel_v".equals(request.getEngineName())) {
             ActiveBpelDeployer deployer = new ActiveBpelDeployer();
-            deployer.setDeploymentDirPath(request.getDeploymentDir());
+            deployer.setDeploymentDirPath(deploymentDirPath);
             deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(request.getEngineLogfileDir());
+            deployer.setLogFilePath(engineLogfileDirPath);
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.setTimeoutInSeconds(request.getDeployTimeout());
             deployer.deploy();
         } else if ("orchestra_v".equals(request.getEngineName())) {
             OrchestraDeployer deployer = new OrchestraDeployer();
-            deployer.setOrchestraHome(request.getDeploymentDir());
+            deployer.setOrchestraHome(deploymentDirPath);
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.deploy();
         } else if ("openesb_v".equals(request.getEngineName())) {
@@ -85,18 +88,16 @@ public class DeployOperation {
         return new DeployResponse();
     }
 
-    public static String saveFileToDisk(DeployRequest operation) throws DeployException {
+    public static Path saveFileToDisk(DeployRequest operation) throws DeployException {
         // write data to temp dir first
-        File tmpDeployFile = new File("tmp", operation.getFileMessage()
-                .getFilename());
+        Path tmpDeployFile = Paths.get("tmp").resolve(operation.getFileMessage().getFilename());
         try {
-            FileUtils.writeByteArrayToFile(tmpDeployFile, operation.getFileMessage()
-                    .getData());
+            Files.write(tmpDeployFile, operation.getFileMessage().getData());
             log.info("Received file is stored to disk");
-            return tmpDeployFile.getAbsolutePath();
-        } catch (IOException exception1) {
+            return tmpDeployFile.toAbsolutePath();
+        } catch (IOException e) {
             throw new DeployException("Couldn't write the container data to "
-                    + "the local disk:", exception1);
+                    + "the local disk:", e);
         }
     }
 

@@ -1,5 +1,7 @@
 package betsy.executables.reporting
 
+import java.nio.file.Path
+
 class JUnitXmlResultToCsvRow {
 
     /**
@@ -29,17 +31,17 @@ class JUnitXmlResultToCsvRow {
     /**
      * path to junit result xml file (READ)
      */
-    String xml
+    Path xml
 
     /**
      * path to resulting csv file (WRITE)
      */
-    String csv
+    Path csv
 
     public void create() {
 
-        new File(csv).withPrintWriter { w ->
-            def testsuites = new XmlSlurper(false, false).parse(new File(xml))
+        csv.toFile().withPrintWriter { w ->
+            def testsuites = new XmlSlurper(false, false).parse(xml.toFile())
             testsuites.testsuite.each { testSuite ->
 
                 String pkg = testSuite.@package.text()

@@ -2,6 +2,7 @@ package betsy.data.engines.petalsesb
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
+import betsy.tasks.ConsoleTasks
 import org.apache.log4j.Logger
 
 import java.nio.file.Files
@@ -23,31 +24,41 @@ class PetalsEsbEngine extends LocalEngine {
         "$CHECK_URL/petals/services/${process.name}TestInterfaceService"
     }
 
-    String getFolder() {
+    Path getPetalsFolder() {
+        serverPath.resolve(getPetalsFolderName())
+    }
+
+    protected String getPetalsFolderName() {
         "petals-esb-4.0"
     }
 
-    String getPetalsLog() {
-        "${getServerPath()}/${getFolder()}/logs/petals.log"
+    Path getPetalsLogsFolder() {
+        petalsFolder.resolve("logs")
+    }
+
+    Path getPetalsLogFile() {
+        petalsLogsFolder.resolve("petals.log")
+    }
+
+    Path getPetalsBinFolder() {
+        petalsFolder.resolve("bin")
     }
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: "${process.targetPath}/logs")
-        ant.copy(file: getPetalsLog(), todir: "${process.targetPath}/logs")
+        ant.mkdir(dir: process.targetLogsPath)
+        ant.copy(file: petalsLogFile, todir: process.targetLogsPath)
     }
 
     @Override
     void startup() {
-        ant.exec(executable: "cmd", failOnError: "true", dir: "${getServerPath()}/${getFolder()}/bin") {
-            arg(value: "/c")
-            arg(value: "petals-esb.bat")
-        }
+        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(petalsBinFolder, "petals-esb.bat"))
+
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             and {
-                resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                resourcecontains(resource: petalsLogFile,
                         substring: "[Petals.Container.Components.petals-bc-soap] : Component started")
-                resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                resourcecontains(resource: petalsLogFile,
                         substring: "[Petals.Container.Components.petals-se-bpel] : Component started")
             }
         }
@@ -55,7 +66,7 @@ class PetalsEsbEngine extends LocalEngine {
         try {
             ant.fail(message: "SOAP BC not installed correctly") {
                 condition() {
-                    resourcecontains(resource: "${getServerPath()}/${getFolder()}/logs/petals.log",
+                    resourcecontains(resource: petalsLogFile,
                             substring: "[Petals.AutoLoaderService] : Error during the auto- installation of a component")
                 }
             }
@@ -69,12 +80,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void shutdown() {
-        ant.exec(executable: "cmd") {
-            arg(value: "/c")
-            arg(value: "taskkill")
-            arg(value: '/FI')
-            arg(value: "WINDOWTITLE eq OW2*")
-        }
+        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(path, "taskkill").values("/FI", "WINDOWTITLE eq OW2*"))
     }
 
     @Override
@@ -86,13 +92,13 @@ class PetalsEsbEngine extends LocalEngine {
     void deploy(BetsyProcess process) {
         new PetalsEsbDeployer(processName: process.name,
                 packageFilePath: process.targetPackageCompositeFilePath,
-                logFilePath: getPetalsLog(),
+                logFilePath: petalsLogFile,
                 deploymentDirPath: getInstallationDir()
         ).deploy()
     }
 
-    String getInstallationDir() {
-        "${getServerPath()}/${getFolder()}/install"
+    Path getInstallationDir() {
+        petalsFolder.resolve("install")
     }
 
     @Override

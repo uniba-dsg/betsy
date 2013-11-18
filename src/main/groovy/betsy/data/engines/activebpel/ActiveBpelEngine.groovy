@@ -6,10 +6,12 @@ import betsy.data.engines.tomcat.Tomcat
 import org.apache.log4j.Logger
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 /*
 * Currently using in-memory mode for the engine
  */
+
 class ActiveBpelEngine extends LocalEngine {
 
     private static final Logger log = Logger.getLogger(ActiveBpelEngine.class)
@@ -28,24 +30,24 @@ class ActiveBpelEngine extends LocalEngine {
         new Tomcat(engineDir: serverPath, tomcatName: "apache-tomcat-5.5.36")
     }
 
-    String getDeploymentDir() {
-        "${tomcat.tomcatDir}/bpr"
+    Path getDeploymentDir() {
+        tomcat.tomcatDir.resolve("bpr")
     }
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: "${process.targetPath}/logs")
-        ant.copy(todir: "${process.targetPath}/logs") {
-            ant.fileset(dir: "${tomcat.tomcatDir}/logs/")
+        ant.mkdir(dir: process.targetLogsPath)
+        ant.copy(todir: process.targetLogsPath) {
+            ant.fileset(dir: tomcat.tomcatLogsDir)
         }
-        ant.copy(file: getAeDeploymentLog(), todir: "${process.targetPath}/logs")
+        ant.copy(file: getAeDeploymentLog(), todir: process.targetLogsPath)
     }
 
-    private static String getAeDeploymentLog() {
+    private static Path getAeDeploymentLog() {
         String homeDir = System.getProperty("user.home");
         homeDir = homeDir.endsWith(File.separator) ?: homeDir + File.separator;
 
-        "$homeDir/AeBpelEngine/deployment-logs/aeDeployment.log"
+        Paths.get("$homeDir/AeBpelEngine/deployment-logs/aeDeployment.log")
     }
 
     @Override

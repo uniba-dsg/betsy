@@ -1,7 +1,11 @@
 package betsy.executables.reporting;
 
 import betsy.data.TestSuite
-import betsy.data.engines.Engine;
+import betsy.data.engines.Engine
+
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Path;
 
 public class TestStepDurationCsvReports {
 
@@ -9,14 +13,14 @@ public class TestStepDurationCsvReports {
      * Represents one row in the resulting csv file
      */
     static class ProcessCsvDuration {
-        File csvFile
+        Path csvFile
         String engine
         String name
 
         String toRow() {
             //load and split the file
-            String[] lines = csvFile.text.split('\n')
-            String durationLine = lines[1]
+            List<String> lines = Files.readAllLines(csvFile, StandardCharsets.UTF_8)
+            String durationLine = lines.get(1)
 
             return [engine, name, durationLine].join(";")
         }
@@ -25,26 +29,27 @@ public class TestStepDurationCsvReports {
     /**
      * path to resulting csv file (WRITE)
      */
-    String csv
+    Path csv
 
     TestSuite tests
 
     public void create() {
-        new File(csv).withPrintWriter { w ->
+        // TODO code to create durations.csv per process is lost somehow
+        return
+
+        csv.toFile().withPrintWriter { w ->
             w.println("Engine;Process;Total;Build;Installation;Startup;Deploy;Test;Shutdown")
         }
 
         tests.engines.each { Engine engine ->
             engine.processes.each { process ->
-                File processDurationFile = new File("${process.getTargetPath()}/durations.csv")
-                if(processDurationFile.isFile()) {
-                    new File(csv).withWriterAppend { w ->
-                        ProcessCsvDuration csvRow = new ProcessCsvDuration(
-                                csvFile: processDurationFile,
-                                name: process.normalizedId,
-                                engine: process.engine.toString())
-                        w.println(csvRow.toRow())
-                    }
+                Path processDurationFile = process.targetPath.resolve("durations.csv")
+                csv.toFile().withWriterAppend { w ->
+                    ProcessCsvDuration csvRow = new ProcessCsvDuration(
+                            csvFile: processDurationFile,
+                            name: process.normalizedId,
+                            engine: process.engine.toString())
+                    w.println(csvRow.toRow())
                 }
             }
         }
