@@ -67,7 +67,7 @@ class Main {
                 betsy.execute()
             } catch (Exception e) {
                 Throwable cleanedException = StackTraceUtils.deepSanitize(e)
-                log.error cleanedException
+                log.error "something went wrong during execution", cleanedException
             }
 
             // open results in browser
