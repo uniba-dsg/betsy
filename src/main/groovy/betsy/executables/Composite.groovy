@@ -10,6 +10,7 @@ import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.Stopwatch
 import betsy.logging.LogContext
 import org.apache.log4j.Logger
+import org.apache.log4j.MDC
 import soapui.SoapUiRunner
 
 import java.nio.file.Path
@@ -28,6 +29,9 @@ class Composite {
 
         TestSuite testSuite = context.testSuite
 
+        Progress progress = new Progress(testSuite.processesCount)
+        MDC.put("progress", progress.toString())
+
         // prepare test suite
         // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
         testSuite.prepare()
@@ -43,6 +47,10 @@ class Composite {
                 log engine.path, {
                     engine.prepare()
                     for (BetsyProcess process : engine.processes) {
+
+                        progress.next()
+                        MDC.put("progress", progress.toString())
+
                         executeProcess(process)
                     }
                 }
@@ -58,8 +66,6 @@ class Composite {
     }
 
     protected void executeProcess(BetsyProcess process) {
-        log.info "Process ${process.engine.processes.indexOf(process) + 1} of ${process.engine.processes.size()}"
-
         new Retry(process: process).atMostThreeTimes {
             log process.targetPath, {
                 try {
@@ -83,7 +89,6 @@ class Composite {
 
     protected void deploy(BetsyProcess process) {
         log "${process.targetPath}/deploy", {
-            log.info "Deploying process ${process} to engine ${process.engine}"
             process.engine.deploy(process)
         }
     }

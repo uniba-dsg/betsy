@@ -1,7 +1,7 @@
 package betsy.data
 
 import ant.tasks.AntUtil
-import betsy.data.engines.Engine;
+import betsy.data.engines.Engine
 import betsy.executables.ExecutionContext
 
 import java.nio.file.Path
@@ -22,9 +22,9 @@ class TestSuite {
         TestSuite test = new TestSuite(path: Paths.get("test"))
 
         engines.each { engine ->
-            engine.processes.addAll(processes.collect() { p -> p.clone() as BetsyProcess})
+            engine.processes.addAll(processes.collect() { p -> p.clone() as BetsyProcess })
             // set engine
-            engine.processes.each { process -> process.engine = engine}
+            engine.processes.each { process -> process.engine = engine }
             // set parentFolder
             engine.parentFolder = test.path
         }
@@ -57,16 +57,26 @@ class TestSuite {
         reportsPath.resolve(csvFile)
     }
 
-	static String getCsvDurationFile() {
-		"durations.csv"
-	}
+    static String getCsvDurationFile() {
+        "durations.csv"
+    }
 
     Path getCsvDurationFilePath() {
-		reportsPath.resolve(csvDurationFile)
-	}
+        reportsPath.resolve(csvDurationFile)
+    }
 
     Path getJUnitXMLFilePath() {
         reportsPath.resolve("TESTS-TestSuites.xml")
+    }
+
+    int getProcessesCount() {
+        int result = 0;
+
+        for (Engine engine : engines) {
+            result += engine.processes.size()
+        }
+
+        return result;
     }
 
     public void prepare() {
