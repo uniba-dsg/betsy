@@ -1,20 +1,20 @@
-package betsy
+package betsy;
 
-import betsy.virtual.host.exceptions.ConfigurationException
-import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation
+import betsy.virtual.host.exceptions.ConfigurationException;
+import groovy.util.ConfigObject;
+import groovy.util.ConfigSlurper;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 
-import java.nio.file.Path
-import java.nio.file.Paths
+import java.io.File;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-class Configuration {
-
-    private static ConfigObject config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
-
+public class Configuration {
     /**
      * Get the value of the given key.
      *
-     * @param key
-     *            Key in config to get value for
+     * @param key Key in config to get value for
      * @return Value assigned to the key, or null if key is not set
      */
     public static Object getValue(final String key) {
@@ -24,14 +24,14 @@ class Configuration {
             throw new ConfigurationException("No value found for key [" + key + "]");
         }
 
+
         return result;
     }
 
     /**
      * Get the value of the given key and cast it as boolean.
      *
-     * @param key
-     *            Key in config to get value for
+     * @param key Key in config to get value for
      * @return Value assigned to the key, or default value if key is not set
      */
     public static Boolean getValueAsBoolean(final String key) {
@@ -41,8 +41,7 @@ class Configuration {
     /**
      * Get the value of the given key and cast it as Integer.
      *
-     * @param key
-     *            Key in config to get value for
+     * @param key Key in config to get value for
      * @return Value assigned to the key, or default value if key is not set
      */
     public static Integer getValueAsInteger(final String key) {
@@ -52,8 +51,7 @@ class Configuration {
     /**
      * Get the value of the given key and cast it as String.
      *
-     * @param key
-     *            Key in config to get value for
+     * @param key Key in config to get value for
      * @return Value assigned to the key, or default value if key is not set
      */
     public static String getValueAsString(final String key) {
@@ -82,6 +80,16 @@ class Configuration {
         if (!new File(value).isDirectory()) {
             throw new ConfigurationException("Found [" + value + "] for key [" + key + "] " + message);
         }
+
     }
 
+    static {
+        try {
+            config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("something went wrong", e);
+        }
+    }
+
+    private static ConfigObject config;
 }
