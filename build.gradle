@@ -64,7 +64,7 @@ task downloadSoapUI {
 
 task installSoapUI {
     ext.srcFile = new File("${config.downloads.dir}/${config.soapui.download.filename}")
-    ext.destDir = new File(config.soapui.container)
+    ext.destDir = new File(config.soapui.home)
 
     inputs.file srcFile
     outputs.dir destDir
@@ -88,7 +88,7 @@ task downloadAnt {
 
 task installAnt {
     ext.srcFile = new File("${config.downloads.dir}/${config.ant.download.filename}")
-    ext.destDir = new File(config.ant.container)
+    ext.destDir = new File(config.ant.home)
 
     inputs.file srcFile
     outputs.dir destDir
