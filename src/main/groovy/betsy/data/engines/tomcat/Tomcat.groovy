@@ -40,7 +40,7 @@ class Tomcat {
      * Start tomcat and wait until it responds to the <code>tomcatUrl</code>
      */
     void startup() {
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(engineDir, "tomcat_startup.bat"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir, "tomcat_startup.bat"))
 
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             http url: tomcatUrl
@@ -52,7 +52,7 @@ class Tomcat {
      * Shutdown the tomcat if running.
      */
     void shutdown() {
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"))
     }
 
     /**

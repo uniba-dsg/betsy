@@ -17,7 +17,7 @@ class OrchestraDeployer {
         Path antBinFolder = Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
         Path antBat = antBinFolder.resolve("ant.bat")
 
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(orchestraHome, antBat).values("deploy", "-Dbar=${packageFilePath.toAbsolutePath()}"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(orchestraHome, antBat).values("deploy", "-Dbar=${packageFilePath.toAbsolutePath()}"))
     }
 
 }

@@ -37,7 +37,7 @@ class OpenEsbInstaller {
             }
         }
 
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(
                 Paths.get("src/main/resources/openesb/reinstallGlassFish.bat")).values(
                 Configuration.getPath("downloads.dir").resolve(fileName).toString(),
                 serverDir.resolve("state.xml").toAbsolutePath().toString())

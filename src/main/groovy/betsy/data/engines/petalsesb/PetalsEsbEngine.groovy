@@ -52,7 +52,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void startup() {
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(petalsBinFolder, "petals-esb.bat"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(petalsBinFolder, "petals-esb.bat"))
 
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             and {

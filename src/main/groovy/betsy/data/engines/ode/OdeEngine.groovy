@@ -23,7 +23,7 @@ class OdeEngine extends LocalEngine {
     }
 
     Tomcat getTomcat() {
-        new Tomcat(engineDir: serverPath)
+        new Tomcat(engineDir: getServerPath())
     }
 
     @Override
@@ -46,7 +46,7 @@ class OdeEngine extends LocalEngine {
 
     @Override
     void install() {
-        new OdeInstaller().install()
+        new OdeInstaller(serverDir: getServerPath()).install()
     }
 
     @Override

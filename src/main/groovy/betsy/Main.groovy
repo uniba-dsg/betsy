@@ -27,7 +27,7 @@ class Main {
     private static final Logger log = Logger.getLogger(Main.class)
 
     public static void main(String[] args) {
-        activeLogging();
+        activateLogging();
 
         // parsing cli params
         CliParser parser = new CliParser()
@@ -87,10 +87,13 @@ class Main {
         }
     }
 
-    protected static String activeLogging() {
+    protected static String activateLogging() {
         LogContext.init();
+
+        // activate log4j logging
         DOMConfigurator.configure("src/main/resources/log4j.xml");
-        // set log4j property to avoid conflicts with soapUIs
+
+        // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml")
     }
 

@@ -90,6 +90,8 @@ class ConsoleTasks {
     public static void executeOnUnix(CliCommand cliCommand) {
         log.info("Executing on unix $cliCommand")
 
+        FileTasks.assertDirectory(cliCommand.dir)
+
         AntUtil.builder().exec(executable: cliCommand.command, failOnError: "true", osfamily: "unix", dir: cliCommand.dir) {
             for (String value : cliCommand.values) {
                 arg(value: value)

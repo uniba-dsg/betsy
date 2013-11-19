@@ -25,8 +25,7 @@ class JUnitHtmlReports {
         ant.echo(message: createAntReportFile(), file: path.resolve("build.xml"))
 
         log.info "executing reporting ant scripts"
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(path, antBinFolder.resolve("ant.bat").toString()))
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(path, antBinFolder.resolve("ant").toString()))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(path, antBinFolder.resolve("ant.bat").toString()))
     }
 
     private String createAntReportFile() {

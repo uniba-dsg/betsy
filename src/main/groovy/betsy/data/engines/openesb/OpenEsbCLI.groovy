@@ -13,11 +13,11 @@ class OpenEsbCLI {
     Path glassfishHome
 
     void stopDomain() {
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(asAdminWindows).values("stop-domain", "domain1"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminWindows).values("stop-domain", "domain1"))
     }
 
     void startDomain() {
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(asAdminWindows).values("start-domain", "domain1"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminWindows).values("start-domain", "domain1"))
     }
 
     private Path getAsAdminWindows() {
@@ -41,7 +41,7 @@ class OpenEsbCLI {
 
         FileTasks.createFile(deployCommands, scriptContent);
 
-        ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(asAdminWindows).values("multimode", "--file", deployCommands.toAbsolutePath().toString()))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminWindows).values("multimode", "--file", deployCommands.toAbsolutePath().toString()))
     }
 
 }

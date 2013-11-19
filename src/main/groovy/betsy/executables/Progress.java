@@ -13,6 +13,9 @@ public class Progress {
         current++;
     }
 
+    /**
+     * @return "current/max"
+     */
     public String toString() {
         return "" + current + "/" + max;
     }
