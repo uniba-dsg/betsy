@@ -2,6 +2,7 @@ package betsy.data.engines.openesb
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
@@ -22,7 +23,7 @@ class OpenEsbEngine extends LocalEngine {
     @Override
     void storeLogs(BetsyProcess process) {
         Path logsFolder = process.targetPath.resolve("logs")
-        ant.mkdir(dir: logsFolder)
+        FileTasks.mkdirs(logsFolder)
         ant.copy(todir: logsFolder) {
             ant.fileset(dir: glassfishHome.resolve("domains/domain1/logs/"))
         }
@@ -81,7 +82,7 @@ class OpenEsbEngine extends LocalEngine {
     void buildDeploymentDescriptor(BetsyProcess process) {
         Path metaDir = process.targetBpelPath.resolve("META-INF")
         Path catalogFile = metaDir.resolve("catalog.xml")
-        ant.mkdir(dir: metaDir)
+        FileTasks.mkdirs(metaDir)
         ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
 </catalog>

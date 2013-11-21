@@ -29,6 +29,19 @@ public class FileTasks {
         }
     }
 
+    public static void mkdirs(Path dir) {
+        try {
+            log.info("Creating directory " + dir);
+            if (Files.isDirectory(dir)) {
+                log.info("Directory already there - skipping creation");
+            } else {
+                Files.createDirectory(dir);
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("could not create directory " + dir, e);
+        }
+    }
+
     public static void assertDirectory(Path dir) {
         if (!Files.isDirectory(dir)) {
             throw new IllegalArgumentException("the path " + dir + " is no directory");

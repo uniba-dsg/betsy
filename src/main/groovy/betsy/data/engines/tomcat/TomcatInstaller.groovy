@@ -2,6 +2,7 @@ package betsy.data.engines.tomcat
 
 import ant.tasks.AntUtil
 import betsy.Configuration
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
@@ -17,12 +18,12 @@ class TomcatInstaller {
     String tomcatName = "apache-tomcat-7.0.26"
 
     public void install() {
-        ant.mkdir dir: Configuration.get("downloads.dir")
+        FileTasks.mkdirs(Configuration.getPath("downloads.dir"))
         ant.get dest: Configuration.get("downloads.dir"), skipexisting: true, {
             ant.url url: downloadUrl
         }
         ant.delete dir: destinationDir
-        ant.mkdir dir: destinationDir
+        FileTasks.mkdirs(destinationDir)
 
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(tomcatArchiveFileName), dest: destinationDir
 

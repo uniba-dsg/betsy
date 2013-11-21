@@ -2,6 +2,7 @@ package betsy.executables.soapui.builder
 
 import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
+import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
 
@@ -20,7 +21,7 @@ class TestBuilder {
 
     public void buildTest() {
         log.info "Creating SoapUI TestSuite"
-        ant.mkdir dir: process.targetSoapUIPath
+        FileTasks.mkdirs(process.targetSoapUIPath)
         new SoapUiProjectBuilder(process: process, requestTimeout: requestTimeout).createSoapUIProject()
     }
 }

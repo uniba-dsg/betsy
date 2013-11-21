@@ -3,6 +3,7 @@ package betsy.data
 import ant.tasks.AntUtil
 import betsy.data.engines.Engine
 import betsy.executables.ExecutionContext
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -81,7 +82,7 @@ class TestSuite {
 
     public void prepare() {
         ant.delete dir: path
-        ant.mkdir dir: path
+        FileTasks.mkdirs(path)
     }
 
 

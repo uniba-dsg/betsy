@@ -3,6 +3,7 @@ package betsy.data.engines.petalsesb
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.ConsoleTasks
+import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
 import java.nio.file.Files
@@ -46,7 +47,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: process.targetLogsPath)
+        FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(file: petalsLogFile, todir: process.targetLogsPath)
     }
 
@@ -107,7 +108,7 @@ class PetalsEsbEngine extends LocalEngine {
 
         // engine specific steps
         Path metaDir = process.targetBpelPath.resolve("META-INF")
-        ant.mkdir(dir: metaDir)
+        FileTasks.mkdirs(metaDir)
         ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"),
                 style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
 

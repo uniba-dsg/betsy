@@ -2,6 +2,7 @@ package betsy.executables
 
 import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
+import betsy.tasks.FileTasks
 import betsy.virtual.host.exceptions.TemporaryFailedTestException
 import org.apache.log4j.Logger
 
@@ -32,7 +33,7 @@ class Retry {
                     String destDir = "${repeatedDir}/${testCount}_${process.normalizedId}"
 
                     ant.sleep(milliseconds: 500)
-                    ant.mkdir(dir: repeatedDir)
+                    FileTasks.mkdirs(repeatedDir)
                     // TODO does not work. fails for petalsesb
                     ant.move(file: process.targetPath, tofile: destDir, force: true, performGCOnFailedDelete: true)
 

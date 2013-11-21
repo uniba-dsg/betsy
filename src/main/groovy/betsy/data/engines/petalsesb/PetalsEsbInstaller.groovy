@@ -2,6 +2,7 @@ package betsy.data.engines.petalsesb
 
 import ant.tasks.AntUtil
 import betsy.Configuration
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -22,7 +23,7 @@ class PetalsEsbInstaller {
 
     public void install() {
         ant.delete dir: serverDir
-        ant.mkdir dir: serverDir
+        FileTasks.mkdirs(serverDir)
 
         ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: downloadUrl

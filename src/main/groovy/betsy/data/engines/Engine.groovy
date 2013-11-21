@@ -2,6 +2,7 @@ package betsy.data.engines
 
 import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -41,7 +42,7 @@ abstract class Engine implements EngineAPI {
 	@Override
     void prepare() {
         // setup engine folder
-        ant.mkdir dir: path
+        FileTasks.mkdirs(path)
     }
 
     boolean equals(o) {

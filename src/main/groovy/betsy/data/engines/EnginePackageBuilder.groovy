@@ -3,6 +3,7 @@ package betsy.data.engines
 import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.BetsyProcess
+import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
 public class EnginePackageBuilder {
@@ -13,7 +14,7 @@ public class EnginePackageBuilder {
 
     public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
         // engine independent package steps
-        ant.mkdir dir: process.targetPath
+        FileTasks.mkdirs(process.targetPath)
 
         log.info "Copying BPEL, WSDL and additional files to target directory"
 
@@ -30,7 +31,7 @@ public class EnginePackageBuilder {
     }
 
     public void bpelFolderToZipFile(BetsyProcess process) {
-        ant.mkdir dir: process.targetPackagePath
+        FileTasks.mkdirs(process.targetPackagePath)
         ant.zip file: process.targetPackageFilePath, basedir: process.targetBpelPath
     }
 

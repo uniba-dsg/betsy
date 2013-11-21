@@ -3,6 +3,7 @@ package betsy.data.engines.ode
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
@@ -38,7 +39,7 @@ class OdeEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: process.targetLogsPath)
+        FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
         }

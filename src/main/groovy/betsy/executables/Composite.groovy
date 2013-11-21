@@ -9,6 +9,7 @@ import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.Stopwatch
 import betsy.logging.LogContext
+import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 import org.apache.log4j.MDC
 import soapui.SoapUiRunner
@@ -36,7 +37,7 @@ class Composite {
         // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
         testSuite.prepare()
 
-        log testSuite.path, {
+        log testSuite.getPath(), {
 
             // fail fast
             for (Engine engine : testSuite.engines) {
@@ -150,7 +151,7 @@ class Composite {
         try {
             LogContext.context = name
 
-            AntUtil.builder().mkdir dir: new File(name).parent
+            FileTasks.mkdirs(new File(name).getAbsoluteFile().parentFile.toPath())
             log.info "Start ..."
 
             Stopwatch stopwatch = new Stopwatch()

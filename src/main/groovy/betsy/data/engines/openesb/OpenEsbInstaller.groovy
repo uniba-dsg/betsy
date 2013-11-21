@@ -3,6 +3,7 @@ package betsy.data.engines.openesb
 import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.tasks.ConsoleTasks
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -24,7 +25,7 @@ class OpenEsbInstaller {
         }
 
         ant.delete dir: serverDir
-        ant.mkdir dir: serverDir
+        FileTasks.mkdirs(serverDir)
 
         ant.copy file: stateXmlTemplate, tofile: serverDir.resolve("state.xml"), {
             filterchain {

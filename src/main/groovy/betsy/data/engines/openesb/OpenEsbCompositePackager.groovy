@@ -2,6 +2,7 @@ package betsy.data.engines.openesb
 
 import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
@@ -19,7 +20,7 @@ class OpenEsbCompositePackager {
         // create composite
         Path compositeDir = process.targetTmpPath.resolve("composite")
         Path compositeMetaDir = compositeDir.resolve("META-INF")
-        ant.mkdir dir: compositeMetaDir
+        FileTasks.mkdirs(compositeMetaDir)
         ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_composite_jbi_from_bpel.xsl"))
         ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("MANIFEST.MF"), style: process.engine.xsltPath.resolve("create_composite_manifest_from_bpel.xsl"))
         ant.copy file: process.targetPackageJarFilePath, todir: compositeDir
@@ -36,10 +37,10 @@ class OpenEsbCompositePackager {
         // create http binding
         Path bindingDir = process.targetTmpPath.resolve("binding")
         Path bindingMetaDir = bindingDir.resolve("META-INF")
-        ant.mkdir dir: bindingDir
+        FileTasks.mkdirs(bindingDir)
         ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
         Path catalogFile = bindingMetaDir.resolve("catalog.xml")
-        ant.mkdir(dir: bindingMetaDir)
+        FileTasks.mkdirs(bindingMetaDir)
         ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
 </catalog>

@@ -3,6 +3,7 @@ package betsy.data.engines.petalsesb
 import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.BetsyProcess
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
@@ -20,7 +21,7 @@ class PetalsEsbCompositePackager {
         // create composite
         Path compositeDir = process.targetTmpPath.resolve("composite")
         Path compositeMetaDir = compositeDir.resolve("META-INF")
-        ant.mkdir dir: compositeMetaDir
+        FileTasks.mkdirs(compositeMetaDir)
         ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_composite_jbi_from_bpel.xsl"))
         ant.move file: process.targetPackageFilePath, todir: compositeDir
         ant.copy file: bindingArchive, todir: compositeDir
@@ -35,8 +36,8 @@ class PetalsEsbCompositePackager {
     void createBinding() {
         Path bindingDir = process.targetTmpPath.resolve("binding")
         Path bindingMetaDir = bindingDir.resolve("META-INF")
-        ant.mkdir dir: bindingDir
-        ant.mkdir(dir: bindingMetaDir)
+        FileTasks.mkdirs(bindingDir)
+        FileTasks.mkdirs(bindingMetaDir)
         ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
         ant.copy(todir: bindingDir) {
             fileset(dir: process.targetBpelPath, includes: "*.xsd")

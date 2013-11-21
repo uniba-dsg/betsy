@@ -3,6 +3,7 @@ package betsy.data.engines.orchestra
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
+import betsy.tasks.FileTasks
 
 class OrchestraEngine extends LocalEngine {
 
@@ -42,7 +43,7 @@ class OrchestraEngine extends LocalEngine {
 
     @Override
     void storeLogs(BetsyProcess process) {
-        ant.mkdir(dir: process.targetLogsPath)
+        FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
         }
