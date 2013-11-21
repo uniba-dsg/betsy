@@ -48,7 +48,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.8'
+    gradleVersion = '1.9'
 }
 
 task downloadSoapUI {
@@ -64,13 +64,13 @@ task downloadSoapUI {
 
 task installSoapUI {
     ext.srcFile = new File("${config.downloads.dir}/${config.soapui.download.filename}")
-    ext.destDir = new File(config.soapui.home)
+    ext.destDir = new File(config.soapui.container)
 
     inputs.file srcFile
     outputs.dir destDir
 
     doLast {
-        ant.mkdir dir: destDir
+        ant.mkdir dir: new File(config.soapui.home)
         ant.unzip src: srcFile, dest: destDir
     }
 }
@@ -88,10 +88,10 @@ task downloadAnt {
 
 task installAnt {
     ext.srcFile = new File("${config.downloads.dir}/${config.ant.download.filename}")
-    ext.destDir = new File(config.ant.home)
+    ext.destDir = new File(config.ant.container)
 
     inputs.file srcFile
-    outputs.dir destDir
+    outputs.dir new File(config.ant.home)
 
     doLast {
         ant.mkdir dir: destDir
