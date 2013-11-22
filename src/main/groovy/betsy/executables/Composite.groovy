@@ -22,7 +22,7 @@ class Composite {
 
     final static AntBuilder ant = AntUtil.builder()
 
-    private static Logger log = Logger.getLogger(Composite.class);
+    private static Logger logger = Logger.getLogger(Composite.class);
 
     ExecutionContext context
 
@@ -112,7 +112,7 @@ class Composite {
                     context.testPartner.publish()
                 } catch (BindException ignore) {
                     context.testPartner.unpublish()
-                    log.debug "Address already in use - waiting 2 seconds to get available"
+                    logger.debug "Address already in use - waiting 2 seconds to get available"
                     ant.sleep(milliseconds: 2000)
                     context.testPartner.publish()
                 }
@@ -146,13 +146,13 @@ class Composite {
         }
     }
 
-    private static log(String name, Closure closure) {
+    protected static log(String name, Closure closure) {
         String previous = LogContext.context;
         try {
             LogContext.context = name
 
             FileTasks.mkdirs(new File(name).getAbsoluteFile().parentFile.toPath())
-            log.info "Start ..."
+            logger.info "Start ..."
 
             Stopwatch stopwatch = new Stopwatch()
             stopwatch.start()
@@ -161,7 +161,7 @@ class Composite {
                 closure.call()
             } finally {
                 stopwatch.stop()
-                log.info "... finished in ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
+                logger.info "... finished in ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
             }
 
         } finally {
@@ -170,7 +170,7 @@ class Composite {
 
     }
 
-    private static log(Path path, Closure closure) {
+    protected static log(Path path, Closure closure) {
         log(path.toString(), closure)
     }
 
