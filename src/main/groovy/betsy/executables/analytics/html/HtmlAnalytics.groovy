@@ -2,27 +2,31 @@ package betsy.executables.analytics.html
 
 import betsy.executables.analytics.CsvReportLoader
 import betsy.executables.analytics.model.CsvReport
+import betsy.tasks.FileTasks
 import groovy.text.SimpleTemplateEngine
+
+import java.nio.file.Path
+import java.nio.file.Paths
 
 class HtmlAnalytics {
 
     CsvReport report
 
     public static void main(String[] args) {
-        String input = args[0];
-        String output = new File(new File(input).parentFile, "myreport.html").getAbsolutePath()
+        Path input = Paths.get(args[0]);
+        Path output = input.parent.resolve("myreport.html").toAbsolutePath()
 
         new HtmlAnalytics(report: new CsvReportLoader(csvFile: input).load()).toHtmlReport(output)
     }
 
-    void toHtmlReport(String filename) {
+    void toHtmlReport(Path filename) {
         SimpleTemplateEngine engine = new SimpleTemplateEngine()
-        File file = new File("src" + File.separator + "main" + File.separator + "groovy" + File.separator + "betsy" + File.separator + "executables" + File.separator + "analytics" + File.separator + "html" + File.separator + "HtmlAnalytics.template")
-        def template = engine.createTemplate(file.text).make([
+        Path templatePath = Paths.get("src/main/groovy/betsy/executables/analytics/html/HtmlAnalytics.template")
+        def template = engine.createTemplate(templatePath.toFile().text).make([
                 "report": report
         ])
 
-        new File(filename).withWriter("UTF-8") { it.write(template.toString()) }
+        FileTasks.createFile(filename, template.toString());
     }
 
 }

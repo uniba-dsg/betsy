@@ -2,14 +2,18 @@ package betsy.executables.analytics
 
 import betsy.executables.analytics.model.*
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Path
+
 class CsvReportLoader {
 
-    String csvFile
+    Path csvFile
 
     CsvReport load() {
         CsvReport report = new CsvReport(file: csvFile)
 
-        new File(csvFile).eachLine { line ->
+        Files.readAllLines(csvFile, StandardCharsets.UTF_8).each { line ->
             String[] fields = line.split(";")
             String testName = fields[0]
             String engineName = fields[1]
