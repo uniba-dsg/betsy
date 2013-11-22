@@ -435,14 +435,14 @@ class BasicActivityProcesses {
     )
 
 
-    public final Process ASSIGN_PARTNERLINK_PARTNER_ROLE = builder.buildProcessWithPartner(
+    public static final BetsyProcess ASSIGN_PARTNERLINK_PARTNER_ROLE = builder.buildProcessWithPartner(
             "basic-activities/Assign-PartnerLink-PartnerRole", "A receive-reply pair with an intermediate assign that assigns an existing partnerLink to another partnerLink of the same type which is used in a subsequent invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
-    public final Process ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
+    public static final BetsyProcess ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
             "basic-activities/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus reference to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "unsupportedReference"))
@@ -477,8 +477,22 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess ASSIGN_EXPRESSION_LANGUAGE_FROM = builder.buildBasicActivityProcess(
+            "Assign-ExpressionLanguage-From", "A receive-reply pair with an intermediate assign that uses an expression with expressionLanguage declaration in a from element.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public static final BetsyProcess ASSIGN_EXPRESSION_LANGUAGE_TO = builder.buildBasicActivityProcess(
+            "Assign-ExpressionLanguage-To", "A receive-reply pair with an intermediate assign that uses an expression with expressionLanguage declaration in a to element.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
     public static final BetsyProcess ASSIGN_INT = builder.buildProcessWithPartner(
-            "basic/Assign-Int", "A receive-reply pair combined with an assign and an invoke inbetween. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
+            "basic-activities/Assign-Int",  "A receive-reply pair combined with an assign and an invoke in between. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
             [
                     new TestCase().checkDeployment().sendSync(1, 10)
             ]
@@ -498,28 +512,28 @@ class BasicActivityProcesses {
             ]
     )
 
-    public final Process ASSIGN_COPY_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
+    public static final BetsyProcess ASSIGN_COPY_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
             "Assign-Copy-QueryLanguage",  "A process with a receive-reply pair with an intermediate assign that uses a query with explicit language declaration in a from element.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
-    public final Process ASSIGN_TO_QUERY = builder.buildBasicActivityProcess(
+    public static final BetsyProcess ASSIGN_TO_QUERY = builder.buildBasicActivityProcess(
             "Assign-To-Query",  "A process with a receive-reply pair with an intermediate assign that uses a query in a to element.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
-    public final Process ASSIGN_TO_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
+    public static final BetsyProcess ASSIGN_TO_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
             "Assign-To-QueryLanguage",  "A process with a receive-reply pair with an intermediate assign that uses a query with explicit language declaration in a to element.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
-    public final Process ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME = builder.buildBasicActivityProcess(
+    public static final BetsyProcess ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME = builder.buildBasicActivityProcess(
             "Assign-Copy-KeepSrcElementName", "A receive-reply pair with an intermediate assign with a copy that has keepSrcElementName set to yes. This should trigger a fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "mismatchedAssignmentFailure"))
@@ -586,6 +600,8 @@ class BasicActivityProcesses {
             ASSIGN_LITERAL,
             ASSIGN_EXPRESSION_FROM,
             ASSIGN_EXPRESSION_TO,
+            ASSIGN_EXPRESSION_LANGUAGE_FROM,
+            ASSIGN_EXPRESSION_LANGUAGE_TO,
             ASSIGN_INT,
             ASSIGN_SELECTION_FAILURE,
             ASSIGN_COPY_QUERY,
