@@ -498,7 +498,14 @@ class BasicActivityProcesses {
             ]
     )
 
-    public static final BetsyProcess ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME = builder.buildBasicActivityProcess(
+    public final Process ASSIGN_COPY_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
+            "Assign-Copy-QueryLanguage",  "A process with a receive-reply pair with an intermediate assign that uses a query in a from element.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public final Process ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME = builder.buildBasicActivityProcess(
             "Assign-Copy-KeepSrcElementName", "A receive-reply pair with an intermediate assign with a copy that has keepSrcElementName set to yes. This should trigger a fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "mismatchedAssignmentFailure"))
@@ -568,6 +575,7 @@ class BasicActivityProcesses {
             ASSIGN_INT,
             ASSIGN_SELECTION_FAILURE,
             ASSIGN_COPY_QUERY,
+            ASSIGN_COPY_QUERY_LANGUAGE,
             ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME,
             ASSIGN_COPY_IGNORE_MISSING_FROM_DATA,
             ASSIGN_COPY_GET_VARIABLE_PROPERTY,
