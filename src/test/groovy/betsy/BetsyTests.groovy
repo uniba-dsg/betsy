@@ -40,6 +40,12 @@ class BetsyTests {
     }
 
     class MockComposite extends Composite {
+
+        @Override
+        protected void buildTest(BetsyProcess process) {
+
+        }
+
         @Override
         protected void test(BetsyProcess process) {
 

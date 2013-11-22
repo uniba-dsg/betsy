@@ -136,13 +136,21 @@ class Composite {
     protected void buildPackageAndTest(BetsyProcess process) {
         log "${process.targetPath}/build", {
 
-            log "${process.targetPath}/build_package", {
-                captureIO { process.engine.buildArchives(process) }
-            }
+            buildPackage(process)
 
-            log "${process.targetPath}/build_test", {
-                captureIO { new TestBuilder(process: process, requestTimeout: context.requestTimeout).buildTest() }
-            }
+            buildTest(process)
+        }
+    }
+
+    protected void buildTest(BetsyProcess process) {
+        log "${process.targetPath}/build_test", {
+            captureIO { new TestBuilder(process: process, requestTimeout: context.requestTimeout).buildTest() }
+        }
+    }
+
+    protected void buildPackage(BetsyProcess process) {
+        log "${process.targetPath}/build_package", {
+            captureIO { process.engine.buildArchives(process) }
         }
     }
 
