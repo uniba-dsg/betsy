@@ -7,6 +7,7 @@ import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -75,9 +76,9 @@ public class Configuration {
     }
 
     public static void assertDirectory(String key, String message) {
-        String value = getValueAsString(key);
+        Path value = getPath(key);
 
-        if (!new File(value).isDirectory()) {
+        if (!Files.isDirectory(value)) {
             throw new ConfigurationException("Found [" + value + "] for key [" + key + "] " + message);
         }
 
