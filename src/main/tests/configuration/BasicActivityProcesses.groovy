@@ -434,8 +434,16 @@ class BasicActivityProcesses {
             ]
     )
 
-    public static final BetsyProcess ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
-            "basic/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus refernce to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
+
+    public final Process ASSIGN_PARTNERLINK_PARTNER_ROLE = builder.buildProcessWithPartner(
+            "basic-activities/Assign-PartnerLink-PartnerRole", "A receive-reply pair with an intermediate assign that assigns an existing partnerLink to another partnerLink of the same type which is used in a subsequent invoke.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public final Process ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
+            "basic-activities/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus reference to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "unsupportedReference"))
             ]
@@ -551,6 +559,7 @@ class BasicActivityProcesses {
             ASSIGN_VALIDATE,
             ASSIGN_PROPERTY,
             ASSIGN_PARTNERLINK,
+            ASSIGN_PARTNERLINK_PARTNER_ROLE,
             ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE,
             ASSIGN_MISMATCHED_ASSIGNMENT_FAILURE,
             ASSIGN_LITERAL,
