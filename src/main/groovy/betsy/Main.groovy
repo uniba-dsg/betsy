@@ -88,7 +88,6 @@ class Main {
     }
 
     protected static String activateLogging() {
-        LogContext.init();
 
         // activate log4j logging
         DOMConfigurator.configure("src/main/resources/log4j.xml");
