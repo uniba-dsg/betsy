@@ -499,7 +499,21 @@ class BasicActivityProcesses {
     )
 
     public final Process ASSIGN_COPY_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
-            "Assign-Copy-QueryLanguage",  "A process with a receive-reply pair with an intermediate assign that uses a query in a from element.",
+            "Assign-Copy-QueryLanguage",  "A process with a receive-reply pair with an intermediate assign that uses a query with explicit language declaration in a from element.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public final Process ASSIGN_TO_QUERY = builder.buildBasicActivityProcess(
+            "Assign-To-Query",  "A process with a receive-reply pair with an intermediate assign that uses a query in a to element.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public final Process ASSIGN_TO_QUERY_LANGUAGE = builder.buildBasicActivityProcess(
+            "Assign-To-QueryLanguage",  "A process with a receive-reply pair with an intermediate assign that uses a query with explicit language declaration in a to element.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
@@ -576,6 +590,8 @@ class BasicActivityProcesses {
             ASSIGN_SELECTION_FAILURE,
             ASSIGN_COPY_QUERY,
             ASSIGN_COPY_QUERY_LANGUAGE,
+            ASSIGN_TO_QUERY,
+            ASSIGN_TO_QUERY_LANGUAGE,
             ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME,
             ASSIGN_COPY_IGNORE_MISSING_FROM_DATA,
             ASSIGN_COPY_GET_VARIABLE_PROPERTY,
