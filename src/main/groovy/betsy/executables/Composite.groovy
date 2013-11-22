@@ -10,11 +10,13 @@ import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.Stopwatch
 import betsy.logging.LogContext
 import betsy.tasks.FileTasks
+import betsy.tasks.WaitTasks
 import org.apache.log4j.Logger
 import org.apache.log4j.MDC
 import soapui.SoapUiRunner
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static betsy.executables.util.IOCapture.captureIO
 
@@ -113,7 +115,7 @@ class Composite {
                 } catch (BindException ignore) {
                     context.testPartner.unpublish()
                     logger.debug "Address already in use - waiting 2 seconds to get available"
-                    ant.sleep(milliseconds: 2000)
+                    WaitTasks.sleep(2000);
                     context.testPartner.publish()
                 }
 
@@ -124,7 +126,7 @@ class Composite {
                     }
                 }
 
-                ant.sleep(milliseconds: 500)
+                WaitTasks.sleep(500);
                 process.engine.storeLogs(process)
 
             } finally {
@@ -159,7 +161,7 @@ class Composite {
         try {
             LogContext.context = name
 
-            FileTasks.mkdirs(new File(name).getAbsoluteFile().parentFile.toPath())
+            FileTasks.mkdirs(Paths.get(name).toAbsolutePath().parent)
             logger.info "Start ..."
 
             Stopwatch stopwatch = new Stopwatch()
