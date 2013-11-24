@@ -427,8 +427,15 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess ASSIGN_TO_PROPERTY = builder.buildBasicActivityProcess(
+            "Assign-To-Property", "A receive-reply pair with an intermediate assign that copies to a property instead of a variable." ,
+            [
+                    new TestCase().checkDeployment().sendSync(5,5)
+            ]
+    )
+
     public static final BetsyProcess ASSIGN_PARTNERLINK = builder.buildProcessWithPartner(
-            "basic/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
+            "basic-activities/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 0)
             ]
@@ -593,6 +600,7 @@ class BasicActivityProcesses {
     public static final List<BetsyProcess> BASIC_ACTIVITIES_ASSIGN = [
             ASSIGN_VALIDATE,
             ASSIGN_PROPERTY,
+            ASSIGN_TO_PROPERTY,
             ASSIGN_PARTNERLINK,
             ASSIGN_PARTNERLINK_PARTNER_ROLE,
             ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE,
