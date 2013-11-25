@@ -36,11 +36,14 @@ class OpenEsbCompositePackager {
 
         // create http binding
         Path bindingDir = process.targetTmpPath.resolve("binding")
-        Path bindingMetaDir = bindingDir.resolve("META-INF")
         FileTasks.mkdirs(bindingDir)
+
+        Path bindingMetaDir = bindingDir.resolve("META-INF")
+        FileTasks.mkdirs(bindingMetaDir)
+
         ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
         Path catalogFile = bindingMetaDir.resolve("catalog.xml")
-        FileTasks.mkdirs(bindingMetaDir)
+
         ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
 </catalog>

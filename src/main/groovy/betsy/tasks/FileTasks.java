@@ -35,7 +35,7 @@ public class FileTasks {
             if (Files.isDirectory(dir)) {
                 log.info("Directory already there - skipping creation");
             } else {
-                Files.createDirectory(dir);
+                Files.createDirectories(dir);
             }
         } catch (IOException e) {
             throw new IllegalStateException("could not create directory " + dir, e);
