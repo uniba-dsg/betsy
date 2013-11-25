@@ -435,7 +435,7 @@ class BasicActivityProcesses {
     )
 
     public static final BetsyProcess ASSIGN_PARTNERLINK = builder.buildProcessWithPartner(
-            "basic-activities/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
+            "basic/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 0)
             ]
@@ -443,14 +443,14 @@ class BasicActivityProcesses {
 
 
     public static final BetsyProcess ASSIGN_PARTNERLINK_PARTNER_ROLE = builder.buildProcessWithPartner(
-            "basic-activities/Assign-PartnerLink-PartnerRole", "A receive-reply pair with an intermediate assign that assigns an existing partnerLink to another partnerLink of the same type which is used in a subsequent invoke.",
+            "basic/Assign-PartnerLink-PartnerRole", "A receive-reply pair with an intermediate assign that assigns an existing partnerLink to another partnerLink of the same type which is used in a subsequent invoke.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
     public static final BetsyProcess ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = builder.buildProcessWithPartner(
-            "basic-activities/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus reference to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
+            "basic/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus reference to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             [
                     new TestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion(faultString: "unsupportedReference"))
             ]
@@ -499,7 +499,7 @@ class BasicActivityProcesses {
     )
 
     public static final BetsyProcess ASSIGN_INT = builder.buildProcessWithPartner(
-            "basic-activities/Assign-Int",  "A receive-reply pair combined with an assign and an invoke in between. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
+            "basic/Assign-Int",  "A receive-reply pair combined with an assign and an invoke in between. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
             [
                     new TestCase().checkDeployment().sendSync(1, 10)
             ]
