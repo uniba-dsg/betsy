@@ -42,12 +42,7 @@ class OdeDeployer {
 
     @Override
     public String toString() {
-        return "OdeDeployer{" +
-                "packageFilePath='" + packageFilePath + '\'' +
-                ", deploymentDirPath='" + deploymentDirPath + '\'' +
-                ", logFilePath='" + logFilePath + '\'' +
-                ", processName='" + processName + '\'' +
-                ", timeoutInSeconds=" + timeoutInSeconds +
-                '}';
+        return "Deploying process $processName ($packageFilePath) to $deploymentDirPath " +
+                "within at most $timeoutInSeconds seconds. Verified via substring in $logFilePath"
     }
 }
