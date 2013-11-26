@@ -2,11 +2,11 @@ package betsy.executables.ws
 
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType
+import org.apache.log4j.Logger
 
 import javax.jws.WebService
 import javax.xml.namespace.QName
 import javax.xml.soap.Detail
-import javax.xml.soap.DetailEntry
 import javax.xml.soap.SOAPFactory
 import javax.xml.soap.SOAPFault
 import javax.xml.ws.soap.SOAPFaultException
@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger
         endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
         wsdlLocation = "TestPartner.wsdl")
 class TestPartnerServiceMock implements TestPartnerPortType {
+
+    private static final Logger log = Logger.getLogger(TestPartnerServiceMock.class)
 
     public static final int CONCURRENCY_TIMEOUT = 1000
 
@@ -36,15 +38,15 @@ class TestPartnerServiceMock implements TestPartnerPortType {
     }
 
     public void startProcessAsync(int inputPart) {
-        println "Partner: startProcessAsync with ${inputPart}"
+        log.info "Partner: startProcessAsync with ${inputPart}"
     }
 
     public int startProcessSync(int inputPart) {
-        println "[${new Date()}] Partner: startProcessSync with ${inputPart}"
+        log.info "[${new Date()}] Partner: startProcessSync with ${inputPart}"
         totalAccesses.incrementAndGet()
 
         if (inputPart == -5) {
-            println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Throwing CustomFault"
+            log.info "[${new Date()}] Partner: startProcessSync with ${inputPart} - Throwing CustomFault"
 
             SOAPFactory fac = SOAPFactory.newInstance();
             SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"))
@@ -54,7 +56,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
         }
 
         if (inputPart == -6) {
-            println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Throwing Fault"
+            log.info "[${new Date()}] Partner: startProcessSync with ${inputPart} - Throwing Fault"
             FaultMessage fault = new FaultMessage("expected Error", inputPart)
             throw fault
         }
@@ -77,12 +79,12 @@ class TestPartnerServiceMock implements TestPartnerPortType {
                 // no concurrency detected
                 result = 0
             } else {
-                println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Concurrency Detected"
+                log.info "[${new Date()}] Partner: startProcessSync with ${inputPart} - Concurrency Detected"
                 totalConcurrentAccesses.incrementAndGet()
             }
             concurrentAccesses.decrementAndGet()
 
-            println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Returning ${result}"
+            log.info "[${new Date()}] Partner: startProcessSync with ${inputPart} - Returning ${result}"
 
             return result
         } else if (inputPart == 101) {
@@ -92,7 +94,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             int result = totalConcurrentAccesses.get()
             totalConcurrentAccesses.set(0)
 
-            println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Returning ${result}"
+            log.info "[${new Date()}] Partner: startProcessSync with ${inputPart} - Returning ${result}"
 
             return result
         } else if (inputPart == 102) {
@@ -101,7 +103,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
             //reset totalAccesses after each query
             totalAccesses.set(0)
 
-            println "[${new Date()}] Partner: startProcessSync with ${inputPart} - Returning ${result}"
+            log.info "[${new Date()}] Partner: startProcessSync with ${inputPart} - Returning ${result}"
 
             return result
         } else {
@@ -110,7 +112,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
     }
 
     public void startProcessWithEmptyMessage() {
-        println "[${new Date()}] Partner: startProcessWithEmptyMessage"
+        log.info "[${new Date()}] Partner: startProcessWithEmptyMessage"
     }
 
 }
