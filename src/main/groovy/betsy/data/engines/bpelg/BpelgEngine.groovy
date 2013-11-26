@@ -53,7 +53,7 @@ class BpelgEngine extends LocalEngine {
 
     @Override
     void install() {
-        new BpelgInstaller().install()
+        new BpelgInstaller(serverDir: serverPath).install()
     }
 
     @Override

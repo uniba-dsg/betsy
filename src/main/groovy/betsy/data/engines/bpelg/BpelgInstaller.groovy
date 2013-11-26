@@ -5,13 +5,12 @@ import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class BpelgInstaller {
 
     private static final AntBuilder ant = AntUtil.builder()
 
-    Path serverDir = Paths.get("server/bpelg")
+    Path serverDir
 
     String fileName = "bpel-g-5.3.war"
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
