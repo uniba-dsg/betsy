@@ -24,7 +24,7 @@ class OpenEsbInstaller {
             ant.url url: downloadUrl
         }
 
-        ant.delete dir: serverDir
+        FileTasks.deleteDirectory(serverDir)
         FileTasks.mkdirs(serverDir)
 
         ant.copy file: stateXmlTemplate, tofile: serverDir.resolve("state.xml"), {

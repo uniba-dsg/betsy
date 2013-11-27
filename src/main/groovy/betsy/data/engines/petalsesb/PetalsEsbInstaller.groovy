@@ -22,7 +22,7 @@ class PetalsEsbInstaller {
     Path sourceFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip")
 
     public void install() {
-        ant.delete dir: serverDir
+        FileTasks.deleteDirectory(serverDir)
         FileTasks.mkdirs(serverDir)
 
         ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {

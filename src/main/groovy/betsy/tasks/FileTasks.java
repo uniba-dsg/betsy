@@ -1,5 +1,6 @@
 package betsy.tasks;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -26,6 +27,25 @@ public class FileTasks {
             Files.write(file, Arrays.asList(lines), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(message, e);
+        }
+    }
+
+    public static void deleteDirectory(Path directory) {
+        log.info("Deleting directory " + directory);
+        if (Files.isDirectory(directory)) {
+            try {
+                FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
+            } catch (IOException e) {
+                log.info("Deletion failed -> retrying after short wait, reason: " + e.getMessage());
+                WaitTasks.sleep(3000);
+                try {
+                    FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
+                } catch (IOException e1) {
+                    throw new IllegalStateException("could not delete directory " + directory, e);
+                }
+            }
+        } else {
+            log.info("Directory is already deleted!");
         }
     }
 

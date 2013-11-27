@@ -22,7 +22,8 @@ class TomcatInstaller {
         ant.get dest: Configuration.get("downloads.dir"), skipexisting: true, {
             ant.url url: downloadUrl
         }
-        ant.delete dir: destinationDir
+
+        FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(tomcatArchiveFileName), dest: destinationDir

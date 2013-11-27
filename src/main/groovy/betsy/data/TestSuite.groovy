@@ -81,7 +81,7 @@ class TestSuite {
     }
 
     public void prepare() {
-        ant.delete dir: path
+        FileTasks.deleteDirectory(path)
         FileTasks.mkdirs(path)
     }
 
