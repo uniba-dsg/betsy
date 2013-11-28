@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The {@link CollectLogFilesOperation} collects the logfiles of the engine and betsy
+ * The {@link CollectLogFilesOperation} collects the log files of the engine and betsy
  * server upon a received {@link betsy.virtual.common.messages.collect_log_files.LogFilesRequest}.
  *
  * @author Cedric Roeck
@@ -27,7 +27,7 @@ public class CollectLogFilesOperation {
     private static final Logger log = Logger.getLogger(CollectLogFilesOperation.class);
 
     /**
-     * Collect the logfiles of an engine and the betsy server. The directories
+     * Collect the log files of an engine and the betsy server. The directories
      * where the logs can be collected from are submitted in the
      * {@link betsy.virtual.common.messages.collect_log_files.LogFilesRequest}.
      *

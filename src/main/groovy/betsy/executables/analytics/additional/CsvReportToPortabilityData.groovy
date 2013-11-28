@@ -4,6 +4,8 @@ import betsy.executables.analytics.CsvReportLoader
 import betsy.executables.analytics.model.CsvReport
 import betsy.executables.analytics.model.Result
 
+import java.nio.file.Paths
+
 
 class CsvReportToPortabilityData {
 
@@ -156,6 +158,6 @@ class CsvReportToPortabilityData {
     }
 
     public static void main(String[] args) {
-        new CsvReportToPortabilityData(report: new CsvReportLoader(csvFile: args[0]).load()).toCsvReport(System.out)
+        new CsvReportToPortabilityData(report: new CsvReportLoader(csvFile: Paths.get(args[0])).load()).toCsvReport(System.out)
     }
 }

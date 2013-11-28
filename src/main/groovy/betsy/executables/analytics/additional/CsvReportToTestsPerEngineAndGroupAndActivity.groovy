@@ -6,6 +6,8 @@ import betsy.executables.analytics.model.Engine
 import betsy.executables.analytics.model.Group
 import betsy.executables.analytics.model.Result
 
+import java.nio.file.Paths
+
 class CsvReportToTestsPerEngineAndGroupAndActivity {
 
     String VALUE_DELIMITER = "\t"
@@ -70,7 +72,7 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
         Properties properties = new Properties()
         properties.load(CsvReportToTestsPerEngineAndGroupAndActivity.class.getResourceAsStream("groups.properties"))
         new CsvReportToTestsPerEngineAndGroupAndActivity(
-                report: new CsvReportLoader(csvFile: args[0]).load(),
+                report: new CsvReportLoader(csvFile: Paths.get(args[0])).load(),
                 properties: properties
         ).toCsvReport(System.out)
     }

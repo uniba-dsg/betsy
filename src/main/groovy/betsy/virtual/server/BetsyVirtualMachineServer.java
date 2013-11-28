@@ -6,12 +6,6 @@ import betsy.virtual.server.logic.ProtocolImpl;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.net.URL;
-
 /**
  * The {@link BetsyVirtualMachineServer} can be used to start the server.<br>
  * <br>
@@ -39,9 +33,8 @@ public class BetsyVirtualMachineServer {
         logStandardErrorToFile();
     }
 
-    private void logStandardErrorToFile() throws FileNotFoundException {
-        URL log4jURL = BetsyVirtualMachineServer.class.getResource("/virtual/server/log4j.properties");
-        PropertyConfigurator.configure(log4jURL);
+    private void logStandardErrorToFile() {
+        PropertyConfigurator.configure(BetsyVirtualMachineServer.class.getResource("/virtual/server/log4j.properties"));
     }
 
     public void start() throws Exception {

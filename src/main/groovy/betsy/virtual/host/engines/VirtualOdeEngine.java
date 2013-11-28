@@ -67,7 +67,7 @@ public class VirtualOdeEngine extends VirtualEngine {
     }
 
     @Override
-    public LogFilesRequest buildLogFilesRequest(BetsyProcess process) {
+    public LogFilesRequest buildLogFilesRequest() {
         LogFilesRequest request = new LogFilesRequest();
         request.getPaths().add(get("virtual.engines.ode_v.bvmsDir") + "/log");
         request.getPaths().add(get("virtual.engines.ode_v.logfileDir"));

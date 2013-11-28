@@ -1,6 +1,5 @@
 package betsy.virtual.host.comm;
 
-import betsy.virtual.common.Constants;
 import betsy.virtual.common.Protocol;
 import betsy.virtual.common.exceptions.CommunicationException;
 import betsy.virtual.common.exceptions.ConnectionException;

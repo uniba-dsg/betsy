@@ -183,7 +183,7 @@ public abstract class VirtualEngine extends Engine implements
     public void storeLogs(BetsyProcess process) {
         log.debug("Storing logs for engine " + getName() + " ...");
 
-        LogFilesRequest request = buildLogFilesRequest(process);
+        LogFilesRequest request = buildLogFilesRequest();
 
         // TODO evtl. mittels RETRY wiederholen lassen.
 

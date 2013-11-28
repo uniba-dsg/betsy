@@ -77,7 +77,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
     }
 
     @Override
-    public LogFilesRequest buildLogFilesRequest(BetsyProcess process) {
+    public LogFilesRequest buildLogFilesRequest() {
         LogFilesRequest request = new LogFilesRequest();
         request.getPaths().add(get("virtual.engines.active_bpel_v.bvmsDir") + "/log");
         request.getPaths().add(get("virtual.engines.active_bpel_v.logfileDir"));

@@ -75,7 +75,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
     }
 
     @Override
-    public LogFilesRequest buildLogFilesRequest(BetsyProcess process) {
+    public LogFilesRequest buildLogFilesRequest() {
         LogFilesRequest request = new LogFilesRequest();
         request.getPaths().add(get("virtual.engines.orchestra_v.bvmsDir") + "/log");
         request.getPaths().add(get("virtual.engines.orchestra_v.logfileDir"));

@@ -89,7 +89,7 @@ public class DeployRequest implements Serializable {
     }
 
     /**
-     * Set the directory where the engine's logfiles are stored.
+     * Set the directory where the engine's log files are stored.
      *
      * @param deploymentLogFilePath directory to set, must not be null or empty.
      */

@@ -4,6 +4,8 @@ import betsy.executables.analytics.CsvReportLoader
 import betsy.executables.analytics.model.CsvReport
 import betsy.executables.analytics.model.Result
 
+import java.nio.file.Paths
+
 
 class CsvReportToTestsPerEngineAndGroup {
 
@@ -44,6 +46,6 @@ class CsvReportToTestsPerEngineAndGroup {
     }
 
     public static void main(String[] args) {
-        new CsvReportToTestsPerEngineAndGroup(report: new CsvReportLoader(csvFile: args[0]).load()).toCsvReport(System.out)
+        new CsvReportToTestsPerEngineAndGroup(report: new CsvReportLoader(csvFile: Paths.get(args[0])).load()).toCsvReport(System.out)
     }
 }

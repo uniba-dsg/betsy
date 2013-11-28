@@ -43,6 +43,6 @@ public interface VirtualizedEngineAPI {
 
     public DeployRequest buildDeployRequest(BetsyProcess process) throws IOException;
 
-    public LogFilesRequest buildLogFilesRequest(BetsyProcess process);
+    public LogFilesRequest buildLogFilesRequest();
 
 }
