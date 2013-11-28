@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="Scope-OnEvent-Element-InitAsync"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/scopeOnEventElementInitAsync"
+        name="Scope-EventHandlers-Element-InitAsync"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/scopeEventHandlersElementInitAsync"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         >
