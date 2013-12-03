@@ -119,20 +119,24 @@ class Composite {
                     context.testPartner.publish()
                 }
 
-                log "${process.targetPath}/test_soapui", {
-                    captureIO {
-                        new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
-                                reportingDirectory: process.targetReportsPath).run()
-                    }
-                }
-
-                WaitTasks.sleep(500);
-                process.engine.storeLogs(process)
+                testSoapUi(process)
 
             } finally {
                 context.testPartner.unpublish()
             }
         }
+    }
+
+    protected void testSoapUi(BetsyProcess process) {
+        log "${process.targetPath}/test_soapui", {
+            captureIO {
+                new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
+                        reportingDirectory: process.targetReportsPath).run()
+            }
+        }
+
+        WaitTasks.sleep(500);
+        process.engine.storeLogs(process)
     }
 
     protected void buildPackageAndTest(BetsyProcess process) {

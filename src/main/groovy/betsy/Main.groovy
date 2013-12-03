@@ -61,6 +61,8 @@ class Main {
 
         Betsy betsy = new Betsy(engines: engines, processes: processes)
 
+        useExternalPartnerService(parser, betsy)
+
         try {
             // execute
             try {
@@ -84,6 +86,19 @@ class Main {
             // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
             // SOLUTION remove exit line for testing purposes
             System.exit(0);
+        }
+    }
+
+    private static void useExternalPartnerService(CliParser parser, Betsy betsy) {
+        // do not use internal partner service
+        if (parser.useExternalPartnerService()) {
+            betsy.composite = new betsy.executables.Composite() {
+                protected void test(BetsyProcess process) {
+                    log "${process.targetPath}/test", {
+                        testSoapUi(process)
+                    }
+                }
+            }
         }
     }
 
