@@ -30,23 +30,29 @@ class EngineRepository {
     private static final OpenEsb23Engine OPENESB_23 = new OpenEsb23Engine()
     private static final PetalsEsb41Engine PETALS_41 = new PetalsEsb41Engine()
     private static final Ode136Engine ODE_136 = new Ode136Engine()
+    public static final OdeEngine ODE = new OdeEngine()
+    public static final OdeInMemoryEngine ODE_IN_MEMORY = new OdeInMemoryEngine()
+    public static final BpelgInMemoryEngine BPELG_IN_MEMORY = new BpelgInMemoryEngine()
+    public static final Ode136InMemoryEngine ODE_136_IN_MEMORY = new Ode136InMemoryEngine()
+    public static final OpenEsbEngine OPENESB = new OpenEsbEngine()
+    public static final PetalsEsbEngine PETALS = new PetalsEsbEngine()
 
     private Repository<Engine> repo = new Repository<>();
 
     public EngineRepository() {
         List<Engine> locals = [
-                new OdeEngine(),
+                ODE,
                 BPELG,
-                new OpenEsbEngine(),
-                new PetalsEsbEngine(),
+                OPENESB,
+                PETALS,
                 ORCHESTRA,
                 ACTIVE_BPEL,
                 OPENESB_23,
                 PETALS_41,
                 ODE_136,
-                new OdeInMemoryEngine(),
-                new Ode136InMemoryEngine(),
-                new BpelgInMemoryEngine()
+                ODE_IN_MEMORY,
+                ODE_136_IN_MEMORY,
+                BPELG_IN_MEMORY
         ]
 
         List<Engine> recent = [

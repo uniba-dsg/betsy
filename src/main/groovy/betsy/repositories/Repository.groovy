@@ -1,14 +1,25 @@
 package betsy.repositories
 
+import org.apache.log4j.Logger
+
 class Repository<T> {
 
-    private Map<String, List<T>> repository = new HashMap<>()
+    private static final Logger log = Logger.getLogger(Repository.class)
+
+    private Map<String, List<T>> repository = new LinkedHashMap<>()
 
     public void put(String key, List<T> values) {
+        if(key == null) {
+            throw new IllegalArgumentException("cannot add null into repository for values " + values)
+        }
+
         repository.put(key, values);
     }
 
     public List<T> getByName(String name) {
+        log.info("Getting element by name [${name}]")
+
+
         String trimmedName = name.trim()
         String key = repository.keySet().find { it.toUpperCase() == trimmedName.toUpperCase() }
         if (key == null) {

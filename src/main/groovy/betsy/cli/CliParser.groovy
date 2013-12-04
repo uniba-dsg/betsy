@@ -13,10 +13,12 @@ class CliParser {
     private def options
 
     public CliParser() {
+        EngineRepository engineRepository = new EngineRepository()
+        ProcessRepository processRepository = new ProcessRepository()
         cli = new CliBuilder(
                 usage: "betsy [options] <engines> <processes>",
                 header: "\nOptions:\n",
-                footer: "\nGROUPS for <engines> and <processes> are in CAPITAL LETTERS.\n<engines>: ${new EngineRepository().names.join(", ")}\n\n\n<processes>: ${new ProcessRepository().names.join(", ")}"
+                footer: "\nGROUPS for <engines> and <processes> are in CAPITAL LETTERS.\n<engines>: ${engineRepository.names.join(", ")}\n\n\n<processes>: ${processRepository.names.join(", ")}"
         )
         cli.o(longOpt: 'open-results-in-browser', "Opens results in default browser")
         cli.h(longOpt: 'help', "Print out usage information")

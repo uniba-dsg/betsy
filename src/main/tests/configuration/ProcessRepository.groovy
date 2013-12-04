@@ -10,13 +10,22 @@ import java.lang.reflect.Field
 
 import static BasicActivityProcesses.BASIC_ACTIVITIES
 import static PatternProcesses.CONTROL_FLOW_PATTERNS
+import static configuration.ScopeProcesses.*
+import static configuration.StaticAnalysisProcesses.*
+import static configuration.StructuredActivityProcesses.*
 
 class ProcessRepository {
 
     private Repository<BetsyProcess> repo = new Repository<>();
 
     public ProcessRepository() {
-        repo.put("ALL", BASIC_ACTIVITIES + configuration.ScopeProcesses.SCOPES + configuration.StructuredActivityProcesses.STRUCTURED_ACTIVITIES + CONTROL_FLOW_PATTERNS + configuration.StaticAnalysisProcesses.STATIC_ANALYSIS as List<BetsyProcess>)
+        repo.put("ALL",
+                BASIC_ACTIVITIES +
+                        SCOPES +
+                        STRUCTURED_ACTIVITIES +
+                        CONTROL_FLOW_PATTERNS +
+                        STATIC_ANALYSIS
+                as List<BetsyProcess>)
 
         Field[] fields = [
                 BasicActivityProcesses.class.declaredFields +
@@ -42,6 +51,8 @@ class ProcessRepository {
                     }
                 }
         )
+
+        repo.put("ERRORS", ErrorProcesses.processes)
 
         repo.put(
                 "WITH_EXIT_ASSERTION",

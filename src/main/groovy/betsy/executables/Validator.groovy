@@ -67,7 +67,7 @@ class Validator {
     private void assertEachProcessReferenceBpelFile() {
         processes.each { p1 ->
             processes.each { p2 ->
-                if (!p1.is(p2) && p1.bpelFileName == p2.bpelFileName) {
+                if (!p1.is(p2) && p1.bpel == p2.bpel) {
                     throw new IllegalStateException("Two processes reference same bpel file: " + p1 + " and " + p2)
                 }
             }

@@ -35,12 +35,12 @@ abstract class Engine implements EngineAPI {
     }
 
 	@Override
-    String toString() {
-        getName()
+    public String toString() {
+        return getName();
     }
 
 	@Override
-    void prepare() {
+    public void prepare() {
         // setup engine folder
         FileTasks.mkdirs(path)
     }

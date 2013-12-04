@@ -26,3 +26,6 @@ vm_download/
 vm_extraction/
 /soapui
 /ant
+
+# ignore this directory which is created on demand
+src/main/tests/files/errors/

@@ -46,8 +46,9 @@ class BetsyProcess implements Cloneable {
         return new BetsyProcess(bpel: bpel, wsdls: wsdls, additionalFiles: additionalFiles, testCases: testCases)
     }
 
-    String toString() {
-        getNormalizedId()
+    @Override
+    public String toString() {
+        return getNormalizedId();
     }
 
     String getEndpoint() {

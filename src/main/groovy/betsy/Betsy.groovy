@@ -17,7 +17,7 @@ class Betsy {
     public void execute() throws Exception {
         new Validator(processes: processes).validate()
 
-        TestSuite testSuite = TestSuite.createTests(engines, processes.sort { it.id })
+        TestSuite testSuite = TestSuite.createTests(engines, processes.sort())
 
         composite.testSuite = testSuite
         composite.execute()
