@@ -8,6 +8,7 @@ import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import betsy.data.engines.Engine
 import betsy.data.engines.LocalEngine
+import betsy.executables.ws.ExternalTestPartnerService
 import betsy.logging.LogContext
 import betsy.virtual.host.VirtualBox
 import betsy.virtual.host.engines.VirtualEngine
@@ -92,13 +93,8 @@ class Main {
     private static void useExternalPartnerService(CliParser parser, Betsy betsy) {
         // do not use internal partner service
         if (parser.useExternalPartnerService()) {
-            betsy.composite = new betsy.executables.Composite() {
-                protected void test(BetsyProcess process) {
-                    log "${process.targetPath}/test", {
-                        testSoapUi(process)
-                    }
-                }
-            }
+            betsy.composite.testPartner = new ExternalTestPartnerService()
+            betsy.composite.requestTimeout = 15 * 1000 // increase request timeout as invoking external service
         }
     }
 

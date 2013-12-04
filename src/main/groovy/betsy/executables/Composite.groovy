@@ -8,6 +8,8 @@ import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.Stopwatch
+import betsy.executables.ws.TestPartnerService
+import betsy.executables.ws.TestPartnerServicePublisher
 import betsy.logging.LogContext
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
@@ -26,12 +28,11 @@ class Composite {
 
     private static Logger logger = Logger.getLogger(Composite.class);
 
-    ExecutionContext context
+    TestPartnerService testPartner = new TestPartnerServicePublisher()
+    TestSuite testSuite
+    int requestTimeout = 5000
 
     public void execute() {
-
-        TestSuite testSuite = context.testSuite
-
         Progress progress = new Progress(testSuite.processesCount)
         MDC.put("progress", progress.toString())
 
@@ -111,18 +112,18 @@ class Composite {
         log "${process.targetPath}/test", {
             try {
                 try {
-                    context.testPartner.publish()
+                    testPartner.publish()
                 } catch (BindException ignore) {
-                    context.testPartner.unpublish()
+                    testPartner.unpublish()
                     logger.debug "Address already in use - waiting 2 seconds to get available"
                     WaitTasks.sleep(2000);
-                    context.testPartner.publish()
+                    testPartner.publish()
                 }
 
                 testSoapUi(process)
 
             } finally {
-                context.testPartner.unpublish()
+                testPartner.unpublish()
             }
         }
     }
@@ -150,7 +151,7 @@ class Composite {
 
     protected void buildTest(BetsyProcess process) {
         log "${process.targetPath}/build_test", {
-            captureIO { new TestBuilder(process: process, requestTimeout: context.requestTimeout).buildTest() }
+            captureIO { new TestBuilder(process: process, requestTimeout: requestTimeout).buildTest() }
         }
     }
 

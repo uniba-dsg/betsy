@@ -8,7 +8,7 @@ import javax.xml.ws.Endpoint
 
 import betsy.Configuration
 
-class TestPartnerServicePublisher {
+class TestPartnerServicePublisher implements TestPartnerService {
 
     private static final Logger log = Logger.getLogger(TestPartnerServicePublisher.class)
 
