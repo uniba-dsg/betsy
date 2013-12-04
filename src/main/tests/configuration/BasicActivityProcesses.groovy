@@ -234,6 +234,13 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess RECEIVE_REPLY_MULTIPLE_MESSAGE_EXCHANGES = builder.buildBasicActivityProcess(
+            "ReceiveReply-Multiple-MessageExchanges", "A receive-reply pair followed by a receive-reply pair of the same operation that use messageExchanges to define which reply belongs to which receive and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess RECEIVE_REPLY_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
@@ -298,6 +305,7 @@ class BasicActivityProcesses {
             RECEIVE_CORRELATION_INIT_ASYNC,
             RECEIVE_CORRELATION_INIT_SYNC,
             RECEIVE_REPLY_MESSAGE_EXCHANGES,
+            RECEIVE_REPLY_MULTIPLE_MESSAGE_EXCHANGES,
             RECEIVE_AMBIGUOUS_RECEIVE_FAULT,
             RECEIVE_CONFLICTING_RECEIVE_FAULT,
             RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT,

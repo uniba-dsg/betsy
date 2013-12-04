@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="ReceiveReply-Multiple-MessageExchanges"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/receiveReplyMultipleMessageExchanges"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <messageExchanges>
+        <messageExchange name="firstExchange"/>
+        <messageExchange name="secondExchange"/>
+    </messageExchanges>
+    <variables>
+        <variable name="ReplyDataOne" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitDataOne" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="ReplyDataTwo" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitDataTwo" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <sequence>
+        <receive messageExchange="firstExchange" name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataOne"/>
+        <assign name="AssignReplyDataOne" >
+            <copy>
+                <from variable="InitDataOne" part="inputPart"/>
+                <to variable="ReplyDataOne" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply messageExchange="firstExchange" name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyDataOne"/>
+
+        <receive messageExchange="secondExchange" name="NextReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataTwo"/>
+        <assign name="AssignReplyDataTwo" >
+            <copy>
+                <from>
+                    $InitDataOne.inputPart + $InitDataTwo.inputPart
+                </from>
+                <to variable="ReplyDataTwo" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply messageExchange="secondExchange" name="ReplyToNextReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyDataTwo"/>
+    </sequence>
+</process>
