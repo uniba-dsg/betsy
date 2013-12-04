@@ -3,6 +3,9 @@ package configuration
 import betsy.data.BetsyProcess
 import betsy.data.TestCase
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class StaticAnalysisProcesses {
 
     public static List<BetsyProcess> getStaticAnalysisProcesses() {
@@ -17,17 +20,17 @@ class StaticAnalysisProcesses {
         new File(path).eachDirRecurse { dir ->
             boolean isTestDirectory = dir.list().any({ String elem -> elem.endsWith(".bpel") })
             if (isTestDirectory) {
-                String testDir = dir.path.replace("\\", "/").replace("src/main/tests/", "")
+                String testDir = dir.path.replace("\\", "/")
 
-                List<String> wsdls = []
+                List<Path> wsdls = []
                 dir.list().each { elem ->
                     if (elem.endsWith(".wsdl")) {
-                        wsdls.add("${testDir}/${elem}")
+                        wsdls.add(Paths.get("${testDir}/${elem}"))
                     }
                 }
 
                 result.add(new BetsyProcess(
-                        bpel: "${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}",
+                        bpel: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
                         wsdls: wsdls,
                         testCases: [new TestCase().checkFailedDeployment()]
                 ))

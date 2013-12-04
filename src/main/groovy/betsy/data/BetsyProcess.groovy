@@ -3,21 +3,18 @@ package betsy.data
 import betsy.data.engines.Engine
 
 import java.nio.file.Path
-import java.nio.file.Paths;
 
 class BetsyProcess implements Cloneable {
 
-    public static Path PATH_PREFIX = Paths.get("src/main/tests")
-
-    String bpel
+    Path bpel
 
     Engine engine
 
-    String description=""
+    String description = ""
 
     List<TestCase> testCases = []
 
-    List<String> wsdls = []
+    List<Path> wsdls = []
 
     void setTestCases(List<TestCase> testCases) {
         uniqueifyTestCaseNames(testCases)
@@ -28,7 +25,7 @@ class BetsyProcess implements Cloneable {
         // group by name of test case
         testCases.groupBy { it.name }.each {
 
-            if(it.value.size() > 1) {
+            if (it.value.size() > 1) {
                 // iterate over values
                 it.value.eachWithIndex { testCase, index ->
 
@@ -42,12 +39,7 @@ class BetsyProcess implements Cloneable {
     /**
      * Additional files like xslt scripts or other resources.
      */
-    List<String> additionalFiles = []
-
-    String getId() {
-        // without .bpel extension and without files/
-        bpel.substring(6, bpel.length() - 5)
-    }
+    List<Path> additionalFiles = []
 
     @Override
     protected Object clone() {
@@ -67,7 +59,7 @@ class BetsyProcess implements Cloneable {
     }
 
     String getGroup() {
-        getId().split("/").first()
+        bpel.getParent().getFileName().toString()
     }
 
     /**
@@ -77,7 +69,7 @@ class BetsyProcess implements Cloneable {
      * @return
      */
     String getNormalizedId() {
-        getId().replaceAll('/', '__')
+        "${group}__${name}"
     }
 
     /**
@@ -86,7 +78,7 @@ class BetsyProcess implements Cloneable {
      * @return
      */
     String getBpelFileName() {
-        bpel.split("/").last()
+        bpel.getFileName().toString()
     }
 
     String getName() {
@@ -98,7 +90,7 @@ class BetsyProcess implements Cloneable {
     }
 
     Path getBpelFilePath() {
-        PATH_PREFIX.resolve(bpel)
+        bpel
     }
 
     /**
@@ -221,19 +213,19 @@ class BetsyProcess implements Cloneable {
     }
 
     List<Path> getWsdlPaths() {
-        getWsdls().collect { wsdl -> PATH_PREFIX.resolve(wsdl)}
+        getWsdls()
     }
 
     List<Path> getTargetWsdlPaths() {
-        getWsdlFileNames().collect {wsdl -> targetBpelPath.resolve(wsdl)}
+        getWsdlFileNames().collect { wsdl -> targetBpelPath.resolve(wsdl) }
     }
 
     List<String> getWsdlFileNames() {
-        wsdls.collect { wsdl -> wsdl.split("/").last()}
+        wsdls.collect { wsdl -> wsdl.getFileName().toString() }
     }
 
     List<Path> getAdditionalFilePaths() {
-        additionalFiles.collect { additionalFile -> PATH_PREFIX.resolve(additionalFile)}
+        additionalFiles
     }
 
     boolean equals(o) {

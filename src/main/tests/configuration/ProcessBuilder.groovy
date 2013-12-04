@@ -3,36 +3,58 @@ package configuration
 import betsy.data.BetsyProcess
 import betsy.data.TestCase
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class ProcessBuilder {
+
+    public static Path PATH_PREFIX = Paths.get("src/main/tests")
+    public static final Path testInterface = PATH_PREFIX.resolve("files/TestInterface.wsdl")
+    public static final Path partnerInterface = PATH_PREFIX.resolve("files/TestPartner.wsdl")
 
     public final int UNDECLARED_FAULT_CODE = -5
 
+    public static BetsyProcess buildPatternProcess(String name, List<TestCase> testCases) {
+        new BetsyProcess(bpel: PATH_PREFIX.resolve("files/cfpatterns/${name}.bpel"),
+                wsdls: [testInterface],
+                testCases: testCases
+        )
+    }
+
+    public static BetsyProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
+        new BetsyProcess(bpel: PATH_PREFIX.resolve("files/cfpatterns/${name}.bpel"),
+                wsdls: [testInterface, partnerInterface],
+                testCases: testCases
+        )
+    }
+
     public static BetsyProcess buildProcess(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "files/${name}.bpel",
-                wsdls: ["files/TestInterface.wsdl"],
+        new BetsyProcess(bpel: PATH_PREFIX.resolve("files/${name}.bpel"),
+                wsdls: [testInterface],
                 testCases: testCases
         )
     }
 
     public static BetsyProcess buildProcessWithXsd(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "files/${name}.bpel",
-                wsdls: ["files/TestInterface.wsdl"],
+        new BetsyProcess(bpel: PATH_PREFIX.resolve("files/${name}.bpel"),
+                wsdls: [testInterface],
                 testCases: testCases,
-                additionalFiles: ["files/basic/months.xsd"],
+                additionalFiles: [PATH_PREFIX.resolve("files/basic/months.xsd")],
         )
     }
 
     public static BetsyProcess buildProcessWithPartner(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "files/${name}.bpel",
-                wsdls: ["files/TestInterface.wsdl", "files/TestPartner.wsdl"],
+        new BetsyProcess(bpel: PATH_PREFIX.resolve("files/${name}.bpel"),
+                wsdls: [testInterface, partnerInterface],
                 testCases: testCases
         )
     }
 
     public static BetsyProcess buildProcessWithXslt(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "files/${name}.bpel",
-                wsdls: ["files/TestInterface.wsdl"],
-                additionalFiles: ["files/basic/echo.xslt", "files/basic/notCompileable.xslt"],
+        new BetsyProcess(bpel: PATH_PREFIX.resolve("files/${name}.bpel"),
+                wsdls: [testInterface],
+                additionalFiles: [PATH_PREFIX.resolve("files/basic/echo.xslt"),
+                        PATH_PREFIX.resolve("files/basic/notCompileable.xslt")],
                 testCases: testCases
         )
     }

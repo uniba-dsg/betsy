@@ -2,7 +2,6 @@ package betsy.data
 
 import ant.tasks.AntUtil
 import betsy.data.engines.Engine
-import betsy.executables.ExecutionContext
 import betsy.tasks.FileTasks
 
 import java.nio.file.Path
@@ -89,10 +88,6 @@ class TestSuite {
     @Override
     public String toString() {
         getPath()
-    }
-
-    public ExecutionContext buildExecutionContext() {
-        new ExecutionContext(testSuite: this)
     }
 
 }

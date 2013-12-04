@@ -4,22 +4,11 @@ import betsy.data.BetsyProcess
 import betsy.data.TestCase
 import betsy.data.assertions.ExitAssertion
 
+import static configuration.ProcessBuilder.buildPatternProcess
+import static configuration.ProcessBuilder.buildPatternProcessWithPartner
+
 
 class PatternProcesses {
-
-    private static BetsyProcess buildPatternProcess(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "files/cfpatterns/${name}.bpel",
-                wsdls: ["files/TestInterface.wsdl"],
-                testCases: testCases
-        )
-    }
-
-    private static BetsyProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: "files/cfpatterns/${name}.bpel",
-                wsdls: ["files/TestInterface.wsdl", "files/TestPartner.wsdl"],
-                testCases: testCases
-        )
-    }
 
     public static final BetsyProcess SEQUENCE_PATTERN = buildPatternProcess(
             "WCP01-Sequence",

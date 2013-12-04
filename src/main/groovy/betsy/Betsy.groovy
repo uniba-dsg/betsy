@@ -5,7 +5,6 @@ import betsy.data.TestSuite
 import betsy.data.engines.Engine;
 import betsy.executables.Composite
 
-import betsy.executables.ExecutionContext
 import betsy.executables.Validator
 
 class Betsy {
