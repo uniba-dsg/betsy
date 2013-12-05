@@ -44,6 +44,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_MULTIPLE_MESSAGE_EXCHANGES = builder.buildScopeProcess(
+            "Scope-Multiple-MessageExchanges", "A scope with a receive-reply pair followed by a receive-reply pair of the same operation that use scope-level definition of messageExchanges to define which reply belongs to which receive and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_CORRELATION_SETS_INIT_ASYNC = builder.buildScopeProcess(
             "Scope-CorrelationSets-InitAsync", "A scope with an asynchronous receive which initiates the correlation set and a receive-reply pair, as well as a scope-level definition of a correlationSet that is used by the messaging activities.",
             [
@@ -289,6 +296,7 @@ class ScopeProcesses {
             SCOPES_EVENT_HANDLERS,
             SCOPES_FAULT_HANDLERS,
             SCOPE_MESSAGE_EXCHANGES,
+            SCOPE_MULTIPLE_MESSAGE_EXCHANGES,
             SCOPE_PARTNER_LINKS,
             SCOPE_VARIABLES,
             SCOPE_VARIABLES_OVERWRITING,
