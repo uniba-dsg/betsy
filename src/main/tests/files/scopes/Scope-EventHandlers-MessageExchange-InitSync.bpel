@@ -10,14 +10,14 @@
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>
+    <messageExchanges>
+        <messageExchange name="theOnlyExchange"/>
+    </messageExchanges>
     <variables>
         <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
         <variable name="InitData2" messageType="ti:executeProcessSyncRequest"/>
     </variables>
-    <messageExchanges>
-        <messageExchange name="theOnlyExchange"/>
-    </messageExchanges>
     <correlationSets>
         <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
     </correlationSets>
