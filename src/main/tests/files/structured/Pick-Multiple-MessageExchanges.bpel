@@ -18,9 +18,15 @@
         <variable name="ReplyDataTwo" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitDataTwo" messageType="ti:executeProcessSyncRequest"/>
     </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
     <sequence>
         <pick name="Pick" createInstance="yes">
             <onMessage messageExchange="firstExchange" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataOne">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="yes"/>
+                </correlations>
                 <sequence name="Sequence">
                     <assign name="AssignReplyDataOne">
                         <copy>
@@ -35,6 +41,9 @@
         
         <pick name="Pick">
             <onMessage messageExchange="secondExchange" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataTwo">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
                 <sequence name="Sequence">
                     <assign name="AssignReplyDataTwo">
                         <copy>

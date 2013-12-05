@@ -14,22 +14,37 @@
         <variable name="ReplyDataTwo" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitDataTwo" messageType="ti:executeProcessSyncRequest"/>
     </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
     <scope name="Scope">
         <messageExchanges>
             <messageExchange name="firstExchange"/>
             <messageExchange name="secondExchange"/>
         </messageExchanges>
         <sequence>
-            <receive messageExchange="firstExchange" name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataOne"/>
+            <receive messageExchange="firstExchange" name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataOne">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="yes"/>
+                </correlations>
+            </receive>
             <assign name="AssignReplyDataOne" >
                 <copy>
                     <from variable="InitDataOne" part="inputPart"/>
                     <to variable="ReplyDataOne" part="outputPart"/>
                 </copy>
             </assign>
-            <reply messageExchange="firstExchange" name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyDataOne"/>
+            <reply messageExchange="firstExchange" name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyDataOne">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+            </reply>
 
-            <receive messageExchange="secondExchange" name="NextReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataTwo"/>
+            <receive messageExchange="secondExchange" name="NextReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitDataTwo">
+                <correlations>
+                    <correlation set="CorrelationSet" initiate="no"/>
+                </correlations>
+            </receive>
             <assign name="AssignReplyDataTwo" >
                 <copy>
                     <from>
