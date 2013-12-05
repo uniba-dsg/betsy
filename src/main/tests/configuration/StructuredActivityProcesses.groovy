@@ -329,6 +329,13 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess PICK_MESSAGE_EXCHANGE = builder.buildStructuredActivityProcess(
+            "Pick-MessageExchange", "A pick with a synchronous onMessage that has createInstance set to yes and uses messageExchange.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
     public static final BetsyProcess PICK_CREATE_INSTANCE_FROM_PARTS = builder.buildStructuredActivityProcess(
             "Pick-CreateInstance-FromParts", "A pick with a synchronous onMessage that has createInstance set to yes using fromParts.",
             [
@@ -354,6 +361,7 @@ class StructuredActivityProcesses {
             PICK_CORRELATIONS_INIT_ASYNC,
             PICK_CORRELATIONS_INIT_SYNC,
             PICK_CREATE_INSTANCE,
+            PICK_MESSAGE_EXCHANGE,
             PICK_CREATE_INSTANCE_FROM_PARTS,
             PICK_ON_ALARM_FOR,
             PICK_ON_ALARM_UNTIL
