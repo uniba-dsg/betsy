@@ -350,6 +350,13 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess PICK_MULTIPLE_MESSAGE_EXCHANGES_SCOPE = builder.buildStructuredActivityProcess(
+            "Pick-Multiple-MessageExchanges-Scope", "A pick with a synchronous onMessage that has createInstance set to yes and a second pick with a synchronous onMessage of the same type and both use messageExchanges in a scope to define which reply belongs to which onMessage and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess PICK_CREATE_INSTANCE_FROM_PARTS = builder.buildStructuredActivityProcess(
             "Pick-CreateInstance-FromParts", "A pick with a synchronous onMessage that has createInstance set to yes using fromParts.",
             [
@@ -378,6 +385,7 @@ class StructuredActivityProcesses {
             PICK_MESSAGE_EXCHANGE,
             PICK_MESSAGE_EXCHANGE_SCOPE,
             PICK_MULTIPLE_MESSAGE_EXCHANGES,
+            PICK_MULTIPLE_MESSAGE_EXCHANGES_SCOPE,
             PICK_CREATE_INSTANCE_FROM_PARTS,
             PICK_ON_ALARM_FOR,
             PICK_ON_ALARM_UNTIL
