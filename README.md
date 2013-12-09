@@ -102,7 +102,7 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 
 # Authors (in alphabetical order)
 
-[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/) and Cedric Röck
+[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Christian Preißinger and Cedric Röck
 
 # Contribution Guide
 
