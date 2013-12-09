@@ -54,7 +54,7 @@
                                 <to variable="Branch2"/>
                             </copy>
                             <copy>
-                                <from><literal>0</literal></from>
+                                <from>'0'</from>
                                 <to variable="ReplyData2" part="outputPart"/>
                             </copy>
                         </assign>
