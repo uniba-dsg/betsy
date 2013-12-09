@@ -7,6 +7,12 @@ The tool has been subject to the paper [BPEL Conformance in Open Source Engines]
 
 This software is licensed under the LGPL Version 3 Open Source License.
 
+## Releases
+
+- [Release December 2013 (latest)](https://github.com/uniba-dsg/betsy/archive/icsoc-2013.zip)
+- [Release December 2012](https://github.com/uniba-dsg/betsy/archive/soca-2012.zip)
+- [Release July 2012](https://github.com/uniba-dsg/betsy/archive/techrep-july-2012.zip)
+
 ## Software Requirements
 - Windows 7
 - JDK 1.7.0_03 (64 Bit) or higher
