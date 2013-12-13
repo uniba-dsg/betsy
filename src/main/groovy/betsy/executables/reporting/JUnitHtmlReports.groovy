@@ -26,6 +26,8 @@ class JUnitHtmlReports {
 
         log.info "executing reporting ant scripts"
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(path, antBinFolder.resolve("ant.bat").toString()))
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(path, "chmod").values("+x", antBinFolder.resolve("ant").toString()))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(path, antBinFolder.resolve("ant").toString()))
     }
 
