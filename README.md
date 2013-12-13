@@ -5,7 +5,7 @@ More information can be found in the [technical report](https://svn.lspi.wiai.un
 A [sample output](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results.zip) of a run of betsy are also available.
 The tool has been subject to the paper [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/) and [presentation](https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-presentation-soca-2012.pdf) for which these [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
 
-This software is licensed under the LGPL Version 3 Open Source License.
+This software is licensed under the LGPL Version 3 Open Source License!
 
 ## Releases
 
