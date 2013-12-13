@@ -123,6 +123,12 @@ task partnerservice(type: JavaExec, dependsOn: build) {
     main = "betsy.tool.PartnerServiceControl"
 }
 
+test {
+    testLogging {
+        exceptionFormat "full" // default is "short"
+    }
+}
+
 /**
  * Creates jar file for the virtual machines.
  */
