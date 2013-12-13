@@ -13,7 +13,9 @@ import betsy.data.engines.openesb.OpenEsbEngine
 import betsy.data.engines.orchestra.OrchestraEngine
 import betsy.data.engines.petalsesb.PetalsEsb41Engine
 import betsy.data.engines.petalsesb.PetalsEsbEngine
-import betsy.data.engines.wso2.Wso2Engine
+import betsy.data.engines.wso2.Wso2Engine_v2_1_2
+import betsy.data.engines.wso2.Wso2Engine_v3_0_0
+import betsy.data.engines.wso2.Wso2Engine_v3_1_0
 import betsy.virtual.host.engines.VirtualActiveBpelEngine
 import betsy.virtual.host.engines.VirtualBpelgEngine
 import betsy.virtual.host.engines.VirtualOdeEngine
@@ -48,7 +50,9 @@ class EngineRepository {
                 new OdeInMemoryEngine(),
                 new Ode136InMemoryEngine(),
                 new BpelgInMemoryEngine(),
-                new Wso2Engine()
+                new Wso2Engine_v3_1_0(),
+                new Wso2Engine_v3_0_0(),
+                new Wso2Engine_v2_1_2()
         ]
 
         List<Engine> recent = [

@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class FileTasks {
 
@@ -80,5 +82,17 @@ public class FileTasks {
         if (!Files.isRegularFile(p)) {
             throw new IllegalArgumentException("the file " + p + " is no file");
         }
+    }
+
+    public static void deleteLine(Path path, int lineNumber) throws IOException {
+        log.info("Deleting line #" + lineNumber + " from file " + path);
+
+        // line numbers start with 1, not with 0!
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        log.info("File has " + lines.size() + " lines -> removing #" + lineNumber + " with content " + lines.get(lineNumber - 1));
+
+        lines.remove(lineNumber - 1);
+
+        Files.write(path, lines, StandardCharsets.UTF_8);
     }
 }

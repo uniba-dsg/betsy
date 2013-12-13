@@ -12,7 +12,7 @@ import java.nio.file.Paths
 
 import static java.nio.file.Files.copy
 
-class Wso2Engine extends LocalEngine {
+class Wso2Engine_v3_1_0 extends LocalEngine {
 
     @Override
     Path getXsltPath() {
@@ -21,14 +21,14 @@ class Wso2Engine extends LocalEngine {
 
     @Override
     String getName() {
-        return "wso2";
+        return "wso2_v3_1_0";
     }
 
     @Override
     void install() {
         FileTasks.deleteDirectory(getServerPath());
 
-        String fileName = "wso2bps-3.1.0.zip"
+        String fileName = getZipFileName()
 
         ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
@@ -38,6 +38,10 @@ class Wso2Engine extends LocalEngine {
 
         FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat")
         FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd ${getBinDir().toAbsolutePath()} && call wso2server.bat")
+    }
+
+    public String getZipFileName() {
+        "wso2bps-3.1.0.zip"
     }
 
     @Override
@@ -52,15 +56,15 @@ class Wso2Engine extends LocalEngine {
         }
     }
 
-    private Path getLogsFolder() {
+    public Path getLogsFolder() {
         getCarbonHome().resolve("repository").resolve("logs")
     }
 
-    private Path getBinDir() {
+    public Path getBinDir() {
         getCarbonHome().resolve("bin")
     }
 
-    private Path getCarbonHome() {
+    public Path getCarbonHome() {
         getServerPath().resolve("wso2bps-3.1.0")
     }
 
@@ -88,7 +92,7 @@ class Wso2Engine extends LocalEngine {
         WaitTasks.sleep(20000);
     }
 
-    private Path getDeploymentDir() {
+    public Path getDeploymentDir() {
         getCarbonHome().resolve("repository").resolve("deployment").resolve("server").resolve("bpel")
     }
 
