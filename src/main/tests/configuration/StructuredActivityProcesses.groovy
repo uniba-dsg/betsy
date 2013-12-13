@@ -110,7 +110,23 @@ class StructuredActivityProcesses {
     )
 
     public static final BetsyProcess FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION = builder.buildStructuredActivityProcess(
-            "Flow-Two-Starting-OnMessage-Correlation", "A flow that contains two pick activities that can both be start activity. Each pick assigns the input to a intermediate variable. The responses are assigned 1) the sum of intermediate variables and 2) the concatenation of the intermediate variables.",
+            "Flow-Two-Starting-OnMessage-Correlation", "A flow that contains two pick activities that can both be start activity and reply 0 or '0'. After the flow a simple synchronous receive-reply pair responses the concatenation of the two starting message inputParts.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
+                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
+            ]
+    )
+
+    public static final BetsyProcess FLOW_STARTING_RECEIVE_ON_MESSAGE_CORRELATION = builder.buildStructuredActivityProcess(
+            "Flow-Starting-Receive-OnMessage-Correlation", "A flow that contains a receive-reply pair in a sequence, replying 0, and a pick activity that replies '0'. Both message activities can be start activity. After the flow a simple synchronous receive-reply pair responses the concatenation of the two starting message inputParts.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
+                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
+            ]
+    )
+
+    public static final BetsyProcess FLOW_TWO_STARTING_RECEIVE_CORRELATION = builder.buildStructuredActivityProcess(
+            "Flow-Two-Starting-Receive-Correlation", "A flow that contains two receive-reply pair in a sequence that can both be start activity and reply 0 or '0'. After the flow a simple synchronous receive-reply pair responses the concatenation of the two starting message inputParts.",
             [
                     new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
                     new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
@@ -127,7 +143,9 @@ class StructuredActivityProcesses {
             FLOW_LINKS_TRANSITION_CONDITION,
             FLOW_GRAPH_EXAMPLE,
             FLOW_LINKS_RECEIVE_CREATING_INSTANCES,
-            FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION
+            FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION,
+            FLOW_STARTING_RECEIVE_ON_MESSAGE_CORRELATION,
+            FLOW_TWO_STARTING_RECEIVE_CORRELATION,
     ].flatten() as List<BetsyProcess>
 
     public static final BetsyProcess IF = builder.buildStructuredActivityProcess(
