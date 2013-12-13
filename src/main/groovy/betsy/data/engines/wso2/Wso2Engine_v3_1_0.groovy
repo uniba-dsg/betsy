@@ -71,6 +71,9 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
     @Override
     void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq wso2server"))
+
+        // required for jenkins - may have side effects but this should not be a problem in this context
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Administrator:*"))
     }
 
     @Override
