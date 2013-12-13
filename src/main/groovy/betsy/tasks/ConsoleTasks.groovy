@@ -67,11 +67,17 @@ class ConsoleTasks {
 
     private
     static void executeOnWindowsWithErrorOption(CliCommand cliCommand, HashMap<String, String> environment, boolean failOnError) {
-        log.info("Executing on windows $cliCommand")
+        execute("windows", cliCommand, failOnError, environment)
+    }
+
+    private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, environment) {
+        log.info("Executing on $osfamily $cliCommand")
 
         FileTasks.assertDirectory(cliCommand.dir)
 
-        AntUtil.builder().exec(executable: "cmd", failOnError: failOnError, osfamily: "windows", dir: cliCommand.dir) {
+
+
+        AntUtil.builder().exec(executable: "cmd", failOnError: failOnError, osfamily: osfamily, dir: cliCommand.dir) {
             arg(value: "/c")
             arg(value: cliCommand.command)
             for (String value : cliCommand.values) {
@@ -88,15 +94,14 @@ class ConsoleTasks {
     }
 
     public static void executeOnUnix(CliCommand cliCommand) {
-        log.info("Executing on unix $cliCommand")
-
-        FileTasks.assertDirectory(cliCommand.dir)
-
-        AntUtil.builder().exec(executable: cliCommand.command, failOnError: "true", osfamily: "unix", dir: cliCommand.dir) {
-            for (String value : cliCommand.values) {
-                arg(value: value)
-            }
-        }
+        execute("unix", cliCommand, true,  new HashMap<>())
     }
 
+    public static void executeOnUnixAndIgnoreError(CliCommand cliCommand) {
+        executeOnUnixWithErrorOption(cliCommand, new HashMap<>(), false)
+    }
+
+    static void executeOnUnixWithErrorOption(CliCommand cliCommand, HashMap hashMap, boolean b) {
+        execute("unix", cliCommand, b,  hashMap)
+    }
 }
