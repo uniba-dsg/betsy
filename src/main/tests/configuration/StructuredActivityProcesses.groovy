@@ -112,8 +112,8 @@ class StructuredActivityProcesses {
     public static final BetsyProcess FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION = builder.buildStructuredActivityProcess(
             "Flow-Two-Starting-OnMessage-Correlation", "A flow that contains two pick activities that can both be start activity. Each pick assigns the input to a intermediate variable. The responses are assigned 1) the sum of intermediate variables and 2) the concatenation of the intermediate variables.",
             [
-                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0"),
-                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0)
+                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
+                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
             ]
     )
 

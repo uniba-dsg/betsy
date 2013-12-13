@@ -14,25 +14,28 @@
         <variable name="InitData1" messageType="ti:executeProcessSyncRequest"/>
         <variable name="ReplyData2" messageType="ti:executeProcessSyncStringResponse"/>
         <variable name="InitData2" messageType="ti:executeProcessSyncStringRequest"/>
-        <variable name="Branch1" type="xsd:int"/>
-        <variable name="Branch2" type="xsd:int"/>
+        <variable name="ReplyData3" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="InitData3" messageType="ti:executeProcessSyncStringRequest"/>
     </variables>
     <correlationSets>
         <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
     </correlationSets>
     <sequence>
         <flow name="Flow">
+            <links>
+                <link name="InitOneToCheck"/>
+                <link name="InitTwoToCheck"/>
+            </links>
             <pick name="Pick1" createInstance="yes">
+                <sources>
+                    <source linkName="InitOneToCheck"/>
+                </sources>
                 <onMessage partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData1">
                     <correlations>
                         <correlation set="CorrelationSet" initiate="join"/>
                     </correlations>
                     <sequence name="Sequence">
                         <assign name="AssignReplyData">
-                            <copy>
-                                <from variable="InitData1" part="inputPart"/>
-                                <to variable="Branch1"/>
-                            </copy>
                             <copy>
                                 <from><literal>0</literal></from>
                                 <to variable="ReplyData1" part="outputPart"/>
@@ -43,16 +46,15 @@
                 </onMessage>
             </pick>
             <pick name="Pick2" createInstance="yes">
+                <sources>
+                    <source linkName="InitTwoToCheck"/>
+                </sources>
                 <onMessage partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData2">
                     <correlations>
                         <correlation set="CorrelationSet" initiate="join"/>
                     </correlations>
                     <sequence name="Sequence">
                         <assign name="AssignStringReplyData">
-                            <copy>
-                                <from variable="InitData2" part="inputPart"/>
-                                <to variable="Branch2"/>
-                            </copy>
                             <copy>
                                 <from>'0'</from>
                                 <to variable="ReplyData2" part="outputPart"/>
@@ -62,6 +64,29 @@
                     </sequence>
                 </onMessage>
             </pick>
+            <sequence>
+                <targets>
+                    <joinCondition>
+                        $InitOneToCheck and $InitTwoToCheck
+                    </joinCondition>
+                    <target linkName="InitOneToCheck"/>
+                    <target linkName="InitTwoToCheck"/>
+                </targets>
+                <receive name="Receive" createInstance="no" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData3">
+                    <correlations>
+                        <correlation set="CorrelationSet" initiate="no"/>
+                    </correlations>
+                </receive>
+                <assign name="AssignReplyData">
+                    <copy>
+                        <from>
+                            concat($InitData2.inputPart,$InitData1.inputPart)
+                        </from>
+                        <to variable="ReplyData3" part="outputPart"/>
+                    </copy>
+                </assign>
+                <reply name="ReplyToReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData3"/>
+            </sequence>
         </flow>
     </sequence>
 </process>
