@@ -107,13 +107,6 @@ class ScopeProcesses {
             ]
     )
 
-    public static final BetsyProcess SCOPE_EVENT_HANDLERS_ELEMENT_INIT_ASYNC = builder.buildScopeProcess(
-            "Scope-EventHandlers-Element-InitAsync", "An asynchronous receive followed by a wait and a process-level onEvent eventHandler. The receive initiates a correlationSet on which the onEvent correlates with a synchronous operation, initializing the inputData with a element variable.",
-            [
-                    new TestCase().checkDeployment().sendAsync(5).sendSync(5, 5)
-            ]
-    )
-
     public static final BetsyProcess SCOPE_EVENT_HANDLER_INIT_ASYNC = builder.buildScopeProcess(
             "Scope-EventHandlers-InitAsync", "An asynchronous receive followed by a wait and a process-level onMessage eventHandler. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
             [
@@ -185,7 +178,6 @@ class ScopeProcesses {
             SCOPE_EVENT_HANDLERS_ON_ALARM_REPEAT_EVERY_FOR,
             SCOPE_EVENT_HANDLERS_ON_ALARM_REPEAT_EVERY_UNTIL,
             SCOPE_EVENT_HANDLERS_ON_ALARM_UNTIL,
-            SCOPE_EVENT_HANDLERS_ELEMENT_INIT_ASYNC,
             SCOPE_EVENT_HANDLERS_PARTS
     ].flatten() as List<BetsyProcess>
 
