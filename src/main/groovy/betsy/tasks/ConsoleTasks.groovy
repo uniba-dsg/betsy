@@ -58,26 +58,29 @@ class ConsoleTasks {
     private static final Logger log = Logger.getLogger(ConsoleTasks.class)
 
     public static void executeOnWindows(CliCommand cliCommand) {
-        executeOnWindowsWithErrorOption(cliCommand, new HashMap<>(), true)
+        execute("windows", cliCommand, true, new HashMap<>())
     }
 
     public static void executeOnWindows(CliCommand cliCommand, HashMap<String, String> environment) {
-        executeOnWindowsWithErrorOption(cliCommand, environment, true)
+        execute("windows", cliCommand, true, environment)
     }
 
-    private
-    static void executeOnWindowsWithErrorOption(CliCommand cliCommand, HashMap<String, String> environment, boolean failOnError) {
-        execute("windows", cliCommand, failOnError, environment)
-    }
-
-    private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, environment) {
+ private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, environment) {
         log.info("Executing on $osfamily $cliCommand")
 
         FileTasks.assertDirectory(cliCommand.dir)
 
+        if ("windows".equals(osfamily)) {
+            internalExecuteOnWindows(failOnError, cliCommand, environment)
+        } else {
+            internalExecuteOnUnix(failOnError, cliCommand, environment)
+        }
 
+    }
 
-        AntUtil.builder().exec(executable: "cmd", failOnError: failOnError, osfamily: osfamily, dir: cliCommand.dir) {
+    private
+    static Object internalExecuteOnWindows(boolean failOnError, CliCommand cliCommand, environment) {
+        AntUtil.builder().exec(executable: "cmd", failOnError: failOnError, osfamily: "windows", dir: cliCommand.dir) {
             arg(value: "/c")
             arg(value: cliCommand.command)
             for (String value : cliCommand.values) {
@@ -89,19 +92,28 @@ class ConsoleTasks {
         }
     }
 
+    private
+    static Object internalExecuteOnUnix(boolean failOnError, CliCommand cliCommand, environment) {
+        AntUtil.builder().exec(executable: cliCommand.command, failOnError: failOnError, osfamily: "unix", dir: cliCommand.dir) {
+            for (String value : cliCommand.values) {
+                arg(value: value)
+            }
+            for (Map.Entry<String, String> entry : environment.entrySet()) {
+                env key: entry.key, path: entry.value
+            }
+        }
+    }
+
     public static void executeOnWindowsAndIgnoreError(CliCommand cliCommand) {
-        executeOnWindowsWithErrorOption(cliCommand, new HashMap<>(), false)
+        execute("windows", cliCommand, false, new HashMap<>())
     }
 
     public static void executeOnUnix(CliCommand cliCommand) {
-        execute("unix", cliCommand, true,  new HashMap<>())
+        execute("unix", cliCommand, true, new HashMap<>())
     }
 
     public static void executeOnUnixAndIgnoreError(CliCommand cliCommand) {
-        executeOnUnixWithErrorOption(cliCommand, new HashMap<>(), false)
+        execute("unix", cliCommand, false, new HashMap<>())
     }
 
-    static void executeOnUnixWithErrorOption(CliCommand cliCommand, HashMap hashMap, boolean b) {
-        execute("unix", cliCommand, b,  hashMap)
-    }
 }
