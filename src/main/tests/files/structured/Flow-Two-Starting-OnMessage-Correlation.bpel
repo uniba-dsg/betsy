@@ -22,14 +22,7 @@
     </correlationSets>
     <sequence>
         <flow name="Flow">
-            <links>
-                <link name="InitOneToCheck"/>
-                <link name="InitTwoToCheck"/>
-            </links>
             <pick name="Pick1" createInstance="yes">
-                <sources>
-                    <source linkName="InitOneToCheck"/>
-                </sources>
                 <onMessage partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData1">
                     <correlations>
                         <correlation set="CorrelationSet" initiate="join"/>
@@ -46,9 +39,6 @@
                 </onMessage>
             </pick>
             <pick name="Pick2" createInstance="yes">
-                <sources>
-                    <source linkName="InitTwoToCheck"/>
-                </sources>
                 <onMessage partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData2">
                     <correlations>
                         <correlation set="CorrelationSet" initiate="join"/>
@@ -64,29 +54,20 @@
                     </sequence>
                 </onMessage>
             </pick>
-            <sequence>
-                <targets>
-                    <joinCondition>
-                        $InitOneToCheck and $InitTwoToCheck
-                    </joinCondition>
-                    <target linkName="InitOneToCheck"/>
-                    <target linkName="InitTwoToCheck"/>
-                </targets>
-                <receive name="Receive" createInstance="no" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData3">
-                    <correlations>
-                        <correlation set="CorrelationSet" initiate="no"/>
-                    </correlations>
-                </receive>
-                <assign name="AssignReplyData">
-                    <copy>
-                        <from>
-                            concat($InitData2.inputPart,$InitData1.inputPart)
-                        </from>
-                        <to variable="ReplyData3" part="outputPart"/>
-                    </copy>
-                </assign>
-                <reply name="ReplyToReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData3"/>
-            </sequence>
         </flow>
+        <receive name="Receive" createInstance="no" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="InitData3">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="no"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData">
+            <copy>
+                <from>
+                    concat($InitData2.inputPart,$InitData1.inputPart)
+                </from>
+                <to variable="ReplyData3" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToReceive" partnerLink="MyRoleLink" operation="startProcessSyncString" portType="ti:TestInterfacePortType" variable="ReplyData3"/>
     </sequence>
 </process>
