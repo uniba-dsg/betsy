@@ -5,3 +5,9 @@ jdk:
 
 before_install:
   - chmod +x gradlew
+
+install:
+  - TERM=dumb ./gradlew assemble
+
+script:
+  - TERM=dumb ./gradlew check --stacktrace
