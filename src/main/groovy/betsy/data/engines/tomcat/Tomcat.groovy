@@ -41,6 +41,7 @@ class Tomcat {
      */
     void startup() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir, "tomcat_startup.bat"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir.resolve("tomcat_startup.sh")))
 
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             http url: tomcatUrl
@@ -53,6 +54,7 @@ class Tomcat {
      */
     void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir.resolve("tomcat_shutdown.sh")))
     }
 
     /**
