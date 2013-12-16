@@ -5,6 +5,8 @@ import betsy.data.TestCase
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 
+import static configuration.ProcessBuilder.*
+
 class BasicActivityProcesses {
 
     static ProcessBuilder builder = new ProcessBuilder()
@@ -379,21 +381,28 @@ class BasicActivityProcesses {
     public static final BetsyProcess INVOKE_CATCH = builder.buildProcessWithPartner(
             "basic/Invoke-Catch", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
-                    new TestCase().checkDeployment().sendSync(-5, 0)
+                    new TestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, 0)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic/Invoke-Catch-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             [
-                    new TestCase().checkDeployment().sendSync(builder.UNDECLARED_FAULT_CODE, 0)
+                    new TestCase().checkDeployment().sendSync(UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-5, 0)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(DECLARED_FAULT_CODE, 0)
+            ]
+    )
+
+    public static final BetsyProcess INVOKE_CATCHALL_UNDECLARED_FAULT = builder.buildProcessWithPartner(
+            "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
+            [
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
@@ -416,6 +425,7 @@ class BasicActivityProcesses {
             INVOKE_CATCH,
             INVOKE_CATCH_UNDECLARED_FAULT,
             INVOKE_CATCHALL,
+            INVOKE_CATCHALL_UNDECLARED_FAULT,
             INVOKE_COMPENSATION_HANDLER
     ]
 

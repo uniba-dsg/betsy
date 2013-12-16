@@ -57,7 +57,6 @@ class TestPartnerServicePublisher {
 			} catch (NullPointerException ignore) {
 				// do nothing, as this expected
 			}
-
 		}
 	}
 
