@@ -37,18 +37,23 @@ class Composite {
 
         // prepare test suite
         // MUST BE OUTSITE OF LOG -> as it deletes whole file tree
-        testSuite.prepare()
+        FileTasks.deleteDirectory(testSuite.getPath());
+        FileTasks.mkdirs(testSuite.getPath());
 
         log testSuite.getPath(), {
 
             // fail fast
             for (Engine engine : testSuite.engines) {
-                engine.failIfRunning()
+                if(engine.isRunning()) {
+                    throw new IllegalStateException("Engine $engine is running");
+                }
             }
 
             for (Engine engine : testSuite.engines) {
+
+                FileTasks.mkdirs(engine.getPath());
+
                 log engine.path, {
-                    engine.prepare()
                     for (BetsyProcess process : engine.processes) {
 
                         progress.next()

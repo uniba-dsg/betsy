@@ -217,24 +217,22 @@ public abstract class VirtualEngine extends Engine implements
     }
 
     @Override
-    public void failIfRunning() {
+    public boolean isRunning() {
         if (useRunningVM()) {
-            return;
+            return false;
         }
 
         // raise exception if VM is imported AND is already running
         if (vm == null) {
             try {
                 vm = getVirtualMachine();
-            } catch (VirtualBoxException e) {
+            } catch (VirtualBoxException ignore) {
                 // ignore, can't be running if not found
-                return;
+                return false;
             }
         }
 
-        if (vm.isActive()) {
-            throw new PermanentFailedTestException("VirtualMachine is already running.");
-        }
+        return vm.isActive();
     }
 
     private boolean useRunningVM() {

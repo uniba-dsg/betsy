@@ -14,6 +14,8 @@ import static java.nio.file.Files.copy
 
 class Wso2Engine_v3_1_0 extends LocalEngine {
 
+    public static final String CHECK_URL = "http://localhost:9763"
+
     @Override
     Path getXsltPath() {
         return Paths.get("src/main/xslt/ode");
@@ -27,6 +29,8 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
     @Override
     void install() {
         FileTasks.deleteDirectory(getServerPath());
+        // setup engine folder
+        FileTasks.mkdirs(getServerPath())
 
         String fileName = getZipFileName()
 
@@ -77,8 +81,17 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    void failIfRunning() {
-
+    boolean isRunning() {
+        try {
+            ant.fail(message: "server for engine ${this} is still running") {
+                condition() {
+                    http url: CHECK_URL
+                }
+            }
+            return false;
+        } catch (Exception ignore) {
+            return true;
+        }
     }
 
     @Override
@@ -116,7 +129,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
 
     @Override
     String getEndpointUrl(BetsyProcess process) {
-        return "http://localhost:9763/services/${process.name}TestInterfaceService"
+        return "$CHECK_URL/services/${process.name}TestInterfaceService"
     }
 
     @Override

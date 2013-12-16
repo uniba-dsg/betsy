@@ -3,6 +3,7 @@ package betsy.data.engines.bpelg
 import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
@@ -19,6 +20,9 @@ class BpelgInstaller {
     String databaseDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${databaseName}"
 
     public void install() {
+        // setup engine folder
+        FileTasks.mkdirs(serverDir)
+
         TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir,
                 additionalVmParam: "-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl")
         tomcatInstaller.install()

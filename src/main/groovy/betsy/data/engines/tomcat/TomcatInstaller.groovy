@@ -2,6 +2,7 @@ package betsy.data.engines.tomcat
 
 import ant.tasks.AntUtil
 import betsy.Configuration
+import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 
 import java.nio.file.Path
@@ -36,7 +37,6 @@ cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat""")
 cd ${tomcatBinFolder.toAbsolutePath()} && ./startup.sh""")
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd ${tomcatBinFolder.toAbsolutePath()} && ./shutdown.sh")
 
-        
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", destinationDir.toAbsolutePath().toString()))
     }
 

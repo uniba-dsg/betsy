@@ -39,12 +39,6 @@ abstract class Engine implements EngineAPI {
         getName()
     }
 
-	@Override
-    void prepare() {
-        // setup engine folder
-        FileTasks.mkdirs(path)
-    }
-
     boolean equals(o) {
         if (this.is(o)) return true
         if (getClass() != o.class) return false

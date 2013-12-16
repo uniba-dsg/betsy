@@ -94,8 +94,8 @@ class OpenEsbEngine extends LocalEngine {
 
 
     @Override
-    void failIfRunning() {
-        // do nothing
+    boolean isRunning() {
+        return false;
     }
 
 }

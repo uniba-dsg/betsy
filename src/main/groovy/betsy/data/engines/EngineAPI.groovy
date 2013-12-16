@@ -2,7 +2,7 @@ package betsy.data.engines
 
 import betsy.data.BetsyProcess;
 
-interface EngineAPI {
+interface EngineAPI extends EngineLifecycle {
 
     /**
      * The name of the engine.
@@ -10,31 +10,6 @@ interface EngineAPI {
      * @return the unique name of the engine
      */
     String getName()
-
-    /**
-     * Setup folder structures for installation.
-     */
-    void prepare()
-
-    /**
-     * Installs the engine.
-     */
-    void install()
-
-    /**
-     * Start the engine and wait until it started.
-     */
-    void startup()
-
-    /**
-     * Stop the engine immediately.
-     */
-    void shutdown()
-
-    /**
-     * Checks whether the engine is currently running and throws an exception when it does
-     */
-    void failIfRunning()
 
     /**
      * Deploy the given <code>process</code> to the current engine.
@@ -65,6 +40,5 @@ interface EngineAPI {
      * @param process the process for which to store the logs.
      */
     void storeLogs(BetsyProcess process)
-
 
 }
