@@ -25,7 +25,7 @@ class CliParser {
         cli.p(longOpt: 'partner-address', args: 1, argName: 'ip-and-port', "Partner IP and Port (defaults to ${Configuration.get("partner.ipAndPort")})")
         cli.c(longOpt: 'check-deployment', "Verifies deployment instead of test success")
         cli.t(longOpt: 'to-core-bpel', args: 1, argName: 'transformations', "Transform to Core BPEL")
-        cli.e(longOpt: 'use-external-partner-service', "Use external partner service")
+        cli.e(longOpt: 'use-external-partner-service', "Use external partner service instead of internal one")
     }
 
     /**
