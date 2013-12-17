@@ -20,9 +20,11 @@ import java.util.Set;
  */
 public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 
+    private static final Logger log = Logger.getLogger(VirtualBoxMachineImpl.class);
+
     private final IMachine machine;
     private final VirtualBoxManager vbManager;
-    private ISession session;
+    private final ISession session;
 
     /**
      * if true, the {@link VirtualBoxMachineImpl} will be running in the
@@ -30,7 +32,6 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
      */
     private boolean headless;
 
-    private static final Logger log = Logger.getLogger(VirtualBoxMachineImpl.class);
 
     public VirtualBoxMachineImpl(VirtualBoxManager vbManager, IMachine machine) {
         this.machine = Objects.requireNonNull(machine);
