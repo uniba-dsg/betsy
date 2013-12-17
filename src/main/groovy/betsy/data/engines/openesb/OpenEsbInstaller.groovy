@@ -18,7 +18,8 @@ class OpenEsbInstaller {
     String stateXmlTemplate = "src/main/resources/openesb/state.xml.template"
 
     public void install() {
-        //TODO adpot for OpnEsb23
+        // setup engine folder
+        FileTasks.mkdirs(serverDir)
 
         ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: downloadUrl

@@ -3,25 +3,16 @@ package betsy.virtual.host;
 import java.util.List;
 import java.util.Set;
 
-public interface VirtualBoxMachine {
-
-    // TODO set headless per setter?
-
-    void start(final boolean headless);
-    void stop();
-    void kill();
+public interface VirtualBoxMachine extends VirtualMachineLifecycle {
 
     void saveState();
 
     boolean isRunning();
-    boolean isActive();
 
-    void resetToLatestSnapshot();
-    void createRunningSnapshot(final String engineName,
-                               final List<ServiceAddress> engineServices,
-                               final Set<Integer> forwardingPorts, final boolean headless)
-            throws VirtualBoxException, InterruptedException;
+    void takeSnapshot(final String name, final String desc);
+    boolean hasRunningSnapshot();
 
+    void setHeadlessMode(boolean headless);
     void applyPortForwarding(final Set<Integer> forwardingPorts) throws VirtualBoxException;
 
 }

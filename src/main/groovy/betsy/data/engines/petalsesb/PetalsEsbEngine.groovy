@@ -130,11 +130,16 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void failIfRunning() {
-        ant.fail(message: "server for engine ${this} is still running") {
-            condition() {
-                http url: CHECK_URL
+    boolean isRunning() {
+        try {
+            ant.fail(message: "server for engine ${this} is still running") {
+                condition() {
+                    http url: CHECK_URL
+                }
             }
+            return false;
+        } catch (Exception ignore) {
+            return true;
         }
     }
 

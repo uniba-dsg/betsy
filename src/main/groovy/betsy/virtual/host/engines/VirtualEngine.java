@@ -12,13 +12,14 @@ import betsy.virtual.common.messages.deploy.DeployRequest;
 import betsy.virtual.host.VirtualBox;
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
-import betsy.virtual.host.VirtualizedEngineAPI;
+import betsy.virtual.host.VirtualEngineAPI;
 import betsy.virtual.host.comm.HostTcpClient;
 import betsy.virtual.host.exceptions.PermanentFailedTestException;
 import betsy.virtual.host.exceptions.TemporaryFailedTestException;
 import betsy.virtual.host.exceptions.VirtualEngineServiceException;
 import betsy.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
+import betsy.virtual.host.virtualbox.SnapshotCreator;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
@@ -38,11 +39,9 @@ import java.util.Set;
  * @author Cedric Roeck
  * @version 1.0
  */
-public abstract class VirtualEngine extends Engine implements
-        VirtualizedEngineAPI {
+public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     private static final Logger log = Logger.getLogger(VirtualEngine.class);
-    public static final int SECOND = 1000;
 
     private VirtualBox virtualBox;
     private final HostTcpClient comm = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT);
@@ -80,10 +79,8 @@ public abstract class VirtualEngine extends Engine implements
 
             // forward and verify used ports
             this.vm.applyPortForwarding(ports);
-            // start headless?
-            boolean headless = Configuration.getValueAsBoolean(
-                    "virtual.engines." + getName() + ".headless");
-            this.vm.start(headless);
+            setHeadlessMode();
+            this.vm.start();
             log.debug("...VM started");
         } catch (PortRedirectException exception) {
             throw new TemporaryFailedTestException("The VM could not be "
@@ -94,19 +91,22 @@ public abstract class VirtualEngine extends Engine implements
         log.trace("...startup done!");
     }
 
+    private void setHeadlessMode() {
+        boolean headless = Configuration.getValueAsBoolean("virtual.engines." + getName() + ".headless");
+        this.vm.setHeadlessMode(headless);
+    }
+
     @Override
     public void shutdown() {
         if (useRunningVM()) {
             return;
         }
 
-        log.debug("Shutdown virtualized engine " + getName() + " ...");
+        log.debug("Shutdown virtual engine " + getName() + " ...");
         // stop communication
         // if there is no virtualMachine then there is nothing to stop
         if (this.vm != null) {
-            boolean saveState = Configuration.getValueAsBoolean(
-                    "virtual.engines." + getName()
-                            + ".shutdownSaveState");
+            boolean saveState = Configuration.getValueAsBoolean("virtual.engines." + getName() + ".shutdownSaveState");
             if (saveState) {
                 this.vm.saveState();
             } else {
@@ -141,16 +141,12 @@ public abstract class VirtualEngine extends Engine implements
     }
 
     private void createAndResetToLatestSnapshot() throws VirtualBoxException, InterruptedException {
-        boolean headless = Configuration
-                .getValueAsBoolean("virtual.engines."
-                        + getName() + ".headless");
-        // need to create a running snapshot
-        this.vm.createRunningSnapshot(getName(),
-                getVerifiableServiceAddresses(),
-                getRequiredPorts(), headless);
+        this.setHeadlessMode();
 
-        // reset to snapshot
-        this.vm.resetToLatestSnapshot();
+        // need to create a running snapshot
+        new SnapshotCreator(this.vm, getName(),  getVerifiableServiceAddresses(), getRequiredPorts()).invoke();
+
+        this.vm.restore();
     }
 
     private VirtualBoxMachine getOrImportVirtualMachine() throws VirtualBoxException {
@@ -217,24 +213,22 @@ public abstract class VirtualEngine extends Engine implements
     }
 
     @Override
-    public void failIfRunning() {
+    public boolean isRunning() {
         if (useRunningVM()) {
-            return;
+            return false;
         }
 
         // raise exception if VM is imported AND is already running
         if (vm == null) {
             try {
                 vm = getVirtualMachine();
-            } catch (VirtualBoxException e) {
+            } catch (VirtualBoxException ignore) {
                 // ignore, can't be running if not found
-                return;
+                return false;
             }
         }
 
-        if (vm.isActive()) {
-            throw new PermanentFailedTestException("VirtualMachine is already running.");
-        }
+        return vm.isActive();
     }
 
     private boolean useRunningVM() {

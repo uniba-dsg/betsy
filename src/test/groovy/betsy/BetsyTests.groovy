@@ -19,19 +19,16 @@ class BetsyTests {
 
         void shutdown() {}
 
-        @Override
-        void failIfRunning() {}
+        boolean isRunning() { return false; }
 
         void deploy(BetsyProcess process) {}
 
         void storeLogs(BetsyProcess process) {}
 
-        @Override
         void buildArchives(BetsyProcess process) {
             new EnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process)
         }
 
-        @Override
         String getEndpointUrl(BetsyProcess process) { "myendpoint" }
 
         String getName() { "mock" }

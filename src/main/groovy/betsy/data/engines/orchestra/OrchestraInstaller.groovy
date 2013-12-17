@@ -3,6 +3,7 @@ package betsy.data.engines.orchestra
 import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -17,6 +18,9 @@ class OrchestraInstaller {
     Path installDir = serverDir.resolve("orchestra-cxf-tomcat-4.9.0")
 
     public void install() {
+        // setup engine folder
+        FileTasks.mkdirs(serverDir)
+
         TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir)
         tomcatInstaller.install()
 

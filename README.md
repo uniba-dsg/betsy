@@ -1,11 +1,17 @@
-# betsy (BPEL Engine Test System)
+# betsy (BPEL Engine Test System) [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
 
 Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
 More information can be found in the [technical report](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/techrep-betsy-final.pdf).
 A [sample output](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results.zip) of a run of betsy are also available.
 The tool has been subject to the paper [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/) and [presentation](https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-presentation-soca-2012.pdf) for which these [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
 
-This software is licensed under the LGPL Version 3 Open Source License.
+This software is licensed under the LGPL Version 3 Open Source License!
+
+## Releases
+
+- [Release December 2013 (latest)](https://github.com/uniba-dsg/betsy/archive/icsoc-2013.zip)
+- [Release December 2012](https://github.com/uniba-dsg/betsy/archive/soca-2012.zip)
+- [Release July 2012](https://github.com/uniba-dsg/betsy/archive/techrep-july-2012.zip)
 
 ## Software Requirements
 - Windows 7
@@ -102,7 +108,7 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 
 # Authors (in alphabetical order)
 
-[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/) and Cedric Röck
+[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Christian Preißinger and Cedric Röck
 
 # Contribution Guide
 

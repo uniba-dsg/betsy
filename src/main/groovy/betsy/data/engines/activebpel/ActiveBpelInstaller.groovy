@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.Configuration
 import betsy.data.engines.tomcat.TomcatInstaller
 import betsy.tasks.ConsoleTasks
+import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -17,6 +18,9 @@ class ActiveBpelInstaller {
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
 
     public void install() {
+        // setup engine folder
+        FileTasks.mkdirs(serverDir)
+
         TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir,
                 additionalVmParam: "-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl",
                 tomcatArchiveFileName: "apache-tomcat-5.5.36.zip", tomcatName: "apache-tomcat-5.5.36",

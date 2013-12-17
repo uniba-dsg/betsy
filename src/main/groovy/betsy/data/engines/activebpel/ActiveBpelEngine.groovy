@@ -62,6 +62,16 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     @Override
+    boolean isRunning() {
+        try {
+            tomcat.checkIfIsRunning()
+            return false;
+        } catch (Exception ignore) {
+            return true;
+        }
+    }
+
+    @Override
     void install() {
         new ActiveBpelInstaller().install()
     }
@@ -89,11 +99,6 @@ class ActiveBpelEngine extends LocalEngine {
 
         // create bpr file
         ant.move(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))
-    }
-
-    @Override
-    void failIfRunning() {
-        tomcat.checkIfIsRunning()
     }
 
 }

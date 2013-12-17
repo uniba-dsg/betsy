@@ -5,6 +5,8 @@ import betsy.data.TestCase
 import betsy.data.assertions.ExitAssertion
 import betsy.data.assertions.SoapFaultTestAssertion
 
+import static configuration.ProcessBuilder.*
+
 class BasicActivityProcesses {
 
     static ProcessBuilder builder = new ProcessBuilder()
@@ -234,6 +236,13 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess RECEIVE_REPLY_MULTIPLE_MESSAGE_EXCHANGES = builder.buildBasicActivityProcess(
+            "ReceiveReply-Multiple-MessageExchanges", "A receive-reply pair followed by a receive-reply pair of the same operation that use messageExchanges to define which reply belongs to which receive and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess RECEIVE_REPLY_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
@@ -298,6 +307,7 @@ class BasicActivityProcesses {
             RECEIVE_CORRELATION_INIT_ASYNC,
             RECEIVE_CORRELATION_INIT_SYNC,
             RECEIVE_REPLY_MESSAGE_EXCHANGES,
+            RECEIVE_REPLY_MULTIPLE_MESSAGE_EXCHANGES,
             RECEIVE_AMBIGUOUS_RECEIVE_FAULT,
             RECEIVE_CONFLICTING_RECEIVE_FAULT,
             RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT,
@@ -371,21 +381,28 @@ class BasicActivityProcesses {
     public static final BetsyProcess INVOKE_CATCH = builder.buildProcessWithPartner(
             "basic/Invoke-Catch", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
-                    new TestCase().checkDeployment().sendSync(-5, 0)
+                    new TestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, 0)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic/Invoke-Catch-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             [
-                    new TestCase().checkDeployment().sendSync(builder.UNDECLARED_FAULT_CODE, 0)
+                    new TestCase().checkDeployment().sendSync(UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(-5, 0)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(DECLARED_FAULT_CODE, 0)
+            ]
+    )
+
+    public static final BetsyProcess INVOKE_CATCHALL_UNDECLARED_FAULT = builder.buildProcessWithPartner(
+            "basic/Invoke-CatchAll-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
+            [
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
@@ -408,6 +425,7 @@ class BasicActivityProcesses {
             INVOKE_CATCH,
             INVOKE_CATCH_UNDECLARED_FAULT,
             INVOKE_CATCHALL,
+            INVOKE_CATCHALL_UNDECLARED_FAULT,
             INVOKE_COMPENSATION_HANDLER
     ]
 

@@ -28,8 +28,13 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void failIfRunning() {
-        tomcat.checkIfIsRunning()
+    boolean isRunning() {
+        try {
+            tomcat.checkIfIsRunning()
+            return false;
+        } catch (Exception ignore) {
+            return true;
+        }
     }
 
     @Override

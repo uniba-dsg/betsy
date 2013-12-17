@@ -44,6 +44,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_MULTIPLE_MESSAGE_EXCHANGES = builder.buildScopeProcess(
+            "Scope-Multiple-MessageExchanges", "A scope with a receive-reply pair followed by a receive-reply pair of the same operation that use scope-level definition of messageExchanges to define which reply belongs to which receive and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_CORRELATION_SETS_INIT_ASYNC = builder.buildScopeProcess(
             "Scope-CorrelationSets-InitAsync", "A scope with an asynchronous receive which initiates the correlation set and a receive-reply pair, as well as a scope-level definition of a correlationSet that is used by the messaging activities.",
             [
@@ -100,13 +107,6 @@ class ScopeProcesses {
             ]
     )
 
-    public static final BetsyProcess SCOPE_EVENT_HANDLERS_ELEMENT_INIT_ASYNC = builder.buildScopeProcess(
-            "Scope-EventHandlers-Element-InitAsync", "An asynchronous receive followed by a wait and a process-level onEvent eventHandler. The receive initiates a correlationSet on which the onEvent correlates with a synchronous operation, initializing the inputData with a element variable.",
-            [
-                    new TestCase().checkDeployment().sendAsync(5).sendSync(5, 5)
-            ]
-    )
-
     public static final BetsyProcess SCOPE_EVENT_HANDLER_INIT_ASYNC = builder.buildScopeProcess(
             "Scope-EventHandlers-InitAsync", "An asynchronous receive followed by a wait and a process-level onMessage eventHandler. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
             [
@@ -116,6 +116,35 @@ class ScopeProcesses {
 
     public static final BetsyProcess SCOPE_EVENT_HANDLER_INIT_SYNC = builder.buildScopeProcess(
             "Scope-EventHandlers-InitSync", "A receive-reply pair followed by a wait and a process-level onMessage eventHandler. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            ]
+    )
+
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_ASYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-MessageExchange-InitAsync", "An asynchronous receive followed by a wait and a process-level onEvent eventHandler that uses messageExchange. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
+            [
+                    new TestCase().checkDeployment().sendAsync(5).sendSync(5, 5)
+            ]
+    )
+
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_SYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-MessageExchange-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler that uses messageExchange. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            ]
+    )
+
+
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_ASYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-Scope-MessageExchange-InitAsync", "An asynchronous receive followed by a wait and a process-level onEvent eventHandler that uses messageExchange in a scope. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
+            [
+                    new TestCase().checkDeployment().sendAsync(5).sendSync(5, 5)
+            ]
+    )
+
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_SYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-Scope-MessageExchange-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler that uses messageExchange in a scope. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
             [
                     new TestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
             ]
@@ -140,12 +169,15 @@ class ScopeProcesses {
             SCOPE_EVENT_HANDLER_ELEMENT_INIT_ASYNC,
             SCOPE_EVENT_HANDLER_ELEMENT_INIT_SYNC,
             SCOPE_EVENT_HANDLER_INIT_SYNC,
+            SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_ASYNC,
+            SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_SYNC,
+            SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_ASYNC,
+            SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_SYNC,
             SCOPE_EVENT_HANDLERS_ON_ALARM_FOR,
             SCOPE_EVENT_HANDLERS_ON_ALARM_REPEAT_EVERY,
             SCOPE_EVENT_HANDLERS_ON_ALARM_REPEAT_EVERY_FOR,
             SCOPE_EVENT_HANDLERS_ON_ALARM_REPEAT_EVERY_UNTIL,
             SCOPE_EVENT_HANDLERS_ON_ALARM_UNTIL,
-            SCOPE_EVENT_HANDLERS_ELEMENT_INIT_ASYNC,
             SCOPE_EVENT_HANDLERS_PARTS
     ].flatten() as List<BetsyProcess>
 
@@ -289,6 +321,7 @@ class ScopeProcesses {
             SCOPES_EVENT_HANDLERS,
             SCOPES_FAULT_HANDLERS,
             SCOPE_MESSAGE_EXCHANGES,
+            SCOPE_MULTIPLE_MESSAGE_EXCHANGES,
             SCOPE_PARTNER_LINKS,
             SCOPE_VARIABLES,
             SCOPE_VARIABLES_OVERWRITING,

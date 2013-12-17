@@ -109,6 +109,30 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION = builder.buildStructuredActivityProcess(
+            "Flow-Two-Starting-OnMessage-Correlation", "A flow that contains two pick activities that can both be start activity and reply 0 or '0'. After the flow a simple synchronous receive-reply pair responses the concatenation of the two starting message inputParts.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
+                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
+            ]
+    )
+
+    public static final BetsyProcess FLOW_STARTING_RECEIVE_ON_MESSAGE_CORRELATION = builder.buildStructuredActivityProcess(
+            "Flow-Starting-Receive-OnMessage-Correlation", "A flow that contains a receive-reply pair in a sequence, replying 0, and a pick activity that replies '0'. Both message activities can be start activity. After the flow a simple synchronous receive-reply pair responses the concatenation of the two starting message inputParts.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
+                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
+            ]
+    )
+
+    public static final BetsyProcess FLOW_TWO_STARTING_RECEIVE_CORRELATION = builder.buildStructuredActivityProcess(
+            "Flow-Two-Starting-Receive-Correlation", "A flow that contains two receive-reply pair in a sequence that can both be start activity and reply 0 or '0'. After the flow a simple synchronous receive-reply pair responses the concatenation of the two starting message inputParts.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 0).sendSyncString(1,"0").sendSyncString(1,"11"),
+                    new TestCase().checkDeployment().sendSyncString(2,"0").sendSync(2, 0).sendSyncString(2,"22"),
+            ]
+    )
+
     public static final List<BetsyProcess> STRUCTURED_ACTIVITIES_FLOW = [
             FLOW,
             FLOW_LINKS,
@@ -118,7 +142,10 @@ class StructuredActivityProcesses {
             FLOW_LINKS_SUPPRESS_JOIN_FAILURE,
             FLOW_LINKS_TRANSITION_CONDITION,
             FLOW_GRAPH_EXAMPLE,
-            FLOW_LINKS_RECEIVE_CREATING_INSTANCES
+            FLOW_LINKS_RECEIVE_CREATING_INSTANCES,
+            FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION,
+            FLOW_STARTING_RECEIVE_ON_MESSAGE_CORRELATION,
+            FLOW_TWO_STARTING_RECEIVE_CORRELATION,
     ].flatten() as List<BetsyProcess>
 
     public static final BetsyProcess IF = builder.buildStructuredActivityProcess(
@@ -320,6 +347,34 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess PICK_MESSAGE_EXCHANGE = builder.buildStructuredActivityProcess(
+            "Pick-MessageExchange", "A pick with a synchronous onMessage that has createInstance set to yes and uses messageExchange.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
+    public static final BetsyProcess PICK_MESSAGE_EXCHANGE_SCOPE = builder.buildStructuredActivityProcess(
+            "Pick-MessageExchange-Scope", "A pick with a synchronous onMessage that has createInstance set to yes and uses messageExchange in a scope.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
+    public static final BetsyProcess PICK_MULTIPLE_MESSAGE_EXCHANGES = builder.buildStructuredActivityProcess(
+            "Pick-Multiple-MessageExchanges", "A pick with a synchronous onMessage that has createInstance set to yes and a second pick with a synchronous onMessage of the same type and both use messageExchanges to define which reply belongs to which onMessage and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
+    public static final BetsyProcess PICK_MULTIPLE_MESSAGE_EXCHANGES_SCOPE = builder.buildStructuredActivityProcess(
+            "Pick-Multiple-MessageExchanges-Scope", "A pick with a synchronous onMessage that has createInstance set to yes and a second pick with a synchronous onMessage of the same type and both use messageExchanges in a scope to define which reply belongs to which onMessage and the response is the initial value first then the sum of the received values.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess PICK_CREATE_INSTANCE_FROM_PARTS = builder.buildStructuredActivityProcess(
             "Pick-CreateInstance-FromParts", "A pick with a synchronous onMessage that has createInstance set to yes using fromParts.",
             [
@@ -345,6 +400,10 @@ class StructuredActivityProcesses {
             PICK_CORRELATIONS_INIT_ASYNC,
             PICK_CORRELATIONS_INIT_SYNC,
             PICK_CREATE_INSTANCE,
+            PICK_MESSAGE_EXCHANGE,
+            PICK_MESSAGE_EXCHANGE_SCOPE,
+            PICK_MULTIPLE_MESSAGE_EXCHANGES,
+            PICK_MULTIPLE_MESSAGE_EXCHANGES_SCOPE,
             PICK_CREATE_INSTANCE_FROM_PARTS,
             PICK_ON_ALARM_FOR,
             PICK_ON_ALARM_UNTIL

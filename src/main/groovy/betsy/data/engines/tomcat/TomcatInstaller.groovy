@@ -2,6 +2,7 @@ package betsy.data.engines.tomcat
 
 import ant.tasks.AntUtil
 import betsy.Configuration
+import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 
 import java.nio.file.Path
@@ -28,8 +29,15 @@ class TomcatInstaller {
 
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(tomcatArchiveFileName), dest: destinationDir
 
-        ant.echo file: destinationDir.resolve("tomcat_startup.bat"), message: getStartupScript()
-        ant.echo file: destinationDir.resolve("tomcat_shutdown.bat"), message: getShutdownScript()
+        FileTasks.createFile(destinationDir.resolve("tomcat_startup.bat"), """SET CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
+cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat""")
+        FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
+
+        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), """CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
+cd ${tomcatBinFolder.toAbsolutePath()} && ./startup.sh""")
+        FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd ${tomcatBinFolder.toAbsolutePath()} && ./shutdown.sh")
+
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", destinationDir.toAbsolutePath().toString()))
     }
 
     public Path getTomcatDestinationDir() {
@@ -38,15 +46,6 @@ class TomcatInstaller {
 
     public Path getTomcatBinFolder() {
         tomcatDestinationDir.resolve("bin")
-    }
-
-    public String getStartupScript() {
-        """SET "CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
-cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat"""
-    }
-
-    public String getShutdownScript() {
-        "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat"
     }
 
 }

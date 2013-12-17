@@ -79,12 +79,6 @@ class TestSuite {
         return result;
     }
 
-    public void prepare() {
-        FileTasks.deleteDirectory(path)
-        FileTasks.mkdirs(path)
-    }
-
-
     @Override
     public String toString() {
         getPath()
