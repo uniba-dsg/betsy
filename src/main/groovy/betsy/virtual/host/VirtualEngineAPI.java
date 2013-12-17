@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The {@link VirtualizedEngineAPI} offers methods that are required if dealing
+ * The {@link VirtualEngineAPI} offers methods that are required if dealing
  * with virtualized testing using betsy.
  *
  * @author Cedric Roeck
  * @version 1.0
  */
-public interface VirtualizedEngineAPI {
+public interface VirtualEngineAPI {
 
     /**
      * Get the name of the VirtualMachine that is used by this engines.<br>

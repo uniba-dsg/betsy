@@ -30,4 +30,5 @@ public class VirtualBoxImpl implements VirtualBox {
 
         return getVirtualMachineByName(vmName);
     }
+
 }
