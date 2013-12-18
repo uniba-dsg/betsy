@@ -9,8 +9,8 @@ import betsy.executables.Validator
 
 class Betsy {
 
-    List<Engine> engines
-    List<BetsyProcess> processes
+    List<Engine> engines = []
+    List<BetsyProcess> processes = []
 
     Composite composite = new Composite()
 
