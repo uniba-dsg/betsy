@@ -9,12 +9,12 @@ import betsy.data.TestCase
 import betsy.data.engines.Engine
 import betsy.data.engines.LocalEngine
 import betsy.executables.ws.ExternalTestPartnerService
-import betsy.logging.LogContext
 import betsy.virtual.host.VirtualBox
 import betsy.virtual.host.engines.VirtualEngine
 import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
+import com.sun.xml.internal.ws.server.ServerRtException
 import org.apache.log4j.Logger
 import org.apache.log4j.xml.DOMConfigurator
 import org.codehaus.groovy.runtime.StackTraceUtils
@@ -42,6 +42,9 @@ class Main {
 
         customPartnerAddress(parser)
 
+
+
+
         // parsing processes and engines
         List<Engine> engines = null
         List<BetsyProcess> processes = null
@@ -54,17 +57,24 @@ class Main {
             System.exit(0)
         }
 
-        printSelectedEnginesAndProcesses(engines, processes)
 
-        checkDeployment(parser, processes)
-        coreBpel(parser, engines)
-        virtualEngines(engines)
 
-        Betsy betsy = new Betsy(engines: engines, processes: processes)
-
-        useExternalPartnerService(parser, betsy)
 
         try {
+            printSelectedEnginesAndProcesses(engines, processes)
+            localhostPartnerAddressNotAllowedForTestingVirtualEngines(engines)
+
+            Betsy betsy = new Betsy()
+            useExternalPartnerService(parser, betsy)
+            testBindabilityOfInternalPartnerService(parser, betsy)
+
+            checkDeployment(parser, processes)
+            coreBpel(parser, engines)
+            virtualEngines(engines)
+
+            betsy.processes = processes
+            betsy.engines = engines
+
             // execute
             try {
                 betsy.execute()
@@ -82,11 +92,39 @@ class Main {
                 }
             }
 
+        } catch (Exception e) {
+            Throwable cleanedException = StackTraceUtils.deepSanitize(e)
+            log.error cleanedException.getMessage(), cleanedException
         } finally {
             // shutdown as SoapUI creates threads which cannot be shutdown so easily
             // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
             // SOLUTION remove exit line for testing purposes
+            Thread.sleep(3000);
             System.exit(0);
+        }
+    }
+
+    private static void localhostPartnerAddressNotAllowedForTestingVirtualEngines(List<Engine> engines) {
+        if (engines.any { it instanceof VirtualEngine }) {
+            // verify IP set
+            String partner = Configuration.get("partner.ipAndPort")
+            if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
+                throw new IllegalStateException("Virtual engines require your local IP-Address to be set. " +
+                        "This can either be done via the -p option or directly in the Config.groovy file.")
+            }
+        }
+    }
+
+    private static void testBindabilityOfInternalPartnerService(CliParser parser, Betsy betsy) {
+        if (!parser.useExternalPartnerService()) {
+            // test the correctness
+            try {
+                betsy.composite.testPartner.publish()
+            } catch (ServerRtException e) {
+                throw new IllegalStateException("the given partner address is not bindable for this system", e);
+            } finally {
+                betsy.composite.testPartner.unpublish()
+            }
         }
     }
 
@@ -132,13 +170,6 @@ class Main {
 
     protected static void virtualEngines(List<Engine> engines) {
         if (engines.any { it instanceof VirtualEngine }) {
-            // verify IP set
-            String partner = Configuration.get("partner.ipAndPort")
-            if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
-                throw new IllegalStateException("Virtual engines require your local IP-Address to be set. " +
-                        "This can either be done via the -p option or directly in the Config.groovy file.")
-            }
-
             // verify all mandatory config options
             new VBoxConfiguration().verify()
             new VBoxWebService().startAndInstall()
