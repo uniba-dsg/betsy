@@ -15,6 +15,8 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class BetsyVirtualMachineServer {
 
+    private static final String version = "0.0.1";
+
     private VirtualMachineTcpServer server;
 
     public static void main(String[] args) throws Exception {
@@ -38,13 +40,13 @@ public class BetsyVirtualMachineServer {
     }
 
     public void start() throws Exception {
-        log.info("bVMS: starting");
+        log.info("bVMS " + version + ": starting");
         server = new VirtualMachineTcpServer(Constants.SERVER_PORT, new ProtocolImpl());
         server.start();
     }
 
     public void stop() {
-        log.info("bVMS: stopping");
+        log.info("bVMS " + version + ": stopping");
         server.shutdown();
         server.close();
     }
