@@ -69,7 +69,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.debug("Startup virtual engine " + getName() + " ...");
+        log.info("Startup virtual engine " + getName() + " ...");
         // required for compatibility with EngineControl
         try {
             // verify port usage
@@ -81,7 +81,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             this.vm.applyPortForwarding(ports);
             setHeadlessMode();
             this.vm.start();
-            log.debug("...VM started");
+            log.info("...VM started");
         } catch (PortRedirectException exception) {
             throw new TemporaryFailedTestException("The VM could not be "
                     + "started properly:", exception);
