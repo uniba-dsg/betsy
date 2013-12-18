@@ -95,4 +95,19 @@ public class FileTasks {
 
         Files.write(path, lines, StandardCharsets.UTF_8);
     }
+
+    public static void deleteFile(Path file) {
+        log.info("Deleting file " + file);
+
+        if(!Files.isRegularFile(file)) {
+            log.info("File does not exist - must not be deleted");
+            return;
+        }
+
+        try {
+            Files.delete(file);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not delete file " + file, e);
+        }
+    }
 }
