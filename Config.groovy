@@ -44,7 +44,8 @@ virtual {
 		requestTimeout = 120
 	}
 
-    useRunningVM = true
+    // development option: set to true for using an active VM instead of loading a snapshot
+    useRunningVM = false
 
 	engines {
 		example_engine {
