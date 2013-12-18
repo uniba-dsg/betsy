@@ -36,7 +36,7 @@ public class Configuration {
      * @return Value assigned to the key, or default value if key is not set
      */
     public static Boolean getValueAsBoolean(final String key) {
-        return DefaultTypeTransformation.castToBoolean(getValue(key));
+        return Boolean.valueOf(getValueAsString(key));
     }
 
     /**
