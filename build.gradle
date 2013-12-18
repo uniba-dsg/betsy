@@ -133,21 +133,21 @@ test {
  * Creates jar file for the virtual machines.
  */
 task jarServer(type: Jar, dependsOn: classes) {
+    inputs.files classes.outputs.files
+    inputs.files configurations.internal
+    outputs.files file("build/libs/betsy-vms.jar")
+
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.resources)
+    from { configurations.internal.collect { it.isDirectory() ? it : zipTree(it) } }
 
-    // results in betsy-vms.jar
+    dependsOn configurations.internal
+
+    // results in build/libs/betsy-vms.jar
     classifier = 'vms'
     baseName = 'betsy'
 
     manifest {
         attributes 'Main-Class': 'betsy.virtual.server.BetsyVirtualMachineServer', 'Implementation-Title': 'Betsy-VirtualMachineServer', 'Built-Date': new Date()
-    }
-
-    // remove MANIFEST.MF files previously inserted
-    doFirst {
-        from(configurations.internal.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
-            exclude 'META-INF/MANIFEST.MF'
-        }
     }
 }
