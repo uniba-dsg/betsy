@@ -129,25 +129,31 @@ test {
     }
 }
 
+task internalClasses(dependsOn: classes) {
+    inputs.files configurations.internal
+    outputs.dir "build/internalClasses"
+
+    doLast {
+        copy {
+            from { configurations.internal.collect { it.isDirectory() ? it : zipTree(it) } }
+            into "build/internalClasses"
+        }
+    }
+}
+
 /**
  * Creates jar file for the virtual machines.
  */
-task jarServer(type: Jar, dependsOn: classes) {
-    inputs.files classes.outputs.files
-    inputs.files configurations.internal
-    outputs.files file("build/libs/betsy-vms.jar")
-
+task jarServer(type: Jar, dependsOn: [classes, internalClasses]) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.resources)
-    from { configurations.internal.collect { it.isDirectory() ? it : zipTree(it) } }
-
-    dependsOn configurations.internal
+    from files("build/internalClasses")
 
     // results in build/libs/betsy-vms.jar
     classifier = 'vms'
     baseName = 'betsy'
 
     manifest {
-        attributes 'Main-Class': 'betsy.virtual.server.BetsyVirtualMachineServer', 'Implementation-Title': 'Betsy-VirtualMachineServer', 'Built-Date': new Date()
+        attributes 'Main-Class': 'betsy.virtual.server.BetsyVirtualMachineServer', 'Implementation-Title': 'Betsy-VirtualMachineServer'
     }
 }
