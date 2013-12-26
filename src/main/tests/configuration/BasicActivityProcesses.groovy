@@ -243,6 +243,20 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess RECEIVE_REPLY_FIFO_MESSAGE_EXCHANGES = builder.buildBasicActivityProcess(
+            "ReceiveReply-FIFO-MessageExchanges", "Two receives of the same operation that use messageExchanges to define which reply belongs to which receive and the response is 1 for the reply to the first receive and 2 for the second reply to the second receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
+    public static final BetsyProcess RECEIVE_REPLY_FILO_MESSAGE_EXCHANGES = builder.buildBasicActivityProcess(
+            "ReceiveReply-FILO-MessageExchanges", "Two receives of the same operation that use messageExchanges to define which reply belongs to which receive and the response is 2 for the reply to the second receive and 1 for the second reply to the first receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess RECEIVE_REPLY_CORRELATION_INIT_ASYNC = builder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet followed by a receive-reply pair that uses this set.",
             [
@@ -308,6 +322,8 @@ class BasicActivityProcesses {
             RECEIVE_CORRELATION_INIT_SYNC,
             RECEIVE_REPLY_MESSAGE_EXCHANGES,
             RECEIVE_REPLY_MULTIPLE_MESSAGE_EXCHANGES,
+            RECEIVE_REPLY_FIFO_MESSAGE_EXCHANGES,
+            RECEIVE_REPLY_FILO_MESSAGE_EXCHANGES,
             RECEIVE_AMBIGUOUS_RECEIVE_FAULT,
             RECEIVE_CONFLICTING_RECEIVE_FAULT,
             RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT,
