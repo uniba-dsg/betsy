@@ -43,10 +43,6 @@
         </flow>
         <assign name="AssignReplyDataTwo" >
             <copy>
-                <from><literal>1</literal></from>
-                <to variable="ReplyDataOne" part="outputPart"/>
-            </copy>
-            <copy>
                 <from><literal>2</literal></from>
                 <to variable="ReplyDataTwo" part="outputPart"/>
             </copy>
