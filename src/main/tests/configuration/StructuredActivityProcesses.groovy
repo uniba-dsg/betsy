@@ -389,6 +389,33 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess RECEIVE_PICK_FIFO_MESSAGE_EXCHANGES = builder.buildStructuredActivityProcess(
+            "Receive-Pick-FIFO-MessageExchanges", "A receive and a onMessage of the same operation that use messageExchanges to define which reply belongs to which receive/onMessage and the response is 1 for the reply to the onMessage and 2 for the second reply to the receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
+    public static final BetsyProcess RECEIVE_PICK_FILO_MESSAGE_EXCHANGES = builder.buildStructuredActivityProcess(
+            "Receive-Pick-FILO-MessageExchanges", "A receive and a onMessage of the same operation that use messageExchanges to define which reply belongs to which receive/onMessage and the response is 2 for the reply to the onMessage and 1 for the second reply to the receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
+    public static final BetsyProcess PICK_RECEIVE_FIFO_MESSAGE_EXCHANGES = builder.buildStructuredActivityProcess(
+            "Pick-Receive-FIFO-MessageExchanges", "A onMessage and a receive of the same operation that use messageExchanges to define which reply belongs to which onMessage/receive and the response is 1 for the reply to the receive and 2 for the second reply to the onMessage.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
+
+    public static final BetsyProcess PICK_RECEIVE_FILO_MESSAGE_EXCHANGES = builder.buildStructuredActivityProcess(
+            "Pick-Receive-FILO-MessageExchanges", "A onMessage and a receive of the same operation that use messageExchanges to define which reply belongs to which onMessage/receive and the response is 2 for the reply to the receive and 1 for the second reply to the onMessage.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).sendSync(1, 2)
+            ]
+    )
 
     public static final BetsyProcess PICK_CREATE_INSTANCE_FROM_PARTS = builder.buildStructuredActivityProcess(
             "Pick-CreateInstance-FromParts", "A pick with a synchronous onMessage that has createInstance set to yes using fromParts.",
@@ -421,6 +448,10 @@ class StructuredActivityProcesses {
             PICK_MULTIPLE_MESSAGE_EXCHANGES_SCOPE,
             PICK_FIFO_MESSAGE_EXCHANGES,
             PICK_FILO_MESSAGE_EXCHANGES,
+            RECEIVE_PICK_FIFO_MESSAGE_EXCHANGES,
+            RECEIVE_PICK_FILO_MESSAGE_EXCHANGES,
+            PICK_RECEIVE_FIFO_MESSAGE_EXCHANGES,
+            PICK_RECEIVE_FILO_MESSAGE_EXCHANGES,
             PICK_CREATE_INSTANCE_FROM_PARTS,
             PICK_ON_ALARM_FOR,
             PICK_ON_ALARM_UNTIL
