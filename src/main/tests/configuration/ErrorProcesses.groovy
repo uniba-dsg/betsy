@@ -13,8 +13,24 @@ import java.nio.file.Paths
 class ErrorProcesses {
 
     public static final Map<Integer, String> inputToErrorCode = [
-            0 : "happy_path",
-            1 : "whatever"
+            0 : "happy-path.xml",
+	    11001 : "content-empty.xml",
+	    12001 : "content-simple-text.xml",
+	    12002 : "content-simple-stackTrace.xml",
+	    13101 : "content-xml-notWellFormed-missingClosingTag.xml",
+	    13102 : "content-xml-notWellFormed-twoRootElements.xml",
+	    13103 : "content-xml-notWellFormed-missingAttributeClosing.xml",
+	    13211 : "content-xml-wrongFormat-elementWithoutContent-emptyElementShort.xml",
+	    13212 : "content-xml-wrongFormat-elementWithoutContent-emptyElementLong.xml",
+	    13221 : "content-xml-wrongFormat-dataFormats-stringInstreadOfInteger.xml",
+	    13222 : "content-xml-wrongFormat-dataFormats-doubleInsteadOfInteger.xml",
+	    13223 : "content-xml-wrongFormat-dataFormats-doubleWithCommaInsteadOfInteger.xml",
+	    13231 : "content-xml-wrongFormat-namespace-noNamespace.xml",
+	    13232 : "content-xml-wrongFormat-namespace-partiallyUsageOfNamespace.xml",
+	    13233 : "content-xml-wrongFormat-namespace-wrongNamespace.xml",
+	    13234 : "content-xml-wrongFormat-namespace-unusedPrefix.xml",
+	    13241 : "content-xml-wrongFormat-additionalContent-element.xml",
+	    13242 : "content-xml-wrongFormat-additionalContent-attribute.xml"
     ]
 
 
