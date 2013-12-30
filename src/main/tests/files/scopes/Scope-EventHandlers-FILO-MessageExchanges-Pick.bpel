@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Scope-EventHandlers-FILO-MessageExchanges-Pick"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/scopeEventHandlersFiloMessageExchangesPick"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+        >
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+            location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <messageExchanges>
+        <messageExchange name="firstExchange"/>
+        <messageExchange name="secondExchange"/>
+    </messageExchanges>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="EventReply" messageType="ti:executeProcessSyncResponse"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
+    <eventHandlers>
+        <onEvent messageExchange="secondExchange" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType"
+                 variable="InitDataSync" messageType="ti:executeProcessSyncRequest">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="no"/>
+            </correlations>
+            <scope name="EventScope">
+                <sequence name="EventSequence">
+                    <assign name="AssignEventReply">
+                        <copy>
+                            <from><literal>2</literal></from>
+                            <to variable="EventReply" part="outputPart"/>
+                        </copy>
+                    </assign>
+                    <reply messageExchange="secondExchange" name="EventReply" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="EventReply" />
+                </sequence>
+            </scope>
+        </onEvent>
+    </eventHandlers>
+    <pick name="Pick" createInstance="yes">
+        <onMessage messageExchange="firstExchange" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+            <sequence name="Sequence">
+                <assign name="AssignReplyData">
+                    <copy>
+                        <from><literal>1</literal></from>
+                        <to variable="ReplyData" part="outputPart"/>
+                    </copy>
+                </assign>
+                <reply messageExchange="firstExchange" name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+                <wait name="WaitFor10Seconds">
+                    <for>'P0Y0M0DT0H0M10.0S'</for>
+                </wait>
+            </sequence>
+        </onMessage>
+    </pick>
+</process>
