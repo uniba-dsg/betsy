@@ -128,6 +128,20 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_FLOW_INIT_ASYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-Flow-InitAsync", "An asynchronous receive followed by a wait and a process-level onEvent eventHandler. The receive initiates a correlationSet on which the onEvent correlates with a synchronous operation. The onEvent contains a assign linked to a reply in a flow.",
+            [
+                    new TestCase().checkDeployment().sendAsync(5).sendSync(5, 5)
+            ]
+    )
+
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_FLOW_INIT_SYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-Flow-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler. The receive initiates a correlationSet on which the onEvent correlates with a synchronous operation. The onEvent contains a assign linked to a reply in a flow.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_ASYNC = builder.buildScopeProcess(
             "Scope-EventHandlers-MessageExchange-InitAsync", "An asynchronous receive followed by a wait and a process-level onEvent eventHandler that uses messageExchange. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
             [
@@ -190,6 +204,8 @@ class ScopeProcesses {
             SCOPE_EVENT_HANDLER_ELEMENT_INIT_ASYNC,
             SCOPE_EVENT_HANDLER_ELEMENT_INIT_SYNC,
             SCOPE_EVENT_HANDLER_INIT_SYNC,
+            SCOPE_EVENT_HANDLER_FLOW_INIT_ASYNC,
+            SCOPE_EVENT_HANDLER_FLOW_INIT_SYNC,
             SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_ASYNC,
             SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_SYNC,
             SCOPE_EVENT_HANDLER_FILO_MESSAGE_EXCHANGES,
