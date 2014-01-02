@@ -429,6 +429,13 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess INVOKE_COMPENSATE_SCOPE_COMPENSATION_HANDLER = builder.buildProcessWithPartner(
+            "basic/Invoke-CompensateScope-CompensationHandler", "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler containing a compensateScope. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 0)
+            ]
+    )
+
     public static final List<BetsyProcess> BASIC_ACTIVITIES_INVOKE = [
             INVOKE_ASYNC,
             INVOKE_SYNC,
@@ -442,6 +449,7 @@ class BasicActivityProcesses {
             INVOKE_CATCH_UNDECLARED_FAULT,
             INVOKE_CATCHALL,
             INVOKE_CATCHALL_UNDECLARED_FAULT,
+            INVOKE_COMPENSATE_SCOPE_COMPENSATION_HANDLER,
             INVOKE_COMPENSATION_HANDLER
     ]
 
