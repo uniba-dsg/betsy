@@ -210,7 +210,7 @@ class StructuredActivityProcesses {
     )
 
     public static final BetsyProcess WHILE_FLOW = builder.buildStructuredActivityProcess(
-            "While-Flow", "A receive-reply pair with an intermediate while that loops for n times, where n is equal to the input. The loop contains a flow that links the assignment of 1 to a counter and the assignment of the counter to the reply data",
+            "While-Flow", "A receive-reply pair with an intermediate while that loops for n times, where n is equal to the input. The loop contains a flow that links the assignment of 1 to a counter and the assignment of the counter to the reply data.",
             [
                     new TestCase().checkDeployment().sendSync(5, 5)
             ]
@@ -227,6 +227,13 @@ class StructuredActivityProcesses {
             "RepeatUntilEquality", "A receive-reply pair with an intermediate while that loops for n times, where n is equal to the input.",
             [
                     new TestCase().checkDeployment().sendSync(2, 2)
+            ]
+    )
+
+    public static final BetsyProcess REPEAT_UNTIL_FLOW = builder.buildStructuredActivityProcess(
+            "RepeatUntil-Flow", "A receive-reply pair with an intermediate while that loops for n+1 times, where n is equal to the input. The loop contains a flow that links the assignment of 1 to a counter and the assignment of the counter to the reply data.",
+            [
+                    new TestCase().checkDeployment().sendSync(2, 3)
             ]
     )
 
@@ -480,6 +487,7 @@ class StructuredActivityProcesses {
             WHILE_FLOW,
             REPEAT_UNTIL,
             REPEAT_UNTIL_EQUALITY,
+            REPEAT_UNTIL_FLOW,
             STRUCTURED_ACTIVITIES_FLOW,
             STRUCTURED_ACTIVITIES_IF,
             STRUCTURED_ACTIVITIES_FOR_EACH,
