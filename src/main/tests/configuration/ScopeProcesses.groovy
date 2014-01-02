@@ -16,6 +16,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess COMPENSATE_FLOW = builder.buildScopeProcess(
+            "Scope-Compensate-Flow", "A scope with a receive-reply pair where the reply data assignment and the reply are linked in a flow nested in compensationHandler. The scope is followed by a throw and the compensationHandler is invoked from the process-level faultHandler that catches the fault using compensate.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
     public static final BetsyProcess COMPENSATE_SCOPE = builder.buildScopeProcess(
             "Scope-CompensateScope", "A scope with a receive-reply pair where the reply is located in a compensationHandler. The scope is followed by a throw and the compensationHandler is invoked from the process-level faultHandler that catches the fault using compensateScope.",
             [
@@ -329,6 +336,7 @@ class ScopeProcesses {
 
     public static final List<BetsyProcess> SCOPES = [
             COMPENSATE,
+            COMPENSATE_FLOW,
             COMPENSATE_SCOPE,
             SCOPE_COMPLEX_COMPENSATION,
             SCOPE_REPEATED_COMPENSATION,
