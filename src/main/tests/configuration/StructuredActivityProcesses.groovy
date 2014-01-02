@@ -232,6 +232,15 @@ class StructuredActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess FOR_EACH_FLOW = builder.buildStructuredActivityProcess(
+            "ForEach-Flow", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. Each iteration the current loop number is added to a intermediary and from there to the final result, and these assigns are linked within a flow.",
+            [
+                    new TestCase(name: "0-equals-0").checkDeployment().sendSync(0, 0),
+                    new TestCase(name: "0plus1-equals-0").checkDeployment().sendSync(1, 1),
+                    new TestCase(name: "0plus1plus2-equals-3").checkDeployment().sendSync(2, 3),
+            ]
+    )
+
     public static final BetsyProcess FOR_EACH_NEGATIVE_STOP_COUNTER = builder.buildStructuredActivityProcess(
             "ForEach-NegativeStopCounter", "A receive-reply pair with an intermediate forEach that should always fail with an invalidExpressionValue fault as finalCounterValue is negative.",
             [
@@ -313,6 +322,7 @@ class StructuredActivityProcesses {
 
     public static final List<BetsyProcess> STRUCTURED_ACTIVITIES_FOR_EACH = [
             FOR_EACH,
+            FOR_EACH_FLOW,
             FOR_EACH_NEGATIVE_STOP_COUNTER,
             FOR_EACH_COMPLETION_CONDITION,
             FOR_EACH_COMPLETION_CONDITION_PARALLEL,
