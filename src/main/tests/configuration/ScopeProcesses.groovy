@@ -322,6 +322,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_TERMINATION_HANDLERS_OUTBOUND_LINK = builder.buildScopeProcess(
+            "Scope-TerminationHandlers-OutboundLink", "A receive-reply pair and a nested scope in between. That scope in turn contains a flow with two parallel scopes. Both scopes pause execution for a short period. The scope that resumes execution first throws a fault caught by the faultHandler of its parent scope. The should trigger the execution of the terminationHandler of its sibling scope. The input value is assigned the reply first, in the terminationHandler -1 is assigned to it and in th outbound linked assign -2.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, -2)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_TERMINATION_HANDLERS_FAULT_NOT_PROPAGATING = builder.buildScopeProcess(
             "Scope-TerminationHandlers-FaultNotPropagating", "A scope with a receive-reply pair and a nested scope in between. That scope in turn contains a flow with two parallel scopes. Both scopes pause execution for a short period. The scope that resumes execution first throws a fault caught by the faultHandler of its parent scope. The should trigger the execution of the terminationHandler of its sibling scope. That terminationHandler also throws a fault which should not be propagated.",
             [
@@ -367,6 +374,7 @@ class ScopeProcesses {
             SCOPE_VARIABLES_OVERWRITING,
             SCOPE_ISOLATED,
             SCOPE_TERMINATION_HANDLERS,
+            SCOPE_TERMINATION_HANDLERS_OUTBOUND_LINK,
             SCOPE_TERMINATION_HANDLERS_FAULT_NOT_PROPAGATING,
             SCOPE_REPEATABLE_CONSTRUCT_COMPENSATION,
             MISSING_REPLY,
