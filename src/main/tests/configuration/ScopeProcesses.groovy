@@ -241,6 +241,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL = builder.buildScopeProcess(
+            "Scope-FaultHandlers-OutboundLink-CatchAll", "A scope in a flow with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level catchAll faultHandler. Inside this faultHandler is a assign that is linked outbound to the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_FAULT_HANDLERS_CATCH_ORDER = builder.buildScopeProcess(
             "Scope-FaultHandlers-CatchOrder", "A scope with a receive followed by a intermediate throw. The scope is associated with mulitple faultHandlers. A specific one of these should catch the fault and only inside this faultHandler is the reply to the initial receive. The process is adapted from the example in Spec. 12.5.",
             [
@@ -279,6 +286,7 @@ class ScopeProcesses {
     public static final List<BetsyProcess> SCOPES_FAULT_HANDLERS = [
             SCOPE_FAULT_HANDLER,
             SCOPE_FAULT_HANDLERS_CATCH_ALL,
+            SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL,
             SCOPE_FAULT_HANDLERS_FAULT_ELEMENT,
             SCOPE_FAULT_HANDLERS_FAULT_MESSAGE_TYPE,
             SCOPE_EXIT_ON_STANDARD_FAULT,
