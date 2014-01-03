@@ -42,9 +42,6 @@ class Main {
 
         customPartnerAddress(parser)
 
-
-
-
         // parsing processes and engines
         List<Engine> engines = null
         List<BetsyProcess> processes = null
@@ -56,9 +53,6 @@ class Main {
             println "ERROR - ${e.message} - Did you misspell the name?"
             System.exit(0)
         }
-
-
-
 
         try {
             printSelectedEnginesAndProcesses(engines, processes)

@@ -30,7 +30,7 @@ class Composite {
 
     TestPartnerService testPartner = new TestPartnerServicePublisher()
     TestSuite testSuite
-    int requestTimeout = 5000
+    int requestTimeout = 15000
 
     public void execute() {
         Progress progress = new Progress(testSuite.processesCount)

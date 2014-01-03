@@ -233,15 +233,14 @@ class BetsyProcess implements Cloneable {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
 
-        BetsyProcess process = (BetsyProcess) o
+        BetsyProcess that = (BetsyProcess) o
 
-        if (bpel != process.bpel) return false
+        if (bpel != that.bpel) return false
 
         return true
     }
 
     int hashCode() {
-        return (bpel != null ? bpel.hashCode() : 0)
+        return bpel.hashCode()
     }
-
 }

@@ -12,25 +12,25 @@ import java.nio.file.Paths
 
 class ErrorProcesses {
 
-    public static final Map<Integer, String> inputToErrorCode = [
-            0 : "happy-path.xml",
-	    11001 : "content-empty.xml",
-	    12001 : "content-simple-text.xml",
-	    12002 : "content-simple-stackTrace.xml",
-	    13101 : "content-xml-notWellFormed-missingClosingTag.xml",
-	    13102 : "content-xml-notWellFormed-twoRootElements.xml",
-	    13103 : "content-xml-notWellFormed-missingAttributeClosing.xml",
-	    13211 : "content-xml-wrongFormat-elementWithoutContent-emptyElementShort.xml",
-	    13212 : "content-xml-wrongFormat-elementWithoutContent-emptyElementLong.xml",
-	    13221 : "content-xml-wrongFormat-dataFormats-stringInstreadOfInteger.xml",
-	    13222 : "content-xml-wrongFormat-dataFormats-doubleInsteadOfInteger.xml",
-	    13223 : "content-xml-wrongFormat-dataFormats-doubleWithCommaInsteadOfInteger.xml",
-	    13231 : "content-xml-wrongFormat-namespace-noNamespace.xml",
-	    13232 : "content-xml-wrongFormat-namespace-partiallyUsageOfNamespace.xml",
-	    13233 : "content-xml-wrongFormat-namespace-wrongNamespace.xml",
-	    13234 : "content-xml-wrongFormat-namespace-unusedPrefix.xml",
-	    13241 : "content-xml-wrongFormat-additionalContent-element.xml",
-	    13242 : "content-xml-wrongFormat-additionalContent-attribute.xml"
+    public static final Map<String, String> inputToErrorCode = [
+            "00000" : "happy-path",
+            "11001" : "content-empty",
+            "12001" : "content-simple-text",
+            "12002" : "content-simple-stackTrace",
+            "13101" : "content-xml-notWellFormed-missingClosingTag",
+            "13102" : "content-xml-notWellFormed-twoRootElements",
+            "13103" : "content-xml-notWellFormed-missingAttributeClosing",
+            "13211" : "content-xml-wrongFormat-elementWithoutContent-emptyElementShort",
+            "13212" : "content-xml-wrongFormat-elementWithoutContent-emptyElementLong",
+            "13221" : "content-xml-wrongFormat-dataFormats-stringInstreadOfInteger",
+            "13222" : "content-xml-wrongFormat-dataFormats-doubleInsteadOfInteger",
+            "13223" : "content-xml-wrongFormat-dataFormats-doubleWithCommaInsteadOfInteger",
+            "13231" : "content-xml-wrongFormat-namespace-noNamespace",
+            "13232" : "content-xml-wrongFormat-namespace-partiallyUsageOfNamespace",
+            "13233" : "content-xml-wrongFormat-namespace-wrongNamespace",
+            "13234" : "content-xml-wrongFormat-namespace-unusedPrefix",
+            "13241" : "content-xml-wrongFormat-additionalContent-element",
+            "13242" : "content-xml-wrongFormat-additionalContent-attribute"
     ]
 
 
@@ -48,7 +48,7 @@ class ErrorProcesses {
 
         for (BetsyProcess baseProcess : baseProcesses) {
 
-            for (Map.Entry<Integer, String> entry : inputToErrorCode) {
+            for (Map.Entry<String, String> entry : inputToErrorCode) {
 
                 BetsyProcess process = (BetsyProcess) baseProcess.clone()
 
@@ -64,7 +64,8 @@ class ErrorProcesses {
                 writeXmlFile(newPath, root)
 
                 process.bpel = newPath
-                process.testCases = [new TestCase().checkDeployment().sendSync(entry.getKey(), entry.getKey())]
+                int number = Integer.parseInt(entry.getKey())
+                process.testCases = [new TestCase().checkDeployment().sendSync(number, number)]
 
                 result.add(process)
             }
@@ -72,8 +73,7 @@ class ErrorProcesses {
 
         }
 
-        result
-
+        result.sort() // make sure the happy path is the first test
     }
 
     private static void writeXmlFile(Path path, GPathResult root) {

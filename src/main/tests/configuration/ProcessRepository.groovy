@@ -53,6 +53,10 @@ class ProcessRepository {
         )
 
         repo.put("ERRORS", ErrorProcesses.processes)
+        // insert every process into the map
+        repo.getByName("ERRORS").each { BetsyProcess process ->
+            repo.put(process.name, [process])
+        }
 
         repo.put(
                 "WITH_EXIT_ASSERTION",
