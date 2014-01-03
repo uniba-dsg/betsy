@@ -283,8 +283,16 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_FAULT_HANDLER_OUTBOUND_LINK = builder.buildScopeProcess(
+            "Scope-FaultHandlers-OutboundLink", "A scope in a flow with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level faultHandler by its faultName.  Inside this faultHandler is a assign that is linked outbound to the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
     public static final List<BetsyProcess> SCOPES_FAULT_HANDLERS = [
             SCOPE_FAULT_HANDLER,
+            SCOPE_FAULT_HANDLER_OUTBOUND_LINK,
             SCOPE_FAULT_HANDLERS_CATCH_ALL,
             SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL,
             SCOPE_FAULT_HANDLERS_FAULT_ELEMENT,

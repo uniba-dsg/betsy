@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="Scope-FaultHandlers-OutboundLink"
+    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/scopeFaultHandlersOutboundLink"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+    xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <flow>
+        <links>
+            <link name="OutboundLink"/>
+        </links>
+        <scope name="Scope">
+            <faultHandlers>
+                <catch faultName="bpel:completionConditionFailure">
+                    <assign name="AssignReplyData">
+                        <sources>
+                            <source linkName="OutboundLink"/>
+                        </sources>
+                        <copy>
+                            <from variable="InitData" part="inputPart"/>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                </catch>
+            </faultHandlers>
+            <sequence>
+                <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+                <throw name="Throw" faultName="bpel:completionConditionFailure" />
+            </sequence>
+        </scope>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData">
+            <targets>
+                <target linkName="OutboundLink"/>
+            </targets>
+        </reply>
+    </flow>
+</process>
