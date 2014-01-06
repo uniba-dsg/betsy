@@ -1,6 +1,6 @@
 package betsy.cli
 
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.repositories.EngineRepository
 import configuration.ProcessRepository
 

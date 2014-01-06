@@ -1,7 +1,7 @@
 package betsy.data.engines.openesb
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 

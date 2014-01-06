@@ -14,8 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static betsy.Configuration.get;
-import static betsy.Configuration.getValueAsInteger;
+import static betsy.config.Configuration.get;
+import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualBpelgEngine extends VirtualEngine {
 

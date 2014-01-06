@@ -1,6 +1,6 @@
 package betsy.virtual.host.virtualbox;
 
-import betsy.Configuration;
+import betsy.config.Configuration;
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.IVirtualBox;
 import org.virtualbox_4_2.VirtualBoxManager;

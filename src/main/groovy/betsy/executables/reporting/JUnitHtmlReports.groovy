@@ -1,7 +1,7 @@
 package betsy.executables.reporting
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 import org.apache.log4j.Logger
 

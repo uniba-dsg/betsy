@@ -6,7 +6,7 @@ import org.apache.log4j.Logger
 
 import javax.xml.ws.Endpoint
 
-import betsy.Configuration
+import betsy.config.Configuration;
 
 class TestPartnerServicePublisher implements TestPartnerService {
 

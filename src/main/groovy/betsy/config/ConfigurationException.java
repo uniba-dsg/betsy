@@ -1,6 +1,5 @@
-package betsy.virtual.host.exceptions;
+package betsy.config;
 
-import betsy.Configuration;
 
 /**
  * The {@link ConfigurationException} is thrown if the {@link Configuration}

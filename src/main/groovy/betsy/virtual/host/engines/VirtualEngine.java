@@ -1,6 +1,6 @@
 package betsy.virtual.host.engines;
 
-import betsy.Configuration;
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.Engine;
 import betsy.virtual.common.Constants;

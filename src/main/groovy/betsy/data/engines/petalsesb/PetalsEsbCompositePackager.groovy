@@ -1,7 +1,7 @@
 package betsy.data.engines.petalsesb
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess
 import betsy.tasks.FileTasks
 

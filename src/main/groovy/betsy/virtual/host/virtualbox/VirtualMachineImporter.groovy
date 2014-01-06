@@ -1,7 +1,7 @@
 package betsy.virtual.host.virtualbox
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import org.apache.log4j.Logger
 
 import java.nio.file.Path

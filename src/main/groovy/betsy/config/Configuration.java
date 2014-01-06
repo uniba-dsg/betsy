@@ -1,8 +1,8 @@
-package betsy;
+package betsy.config;
 
-import betsy.virtual.host.exceptions.ConfigurationException;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
+
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 
 import java.io.File;

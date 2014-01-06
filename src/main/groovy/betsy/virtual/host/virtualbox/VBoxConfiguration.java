@@ -1,7 +1,7 @@
 package betsy.virtual.host.virtualbox;
 
-import betsy.Configuration;
-import betsy.virtual.host.exceptions.ConfigurationException;
+import betsy.config.Configuration;
+import betsy.config.ConfigurationException;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,7 +1,7 @@
 package betsy.data.engines.petalsesb
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.tasks.FileTasks
 
 import java.nio.file.Path

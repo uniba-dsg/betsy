@@ -1,6 +1,6 @@
 package betsy.virtual.host.virtualbox;
 
-import betsy.Configuration;
+import betsy.config.Configuration;
 import betsy.virtual.host.ServiceAddress;
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;

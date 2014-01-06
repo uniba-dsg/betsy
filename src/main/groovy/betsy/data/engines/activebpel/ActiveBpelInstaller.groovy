@@ -1,7 +1,7 @@
 package betsy.data.engines.activebpel
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.data.engines.tomcat.TomcatInstaller
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks

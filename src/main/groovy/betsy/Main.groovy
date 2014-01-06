@@ -3,6 +3,7 @@ package betsy
 import betsy.cli.CliParser
 import betsy.cli.EngineParser
 import betsy.cli.ProcessParser
+import betsy.config.Configuration;
 import betsy.corebpel.CoreBPELEngineExtension
 import betsy.data.BetsyProcess
 import betsy.data.TestCase

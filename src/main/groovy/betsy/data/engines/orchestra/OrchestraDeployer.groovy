@@ -1,7 +1,7 @@
 package betsy.data.engines.orchestra
 
 import ant.tasks.AntUtil
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 
 import java.nio.file.Path

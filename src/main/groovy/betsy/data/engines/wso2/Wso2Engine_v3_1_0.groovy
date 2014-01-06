@@ -1,6 +1,6 @@
 package betsy.data.engines.wso2
 
-import betsy.Configuration
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.ConsoleTasks
