@@ -6,6 +6,8 @@ import betsy.config.ConfigurationException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.lang.SystemUtils;
+
 /**
  * The {@link VBoxConfiguration} provides access to mandatory options required
  * by virtualized testing using VirtualBox.
@@ -40,7 +42,28 @@ public class VBoxConfiguration {
      * @return file of VirtualBox WebService
      */
     Path getVBoxWebSrv() {
-        return getVboxDir().resolve("VBoxWebSrv.exe");
+    	if(SystemUtils.IS_OS_WINDOWS) {
+    		return getVboxDir().resolve("VBoxWebSrv.exe");
+    	}else if(SystemUtils.IS_OS_UNIX) {
+    		return getVboxDir().resolve("vboxwebsrv");
+    	}else {
+    		throw new IllegalStateException("Incompatible OS running");
+    	}
+    }
+    
+    /**
+     * Get the VirtualBox Manage File
+     *
+     * @return file of VirtualBox Manage
+     */
+    Path getVBoxManage() {
+    	if(SystemUtils.IS_OS_WINDOWS) {
+    		return getVboxDir().resolve("VBoxManage.exe");
+    	}else if(SystemUtils.IS_OS_UNIX) {
+    		return getVboxDir().resolve("VBoxManage");
+    	}else{
+    		throw new IllegalStateException("Incompatible OS running");
+    	}
     }
 
 }
