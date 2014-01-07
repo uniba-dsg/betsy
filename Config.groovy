@@ -71,7 +71,7 @@ virtual {
 
             serviceTimeout = 300
 		}
-		active_bpel_v {
+		active-bpel_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-active_bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
             deploymentLogFile = "~/AeBpelEngine/deployment-logs/aeDeployment.log"
