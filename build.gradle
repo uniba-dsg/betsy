@@ -141,6 +141,17 @@ task internalClasses(dependsOn: classes) {
     }
 }
 
+task zipSingleTestRun(type: Zip) {
+    into("test") {
+        from files("test")
+    }
+    from files("betsy.log")
+    from files("betsy_console.log")
+    from files("betsy_time.log")
+
+    baseName = "test-folder-and-logs"
+}
+
 /**
  * Creates jar file for the virtual machines.
  */
