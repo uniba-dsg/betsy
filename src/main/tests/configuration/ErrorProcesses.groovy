@@ -70,9 +70,9 @@ class ErrorProcesses {
         BetsyProcess process = (BetsyProcess) baseProcess.clone()
 
         // copy file
-        String filename = "ERR${entry.getKey()}_${entry.getValue()}"
+        String filename = "${baseProcess.getName()}_ERR${entry.getKey()}_${entry.getValue()}"
         Path newPath = errorsDir.resolve("${filename}.bpel")
-        Files.copy(process.bpel, newPath, StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(process.bpel, newPath)
 
         // update filename
         GPathResult root = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile())

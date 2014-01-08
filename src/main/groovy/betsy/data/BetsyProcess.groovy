@@ -4,7 +4,7 @@ import betsy.data.engines.Engine
 
 import java.nio.file.Path
 
-class BetsyProcess implements Cloneable {
+class BetsyProcess implements Cloneable, Comparable {
 
     Path bpel
 
@@ -235,12 +235,17 @@ class BetsyProcess implements Cloneable {
 
         BetsyProcess that = (BetsyProcess) o
 
-        if (bpel != that.bpel) return false
+        if (bpel.toString() != that.bpel.toString()) return false
 
         return true
     }
 
     int hashCode() {
         return bpel.hashCode()
+    }
+
+    @Override
+    int compareTo(Object o) {
+        return bpel.compareTo(((BetsyProcess)o).bpel)
     }
 }
