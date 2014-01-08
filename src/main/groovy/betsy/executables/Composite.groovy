@@ -188,6 +188,7 @@ class Composite {
             } finally {
                 stopwatch.stop()
                 logger.info "... finished in ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
+                new File("test/timings.csv").withWriterAppend { out -> out.println("${stopwatch.diff};${name};${name.replaceAll("\\\\","/").split("/").join(";")}") }
             }
 
         } finally {
