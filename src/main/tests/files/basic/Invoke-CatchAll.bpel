@@ -36,7 +36,7 @@
                         <copy>
                             <from>
                                 <literal>
-                                    0
+                                    -1
                                 </literal>
                             </from>
                             <to variable="ReplyData" part="outputPart"/>

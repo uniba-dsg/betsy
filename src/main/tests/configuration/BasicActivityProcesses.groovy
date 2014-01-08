@@ -411,7 +411,7 @@ class BasicActivityProcesses {
     public static final BetsyProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(DECLARED_FAULT_CODE, 0)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
             ]
     )
 
