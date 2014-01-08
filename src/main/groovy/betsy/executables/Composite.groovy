@@ -82,6 +82,7 @@ class Composite {
                     installAndStart(process)
                     deploy(process)
                     test(process)
+                    collect(process)
                 } finally {
                     // ensure shutdown
                     shutdown(process)
@@ -133,6 +134,12 @@ class Composite {
         }
     }
 
+    protected void collect(BetsyProcess process) {
+        log "${process.targetPath}/collect", {
+            process.engine.storeLogs(process)
+        }
+    }
+
     protected void testSoapUi(BetsyProcess process) {
         log "${process.targetPath}/test_soapui", {
             captureIO {
@@ -142,7 +149,6 @@ class Composite {
         }
 
         WaitTasks.sleep(500);
-        process.engine.storeLogs(process)
     }
 
     protected void buildPackageAndTest(BetsyProcess process) {
