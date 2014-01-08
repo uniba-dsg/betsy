@@ -41,11 +41,13 @@ public class ServiceValidator {
         ant.typedef(name: "httpcontains", classname: "ant.tasks.HttpContains")
 
         ant.waitfor maxwait: secondsToWait, maxwaitunit: "second", checkevery: 500, {
-            for (ServiceAddress address : engineServices) {
-                if (address.isRequiringHtmlContent()) {
-                    httpcontains url: address, contains: address.getRequiredHtmlContent()
-                } else {
-                    http url: address
+            and {
+                for (ServiceAddress address : engineServices) {
+                    if (address.isRequiringHtmlContent()) {
+                        httpcontains url: address, contains: address.getRequiredHtmlContent()
+                    } else {
+                        http url: address
+                    }
                 }
             }
         }
