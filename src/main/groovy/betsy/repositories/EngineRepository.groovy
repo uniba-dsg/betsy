@@ -33,13 +33,13 @@ class EngineRepository {
     private static final OpenEsb23Engine OPENESB_23 = new OpenEsb23Engine()
     private static final PetalsEsb41Engine PETALS_41 = new PetalsEsb41Engine()
     private static final Ode136Engine ODE_136 = new Ode136Engine()
-    public static final OdeEngine ODE = new OdeEngine()
-    public static final OdeInMemoryEngine ODE_IN_MEMORY = new OdeInMemoryEngine()
-    public static final BpelgInMemoryEngine BPELG_IN_MEMORY = new BpelgInMemoryEngine()
-    public static final Ode136InMemoryEngine ODE_136_IN_MEMORY = new Ode136InMemoryEngine()
-    public static final OpenEsbEngine OPENESB = new OpenEsbEngine()
-    public static final PetalsEsbEngine PETALS = new PetalsEsbEngine()
-    public static final Wso2Engine_v3_1_0 WSO2_310= new Wso2Engine_v3_1_0()
+    private static final OdeEngine ODE = new OdeEngine()
+    private static final OdeInMemoryEngine ODE_IN_MEMORY = new OdeInMemoryEngine()
+    private static final BpelgInMemoryEngine BPELG_IN_MEMORY = new BpelgInMemoryEngine()
+    private static final Ode136InMemoryEngine ODE_136_IN_MEMORY = new Ode136InMemoryEngine()
+    private static final OpenEsbEngine OPENESB = new OpenEsbEngine()
+    private static final PetalsEsbEngine PETALS = new PetalsEsbEngine()
+    private static final Wso2Engine_v3_1_0 WSO2_310= new Wso2Engine_v3_1_0()
 
     private Repository<Engine> repo = new Repository<>();
 
