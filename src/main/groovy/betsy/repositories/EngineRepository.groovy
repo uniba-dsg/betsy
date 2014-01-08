@@ -8,6 +8,7 @@ import betsy.data.engines.ode.Ode136Engine
 import betsy.data.engines.ode.Ode136InMemoryEngine
 import betsy.data.engines.ode.OdeEngine
 import betsy.data.engines.ode.OdeInMemoryEngine
+import betsy.data.engines.openesb.OpenEsb231Engine
 import betsy.data.engines.openesb.OpenEsb23Engine
 import betsy.data.engines.openesb.OpenEsbEngine
 import betsy.data.engines.orchestra.OrchestraEngine
@@ -40,6 +41,7 @@ class EngineRepository {
     private static final OpenEsbEngine OPENESB = new OpenEsbEngine()
     private static final PetalsEsbEngine PETALS = new PetalsEsbEngine()
     private static final Wso2Engine_v3_1_0 WSO2_310= new Wso2Engine_v3_1_0()
+    private static final OpenEsb231Engine OPENESB231 = new OpenEsb231Engine()
 
     private Repository<Engine> repo = new Repository<>();
 
@@ -52,6 +54,7 @@ class EngineRepository {
                 ORCHESTRA,
                 ACTIVE_BPEL,
                 OPENESB_23,
+                OPENESB231,
                 PETALS_41,
                 ODE_136,
                 ODE_IN_MEMORY,
@@ -66,7 +69,7 @@ class EngineRepository {
                 BPELG,
                 ORCHESTRA,
                 ACTIVE_BPEL,
-                OPENESB_23,
+                OPENESB231,
                 PETALS_41,
                 ODE_136,
                 WSO2_310
