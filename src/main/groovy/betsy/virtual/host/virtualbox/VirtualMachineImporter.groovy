@@ -1,7 +1,8 @@
 package betsy.virtual.host.virtualbox
 
 import ant.tasks.AntUtil
-import betsy.config.Configuration;
+import betsy.config.Configuration
+import betsy.tasks.FileTasks;
 import org.apache.log4j.Logger
 
 import java.nio.file.Path
@@ -41,6 +42,7 @@ public class VirtualMachineImporter {
 
     public void makeVMAvailable() {
         log.info("Downloading VM " + vmName + " to " + downloadPath);
+        FileTasks.mkdirs(downloadPath);
         AntUtil.builder().get(dest: downloadPath, src: downloadUrl, skipexisting: true);
 
         log.info("Importing VM " + vmName + " into VirtualBox");
