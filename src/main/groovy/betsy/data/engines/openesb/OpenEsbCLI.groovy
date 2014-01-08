@@ -24,6 +24,10 @@ class OpenEsbCLI {
         getBinFolder().resolve("asadmin.bat").toAbsolutePath()
     }
 
+    private Path getAsAdminUnix() {
+        getBinFolder().resolve("asadmin").toAbsolutePath()
+    }
+
     protected Path getBinFolder() {
         glassfishHome.resolve("bin")
     }
@@ -42,6 +46,7 @@ class OpenEsbCLI {
         FileTasks.createFile(deployCommands, scriptContent);
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminWindows).values("multimode", "--file", deployCommands.toAbsolutePath().toString()))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminUnix).values("multimode", "--file", deployCommands.toAbsolutePath().toString()))
     }
 
 }

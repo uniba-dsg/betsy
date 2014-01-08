@@ -74,8 +74,10 @@ public class DeployOperation {
             deployer.deploy();
         } else if ("openesb_v".equals(request.getEngineName())) {
             OpenEsbCLI cli = new OpenEsbCLI();
+            cli.setGlassfishHome(Paths.get("/opt/openesb/glassfish"));
 
             OpenEsbDeployer deployer = new OpenEsbDeployer();
+            deployer.setTmpFolder(Paths.get("/opt/betsy"));
             deployer.setProcessName(request.getProcessName());
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.setCli(cli);
