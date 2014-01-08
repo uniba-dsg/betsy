@@ -39,6 +39,7 @@ class EngineRepository {
     public static final Ode136InMemoryEngine ODE_136_IN_MEMORY = new Ode136InMemoryEngine()
     public static final OpenEsbEngine OPENESB = new OpenEsbEngine()
     public static final PetalsEsbEngine PETALS = new PetalsEsbEngine()
+    public static final Wso2Engine_v3_1_0 WSO2_310= new Wso2Engine_v3_1_0()
 
     private Repository<Engine> repo = new Repository<>();
 
@@ -56,7 +57,7 @@ class EngineRepository {
                 ODE_IN_MEMORY,
                 ODE_136_IN_MEMORY,
                 BPELG_IN_MEMORY,
-                new Wso2Engine_v3_1_0(),
+                WSO2_310,
                 new Wso2Engine_v3_0_0(),
                 new Wso2Engine_v2_1_2()
         ]
@@ -68,6 +69,7 @@ class EngineRepository {
                 OPENESB_23,
                 PETALS_41,
                 ODE_136,
+                WSO2_310
         ]
 
         List<Engine> vms = [
