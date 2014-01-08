@@ -72,7 +72,7 @@ virtual {
             serviceTimeout = 300
 		}
 		active-bpel_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-active_bpel_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-active-bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
             deploymentLogFile = "~/AeBpelEngine/deployment-logs/aeDeployment.log"
 			logfileDir = "/usr/share/tomcat5.5/logs"
@@ -83,7 +83,7 @@ virtual {
             serviceTimeout = 30
 		}
 		bpelg_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-bpelg_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-bpelg_v.ova"
 			deploymentDir = "/usr/share/tomcat7/bpr"
             deploymentLogFile = "/var/log/tomcat7/bpelg.log"
             logfileDir = "/var/log/tomcat7"
@@ -94,7 +94,7 @@ virtual {
             serviceTimeout = 30
 		}
 		ode_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-ode_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-ode_v.ova"
 			deploymentDir = "/var/lib/tomcat7/webapps/ode/WEB-INF/processes"
             deploymentLogFile = "/var/log/tomcat7/ode.log"
             logfileDir = "/var/log/tomcat7"
@@ -105,7 +105,7 @@ virtual {
             serviceTimeout = 30
 		}
 		openesb_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-openesb_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-openesb_v.ova"
 			deploymentFile = "/opt/openesb/glassfish/bin/asadmin"
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
             deploymentTimeout = 30
@@ -115,7 +115,7 @@ virtual {
             serviceTimeout = 30
 		}
 		orchestra_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-orchestra_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-orchestra_v.ova"
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
 			logfileDir = "/var/log/tomcat7"
             deploymentTimeout = 30
@@ -125,7 +125,7 @@ virtual {
             serviceTimeout = 30
 		}
 		petalsesb_v {
-			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-petalsesb_v.ova"
+			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-petalsesb_v.ova"
 			deploymentDir = "/opt/petalsesb/install"
 			logfileDir = "/opt/petalsesb/logs"
             deploymentTimeout = 30
