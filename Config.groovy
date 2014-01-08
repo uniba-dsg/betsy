@@ -108,6 +108,7 @@ virtual {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-openesb_v.ova"
 			deploymentFile = "/opt/openesb/glassfish/bin/asadmin"
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
+            deploymentDir = ""
             deploymentTimeout = 30
             deploymentLogFile = ""
 			headless = true
