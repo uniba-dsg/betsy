@@ -67,7 +67,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
         operation.setFileMessage(FileMessage.build(process.getTargetPackageFilePath("zip")));
         operation.setEngineName(getName());
         operation.setProcessName(process.getName());
-        // deploymentLogFile unnecessary
+        operation.setDeploymentLogFilePath(get("virtual.engines.orchestra_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.orchestra_v.deploymentDir"));
         operation.setDeployTimeout(getValueAsInteger("virtual.engines.orchestra_v.deploymentTimeout"));
 

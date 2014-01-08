@@ -109,6 +109,7 @@ virtual {
 			deploymentFile = "/opt/openesb/glassfish/bin/asadmin"
 			logfileDir = "/opt/openesb/glassfish/domains/domain1/logs"
             deploymentTimeout = 30
+            deploymentLogFile = ""
 			headless = true
 			shutdownSaveState = false
             bvmsDir = "/opt/betsy"
@@ -118,6 +119,7 @@ virtual {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-orchestra_v.ova"
 			deploymentDir = "/home/betsy/orchestra-cxf-tomcat"
 			logfileDir = "/var/log/tomcat7"
+            deploymentLogFile = ""
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
@@ -128,6 +130,7 @@ virtual {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-petalsesb_v.ova"
 			deploymentDir = "/opt/petalsesb/install"
 			logfileDir = "/opt/petalsesb/logs"
+            deploymentLogFile = ""
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
