@@ -168,3 +168,13 @@ task jarServer(type: Jar, dependsOn: [classes, internalClasses]) {
         attributes 'Main-Class': 'betsy.virtual.server.BetsyVirtualMachineServer', 'Implementation-Title': 'Betsy-VirtualMachineServer'
     }
 }
+
+task install(type: JavaExec, dependsOn: jarServer) {
+    description = 'Install virtual machines to use the virtual engines'
+    classpath = sourceSets.main.runtimeClasspath
+    main = "betsy.tool.VirtualMachineInstaller"
+
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
+}
