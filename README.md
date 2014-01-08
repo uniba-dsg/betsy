@@ -49,7 +49,7 @@ VMS (install and execute all engines in virtual machines),
 ALL (install and execute all engines, in all versions supported, locally and in virtual machines),
 ode, bpelg, openesb, petalsesb, orchestra,
 active-bpel, openesb23, petalsesb41, ode_v, bpelg_v, openesb_v,
-petalsesb_v, orchestra_v, active-bpel_v
+petalsesb_v, orchestra_v, active_bpel_v
 
 <processes>: ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
 BASIC_ACTIVITIES_RECEIVE, BASIC_ACTIVITIES_INVOKE,

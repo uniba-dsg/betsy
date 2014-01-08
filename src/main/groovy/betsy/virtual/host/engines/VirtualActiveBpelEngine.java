@@ -28,7 +28,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
 
     @Override
     public String getName() {
-        return "active-bpel_v";
+        return "active_bpel_v";
     }
 
     @Override
@@ -69,9 +69,9 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
         operation.setFileMessage(FileMessage.build(process.getTargetPackageFilePath("bpr")));
         operation.setEngineName(getName());
         operation.setProcessName(process.getName());
-        operation.setDeploymentLogFilePath(get("virtual.engines.active-bpel_v.deploymentLogFile"));
-        operation.setDeploymentDir(get("virtual.engines.active-bpel_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.active-bpel_v.deploymentTimeout"));
+        operation.setDeploymentLogFilePath(get("virtual.engines.active_bpel_v.deploymentLogFile"));
+        operation.setDeploymentDir(get("virtual.engines.active_bpel_v.deploymentDir"));
+        operation.setDeployTimeout(getValueAsInteger("virtual.engines.active_bpel_v.deploymentTimeout"));
 
         return operation;
     }
@@ -79,8 +79,8 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
     @Override
     public LogFilesRequest buildLogFilesRequest() {
         LogFilesRequest request = new LogFilesRequest();
-        request.getPaths().add(get("virtual.engines.active-bpel_v.bvmsDir") + "/log");
-        request.getPaths().add(get("virtual.engines.active-bpel_v.logfileDir"));
+        request.getPaths().add(get("virtual.engines.active_bpel_v.bvmsDir") + "/log");
+        request.getPaths().add(get("virtual.engines.active_bpel_v.logfileDir"));
         return request;
     }
 }

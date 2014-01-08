@@ -59,7 +59,7 @@ public class DeployOperation {
             deployer.setPackageFilePath(pathToPackageFile);
             deployer.setTimeoutInSeconds(request.getDeployTimeout());
             deployer.deploy();
-        } else if ("active-bpel_v".equals(request.getEngineName())) {
+        } else if ("active_bpel_v".equals(request.getEngineName())) {
             ActiveBpelDeployer deployer = new ActiveBpelDeployer();
             deployer.setDeploymentDirPath(deploymentDirPath);
             deployer.setProcessName(request.getProcessName());
