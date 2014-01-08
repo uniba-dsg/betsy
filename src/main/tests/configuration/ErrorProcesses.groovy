@@ -9,6 +9,7 @@ import groovy.xml.XmlUtil
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
 class ErrorProcesses {
 
@@ -71,7 +72,7 @@ class ErrorProcesses {
         // copy file
         String filename = "ERR${entry.getKey()}_${entry.getValue()}"
         Path newPath = errorsDir.resolve("${filename}.bpel")
-        Files.copy(process.bpel, newPath)
+        Files.copy(process.bpel, newPath, StandardCopyOption.REPLACE_EXISTING)
 
         // update filename
         GPathResult root = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile())
