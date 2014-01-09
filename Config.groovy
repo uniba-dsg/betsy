@@ -74,7 +74,7 @@ virtual {
 		active_bpel_v {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-active_bpel_v.ova"
 			deploymentDir = "/usr/share/tomcat5.5/bpr"
-            deploymentLogFile = "~/AeBpelEngine/deployment-logs/aeDeployment.log"
+            deploymentLogFile = "/home/tomcat55/AeBpelEngine/deployment-logs/aeDeployment.log"
 			logfileDir = "/usr/share/tomcat5.5/logs"
             deploymentTimeout = 30
 			headless = true
