@@ -71,6 +71,7 @@ public class DeployOperation {
             OrchestraDeployer deployer = new OrchestraDeployer();
             deployer.setOrchestraHome(deploymentDirPath);
             deployer.setPackageFilePath(pathToPackageFile);
+            deployer.setAntBinFolder(Paths.get("TODO"));
             deployer.deploy();
         } else if ("openesb_v".equals(request.getEngineName())) {
             OpenEsbCLI cli = new OpenEsbCLI();

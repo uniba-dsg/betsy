@@ -12,12 +12,11 @@ class OrchestraDeployer {
 
     Path orchestraHome
     Path packageFilePath
+    Path antBinFolder = Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
 
     void deploy() {
-        Path antBinFolder = Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
-        Path antBat = antBinFolder.resolve("ant.bat")
-
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(orchestraHome, antBat).values("deploy", "-Dbar=${packageFilePath.toAbsolutePath()}"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant.bat")).values("deploy", "-Dbar=${packageFilePath.toAbsolutePath()}"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant")).values("deploy", "-Dbar=${packageFilePath.toAbsolutePath()}"))
     }
 
 }

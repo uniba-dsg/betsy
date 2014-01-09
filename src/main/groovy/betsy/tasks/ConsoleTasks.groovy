@@ -12,6 +12,9 @@ class ConsoleTasks {
      * Represents "dir $ command values[0] values[1] ..."
      */
     public static class CliCommand {
+
+        private static final Logger log = Logger.getLogger(CliCommand.class);
+
         Path dir
         String command
         String[] values
@@ -45,7 +48,11 @@ class ConsoleTasks {
          * Execute dir $ command args[0] args[1] ...
          */
         public static CliCommand build(Path dir, Path command) {
-            FileTasks.assertExecutableFile(command)
+            try {
+                FileTasks.assertExecutableFile(command)
+            } catch (IllegalArgumentException e) {
+                log.warn("executable file not found: ${e.message}")
+            }
 
             build(dir, command.toAbsolutePath().toString())
         }
