@@ -1,5 +1,6 @@
 package betsy.data.engines.orchestra
 
+import betsy.config.Configuration
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
@@ -58,7 +59,9 @@ class OrchestraEngine extends LocalEngine {
     void deploy(BetsyProcess process) {
         new OrchestraDeployer(
                 orchestraHome: serverPath.resolve("orchestra-cxf-tomcat-4.9.0"),
-                packageFilePath: process.targetPackageFilePath).deploy()
+                packageFilePath: process.targetPackageFilePath,
+                antBinFolder: Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
+        ).deploy()
     }
 
     public void buildArchives(BetsyProcess process) {
