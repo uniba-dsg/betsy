@@ -1,6 +1,7 @@
 package betsy.virtual.host.virtualbox;
 
 import betsy.config.Configuration;
+import betsy.tasks.WaitTasks;
 import betsy.virtual.host.ServiceAddress;
 import betsy.virtual.host.VirtualBoxException;
 import betsy.virtual.host.VirtualBoxMachine;
@@ -72,6 +73,8 @@ public class SnapshotCreator {
             // ensure all is up and running
             failIfEngineServicesTimeout(engineName, engineServices);
             failIfBetsyServerTimesout();
+
+            WaitTasks.sleep(30000);
 
             virtualBoxMachine.takeSnapshot(createSnapshotName(engineName), createSnapshotDescription());
 
