@@ -1,5 +1,6 @@
 package betsy.virtual.host.virtualbox;
 
+import betsy.tasks.FileTasks;
 import betsy.virtual.host.VirtualBoxMachine;
 import betsy.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import org.apache.commons.lang.StringUtils;
@@ -152,9 +153,7 @@ public class VBoxController {
 
     private void deleteMachine(final IMachine machine) {
         Path logFolder = Paths.get(machine.getLogFolder());
-        if (!logFolder.toFile().delete()) {
-            throw new IllegalArgumentException("could not delete folder " + logFolder);
-        }
+        FileTasks.deleteDirectory(logFolder);
 
         List<IMedium> removableMediums = machine.unregister(CleanupMode.Full);
         machine.delete(removableMediums);
