@@ -131,7 +131,7 @@ virtual {
 			download = "https://lspi.wiai.uni-bamberg.de/svn/betsy/ova/betsy-petalsesb_v.ova"
 			deploymentDir = "/opt/petalsesb/install"
 			logfileDir = "/opt/petalsesb/logs"
-            deploymentLogFile = ""
+            deploymentLogFile = "/opt/petalsesb/logs/petals.log"
             deploymentTimeout = 30
 			headless = true
 			shutdownSaveState = false
