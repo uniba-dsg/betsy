@@ -52,6 +52,7 @@ class VirtualMachineInstaller {
 		// TODO apply default
 		cli.b(args:1, argName:'directory', longOpt:'betsy', "path where betsy is located, defaults to current dir, defaults to './'")
 		cli.e(args:1, argName:'directory', longOpt:'engines', "path where the sprinkle scripts for the virtual engines are located, defaults to '../betsy-engines'")
+		cli.o(args:1, argName:'directory', longOpt:'output', "path where the created virtual machines should be exported to as .ova file. If not set, the VMs are not exported.")
 
 		// parsing cli params
 		def options = cli.parse(args)
@@ -181,6 +182,20 @@ class VirtualMachineInstaller {
 				return false
 			}
 
+			if(options.o) {
+				def ovaDirectory = Paths.get(options.o).toAbsolutePath()
+				def ovaFile = ovaDirectory.resolve("betsy-${engine.name}.ova")
+				println "dir: ${ovaDirectory}"
+				// verify if directory exists
+				if(Files.exists(ovaFile) && !options.f) {
+					// handle export failed
+					error "Export failed: The .ova file for the engine '${engine.name}' already exists. Please use the '-f' option to overwrite the file, change the directory or manually delte this file."
+				}else {
+					// TODO export the engine
+					vbox.exportVM(cloneUuid, ovaFile)
+				}
+			}
+			
 			// installation successful
 			return true
 		}catch(e) {

@@ -29,3 +29,4 @@ vm_extraction/
 
 # ignore this directory which is created on demand
 src/main/tests/files/errors/
+ovas

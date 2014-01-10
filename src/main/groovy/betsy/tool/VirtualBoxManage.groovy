@@ -2,6 +2,7 @@ package betsy.tool;
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths;
 
 import org.apache.commons.lang.StringUtils
 
@@ -162,6 +163,27 @@ public class VirtualBoxManage {
 		}catch(e) {
 			// TODO shall we download and import the basic VM?
 			throw new VirtualBoxException("Forwarding rules for the VM could not be found", e)
+		}
+	}
+	
+	def exportVM(String uuid, Path ovaFile) {
+		try {
+			// create directories if they don't exist yet
+			if(!Files.isDirectory(ovaFile.parent)) {
+				Files.createDirectories(ovaFile.parent)
+			}
+			// vbox requires us to delete the file first
+			if(Files.exists(ovaFile)) {
+				Files.delete(ovaFile)
+			}
+ 			
+			// can take up to 5 minutes
+			executeCommand(["export", uuid, "--output", ovaFile], 600_000)
+			println "VM successfully exported to ${ovaFile}"
+			return true
+		}catch(Exception e) {
+			throw new VirtualBoxException("Exporting the VM failed", e)
+			return false
 		}
 	}
 	
