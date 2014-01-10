@@ -48,9 +48,9 @@ class VirtualMachineInstaller {
 		CliBuilder cli = new CliBuilder(usage: "[options] <engines>")
 		cli.f(longOpt:'force',"force creating new VMs, will delete existing VMs with the same name")
 		cli.k(longOpt:'keep',"keep VMs for failed installation attempts")
+		cli.v(longOpt:'verbose',"show all output of the executed commands, not only the current steps")
 		cli.u(args:1, argName:'uuid', longOpt:'uuid', "uuid of the basic virtual machine, which will be cloned to install the engines. Can also be the unique name of the virtual machine.")
-		// TODO apply default
-		cli.b(args:1, argName:'directory', longOpt:'betsy', "path where betsy is located, defaults to current dir, defaults to './'")
+		cli.b(args:1, argName:'directory', longOpt:'betsy', "path where betsy is located, defaults to current dir")
 		cli.e(args:1, argName:'directory', longOpt:'engines', "path where the sprinkle scripts for the virtual engines are located, defaults to '../betsy-engines'")
 		cli.o(args:1, argName:'directory', longOpt:'output', "path where the created virtual machines should be exported to as .ova file. If not set, the VMs are not exported.")
 
@@ -89,13 +89,12 @@ class VirtualMachineInstaller {
 	def install() {
 		VBoxConfiguration vConfig = new VBoxConfiguration()
 
-		// TODO how to set to the current directory: '.' ?
 		def betsyHome = options.b ?:""
 		def betsyEnginesHome = options.e ?:"../betsy-engines"
 		// basic virtual machine with name "betsy_basic_cloneable" or by given name/uuid
 		def basicUuid = options.u ?: "betsy_basic_cloneable"
 
-		vbox = new VirtualBoxManage(vConfig)
+		vbox = new VirtualBoxManage(vConfig, options.v)
 		// verify all mandatory config options related to the VirtualBox installation
 		if(!vbox.isValid()) {
 			error "VirtualBox installation could not be verified, aborting installation"
@@ -103,7 +102,7 @@ class VirtualMachineInstaller {
 		}
 		println "VirtualBox installation found and verified"
 
-		sprinkle = new Sprinkle(betsyEnginesHome)
+		sprinkle = new Sprinkle(betsyEnginesHome, options.v)
 		if(!sprinkle.isInstalled()) {
 			error "Sprinkle installation could not be verified, aborting installation"
 			return false

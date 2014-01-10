@@ -17,11 +17,13 @@ public class VirtualBoxManage {
 	
 	private VBoxConfiguration config
 	private Path vboxManage
+	private boolean verbose
 	
-	VirtualBoxManage(VBoxConfiguration config) {
+	VirtualBoxManage(VBoxConfiguration config, def verbose) {
 		this.config = Objects.requireNonNull(config)
 		// make sure path is absolute!
 		this.vboxManage = config.getVBoxManage().toAbsolutePath()
+		this.verbose = verbose ? true : false
 	}
 	
 	boolean isValid() {
@@ -42,10 +44,22 @@ public class VirtualBoxManage {
 	def executeCommand(String command, long timeoutInMs = 10_000) {
 		String vbCommand = "${vboxManage} ${command}"
 		println vbCommand
+		
+		def serr
+		def sout
 		def vboxProcess = vbCommand.execute()
-		vboxProcess.consumeProcessOutput(System.out, System.err)
+		if(verbose) {
+			vboxProcess.consumeProcessOutput(System.out, System.err)
+		}else {
+			sout = new StringBuffer()
+			serr = new StringBuffer()
+			vboxProcess.consumeProcessOutput(sout, serr)
+		}
 		vboxProcess.waitForOrKill(timeoutInMs)
 		if (vboxProcess.exitValue()) {
+			if (!verbose) {
+				error serr
+			}
 			throw new VirtualBoxException("Execution of the command '${vbCommand}' failed")
 		}
 		return true
@@ -57,13 +71,26 @@ public class VirtualBoxManage {
 	def executeCommand(List<String> command, long timeoutInMs = 10_000) {
 		def vbCommand = []
 		vbCommand.add(vboxManage.toString())
-		vbCommand.addAll(command)
+		vbCommand.addAll(command*.toString())
+		println vbCommand.join(" ")
 		
 		ProcessBuilder pb = new ProcessBuilder(vbCommand as List)
 		def vboxProcess = pb.start()
-		vboxProcess.consumeProcessOutput(System.out, System.err)
+		
+		def serr
+		def sout
+		if(verbose) {
+			vboxProcess.consumeProcessOutput(System.out, System.err)
+		}else {
+			sout = new StringBuffer()
+			serr = new StringBuffer()
+			vboxProcess.consumeProcessOutput(sout, serr)
+		}
 		vboxProcess.waitForOrKill(timeoutInMs)
 		if (vboxProcess.exitValue()) {
+			if (!verbose) {
+				error serr
+			}
 			throw new VirtualBoxException("Execution of the command '${vbCommand}' failed")
 		}
 		return true
@@ -75,6 +102,7 @@ public class VirtualBoxManage {
 		
 		String vbCommand = "${vboxManage} ${command}"
 		println vbCommand
+		
 		def vboxProcess = vbCommand.execute()
 		vboxProcess.consumeProcessOutput(sout, serr)
 		vboxProcess.waitForOrKill(timeoutInMs)

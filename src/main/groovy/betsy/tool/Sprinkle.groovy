@@ -9,27 +9,39 @@ public class Sprinkle {
 	}
 
 	def installerHomeDir
+	boolean verbose
 
-	Sprinkle(def installerHomeDir) {
+	Sprinkle(def installerHomeDir, def verbose) {
 		this.installerHomeDir = Objects.requireNonNull(installerHomeDir)
+		this.verbose = verbose ? true : false
 	}
 
 	def isInstalled() {
 		// Test if sprinkle is available
 		try {
-			def sout = new StringBuffer()
-			def serr = new StringBuffer()
+			def sout
+			def serr
 			def process
 			if(SystemUtils.IS_OS_WINDOWS) {
 				process = "cmd /C sprinkle -v".execute()
 			}else {
 				process = "sprinkle -v".execute()
 			}
-			process.consumeProcessOutput(sout, serr)
+			
+			if(verbose) {
+				process.consumeProcessOutput(System.out, System.err)
+			}else {
+				sout = new StringBuffer()
+				serr = new StringBuffer()
+				process.consumeProcessOutput(sout, serr)
+			}
+			
 			process.waitForOrKill(10_000)
 			if (process.exitValue()) {
 				// unknown error, nevertheless sprinkle is most likely not usable
-				error 'Sprinkle: >> ' + serr
+				if (!verbose) {
+					error 'Sprinkle: >> ' + serr
+				}
 				return false
 			}
 		}catch(e) {
@@ -56,8 +68,8 @@ public class Sprinkle {
 
 		// invoke sprinkle
 		try {
-			def sout = new StringBuffer()
-			def serr = new StringBuffer()
+			def sout
+			def serr
 			def command
 			if(SystemUtils.IS_OS_WINDOWS) {
 				command = "cmd /C sprinkle -v -s ${engineName}_server.rb"
@@ -65,16 +77,27 @@ public class Sprinkle {
 				command = "sprinkle -v -s ${engineName}_server.rb"
 			}
 			def process = command.execute(null, new File(installerHomeDir))
-			process.consumeProcessOutput(System.out, System.err)
+			
+			if(verbose) {
+				process.consumeProcessOutput(System.out, System.err)
+			}else {
+				sout = new StringBuffer()
+				serr = new StringBuffer()
+				process.consumeProcessOutput(sout, serr)
+			}
+			
 			// allow installation to take up to 30 minutes (1.800 seconds)
 			process.waitForOrKill(1_800_000)
 			if (process.exitValue()) {
 				error "Sprinkle did not exit properly"
+				
 				// sprinkle did not exit properly, sth. must have went wrong
 				return false
 			}
 		}catch(e) {
-			error "Running the sprinkle installer failed: " + e
+			if (!verbose) {
+				error "Running the sprinkle installer failed: " + e
+			}
 			return false
 		}
 		println "Sprinkle installer successfully finished"
