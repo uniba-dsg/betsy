@@ -66,6 +66,10 @@ public class VBoxController {
             IAppliance appliance = vBoxImporter.importAppliance(importFile);
             log.info("Appliance imported (machines: " + appliance.getMachines() + ")");
 
+            if(appliance.getMachines().isEmpty()){
+                throw new IllegalStateException("The appliance " + importFile + " has no machines inside");
+            }
+
             // by definition the appliance container could contain several
             // separated machines which must be imported each at it's own.
             for (String uuid : appliance.getMachines()) {
