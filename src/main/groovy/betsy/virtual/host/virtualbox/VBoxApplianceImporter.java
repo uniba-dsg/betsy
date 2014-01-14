@@ -48,11 +48,8 @@ class VBoxApplianceImporter {
 		}
 
 		appliance.interpret();
-		List<String> warnings = appliance.getWarnings();
 
-		for (String warning : warnings) {
-			log.warn("Import warning: " + warning);
-		}
+        logWarnings(appliance);
 
 		// keep NAT MAC addresses
 		List<ImportOptions> options = new LinkedList<>();
@@ -61,11 +58,19 @@ class VBoxApplianceImporter {
 		while (!importProgress.getCompleted()) {
 			importProgress.waitForCompletion(1000);
 		}
+
 		log.trace("Appliance import done!");
 		return appliance;
 	}
 
-	/**
+    private void logWarnings(IAppliance appliance) {
+        List<String> warnings = appliance.getWarnings();
+        for (String warning : warnings) {
+            log.warn("Import warning: " + warning);
+        }
+    }
+
+    /**
 	 * Adjust the settings of the given appliance.<br>
 	 * <br>
 	 * This includes:

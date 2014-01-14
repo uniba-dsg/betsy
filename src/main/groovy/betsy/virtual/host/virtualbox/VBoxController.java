@@ -62,7 +62,9 @@ public class VBoxController {
         IMachine importedVm = null;
         ISession session = null;
         try {
+            log.info("Importing appliance from file " + importFile);
             IAppliance appliance = vBoxImporter.importAppliance(importFile);
+            log.info("Appliance imported (machines: " + appliance.getMachines() + ")");
 
             // by definition the appliance container could contain several
             // separated machines which must be imported each at it's own.
