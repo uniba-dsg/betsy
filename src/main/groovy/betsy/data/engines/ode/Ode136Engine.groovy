@@ -11,7 +11,7 @@ class Ode136Engine extends OdeEngine {
     }
 
     Path getXsltPath() {
-        Paths.get("src/main/xslt/ode")
+        Paths.get(Ode136Engine.class.getResource("/ode").toURI())
     }
 
     @Override

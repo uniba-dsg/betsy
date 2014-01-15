@@ -18,7 +18,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
 
     @Override
     Path getXsltPath() {
-        return Paths.get("src/main/xslt/ode");
+        Paths.get(Wso2Engine_v3_1_0.class.getResource("/ode").toURI())
     }
 
     @Override

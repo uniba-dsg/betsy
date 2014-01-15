@@ -11,7 +11,7 @@ class Ode136InMemoryEngine extends Ode136Engine {
     }
 
     Path getXsltPath() {
-        Paths.get("src/main/xslt/ode-in-memory")
+        Paths.get(Ode136InMemoryEngine.class.getResource("/ode-in-memory").toURI())
     }
 
 }

@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
+import com.google.common.io.Files
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -15,7 +16,7 @@ class OpenEsbInstaller {
     Path serverDir = Paths.get("server/openesb")
     String fileName = "glassfishesb-v2.2-full-installer-windows.exe"
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
-    String stateXmlTemplate = "src/main/resources/openesb/state.xml.template"
+    Path stateXmlTemplate = Paths.get(OpenEsbInstaller.class.getResource("/openesb/state.xml.template").toURI())
 
     public void install() {
         // setup engine folder
@@ -28,7 +29,8 @@ class OpenEsbInstaller {
         FileTasks.deleteDirectory(serverDir)
         FileTasks.mkdirs(serverDir)
 
-        ant.copy file: stateXmlTemplate, tofile: serverDir.resolve("state.xml"), {
+        Path stateXmlPath = serverDir.resolve("state.xml").toAbsolutePath()
+        ant.copy file: stateXmlTemplate, tofile: stateXmlPath, {
             filterchain {
                 replacetokens {
                     token key: "INSTALL_PATH", value: serverDir.toAbsolutePath()
@@ -39,10 +41,14 @@ class OpenEsbInstaller {
             }
         }
 
+        Path reinstallGlassFishBatPath = serverDir.resolve("reinstallGlassFish.bat")
+        java.nio.file.Files.copy(Paths.get(OpenEsbInstaller.class.getResource("/openesb/reinstallGlassFish.bat").toURI()),
+                reinstallGlassFishBatPath)
+
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(
-                Paths.get("src/main/resources/openesb/reinstallGlassFish.bat")).values(
+                reinstallGlassFishBatPath).values(
                 Configuration.getPath("downloads.dir").resolve(fileName).toString(),
-                serverDir.resolve("state.xml").toAbsolutePath().toString())
+                stateXmlPath.toString())
         )
 
     }

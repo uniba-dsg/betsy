@@ -12,7 +12,7 @@ class OpenEsb231Engine  extends OpenEsbEngine {
     }
 
     Path getXsltPath() {
-        Paths.get("src/main/xslt/openesb")
+        Paths.get(OpenEsb231Engine.class.getResource("/openesb").toURI())
     }
 
     @Override
@@ -20,7 +20,7 @@ class OpenEsb231Engine  extends OpenEsbEngine {
         new OpenEsbInstaller(fileName: "openesb-v231-installer-windows.exe",
                 serverDir: Paths.get("server/openesb231"),
                 downloadUrl: "https://lspi.wiai.uni-bamberg.de/svn/betsy/openesb-v231-installer-windows.exe",
-                stateXmlTemplate: "src/main/resources/openesb231/state.xml.template"
+                stateXmlTemplate: Paths.get(OpenEsbInstaller.class.getResource("/openesb231/state.xml.template").toURI())
         ).install()
     }
 

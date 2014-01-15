@@ -15,6 +15,9 @@ sourceSets {
         groovy {
             srcDirs = ['src/main/groovy', 'src/main/tests', 'src/main/java']
         }
+        resources {
+            srcDirs = ['src/main/resources', 'src/main/xslt', 'src/main/tests']
+        }
     }
 }
 

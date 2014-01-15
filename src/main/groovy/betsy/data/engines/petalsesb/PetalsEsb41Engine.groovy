@@ -15,7 +15,7 @@ class PetalsEsb41Engine extends PetalsEsbEngine {
     }
 
     Path getXsltPath() {
-        Paths.get("src/main/xslt/petalsesb")
+        Paths.get(PetalsEsb41Engine.class.getResource("/petalsesb").toURI())
     }
 
     @Override

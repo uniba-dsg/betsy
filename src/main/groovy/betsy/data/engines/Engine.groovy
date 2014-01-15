@@ -22,7 +22,7 @@ abstract class Engine implements EngineAPI {
      * @return the path <code>src/main/xslt/$engine</code>
      */
     Path getXsltPath() {
-        Paths.get("src/main/xslt").resolve(name)
+        Paths.get(Engine.class.getResource("/" + name).toURI())
     }
 
     /**

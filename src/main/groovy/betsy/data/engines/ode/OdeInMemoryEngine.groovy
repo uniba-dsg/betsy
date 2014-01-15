@@ -12,7 +12,7 @@ class OdeInMemoryEngine extends OdeEngine {
 
     @Override
     Path getXsltPath() {
-        Paths.get("src/main/xslt/ode-in-memory")
+        Paths.get(OdeInMemoryEngine.class.getResource("/ode-in-memory").toURI())
     }
 
 }
