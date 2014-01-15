@@ -154,7 +154,7 @@ public class VBoxController {
         }
 
         throw new VirtualMachineNotFoundException("VirtualMachine with name '"
-                + name + "' could not be found in betsy's VirtualBox group.");
+                + name + "' could not be found in group " + BETSY_VBOX_GROUP);
     }
 
     private void deleteMachine(final IMachine machine) {

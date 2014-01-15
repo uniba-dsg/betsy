@@ -9,12 +9,10 @@ import groovy.xml.XmlUtil
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 
 class ErrorProcesses {
 
     public static final Map<String, String> inputToErrorCode = [
-            "0": "happy-path",
             "11001": "content-empty",
             "12001": "content-simple-text",
             "12002": "content-simple-stackTrace",
@@ -42,35 +40,17 @@ class ErrorProcesses {
 
         List<BetsyProcess> result = new LinkedList<>(); ;
 
-        result.addAll(createTestsForInvokeSync(errorsDir))
-        result.addAll(createTestsForInvokeCatchAll(errorsDir))
+        result.addAll(createTestsForCatchAll(errorsDir))
 
         result.sort() // make sure the happy path is the first test
     }
 
-    private static List<BetsyProcess> createTestsForInvokeSync(Path errorsDir) {
-        BetsyProcess baseProcess = BasicActivityProcesses.INVOKE_SYNC
-
-        List<BetsyProcess> result = new LinkedList<>();
-        for (Map.Entry<String, String> entry : inputToErrorCode) {
-
-            BetsyProcess process = cloneErrorBetsyProcess(baseProcess, entry, errorsDir)
-
-            int number = Integer.parseInt(entry.getKey())
-            process.testCases = [new TestCase().checkDeployment().sendSync(number, number)]
-
-            result.add(process)
-        }
-
-        result
-    }
-
     private
-    static BetsyProcess cloneErrorBetsyProcess(BetsyProcess baseProcess, Map.Entry<String, String> entry, Path errorsDir) {
+    static BetsyProcess cloneErrorBetsyProcess(BetsyProcess baseProcess, int number, String name, Path errorsDir) {
         BetsyProcess process = (BetsyProcess) baseProcess.clone()
 
         // copy file
-        String filename = "${baseProcess.getName()}_ERR${entry.getKey()}_${entry.getValue()}"
+        String filename = "${baseProcess.getName()}_ERR${number}_${name}"
         Path newPath = errorsDir.resolve("${filename}.bpel")
         Files.copy(process.bpel, newPath)
 
@@ -84,16 +64,21 @@ class ErrorProcesses {
         process
     }
 
-    private static List<BetsyProcess> createTestsForInvokeCatchAll(Path errorsDir) {
-        BetsyProcess baseProcess = BasicActivityProcesses.INVOKE_CATCHALL
+    private static List<BetsyProcess> createTestsForCatchAll(Path errorsDir) {
+        BetsyProcess baseProcess = ScopeProcesses.SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE
 
         List<BetsyProcess> result = new LinkedList<>();
+
+        BetsyProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
+        happyPathProcess.testCases = [new TestCase().checkDeployment().sendSync(0, 0)]
+        result.add(happyPathProcess)
+
         for (Map.Entry<String, String> entry : inputToErrorCode) {
 
-            BetsyProcess process = cloneErrorBetsyProcess(baseProcess, entry, errorsDir)
-
             int number = Integer.parseInt(entry.getKey())
-            process.testCases = [new TestCase().checkDeployment().sendSync(number, 0)]
+            String name = entry.getValue()
+            BetsyProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
+            process.testCases = [new TestCase().checkDeployment().sendSync(number, -1)]
 
             result.add(process)
         }

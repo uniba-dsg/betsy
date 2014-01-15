@@ -59,6 +59,8 @@ class VBoxApplianceImporter {
 			importProgress.waitForCompletion(1000);
 		}
 
+        logWarnings(appliance);
+
 		log.trace("Appliance import done!");
 		return appliance;
 	}
