@@ -134,7 +134,7 @@ class Main {
     protected static String activateLogging() {
 
         // activate log4j logging
-        DOMConfigurator.configure("src/main/resources/log4j.xml");
+        DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
 
         // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml")

@@ -57,7 +57,7 @@ class CoreBPEL {
     protected static Templates getTemplatesByName(String name) {
         Templates tmpl = nameToTransformation.get(name)
         if (tmpl == null) {
-            Source xsltSource = new StreamSource(name);
+            Source xsltSource = new StreamSource(CoreBPEL.class.getResourceAsStream(name));
             TransformerFactory transFact = TransformerFactory.newInstance();
             tmpl = transFact.newTemplates(xsltSource);
             nameToTransformation.put(name, tmpl)
@@ -89,7 +89,7 @@ class CoreBPEL {
         Files.createDirectories(temporaryDirectory)
         Files.copy(bpelFilePath, temporaryBeforeBpelFilePath)
 
-        Transformer transformer = getTransformerByName("src/main/xslt/corebpel/${xslSheet}")
+        Transformer transformer = getTransformerByName("/corebpel/${xslSheet}")
         transformer.setParameter("freshPrefix", "newprefix")
         transformer.transform(new StreamSource(bpelFilePath.toFile()), new StreamResult(temporaryAfterBpelFilePath.toFile()))
 
