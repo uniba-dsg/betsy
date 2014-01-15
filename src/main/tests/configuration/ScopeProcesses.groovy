@@ -258,8 +258,8 @@ class ScopeProcesses {
             ]
     )
 
-    public static final BetsyProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE = builder.buildScopeProcess(
-            "Scope-FaultHandlers-CatchAll-Invoke", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+    public static final BetsyProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE = builder.buildProcessWithPartner(
+            "scopes/Scope-FaultHandlers-CatchAll-Invoke", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
                     new TestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
             ]
