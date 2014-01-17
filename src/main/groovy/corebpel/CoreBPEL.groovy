@@ -52,6 +52,39 @@ class CoreBPEL {
             "repeatUntil-improved.xsl" //without variable definition and initialization in one step
     ]
 
+    public static final String[] ALL_OPTION = [
+            "remove-optional-extensions.xsl",            // Remove optional extensions
+
+            // REMOVE we do not test these meta data
+            "remove-documentation.xsl",                  // Remove human readable documentation
+
+            "default-message-exchanges.xsl",             // Make default message exchanges explicit
+            "process.xsl",                               // Move process scope to an explicit scope
+
+            // TEST only petalsesb has problems with it
+            "repeatUntil.xsl",                           // <repeatUntil> to <while>
+
+            // REMOVE every engine supports if fully
+            "if.xsl",                                    // Add missing <else>-clause and turn <elseif> into nested <if>
+
+            // TEST should enable Variables-DefaultInitialization for ODE and OpenESB
+            "scope.xsl",                                 // Variable initializations
+
+            "receive.xsl",                               // Change <receive>s into <pick>s
+            "invoke.xsl",                                // Make implicit <scope> and assignments explicit for <invoke>
+            "pick.xsl",                                  // Make implicit <scope> and assignments explicit for <pick>
+            "reply.xsl",                                 // Make implicit <scope> and assignments explicit for <reply>
+
+            "default-handlers.xsl",                      // Make the default handlers explicit
+            "sequence.xsl",                              // Change <sequence>s into <flow>s
+            "default-conditions.xsl",                    // Make the default conditions explicit
+            "default-attribute-values-simple.xsl",       // Make the simple default attribute values explicit
+            "default-attribute-values-global.xsl",       // Make the global default attribute values explicit
+            "default-attribute-values-inherited.xsl",    // Make the inherited default attribute values explicit
+            "standard-attributes-elements.xsl",          // Move standard attributes and elements to wrapper <flow>s
+            "remove-redundant-attributes.xsl",            // Remove redundant attributes
+    ]
+
     private static Map<String, Templates> nameToTransformation = new HashMap<>()
 
     private static Transformer getTransformerByName(String name) {

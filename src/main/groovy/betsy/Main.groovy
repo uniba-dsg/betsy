@@ -16,6 +16,7 @@ import betsy.virtual.host.virtualbox.VBoxConfiguration
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
 import com.sun.xml.internal.ws.server.ServerRtException
+import corebpel.CoreBPEL
 import org.apache.log4j.Logger
 import org.apache.log4j.xml.DOMConfigurator
 import org.codehaus.groovy.runtime.StackTraceUtils
@@ -186,9 +187,9 @@ class Main {
             if (transformations == "ALL") {
                 for (Engine engine : engines) {
                     if (engine instanceof VirtualEngine) {
-                        CoreBPELEngineExtension.extendEngine(engine.defaultEngine)
+                        CoreBPELEngineExtension.extendEngine(engine.defaultEngine, CoreBPEL.ALL_OPTION)
                     } else if (engine instanceof LocalEngine) {
-                        CoreBPELEngineExtension.extendEngine(engine)
+                        CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION)
                     }
                 }
             } else if (transformations == "NONE") {

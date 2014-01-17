@@ -7,10 +7,6 @@ import corebpel.CoreBPEL
 
 class CoreBPELEngineExtension {
 
-    public static void extendEngine(Engine engine) {
-        extendEngine(engine, CoreBPEL.XSL_SHEETS)
-    }
-
     public static void extendEngine(Engine engine, String[] transformations) {
         for(String transformation : transformations){
             if(!CoreBPEL.XSL_SHEETS.any { it == transformation} ){
@@ -27,6 +23,5 @@ class CoreBPELEngineExtension {
                 coreBPEL.toCoreBPEL(transformations)
             }
         }
-
     }
 }
