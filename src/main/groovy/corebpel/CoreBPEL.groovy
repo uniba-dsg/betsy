@@ -35,6 +35,7 @@ class CoreBPEL {
             "invoke.xsl",                                // Make implicit <scope> and assignments explicit for <invoke>
             "pick.xsl",                                  // Make implicit <scope> and assignments explicit for <pick>
             "reply.xsl",                                 // Make implicit <scope> and assignments explicit for <reply>
+
             "default-handlers.xsl",                      // Make the default handlers explicit
             "sequence.xsl",                              // Change <sequence>s into <flow>s
             "default-conditions.xsl",                    // Make the default conditions explicit
@@ -43,6 +44,9 @@ class CoreBPEL {
             "default-attribute-values-inherited.xsl",    // Make the inherited default attribute values explicit
             "standard-attributes-elements.xsl",          // Move standard attributes and elements to wrapper <flow>s
             "remove-redundant-attributes.xsl",            // Remove redundant attributes
+
+            //additions
+            "onEvent.xsl",
 
             //improved versions
             "repeatUntil-improved.xsl" //without variable definition and initialization in one step
@@ -57,12 +61,18 @@ class CoreBPEL {
     protected static Templates getTemplatesByName(String name) {
         Templates tmpl = nameToTransformation.get(name)
         if (tmpl == null) {
-            Source xsltSource = new StreamSource(CoreBPEL.class.getResourceAsStream(name));
+            Source xsltSource = new StreamSource(new File("src/main/xslt/corebpel/$name"));
             TransformerFactory transFact = TransformerFactory.newInstance();
             tmpl = transFact.newTemplates(xsltSource);
             nameToTransformation.put(name, tmpl)
         }
         tmpl
+    }
+
+    public static void validate() {
+        for (String xslSheet : XSL_SHEETS) {
+            getTemplatesByName(xslSheet);
+        }
     }
 
     Path temporaryDirectory
@@ -89,7 +99,7 @@ class CoreBPEL {
         Files.createDirectories(temporaryDirectory)
         Files.copy(bpelFilePath, temporaryBeforeBpelFilePath)
 
-        Transformer transformer = getTransformerByName("/corebpel/${xslSheet}")
+        Transformer transformer = getTransformerByName(xslSheet)
         transformer.setParameter("freshPrefix", "newprefix")
         transformer.transform(new StreamSource(bpelFilePath.toFile()), new StreamResult(temporaryAfterBpelFilePath.toFile()))
 
