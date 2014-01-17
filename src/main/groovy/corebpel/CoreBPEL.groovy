@@ -46,7 +46,7 @@ class CoreBPEL {
             "remove-redundant-attributes.xsl",            // Remove redundant attributes
 
             //additions
-            "onEvent.xsl",
+            //"onEvent.xsl",
 
             //improved versions
             "repeatUntil-improved.xsl" //without variable definition and initialization in one step
