@@ -25,7 +25,7 @@ class StaticAnalysisProcesses {
                 result.add(new BetsyProcess(
                         bpel: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
                         wsdls: createWSDLPaths(dir, testDir),
-                        xsds: createXSDPaths(dir, testDir),
+                        additionalFiles: createXSDPaths(dir, testDir),
                         testCases: [new TestCase().checkFailedDeployment()]
                 ))
             }
