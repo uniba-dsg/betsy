@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The GUI to install, start and stop a local engine or all local engines.
+ */
 public class EngineControl extends JFrame {
     public static void main(String[] args) {
         new EngineControl().setVisible(true);

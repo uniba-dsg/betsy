@@ -1,8 +1,11 @@
 package betsy.executables;
 
+/**
+ * Tracks the progress by means of x/y, e.g., 2/10.
+ */
 public class Progress {
 
-    private int max;
+    private final int max;
     private int current = 0;
 
     public Progress(int max) {

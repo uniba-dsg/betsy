@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * GUI to start and stop / publish and unpublish the partner service.
+ */
 public class PartnerServiceControl extends JFrame {
 
     public static void main(String[] args) {

@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Prints the processes per process group to the console.
+ */
 public class TestsPerGroup {
 
     public static void main(String[] args) {
