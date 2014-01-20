@@ -150,8 +150,14 @@ class Main {
     protected static void customPartnerAddress(CliParser parser) {
         // setting partner address
         if (parser.hasCustomPartnerAddress()) {
-            log.info "Setting Partner IP and Port to ${parser.getCustomPartnerAddress()} from previous setting ${Configuration.get("partner.ipAndPort")}"
-            Configuration.set("partner.ipAndPort", parser.getCustomPartnerAddress())
+
+            String newPartnerAddress = parser.getCustomPartnerAddress()
+            if(!newPartnerAddress.contains(":")){
+                throw new IllegalArgumentException("Port is missing in partner address [$newPartnerAddress]")
+            }
+
+            log.info "Setting Partner IP and Port to ${newPartnerAddress} from previous setting ${Configuration.get("partner.ipAndPort")}"
+            Configuration.set("partner.ipAndPort", newPartnerAddress)
         }
     }
 
