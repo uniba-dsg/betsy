@@ -22,22 +22,36 @@ class StaticAnalysisProcesses {
             if (isTestDirectory) {
                 String testDir = dir.path.replace("\\", "/")
 
-                List<Path> wsdls = []
-                dir.list().each { elem ->
-                    if (elem.endsWith(".wsdl")) {
-                        wsdls.add(Paths.get("${testDir}/${elem}"))
-                    }
-                }
-
                 result.add(new BetsyProcess(
                         bpel: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
-                        wsdls: wsdls,
+                        wsdls: createWSDLPaths(dir, testDir),
+                        xsds: createXSDPaths(dir, testDir),
                         testCases: [new TestCase().checkFailedDeployment()]
                 ))
             }
         }
 
         return result
+    }
+
+    private static ArrayList<Path> createXSDPaths(File dir, String testDir) {
+        List<Path> xsds = []
+        dir.list().each { elem ->
+            if (elem.endsWith(".xsd")) {
+                xsds.add(Paths.get("${testDir}/${elem}"))
+            }
+        }
+        xsds
+    }
+
+    private static ArrayList<Path> createWSDLPaths(File dir, String testDir) {
+        List<Path> wsdls = []
+        dir.list().each { elem ->
+            if (elem.endsWith(".wsdl")) {
+                wsdls.add(Paths.get("${testDir}/${elem}"))
+            }
+        }
+        wsdls
     }
 
     public static List<BetsyProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses()
