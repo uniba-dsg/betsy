@@ -436,9 +436,41 @@ class BasicActivityProcesses {
             ]
     )
 
+    public static final BetsyProcess INVOKE_INITIALIZE_PARTNER_ROLE_YES_ASYNC = builder.buildProcessWithPartner(
+            "basic/Invoke-InitializePartnerRole-Yes-Async", "A receive-reply pair with an intermediate asynchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to yes.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public static final BetsyProcess INVOKE_INITIALIZE_PARTNER_ROLE_YES_SYNC = builder.buildProcessWithPartner(
+            "basic/Invoke-InitializePartnerRole-Yes-Sync", "A receive-reply pair with an intermediate synchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to yes.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
+    public static final BetsyProcess INVOKE_INITIALIZE_PARTNER_ROLE_NO_ASYNC = builder.buildProcessWithPartner(
+            "basic/Invoke-InitializePartnerRole-No-Async", "A receive-reply pair with an intermediate asynchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to no.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
+    public static final BetsyProcess INVOKE_INITIALIZE_PARTNER_ROLE_NO_SYNC = builder.buildProcessWithPartner(
+            "basic/Invoke-InitializePartnerRole-No-Sync", "A receive-reply pair with an intermediate synchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to no.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
     public static final List<BetsyProcess> BASIC_ACTIVITIES_INVOKE = [
             INVOKE_ASYNC,
             INVOKE_SYNC,
+            INVOKE_INITIALIZE_PARTNER_ROLE_YES_ASYNC,
+            INVOKE_INITIALIZE_PARTNER_ROLE_YES_SYNC,
+            INVOKE_INITIALIZE_PARTNER_ROLE_NO_ASYNC,
+            INVOKE_INITIALIZE_PARTNER_ROLE_NO_SYNC,
             INVOKE_SYNC_FAULT,
             INVOKE_EMPTY,
             INVOKE_TO_PARTS,
