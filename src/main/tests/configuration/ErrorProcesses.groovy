@@ -50,7 +50,7 @@ class ErrorProcesses {
         BetsyProcess process = (BetsyProcess) baseProcess.clone()
 
         // copy file
-        String filename = "${baseProcess.getName()}_ERR${number}_${name}"
+        String filename = "${baseProcess.getShortId()}_ERR${number}_${name}"
         Path newPath = errorsDir.resolve("${filename}.bpel")
         Files.copy(process.bpel, newPath)
 
