@@ -152,7 +152,12 @@ task zipSingleTestRun(type: Zip) {
     from files("betsy_console.log")
     from files("betsy_time.log")
 
-    baseName = "test-folder-and-logs"
+    if(project.hasProperty("zipArchiveBaseName")) {
+        baseName = project.zipArchiveBaseName
+    } else {
+        // use default
+        baseName = "test-folder-and-logs"
+    }
 }
 
 /**
