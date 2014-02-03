@@ -265,6 +265,14 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE = builder.buildProcessWithPartner(
+            // only used for error processes. but may also be used as a test
+            "scopes/Scope-FaultHandlers-CatchAll-Invoke-Validate", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL = builder.buildScopeProcess(
             "Scope-FaultHandlers-OutboundLink-CatchAll", "A scope in a flow with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level catchAll faultHandler. Inside this faultHandler is a assign that is linked outbound to the reply to the initial receive.",
             [
@@ -319,6 +327,7 @@ class ScopeProcesses {
             SCOPE_FAULT_HANDLER_OUTBOUND_LINK,
             SCOPE_FAULT_HANDLERS_CATCH_ALL,
             SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE,
+            SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE,
             SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL,
             SCOPE_FAULT_HANDLERS_FAULT_ELEMENT,
             SCOPE_FAULT_HANDLERS_FAULT_MESSAGE_TYPE,

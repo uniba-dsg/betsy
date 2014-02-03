@@ -41,6 +41,7 @@ class ErrorProcesses {
         List<BetsyProcess> result = new LinkedList<>(); ;
 
         result.addAll(createTestsForCatchAll(errorsDir))
+        result.addAll(createTestsForCatchAllInvokeValidate(errorsDir))
 
         result.sort() // make sure the happy path is the first test
     }
@@ -66,6 +67,28 @@ class ErrorProcesses {
 
     private static List<BetsyProcess> createTestsForCatchAll(Path errorsDir) {
         BetsyProcess baseProcess = ScopeProcesses.SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE
+
+        List<BetsyProcess> result = new LinkedList<>();
+
+        BetsyProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
+        happyPathProcess.testCases = [new TestCase().checkDeployment().sendSync(0, 0)]
+        result.add(happyPathProcess)
+
+        for (Map.Entry<String, String> entry : inputToErrorCode) {
+
+            int number = Integer.parseInt(entry.getKey())
+            String name = entry.getValue()
+            BetsyProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
+            process.testCases = [new TestCase().checkDeployment().sendSync(number, -1)]
+
+            result.add(process)
+        }
+
+        result
+    }
+
+    private static List<BetsyProcess> createTestsForCatchAllInvokeValidate(Path errorsDir) {
+        BetsyProcess baseProcess = ScopeProcesses.SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE
 
         List<BetsyProcess> result = new LinkedList<>();
 
