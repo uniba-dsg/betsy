@@ -17,9 +17,6 @@ class BpelgInstaller {
     String fileName = "bpel-g-5.3.war"
     String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
 
-    String databaseName = "h2-1.2.122.jar"
-    String databaseDownloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${databaseName}"
-
     public void install() {
         // setup engine folder
         FileTasks.mkdirs(serverDir)
@@ -37,11 +34,6 @@ class BpelgInstaller {
         ant.copy file: Paths.get(BpelgInstaller.class.getResource("/bpelg/log4j.properties").toURI()),
                 todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/bpel-g/WEB-INF"), overwrite: true
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: databaseDownloadUrl
-        }
-        ant.copy file: Configuration.getPath("downloads.dir").resolve(databaseName),
-                tofile: serverDir.resolve(tomcatInstaller.tomcatName).resolve("lib").resolve(databaseName)
     }
 
 
@@ -51,8 +43,6 @@ class BpelgInstaller {
                 "serverDir='" + serverDir + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", downloadUrl='" + downloadUrl + '\'' +
-                ", databaseName='" + databaseName + '\'' +
-                ", databaseDownloadUrl='" + databaseDownloadUrl + '\'' +
                 '}';
     }
 }
