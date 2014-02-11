@@ -58,8 +58,8 @@
             <fault name="syncFault" message="tns:executeProcessSyncFault"/>
         </operation>
         <operation name="startProcessSyncString">
-            <input name="syncInput" message="tns:executeProcessSyncStringRequest"/>
-            <output name="syncOutput" message="tns:executeProcessSyncStringResponse"/>
+            <input name="syncInputString" message="tns:executeProcessSyncStringRequest"/>
+            <output name="syncOutputString" message="tns:executeProcessSyncStringResponse"/>
         </operation>
     </portType>
 
@@ -85,10 +85,10 @@
         </operation>
         <operation name="startProcessSyncString">
             <soap:operation soapAction="syncString"/>
-            <input name="syncInput">
+            <input name="syncInputString">
                 <soap:body use="literal"/>
             </input>
-            <output name="syncOutput">
+            <output name="syncOutputString">
                 <soap:body use="literal"/>
             </output>
         </operation>
