@@ -22,7 +22,7 @@ sourceSets {
 }
 
 ext {
-    config = new ConfigSlurper().parse(new File("Config.groovy").toURI().toURL())
+    config = new ConfigSlurper().parse(new File(project.rootDir, "Config.groovy").toURI().toURL())
 }
 
 configurations {
