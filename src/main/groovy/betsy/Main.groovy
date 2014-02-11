@@ -68,6 +68,8 @@ class Main {
             coreBpel(parser, engines)
             virtualEngines(engines)
 
+            onlyBuildSteps(parser, betsy)
+
             betsy.processes = processes
             betsy.engines = engines
 
@@ -97,6 +99,40 @@ class Main {
             // SOLUTION remove exit line for testing purposes
             Thread.sleep(3000);
             System.exit(0);
+        }
+    }
+
+    static void onlyBuildSteps(CliParser cliParser, Betsy betsy) {
+        if(cliParser.onlyBuildSteps()){
+            betsy.composite = new betsy.executables.Composite() {
+                @Override
+                protected void testSoapUi(BetsyProcess process) {
+                }
+
+                @Override
+                protected void collect(BetsyProcess process) {
+                }
+
+                @Override
+                protected void test(BetsyProcess process) {
+                }
+
+                @Override
+                protected void installAndStart(BetsyProcess process) {
+                }
+
+                @Override
+                protected void deploy(BetsyProcess process) {
+                }
+
+                @Override
+                protected void shutdown(BetsyProcess process) {
+                }
+
+                @Override
+                protected createReports() {
+                }
+            }
         }
     }
 

@@ -65,13 +65,17 @@ class Composite {
                 }
             }
 
-            log testSuite.reportsPath, {
-                new Reporter(tests: testSuite).createReports()
-                new Analyzer(csvFilePath: testSuite.csvFilePath,
-                        reportsFolderPath: testSuite.reportsPath).createAnalytics()
-            }
+            createReports()
         }
 
+    }
+
+    protected createReports() {
+        log testSuite.reportsPath, {
+            new Reporter(tests: testSuite).createReports()
+            new Analyzer(csvFilePath: testSuite.csvFilePath,
+                    reportsFolderPath: testSuite.reportsPath).createAnalytics()
+        }
     }
 
     protected void executeProcess(BetsyProcess process) {

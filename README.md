@@ -38,6 +38,8 @@ Options:
  -o,--open-results-in-browser          Opens results in default browser
  -c,--check-deployment                 Verifies deployment instead of test
                                        success
+ -b,--build-only                       Builds only the artifacts. Does
+                                       nothing else.
  -e,--use-external-partner-service     Use external partner service instead of internal one
  -h,--help                             Print out usage information
 

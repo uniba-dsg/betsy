@@ -26,6 +26,7 @@ class CliParser {
         cli.c(longOpt: 'check-deployment', "Verifies deployment instead of test success")
         cli.t(longOpt: 'to-core-bpel', args: 1, argName: 'transformations', "Transform to Core BPEL")
         cli.e(longOpt: 'use-external-partner-service', "Use external partner service instead of internal one")
+        cli.b(longOpt: 'build-only', "Builds only the artifacts. Does nothing else.")
     }
 
     /**
@@ -74,6 +75,10 @@ class CliParser {
 
     public boolean useExternalPartnerService() {
         options.e
+    }
+
+    public boolean onlyBuildSteps() {
+        options.b
     }
 
     /**
