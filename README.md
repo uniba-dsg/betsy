@@ -1,9 +1,6 @@
 # betsy (BPEL Engine Test System) [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
 
 Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
-More information can be found in the [technical report](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/techrep-betsy-final.pdf).
-A [sample output](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results.zip) of a run of betsy are also available.
-The tool has been subject to the paper [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/) and [presentation](https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-presentation-soca-2012.pdf) for which these [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
 
 This software is licensed under the LGPL Version 3 Open Source License!
 
@@ -113,6 +110,14 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 
 [Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Christian Preißinger and Cedric Röck
 
+# Publications
+The following scientific publications are either about betsy, have used betsy to present benchmarks or use and build upon data obtained through betsy:
+ - Harrer, S., Lenhard, J.: [Betsy - A BPEL Engine Test System](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-a1-harrer-lenhard/), Bamberger Beiträge zur Wirtschaftsinformatik und Angewandten Informatik Nr. 90, Bamberg University, July 2012. ISSN 0937-3349, this is betsy's original architectural white paper
+ - Harrer, S., Lenhard, J., Wirtz, G.: [BPEL Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/12-02-lenhard-wirtz-harrer/), Proceedings of the 5th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'12), Taipei, Taiwan, December 17-19, 2012, see also the [presentation](https://lspi.wiai.uni-bamberg.de/svn/betsy/betsy-presentation-soca-2012.pdf) for which these [test results](https://svn.lspi.wiai.uni-bamberg.de/svn/betsy/test-results-soca-2012.zip) have been used.
+ - Lenhard, J., Wirtz, G.: [Detecting Portability Issues in Model-Driven BPEL Mappings](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-03-lenhard-wirtz/), Proceedings of the 25th International Conference on Software Engineering and Knowledge Engineering (SEKE'2013), Boston, Massachusetts, USA, Knowledge Systems Institute, June 27 - 29, 2013
+ - Lenhard, J., Wirtz, G.: [Measuring the Portability of Executable Service-Oriented Processes](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-05-lenhard-wirtz/), Proceedings of the 17th IEEE International EDOC Conference, Vancouver, Canada, September 9 - 13, 2013, Awarded Best Student Conference Paper in Service Science
+ - Harrer, S., Lenhard, J., Wirtz, G.: [Open Source versus Proprietary Software in Service-Orientation: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-07-harrer-lenhard-wirtz/), Proceedings of the 11th International Conference on Service Oriented Computing (ICSOC '13), Berlin, Germany, December 2 - 5, 2013
+ - Lenhard, J. Harrer, S., Wirtz, G.: [Measuring the Installability of Service Orchestrations Using the SQuaRE Method](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-08-harrer-lenhard-wirtz/), Proceedings of the 6th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'13), Kauai, Hawaii, USA, December 16 - 18, 2013, Awarded Best Conference Paper
 # Contribution Guide
 
 - Fork
