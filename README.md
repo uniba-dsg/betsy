@@ -73,6 +73,7 @@ $ betsy -o # Opens the results in the default browser after a successful run
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
+$ gradlew enginecontrol # Opens a Swing GUI that allows to install, start and stop supported engines
 ```
 
 ## Downloads
