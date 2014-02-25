@@ -21,16 +21,16 @@ class CamundaInstaller {
     Path destinationDir
 
     String fileName = "camunda-bpm-tomcat-7.0.0-Final.zip"
-    //String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
+    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
     String tomcatName = "apache-tomcat-7.0.33"
 
     public void install() {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        /*ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
+        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
             ant.url url: downloadUrl
-        } */
+        }
 
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
                 dest: destinationDir
