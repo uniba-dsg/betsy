@@ -4,8 +4,9 @@ import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.ConsoleTasks
+import betsy.tasks.FileTasks
+import org.codehaus.groovy.tools.RootLoader
 
-import java.nio.file.Path
 import java.nio.file.Paths;
 
 /**
@@ -37,8 +38,13 @@ class CamundaEngine extends LocalEngine {
     }
 
     void deployTest(){
-        new CamundaDeployer(processName: "loan-approval-0.0.1-SNAPSHOT",
+        /*new CamundaDeployer(processName: "loan-approval-0.0.1-SNAPSHOT",
                 packageFilePath: Paths.get("downloads/loan-approval-0.0.1-SNAPSHOT.war"),
+                deploymentDirPath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/webapps/"),
+                logFilePath: Paths.get("") //TODO
+        ).deploy()*/
+        new CamundaDeployer(processName: "loan-approval-0.0.1-SNAPSHOT",
+                packageFilePath: Paths.get("buildBPMNTest/test.war"),
                 deploymentDirPath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/webapps/"),
                 logFilePath: Paths.get("") //TODO
         ).deploy()
@@ -47,6 +53,57 @@ class CamundaEngine extends LocalEngine {
     @Override
     void buildArchives(BetsyProcess process) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    void buildWar(){
+        // needed process information
+        String filename = "test"
+        String processName = "test"
+        String processDir = "downloads/test"
+        String groupId = "org.camunda.bpm.example"
+        String key = "loan-approval"
+
+        //directory structure
+        String rootDir = "buildBPMNTest"
+        String dir = "${rootDir}/${processName}"
+        String pomDir = "${dir}/META-INF/maven/${groupId}/${key}"
+        String classesDir = "${dir}/WEB-INF/classes"
+
+        //setup infrastructure
+        FileTasks.mkdirs(Paths.get(pomDir))
+        FileTasks.mkdirs(Paths.get(classesDir))
+
+        //copy process specific files
+        ant.copy(todir: pomDir){
+            fileset(dir: "${processDir}/pom"){ }
+        }
+        ant.copy(todir: classesDir){
+            fileset(dir: "${processDir}/process"){ }
+        }
+
+        //setup path to 'tools.jar' for the javac ant task
+        String javaHome = System.getProperty("java.home")
+        if(javaHome.endsWith("jre")){
+            javaHome = javaHome.substring(0, javaHome.length() - 4)
+        }
+        RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader()
+        if(rl == null){
+            Thread.currentThread().getContextClassLoader().addURL(new URL("file:///${javaHome}/lib/tools.jar"))
+        }else{
+            rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
+        }
+
+        // compile sources
+        ant.javac(srcdir: "${processDir}/src", destdir: classesDir, includeantruntime: false) {
+            classpath{
+                pathelement(location: "downloads/camunda-engine-7.0.0-Final.jar")
+                pathelement(location: "downloads/javaee-api-7.0.jar")
+            }
+        }
+        //pack war
+        ant.war(destfile: "${rootDir}/${filename}.war", needxmlfile: false){
+            fileset(dir: dir){ }
+        }
     }
 
     @Override
