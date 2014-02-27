@@ -1,7 +1,12 @@
 package betsy.data.engines.camunda
 
+import ant.tasks.AntUtil
+import betsy.tasks.FileTasks
+import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONArray
 import org.json.JSONObject
+
+import java.nio.file.Paths
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +18,7 @@ import org.json.JSONObject
 class CamundaTester {
 
     String restURL
+    private static final AntBuilder ant = AntUtil.builder()
 
     /**
      * runs a single test
@@ -23,6 +29,7 @@ class CamundaTester {
         String key = "SimpleApplication"
         HashMap<String, Boolean> variableResults = new HashMap<String, Boolean>()
         variableResults.put("successfull", true)
+        String reportDir = "reports/test"
 
         //first request to get id
         JSONObject response = get(restURL + "/process-definition?key=${key}")
@@ -38,27 +45,48 @@ class CamundaTester {
             variableObject.put("type", "Boolean")
             variables.put(variable, variableObject)
         }
-        /*JSONObject amount = new JSONObject()
-        JSONObject customerId = new JSONObject()
-        amount.put("value", 200)
-        amount.put("type", "Integer")
-        customerId.put("value", "test")
-        customerId.put("type","String")
-        variables.put("amount", amount)
-        variables.put("customerId", customerId)*/
         requestBody.put("variables", variables)
         requestBody.put("businessKey", "key-${key}")
 
         //second request to start process using id and Json to get the process instance id
         response = post(restURL + "/process-definition/${id}/start", requestBody)
-        String processInstanceId = response.get("id")
+        //String processInstanceId = response.get("id")
 
-        //third request to get variable back
-        /*for (String variable : variableResults.keySet()){
-            response = get(restURL + "/variable-instance?processInstanceIdIn=${processInstanceId}&variableName=${variable}")
-            println response.get("value")
-            //TODO: Assertion
-        }*/
+        //prepare junit test
+        FileTasks.deleteDirectory(Paths.get(reportDir))
+        FileTasks.mkdirs(Paths.get(reportDir))
+        FileTasks.deleteFile(Paths.get("downloads/unitTests/bin/unitTest.class"))
+
+        //setup path to 'tools.jar' for the javac ant task
+        String javaHome = System.getProperty("java.home")
+        if(javaHome.endsWith("jre")){
+            javaHome = javaHome.substring(0, javaHome.length() - 4)
+        }
+        RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader()
+        if(rl == null){
+            Thread.currentThread().getContextClassLoader().addURL(new URL("file:///${javaHome}/lib/tools.jar"))
+        }else{
+            rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
+        }
+
+        // compile test sources
+        ant.javac(srcdir: "downloads/unitTests/src", destdir: "downloads/unitTests/bin", includeantruntime: false) {
+            classpath{
+                pathelement(location: "downloads/junit-4.10.jar")    //TODO use junit from library home
+            }
+        }
+        ant.junit(printsummary: "on", fork: "true", haltonfailure: "yes"){
+            classpath{
+                pathelement(location: "downloads/junit-4.10.jar")    //TODO use junit from library home
+                pathelement(location: "downloads/unitTests/bin")
+            }
+            formatter(type: "xml")
+            batchtest(todir: reportDir){
+                fileset(dir: "downloads/unitTests/src"){
+                    include(name: "**/*Test*.java")
+                }
+            }
+        }
 
     }
 

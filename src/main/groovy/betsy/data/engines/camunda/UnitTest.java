@@ -1,14 +1,14 @@
-package betsy.data.engines.camunda;
-
 import org.junit.Test;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import static org.junit.Assert.*;
+import org.junit.Assert;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import junit.framework.JUnit4TestAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +25,7 @@ public class UnitTest {
     @BeforeClass
     public static void setup(){
         try {
-            br = new BufferedReader(new FileReader("log.txt"));
+            br = new BufferedReader(new FileReader("server/camunda/server/apache-tomcat-7.0.33/bin/log.txt"));
         }catch (FileNotFoundException fnfe){
             fnfe.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class UnitTest {
     @Test
     public void testIfSuccessful(){
         try {
-            assertTrue(br.readLine().contentEquals("success"));
+            Assert.assertTrue(br.readLine().contentEquals("success"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,6 +47,10 @@ public class UnitTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static junit.framework.Test suite() {
+        return new JUnit4TestAdapter(UnitTest.class);
     }
 
 }

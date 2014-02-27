@@ -8,6 +8,9 @@ mainClassName = "betsy.Main"
 
 repositories {
     mavenCentral()
+    //maven {
+    //    url "https://app.camunda.com/nexus/content/groups/public"
+    //}
 }
 
 sourceSets {
@@ -33,14 +36,17 @@ configurations {
 dependencies {
     internal 'org.codehaus.groovy:groovy-all:2.2.0'
 
-    internal 'org.apache.ant:ant:1.9.2'
+    internal 'org.apache.ant:ant:1.9.3'
     internal 'log4j:log4j:1.2.17'
     internal 'org.virtualbox:vboxjws:4.2.8'
     internal 'commons-daemon:commons-daemon:1.0.12'
     internal 'org.apache.commons:commons-io:1.3.2'
     internal 'commons-lang:commons-lang:2.4'
-    internal 'org.apache.ant:ant-apache-log4j:1.9.2'
+    internal 'org.apache.ant:ant-apache-log4j:1.9.3'
     internal 'org.json:json:20140107'
+    //internal 'org.camunda.bpm.camunda-engine.7.0.0-Final:camunda-engine-7.0.0-Final'
+    //testCompile 'javax:javaee-api:7.0'
+    internal 'org.apache.ant:ant-junit:1.9.3'
 
     testCompile 'junit:junit:4.11'
 
