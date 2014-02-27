@@ -15,14 +15,15 @@ class CamundaMain {
 
     public static void main(String[] args) {
         CamundaEngine engine = new CamundaEngine()
-        /*engine.install()
+        engine.install()
         engine.startup()
 
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             http url: "http://localhost:8080"
         }
+        engine.buildWar()
         engine.deployTest()
-        Thread.sleep(15000)*/
+        Thread.sleep(15000)
         CamundaTester tester = new CamundaTester(restURL: "http://localhost:8080/engine-rest/engine/default")
         tester.runTest()
         //engine.shutdown()

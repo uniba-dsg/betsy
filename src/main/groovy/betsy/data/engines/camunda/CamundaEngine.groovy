@@ -43,10 +43,10 @@ class CamundaEngine extends LocalEngine {
                 deploymentDirPath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/webapps/"),
                 logFilePath: Paths.get("") //TODO
         ).deploy()*/
-        new CamundaDeployer(processName: "loan-approval-0.0.1-SNAPSHOT",
-                packageFilePath: Paths.get("buildBPMNTest/test.war"),
+        new CamundaDeployer(processName: "Simple BPM",
+                packageFilePath: Paths.get("buildBPMNTest/simple.war"),
                 deploymentDirPath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/webapps/"),
-                logFilePath: Paths.get("") //TODO
+                logFilePath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/bin/") //TODO
         ).deploy()
     }
 
@@ -57,11 +57,11 @@ class CamundaEngine extends LocalEngine {
 
     void buildWar(){
         // needed process information
-        String filename = "test"
-        String processName = "test"
-        String processDir = "downloads/test"
-        String groupId = "org.camunda.bpm.example"
-        String key = "loan-approval"
+        String filename = "simple"
+        String processName = "Simple BPM"
+        String processDir = "downloads/camunda-sequence"
+        String groupId = "org.camunda.bpm.simple"
+        String key = "simple"
 
         //directory structure
         String rootDir = "buildBPMNTest"
@@ -72,6 +72,13 @@ class CamundaEngine extends LocalEngine {
         //setup infrastructure
         FileTasks.mkdirs(Paths.get(pomDir))
         FileTasks.mkdirs(Paths.get(classesDir))
+
+        //generate pom.properties
+        PrintWriter pw = new PrintWriter("${pomDir}/pom.properties", "UTF-8")
+        pw.println("version=0.0.1-SNAPSHOT")
+        pw.println("groupId=${groupId}")
+        pw.println("artifactId=${key}")
+        pw.close()
 
         //copy process specific files
         ant.copy(todir: pomDir){
