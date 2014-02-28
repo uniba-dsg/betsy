@@ -44,7 +44,7 @@ class CamundaEngine extends LocalEngine {
                 logFilePath: Paths.get("") //TODO
         ).deploy()*/
         new CamundaDeployer(processName: "Simple BPM",
-                packageFilePath: Paths.get("buildBPMNTest/simple.war"),
+                packageFilePath: Paths.get("test/camunda/tasks__simple/war/simple.war"),
                 deploymentDirPath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/webapps/"),
                 logFilePath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/bin/") //TODO
         ).deploy()
@@ -56,7 +56,9 @@ class CamundaEngine extends LocalEngine {
     }
 
     void buildWar(){
-        // needed process information
+
+        new CamundaResourcesGenerator().generateWar("Simple BPM", "org.camunda.bpm.simple", "simple")
+        /*// needed process information
         String filename = "simple"
         String processName = "Simple BPM"
         String processDir = "downloads/camunda-sequence"
@@ -64,8 +66,8 @@ class CamundaEngine extends LocalEngine {
         String key = "simple"
 
         //directory structure
-        String rootDir = "buildBPMNTest"
-        String dir = "${rootDir}/${processName}"
+        String srcDir = "buildBPMNTest"
+        String dir = "${srcDir}/${processName}"
         String pomDir = "${dir}/META-INF/maven/${groupId}/${key}"
         String classesDir = "${dir}/WEB-INF/classes"
 
@@ -108,9 +110,9 @@ class CamundaEngine extends LocalEngine {
             }
         }
         //pack war
-        ant.war(destfile: "${rootDir}/${filename}.war", needxmlfile: false){
+        ant.war(destfile: "${srcDir}/${filename}.war", needxmlfile: false){
             fileset(dir: dir){ }
-        }
+        }*/
     }
 
     @Override
