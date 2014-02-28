@@ -6,6 +6,7 @@ import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONArray
 import org.json.JSONObject
 
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -18,6 +19,8 @@ import java.nio.file.Paths
 class CamundaTester {
 
     String restURL
+    Path reportPath
+    Path testBin
     private static final AntBuilder ant = AntUtil.builder()
 
     /**
@@ -29,7 +32,7 @@ class CamundaTester {
         String key = "SimpleApplication"
         HashMap<String, Boolean> variableResults = new HashMap<String, Boolean>()
         variableResults.put("successfull", true)
-        String reportDir = "reports/test"
+        String testSrc = "bpmnRes/files/tasks/simple/testSrc"
 
         //first request to get id
         JSONObject response = get(restURL + "/process-definition?key=${key}")
@@ -52,11 +55,6 @@ class CamundaTester {
         response = post(restURL + "/process-definition/${id}/start", requestBody)
         //String processInstanceId = response.get("id")
 
-        //prepare junit test
-        FileTasks.deleteDirectory(Paths.get(reportDir))
-        FileTasks.mkdirs(Paths.get(reportDir))
-        FileTasks.deleteFile(Paths.get("downloads/unitTests/bin/unitTest.class"))
-
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
         if(javaHome.endsWith("jre")){
@@ -69,20 +67,22 @@ class CamundaTester {
             rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
         }
 
+        String systemClasspath = System.getProperty('java.class.path')
+
         // compile test sources
-        ant.javac(srcdir: "downloads/unitTests/src", destdir: "downloads/unitTests/bin", includeantruntime: false) {
+        ant.javac(srcdir: testSrc, destdir: testBin, includeantruntime: false) {
             classpath{
-                pathelement(location: "downloads/junit-4.10.jar")    //TODO use junit from library home
+                pathelement(path: systemClasspath)
             }
         }
         ant.junit(printsummary: "on", fork: "true", haltonfailure: "yes"){
             classpath{
-                pathelement(location: "downloads/junit-4.10.jar")    //TODO use junit from library home
-                pathelement(location: "downloads/unitTests/bin")
+                pathelement(path: systemClasspath)
+                pathelement(location: testBin)
             }
             formatter(type: "xml")
-            batchtest(todir: reportDir){
-                fileset(dir: "downloads/unitTests/src"){
+            batchtest(todir: reportPath){
+                fileset(dir: testSrc){
                     include(name: "**/*Test*.java")
                 }
             }

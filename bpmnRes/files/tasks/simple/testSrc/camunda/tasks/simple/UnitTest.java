@@ -1,4 +1,4 @@
-package camunda.basic.simple;
+package camunda.tasks.simple;
 
 import org.junit.Test;
 import org.junit.AfterClass;

@@ -29,10 +29,9 @@ class CamundaMain {
         List<Engine> engines = new ArrayList<>()
         engines.add(engine)
         BetsyProcess process = new BetsyProcess(){
-            public Path getTargetReportsPath() {Paths.get("reports/test")}
             public String getName() {"simple"}
             String getNormalizedId() {
-                "basic__simple"
+                "tasks__simple"
             }
         }
         process.engine = engine
@@ -46,7 +45,8 @@ class CamundaMain {
         FileTasks.mkdirs(suite.getPath());
         FileTasks.mkdirs(engine.getPath());
         FileTasks.mkdirs(process.targetPath)
-        FileTasks.mkdirs(process.targetSoapUIPath)
+        FileTasks.mkdirs(process.targetReportsPath)
+        FileTasks.mkdirs(process.targetPath.resolve("testBin"))
 
         //engine installation and startup
         engine.install()
@@ -62,14 +62,16 @@ class CamundaMain {
         Thread.sleep(15000)
 
         // run test
-        CamundaTester tester = new CamundaTester(restURL: "http://localhost:8080/engine-rest/engine/default")
+        CamundaTester tester = new CamundaTester(restURL: "http://localhost:8080/engine-rest/engine/default",
+                                                reportPath: process.targetReportsPath,
+                                                testBin: process.targetPath.resolve("testBin"))
         tester.runTest()
 
         //collect
-        FileTasks.mkdirs(process.targetLogsPath)
+        /*FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: "reports/test")
-        }
+        }*/
 
         //generate reports
         Reporter reporter = new Reporter(tests: suite)
