@@ -49,7 +49,7 @@ class CamundaMain {
         FileTasks.mkdirs(process.targetSoapUIPath)
 
         //engine installation and startup
-        /*engine.install()
+        engine.install()
         engine.startup()
 
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
@@ -63,10 +63,13 @@ class CamundaMain {
 
         // run test
         CamundaTester tester = new CamundaTester(restURL: "http://localhost:8080/engine-rest/engine/default")
-        tester.runTest()      */
+        tester.runTest()
 
         //collect
         FileTasks.mkdirs(process.targetLogsPath)
+        ant.copy(todir: process.targetLogsPath) {
+            ant.fileset(dir: "reports/test")
+        }
 
         //generate reports
         Reporter reporter = new Reporter(tests: suite)
