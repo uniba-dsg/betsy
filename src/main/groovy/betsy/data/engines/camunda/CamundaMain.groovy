@@ -52,10 +52,6 @@ class CamundaMain {
         engine.install()
         engine.startup()
 
-        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-            http url: "http://localhost:8080"
-        }
-
         //build and deploy process
         engine.buildArchives(process)
         engine.deploy(process)

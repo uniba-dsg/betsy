@@ -63,9 +63,9 @@ class CamundaEngine extends LocalEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "camunda_startup.bat"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath.resolve("camunda_startup.sh")))
 
-        /*ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
+        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             http url: camundaUrl
-        } */
+        }
     }
 
     @Override

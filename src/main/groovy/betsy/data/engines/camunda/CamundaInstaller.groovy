@@ -59,7 +59,7 @@ class CamundaInstaller {
         return "CamundaInstaller{" +
                 "destinationDir='" + destinationDir + '\'' +
                 ", fileName='" + fileName + '\'' +
-                /*", downloadUrl='" + downloadUrl + '\'' +*/
+                ", downloadUrl='" + downloadUrl + '\'' +
                 '}';
     }
 }
