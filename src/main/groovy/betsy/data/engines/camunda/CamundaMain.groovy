@@ -57,8 +57,8 @@ class CamundaMain {
         }
 
         //build and deploy process
-        engine.buildWar()
-        engine.deployTest()
+        engine.buildArchives(process)
+        engine.deploy(process)
         Thread.sleep(15000)
 
         // run test
@@ -79,7 +79,7 @@ class CamundaMain {
         new Analyzer(csvFilePath: suite.csvFilePath,
                 reportsFolderPath: suite.reportsPath).createAnalytics()
 
-        //engine.shutdown()
+        engine.shutdown()
 
         //engine.isRunning()
     }

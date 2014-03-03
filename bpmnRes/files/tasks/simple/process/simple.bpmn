@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_IxhakJ7YEeOuPIo8BooRNg" targetNamespace="http://activiti.org/bpmn">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_IxhakJ7YEeOuPIo8BooRNg">
   <bpmn2:process id="SimpleApplication" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
-      <bpmn2:messageEventDefinition id="MessageEventDefinition_2" camunda:class="org.camunda.bpm.simple.EndEventDelegate"/>
+      <bpmn2:messageEventDefinition id="MessageEventDefinition_2" />
     </bpmn2:endEvent>
-    <bpmn2:serviceTask id="ServiceTask_1" camunda:class="org.camunda.bpm.simple.StartTaskDelegate" name="Start Task">
+    <bpmn2:serviceTask id="ServiceTask_1" name="Start Task">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
     </bpmn2:serviceTask>
