@@ -1,6 +1,7 @@
 package betsy.data.engines.camunda
 
 import ant.tasks.AntUtil
+import betsy.executables.BPMNTestBuilder
 import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONArray
@@ -32,7 +33,7 @@ class CamundaTester {
         String key = "SimpleApplication"
         HashMap<String, Boolean> variableResults = new HashMap<String, Boolean>()
         variableResults.put("successfull", true)
-        String testSrc = "bpmnRes/files/tasks/simple/testSrc"
+        String testSrc = "test/camunda/tasks__simple/testSrc"
 
         //first request to get id
         JSONObject response = get(restURL + "/process-definition?key=${key}")
@@ -68,6 +69,11 @@ class CamundaTester {
         }
 
         String systemClasspath = System.getProperty('java.class.path')
+
+        //generate test sources TODO: transfer to Composite
+        List<String> assertionList = new ArrayList<String>()
+        assertionList.add("success")
+        new BPMNTestBuilder().buildTest("server/camunda/server/apache-tomcat-7.0.33/bin/log.txt", testSrc, assertionList)
 
         // compile test sources
         ant.javac(srcdir: testSrc, destdir: testBin, includeantruntime: false) {
