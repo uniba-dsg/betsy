@@ -31,9 +31,8 @@ class CamundaEngine extends LocalEngine {
     @Override
     void deploy(BetsyProcess process) {
         new CamundaDeployer(processName: "Simple BPM",
-                packageFilePath: Paths.get("test/camunda/tasks__simple/war/${process.getName()}.war"),
-                deploymentDirPath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/webapps/"),
-                logFilePath: Paths.get("server/camunda/server/apache-tomcat-7.0.33/bin/") //TODO
+                packageFilePath: Paths.get("${process.getTargetPath()}/war/${process.getName()}.war"),
+                deploymentDirPath: Paths.get("${serverPath}/server/apache-tomcat-7.0.33/webapps/")
         ).deploy()
     }
 

@@ -16,23 +16,9 @@ class CamundaDeployer {
     Path deploymentDirPath
     String processName
     Path packageFilePath
-    Path logFilePath
-    int timeoutInSeconds = 100
 
     public void deploy() {
         ant.copy(file: packageFilePath, todir: deploymentDirPath)
-
-        /*ant.sequential() {
-            ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second") {
-                and {
-                    available directory: deploymentDirPath.resolve(processName)
-                    or {
-                        resourcecontains(resource: logFilePath, substring: "Deployment successful")
-                        resourcecontains(resource: logFilePath, substring: "Deployment failed")
-                    }
-                }
-            }
-        } */
     }
 
 
@@ -42,8 +28,6 @@ class CamundaDeployer {
                 "deploymentDirPath='" + deploymentDirPath + '\'' +
                 ", processName='" + processName + '\'' +
                 ", packageFilePath='" + packageFilePath + '\'' +
-                ", logFilePath='" + logFilePath + '\'' +
-                ", timeoutInSeconds=" + timeoutInSeconds +
                 '}';
     }
 }
