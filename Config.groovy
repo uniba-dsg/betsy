@@ -8,10 +8,10 @@ downloads {
 
 soapui {
     container = "soapui"
-    home = "soapui/SoapUI-4.6.1"
+    home = "soapui/SoapUI-4.6.4"
     download {
-        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/SoapUI-4.6.1-windows-bin.zip"
-        filename = "SoapUI-4.6.1-windows-bin.zip"
+        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/SoapUI-4.6.4-windows-bin.zip"
+        filename = "SoapUI-4.6.4-windows-bin.zip"
     }
 }
 
