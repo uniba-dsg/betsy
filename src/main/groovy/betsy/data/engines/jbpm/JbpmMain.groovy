@@ -18,7 +18,10 @@ class JbpmMain {
         JbpmEngine engine = new JbpmEngine(parentFolder: Paths.get("test"))
         engine.install()
         engine.startup()
+        Thread.sleep(120000)
+        engine.deploy(null)
+        new JbpmTester().runTest()
         //engine.isRunning()
-        engine.shutdown()
+        //engine.shutdown()
     }
 }

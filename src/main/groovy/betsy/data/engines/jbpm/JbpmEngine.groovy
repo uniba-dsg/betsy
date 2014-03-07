@@ -4,6 +4,8 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.ConsoleTasks
 
+import java.nio.file.Paths
+
 /**
  * Created with IntelliJ IDEA.
  * User: stavorndran
@@ -23,7 +25,9 @@ class JbpmEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //TODO Problem with DSA Host Key: must be set as known host
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar org.jbpm Evaluation 1.0 ssh://admin@localhost:8001/system"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar org.jbpm Evaluation 1.0 ssh://admin@localhost:8001/system"))
     }
 
     @Override

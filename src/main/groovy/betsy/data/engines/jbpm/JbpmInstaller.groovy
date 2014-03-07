@@ -32,6 +32,9 @@ class JbpmInstaller {
 
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
                 dest: destinationDir
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant install.demo.noeclipse"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant install.demo.noeclipse"))
     }
 
     @Override
