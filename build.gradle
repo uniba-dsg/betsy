@@ -54,7 +54,9 @@ dependencies {
     internal files(fileTree(dir: "downloads", includes: ['jbpm-shared-services-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['jbpm-human-task-core-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['slf4j-api-1.7.6.jar']))
+    internal files(fileTree(dir: "downloads", includes: ['slf4j-simple-1.7.6.jar']))
     internal files(fileTree(dir: "downloads", includes: ['javaee-api-7.0.jar']))
+    internal files(fileTree(dir: "downloads", includes: ['resteasy-jaxb-provider-3.0.6.Final.jar']))
 
     testCompile 'junit:junit:4.11'
 

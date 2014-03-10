@@ -3,6 +3,7 @@ package betsy.data.engines.jbpm
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.ConsoleTasks
+import betsy.tasks.FileTasks
 
 import java.nio.file.Paths
 
@@ -25,9 +26,20 @@ class JbpmEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
-        //TODO Problem with DSA Host Key: must be set as known host
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar org.jbpm Evaluation 1.0 ssh://admin@localhost:8001/system"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar org.jbpm Evaluation 1.0 ssh://admin@localhost:8001/system"))
+        //preparing ssh
+        String homeDir = System.getenv("HOME") //System.getProperty("user.home")
+        // delete known_hosts file for do not getting trouble with changing remote finger print
+        FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
+        FileTasks.createFile(Paths.get(homeDir + "/.ssh/config"), """Host localhost
+    StrictHostKeyChecking no""")
+
+        //deploy
+        String groupId = "org.jbpm"
+        String artifactId = "Evaluation"
+        String version = "1.0"
+        String systemUrl = "ssh://admin@localhost:8001/system"
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${groupId} ${artifactId} ${version} ${systemUrl}"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${groupId} ${artifactId} ${version} ${systemUrl}"))
     }
 
     @Override
@@ -64,6 +76,9 @@ class JbpmEngine extends LocalEngine {
     void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant stop.demo"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant stop.demo"))
+        Thread.sleep(5000)
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant clean.demo"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant clean.demo"))
     }
 
     @Override

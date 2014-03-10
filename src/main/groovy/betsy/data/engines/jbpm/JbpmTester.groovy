@@ -24,7 +24,5 @@ class JbpmTester {
         RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
         ProcessInstance instance = kSession.startProcess("evaluation")
-        List<ProcessInstance> instances = kSession.getProcessInstances()
-        println instances
     }
 }

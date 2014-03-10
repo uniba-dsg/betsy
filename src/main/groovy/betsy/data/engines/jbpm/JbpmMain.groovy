@@ -20,6 +20,7 @@ class JbpmMain {
         engine.startup()
         Thread.sleep(120000)
         engine.deploy(null)
+        Thread.sleep(3000)
         new JbpmTester().runTest()
         //engine.isRunning()
         //engine.shutdown()
