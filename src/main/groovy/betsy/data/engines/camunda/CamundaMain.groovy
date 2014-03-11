@@ -30,9 +30,7 @@ class CamundaMain {
         engines.add(engine)
         BetsyProcess process = new BetsyProcess(){
             public String getName() {"simple"}
-            String getNormalizedId() {
-                "tasks__simple"
-            }
+            String getGroup() {"tasks"}
         }
         process.engine = engine
         engine.processes.add(process)
@@ -57,17 +55,12 @@ class CamundaMain {
         engine.deploy(process)
         Thread.sleep(15000)
 
-        // run test
-        CamundaTester tester = new CamundaTester(restURL: "http://localhost:8080/engine-rest/engine/default",
-                                                reportPath: process.targetReportsPath,
-                                                testBin: process.targetPath.resolve("testBin"))
-        tester.runTest()
+        // build and run test
+        engine.buildTest(process)
+        engine.testProcess(process)
 
         //collect
-        /*FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(todir: process.targetLogsPath) {
-            ant.fileset(dir: "reports/test")
-        }*/
+        engine.storeLogs(process)
 
         //generate reports
         Reporter reporter = new Reporter(tests: suite)

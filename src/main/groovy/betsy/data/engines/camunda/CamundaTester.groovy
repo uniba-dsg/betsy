@@ -19,22 +19,20 @@ import java.nio.file.Paths
  */
 class CamundaTester {
 
+    private static final AntBuilder ant = AntUtil.builder()
+
     String restURL
     Path reportPath
     Path testBin
-    private static final AntBuilder ant = AntUtil.builder()
+    Path testSrc
+    String key
+    List<String> assertionList
+    Path serverDir
 
     /**
      * runs a single test
      */
     void runTest(){
-
-        // needed process information
-        String key = "SimpleApplication"
-        HashMap<String, Boolean> variableResults = new HashMap<String, Boolean>()
-        variableResults.put("successfull", true)
-        String testSrc = "test/camunda/tasks__simple/testSrc"
-
         //first request to get id
         JSONObject response = get(restURL + "/process-definition?key=${key}")
         String id = response.get("id")
@@ -43,18 +41,11 @@ class CamundaTester {
         //assembling JSONObject for second request
         JSONObject requestBody = new JSONObject()
         JSONObject variables = new JSONObject()
-        for(String variable : variableResults.keySet()){
-            JSONObject variableObject = new JSONObject()
-            variableObject.put("value", false)
-            variableObject.put("type", "Boolean")
-            variables.put(variable, variableObject)
-        }
         requestBody.put("variables", variables)
         requestBody.put("businessKey", "key-${key}")
 
         //second request to start process using id and Json to get the process instance id
-        response = post(restURL + "/process-definition/${id}/start", requestBody)
-        //String processInstanceId = response.get("id")
+        post(restURL + "/process-definition/${id}/start", requestBody)
 
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
@@ -69,11 +60,6 @@ class CamundaTester {
         }
 
         String systemClasspath = System.getProperty('java.class.path')
-
-        //generate test sources TODO: transfer to Composite
-        List<String> assertionList = new ArrayList<String>()
-        assertionList.add("success")
-        new BPMNTestBuilder().buildTest("server/camunda/server/apache-tomcat-7.0.33/bin/log.txt", testSrc, assertionList)
 
         // compile test sources
         ant.javac(srcdir: testSrc, destdir: testBin, includeantruntime: false) {

@@ -2,20 +2,25 @@ package betsy.executables
 
 import ant.tasks.AntUtil
 
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
  * Created with IntelliJ IDEA.
- * User: stmcasar
+ * User: Mathias Casar, Andreas Vorndran
  * Date: 03.03.14
  * Time: 09:41
- * To change this template use File | Settings | File Templates.
  */
 class BPMNTestBuilder {
 
     private static final AntBuilder ant = AntUtil.builder()
 
-    public void buildTest(String logFile, String unitTestDir, List<String> assertionList) {
+    String packageString
+    Path logFile
+    String unitTestDir
+    List<String> assertionList
+
+    public void buildTest() {
 
         //assemble array of assertion for unitTestString
         String assertionListString = "{";
@@ -25,7 +30,7 @@ class BPMNTestBuilder {
         assertionListString = assertionListString.substring(0, (assertionListString.length() - 1))
         assertionListString = assertionListString + "}"
 
-        String unitTestString = """package camunda.tasks.simple;
+        String unitTestString = """package ${packageString};
 
 import org.junit.Test;
 import org.junit.AfterClass;
@@ -49,7 +54,7 @@ public class UnitTest {
     @BeforeClass
     public static void setup(){
         try {
-            br = new BufferedReader(new FileReader("${logFile}"));
+            br = new BufferedReader(new FileReader("${logFile.toUri().toString().substring(8)}"));
         }catch (FileNotFoundException fnfe){
             fnfe.printStackTrace();
         }
@@ -102,7 +107,7 @@ public class UnitTest {
 
 }
 """
-        ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/camunda/tasks/simple/UnitTest.java"))
+        ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/${packageString.replace('.', '/')}/UnitTest.java"))
     }
 
 }
