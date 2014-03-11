@@ -30,6 +30,10 @@ class CamundaEngine extends LocalEngine {
         "http://localhost:8080"
     }
 
+    String getRestURL(){
+        "http://localhost:8080/engine-rest/engine/default"
+    }
+
     String getTomcatName(){
         "apache-tomcat-7.0.33"
     }
@@ -48,13 +52,14 @@ class CamundaEngine extends LocalEngine {
 
     @Override
     void buildArchives(BetsyProcess process) {
-        ant.xslt(in: "bpmnRes/files/${process.group}/${process.name}/process/${process.name}.bpmn",
-                out: "${process.targetPath}/war/WEB-INF/classes/${process.name}.bpmn",
+        Path resourceDir = Paths.get("bpmnRes/files/${process.group}/${process.name}")
+        ant.xslt(in: resourceDir.resolve("process/${process.name}.bpmn"),
+                out: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn"),
                 style: xsltPath.resolve("camunda.xsl"))
         new CamundaResourcesGenerator(groupId: "org.camunda.bpm.dsg",
                 processName: process.name,
-                srcDir: "bpmnRes/files/${process.group}/${process.name}",
-                destDir: "${process.targetPath}/war",
+                srcDir: resourceDir,
+                destDir: process.targetPath.resolve("war"),
                 version: "0.0.1-SNAPSHOT").generateWar()
     }
 
@@ -112,7 +117,7 @@ class CamundaEngine extends LocalEngine {
 
     void testProcess(BetsyProcess process){
         new CamundaTester(testSrc: process.targetPath.resolve("testSrc"),
-                restURL: "http://localhost:8080/engine-rest/engine/default",
+                restURL: restURL,
                 reportPath: process.targetReportsPath,
                 testBin: process.targetPath.resolve("testBin"),
                 key: "SimpleApplication",

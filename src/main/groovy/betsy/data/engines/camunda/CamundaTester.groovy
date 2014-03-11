@@ -15,7 +15,6 @@ import java.nio.file.Paths
  * User: Andreas Vorndran, Mathias Casar
  * Date: 25.02.14
  * Time: 14:36
- * To change this template use File | Settings | File Templates.
  */
 class CamundaTester {
 

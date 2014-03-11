@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -16,31 +17,31 @@ class CamundaResourcesGenerator {
 
     private static final AntBuilder ant = AntUtil.builder()
 
-    String srcDir
-    String destDir
+    Path srcDir
+    Path destDir
     String processName
     String groupId
     String version
 
     void generateWar(){
         //directory structure
-        String pomDir = "${destDir}/META-INF/maven/${groupId}/${processName}"
-        String classesDir = "${destDir}/WEB-INF/classes"
+        Path pomDir = destDir.resolve("META-INF/maven/${groupId}/${processName}")
+        Path classesDir = destDir.resolve("WEB-INF/classes")
 
         //setup infrastructure
-        FileTasks.mkdirs(Paths.get(pomDir))
-        FileTasks.mkdirs(Paths.get(classesDir))
+        FileTasks.mkdirs(pomDir)
+        FileTasks.mkdirs(classesDir)
 
         //generate pom.properties
-        PrintWriter pw = new PrintWriter("${pomDir}/pom.properties", "UTF-8")
-        pw.println("version=0.0.1-SNAPSHOT")
+        PrintWriter pw = new PrintWriter(pomDir.resolve("pom.properties").toString(), "UTF-8")
+        pw.println("version=${version}")
         pw.println("groupId=${groupId}")
         pw.println("artifactId=${processName}")
         pw.close()
 
         //copy process specific files
         ant.copy(todir: classesDir){
-            fileset(dir: "${srcDir}/process"){ }
+            fileset(dir: srcDir.resolve("process")){ }
         }
         //generate pom
         generatePom(pomDir)
@@ -66,12 +67,12 @@ class CamundaResourcesGenerator {
             }
         }
         //pack war
-        ant.war(destfile: "${destDir}/${processName}.war", needxmlfile: false){
+        ant.war(destfile: destDir.resolve("${processName}.war"), needxmlfile: false){
             fileset(dir: destDir){ }
         }
     }
 
-    private void generatePom(String pomDir){
+    private void generatePom(Path pomDir){
         String pomString = """<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -120,10 +121,10 @@ class CamundaResourcesGenerator {
 
 </project>
 """
-        ant.echo(message: pomString, file: Paths.get("${pomDir}/pom.xml"))
+        ant.echo(message: pomString, file: pomDir.resolve("pom.xml"))
     }
 
-    private void generateProcessesXml(String classesDir){
+    private void generateProcessesXml(Path classesDir){
         String processesXmlString = """<?xml version="1.0" encoding="UTF-8" ?>
 
 <process-application
@@ -139,7 +140,7 @@ class CamundaResourcesGenerator {
 
 </process-application>
 """
-        ant.echo(message: processesXmlString, file: Paths.get("${classesDir}/META-INF/processes.xml"))
+        ant.echo(message: processesXmlString, file: classesDir.resolve("META-INF/processes.xml"))
     }
 
 }
