@@ -75,6 +75,9 @@ public class UnitTest {
             e.printStackTrace();
         }
 
+        //check if the asserted count of values exists
+        Assert.assertEquals(valueList.size(), assertionList.length);
+
         //check if all asserted Elements are also in the returned values
         for(String val: valueList){
             for(String asrt: assertionList){
@@ -85,11 +88,8 @@ public class UnitTest {
                     result = false;
                 }
             }
-            if(!result){
-                break;
-            }
+            Assert.assertTrue(result);
         }
-        Assert.assertTrue(true);
     }
 
     @AfterClass
