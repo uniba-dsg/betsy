@@ -26,16 +26,19 @@ class JbpmEngine extends LocalEngine {
 
     @Override
     void deploy(BetsyProcess process) {
+        // maven deployment
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("D:\\programming\\testo"), "..\\apache-maven-3.2.1\\bin\\mvn clean install"))
+        Thread.sleep(1500)
         //preparing ssh
         String homeDir = System.getenv("HOME") //System.getProperty("user.home")
         // delete known_hosts file for do not getting trouble with changing remote finger print
-        FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
+        //FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
         FileTasks.createFile(Paths.get(homeDir + "/.ssh/config"), """Host localhost
     StrictHostKeyChecking no""")
 
         //deploy
-        String groupId = "org.jbpm"
-        String artifactId = "Evaluation"
+        String groupId = "testo"
+        String artifactId = "testo"
         String version = "1.0"
         String systemUrl = "ssh://admin@localhost:8001/system"
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${groupId} ${artifactId} ${version} ${systemUrl}"))
