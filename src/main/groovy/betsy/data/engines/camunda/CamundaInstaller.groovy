@@ -34,8 +34,8 @@ class CamundaInstaller {
 
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
                 dest: destinationDir
-        //ant.copy file: Paths.get(BpelgInstaller.class.getResource("/bpelg/log4j.properties").toURI()),
-        //        todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/bpel-g/WEB-INF"), overwrite: true
+
+        ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: "bpmnRes/camunda/groovy-all-2.2.0.jar")
 
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat")
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
