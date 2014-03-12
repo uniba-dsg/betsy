@@ -29,7 +29,8 @@ class BPMNTestBuilder {
 import org.junit.Test;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -70,7 +71,7 @@ public class UnitTest {
         }
 
         //check if the asserted count of values exists
-        Assert.assertEquals(valueList.size(), assertionList.length);
+        assertEquals(valueList.size(), assertionList.length);
 
         //check if all asserted Elements are also in the returned values
         for(String val: valueList){
@@ -82,7 +83,7 @@ public class UnitTest {
                     result = false;
                 }
             }
-            Assert.assertTrue(result);
+            assertTrue(result);
         }
     }
 

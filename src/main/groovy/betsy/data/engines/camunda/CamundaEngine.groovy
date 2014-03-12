@@ -26,7 +26,7 @@ class CamundaEngine extends BPMNLocalEngine {
     }
 
     Path getTomcatDir(){
-        serverPath.resolve("server").resolve("tomcatName")
+        serverPath.resolve("server").resolve(tomcatName)
     }
 
     @Override
