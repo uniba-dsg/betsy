@@ -8,6 +8,7 @@ import betsy.data.TestSuite
 import betsy.data.engines.Engine
 import betsy.executables.Progress
 import betsy.executables.analytics.Analyzer
+import betsy.executables.reporting.BPMNReporter
 import betsy.executables.reporting.Reporter
 import betsy.tasks.FileTasks
 import org.apache.log4j.MDC
@@ -62,10 +63,10 @@ class CamundaMain {
         suite.engines.first().storeLogs(suite.engines.first().processes.first())
 
         //generate reports
-        /*Reporter reporter = new Reporter(tests: suite)
+        BPMNReporter reporter = new BPMNReporter(tests: suite)
         reporter.createReports()
         new Analyzer(csvFilePath: suite.csvFilePath,
-                reportsFolderPath: suite.reportsPath).createAnalytics()*/
+                reportsFolderPath: suite.reportsPath).createAnalytics()
 
         suite.engines.first().shutdown()
 
