@@ -3,25 +3,15 @@ package betsy.data.engines.camunda
 import ant.tasks.AntUtil
 import betsy.data.BPMNProcess
 import betsy.data.BPMNTestSuite
-import betsy.data.BetsyProcess
-import betsy.data.TestSuite
 import betsy.data.engines.Engine
 import betsy.executables.Progress
 import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.BPMNReporter
-import betsy.executables.reporting.Reporter
 import betsy.tasks.FileTasks
 import org.apache.log4j.MDC
 
-import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran, Mathias Casar
- * Date: 25.02.14
- * Time: 10:13
- */
 class CamundaMain {
 
     private static final AntBuilder ant = AntUtil.builder()
@@ -53,7 +43,6 @@ class CamundaMain {
         //build and deploy process
         suite.engines.first().buildArchives(suite.engines.first().processes.first())
         suite.engines.first().deploy(suite.engines.first().processes.first())
-        Thread.sleep(15000)
 
         // build and run test
         suite.engines.first().buildTest(suite.engines.first().processes.first())

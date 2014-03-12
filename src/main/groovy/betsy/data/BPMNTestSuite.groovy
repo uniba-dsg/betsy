@@ -6,12 +6,6 @@ import betsy.data.engines.BPMNEngine
 import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran
- * Date: 12.03.14
- * Time: 12:00
- */
 class BPMNTestSuite {
     AntBuilder ant = AntUtil.builder()
 

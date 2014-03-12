@@ -1,24 +1,15 @@
 package betsy.data.engines.camunda
 
-import ant.tasks.AntUtil
 import betsy.data.BPMNProcess
-import betsy.data.BetsyProcess
 import betsy.data.engines.BPMNLocalEngine
-import betsy.data.engines.LocalEngine
 import betsy.executables.BPMNTestBuilder
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
-import org.codehaus.groovy.tools.RootLoader
+import betsy.tasks.WaitTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran, Mathias Casar
- * Date: 25.02.14
- * Time: 09:58
- */
 class CamundaEngine extends BPMNLocalEngine {
 
     @Override
@@ -35,7 +26,7 @@ class CamundaEngine extends BPMNLocalEngine {
     }
 
     Path getTomcatDir(){
-        serverPath.resolve("server/${tomcatName}")
+        serverPath.resolve("server").resolve("tomcatName")
     }
 
     @Override
@@ -44,6 +35,9 @@ class CamundaEngine extends BPMNLocalEngine {
                 packageFilePath: Paths.get("${process.targetPath}/war/${process.name}.war"),
                 deploymentDirPath: tomcatDir.resolve("webapps")
         ).deploy()
+
+        //wait until it is deployed
+        WaitTasks.sleep(15000)
     }
 
     @Override
@@ -58,11 +52,12 @@ class CamundaEngine extends BPMNLocalEngine {
                 version: process.version).generateWar()
     }
 
+    @Override
     void buildTest(BPMNProcess process){
         List<String> assertionList = new ArrayList<String>()
         assertionList.add("success")
         new BPMNTestBuilder(packageString: "${name}.${process.group}.${process.name}",
-                logFile: tomcatDir.resolve("bin/log.txt"),
+                logFile: tomcatDir.resolve("bin").resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
                 assertionList: assertionList).buildTest()
     }
@@ -103,13 +98,19 @@ class CamundaEngine extends BPMNLocalEngine {
 
     @Override
     boolean isRunning() {
-        ant.fail(message: "tomcat for engine ${serverPath} is still running") {
-            condition() {
-                http url: camundaUrl
+        try{
+            ant.fail(message: "tomcat for engine ${serverPath} is still running") {
+                condition() {
+                    http url: camundaUrl
+                }
             }
+            return false
+        } catch (Exception ignore) {
+            return true
         }
     }
 
+    @Override
     void testProcess(BPMNProcess process){
         new CamundaTester(testSrc: process.targetTestSrcPath,
                 restURL: getEndpointUrl(process),

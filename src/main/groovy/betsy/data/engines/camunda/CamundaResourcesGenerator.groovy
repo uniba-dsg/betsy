@@ -5,14 +5,7 @@ import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mathias Casar, Andreas Vorndran
- * Date: 28.02.14
- * Time: 13:50
- */
 class CamundaResourcesGenerator {
 
     private static final AntBuilder ant = AntUtil.builder()

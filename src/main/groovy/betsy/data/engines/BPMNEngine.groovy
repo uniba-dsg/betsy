@@ -6,12 +6,6 @@ import betsy.data.BPMNProcess
 import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran
- * Date: 12.03.14
- * Time: 11:15
- */
 abstract class BPMNEngine implements BPMNEngineAPI{
     AntBuilder ant = AntUtil.builder()
 

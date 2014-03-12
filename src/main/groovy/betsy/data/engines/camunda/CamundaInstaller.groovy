@@ -2,19 +2,11 @@ package betsy.data.engines.camunda
 
 import ant.tasks.AntUtil
 import betsy.config.Configuration
-import betsy.data.engines.tomcat.TomcatInstaller
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran, Mathias Casar
- * Date: 25.02.14
- * Time: 09:49
- */
 class CamundaInstaller {
     private static final AntBuilder ant = AntUtil.builder()
 

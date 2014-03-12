@@ -2,12 +2,6 @@ package betsy.data.engines
 
 import betsy.data.BPMNProcess
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran
- * Date: 12.03.14
- * Time: 11:11
- */
 interface BPMNEngineAPI extends EngineLifecycle{
     /**
      * The name of the engine.

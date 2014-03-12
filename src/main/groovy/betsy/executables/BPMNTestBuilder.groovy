@@ -5,12 +5,6 @@ import ant.tasks.AntUtil
 import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mathias Casar, Andreas Vorndran
- * Date: 03.03.14
- * Time: 09:41
- */
 class BPMNTestBuilder {
 
     private static final AntBuilder ant = AntUtil.builder()

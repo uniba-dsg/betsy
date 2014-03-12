@@ -5,12 +5,6 @@ import betsy.data.engines.BPMNEngine
 import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran
- * Date: 12.03.14
- * Time: 11:13
- */
 class BPMNProcess implements Cloneable, Comparable {
 
     String description = ""
@@ -73,7 +67,7 @@ class BPMNProcess implements Cloneable, Comparable {
     }
 
     Path getResourcePath(){
-        Paths.get("bpmnRes/files").resolve("${group}/${name}")
+        Paths.get("bpmnRes").resolve("files").resolve(group).resolve(name)
     }
 
     /**

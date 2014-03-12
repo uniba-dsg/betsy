@@ -4,12 +4,6 @@ import ant.tasks.AntUtil
 
 import java.nio.file.Path
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran, Mathias Casar
- * Date: 25.02.14
- * Time: 11:35
- */
 class CamundaDeployer {
     private static final AntBuilder ant = AntUtil.builder()
 

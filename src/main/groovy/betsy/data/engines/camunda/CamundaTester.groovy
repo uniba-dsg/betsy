@@ -1,21 +1,13 @@
 package betsy.data.engines.camunda
 
 import ant.tasks.AntUtil
-import betsy.executables.BPMNTestBuilder
 import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONArray
 import org.json.JSONObject
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: Andreas Vorndran, Mathias Casar
- * Date: 25.02.14
- * Time: 14:36
- */
 class CamundaTester {
 
     private static final AntBuilder ant = AntUtil.builder()
@@ -32,10 +24,13 @@ class CamundaTester {
      * runs a single test
      */
     void runTest(){
+        //make bin dir
+        FileTasks.mkdirs(testBin)
+        FileTasks.mkdirs(reportPath)
+
         //first request to get id
         JSONObject response = get(restURL + "/process-definition?key=${key}")
         String id = response.get("id")
-
 
         //assembling JSONObject for second request
         JSONObject requestBody = new JSONObject()
