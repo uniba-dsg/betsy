@@ -21,7 +21,7 @@ class CamundaMain {
         CamundaEngine engine = new CamundaEngine(parentFolder: Paths.get("test"))
         List<Engine> engines = new ArrayList<>()
         engines.add(engine)
-        BPMNProcess process = new BPMNProcess(name: "simple", group: "tasks", key: "SimpleApplication", groupId: "org.camunda.bpm.dsg", version: "0.0.1-SNAPSHOT")
+        BPMNProcess process = new BPMNProcess(name: "XOR", group: "gateways", key: "XOR", groupId: "org.camunda.bpm.dsg", version: "1.0")
         List<BPMNProcess> processes = new ArrayList<>()
         processes.add(process)
         BPMNTestSuite suite = BPMNTestSuite.createTests(engines, processes)

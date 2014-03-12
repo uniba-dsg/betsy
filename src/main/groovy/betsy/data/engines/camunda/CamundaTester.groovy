@@ -35,6 +35,10 @@ class CamundaTester {
         //assembling JSONObject for second request
         JSONObject requestBody = new JSONObject()
         JSONObject variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", true)
+        value.put("type", "Boolean")
+        variables.put("test", value)
         requestBody.put("variables", variables)
         requestBody.put("businessKey", "key-${key}")
 

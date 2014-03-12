@@ -56,6 +56,7 @@ class CamundaEngine extends BPMNLocalEngine {
     void buildTest(BPMNProcess process){
         List<String> assertionList = new ArrayList<String>()
         assertionList.add("success")
+        assertionList.add("true")
         new BPMNTestBuilder(packageString: "${name}.${process.group}.${process.name}",
                 logFile: tomcatDir.resolve("bin").resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
