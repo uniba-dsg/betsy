@@ -7,7 +7,7 @@ import betsy.tasks.FileTasks
 import java.nio.file.Path
 import java.nio.file.Paths
 
-abstract class Engine implements EngineAPI {
+abstract class Engine implements EngineAPI<BetsyProcess> {
 
     AntBuilder ant = AntUtil.builder()
 	EnginePackageBuilder packageBuilder = new EnginePackageBuilder()

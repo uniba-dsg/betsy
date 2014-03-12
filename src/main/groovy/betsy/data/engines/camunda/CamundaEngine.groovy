@@ -1,7 +1,7 @@
 package betsy.data.engines.camunda
 
 import betsy.data.BPMNProcess
-import betsy.data.engines.BPMNLocalEngine
+import betsy.data.engines.BPMNEngine
 import betsy.executables.BPMNTestBuilder
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
@@ -10,7 +10,7 @@ import betsy.tasks.WaitTasks
 import java.nio.file.Path
 import java.nio.file.Paths;
 
-class CamundaEngine extends BPMNLocalEngine {
+class CamundaEngine extends BPMNEngine {
 
     @Override
     String getName() {

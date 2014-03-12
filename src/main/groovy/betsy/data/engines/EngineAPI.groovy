@@ -1,8 +1,6 @@
 package betsy.data.engines
 
-import betsy.data.BetsyProcess;
-
-interface EngineAPI extends EngineLifecycle {
+interface EngineAPI<P> extends EngineLifecycle {
 
     /**
      * The name of the engine.
@@ -17,14 +15,14 @@ interface EngineAPI extends EngineLifecycle {
      *
      * @param process to be deployed
      */
-    void deploy(BetsyProcess process)
+    void deploy(P process)
 
     /**
      * Build archives required for deployment.
      *
      * @param process the process for which the archives are being built
      */
-    void buildArchives(BetsyProcess process)
+    void buildArchives(P process)
 
     /**
      * Gets endpoint url of requested endpoint url. This url is used for testing the process later on.
@@ -32,13 +30,13 @@ interface EngineAPI extends EngineLifecycle {
      * @param process the process
      * @return the url of the endpoint
      */
-    String getEndpointUrl(BetsyProcess process)
+    String getEndpointUrl(P process)
 
     /**
      * Store logs used for a specific process. This is required for analysis in case of error.
      *
      * @param process the process for which to store the logs.
      */
-    void storeLogs(BetsyProcess process)
+    void storeLogs(P process)
 
 }

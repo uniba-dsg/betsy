@@ -6,7 +6,7 @@ import betsy.data.BPMNProcess
 import java.nio.file.Path
 import java.nio.file.Paths
 
-abstract class BPMNEngine implements BPMNEngineAPI{
+abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI{
     AntBuilder ant = AntUtil.builder()
 
     Path parentFolder
@@ -49,5 +49,10 @@ abstract class BPMNEngine implements BPMNEngineAPI{
 
     int hashCode() {
         return (getName() != null ? getName().hashCode() : 0)
+    }
+
+    @Override
+    public Path getServerPath() {
+        return Paths.get("server").resolve(getName());
     }
 }
