@@ -1,7 +1,9 @@
 package betsy.data.engines.camunda
 
 import ant.tasks.AntUtil
+import betsy.data.BPMNProcess
 import betsy.data.BetsyProcess
+import betsy.data.engines.BPMNLocalEngine
 import betsy.data.engines.LocalEngine
 import betsy.executables.BPMNTestBuilder
 import betsy.tasks.ConsoleTasks
@@ -17,9 +19,7 @@ import java.nio.file.Paths;
  * Date: 25.02.14
  * Time: 09:58
  */
-class CamundaEngine extends LocalEngine {
-
-    private static final AntBuilder ant = AntUtil.builder()
+class CamundaEngine extends BPMNLocalEngine {
 
     @Override
     String getName() {
@@ -28,10 +28,6 @@ class CamundaEngine extends LocalEngine {
 
     String getCamundaUrl(){
         "http://localhost:8080"
-    }
-
-    String getRestURL(){
-        "http://localhost:8080/engine-rest/engine/default"
     }
 
     String getTomcatName(){
@@ -43,7 +39,7 @@ class CamundaEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(BPMNProcess process) {
         new CamundaDeployer(processName: process.name,
                 packageFilePath: Paths.get("${process.targetPath}/war/${process.name}.war"),
                 deploymentDirPath: tomcatDir.resolve("webapps")
@@ -51,34 +47,33 @@ class CamundaEngine extends LocalEngine {
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
-        Path resourceDir = Paths.get("bpmnRes/files/${process.group}/${process.name}")
-        ant.xslt(in: resourceDir.resolve("process/${process.name}.bpmn"),
+    void buildArchives(BPMNProcess process) {
+        ant.xslt(in: process.resourcePath.resolve("process/${process.name}.bpmn"),
                 out: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn"),
                 style: xsltPath.resolve("camunda.xsl"))
-        new CamundaResourcesGenerator(groupId: "org.camunda.bpm.dsg",
+        new CamundaResourcesGenerator(groupId: process.groupId,
                 processName: process.name,
-                srcDir: resourceDir,
+                srcDir: process.resourcePath,
                 destDir: process.targetPath.resolve("war"),
-                version: "0.0.1-SNAPSHOT").generateWar()
+                version: process.version).generateWar()
     }
 
-    void buildTest(BetsyProcess process){
+    void buildTest(BPMNProcess process){
         List<String> assertionList = new ArrayList<String>()
         assertionList.add("success")
         new BPMNTestBuilder(packageString: "${name}.${process.group}.${process.name}",
                 logFile: tomcatDir.resolve("bin/log.txt"),
-                unitTestDir: process.targetPath.resolve("testSrc"),
+                unitTestDir: process.targetTestSrcPath,
                 assertionList: assertionList).buildTest()
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
+    String getEndpointUrl(BPMNProcess process) {
+        "http://localhost:8080/engine-rest/engine/default"
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
+    void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcatDir.resolve("logs"))
@@ -115,12 +110,12 @@ class CamundaEngine extends LocalEngine {
         }
     }
 
-    void testProcess(BetsyProcess process){
-        new CamundaTester(testSrc: process.targetPath.resolve("testSrc"),
-                restURL: restURL,
+    void testProcess(BPMNProcess process){
+        new CamundaTester(testSrc: process.targetTestSrcPath,
+                restURL: getEndpointUrl(process),
                 reportPath: process.targetReportsPath,
-                testBin: process.targetPath.resolve("testBin"),
-                key: "SimpleApplication",
+                testBin: process.targetTestBinPath,
+                key: process.key,
                 serverDir: tomcatDir).runTest()
     }
 }

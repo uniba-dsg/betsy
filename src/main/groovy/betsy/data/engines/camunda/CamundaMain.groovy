@@ -1,6 +1,8 @@
 package betsy.data.engines.camunda
 
 import ant.tasks.AntUtil
+import betsy.data.BPMNProcess
+import betsy.data.BPMNTestSuite
 import betsy.data.BetsyProcess
 import betsy.data.TestSuite
 import betsy.data.engines.Engine
@@ -28,47 +30,44 @@ class CamundaMain {
         CamundaEngine engine = new CamundaEngine(parentFolder: Paths.get("test"))
         List<Engine> engines = new ArrayList<>()
         engines.add(engine)
-        BetsyProcess process = new BetsyProcess(){
-            public String getName() {"simple"}
-            String getGroup() {"tasks"}
-        }
-        process.engine = engine
-        engine.processes.add(process)
-        TestSuite suite = new TestSuite(engines: engines, path: Paths.get("test"))
+        BPMNProcess process = new BPMNProcess(name: "simple", group: "tasks", key: "SimpleApplication", groupId: "org.camunda.bpm.dsg", version: "0.0.1-SNAPSHOT")
+        List<BPMNProcess> processes = new ArrayList<>()
+        processes.add(process)
+        BPMNTestSuite suite = BPMNTestSuite.createTests(engines, processes)
 
         // preparation
         Progress progress = new Progress(suite.processesCount)
         MDC.put("progress", progress.toString())
         FileTasks.deleteDirectory(suite.getPath());
         FileTasks.mkdirs(suite.getPath());
-        FileTasks.mkdirs(engine.getPath());
-        FileTasks.mkdirs(process.targetPath)
-        FileTasks.mkdirs(process.targetReportsPath)
-        FileTasks.mkdirs(process.targetPath.resolve("testBin"))
+        FileTasks.mkdirs(suite.engines.first().getPath());
+        FileTasks.mkdirs(suite.engines.first().processes.first().targetPath)
+        FileTasks.mkdirs(suite.engines.first().processes.first().targetReportsPath)
+        FileTasks.mkdirs(suite.engines.first().processes.first().targetTestBinPath)
 
         //engine installation and startup
-        engine.install()
-        engine.startup()
+        suite.engines.first().install()
+        suite.engines.first().startup()
 
         //build and deploy process
-        engine.buildArchives(process)
-        engine.deploy(process)
+        suite.engines.first().buildArchives(suite.engines.first().processes.first())
+        suite.engines.first().deploy(suite.engines.first().processes.first())
         Thread.sleep(15000)
 
         // build and run test
-        engine.buildTest(process)
-        engine.testProcess(process)
+        suite.engines.first().buildTest(suite.engines.first().processes.first())
+        suite.engines.first().testProcess(suite.engines.first().processes.first())
 
         //collect
-        engine.storeLogs(process)
+        suite.engines.first().storeLogs(suite.engines.first().processes.first())
 
         //generate reports
-        Reporter reporter = new Reporter(tests: suite)
+        /*Reporter reporter = new Reporter(tests: suite)
         reporter.createReports()
         new Analyzer(csvFilePath: suite.csvFilePath,
-                reportsFolderPath: suite.reportsPath).createAnalytics()
+                reportsFolderPath: suite.reportsPath).createAnalytics()*/
 
-        engine.shutdown()
+        suite.engines.first().shutdown()
 
         //engine.isRunning()
     }
