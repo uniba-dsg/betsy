@@ -7,20 +7,16 @@ import betsy.data.engines.Engine
 import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
-import betsy.executables.util.Stopwatch
 import betsy.executables.ws.TestPartnerService
 import betsy.executables.ws.TestPartnerServicePublisher
-import betsy.logging.LogContext
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
 import org.apache.log4j.Logger
 import org.apache.log4j.MDC
 import soapui.SoapUiRunner
 
-import java.nio.file.Path
-import java.nio.file.Paths
-
 import static betsy.executables.util.IOCapture.captureIO
+import static betsy.executables.util.LogUtil.log
 
 class Composite {
 
@@ -41,7 +37,7 @@ class Composite {
         FileTasks.deleteDirectory(testSuite.getPath());
         FileTasks.mkdirs(testSuite.getPath());
 
-        log testSuite.getPath(), {
+        log testSuite.getPath(), logger, {
 
             // fail fast
             for (Engine engine : testSuite.engines) {
@@ -54,7 +50,7 @@ class Composite {
 
                 FileTasks.mkdirs(engine.getPath());
 
-                log engine.path, {
+                log engine.path, logger, {
                     for (BetsyProcess process : engine.processes) {
 
                         progress.next()
@@ -71,7 +67,7 @@ class Composite {
     }
 
     protected createReports() {
-        log testSuite.reportsPath, {
+        log testSuite.reportsPath, logger, {
             new Reporter(tests: testSuite).createReports()
             new Analyzer(csvFilePath: testSuite.csvFilePath,
                     reportsFolderPath: testSuite.reportsPath).createAnalytics()
@@ -80,7 +76,7 @@ class Composite {
 
     protected void executeProcess(BetsyProcess process) {
         new Retry(process: process).atMostThreeTimes {
-            log process.targetPath, {
+            log process.targetPath, logger, {
                 try {
                     buildPackageAndTest(process)
                     installAndStart(process)
@@ -96,30 +92,30 @@ class Composite {
     }
 
     protected void shutdown(BetsyProcess process) {
-        log "${process.targetPath}/engine_shutdown", {
+        log "${process.targetPath}/engine_shutdown", logger, {
             process.engine.shutdown()
         }
     }
 
     protected void deploy(BetsyProcess process) {
-        log "${process.targetPath}/deploy", {
+        log "${process.targetPath}/deploy", logger, {
             process.engine.deploy(process)
         }
     }
 
     protected void installAndStart(BetsyProcess process) {
         // setup infrastructure
-        log "${process.targetPath}/engine_install", {
+        log "${process.targetPath}/engine_install", logger, {
             process.engine.install()
         }
 
-        log "${process.targetPath}/engine_startup", {
+        log "${process.targetPath}/engine_startup", logger, {
             process.engine.startup()
         }
     }
 
     protected void test(BetsyProcess process) {
-        log "${process.targetPath}/test", {
+        log "${process.targetPath}/test", logger, {
             try {
                 try {
                     testPartner.publish()
@@ -139,13 +135,13 @@ class Composite {
     }
 
     protected void collect(BetsyProcess process) {
-        log "${process.targetPath}/collect", {
+        log "${process.targetPath}/collect", logger, {
             process.engine.storeLogs(process)
         }
     }
 
     protected void testSoapUi(BetsyProcess process) {
-        log "${process.targetPath}/test_soapui", {
+        log "${process.targetPath}/test_soapui", logger, {
             captureIO {
                 new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
                         reportingDirectory: process.targetReportsPath).run()
@@ -156,7 +152,7 @@ class Composite {
     }
 
     protected void buildPackageAndTest(BetsyProcess process) {
-        log "${process.targetPath}/build", {
+        log "${process.targetPath}/build", logger, {
 
             buildPackage(process)
 
@@ -165,44 +161,15 @@ class Composite {
     }
 
     protected void buildTest(BetsyProcess process) {
-        log "${process.targetPath}/build_test", {
+        log "${process.targetPath}/build_test", logger, {
             captureIO { new TestBuilder(process: process, requestTimeout: requestTimeout).buildTest() }
         }
     }
 
     protected void buildPackage(BetsyProcess process) {
-        log "${process.targetPath}/build_package", {
+        log "${process.targetPath}/build_package", logger, {
             captureIO { process.engine.buildArchives(process) }
         }
-    }
-
-    protected static log(String name, Closure closure) {
-        String previous = LogContext.context;
-        try {
-            LogContext.context = name
-
-            FileTasks.mkdirs(Paths.get(name).toAbsolutePath().parent)
-            logger.info "Start ..."
-
-            Stopwatch stopwatch = new Stopwatch()
-            stopwatch.start()
-
-            try {
-                closure.call()
-            } finally {
-                stopwatch.stop()
-                logger.info "... finished in ${stopwatch.formattedDiff} | (${stopwatch.diff}ms)"
-                new File("test/timings.csv").withWriterAppend { out -> out.println("${stopwatch.diff};${name};${name.replaceAll("\\\\","/").split("/").join(";")}") }
-            }
-
-        } finally {
-            LogContext.context = previous
-        }
-
-    }
-
-    protected static log(Path path, Closure closure) {
-        log(path.toString(), closure)
     }
 
 }

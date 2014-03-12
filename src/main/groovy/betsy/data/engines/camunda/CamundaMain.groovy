@@ -3,7 +3,9 @@ package betsy.data.engines.camunda
 import ant.tasks.AntUtil
 import betsy.data.BPMNProcess
 import betsy.data.BPMNTestSuite
+import betsy.data.engines.BPMNEngine
 import betsy.data.engines.Engine
+import betsy.executables.BPMNComposite
 import betsy.executables.Progress
 import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.BPMNReporter
@@ -19,46 +21,14 @@ class CamundaMain {
     public static void main(String[] args) {
         //setup testsuite
         CamundaEngine engine = new CamundaEngine(parentFolder: Paths.get("test"))
-        List<Engine> engines = new ArrayList<>()
+        List<BPMNEngine> engines = new ArrayList<>()
         engines.add(engine)
         BPMNProcess process = new BPMNProcess(name: "XOR", group: "gateways", key: "XOR", groupId: "org.camunda.bpm.dsg", version: "1.0")
         List<BPMNProcess> processes = new ArrayList<>()
         processes.add(process)
         BPMNTestSuite suite = BPMNTestSuite.createTests(engines, processes)
 
-        // preparation
-        Progress progress = new Progress(suite.processesCount)
-        MDC.put("progress", progress.toString())
-        FileTasks.deleteDirectory(suite.getPath());
-        FileTasks.mkdirs(suite.getPath());
-        FileTasks.mkdirs(suite.engines.first().getPath());
-        FileTasks.mkdirs(suite.engines.first().processes.first().targetPath)
-        FileTasks.mkdirs(suite.engines.first().processes.first().targetReportsPath)
-        FileTasks.mkdirs(suite.engines.first().processes.first().targetTestBinPath)
+        new BPMNComposite(testSuite: suite).execute()
 
-        //engine installation and startup
-        suite.engines.first().install()
-        suite.engines.first().startup()
-
-        //build and deploy process
-        suite.engines.first().buildArchives(suite.engines.first().processes.first())
-        suite.engines.first().deploy(suite.engines.first().processes.first())
-
-        // build and run test
-        suite.engines.first().buildTest(suite.engines.first().processes.first())
-        suite.engines.first().testProcess(suite.engines.first().processes.first())
-
-        //collect
-        suite.engines.first().storeLogs(suite.engines.first().processes.first())
-
-        //generate reports
-        BPMNReporter reporter = new BPMNReporter(tests: suite)
-        reporter.createReports()
-        new Analyzer(csvFilePath: suite.csvFilePath,
-                reportsFolderPath: suite.reportsPath).createAnalytics()
-
-        suite.engines.first().shutdown()
-
-        //engine.isRunning()
     }
 }
