@@ -6,12 +6,14 @@ import betsy.data.BPMNTestSuite
 import betsy.data.engines.BPMNEngine
 import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.BPMNReporter
+import betsy.executables.util.LogUtil
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 import org.apache.log4j.MDC
 
+import java.nio.file.Path
+
 import static betsy.executables.util.IOCapture.captureIO
-import static betsy.executables.util.LogUtil.log
 
 class BPMNComposite {
     final static AntBuilder ant = AntUtil.builder()
@@ -29,7 +31,7 @@ class BPMNComposite {
         FileTasks.deleteDirectory(testSuite.getPath());
         FileTasks.mkdirs(testSuite.getPath());
 
-        log testSuite.getPath(), logger, {
+        log testSuite.getPath(), {
             // fail fast
             for (BPMNEngine engine : testSuite.engines) {
                 if(engine.isRunning()) {
@@ -41,7 +43,7 @@ class BPMNComposite {
 
                 FileTasks.mkdirs(engine.getPath());
 
-                log engine.path, logger, {
+                log engine.path, {
                     for (BPMNProcess process : engine.processes) {
 
                         progress.next()
@@ -57,7 +59,7 @@ class BPMNComposite {
     }
 
     protected createReports() {
-        log testSuite.reportsPath, logger, {
+        log testSuite.reportsPath, {
             new BPMNReporter(tests: testSuite).createReports()
             new Analyzer(csvFilePath: testSuite.csvFilePath,
                     reportsFolderPath: testSuite.reportsPath).createAnalytics()
@@ -66,7 +68,7 @@ class BPMNComposite {
 
     protected void executeProcess(BPMNProcess process) {
         //TODO Retry?
-        log process.targetPath, logger, {
+        log process.targetPath, {
             try {
                 buildPackageAndTest(process)
                 installAndStart(process)
@@ -81,42 +83,42 @@ class BPMNComposite {
     }
 
     protected void shutdown(BPMNProcess process) {
-        log "${process.targetPath}/engine_shutdown", logger, {
+        log "${process.targetPath}/engine_shutdown", {
             process.engine.shutdown()
         }
     }
 
     protected void deploy(BPMNProcess process) {
-        log "${process.targetPath}/deploy", logger,  {
+        log "${process.targetPath}/deploy", {
             process.engine.deploy(process)
         }
     }
 
     protected void installAndStart(BPMNProcess process) {
         // setup infrastructure
-        log "${process.targetPath}/engine_install", logger, {
+        log "${process.targetPath}/engine_install", {
             process.engine.install()
         }
 
-        log "${process.targetPath}/engine_startup", logger, {
+        log "${process.targetPath}/engine_startup", {
             process.engine.startup()
         }
     }
 
     protected void test(BPMNProcess process) {
-        log "${process.targetPath}/test", logger, {
+        log "${process.targetPath}/test", {
             captureIO { process.engine.testProcess(process) }
         }
     }
 
     protected void collect(BPMNProcess process) {
-        log "${process.targetPath}/collect", logger, {
+        log "${process.targetPath}/collect", {
             process.engine.storeLogs(process)
         }
     }
 
     protected void buildPackageAndTest(BPMNProcess process) {
-        log "${process.targetPath}/build", logger, {
+        log "${process.targetPath}/build", {
 
             buildPackage(process)
 
@@ -125,15 +127,22 @@ class BPMNComposite {
     }
 
     protected void buildTest(BPMNProcess process) {
-        log "${process.targetPath}/build_test", logger, {
+        log "${process.targetPath}/build_test", {
             captureIO { process.engine.buildTest(process) }
         }
     }
 
     protected void buildPackage(BPMNProcess process) {
-        log "${process.targetPath}/build_package", logger, {
+        log "${process.targetPath}/build_package", {
             captureIO { process.engine.buildArchives(process) }
         }
     }
 
+    protected static log(String name, Closure closure){
+        betsy.executables.util.LogUtil.log(name, logger, closure)
+    }
+
+    protected static log(Path path, Closure closure){
+        betsy.executables.util.LogUtil.log(path, logger, closure)
+    }
 }
