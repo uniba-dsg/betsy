@@ -67,7 +67,8 @@ class CamundaEngine extends BPMNEngine {
             e.printStackTrace();
         }
 
-        new BPMNTestBuilder(packageString: "${name}.${process.group}.${process.name}",
+        new BPMNTestBuilder(packageString: "${name}.${process.group}",
+                name: process.name,
                 logFile: tomcatDir.resolve("bin").resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
                 assertionList: assertionList).buildTest()
@@ -83,6 +84,7 @@ class CamundaEngine extends BPMNEngine {
         FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcatDir.resolve("logs"))
+            ant.fileset(file: tomcatDir.resolve("bin").resolve("log.txt"))
         }
     }
 

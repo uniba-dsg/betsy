@@ -10,6 +10,7 @@ class BPMNTestBuilder {
     private static final AntBuilder ant = AntUtil.builder()
 
     String packageString
+    String name
     Path logFile
     String unitTestDir
     List<String> assertionList
@@ -41,7 +42,7 @@ import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
 
-public class UnitTest {
+public class ${name} {
 
     static BufferedReader br;
     String[] assertionList = ${assertionListString};
@@ -97,12 +98,12 @@ public class UnitTest {
     }
 
     public static junit.framework.Test suite() {
-        return new JUnit4TestAdapter(UnitTest.class);
+        return new JUnit4TestAdapter(${name}.class);
     }
 
 }
 """
-        ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/${packageString.replace('.', '/')}/UnitTest.java"))
+        ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/${packageString.replace('.', '/')}/${name}.java"))
     }
 
 }

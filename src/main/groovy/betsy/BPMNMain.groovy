@@ -36,10 +36,10 @@ class BPMNMain {
             engines = new BPMNEngineParser(args: parser.arguments()).parse()
             //processes = new BPMNProcessParser(args: parser.arguments()).parse()
             BPMNProcess process = new BPMNProcess(name: "XOR", group: "gateways", key: "XOR", groupId: "org.camunda.bpm.dsg", version: "1.0")
-            //BPMNProcess process2 = new BPMNProcess(name: "simple", group: "tasks", key: "SimpleApplication", groupId: "org.camunda.bpm.dsg", version: "1.0")
+            BPMNProcess process2 = new BPMNProcess(name: "simple", group: "tasks", key: "SimpleApplication", groupId: "org.camunda.bpm.dsg", version: "1.0")
             processes = new ArrayList<>()
             processes.add(process)
-            //processes.add(process2)
+            processes.add(process2)
         } catch (IllegalArgumentException e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
@@ -94,7 +94,7 @@ class BPMNMain {
         log.info "Processes: ${processes.size() < 10 ? processes.collect { it.name } : processes.size()}"
     }
 
-    static void onlyBuildSteps(BPMNCliParser cliParser, Betsy betsy) {
+    static void onlyBuildSteps(BPMNCliParser cliParser, BPMNBetsy betsy) {
         if(cliParser.onlyBuildSteps()){
             betsy.composite = new betsy.executables.BPMNComposite() {
 

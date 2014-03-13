@@ -73,7 +73,7 @@ class CamundaTester {
             formatter(type: "xml")
             batchtest(todir: reportPath){
                 fileset(dir: testSrc){
-                    include(name: "**/*Test*.java")
+                    include(name: "**/*.java")
                 }
             }
         }
