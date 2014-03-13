@@ -1,6 +1,8 @@
 package betsy.executables
 
 import ant.tasks.AntUtil
+import betsy.data.BPMNProcess
+import betsy.data.BPMNTestCase
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -15,17 +17,27 @@ class BPMNTestBuilder {
     String unitTestDir
     List<String> assertionList
 
+    BPMNProcess process
+
+
     public void buildTest() {
 
-        //assemble array of assertion for unitTestString
-        String assertionListString = "{";
-        for(String assertString: assertionList){
-            assertionListString = assertionListString + "\"" + assertString + "\","
-        }
-        assertionListString = assertionListString.substring(0, (assertionListString.length() - 1))
-        assertionListString = assertionListString + "}"
+        int testCaseCounter = 1
 
-        String unitTestString = """package ${packageString};
+        //Build test for each Test Case
+        for(BPMNTestCase testCase: process.testCases){
+            assertionList = testCase.testSteps.get(0).assertions
+
+
+            //assemble array of assertion for unitTestString
+            String assertionListString = "{";
+            for(String assertString: assertionList){
+                assertionListString = assertionListString + "\"" + assertString + "\","
+            }
+            assertionListString = assertionListString.substring(0, (assertionListString.length() - 1))
+            assertionListString = assertionListString + "}"
+
+            String unitTestString = """package ${packageString};
 
 import org.junit.Test;
 import org.junit.AfterClass;
@@ -103,7 +115,10 @@ public class ${name} {
 
 }
 """
-        ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/${packageString.replace('.', '/')}/${name}.java"))
+            ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/Case${testCaseCounter}/${packageString.replace('.', '/')}/${name}.java"))
+            testCaseCounter++
+
+        }
     }
 
 }

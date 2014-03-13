@@ -16,11 +16,13 @@ class BPMNProcess implements Cloneable, Comparable {
     String groupId
     String version
 
+    List<BPMNTestCase> testCases = []
+
     BPMNEngine engine
 
     @Override
     protected Object clone(){
-        return new BPMNProcess(name: name, group: group, key: key, groupId: groupId, version: version, engine: engine)
+        return new BPMNProcess(name: name, group: group, key: key, groupId: groupId, version: version, engine: engine, testCases: testCases)
     }
 
     @Override
@@ -54,6 +56,10 @@ class BPMNProcess implements Cloneable, Comparable {
 
     void setEngine(BPMNEngine engine){
         this.engine = engine
+    }
+
+    void setTestCases(List<BPMNTestCase> testCases){
+        this.testCases = testCases
     }
 
     /**
@@ -98,6 +104,10 @@ class BPMNProcess implements Cloneable, Comparable {
 
     Path getTargetTestSrcPath(){
         targetPath.resolve("testSrc")
+    }
+
+    List<BPMNTestCase> getTestCases(){
+        testCases
     }
 
     boolean equals(o) {

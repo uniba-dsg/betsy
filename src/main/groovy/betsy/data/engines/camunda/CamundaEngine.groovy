@@ -56,22 +56,23 @@ class CamundaEngine extends BPMNEngine {
     void buildTest(BPMNProcess process){
         List<String> assertionList = new ArrayList<String>()
 
-        String line;
-        String rpath = process.resourcePath.resolve("assertions.txt").toString()
-        BufferedReader br = new BufferedReader(new FileReader(rpath))
-        try{
-            while ((line = br.readLine()) != null){
-                assertionList.add(line);
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+//        String line;
+//        String rpath = process.resourcePath.resolve("assertions.txt").toString()
+//        BufferedReader br = new BufferedReader(new FileReader(rpath))
+//        try{
+//            while ((line = br.readLine()) != null){
+//                assertionList.add(line);
+//            }
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
 
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 name: process.name,
                 logFile: tomcatDir.resolve("bin").resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
-                assertionList: assertionList).buildTest()
+                assertionList: assertionList,
+                process: process).buildTest()
     }
 
     @Override
