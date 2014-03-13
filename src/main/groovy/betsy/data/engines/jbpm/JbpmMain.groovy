@@ -6,6 +6,7 @@ import betsy.data.BPMNTestSuite
 import betsy.data.engines.BPMNEngine
 import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.BPMNReporter
+import betsy.tasks.FileTasks
 
 import java.nio.file.Paths
 
@@ -20,15 +21,18 @@ class JbpmMain {
         BPMNProcess process = new BPMNProcess(name: "simple", key: "simple", group: "tasks", groupId: "testo", version: "1.0")
         processes.add(process)
         BPMNTestSuite testSuite = BPMNTestSuite.createTests(engines, processes)
+        FileTasks.deleteDirectory(testSuite.getPath());
+        FileTasks.mkdirs(testSuite.getPath());
 
+        testSuite.engines.first().buildTest(testSuite.engines.first().processes.first())
         testSuite.engines.first().install()
         testSuite.engines.first().startup()
         testSuite.engines.first().deploy(testSuite.engines.first().processes.first())
         testSuite.engines.first().testProcess(testSuite.engines.first().processes.first())
 
-        /*new BPMNReporter(tests: testSuite).createReports()
+        new BPMNReporter(tests: testSuite).createReports()
         new Analyzer(csvFilePath: testSuite.csvFilePath,
-                reportsFolderPath: testSuite.reportsPath).createAnalytics()*/
+                reportsFolderPath: testSuite.reportsPath).createAnalytics()
         testSuite.engines.first().storeLogs(testSuite.engines.first().processes.first())
         //engine.isRunning()
         engine.shutdown()

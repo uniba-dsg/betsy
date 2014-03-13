@@ -118,7 +118,11 @@ class JbpmEngine extends BPMNEngine {
     void testProcess(BPMNProcess process){
         new JbpmTester(name: process.name,
                 deploymentId: "${process.groupId}:${process.name}:${process.version}",
-                baseUrl: new URL(getEndpointUrl(process))).runTest()
+                baseUrl: new URL(getEndpointUrl(process)),
+                testSrc: process.targetTestSrcPath,
+                reportPath: process.targetReportsPath,
+                testBin: process.targetTestBinPath
+        ).runTest()
     }
 
     void buildTest(BPMNProcess process){
@@ -139,6 +143,7 @@ class JbpmEngine extends BPMNEngine {
                 name: process.name,
                 logFile: serverPath.resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
-                assertionList: assertionList).buildTest()
+                assertionList: assertionList
+        ).buildTest()
     }
 }
