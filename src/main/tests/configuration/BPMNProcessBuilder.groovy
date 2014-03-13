@@ -4,16 +4,16 @@ import betsy.data.BPMNProcess
 import betsy.data.BPMNTestCase
 import betsy.data.engines.BPMNEngine
 
-/**
- * Created with IntelliJ IDEA.
- * User: stmcasar
- * Date: 13.03.14
- * Time: 10:03
- * To change this template use File | Settings | File Templates.
- */
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class BPMNProcessBuilder {
 
-    public static BPMNProcess buildProcess(String name, List<BPMNTestCase> testCases){
-        //new BPMNProcess(name: name,group: ,key: , groupId: , version: ,engine: )
+    public static BPMNProcess buildTaskProcess(String name, String key, String groupId, String version, String description){
+        new BPMNProcess(name: name, group: "tasks", key: key, groupId: groupId, version: version, description: description)
+    }
+
+    public static BPMNProcess buildGatewayProcess(String name, String key, String groupId, String version, String description ){
+        new BPMNProcess(name: name, group: "gateways", key: key, groupId: groupId, version: version, description: description)
     }
 }
