@@ -14,6 +14,6 @@ import betsy.data.engines.BPMNEngine
 class BPMNProcessBuilder {
 
     public static BPMNProcess buildProcess(String name, List<BPMNTestCase> testCases){
-        new BPMNProcess(name: name,group: ,key: , groupId: , version: ,engine: )
+        //new BPMNProcess(name: name,group: ,key: , groupId: , version: ,engine: )
     }
 }

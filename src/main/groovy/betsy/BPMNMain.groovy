@@ -37,9 +37,11 @@ class BPMNMain {
             //processes = new BPMNProcessParser(args: parser.arguments()).parse()
             BPMNProcess process = new BPMNProcess(name: "XOR", group: "gateways", key: "XOR", groupId: "org.camunda.bpm.dsg", version: "1.0")
             BPMNProcess process2 = new BPMNProcess(name: "simple", group: "tasks", key: "SimpleApplication", groupId: "org.camunda.bpm.dsg", version: "1.0")
+            BPMNProcess process3 = new BPMNProcess(name: "AND", group: "gateways", key: "AND", groupId: "org.camunda.bpm.dsg", version: "1.0")
             processes = new ArrayList<>()
             processes.add(process)
             processes.add(process2)
+            processes.add(process3)
         } catch (IllegalArgumentException e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
