@@ -32,9 +32,9 @@ class CamundaResourcesGenerator {
         pw.println("artifactId=${processName}")
         pw.close()
 
-        //copy process specific files
+        //copy process image
         ant.copy(todir: classesDir){
-            fileset(dir: srcDir.resolve("process")){ }
+            fileset(file: srcDir.resolve("process").resolve("${processName}.png"))
         }
         //generate pom
         generatePom(pomDir)

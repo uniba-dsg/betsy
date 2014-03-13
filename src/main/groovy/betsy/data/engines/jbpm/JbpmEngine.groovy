@@ -35,7 +35,7 @@ class JbpmEngine extends BPMNEngine {
     @Override
     void deploy(BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("D:\\programming\\testo"), "..\\apache-maven-3.2.1\\bin\\mvn clean install"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "D:\\programming\\apache-maven-3.2.1\\bin\\mvn clean install"))
         Thread.sleep(1500)
         //preparing ssh
         String homeDir = System.getenv("HOME") //System.getProperty("user.home")
@@ -54,7 +54,16 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void buildArchives(BPMNProcess process) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        ant.xslt(in: process.resourcePath.resolve("process/${process.name}.bpmn"),
+                out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2"),
+                style: xsltPath.resolve("jbpm.xsl"))
+        new JbpmResourcesGenerator(
+                jbpmSrcDir: Paths.get("bpmnRes/jbpm"),
+                destDir: process.targetPath.resolve("project"),
+                processName: process.name,
+                groupId: process.groupId,
+                version: process.version
+        ).generateProject()
     }
 
     @Override

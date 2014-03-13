@@ -25,16 +25,21 @@ class JbpmMain {
         FileTasks.mkdirs(testSuite.getPath());
 
         testSuite.engines.first().buildTest(testSuite.engines.first().processes.first())
-        testSuite.engines.first().install()
-        testSuite.engines.first().startup()
-        testSuite.engines.first().deploy(testSuite.engines.first().processes.first())
-        testSuite.engines.first().testProcess(testSuite.engines.first().processes.first())
+        testSuite.engines.first().buildArchives(testSuite.engines.first().processes.first())
+        try {
+            testSuite.engines.first().install()
+            testSuite.engines.first().startup()
+            testSuite.engines.first().deploy(testSuite.engines.first().processes.first())
+            testSuite.engines.first().testProcess(testSuite.engines.first().processes.first())
 
-        new BPMNReporter(tests: testSuite).createReports()
-        new Analyzer(csvFilePath: testSuite.csvFilePath,
-                reportsFolderPath: testSuite.reportsPath).createAnalytics()
-        testSuite.engines.first().storeLogs(testSuite.engines.first().processes.first())
+            new BPMNReporter(tests: testSuite).createReports()
+            new Analyzer(csvFilePath: testSuite.csvFilePath,
+                    reportsFolderPath: testSuite.reportsPath).createAnalytics()
+            testSuite.engines.first().storeLogs(testSuite.engines.first().processes.first())
+        }finally {
+            engine.shutdown()
+        }
+
         //engine.isRunning()
-        engine.shutdown()
     }
 }

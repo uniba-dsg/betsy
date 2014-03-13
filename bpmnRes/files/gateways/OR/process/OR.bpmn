@@ -3,6 +3,7 @@
   <bpmn2:process id="OR" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
     </bpmn2:endEvent>
     <bpmn2:inclusiveGateway id="ExclusiveGateway_2">
       <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>

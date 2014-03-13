@@ -34,7 +34,7 @@ class JbpmTester {
         RemoteRestRuntimeFactory factory = new RemoteRestRuntimeFactory(deploymentId, baseUrl, user, password)
         RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
-        ProcessInstance instance = kSession.startProcess(name)
+        kSession.startProcess("SimpleApplication")
 
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
