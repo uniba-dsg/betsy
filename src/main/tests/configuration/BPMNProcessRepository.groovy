@@ -6,16 +6,20 @@ import betsy.repositories.Repository
 import java.lang.reflect.Field
 
 import static configuration.BPMNGatewayProcesses.GATEWAYS
+import static configuration.BPMNTaskProcesses.TASKS
 
 class BPMNProcessRepository {
     private Repository<BPMNProcess> repo = new Repository<>()
 
     public BPMNProcessRepository(){
         repo.put("ALL",
-                [GATEWAYS])
+                GATEWAYS +
+                TASKS
+                as List<BPMNProcess>)
 
         Field[] fields = [
-            BPMNGatewayProcesses.class.declaredFields
+            BPMNGatewayProcesses.class.declaredFields +
+            BPMNTaskProcesses.class.declaredFields
         ].flatten()
 
         fields.each { Field f ->
