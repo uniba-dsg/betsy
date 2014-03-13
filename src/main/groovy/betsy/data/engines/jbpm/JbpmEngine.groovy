@@ -1,20 +1,16 @@
 package betsy.data.engines.jbpm
 
-import betsy.data.BetsyProcess
-import betsy.data.engines.LocalEngine
+import betsy.data.BPMNProcess
+import betsy.data.engines.BPMNEngine
+import betsy.executables.BPMNTestBuilder
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
+import betsy.tasks.WaitTasks
 
+import java.nio.file.Path
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: stavorndran
- * Date: 04.03.14
- * Time: 12:37
- * To change this template use File | Settings | File Templates.
- */
-class JbpmEngine extends LocalEngine {
+class JbpmEngine extends BPMNEngine {
     @Override
     String getName() {
         "jbpm"
@@ -24,9 +20,21 @@ class JbpmEngine extends LocalEngine {
         "http://localhost:8080"
     }
 
+    String getSystemURL(){
+        "ssh://admin@localhost:8001/system"
+    }
+
+    String getJbossName(){
+        "jboss-as-7.1.1.Final"
+    }
+
+    Path getJbossStandaloneDir(){
+        serverPath.resolve(jbossName).resolve("standalone")
+    }
+
     @Override
-    void deploy(BetsyProcess process) {
-        // maven deployment
+    void deploy(BPMNProcess process) {
+        // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("D:\\programming\\testo"), "..\\apache-maven-3.2.1\\bin\\mvn clean install"))
         Thread.sleep(1500)
         //preparing ssh
@@ -36,28 +44,31 @@ class JbpmEngine extends LocalEngine {
         FileTasks.createFile(Paths.get(homeDir + "/.ssh/config"), """Host localhost
     StrictHostKeyChecking no""")
 
-        //deploy
-        String groupId = "testo"
-        String artifactId = "testo"
-        String version = "1.0"
-        String systemUrl = "ssh://admin@localhost:8001/system"
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${groupId} ${artifactId} ${version} ${systemUrl}"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${groupId} ${artifactId} ${version} ${systemUrl}"))
+        //deploy by creating a deployment unit, which can be started
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
+
+        //waiting for the result of the deployment
+        WaitTasks.sleep(3000)
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    void buildArchives(BPMNProcess process) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
+    String getEndpointUrl(BPMNProcess process) {
+        "http://localhost:8080/jbpm-console/"
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    void storeLogs(BPMNProcess process) {
+        FileTasks.mkdirs(process.targetLogsPath)
+        ant.copy(todir: process.targetLogsPath) {
+            ant.fileset(dir: jbossStandaloneDir.resolve("log"))
+            ant.fileset(file: serverPath.resolve("log.txt"))
+        }
     }
 
     @Override
@@ -70,26 +81,64 @@ class JbpmEngine extends LocalEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant start.demo.noeclipse"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant start.demo.noeclipse"))
 
+        //waiting for jboss to startup
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
             http url: jbpmnUrl
         }
+
+        //waiting for jbpm-console for deployment and instantiating
+        WaitTasks.sleep(120000)
     }
 
     @Override
     void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant stop.demo"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant stop.demo"))
-        Thread.sleep(5000)
+        //waiting for shutdown
+        WaitTasks.sleep(5000)
+        // clean up data (with db and config files in the users home directory)
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant clean.demo"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant clean.demo"))
     }
 
     @Override
     boolean isRunning() {
-        ant.fail(message: "JBoss for engine ${serverPath} is still running") {
-            condition() {
-                http url: jbpmnUrl
+        try{
+            ant.fail(message: "JBoss for engine ${serverPath} is still running") {
+                condition() {
+                    http url: jbpmnUrl
+                }
             }
+            return false
+        } catch (Exception ignore) {
+            return true
         }
+    }
+
+    void testProcess(BPMNProcess process){
+        new JbpmTester(name: process.name,
+                deploymentId: "${process.groupId}:${process.name}:${process.version}",
+                baseUrl: new URL(getEndpointUrl(process))).runTest()
+    }
+
+    void buildTest(BPMNProcess process){
+        List<String> assertionList = new ArrayList<String>()
+
+        String line;
+        String rpath = process.resourcePath.resolve("assertions.txt").toString()
+        BufferedReader br = new BufferedReader(new FileReader(rpath))
+        try{
+            while ((line = br.readLine()) != null){
+                assertionList.add(line);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        new BPMNTestBuilder(packageString: "${name}.${process.group}",
+                name: process.name,
+                logFile: serverPath.resolve("log.txt"),
+                unitTestDir: process.targetTestSrcPath,
+                assertionList: assertionList).buildTest()
     }
 }

@@ -1,28 +1,36 @@
 package betsy.data.engines.jbpm
 
 import ant.tasks.AntUtil
+import betsy.data.BPMNProcess
+import betsy.data.BPMNTestSuite
+import betsy.data.engines.BPMNEngine
+import betsy.executables.analytics.Analyzer
+import betsy.executables.reporting.BPMNReporter
 
 import java.nio.file.Paths
 
-/**
- * Created with IntelliJ IDEA.
- * User: stavorndran
- * Date: 04.03.14
- * Time: 13:05
- * To change this template use File | Settings | File Templates.
- */
 class JbpmMain {
     private static final AntBuilder ant = AntUtil.builder()
 
     public static void main(String[] args){
+        List<BPMNEngine> engines = new ArrayList<>()
         JbpmEngine engine = new JbpmEngine(parentFolder: Paths.get("test"))
-        engine.install()
-        engine.startup()
-        Thread.sleep(120000)
-        engine.deploy(null)
-        Thread.sleep(3000)
-        new JbpmTester().runTest()
+        engines.add(engine)
+        List<BPMNProcess> processes = new ArrayList<>()
+        BPMNProcess process = new BPMNProcess(name: "simple", key: "simple", group: "tasks", groupId: "testo", version: "1.0")
+        processes.add(process)
+        BPMNTestSuite testSuite = BPMNTestSuite.createTests(engines, processes)
+
+        testSuite.engines.first().install()
+        testSuite.engines.first().startup()
+        testSuite.engines.first().deploy(testSuite.engines.first().processes.first())
+        testSuite.engines.first().testProcess(testSuite.engines.first().processes.first())
+
+        /*new BPMNReporter(tests: testSuite).createReports()
+        new Analyzer(csvFilePath: testSuite.csvFilePath,
+                reportsFolderPath: testSuite.reportsPath).createAnalytics()*/
+        testSuite.engines.first().storeLogs(testSuite.engines.first().processes.first())
         //engine.isRunning()
-        //engine.shutdown()
+        engine.shutdown()
     }
 }
