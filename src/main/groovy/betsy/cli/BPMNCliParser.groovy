@@ -18,6 +18,7 @@ class BPMNCliParser {
         )
         cli.o(longOpt: 'open-results-in-browser', "Opens results in default browser")
         cli.h(longOpt: 'help', "Print out usage information")
+        cli.b(longOpt: 'build-only', "Builds only the artifacts. Does nothing else.")
     }
 
     /**
@@ -42,6 +43,10 @@ class BPMNCliParser {
 
     public boolean openResultsInBrowser() {
         options.o
+    }
+
+    public boolean onlyBuildSteps() {
+        options.b
     }
 
     /**

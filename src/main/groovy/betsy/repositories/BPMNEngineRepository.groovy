@@ -11,7 +11,7 @@ class BPMNEngineRepository {
 
     public BPMNEngineRepository(){
         repo.put("ALL",
-                CAMUNDA as List<BPMNEngine>)
+                [CAMUNDA])
 
         // insert every engine into the map
         for (BPMNEngine engine : repo.getByName("ALL")) {
