@@ -38,7 +38,8 @@ dependencies {
     internal 'org.virtualbox:vboxjws:4.2.8'
     internal 'commons-daemon:commons-daemon:1.0.12'
     //internal 'org.apache.commons:commons-io:1.3.2'
-    internal files(fileTree(dir: "downloads", includes: ['commons-io-2.4.jar']))
+    //internal files(fileTree(dir: "downloads", includes: ['commons-io-2.4.jar']))
+    internal 'commons-io:commons-io:2.4'
     internal 'commons-lang:commons-lang:2.4'
     internal 'org.apache.ant:ant-apache-log4j:1.9.2'
     internal 'org.json:json:20140107'
@@ -47,16 +48,30 @@ dependencies {
     internal files(fileTree(dir: "downloads", includes: ['jbpm-runtime-manager-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['kie-services-client-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['kie-api-6.0.1.Final.jar']))
-    internal files(fileTree(dir: "downloads", includes: ['resteasy-jaxrs-3.0.6.Final.jar']))
+    //internal files(fileTree(dir: "downloads", includes: ['resteasy-jaxrs-3.0.6.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['drools-core-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['jbpm-audit-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['kie-internal-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['jbpm-shared-services-6.0.1.Final.jar']))
     internal files(fileTree(dir: "downloads", includes: ['jbpm-human-task-core-6.0.1.Final.jar']))
-    internal files(fileTree(dir: "downloads", includes: ['slf4j-api-1.7.6.jar']))
-    internal files(fileTree(dir: "downloads", includes: ['slf4j-simple-1.7.6.jar']))
-    internal files(fileTree(dir: "downloads", includes: ['javaee-api-7.0.jar']))
-    internal files(fileTree(dir: "downloads", includes: ['resteasy-jaxb-provider-3.0.6.Final.jar']))
+    //internal files(fileTree(dir: "downloads", includes: ['slf4j-api-1.7.6.jar']))
+    //internal files(fileTree(dir: "downloads", includes: ['slf4j-simple-1.7.6.jar']))
+    //internal files(fileTree(dir: "downloads", includes: ['javaee-api-7.0.jar']))
+    //internal files(fileTree(dir: "downloads", includes: ['resteasy-jaxb-provider-3.0.6.Final.jar']))
+
+    internal 'javax:javaee-api:7.0'
+    //internal 'org.drools:drools-core:6.0.1.Final'
+    //internal 'org.kie:kie-api:6.0.1.Final'
+    //internal 'org.kie:kie-internal:6.0.1.Final'
+    //internal 'org.kie.remote:kie-services-client:6.0.1.Final'
+    internal 'org.jboss.resteasy:resteasy-jaxrs:3.0.6.Final'
+    internal 'org.jboss.resteasy:resteasy-jaxb-provider:3.0.6.Final'
+    //internal 'org.jbpm:jbpm-audit:6.0.1.Final'
+    //internal 'org.jbpm:jbpm-human-task-core:6.0.1.Final'
+    //internal 'org.jbpm:jbpm-runtime-manager:6.0.1.Final'
+    //internal 'org.jbpm:jbpm-shared-services:6.0.1.Final'
+    internal 'org.slf4j:slf4j-api:1.7.6'
+    internal 'org.slf4j:slf4j-simple:1.7.6'
 
     testCompile 'junit:junit:4.11'
 
@@ -69,6 +84,54 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
+}
+
+task downloadMaven {
+    outputs.file new File("${config.downloads.dir}/${config.maven.download.filename}")
+
+    doLast {
+        ant.mkdir dir: config.downloads.dir
+        ant.get dest: config.downloads.dir, maxtime: 240, {
+            ant.url url: config.maven.download.url
+        }
+    }
+}
+
+task installMaven {
+    ext.srcFile = new File("${config.downloads.dir}/${config.maven.download.filename}")
+    ext.destDir = new File(config.maven.container)
+
+    inputs.file srcFile
+    outputs.dir destDir
+
+    doLast {
+        ant.mkdir dir: new File(config.maven.home)
+        ant.unzip src: srcFile, dest: destDir
+    }
+}
+
+task downloadJPBMDeployer {
+    outputs.file new File("${config.downloads.dir}/${config.jbpmdeployer.download.filename}")
+
+    doLast {
+        ant.mkdir dir: config.downloads.dir
+        ant.get dest: config.downloads.dir, maxtime: 240, {
+            ant.url url: config.jbpmdeployer.download.url
+        }
+    }
+}
+
+task installJBPMDeployer {
+    ext.srcFile = new File("${config.downloads.dir}/${config.jbpmdeployer.download.filename}")
+    ext.destDir = new File(config.jbpmdeployer.home)
+
+    inputs.file srcFile
+    outputs.dir destDir
+
+    doLast {
+        ant.mkdir dir: new File(config.jbpmdeployer.home)
+        ant.unzip src: srcFile, dest: destDir
+    }
 }
 
 task downloadSoapUI {
@@ -120,10 +183,14 @@ task installAnt {
 
 }
 
+installMaven.dependsOn downloadMaven
+installJBPMDeployer.dependsOn downloadJPBMDeployer
 installSoapUI.dependsOn downloadSoapUI
 compileGroovy.dependsOn installSoapUI
 installAnt.dependsOn downloadAnt
 installSoapUI.dependsOn installAnt
+installSoapUI.dependsOn installJBPMDeployer
+installSoapUI.dependsOn installMaven
 
 run {
     if (project.hasProperty('args')) {

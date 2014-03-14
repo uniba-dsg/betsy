@@ -36,7 +36,8 @@ class JbpmEngine extends BPMNEngine {
     @Override
     void deploy(BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "D:\\programming\\apache-maven-3.2.1\\bin\\mvn clean install"))
+        Path mavenPath = Paths.get("maven/apache-maven-3.2.1/bin")
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
         Thread.sleep(1500)
         //preparing ssh
         String homeDir = System.getenv("HOME") //System.getProperty("user.home")
@@ -46,8 +47,8 @@ class JbpmEngine extends BPMNEngine {
     StrictHostKeyChecking no""")
 
         //deploy by creating a deployment unit, which can be started
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("downloads"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("jbpmdeployer/JPBM-Deployer-1.1"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("jbpmdeployer/JPBM-Deployer-1.1"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
 
         //waiting for the result of the deployment
         WaitTasks.sleep(3000)

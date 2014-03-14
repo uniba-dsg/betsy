@@ -6,6 +6,24 @@ downloads {
     dir = "downloads"
 }
 
+jbpmdeployer {
+    container = "jbpmdeployer"
+    home = "jbpmdeployer/JPBM-Deployer-1.1"
+    download {
+        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/jbpm-deployer-1.1.zip"
+        filename = "jbpm-deployer-1.1.zip"
+    }
+}
+
+maven {
+    container = "maven"
+    home = "maven/apache-maven-3.2.1"
+    download {
+        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-maven-3.2.1.zip"
+        filename = "apache-maven-3.2.1.zip"
+    }
+}
+
 soapui {
     container = "soapui"
     home = "soapui/SoapUI-4.6.1"
