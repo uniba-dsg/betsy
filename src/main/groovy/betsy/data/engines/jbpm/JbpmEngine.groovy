@@ -1,6 +1,7 @@
 package betsy.data.engines.jbpm
 
 import betsy.data.BPMNProcess
+import betsy.data.BPMNTestCase
 import betsy.data.engines.BPMNEngine
 import betsy.executables.BPMNTestBuilder
 import betsy.tasks.ConsoleTasks
@@ -125,34 +126,23 @@ class JbpmEngine extends BPMNEngine {
     }
 
     void testProcess(BPMNProcess process){
-        new JbpmTester(name: process.name,
-                deploymentId: "${process.groupId}:${process.name}:${process.version}",
-                baseUrl: new URL(getEndpointUrl(process)),
-                testSrc: process.targetTestSrcPath,
-                reportPath: process.targetReportsPath,
-                testBin: process.targetTestBinPath
-        ).runTest()
+        for (BPMNTestCase testCase : process.testCases){
+            new JbpmTester(name: process.name,
+                    deploymentId: "${process.groupId}:${process.name}:${process.version}",
+                    baseUrl: new URL(getEndpointUrl(process)),
+                    testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
+                    reportPath: process.targetReportsPath,
+                    testBin: process.targetTestBinPath.resolve("case${testCase.number}")
+            ).runTest()
+        }
     }
 
     void buildTest(BPMNProcess process){
-        List<String> assertionList = new ArrayList<String>()
-
-        String line;
-        String rpath = process.resourcePath.resolve("assertions.txt").toString()
-        BufferedReader br = new BufferedReader(new FileReader(rpath))
-        try{
-            while ((line = br.readLine()) != null){
-                assertionList.add(line);
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 name: process.name,
                 logFile: serverPath.resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
-                assertionList: assertionList
-        ).buildTest()
+                process: process
+        ).buildTests()
     }
 }

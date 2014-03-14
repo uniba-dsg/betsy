@@ -34,7 +34,8 @@ class JbpmTester {
         RemoteRestRuntimeFactory factory = new RemoteRestRuntimeFactory(deploymentId, baseUrl, user, password)
         RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
-        kSession.startProcess("SimpleApplication")
+        //TODO start process with variables
+        kSession.startProcess(name)
 
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
@@ -56,7 +57,7 @@ class JbpmTester {
                 pathelement(path: systemClasspath)
             }
         }
-        ant.junit(printsummary: "on", fork: "true", haltonfailure: "yes"){
+        ant.junit(printsummary: "on", fork: "true", haltonfailure: "no"){
             classpath{
                 pathelement(path: systemClasspath)
                 pathelement(location: testBin)

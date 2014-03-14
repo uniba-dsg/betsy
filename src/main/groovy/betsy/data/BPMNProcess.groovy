@@ -12,7 +12,6 @@ class BPMNProcess implements Cloneable, Comparable {
     String name
     String group
 
-    String key
     String groupId
     String version
 
@@ -22,7 +21,7 @@ class BPMNProcess implements Cloneable, Comparable {
 
     @Override
     protected Object clone(){
-        return new BPMNProcess(name: name, group: group, key: key, groupId: groupId, version: version, engine: engine, testCases: testCases)
+        return new BPMNProcess(name: name, group: group, groupId: groupId, version: version, engine: engine, testCases: testCases)
     }
 
     @Override
@@ -36,10 +35,6 @@ class BPMNProcess implements Cloneable, Comparable {
 
     String getGroup(){
         group
-    }
-
-    String getKey(){
-        key
     }
 
     String getGroupId(){
