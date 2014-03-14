@@ -59,7 +59,7 @@ class JbpmEngine extends BPMNEngine {
                 out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2"),
                 style: xsltPath.resolve("jbpm.xsl"))
         new JbpmResourcesGenerator(
-                jbpmSrcDir: Paths.get("bpmnRes/jbpm"),
+                jbpmSrcDir: Paths.get("src/main/tests/files/bpmnRes/jbpm"),
                 destDir: process.targetPath.resolve("project"),
                 processName: process.name,
                 groupId: process.groupId,

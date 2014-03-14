@@ -5,6 +5,7 @@ import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class CamundaResourcesGenerator {
 
@@ -20,10 +21,13 @@ class CamundaResourcesGenerator {
         //directory structure
         Path pomDir = destDir.resolve("META-INF/maven/${groupId}/${processName}")
         Path classesDir = destDir.resolve("WEB-INF/classes")
+        Path srcDestDir = destDir.resolve("../src").normalize()
+        Path camundaResDir = srcDir.resolve("../../../camunda").normalize()
 
         //setup infrastructure
         FileTasks.mkdirs(pomDir)
         FileTasks.mkdirs(classesDir)
+        FileTasks.mkdirs(srcDestDir)
 
         //generate pom.properties
         PrintWriter pw = new PrintWriter(pomDir.resolve("pom.properties").toString(), "UTF-8")
@@ -52,11 +56,13 @@ class CamundaResourcesGenerator {
             rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
         }
 
-        // compile sources
-        ant.javac(srcdir: "${srcDir}/src", destdir: classesDir, includeantruntime: false) {
+
+        // generate and compile sources
+        generateServletProcessApplication(srcDestDir)
+        ant.javac(srcdir: "${srcDestDir}", destdir: classesDir, includeantruntime: false) {
             classpath{
-                pathelement(location: "bpmnRes/camunda/camunda-engine-7.0.0-Final.jar")
-                pathelement(location: "bpmnRes/camunda/javaee-api-7.0.jar")
+                pathelement(location: "${camundaResDir}/camunda-engine-7.0.0-Final.jar")
+                pathelement(location: "${camundaResDir}/javaee-api-7.0.jar")
             }
         }
         //pack war
@@ -136,6 +142,20 @@ class CamundaResourcesGenerator {
         ant.echo(message: processesXmlString, file: classesDir.resolve("META-INF/processes.xml"))
     }
 
+    private void generateServletProcessApplication(Path srcDestDir){
+        String fileString = """package ${groupId};
+
+import org.camunda.bpm.application.ProcessApplication;
+import org.camunda.bpm.application.impl.ServletProcessApplication;
+
+@ProcessApplication("${processName} Application")
+public class ProcessTestApplication extends ServletProcessApplication{
+    //empty implementation
+}
+
+"""
+        ant.echo(message: fileString, file: Paths.get("${srcDestDir}/${groupId.replaceAll('.', '/')}/ProcessTestApplication.java"))
+    }
 }
 
 

@@ -27,7 +27,7 @@ class CamundaInstaller {
         ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
                 dest: destinationDir
 
-        ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: "bpmnRes/camunda/groovy-all-2.2.0.jar")
+        ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: "src/main/tests/files/bpmnRes/camunda/groovy-all-2.2.0.jar")
 
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat")
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
