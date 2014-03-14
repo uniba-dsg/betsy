@@ -4,7 +4,16 @@ import betsy.data.steps.BPMNTestStep
 
 class BPMNTestCase {
 
+    int number
     List<BPMNTestStep> testSteps = []
+
+    public BPMNTestCase(){
+        number = 1
+    }
+
+    public BPMNTestCase(int number){
+        this.number = number
+    }
 
     public BPMNTestCase addStep(BPMNTestStep testStep){
         testSteps.add(testStep)

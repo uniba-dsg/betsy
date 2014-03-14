@@ -1,12 +1,5 @@
 package betsy.data.steps
 
-/**
- * Created with IntelliJ IDEA.
- * User: stmcasar
- * Date: 13.03.14
- * Time: 12:20
- * To change this template use File | Settings | File Templates.
- */
 class BPMNTestStep {
 
     /**
@@ -14,57 +7,57 @@ class BPMNTestStep {
      */
     List<String> assertions = []
 
-    public addAssertions(String assertion){
+    public BPMNTestStep addAssertions(String assertion){
         assertions.add(assertion)
 
         this
     }
 
-    public void assertXorTrue(){
+    public BPMNTestStep assertXorTrue(){
         assertTrue()
         assertSuccess()
     }
 
-    public void assertXorFalse(){
+    public BPMNTestStep assertXorFalse(){
         assertFalse()
         assertSuccess()
     }
 
-    public void assertAnd(){
+    public BPMNTestStep assertAnd(){
         assertTask1()
         assertTask2()
         assertSuccess()
     }
 
-    public void assertOrSingleFlow(){
+    public BPMNTestStep assertOrSingleFlow(){
         assertTask1()
         assertSuccess()
     }
 
-    public void assertOrMultiFlow(){
+    public BPMNTestStep assertOrMultiFlow(){
         assertTask1()
         assertTask2()
         assertSuccess()
     }
 
-    public void assertSuccess(){
-        assertions << "success"
+    public BPMNTestStep assertSuccess(){
+        addAssertions("success")
     }
 
-    public void assertTask1(){
-        assertions << "task1"
+    public BPMNTestStep assertTask1(){
+        addAssertions("task1")
     }
 
-    public void assertTask2(){
-        assertions << "task2"
+    public BPMNTestStep assertTask2(){
+        addAssertions("task2")
     }
 
-    public void assertTrue(){
-        assertions << "true"
+    public BPMNTestStep assertTrue(){
+        addAssertions("true")
     }
 
-    public void assertFalse(){
-        assertions << "true"
+    public BPMNTestStep assertFalse(){
+        addAssertions("true")
     }
 
 }

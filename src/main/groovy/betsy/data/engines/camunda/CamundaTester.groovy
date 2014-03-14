@@ -17,7 +17,6 @@ class CamundaTester {
     Path testBin
     Path testSrc
     String key
-    List<String> assertionList
     Path serverDir
 
     /**
@@ -36,6 +35,7 @@ class CamundaTester {
         JSONObject requestBody = new JSONObject()
         JSONObject variables = new JSONObject()
         JSONObject value = new JSONObject()
+        //TODO get it from the process
         value.put("value", true)
         value.put("type", "Boolean")
         variables.put("test", value)
@@ -65,7 +65,7 @@ class CamundaTester {
                 pathelement(path: systemClasspath)
             }
         }
-        ant.junit(printsummary: "on", fork: "true", haltonfailure: "yes"){
+        ant.junit(printsummary: "on", fork: "true", haltonfailure: "no"){
             classpath{
                 pathelement(path: systemClasspath)
                 pathelement(location: testBin)

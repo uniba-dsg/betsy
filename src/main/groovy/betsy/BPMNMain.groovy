@@ -70,8 +70,6 @@ class BPMNMain {
         } catch (Exception e) {
             Throwable cleanedException = StackTraceUtils.deepSanitize(e)
             log.error cleanedException.getMessage(), cleanedException
-        } finally {
-            System.exit(0);
         }
     }
 

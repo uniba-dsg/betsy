@@ -15,19 +15,13 @@ class BPMNTestBuilder {
     String name
     Path logFile
     String unitTestDir
-    List<String> assertionList
-
     BPMNProcess process
 
-
-    public void buildTest() {
-
-        int testCaseCounter = 1
+    public void buildTests() {
 
         //Build test for each Test Case
         for(BPMNTestCase testCase: process.testCases){
-            assertionList = testCase.testSteps.get(0).assertions
-
+            List<String> assertionList = testCase.testSteps.get(0).assertions
 
             //assemble array of assertion for unitTestString
             String assertionListString = "{";
@@ -115,10 +109,7 @@ public class ${name} {
 
 }
 """
-            ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/Case${testCaseCounter}/${packageString.replace('.', '/')}/${name}.java"))
-            testCaseCounter++
-
+            ant.echo(message: unitTestString, file: Paths.get("${unitTestDir}/case${testCase.number}/${packageString.replace('.', '/')}/${name}.java"))
         }
     }
-
 }

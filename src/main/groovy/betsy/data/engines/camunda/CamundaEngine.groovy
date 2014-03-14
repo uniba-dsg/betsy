@@ -1,8 +1,10 @@
 package betsy.data.engines.camunda
 
 import betsy.data.BPMNProcess
+import betsy.data.BPMNTestCase
 import betsy.data.engines.BPMNEngine
 import betsy.executables.BPMNTestBuilder
+import betsy.executables.reporting.BPMNTestcaseMerger
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
@@ -54,25 +56,12 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     void buildTest(BPMNProcess process){
-        List<String> assertionList = new ArrayList<String>()
-
-//        String line;
-//        String rpath = process.resourcePath.resolve("assertions.txt").toString()
-//        BufferedReader br = new BufferedReader(new FileReader(rpath))
-//        try{
-//            while ((line = br.readLine()) != null){
-//                assertionList.add(line);
-//            }
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 name: process.name,
                 logFile: tomcatDir.resolve("bin").resolve("log.txt"),
                 unitTestDir: process.targetTestSrcPath,
-                assertionList: assertionList,
-                process: process).buildTest()
+                process: process
+        ).buildTests()
     }
 
     @Override
@@ -126,11 +115,14 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     void testProcess(BPMNProcess process){
-        new CamundaTester(testSrc: process.targetTestSrcPath,
-                restURL: getEndpointUrl(process),
-                reportPath: process.targetReportsPath,
-                testBin: process.targetTestBinPath,
-                key: process.key,
-                serverDir: tomcatDir).runTest()
+        for (BPMNTestCase testCase : process.testCases){
+            new CamundaTester(testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
+                    restURL: getEndpointUrl(process),
+                    reportPath: process.targetReportsPath,
+                    testBin: process.targetTestBinPath.resolve("case${testCase.number}"),
+                    key: process.key,
+                    serverDir: tomcatDir).runTest()
+        }
+        new BPMNTestcaseMerger(reportPath: process.targetReportsPath).mergeTestCases()
     }
 }
