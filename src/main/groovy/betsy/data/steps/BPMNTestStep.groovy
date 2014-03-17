@@ -57,7 +57,7 @@ class BPMNTestStep {
     }
 
     public BPMNTestStep assertFalse(){
-        addAssertions("true")
+        addAssertions("false")
     }
 
 }

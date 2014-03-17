@@ -7,7 +7,7 @@ class BPMNGatewayProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess XOR = builder.buildGatewayProcess(
-            "XOR", "de.uniba.dsg", "1.0", "A simple Test for the XOR Gateway",
+            "ExclusiveGateway", "de.uniba.dsg", "1.0", "A simple Test for the XOR Gateway",
             [
                     new BPMNTestCase().buildXorTrue().buildXorFalse()
             ]
