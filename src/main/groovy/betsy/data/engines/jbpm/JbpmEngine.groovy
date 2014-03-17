@@ -82,7 +82,9 @@ class JbpmEngine extends BPMNEngine {
         FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: jbossStandaloneDir.resolve("log"))
-            ant.fileset(file: serverPath.resolve("log.txt"))
+            for(BPMNTestCase tc: process.testCases){
+                ant.fileset(file: serverPath.resolve("log${tc.number}.txt"))
+            }
         }
     }
 
@@ -132,11 +134,12 @@ class JbpmEngine extends BPMNEngine {
 
     void testProcess(BPMNProcess process){
         for (BPMNTestCase testCase : process.testCases){
-            new JbpmTester(name: process.name,
+            new JbpmTester(testCase: testCase,
+                    name: process.name,
                     deploymentId: "${process.groupId}:${process.name}:${process.version}",
                     baseUrl: new URL(getEndpointUrl(process)),
                     testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
-                    reportPath: process.targetReportsPath,
+                    reportPath: process.targetReportsPath.resolve("case${testCase.number}"),
                     testBin: process.targetTestBinPath.resolve("case${testCase.number}")
             ).runTest()
         }
@@ -146,7 +149,7 @@ class JbpmEngine extends BPMNEngine {
     void buildTest(BPMNProcess process){
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 name: process.name,
-                logFile: serverPath.resolve("log.txt"),
+                logDir: serverPath,
                 unitTestDir: process.targetTestSrcPath,
                 process: process
         ).buildTests()

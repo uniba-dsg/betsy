@@ -1,6 +1,7 @@
 package betsy.data.engines.jbpm
 
 import ant.tasks.AntUtil
+import betsy.data.BPMNTestCase
 import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.kie.api.runtime.KieSession
@@ -13,6 +14,7 @@ class JbpmTester {
 
     private static final AntBuilder ant = AntUtil.builder()
 
+    BPMNTestCase testCase
     String name
     String deploymentId
     URL baseUrl

@@ -58,7 +58,7 @@ class CamundaEngine extends BPMNEngine {
     void buildTest(BPMNProcess process){
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 name: process.name,
-                logFile: tomcatDir.resolve("bin").resolve("log.txt"),
+                logDir: tomcatDir.resolve("bin"),
                 unitTestDir: process.targetTestSrcPath,
                 process: process
         ).buildTests()
@@ -74,7 +74,9 @@ class CamundaEngine extends BPMNEngine {
         FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcatDir.resolve("logs"))
-            ant.fileset(file: tomcatDir.resolve("bin").resolve("log.txt"))
+            for(BPMNTestCase tc: process.testCases){
+                ant.fileset(file: tomcatDir.resolve("bin").resolve("log${tc.number}.txt"))
+            }
         }
     }
 
@@ -116,9 +118,10 @@ class CamundaEngine extends BPMNEngine {
     @Override
     void testProcess(BPMNProcess process){
         for (BPMNTestCase testCase : process.testCases){
-            new CamundaTester(testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
+            new CamundaTester(testCase: testCase,
+                    testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
                     restURL: getEndpointUrl(process),
-                    reportPath: process.targetReportsPath,
+                    reportPath: process.targetReportsPath.resolve("case${testCase.number}"),
                     testBin: process.targetTestBinPath.resolve("case${testCase.number}"),
                     key: process.name,
                     serverDir: tomcatDir).runTest()

@@ -1,6 +1,8 @@
 package betsy.data.engines.camunda
 
 import ant.tasks.AntUtil
+import betsy.data.BPMNProcess
+import betsy.data.BPMNTestCase
 import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONArray
@@ -12,6 +14,7 @@ class CamundaTester {
 
     private static final AntBuilder ant = AntUtil.builder()
 
+    BPMNTestCase testCase
     String restURL
     Path reportPath
     Path testBin
@@ -33,13 +36,7 @@ class CamundaTester {
 
         //assembling JSONObject for second request
         JSONObject requestBody = new JSONObject()
-        JSONObject variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        //TODO get it from the process
-        value.put("value", true)
-        value.put("type", "Boolean")
-        variables.put("test", value)
-        requestBody.put("variables", variables)
+        requestBody.put("variables", testCase.variables)
         requestBody.put("businessKey", "key-${key}")
 
         //second request to start process using id and Json to get the process instance id

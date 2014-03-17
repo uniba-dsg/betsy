@@ -30,21 +30,23 @@ class BPMNTestcaseMerger {
         //extract information
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
         File reportDir = new File(reportPath.toString())
-        reportDir.eachFile(FileType.FILES){ file ->
+        reportDir.eachFile(FileType.DIRECTORIES){ dir ->
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
-            Document document = dBuilder.parse(file)
-            document.getDocumentElement().normalize()
-            Node testSuite = document.getDocumentElement()
-            name = testSuite.getAttribute("name")
-            errors += Integer.parseInt(testSuite.getAttribute("errors"))
-            failures += Integer.parseInt(testSuite.getAttribute("failures"))
-            skipped += Integer.parseInt(testSuite.getAttribute("skipped"))
-            tests += Integer.parseInt(testSuite.getAttribute("tests"))
-            time += Double.parseDouble(testSuite.getAttribute("time"))
-            testCases.add(testSuite.getElementsByTagName("testcase").item(0))
+            dir.eachFile(FileType.FILES) { file ->
+                Document document = dBuilder.parse(file)
+                document.getDocumentElement().normalize()
+                Node testSuite = document.getDocumentElement()
+                name = testSuite.getAttribute("name")
+                errors += Integer.parseInt(testSuite.getAttribute("errors"))
+                failures += Integer.parseInt(testSuite.getAttribute("failures"))
+                skipped += Integer.parseInt(testSuite.getAttribute("skipped"))
+                tests += Integer.parseInt(testSuite.getAttribute("tests"))
+                time += Double.parseDouble(testSuite.getAttribute("time"))
+                testCases.add(testSuite.getElementsByTagName("testcase").item(0))
 
-            //remove 'Test-' that this file is not detected by junit html report generation
-            file.renameTo(reportPath.resolve(file.getName().substring(5)).toString())
+                //remove 'Test-' that this file is not detected by junit html report generation
+                file.renameTo(reportPath.resolve(dir.getName()).resolve(file.getName().substring(5)).toString())
+            }
         }
 
         //create merged test suite xml file

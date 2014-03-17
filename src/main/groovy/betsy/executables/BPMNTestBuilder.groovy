@@ -13,14 +13,19 @@ class BPMNTestBuilder {
 
     String packageString
     String name
-    Path logFile
+    Path logDir
     String unitTestDir
     BPMNProcess process
 
     public void buildTests() {
 
+
+
         //Build test for each Test Case
         for(BPMNTestCase testCase: process.testCases){
+
+            Path logFile = logDir.resolve("log${testCase.number}.txt")
+
             List<String> assertionList = testCase.testSteps.get(0).assertions
 
             //assemble array of assertion for unitTestString
