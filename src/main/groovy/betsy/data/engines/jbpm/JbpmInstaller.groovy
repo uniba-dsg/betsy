@@ -7,13 +7,6 @@ import betsy.tasks.FileTasks
 
 import java.nio.file.Path
 
-/**
- * Created with IntelliJ IDEA.
- * User: stavorndran
- * Date: 04.03.14
- * Time: 12:59
- * To change this template use File | Settings | File Templates.
- */
 class JbpmInstaller {
     private static final AntBuilder ant = AntUtil.builder()
 

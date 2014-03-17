@@ -5,7 +5,6 @@ import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.kie.api.runtime.KieSession
 import org.kie.api.runtime.manager.RuntimeEngine
-import org.kie.api.runtime.process.ProcessInstance
 import org.kie.services.client.api.RemoteRestRuntimeFactory
 
 import java.nio.file.Path

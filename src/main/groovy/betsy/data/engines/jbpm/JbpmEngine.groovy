@@ -4,6 +4,7 @@ import betsy.data.BPMNProcess
 import betsy.data.BPMNTestCase
 import betsy.data.engines.BPMNEngine
 import betsy.executables.BPMNTestBuilder
+import betsy.executables.reporting.BPMNTestcaseMerger
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
@@ -40,7 +41,10 @@ class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
         Thread.sleep(1500)
         //preparing ssh
-        String homeDir = System.getenv("HOME") //System.getProperty("user.home")
+        String homeDir = System.getenv("HOME")
+        if(homeDir == null){
+            homeDir = System.getProperty("user.home")
+        }
         // delete known_hosts file for do not getting trouble with changing remote finger print
         //FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
         FileTasks.createFile(Paths.get(homeDir + "/.ssh/config"), """Host localhost
@@ -136,6 +140,7 @@ class JbpmEngine extends BPMNEngine {
                     testBin: process.targetTestBinPath.resolve("case${testCase.number}")
             ).runTest()
         }
+        new BPMNTestcaseMerger(reportPath: process.targetReportsPath).mergeTestCases()
     }
 
     void buildTest(BPMNProcess process){
