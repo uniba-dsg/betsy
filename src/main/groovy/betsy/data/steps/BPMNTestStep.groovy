@@ -65,7 +65,12 @@ class BPMNTestStep {
         addAssertions("false")
     }
 
+    public BPMNTestStep assertDefault(){
+        addAssertions("default")
+        assertSuccess()
+    }
+
     public BPMNTestStep assertRuntimeException(){
-        addAssertions("runetimeException")
+        addAssertions("runtimeException")
     }
 }

@@ -24,7 +24,7 @@ class BPMNGatewayProcesses {
     )
 
     public static final BPMNProcess AND_CONDITION = builder.buildGatewayProcess(
-            "ParallelGatewayWithCondtions", "de.uniba.dsg", "1.0", "A test for the parallel gateway to ignore conditions",
+            "ParallelGatewayWithConditions", "de.uniba.dsg", "1.0", "A test for the parallel gateway to ignore conditions",
             [
                     new BPMNTestCase(1).buildAnd()
             ]
@@ -39,10 +39,21 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess OR_DEFAULT = builder.buildGatewayProcess(
+            "InclusiveGatewayWithDefault", "de.uniba.dsg", "1.0", "A simple test for the inclusive gateway",
+            [
+                    new BPMNTestCase(1).buildOrMultiFlow(),
+                    new BPMNTestCase(2).buildOrSingleFlow1(),
+                    new BPMNTestCase(3).buildOrSingleFlow2(),
+                    new BPMNTestCase(4).buildDefault(),
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
             AND,
             AND_CONDITION,
-            OR
+            OR,
+            OR_DEFAULT
     ].flatten() as List<BPMNProcess>
 }
