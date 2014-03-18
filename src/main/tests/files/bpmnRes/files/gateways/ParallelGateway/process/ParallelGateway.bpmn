@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_IxhakJ7YEeOuPIo8BooRNg" targetNamespace="http://activiti.org/bpmn">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_IxhakJ7YEeOuPIo8BooRNg">
   <bpmn2:process id="ParallelGateway" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
     </bpmn2:endEvent>
     <bpmn2:parallelGateway id="ParallelGateway_2">
       <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
@@ -14,7 +15,7 @@
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
     </bpmn2:parallelGateway>
-    <bpmn2:scriptTask id="ScriptTask_2" name="Task 2" scriptFormat="groovy">
+    <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
@@ -24,7 +25,7 @@ bw.newLine();
 bw.close();
 }catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
-    <bpmn2:scriptTask id="ScriptTask_1" name="Task 1" scriptFormat="groovy">
+    <bpmn2:scriptTask id="ScriptTask_1" name="Task 1">
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
@@ -39,7 +40,7 @@ bw.close();
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ParallelGateway_1" targetRef="ScriptTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="ParallelGateway_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="ParallelGateway_2"/>
-    <bpmn2:scriptTask id="start" name="Start" scriptFormat="groovy">
+    <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
@@ -54,7 +55,7 @@ f.createNewFile();
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="start"/>
-    <bpmn2:scriptTask id="end" name="End" scriptFormat="groovy">
+    <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
