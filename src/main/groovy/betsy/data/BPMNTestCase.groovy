@@ -30,6 +30,17 @@ class BPMNTestCase {
     }
 
     public BPMNTestCase buildAnd(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", "a")
+        value1.put("type", "String")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
         addStep(new BPMNTestStep().assertAnd())
     }
 
