@@ -16,6 +16,16 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess XOR_DEFAULT = builder.buildGatewayProcess(
+            "ExclusiveGatewayWithDefault", "de.uniba.dsg", "1.0", "A simple test for the exclusive gateway with default path",
+            [
+                    new BPMNTestCase(1).buildXorFalse(), //same as in XOR without default
+                    new BPMNTestCase(2).buildXorTrue(),  //same as in XOR without default
+                    new BPMNTestCase(3).buildXorBothTrue(),   //same as in XOR without default
+                    new BPMNTestCase(4).buildXorWithDefaultBothFalse()
+            ]
+    )
+
     public static final BPMNProcess AND = builder.buildGatewayProcess(
             "ParallelGateway", "de.uniba.dsg", "1.0", "A simple test for the parallel gateway",
             [
@@ -51,6 +61,7 @@ class BPMNGatewayProcesses {
 
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
+            XOR_DEFAULT,
             AND,
             AND_CONDITION,
             OR,
