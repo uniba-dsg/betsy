@@ -29,8 +29,13 @@ class BPMNTestStep {
         assertSuccess()
     }
 
-    public BPMNTestStep assertOrSingleFlow(){
+    public BPMNTestStep assertOrSingleFlow1(){
         assertTask1()
+        assertSuccess()
+    }
+
+    public BPMNTestStep assertOrSingleFlow2(){
+        assertTask2()
         assertSuccess()
     }
 
@@ -60,4 +65,7 @@ class BPMNTestStep {
         addAssertions("false")
     }
 
+    public BPMNTestStep assertRuntimeException(){
+        addAssertions("runetimeException")
+    }
 }

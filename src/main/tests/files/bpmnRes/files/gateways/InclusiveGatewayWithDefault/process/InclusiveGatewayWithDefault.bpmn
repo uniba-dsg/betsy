@@ -6,23 +6,14 @@
       <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
     </bpmn2:endEvent>
     <bpmn2:inclusiveGateway id="InclusiveGateway_2">
-      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
     </bpmn2:inclusiveGateway>
-    <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
-      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("task2");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
-    </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_1" name="Task 1">
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
 java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 bw.append("task1");
@@ -31,8 +22,6 @@ bw.close();
 }catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="InclusiveGateway_2" targetRef="end"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="InclusiveGateway_2"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="InclusiveGateway_2"/>
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
@@ -57,17 +46,42 @@ bw.close();
 }catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
-    <bpmn2:inclusiveGateway id="InclusiveGateway_1">
+    <bpmn2:inclusiveGateway id="InclusiveGateway_1" default="SequenceFlow_7">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
     </bpmn2:inclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_2">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("b")</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
+    <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
+      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:script><![CDATA[try{
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+bw.append("task2");
+bw.newLine();
+bw.close();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="ScriptTask_2" targetRef="InclusiveGateway_2"/>
+    <bpmn2:scriptTask id="ScriptTask_3" name="Default">
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+      <bpmn2:script><![CDATA[try{
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+bw.append("default");
+bw.newLine();
+bw.close();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" name="" sourceRef="ScriptTask_3" targetRef="InclusiveGateway_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" name="" sourceRef="ScriptTask_1" targetRef="InclusiveGateway_2"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="InclusiveGateway">
@@ -121,7 +135,7 @@ bw.close();
         <dc:Bounds height="80.0" width="100.0" x="504.0" y="252.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_6" bpmnElement="ScriptTask_2">
-        <dc:Bounds height="80.0" width="100.0" x="504.0" y="444.0"/>
+        <dc:Bounds height="80.0" width="100.0" x="504.0" y="347.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_ScriptTask_3" targetElement="_BPMNShape_InclusiveGateway_2">
         <di:waypoint xsi:type="dc:Point" x="376.0" y="387.0"/>
@@ -150,30 +164,37 @@ bw.close();
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="_BPMNShape_InclusiveGateway_2" targetElement="_BPMNShape_ScriptTask_6">
+        <di:waypoint xsi:type="dc:Point" x="464.0" y="386.0"/>
+        <di:waypoint xsi:type="dc:Point" x="504.0" y="387.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="481.0" y="387.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_7" bpmnElement="ScriptTask_3">
+        <dc:Bounds height="73.0" width="97.0" x="505.0" y="444.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="_BPMNShape_ScriptTask_6" targetElement="_BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="604.0" y="387.0"/>
+        <di:waypoint xsi:type="dc:Point" x="626.0" y="387.0"/>
+        <di:waypoint xsi:type="dc:Point" x="626.0" y="386.0"/>
+        <di:waypoint xsi:type="dc:Point" x="648.0" y="386.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="_BPMNShape_InclusiveGateway_2" targetElement="_BPMNShape_ScriptTask_7">
         <di:waypoint xsi:type="dc:Point" x="439.0" y="411.0"/>
-        <di:waypoint xsi:type="dc:Point" x="440.0" y="484.0"/>
-        <di:waypoint xsi:type="dc:Point" x="504.0" y="484.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="437.0" y="480.0"/>
-        </bpmndi:BPMNLabel>
+        <di:waypoint xsi:type="dc:Point" x="439.0" y="480.0"/>
+        <di:waypoint xsi:type="dc:Point" x="505.0" y="480.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="_BPMNShape_ScriptTask_6" targetElement="_BPMNShape_ExclusiveGateway_3">
-        <di:waypoint xsi:type="dc:Point" x="604.0" y="484.0"/>
-        <di:waypoint xsi:type="dc:Point" x="626.0" y="484.0"/>
-        <di:waypoint xsi:type="dc:Point" x="673.0" y="484.0"/>
-        <di:waypoint xsi:type="dc:Point" x="673.0" y="411.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="670.0" y="482.0"/>
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="_BPMNShape_ScriptTask_7" targetElement="_BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="480.0"/>
+        <di:waypoint xsi:type="dc:Point" x="625.0" y="480.0"/>
+        <di:waypoint xsi:type="dc:Point" x="625.0" y="386.0"/>
+        <di:waypoint xsi:type="dc:Point" x="648.0" y="386.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="_BPMNShape_ScriptTask_5" targetElement="_BPMNShape_ExclusiveGateway_3">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="_BPMNShape_ScriptTask_5" targetElement="_BPMNShape_ExclusiveGateway_3">
         <di:waypoint xsi:type="dc:Point" x="604.0" y="292.0"/>
         <di:waypoint xsi:type="dc:Point" x="626.0" y="292.0"/>
-        <di:waypoint xsi:type="dc:Point" x="673.0" y="292.0"/>
-        <di:waypoint xsi:type="dc:Point" x="673.0" y="361.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="670.0" y="292.0"/>
-        </bpmndi:BPMNLabel>
+        <di:waypoint xsi:type="dc:Point" x="626.0" y="386.0"/>
+        <di:waypoint xsi:type="dc:Point" x="648.0" y="386.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

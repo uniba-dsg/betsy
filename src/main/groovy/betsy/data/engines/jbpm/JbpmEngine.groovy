@@ -144,7 +144,8 @@ class JbpmEngine extends BPMNEngine {
                     baseUrl: new URL(getEndpointUrl(process)),
                     testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
                     reportPath: process.targetReportsPath.resolve("case${testCase.number}"),
-                    testBin: process.targetTestBinPath.resolve("case${testCase.number}")
+                    testBin: process.targetTestBinPath.resolve("case${testCase.number}"),
+                    logDir: serverPath
             ).runTest()
         }
         new BPMNTestcaseMerger(reportPath: process.targetReportsPath).mergeTestCases()

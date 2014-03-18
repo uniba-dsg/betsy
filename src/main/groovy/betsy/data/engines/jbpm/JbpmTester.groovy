@@ -22,6 +22,7 @@ class JbpmTester {
     Path reportPath
     Path testBin
     Path testSrc
+    Path logDir
     String user = "admin"
     String password = "admin"
 
@@ -30,20 +31,28 @@ class JbpmTester {
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
-        //start process
+        //connect to remote
         RemoteRestRuntimeFactory factory = new RemoteRestRuntimeFactory(deploymentId, baseUrl, user, password)
         RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
 
-        //setup variables
-        if(testCase.variables != null){
-            Map<String, Object> variables = new HashMap<>()
-            for(String key : testCase.variables.keySet()){
-                variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
+        //setup variables and start process
+        try {
+            if(testCase.variables != null){
+                Map<String, Object> variables = new HashMap<>()
+                for(String key : testCase.variables.keySet()){
+                    variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
+                }
+                kSession.startProcess(name, variables)
+            }else{
+                kSession.startProcess(name)
             }
-            kSession.startProcess(name, variables)
-        }else{
-            kSession.startProcess(name)
+        }catch (RuntimeException e){
+            try{
+                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
+                bw.append("runtimeException");
+                bw.close();
+            }catch(IOException ioe){}
         }
 
         //setup path to 'tools.jar' for the javac ant task
