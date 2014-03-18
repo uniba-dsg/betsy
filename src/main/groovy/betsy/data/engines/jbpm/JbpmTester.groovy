@@ -36,11 +36,15 @@ class JbpmTester {
         KieSession kSession = remoteEngine.getKieSession()
 
         //setup variables
-        Map<String, Object> variables = new HashMap<>()
-        for(String key : testCase.variables.keySet()){
-            variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
+        if(testCase.variables != null){
+            Map<String, Object> variables = new HashMap<>()
+            for(String key : testCase.variables.keySet()){
+                variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
+            }
+            kSession.startProcess(name, variables)
+        }else{
+            kSession.startProcess(name)
         }
-        kSession.startProcess(name, variables)
 
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
