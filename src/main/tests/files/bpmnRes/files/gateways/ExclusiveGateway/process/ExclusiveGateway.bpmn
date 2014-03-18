@@ -37,10 +37,10 @@ bw.close();
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ExclusiveGateway_2" targetRef="end"/>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test == true</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_2">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test == false</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("b")</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="ExclusiveGateway_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="ExclusiveGateway_2"/>

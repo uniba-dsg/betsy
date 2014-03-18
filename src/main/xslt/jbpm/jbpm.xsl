@@ -10,7 +10,7 @@
             <xsl:namespace name="dc" select="'http://www.omg.org/spec/DD/20100524/DC'" />
             <xsl:namespace name="di" select="'http://www.omg.org/spec/DD/20100524/DI'" />
             <xsl:apply-templates select="@*"/>
-            <bpmn2:itemDefinition id="testItem" structureRef="Boolean" />
+            <bpmn2:itemDefinition id="testItem" structureRef="String" />
             <bpmn2:itemDefinition id="testCaseNumberItem" structureRef="Integer" />
             <xsl:apply-templates select="node()"/>
         </bpmn2:definitions>

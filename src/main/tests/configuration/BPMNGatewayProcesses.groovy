@@ -10,7 +10,9 @@ class BPMNGatewayProcesses {
             "ExclusiveGateway", "de.uniba.dsg", "1.0", "A simple test for the exclusive gateway with testing both directions",
             [
                     new BPMNTestCase(1).buildXorFalse(),
-                    new BPMNTestCase(2).buildXorTrue()
+                    new BPMNTestCase(2).buildXorTrue(),
+                    new BPMNTestCase(3).buildXorBothTrue(),
+                    new BPMNTestCase(4).buildXorBothFalse()
             ]
     )
 
