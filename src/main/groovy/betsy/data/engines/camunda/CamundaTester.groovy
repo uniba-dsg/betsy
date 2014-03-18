@@ -4,6 +4,8 @@ import ant.tasks.AntUtil
 import betsy.data.BPMNProcess
 import betsy.data.BPMNTestCase
 import betsy.tasks.FileTasks
+import betsy.tasks.WaitTasks
+import groovy.io.FileType
 import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONArray
 import org.json.JSONObject
@@ -20,7 +22,7 @@ class CamundaTester {
     Path testBin
     Path testSrc
     String key
-    Path serverDir
+    Path logDir
 
     /**
      * runs a single test
@@ -62,6 +64,29 @@ class CamundaTester {
                 pathelement(path: systemClasspath)
             }
         }
+
+        //look up log for runtime exception in logs
+        boolean runtimeExceptionFound = false
+        File dir = new File(logDir.toString())
+        dir.eachFile(FileType.FILES) { file ->
+            if(file.name.contains("catalina")){
+                BufferedReader br = new BufferedReader(new FileReader(file))
+                br.eachLine(170){ line ->
+                    if(line.startsWith("org.camunda.bpm.engine.ProcessEngineException")){
+                        runtimeExceptionFound = true
+                    }
+                }
+            }
+        }
+        if(runtimeExceptionFound){
+            try{
+                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
+                bw.append("runtimeException");
+                bw.close();
+            }catch(IOException e){}
+        }
+
+        //start test
         ant.junit(printsummary: "on", fork: "true", haltonfailure: "no"){
             classpath{
                 pathelement(path: systemClasspath)

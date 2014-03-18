@@ -124,7 +124,7 @@ class CamundaEngine extends BPMNEngine {
                     reportPath: process.targetReportsPath.resolve("case${testCase.number}"),
                     testBin: process.targetTestBinPath.resolve("case${testCase.number}"),
                     key: process.name,
-                    serverDir: tomcatDir).runTest()
+                    logDir: tomcatDir.resolve("logs")).runTest()
         }
         new BPMNTestcaseMerger(reportPath: process.targetReportsPath).mergeTestCases()
     }
