@@ -9,13 +9,19 @@
             <xsl:namespace name="bpmndi" select="'http://www.omg.org/spec/BPMN/20100524/DI'" />
             <xsl:namespace name="dc" select="'http://www.omg.org/spec/DD/20100524/DC'" />
             <xsl:namespace name="di" select="'http://www.omg.org/spec/DD/20100524/DI'" />
-            <xsl:apply-templates select="@*|node()"/>
+            <xsl:apply-templates select="@*"/>
+            <bpmn2:itemDefinition id="testItem" structureRef="Boolean" />
+            <bpmn2:itemDefinition id="testCaseNumberItem" structureRef="Integer" />
+            <xsl:apply-templates select="node()"/>
         </bpmn2:definitions>
     </xsl:template>
 
     <xsl:template match="bpmn2:process">
         <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process" processType="Private">
-            <xsl:apply-templates select="@*|node()"/>
+            <xsl:apply-templates select="@*"/>
+            <bpmn2:property id="test" itemSubjectRef="testItem" />
+            <bpmn2:property id="testCaseNumber" itemSubjectRef="testCaseNumberItem" />
+            <xsl:apply-templates select="node()"/>
         </bpmn2:process>
     </xsl:template>
 
@@ -47,7 +53,8 @@
     <!-- for gateways in general -->
     <xsl:template match="bpmn2:conditionExpression">
         <bpmn2:conditionExpression language="http://www.java.com/java">
-            <xsl:apply-templates select="@*|node()"/>
+            <xsl:apply-templates select="@*"/>
+            return <xsl:value-of select="." />;
         </bpmn2:conditionExpression>
     </xsl:template>
 
@@ -62,6 +69,19 @@
         <bpmn2:parallelGateway gatewayDirection="Converging">
             <xsl:apply-templates select="@*|node()"/>
         </bpmn2:parallelGateway>
+    </xsl:template>
+
+    <!-- for inclusive gateways -->
+    <xsl:template match="bpmn2:inclusiveGateway[@id='InclusiveGateway_1']">
+        <bpmn2:inclusiveGateway gatewayDirection="Diverging">
+            <xsl:apply-templates select="@*|node()"/>
+        </bpmn2:inclusiveGateway>
+    </xsl:template>
+
+    <xsl:template match="bpmn2:inclusiveGateway[@id='InclusiveGateway_2']">
+        <bpmn2:inclusiveGateway gatewayDirection="Converging">
+            <xsl:apply-templates select="@*|node()"/>
+        </bpmn2:inclusiveGateway>
     </xsl:template>
 
     <xsl:template match="node()|@*">

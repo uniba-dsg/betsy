@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.data.BPMNTestCase
 import betsy.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
+import org.json.JSONObject
 import org.kie.api.runtime.KieSession
 import org.kie.api.runtime.manager.RuntimeEngine
 import org.kie.services.client.api.RemoteRestRuntimeFactory
@@ -29,14 +30,17 @@ class JbpmTester {
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
-        // start process
-        //String deploymentId = "org.jbpm:Evaluation:1.0"
-
+        //start process
         RemoteRestRuntimeFactory factory = new RemoteRestRuntimeFactory(deploymentId, baseUrl, user, password)
         RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
-        //TODO start process with variables
-        kSession.startProcess(name)
+
+        //setup variables
+        Map<String, Object> variables = new HashMap<>()
+        for(String key : testCase.variables.keySet()){
+            variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
+        }
+        kSession.startProcess(name, variables)
 
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
@@ -58,6 +62,8 @@ class JbpmTester {
                 pathelement(path: systemClasspath)
             }
         }
+
+        //runt test
         ant.junit(printsummary: "on", fork: "true", haltonfailure: "no"){
             classpath{
                 pathelement(path: systemClasspath)

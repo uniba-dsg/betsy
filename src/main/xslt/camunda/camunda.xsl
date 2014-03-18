@@ -18,6 +18,14 @@
         </bpmn2:scriptTask>
     </xsl:template>
 
+    <!-- for gateways in general -->
+    <xsl:template match="bpmn2:conditionExpression">
+        <bpmn2:conditionExpression>
+            <xsl:apply-templates select="@*"/>
+            ${<xsl:value-of select="." />}
+        </bpmn2:conditionExpression>
+    </xsl:template>
+
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>

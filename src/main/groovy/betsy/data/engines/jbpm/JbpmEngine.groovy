@@ -34,6 +34,14 @@ class JbpmEngine extends BPMNEngine {
         serverPath.resolve(jbossName).resolve("standalone")
     }
 
+    String getHomeDir(){
+        String homeDir = System.getenv("HOME")
+        if(homeDir == null){
+            homeDir = System.getProperty("user.home")
+        }
+        return homeDir
+    }
+
     @Override
     void deploy(BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
@@ -41,10 +49,6 @@ class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
         Thread.sleep(1500)
         //preparing ssh
-        String homeDir = System.getenv("HOME")
-        if(homeDir == null){
-            homeDir = System.getProperty("user.home")
-        }
         // delete known_hosts file for do not getting trouble with changing remote finger print
         //FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
         FileTasks.createFile(Paths.get(homeDir + "/.ssh/config"), """Host localhost
