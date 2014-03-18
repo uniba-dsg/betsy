@@ -65,10 +65,32 @@ class BPMNTestCase {
     }
 
     public BPMNTestCase buildOrSingleFlow(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", false)
+        value1.put("type", "Boolean")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
         addStep(new BPMNTestStep().assertOrSingleFlow())
     }
 
     public BPMNTestCase buildOrMultiFlow(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", true)
+        value1.put("type", "Boolean")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
         addStep(new BPMNTestStep().assertOrMultiFlow())
     }
 

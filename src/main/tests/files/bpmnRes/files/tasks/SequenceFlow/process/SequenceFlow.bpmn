@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="_IxhakJ7YEeOuPIo8BooRNg">
-  <bpmn2:process id="Sequence" isExecutable="true">
+  <bpmn2:process id="SequenceFlow" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
 	  <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
@@ -22,7 +22,7 @@ f.createNewFile();
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log.txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
 bw.append("success");
 bw.close();
 }catch(java.io.IOException e){

@@ -21,8 +21,17 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess OR = builder.buildGatewayProcess(
+            "InclusiveGateway", "de.uniba.dsg", "1.0", "A simple test for the inclusive gateway",
+            [
+                    new BPMNTestCase(1).buildOrMultiFlow(),
+                    new BPMNTestCase(2).buildOrSingleFlow()
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
-            AND
+            AND,
+            OR
     ].flatten() as List<BPMNProcess>
 }
