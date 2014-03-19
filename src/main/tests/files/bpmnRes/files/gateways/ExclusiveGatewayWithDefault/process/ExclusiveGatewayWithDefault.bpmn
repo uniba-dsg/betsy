@@ -39,7 +39,7 @@ bw.close();
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log" + testCaseNumber + ".txt")
+java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
 f.createNewFile();
 }catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
@@ -56,7 +56,7 @@ java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("l
 bw.append("success");
 bw.close();
 }catch(java.io.IOException e){
-	
+
 }]]></bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
