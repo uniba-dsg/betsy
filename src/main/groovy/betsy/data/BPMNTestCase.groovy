@@ -191,4 +191,49 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertDefault())
     }
 
+    public BPMNTestCase buildExclusiveInParallelOutTrue(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", "a")
+        value1.put("type", "String")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
+        addStep(new BPMNTestStep().assertTrue())
+    }
+
+    public BPMNTestCase buildExclusiveInParallelOutFalse(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", "b")
+        value1.put("type", "String")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
+        addStep(new BPMNTestStep().assertFalse())
+    }
+
+    public BPMNTestCase buildExclusiveInParallelOutBothTrue(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", "ab")
+        value1.put("type", "String")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
+        addStep(new BPMNTestStep().assertTrue())
+    }
+
 }
