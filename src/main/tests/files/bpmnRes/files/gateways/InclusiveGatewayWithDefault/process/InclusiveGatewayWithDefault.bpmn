@@ -53,7 +53,7 @@ bw.close();
       <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
     </bpmn2:inclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_2">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("b")</bpmn2:conditionExpression>

@@ -75,7 +75,7 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertXorFalse())
     }
 
-    public BPMNTestCase buildXorBothFalse(){
+    public BPMNTestCase buildBothFalse(){
 
         variables = new JSONObject()
         JSONObject value1 = new JSONObject()

@@ -7,17 +7,17 @@ class BPMNGatewayProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess XOR = builder.buildGatewayProcess(
-            "ExclusiveGateway", "de.uniba.dsg", "1.0", "A simple test for the exclusive gateway with testing both directions",
+            "ExclusiveGateway", "de.uniba.dsg", "1.0", "Tests for the exclusive gateway with testing the combination of the sequence flow conditions",
             [
                     new BPMNTestCase(1).buildXorFalse(),
                     new BPMNTestCase(2).buildXorTrue(),
                     new BPMNTestCase(3).buildXorBothTrue(),
-                    new BPMNTestCase(4).buildXorBothFalse()
+                    new BPMNTestCase(4).buildBothFalse()
             ]
     )
 
     public static final BPMNProcess XOR_DEFAULT = builder.buildGatewayProcess(
-            "ExclusiveGatewayWithDefault", "de.uniba.dsg", "1.0", "A simple test for the exclusive gateway with default path",
+            "ExclusiveGatewayWithDefault", "de.uniba.dsg", "1.0", "Tests for the exclusive gateway with default sequence flow",
             [
                     new BPMNTestCase(1).buildXorFalse(), //same as in XOR without default
                     new BPMNTestCase(2).buildXorTrue(),  //same as in XOR without default
@@ -41,16 +41,17 @@ class BPMNGatewayProcesses {
     )
 
     public static final BPMNProcess OR = builder.buildGatewayProcess(
-            "InclusiveGateway", "de.uniba.dsg", "1.0", "A simple test for the inclusive gateway",
+            "InclusiveGateway", "de.uniba.dsg", "1.0", "Tests for the inclusive gateway with two sequence flows and their combination of conditions",
             [
                     new BPMNTestCase(1).buildOrMultiFlow(),
                     new BPMNTestCase(2).buildOrSingleFlow1(),
-                    new BPMNTestCase(3).buildOrSingleFlow2()
+                    new BPMNTestCase(3).buildOrSingleFlow2(),
+                    new BPMNTestCase(4).buildBothFalse()
             ]
     )
 
     public static final BPMNProcess OR_DEFAULT = builder.buildGatewayProcess(
-            "InclusiveGatewayWithDefault", "de.uniba.dsg", "1.0", "A simple test for the inclusive gateway",
+            "InclusiveGatewayWithDefault", "de.uniba.dsg", "1.0", "Tests for the inclusive gateway with two conditioned sequence flows and a default sequence flow",
             [
                     new BPMNTestCase(1).buildOrMultiFlow(),
                     new BPMNTestCase(2).buildOrSingleFlow1(),
