@@ -67,6 +67,13 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess PARALLEL_IN_INCLUSIVE_OUT = builder.buildGatewayProcess(
+            "ParallelInInclusiveOut", "de.uniba.dsg", "1.0", "Tests for the parallel gateway when joined with inclusive gateway",
+            [
+                    new BPMNTestCase(1).buildAnd()
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
             XOR_DEFAULT,
@@ -74,6 +81,7 @@ class BPMNGatewayProcesses {
             AND_CONDITION,
             OR,
             OR_DEFAULT,
-            PARALLEL_IN_EXCLUSIVE_OUT
+            PARALLEL_IN_EXCLUSIVE_OUT,
+            PARALLEL_IN_INCLUSIVE_OUT
     ].flatten() as List<BPMNProcess>
 }
