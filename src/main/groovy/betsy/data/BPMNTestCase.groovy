@@ -165,6 +165,17 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertOrMultiFlow())
     }
 
+    public BPMNTestCase buildParallelInExclusiveOut(){
+
+        variables = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("testCaseNumber", value2)
+
+        addStep(new BPMNTestStep().assertParallelInExclusiveOut())
+    }
+
     public BPMNTestCase buildDefault(){
 
         variables = new JSONObject()

@@ -56,7 +56,14 @@ class BPMNGatewayProcesses {
                     new BPMNTestCase(1).buildOrMultiFlow(),
                     new BPMNTestCase(2).buildOrSingleFlow1(),
                     new BPMNTestCase(3).buildOrSingleFlow2(),
-                    new BPMNTestCase(4).buildDefault(),
+                    new BPMNTestCase(4).buildDefault()
+            ]
+    )
+
+    public static final BPMNProcess PARALLEL_IN_EXCLUSIVE_OUT = builder.buildGatewayProcess(
+            "ParallelInExclusiveOut", "de.uniba.dsg", "1.0", "Tests for the parallel gateway when joined with exclusive gateway",
+            [
+                    new BPMNTestCase(1).buildParallelInExclusiveOut()
             ]
     )
 
@@ -66,6 +73,7 @@ class BPMNGatewayProcesses {
             AND,
             AND_CONDITION,
             OR,
-            OR_DEFAULT
+            OR_DEFAULT,
+            PARALLEL_IN_EXCLUSIVE_OUT
     ].flatten() as List<BPMNProcess>
 }

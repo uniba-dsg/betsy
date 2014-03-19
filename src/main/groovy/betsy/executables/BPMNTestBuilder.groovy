@@ -86,17 +86,18 @@ public class ${name} {
         assertEquals(valueList.size(), assertionList.length);
 
         //check if all asserted Elements are also in the returned values
-        for(String val: valueList){
-            for(String asrt: assertionList){
+        for(String asrt: assertionList){
+            for(String val: valueList){
                 if(val.contentEquals(asrt)){
                     result = true;
+                    valueList.remove(val);
                     break;
                 }else{
                     result = false;
                 }
             }
-            assertTrue(result);
         }
+        assertTrue(result);
     }
 
     @AfterClass

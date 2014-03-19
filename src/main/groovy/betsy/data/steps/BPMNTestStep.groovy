@@ -39,6 +39,13 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertParallelInExclusiveOut(){
+        assertTask1()
+        assertSuccess()
+        assertTask2()
+        assertSuccess()
+    }
+
     public BPMNTestStep assertOrMultiFlow(){
         assertTask1()
         assertTask2()
