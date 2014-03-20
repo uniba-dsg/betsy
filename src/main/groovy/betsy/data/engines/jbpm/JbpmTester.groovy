@@ -3,10 +3,12 @@ package betsy.data.engines.jbpm
 import ant.tasks.AntUtil
 import betsy.data.BPMNTestCase
 import betsy.tasks.FileTasks
+import betsy.tasks.WaitTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONObject
 import org.kie.api.runtime.KieSession
 import org.kie.api.runtime.manager.RuntimeEngine
+import org.kie.api.runtime.process.ProcessInstance
 import org.kie.services.client.api.RemoteRestRuntimeFactory
 
 import java.nio.file.Path
@@ -43,7 +45,17 @@ class JbpmTester {
                 for(String key : testCase.variables.keySet()){
                     variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
                 }
-                kSession.startProcess(name, variables)
+                ProcessInstance instance = kSession.startProcess(name, variables)
+                //look for error end event special case
+                WaitTasks.sleep(200)
+                if(instance.getState() == ProcessInstance.STATE_ABORTED){
+                    try{
+                        BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
+                        bw.append("thrownErrorEvent");
+                        bw.newLine()
+                        bw.close();
+                    }catch(IOException ioe){}
+                }
             }else{
                 kSession.startProcess(name)
             }
