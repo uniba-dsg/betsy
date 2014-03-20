@@ -84,6 +84,14 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess EXCLUSIVE_MIXED = builder.buildGatewayProcess(
+            "ExclusiveGatewayMixed", "de.uniba.dsg", "1.0", "Tests for the exclusive gateway when joined with parallel gateway",
+            [
+                    new BPMNTestCase(1).buildXorTrue(),
+                    new BPMNTestCase(2).buildXorFalse()
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
             XOR_DEFAULT,
@@ -93,6 +101,7 @@ class BPMNGatewayProcesses {
             OR_DEFAULT,
             PARALLEL_IN_EXCLUSIVE_OUT,
             PARALLEL_IN_INCLUSIVE_OUT,
-            EXCLUSIVE_IN_PARALLEL_OUT
+            EXCLUSIVE_IN_PARALLEL_OUT,
+            EXCLUSIVE_MIXED
     ].flatten() as List<BPMNProcess>
 }

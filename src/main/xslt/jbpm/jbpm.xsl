@@ -50,6 +50,12 @@
         </bpmn2:exclusiveGateway>
     </xsl:template>
 
+    <xsl:template match="bpmn2:exclusiveGateway[@id='ExclusiveGateway_X']">
+        <bpmn2:exclusiveGateway gatewayDirection="Mixed">
+            <xsl:apply-templates select="@*|node()"/>
+        </bpmn2:exclusiveGateway>
+    </xsl:template>
+
     <!-- for gateways in general -->
     <xsl:template match="bpmn2:conditionExpression">
         <bpmn2:conditionExpression language="http://www.java.com/java">
