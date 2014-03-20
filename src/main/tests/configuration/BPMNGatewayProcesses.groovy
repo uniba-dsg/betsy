@@ -92,6 +92,14 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess COMPLEX = builder.buildGatewayProcess(
+            "ComplexGateway", "de.uniba.dsg", "1.0", "Tests for the complex gateway",
+            [
+                    new BPMNTestCase(1).buildOrMultiFlow()
+                    //this gateway is actually not supported by camunda and jbpm for that reason there are no more test cases
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
             XOR_DEFAULT,
@@ -102,6 +110,7 @@ class BPMNGatewayProcesses {
             PARALLEL_IN_EXCLUSIVE_OUT,
             PARALLEL_IN_INCLUSIVE_OUT,
             EXCLUSIVE_IN_PARALLEL_OUT,
-            EXCLUSIVE_MIXED
+            EXCLUSIVE_MIXED,
+            COMPLEX
     ].flatten() as List<BPMNProcess>
 }

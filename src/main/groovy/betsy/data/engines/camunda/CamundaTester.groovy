@@ -32,17 +32,38 @@ class CamundaTester {
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
-        //first request to get id
-        JSONObject response = get(restURL + "/process-definition?key=${key}")
-        String id = response.get("id")
+        //look up log for deployment error caused by unsupported activity type
+        String unsupportedMessage = null
+        File dir = new File(logDir.toString())
+        dir.eachFile(FileType.FILES) { file ->
+            if(file.name.contains("catalina")){
+                BufferedReader br = new BufferedReader(new FileReader(file))
+                br.eachLine(150){ line ->
+                    if(line.contains("Ignoring unsupported activity type")){
+                        unsupportedMessage = line
+                    }
+                }
+            }
+        }
+        if(unsupportedMessage != null){
+            try{
+                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt"));
+                bw.writeLine(unsupportedMessage);
+                bw.close();
+            }catch(IOException e){}
+        }else{
+            //first request to get id
+            JSONObject response = get(restURL + "/process-definition?key=${key}")
+            String id = response.get("id")
 
-        //assembling JSONObject for second request
-        JSONObject requestBody = new JSONObject()
-        requestBody.put("variables", testCase.variables)
-        requestBody.put("businessKey", "key-${key}")
+            //assembling JSONObject for second request
+            JSONObject requestBody = new JSONObject()
+            requestBody.put("variables", testCase.variables)
+            requestBody.put("businessKey", "key-${key}")
 
-        //second request to start process using id and Json to get the process instance id
-        post(restURL + "/process-definition/${id}/start", requestBody)
+            //second request to start process using id and Json to get the process instance id
+            post(restURL + "/process-definition/${id}/start", requestBody)
+        }
 
         //setup path to 'tools.jar' for the javac ant task
         String javaHome = System.getProperty("java.home")
@@ -65,25 +86,26 @@ class CamundaTester {
             }
         }
 
-        //look up log for runtime exception in logs
-        boolean runtimeExceptionFound = false
-        File dir = new File(logDir.toString())
-        dir.eachFile(FileType.FILES) { file ->
-            if(file.name.contains("catalina")){
-                BufferedReader br = new BufferedReader(new FileReader(file))
-                br.eachLine(170){ line ->
-                    if(line.startsWith("org.camunda.bpm.engine.ProcessEngineException")){
-                        runtimeExceptionFound = true
+        //look up log for runtime exception if process could be started
+        if (unsupportedMessage == null){
+            boolean runtimeExceptionFound = false
+            dir.eachFile(FileType.FILES) { file ->
+                if(file.name.contains("catalina")){
+                    BufferedReader br = new BufferedReader(new FileReader(file))
+                    br.eachLine(170){ line ->
+                        if(line.startsWith("org.camunda.bpm.engine.ProcessEngineException")){
+                            runtimeExceptionFound = true
+                        }
                     }
                 }
             }
-        }
-        if(runtimeExceptionFound){
-            try{
-                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
-                bw.append("runtimeException");
-                bw.close();
-            }catch(IOException e){}
+            if(runtimeExceptionFound){
+                try{
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
+                    bw.append("runtimeException");
+                    bw.close();
+                }catch(IOException e){}
+            }
         }
 
         //start test

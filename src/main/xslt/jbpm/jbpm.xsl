@@ -90,6 +90,19 @@
         </bpmn2:inclusiveGateway>
     </xsl:template>
 
+    <!-- for complex gateways -->
+    <xsl:template match="bpmn2:complexGateway[@id='ComplexGateway_1']">
+        <bpmn2:complexGateway gatewayDirection="Diverging">
+            <xsl:apply-templates select="@*|node()"/>
+        </bpmn2:complexGateway>
+    </xsl:template>
+
+    <xsl:template match="bpmn2:complexGateway[@id='ComplexGateway_2']">
+        <bpmn2:complexGateway gatewayDirection="Converging">
+            <xsl:apply-templates select="@*|node()"/>
+        </bpmn2:complexGateway>
+    </xsl:template>
+
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
