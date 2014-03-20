@@ -84,4 +84,8 @@ class BPMNTestStep {
     public BPMNTestStep assertThrownErrorEvent(){
         addAssertions("thrownErrorEvent")
     }
+
+    public BPMNTestStep assertSubprocess(){
+        addAssertions("subprocess")
+    }
 }

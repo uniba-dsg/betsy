@@ -8,6 +8,7 @@ import java.lang.reflect.Field
 import static configuration.BPMNGatewayProcesses.GATEWAYS
 import static configuration.BPMNTaskProcesses.TASKS
 import static configuration.BPMNEventProcesses.EVENTS
+import static configuration.BPMNSubprocessProcesses.SUBPROCESSES
 
 class BPMNProcessRepository {
     private Repository<BPMNProcess> repo = new Repository<>()
@@ -16,13 +17,15 @@ class BPMNProcessRepository {
         repo.put("ALL",
                 GATEWAYS +
                 TASKS +
-                EVENTS
+                EVENTS +
+                SUBPROCESSES
                 as List<BPMNProcess>)
 
         Field[] fields = [
             BPMNGatewayProcesses.class.declaredFields +
             BPMNTaskProcesses.class.declaredFields +
-            BPMNEventProcesses.class.declaredFields
+            BPMNEventProcesses.class.declaredFields +
+            BPMNSubprocessProcesses.class.declaredFields
         ].flatten()
 
         fields.each { Field f ->

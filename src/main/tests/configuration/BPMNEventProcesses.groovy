@@ -21,9 +21,17 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess ERROR_INTERMEDIATE = builder.buildEventProcess(
+            "ErrorIntermediateEvent", "de.uniba.dsg", "1.0", "A simple Test for the error intermediate event",
+            [
+                    new BPMNTestCase(1).buildSubprocess()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
             TIMER_EVENT,
-            ERROR_END
+            ERROR_END,
+            ERROR_INTERMEDIATE
     ].flatten() as List<BPMNProcess>
 
 }

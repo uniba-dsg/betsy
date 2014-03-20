@@ -20,4 +20,8 @@ class BPMNProcessBuilder {
     public static BPMNProcess buildEventProcess(String name, String groupId, String version, String description, List<BPMNTestCase> testCases){
         new BPMNProcess(name: name, group: "events", groupId: groupId, version: version, description: description, testCases: testCases)
     }
+
+    public static BPMNProcess buildSubprocessProcess(String name, String groupId, String version, String description, List<BPMNTestCase> testCases){
+        new BPMNProcess(name: name, group: "subprocess", groupId: groupId, version: version, description: description, testCases: testCases)
+    }
 }
