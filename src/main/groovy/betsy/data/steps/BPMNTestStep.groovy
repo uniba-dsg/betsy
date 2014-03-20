@@ -80,4 +80,8 @@ class BPMNTestStep {
     public BPMNTestStep assertRuntimeException(){
         addAssertions("runtimeException")
     }
+
+    public BPMNTestStep assertThrownErrorEvent(){
+        addAssertions("thrownErrorEvent")
+    }
 }

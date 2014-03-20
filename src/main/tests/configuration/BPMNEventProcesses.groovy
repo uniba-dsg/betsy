@@ -14,8 +14,16 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess ERROR_END = builder.buildEventProcess(
+            "ErrorEndEvent", "de.uniba.dsg", "1.0", "A simple Test for the ErrorEndEvent",
+            [
+                    new BPMNTestCase(1).buildSimpleError()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
-            TIMER_EVENT
+            TIMER_EVENT,
+            ERROR_END
     ].flatten() as List<BPMNProcess>
 
 }

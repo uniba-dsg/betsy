@@ -96,6 +96,14 @@ class CamundaTester {
                         if(line.startsWith("org.camunda.bpm.engine.ProcessEngineException")){
                             runtimeExceptionFound = true
                         }
+                        //special case for error end event
+                        if(line.contains("EndEvent_2 throws error event with errorCode 'ERR-1'")){
+                            try{
+                                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
+                                bw.append("thrownErrorEvent");
+                                bw.close();
+                            }catch(IOException e){}
+                        }
                     }
                 }
             }
