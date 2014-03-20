@@ -8,9 +8,9 @@ class BPMNEventProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess TIMER_EVENT = builder.buildEventProcess(
-            "TimerEvent", "de.uniba.dsg", "1.0", "Tests for the TimerEvent",
+            "TimerStartEvent", "de.uniba.dsg", "1.0", "Tests for the TimerEvent",
             [
-                    new BPMNTestCase(1).buildSimple()
+                    new BPMNTestCase(number: 1, selfStarting: true, delay: 2000).buildSimple()
             ]
     )
 

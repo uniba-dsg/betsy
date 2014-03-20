@@ -61,8 +61,14 @@ class CamundaTester {
             requestBody.put("variables", testCase.variables)
             requestBody.put("businessKey", "key-${key}")
 
-            //second request to start process using id and Json to get the process instance id
-            post(restURL + "/process-definition/${id}/start", requestBody)
+
+            if(testCase.selfStarting){
+                //just wait until process starts itself
+                WaitTasks.sleep(testCase.delay);
+            }else{
+                //second request to start process using id and Json to get the process instance id
+                post(restURL + "/process-definition/${id}/start", requestBody)
+            }
         }
 
         //setup path to 'tools.jar' for the javac ant task

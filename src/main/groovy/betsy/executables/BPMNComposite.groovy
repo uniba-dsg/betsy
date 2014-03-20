@@ -77,7 +77,7 @@ class BPMNComposite {
                 collect(process)
             } finally {
                 // ensure shutdown
-                shutdown(process)
+                //shutdown(process)
             }
         }
     }

@@ -8,7 +8,10 @@ class BPMNTestCase {
     int number
     List<BPMNTestStep> testSteps = []
 
-    //variables to be sent for a test case
+    boolean selfStarting = false
+    int delay = 0
+
+//variables to be sent for a test case
     JSONObject variables
 
     public BPMNTestCase(){
@@ -26,6 +29,13 @@ class BPMNTestCase {
     }
 
     public BPMNTestCase buildSimple(){
+
+        variables = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("testCaseNumber", value2)
+
         addStep(new BPMNTestStep().assertSuccess())
     }
 
@@ -260,6 +270,32 @@ class BPMNTestCase {
         variables.put("testCaseNumber", value2)
 
         addStep(new BPMNTestStep().assertTrue())
+    }
+
+    //Getter and Setter
+
+    boolean getSelfStarting() {
+        return selfStarting
+    }
+
+    void setSelfStarting(boolean selfStarting) {
+        this.selfStarting = selfStarting
+    }
+
+    int getNumber() {
+        return number
+    }
+
+    void setNumber(int number) {
+        this.number = number
+    }
+
+    int getDelay() {
+        return delay
+    }
+
+    void setDelay(int delay) {
+        this.delay = delay
     }
 
 }
