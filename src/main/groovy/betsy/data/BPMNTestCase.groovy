@@ -287,6 +287,16 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertErrorStartEvent())
     }
 
+    public BPMNTestCase buildSignaledSubprocess(){
+
+        addStep(new BPMNTestStep().assertSignaledSubprocess())
+    }
+
+    public BPMNTestCase buildTwoSignaledSubprocesses(){
+
+        addStep(new BPMNTestStep().assertSignaledSubprocess().assertSignaled())
+    }
+
     //Getter and Setter
 
     boolean getSelfStarting() {

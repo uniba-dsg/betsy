@@ -64,6 +64,12 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertSignaledSubprocess(){
+        assertNormalTask()
+        assertSignaled()
+        assertSuccess()
+    }
+
     public BPMNTestStep assertSuccess(){
         addAssertions("success")
     }

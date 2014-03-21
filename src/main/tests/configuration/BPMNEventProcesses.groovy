@@ -63,6 +63,20 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess SIGNAL_START_SUBPROCESS = builder.buildEventProcess(
+            "SignalStartEventSubprocess", "de.uniba.dsg", "1.0", "A test for the signal start event in an event triggered sub process",
+            [
+                    new BPMNTestCase(1).buildSignaledSubprocess()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_START_TWO_SUBPROCESSES = builder.buildEventProcess(
+            "SignalTwoStartEventSubprocesses", "de.uniba.dsg", "1.0", "A test for signaling two signal start events in event triggered sub processes",
+            [
+                    new BPMNTestCase(1).buildTwoSignaledSubprocesses()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
 //            TIMER_EVENT,
             ERROR_END,
@@ -71,7 +85,9 @@ class BPMNEventProcesses {
             LINK,
             SIGNAL_INTERMEDIATE,
             SIGNAL_START_END,
-            SIGNAL_INTERMEDIATE_START
+            SIGNAL_INTERMEDIATE_START,
+            SIGNAL_START_SUBPROCESS,
+            SIGNAL_START_TWO_SUBPROCESSES
     ].flatten() as List<BPMNProcess>
 
 }
