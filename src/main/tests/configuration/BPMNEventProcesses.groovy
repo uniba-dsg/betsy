@@ -28,10 +28,18 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess LINK = builder.buildEventProcess(
+            "LinkEvent", "de.uniba.dsg", "1.0", "A simple Test for link events",
+            [
+                    new BPMNTestCase(1).buildSimple()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
 //            TIMER_EVENT,
             ERROR_END,
-            ERROR_INTERMEDIATE
+            ERROR_INTERMEDIATE,
+            LINK
     ].flatten() as List<BPMNProcess>
 
 }

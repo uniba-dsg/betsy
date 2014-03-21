@@ -31,10 +31,10 @@ class BPMNTestCase {
     public BPMNTestCase buildSimple(){
 
         variables = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("testCaseNumber", value2)
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
 
         addStep(new BPMNTestStep().assertSuccess())
     }
