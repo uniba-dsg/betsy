@@ -15,23 +15,30 @@ class BPMNEventProcesses {
 //    )
 
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
-            "ErrorEndEvent", "de.uniba.dsg", "1.0", "A simple Test for the ErrorEndEvent",
+            "ErrorEndEvent", "de.uniba.dsg", "1.0", "A simple test for the ErrorEndEvent",
             [
                     new BPMNTestCase(1).buildSimpleError()
             ]
     )
 
     public static final BPMNProcess ERROR_INTERMEDIATE = builder.buildEventProcess(
-            "ErrorIntermediateEvent", "de.uniba.dsg", "1.0", "A simple Test for the error intermediate event",
+            "ErrorIntermediateEvent", "de.uniba.dsg", "1.0", "A simple test for the error intermediate event",
             [
                     new BPMNTestCase(1).buildSubprocess()
             ]
     )
 
     public static final BPMNProcess LINK = builder.buildEventProcess(
-            "LinkEvent", "de.uniba.dsg", "1.0", "A simple Test for link events",
+            "LinkEvent", "de.uniba.dsg", "1.0", "A simple test for link events",
             [
                     new BPMNTestCase(1).buildSimple()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE = builder.buildEventProcess(
+            "SignalIntermediateEvent", "de.uniba.dsg", "1.0", "A simple test for signal intermediate events",
+            [
+                    new BPMNTestCase(1).buildSignaled()
             ]
     )
 
@@ -39,7 +46,8 @@ class BPMNEventProcesses {
 //            TIMER_EVENT,
             ERROR_END,
             ERROR_INTERMEDIATE,
-            LINK
+            LINK,
+            SIGNAL_INTERMEDIATE
     ].flatten() as List<BPMNProcess>
 
 }

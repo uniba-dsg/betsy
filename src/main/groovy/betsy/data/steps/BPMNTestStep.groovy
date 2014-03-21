@@ -106,4 +106,8 @@ class BPMNTestStep {
     public BPMNTestStep assertMulti(){
         addAssertions("multi")
     }
+
+    public BPMNTestStep assertSignaled(){
+        addAssertions("signaled")
+    }
 }

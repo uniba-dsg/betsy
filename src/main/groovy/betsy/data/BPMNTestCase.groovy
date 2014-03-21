@@ -48,6 +48,17 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSuccess().assertSubprocess())
     }
 
+    public BPMNTestCase buildSignaled(){
+
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+
+        addStep(new BPMNTestStep().assertSuccess().assertSignaled())
+    }
+
     public BPMNTestCase buildSimpleError(){
 
         variables = new JSONObject()
