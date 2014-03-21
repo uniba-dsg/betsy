@@ -83,7 +83,7 @@ public class ${name} {
         }
 
         //check if the asserted count of values exists
-        assertEquals(valueList.size(), assertionList.length);
+        assertEquals(assertionList.length, valueList.size());
 
         //check if all asserted Elements are also in the returned values
         for(String asrt: assertionList){
