@@ -33,7 +33,7 @@ f.createNewFile();
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
 java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
-bw.append("task1");
+bw.append("lane1");
 bw.newLine();
 bw.close();
 }catch(java.io.IOException e){}]]></bpmn2:script>
@@ -45,7 +45,7 @@ bw.close();
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
 java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
-bw.append("task2");
+bw.append("lane2");
 bw.newLine();
 bw.close();
 }catch(java.io.IOException e){}]]></bpmn2:script>
