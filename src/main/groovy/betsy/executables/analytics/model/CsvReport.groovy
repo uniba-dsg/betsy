@@ -73,8 +73,17 @@ class CsvReport {
 
             return relativePath
         } catch (Exception e){
-            println e.getMessage()
-            return "#"
+            //try it without soapui for the bpmn cases
+            try {
+                String path = new FileNameFinder().getFileNames("test/reports/html/${engine.name}/${group.name}", "*_${test.fullName}.html").first()
+                String parentPath = new File(file).parentFile.absolutePath
+                String relativePath = path.substring(parentPath.length() + 1)
+
+                return relativePath
+            } catch (Exception e2){
+                println e2.getMessage()
+                return "#"
+            }
         }
     }
 
