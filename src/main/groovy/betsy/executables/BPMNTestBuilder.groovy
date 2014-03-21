@@ -96,8 +96,8 @@ public class ${name} {
                     result = false;
                 }
             }
+            assertTrue(result);
         }
-        assertTrue(result);
     }
 
     @AfterClass
