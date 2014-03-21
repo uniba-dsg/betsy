@@ -9,6 +9,7 @@ import static configuration.BPMNGatewayProcesses.GATEWAYS
 import static configuration.BPMNTaskProcesses.TASKS
 import static configuration.BPMNEventProcesses.EVENTS
 import static configuration.BPMNSubprocessProcesses.SUBPROCESSES
+import static configuration.BPMNMiscProcesses.MISCS
 
 class BPMNProcessRepository {
     private Repository<BPMNProcess> repo = new Repository<>()
@@ -18,14 +19,16 @@ class BPMNProcessRepository {
                 GATEWAYS +
                 TASKS +
                 EVENTS +
-                SUBPROCESSES
+                SUBPROCESSES +
+                MISCS
                 as List<BPMNProcess>)
 
         Field[] fields = [
             BPMNGatewayProcesses.class.declaredFields +
             BPMNTaskProcesses.class.declaredFields +
             BPMNEventProcesses.class.declaredFields +
-            BPMNSubprocessProcesses.class.declaredFields
+            BPMNSubprocessProcesses.class.declaredFields +
+            BPMNMiscProcesses.class.declaredFields
         ].flatten()
 
         fields.each { Field f ->

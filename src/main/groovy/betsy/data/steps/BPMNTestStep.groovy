@@ -52,6 +52,12 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertTwoLanes(){
+        assertLane1()
+        assertLane2()
+        assertSuccess()
+    }
+
     public BPMNTestStep assertSuccess(){
         addAssertions("success")
     }
@@ -88,4 +94,13 @@ class BPMNTestStep {
     public BPMNTestStep assertSubprocess(){
         addAssertions("subprocess")
     }
+
+    public BPMNTestStep assertLane1(){
+        addAssertions("lane1")
+    }
+
+    public BPMNTestStep assertLane2(){
+        addAssertions("lane2")
+    }
+
 }

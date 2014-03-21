@@ -54,17 +54,6 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSuccess().assertThrownErrorEvent())
     }
 
-    public BPMNTestCase buildSimple2(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertSuccess())
-    }
-
     public BPMNTestCase buildAnd(){
 
         variables = new JSONObject()
@@ -270,6 +259,11 @@ class BPMNTestCase {
         variables.put("testCaseNumber", value2)
 
         addStep(new BPMNTestStep().assertTrue())
+    }
+
+    public BPMNTestCase buildTwoLanes(){
+
+        addStep(new BPMNTestStep().assertTwoLanes())
     }
 
     //Getter and Setter
