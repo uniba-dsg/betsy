@@ -49,13 +49,21 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_START = builder.buildEventProcess(
+            "SignalIntermediateStartEvent", "de.uniba.dsg", "1.0", "A test with 2 pools for signal start/intermediate events",
+            [
+                    new BPMNTestCase(1).buildSignaled()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
 //            TIMER_EVENT,
             ERROR_END,
             ERROR_INTERMEDIATE,
             LINK,
             SIGNAL_INTERMEDIATE,
-            SIGNAL_START_END
+            SIGNAL_START_END,
+            SIGNAL_INTERMEDIATE_START
     ].flatten() as List<BPMNProcess>
 
 }
