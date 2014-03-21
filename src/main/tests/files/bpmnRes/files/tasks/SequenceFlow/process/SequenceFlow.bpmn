@@ -12,11 +12,9 @@
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log.txt");
+java.io.File f = new java.io.File("log1.txt");
 f.createNewFile();
-}catch(java.io.IOException e){
-	
-}]]></bpmn2:script>
+}catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
@@ -25,16 +23,14 @@ f.createNewFile();
 java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
 bw.append("success");
 bw.close();
-}catch(java.io.IOException e){
-	
-}]]></bpmn2:script>
+}catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="start"/>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="start" targetRef="end"/>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Sequence">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="SequenceFlow">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="216.0" y="372.0"/>
         <bpmndi:BPMNLabel>

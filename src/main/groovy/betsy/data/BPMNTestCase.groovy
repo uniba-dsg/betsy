@@ -39,6 +39,11 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSuccess())
     }
 
+    public BPMNTestCase buildMulti3(){
+
+        addStep(new BPMNTestStep().assertSuccess().assertMulti().assertMulti().assertMulti())
+    }
+
     public BPMNTestCase buildSubprocess(){
         addStep(new BPMNTestStep().assertSuccess().assertSubprocess())
     }

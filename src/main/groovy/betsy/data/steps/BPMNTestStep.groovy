@@ -103,4 +103,7 @@ class BPMNTestStep {
         addAssertions("lane2")
     }
 
+    public BPMNTestStep assertMulti(){
+        addAssertions("multi")
+    }
 }
