@@ -58,6 +58,12 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertErrorStartEvent(){
+        assertNormalTask()
+        assertErrorTask()
+        assertSuccess()
+    }
+
     public BPMNTestStep assertSuccess(){
         addAssertions("success")
     }
@@ -109,5 +115,13 @@ class BPMNTestStep {
 
     public BPMNTestStep assertSignaled(){
         addAssertions("signaled")
+    }
+
+    public BPMNTestStep assertNormalTask(){
+        addAssertions("normalTask")
+    }
+
+    public BPMNTestStep assertErrorTask(){
+        addAssertions("errorTask")
     }
 }

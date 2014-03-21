@@ -28,6 +28,13 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess ERROR_START = builder.buildEventProcess(
+            "ErrorStartEvent", "de.uniba.dsg", "1.0", "A test for the error start event in an event triggered sub process",
+            [
+                    new BPMNTestCase(1).buildErrorStartEvent()
+            ]
+    )
+
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "LinkEvent", "de.uniba.dsg", "1.0", "A simple test for link events",
             [
@@ -60,6 +67,7 @@ class BPMNEventProcesses {
 //            TIMER_EVENT,
             ERROR_END,
             ERROR_INTERMEDIATE,
+            ERROR_START,
             LINK,
             SIGNAL_INTERMEDIATE,
             SIGNAL_START_END,

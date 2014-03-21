@@ -282,6 +282,11 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertTwoLanes())
     }
 
+    public BPMNTestCase buildErrorStartEvent(){
+
+        addStep(new BPMNTestStep().assertErrorStartEvent())
+    }
+
     //Getter and Setter
 
     boolean getSelfStarting() {
