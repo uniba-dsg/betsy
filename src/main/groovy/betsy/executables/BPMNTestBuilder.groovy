@@ -68,7 +68,7 @@ public class ${name} {
     }
 
     @Test
-    public void testIfSuccessful(){
+    public void ${testCase.toString()}(){
         String line;
         List<String> valueList = new ArrayList<String>();
         Boolean result = false;

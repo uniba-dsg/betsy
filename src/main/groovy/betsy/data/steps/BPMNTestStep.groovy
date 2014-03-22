@@ -130,4 +130,13 @@ class BPMNTestStep {
     public BPMNTestStep assertErrorTask(){
         addAssertions("errorTask")
     }
+
+    @Override
+    public String toString(){
+        String string = ""
+        for (String assertion : assertions){
+            string += assertion.capitalize()
+        }
+        return string
+    }
 }

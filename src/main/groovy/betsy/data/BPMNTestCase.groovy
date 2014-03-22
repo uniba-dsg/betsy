@@ -1,6 +1,7 @@
 package betsy.data
 
 import betsy.data.steps.BPMNTestStep
+import com.teamdev.jxbrowser.gecko15.xpcom.interfaces.nsIStringBundleOverride
 import org.json.JSONObject
 
 class BPMNTestCase {
@@ -323,4 +324,12 @@ class BPMNTestCase {
         this.delay = delay
     }
 
+    @Override
+    public String toString(){
+        String string = "test${number}Assert"
+        for (BPMNTestStep step : testSteps){
+            string += step.toString()
+        }
+        return string
+    }
 }
