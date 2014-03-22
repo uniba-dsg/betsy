@@ -77,6 +77,13 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess CANCEL = builder.buildEventProcess(
+            "CancelEvent", "de.uniba.dsg", "1.0", "A simple test for canceling a transaction",
+            [
+                    new BPMNTestCase(1).buildTransaction()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
 //            TIMER_EVENT,
             ERROR_END,
@@ -87,7 +94,8 @@ class BPMNEventProcesses {
             SIGNAL_START_END,
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_START_SUBPROCESS,
-            SIGNAL_START_TWO_SUBPROCESSES
+            SIGNAL_START_TWO_SUBPROCESSES,
+            CANCEL
     ].flatten() as List<BPMNProcess>
 
 }
