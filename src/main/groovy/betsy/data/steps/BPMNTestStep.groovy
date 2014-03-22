@@ -70,6 +70,11 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertTransaction(){
+        assertTransactionTask()
+        assertSuccess()
+    }
+
     public BPMNTestStep assertSuccess(){
         addAssertions("success")
     }
@@ -129,6 +134,10 @@ class BPMNTestStep {
 
     public BPMNTestStep assertErrorTask(){
         addAssertions("errorTask")
+    }
+
+    public BPMNTestStep assertTransactionTask(){
+        addAssertions("transaction")
     }
 
     @Override

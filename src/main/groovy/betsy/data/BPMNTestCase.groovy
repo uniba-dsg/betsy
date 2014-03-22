@@ -1,7 +1,6 @@
 package betsy.data
 
 import betsy.data.steps.BPMNTestStep
-import com.teamdev.jxbrowser.gecko15.xpcom.interfaces.nsIStringBundleOverride
 import org.json.JSONObject
 
 class BPMNTestCase {
@@ -296,6 +295,11 @@ class BPMNTestCase {
     public BPMNTestCase buildTwoSignaledSubprocesses(){
 
         addStep(new BPMNTestStep().assertSignaledSubprocess().assertSignaled())
+    }
+
+    public BPMNTestCase buildTransaction(){
+
+        addStep(new BPMNTestStep().assertTransaction())
     }
 
     //Getter and Setter

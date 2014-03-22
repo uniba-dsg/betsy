@@ -13,7 +13,15 @@ class BPMNSubprocessProcesses {
             ]
     )
 
+    public static final BPMNProcess TRANSACTION = builder.buildSubprocessProcess(
+            "Transaction", "de.uniba.dsg", "1.0", "A simple test for a transaction subprocess",
+            [
+                    new BPMNTestCase(1).buildTransaction()
+            ]
+    )
+
     public static final List<BPMNProcess> SUBPROCESSES = [
-            SUBPROCESS
+            SUBPROCESS,
+            TRANSACTION
     ].flatten() as List<BPMNProcess>
 }
