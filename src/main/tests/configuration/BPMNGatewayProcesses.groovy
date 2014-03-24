@@ -100,6 +100,13 @@ class BPMNGatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess EVENT_BASED = builder.buildGatewayProcess(
+            "EventBasedGateway", "de.uniba.dsg", "1.0", "Tests for the complex gateway",
+            [
+                    new BPMNTestCase(1).buildEventBasedGateway()
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             XOR,
             XOR_DEFAULT,
@@ -111,6 +118,7 @@ class BPMNGatewayProcesses {
             PARALLEL_IN_INCLUSIVE_OUT,
             EXCLUSIVE_IN_PARALLEL_OUT,
             EXCLUSIVE_MIXED,
-            COMPLEX
+            COMPLEX,
+            EVENT_BASED
     ].flatten() as List<BPMNProcess>
 }

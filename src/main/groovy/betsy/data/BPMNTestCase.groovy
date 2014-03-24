@@ -277,6 +277,10 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertTrue())
     }
 
+    public BPMNTestCase buildEventBasedGateway(){
+        addStep(new BPMNTestStep().assertTask1().assertSuccess())
+    }
+
     public BPMNTestCase buildTwoLanes(){
 
         addStep(new BPMNTestStep().assertTwoLanes())
