@@ -75,6 +75,12 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertCompensated(){
+        assertSubprocess()
+        assertCompensate()
+        assertSuccess()
+    }
+
     public BPMNTestStep assertSuccess(){
         addAssertions("success")
     }
@@ -138,6 +144,10 @@ class BPMNTestStep {
 
     public BPMNTestStep assertTransactionTask(){
         addAssertions("transaction")
+    }
+
+    public BPMNTestStep assertCompensate(){
+        addAssertions("compensate")
     }
 
     @Override

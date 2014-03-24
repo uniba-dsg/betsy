@@ -302,6 +302,11 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertTransaction())
     }
 
+    public BPMNTestCase buildCompensate(){
+
+        addStep(new BPMNTestStep().assertCompensated())
+    }
+
     //Getter and Setter
 
     boolean getSelfStarting() {

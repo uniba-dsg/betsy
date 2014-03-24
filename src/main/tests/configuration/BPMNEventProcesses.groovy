@@ -91,6 +91,48 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess COMPENSATION_BOUNDARY_END = builder.buildEventProcess(
+            "CompensationBoundaryEnd", "de.uniba.dsg", "1.0", "A test for a compensation end and a compensation boundary event",
+            [
+                    new BPMNTestCase(1).buildCompensate()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_BOUNDARY_THROW = builder.buildEventProcess(
+            "CompensationBoundaryThrow", "de.uniba.dsg", "1.0", "A test for a compensation throw and a compensation boundary event",
+            [
+                    new BPMNTestCase(1).buildCompensate()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_BOUNDARY_TASK_THROW = builder.buildEventProcess(
+            "CompensationBoundaryTaskThrow", "de.uniba.dsg", "1.0", "A test for a compensation throw and a compensation boundary event on task level",
+            [
+                    new BPMNTestCase(1).buildCompensate()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_BOUNDARY_TASK_END = builder.buildEventProcess(
+            "CompensationBoundaryTaskEnd", "de.uniba.dsg", "1.0", "A test for a compensation end and a compensation boundary event on task level",
+            [
+                    new BPMNTestCase(1).buildCompensate()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_EVENT_SUBPROCESS_END = builder.buildEventProcess(
+            "CompensationEventSubprocessEnd", "de.uniba.dsg", "1.0", "A test for a compensation end and an event subprocess with a compensation start event",
+            [
+                    new BPMNTestCase(1).buildCompensate()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_EVENT_SUBPROCESS_THROW = builder.buildEventProcess(
+            "CompensationEventSubprocessThrow", "de.uniba.dsg", "1.0", "A test for a compensation throw and an event subprocess with a compensation start event",
+            [
+                    new BPMNTestCase(1).buildCompensate()
+            ]
+    )
+
     public static final List<BPMNProcess> EVENTS = [
 //            TIMER_EVENT,
             ERROR_END,
@@ -103,7 +145,13 @@ class BPMNEventProcesses {
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_START_SUBPROCESS,
             SIGNAL_START_TWO_SUBPROCESSES,
-            CANCEL
+            CANCEL,
+            COMPENSATION_BOUNDARY_END,
+            COMPENSATION_BOUNDARY_THROW,
+            COMPENSATION_BOUNDARY_TASK_THROW,
+            COMPENSATION_BOUNDARY_TASK_END,
+            COMPENSATION_EVENT_SUBPROCESS_END,
+            COMPENSATION_EVENT_SUBPROCESS_THROW
     ].flatten() as List<BPMNProcess>
 
 }

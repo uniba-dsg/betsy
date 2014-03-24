@@ -42,6 +42,9 @@ class CamundaTester {
                     if(line.contains("Ignoring unsupported activity type")){
                         unsupportedMessage = line
                     }
+                    if(line.startsWith("org.camunda.bpm.engine.ProcessEngineException")){
+                        unsupportedMessage = line
+                    }
                 }
             }
         }
