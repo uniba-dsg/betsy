@@ -35,6 +35,13 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess ERROR_TRANSACTION = builder.buildEventProcess(
+            "ErrorTransaction", "de.uniba.dsg", "1.0", "A test for the error end event and an error boundary event in a transaction sub process",
+            [
+                    new BPMNTestCase(1).buildTransaction()
+            ]
+    )
+
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "LinkEvent", "de.uniba.dsg", "1.0", "A simple test for link events",
             [
@@ -89,6 +96,7 @@ class BPMNEventProcesses {
             ERROR_END,
             ERROR_INTERMEDIATE,
             ERROR_START,
+            ERROR_TRANSACTION,
             LINK,
             SIGNAL_INTERMEDIATE,
             SIGNAL_START_END,
