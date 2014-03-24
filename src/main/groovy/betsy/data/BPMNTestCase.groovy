@@ -292,6 +292,11 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSignaledSubprocess())
     }
 
+    public BPMNTestCase buildSignaledBoundary(){
+
+        addStep(new BPMNTestStep().assertSignaledBoundary())
+    }
+
     public BPMNTestCase buildTwoSignaledSubprocesses(){
 
         addStep(new BPMNTestStep().assertSignaledSubprocess().assertSignaled())

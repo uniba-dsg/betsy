@@ -49,12 +49,13 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE = builder.buildEventProcess(
+    //removed due to inconsistency in the bpmn standard about the use of a signal intermediate catch event (page 253 says no, the oversight on page 261 yes)
+    /*public static final BPMNProcess SIGNAL_INTERMEDIATE = builder.buildEventProcess(
             "SignalIntermediateEvent", "de.uniba.dsg", "1.0", "A simple test for signal intermediate events",
             [
                     new BPMNTestCase(1).buildSignaled()
             ]
-    )
+    )*/
 
     public static final BPMNProcess SIGNAL_START_END = builder.buildEventProcess(
             "SignalStartEndEvent", "de.uniba.dsg", "1.0", "A test with 2 pools for signal start/end events",
@@ -67,6 +68,13 @@ class BPMNEventProcesses {
             "SignalIntermediateStartEvent", "de.uniba.dsg", "1.0", "A test with 2 pools for signal start/intermediate events",
             [
                     new BPMNTestCase(1).buildSignaled()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY = builder.buildEventProcess(
+            "SignalIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a signal intermediate boundary event",
+            [
+                    new BPMNTestCase(1).buildSignaledBoundary()
             ]
     )
 
@@ -140,7 +148,7 @@ class BPMNEventProcesses {
             ERROR_START,
             ERROR_TRANSACTION,
             LINK,
-            SIGNAL_INTERMEDIATE,
+            SIGNAL_INTERMEDIATE_BOUNDARY,
             SIGNAL_START_END,
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_START_SUBPROCESS,

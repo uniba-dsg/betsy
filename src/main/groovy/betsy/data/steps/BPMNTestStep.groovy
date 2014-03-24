@@ -70,6 +70,11 @@ class BPMNTestStep {
         assertSuccess()
     }
 
+    public BPMNTestStep assertSignaledBoundary(){
+        assertNormalTask()
+        assertSignaled()
+    }
+
     public BPMNTestStep assertTransaction(){
         assertTransactionTask()
         assertSuccess()
