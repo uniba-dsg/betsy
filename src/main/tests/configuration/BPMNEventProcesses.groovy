@@ -72,7 +72,14 @@ class BPMNEventProcesses {
     )
 
     public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a signal intermediate boundary event",
+            "SignalIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a non interrupting signal intermediate boundary event",
+            [
+                    new BPMNTestCase(1).buildSignaledSubprocess()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL = builder.buildEventProcess(
+            "SignalIntermediateBoundaryEventCancel", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a interrupting signal intermediate boundary event",
             [
                     new BPMNTestCase(1).buildSignaledBoundary()
             ]
@@ -149,6 +156,7 @@ class BPMNEventProcesses {
             ERROR_TRANSACTION,
             LINK,
             SIGNAL_INTERMEDIATE_BOUNDARY,
+            SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL,
             SIGNAL_START_END,
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_START_SUBPROCESS,
