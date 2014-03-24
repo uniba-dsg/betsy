@@ -296,6 +296,11 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSignaledSubprocess())
     }
 
+    public BPMNTestCase buildSignaledSubprocessNotInterrupted(){
+
+        addStep(new BPMNTestStep().assertSignaledSubprocess().assertNotInterrupted())
+    }
+
     public BPMNTestCase buildSignaledBoundary(){
 
         addStep(new BPMNTestStep().assertSignaledBoundary())

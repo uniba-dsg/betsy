@@ -155,6 +155,10 @@ class BPMNTestStep {
         addAssertions("compensate")
     }
 
+    public BPMNTestStep assertNotInterrupted(){
+        addAssertions("notInterrupted")
+    }
+
     @Override
     public String toString(){
         String string = ""

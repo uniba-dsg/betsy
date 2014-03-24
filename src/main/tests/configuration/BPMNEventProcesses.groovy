@@ -72,16 +72,30 @@ class BPMNEventProcesses {
     )
 
     public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a non interrupting signal intermediate boundary event",
+            "SignalIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a not interrupting signal intermediate boundary event",
             [
                     new BPMNTestCase(1).buildSignaledSubprocess()
             ]
     )
 
     public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEventCancel", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a interrupting signal intermediate boundary event",
+            "SignalIntermediateBoundaryEventCancel", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and an interrupting signal intermediate boundary event",
             [
                     new BPMNTestCase(1).buildSignaledBoundary()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS = builder.buildEventProcess(
+            "SignalIntermediateThrowEventSubprocess", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal intermediate throw event and a not interrupting signal start event",
+            [
+                    new BPMNTestCase(1).buildSignaledSubprocessNotInterrupted()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "SignalIntermediateThrowEventSubprocessInterrupting", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal intermediate throw event and an interrupting signal start event",
+            [
+                    new BPMNTestCase(1).buildSignaledSubprocess()
             ]
     )
 
@@ -157,6 +171,8 @@ class BPMNEventProcesses {
             LINK,
             SIGNAL_INTERMEDIATE_BOUNDARY,
             SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL,
+            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
+            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING,
             SIGNAL_START_END,
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_START_SUBPROCESS,
