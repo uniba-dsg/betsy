@@ -59,7 +59,7 @@ task downloadSoapUI {
 
     doLast {
         ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 1024, verbose: true, {
+        ant.get dest: config.downloads.dir, maxtime: 1524, verbose: true, {
             ant.url url: config.soapui.download.url
         }
     }
