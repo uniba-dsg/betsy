@@ -27,9 +27,17 @@ class BPMNTaskProcesses {
             ]
     )
 
+    public static final BPMNProcess LOOP = builder.buildTaskProcess(
+            "LoopTask", "de.uniba.dsg", "1.0", "A simple Test for a 3 times looped script task",
+            [
+                    new BPMNTestCase().buildMulti3()
+            ]
+    )
+
     public static final List<BPMNProcess> TASKS = [
             SIMPLE,
             MULTI_SEQUENTIAL,
-            MULTI_PARALLEL
+            MULTI_PARALLEL,
+            LOOP
     ].flatten() as List<BPMNProcess>
 }
