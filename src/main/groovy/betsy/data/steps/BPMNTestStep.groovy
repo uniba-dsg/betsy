@@ -61,13 +61,11 @@ class BPMNTestStep {
     public BPMNTestStep assertErrorStartEvent(){
         assertNormalTask()
         assertErrorTask()
-        assertSuccess()
     }
 
     public BPMNTestStep assertSignaledSubprocess(){
         assertNormalTask()
         assertSignaled()
-        assertSuccess()
     }
 
     public BPMNTestStep assertSignaledBoundary(){
@@ -161,6 +159,14 @@ class BPMNTestStep {
 
     public BPMNTestStep assertStarted(){
         addAssertions("started")
+    }
+
+    public BPMNTestStep assertTimerInternal(){
+        addAssertions("timerInternal")
+    }
+
+    public BPMNTestStep assertTimerExternal(){
+        addAssertions("timerExternal")
     }
 
     @Override

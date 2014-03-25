@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_IxhakJ7YEeOuPIo8BooRNg">
   <bpmn2:error id="Error_1" errorCode="ERR-1" name="error"/>
-  <bpmn2:process id="ErrorIntermediateEvent" isExecutable="true">
+  <bpmn2:process id="ErrorIntermediateEvent1" isExecutable="true">
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
@@ -62,7 +62,7 @@ bw.close();
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="SubProcess_1" targetRef="EndEvent_1"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ErrorIntermediateEvent">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ErrorIntermediateEvent1">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="204.0" y="369.0"/>
         <bpmndi:BPMNLabel>

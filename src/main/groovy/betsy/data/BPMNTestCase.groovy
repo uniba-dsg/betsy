@@ -61,6 +61,28 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertStarted())
     }
 
+    public BPMNTestCase buildTimerBoundaryOnTime(){
+
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+
+        addStep(new BPMNTestStep().assertStarted().assertSuccess().assertTimerInternal().assertTimerExternal())
+    }
+
+    public BPMNTestCase buildTimerBoundaryCancelingOnTime(){
+
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+
+        addStep(new BPMNTestStep().assertStarted().assertTimerExternal())
+    }
+
     public BPMNTestCase buildMulti3(){
 
         addStep(new BPMNTestStep().assertSuccess().assertMulti().assertMulti().assertMulti())
@@ -308,14 +330,24 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertTwoLanes())
     }
 
-    public BPMNTestCase buildErrorStartEvent(){
+    public BPMNTestCase buildErrorStartEvent1(){
 
         addStep(new BPMNTestStep().assertErrorStartEvent())
     }
 
-    public BPMNTestCase buildSignaledSubprocess(){
+    public BPMNTestCase buildErrorStartEvent2(){
+
+        addStep(new BPMNTestStep().assertErrorStartEvent().assertSuccess())
+    }
+
+    public BPMNTestCase buildSignaledSubprocess1(){
 
         addStep(new BPMNTestStep().assertSignaledSubprocess())
+    }
+
+    public BPMNTestCase buildSignaledSubprocess2(){
+
+        addStep(new BPMNTestStep().assertSignaledSubprocess().assertSuccess())
     }
 
     public BPMNTestCase buildSignaledSubprocessNotInterrupted(){
@@ -328,9 +360,9 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSignaledBoundary())
     }
 
-    public BPMNTestCase buildTwoSignaledSubprocesses(){
+    public BPMNTestCase buildTwoSignaled(){
 
-        addStep(new BPMNTestStep().assertSignaledSubprocess().assertSignaled())
+        addStep(new BPMNTestStep().assertSignaled().assertSignaled().assertSuccess())
     }
 
     public BPMNTestCase buildTransaction(){

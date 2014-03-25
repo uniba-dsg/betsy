@@ -23,6 +23,30 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess TIMER_INTERMEDIATE_BOUNDARY_EVENT = builder.buildEventProcess(
+            "TimerIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "Tests for the timer intermediate boundary event",
+            [
+                    new BPMNTestCase(number: 1, selfStarting: false, delay: 5000).buildTimerBoundaryOnTime(),
+                    new BPMNTestCase(number: 2, selfStarting: false, delay: 100).buildTimerIntermediateEventNotOnTime()
+            ]
+    )
+
+    public static final BPMNProcess TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_1 = builder.buildEventProcess(
+            "TimerIntermediateBoundaryEventCancel1", "de.uniba.dsg", "1.0", "Tests for the timer intermediate boundary event canceling the activity",
+            [
+                    new BPMNTestCase(number: 1, selfStarting: false, delay: 100).buildTimerIntermediateEventNotOnTime(),
+                    new BPMNTestCase(number: 2, selfStarting: false, delay: 5000).buildTimerBoundaryCancelingOnTime()
+            ]
+    )
+
+    public static final BPMNProcess TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2 = builder.buildEventProcess(
+            "TimerIntermediateBoundaryEventCancel2", "de.uniba.dsg", "1.0", "Tests for the timer intermediate boundary event canceling a sub process with a following normal sequence flow",
+            [
+                    new BPMNTestCase(number: 1, selfStarting: false, delay: 100).buildTimerIntermediateEventNotOnTime(),
+                    new BPMNTestCase(number: 2, selfStarting: false, delay: 5000).buildTimerBoundaryCancelingOnTime()
+            ]
+    )
+
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
             "ErrorEndEvent", "de.uniba.dsg", "1.0", "A simple test for the ErrorEndEvent",
             [
@@ -30,17 +54,31 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess ERROR_INTERMEDIATE = builder.buildEventProcess(
-            "ErrorIntermediateEvent", "de.uniba.dsg", "1.0", "A simple test for the error intermediate event",
+    public static final BPMNProcess ERROR_INTERMEDIATE_1 = builder.buildEventProcess(
+            "ErrorIntermediateEvent1", "de.uniba.dsg", "1.0", "A simple test for the error intermediate boundary event",
             [
                     new BPMNTestCase(1).buildSubprocess()
             ]
     )
 
-    public static final BPMNProcess ERROR_START = builder.buildEventProcess(
-            "ErrorStartEvent", "de.uniba.dsg", "1.0", "A test for the error start event in an event triggered sub process",
+    public static final BPMNProcess ERROR_INTERMEDIATE_2 = builder.buildEventProcess(
+            "ErrorIntermediateEvent2", "de.uniba.dsg", "1.0", "A simple test for the error intermediate boundary event on a sub process with a following normal sequence flow",
             [
-                    new BPMNTestCase(1).buildErrorStartEvent()
+                    new BPMNTestCase(1).buildSubprocess()
+            ]
+    )
+
+    public static final BPMNProcess ERROR_START_1 = builder.buildEventProcess(
+            "ErrorStartEvent1", "de.uniba.dsg", "1.0", "A test for the error start event in an event triggered sub process",
+            [
+                    new BPMNTestCase(1).buildErrorStartEvent1()
+            ]
+    )
+
+    public static final BPMNProcess ERROR_START_2 = builder.buildEventProcess(
+            "ErrorStartEvent2", "de.uniba.dsg", "1.0", "A test for the error start event in an event triggered sub process in a sub process with a following normal sequence flow",
+            [
+                    new BPMNTestCase(1).buildErrorStartEvent2()
             ]
     )
 
@@ -83,12 +121,19 @@ class BPMNEventProcesses {
     public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY = builder.buildEventProcess(
             "SignalIntermediateBoundaryEvent", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and a not interrupting signal intermediate boundary event",
             [
-                    new BPMNTestCase(1).buildSignaledSubprocess()
+                    new BPMNTestCase(1).buildSignaledSubprocess2()
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEventCancel", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and an interrupting signal intermediate boundary event",
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_1 = builder.buildEventProcess(
+            "SignalIntermediateBoundaryEventCancel1", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and an interrupting signal intermediate boundary event",
+            [
+                    new BPMNTestCase(1).buildSignaledBoundary()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_2 = builder.buildEventProcess(
+            "SignalIntermediateBoundaryEventCancel2", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal end event and an interrupting signal intermediate boundary event on a sub process with a following normal sequence flow",
             [
                     new BPMNTestCase(1).buildSignaledBoundary()
             ]
@@ -101,24 +146,24 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
-            "SignalIntermediateThrowEventSubprocessInterrupting", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal intermediate throw event and an interrupting signal start event",
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
+            "SignalIntermediateThrowEventSubprocessInterrupting1", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal intermediate throw event and an interrupting signal start event",
             [
-                    new BPMNTestCase(1).buildSignaledSubprocess()
+                    new BPMNTestCase(1).buildSignaledSubprocess1()
             ]
     )
 
-    public static final BPMNProcess SIGNAL_START_SUBPROCESS = builder.buildEventProcess(
-            "SignalStartEventSubprocess", "de.uniba.dsg", "1.0", "A test for the signal start event in an event triggered sub process",
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2 = builder.buildEventProcess(
+            "SignalIntermediateThrowEventSubprocessInterrupting2", "de.uniba.dsg", "1.0", "A test with a subprocess with a signal intermediate throw event and an interrupting signal start event in a sub process with a following normal sequence flow",
             [
-                    new BPMNTestCase(1).buildSignaledSubprocess()
+                    new BPMNTestCase(1).buildSignaledSubprocess2()
             ]
     )
 
-    public static final BPMNProcess SIGNAL_START_TWO_SUBPROCESSES = builder.buildEventProcess(
-            "SignalTwoStartEventSubprocesses", "de.uniba.dsg", "1.0", "A test for signaling two signal start events in event triggered sub processes",
+    public static final BPMNProcess SIGNAL_TWO_STARTS = builder.buildEventProcess(
+            "SignalTwoStartEvents", "de.uniba.dsg", "1.0", "A test for signaling two signal start events in two pools",
             [
-                    new BPMNTestCase(1).buildTwoSignaledSubprocesses()
+                    new BPMNTestCase(1).buildTwoSignaled()
             ]
     )
 
@@ -174,19 +219,25 @@ class BPMNEventProcesses {
     public static final List<BPMNProcess> EVENTS = [
             //TIMER_EVENT,
             TIMER_INTERMEDIATE_EVENT,
+            TIMER_INTERMEDIATE_BOUNDARY_EVENT,
+            TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_1,
+            TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2,
             ERROR_END,
-            ERROR_INTERMEDIATE,
-            ERROR_START,
+            ERROR_INTERMEDIATE_1,
+            ERROR_INTERMEDIATE_2,
+            ERROR_START_1,
+            ERROR_START_2,
             ERROR_TRANSACTION,
             LINK,
             SIGNAL_INTERMEDIATE_BOUNDARY,
-            SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL,
+            SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_1,
+            SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_2,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
-            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING,
+            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1,
+            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2,
             SIGNAL_START_END,
             SIGNAL_INTERMEDIATE_START,
-            SIGNAL_START_SUBPROCESS,
-            SIGNAL_START_TWO_SUBPROCESSES,
+            SIGNAL_TWO_STARTS,
             CANCEL,
             COMPENSATION_BOUNDARY_END,
             COMPENSATION_BOUNDARY_THROW,
