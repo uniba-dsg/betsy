@@ -59,6 +59,7 @@ task downloadSoapUI {
 
     doLast {
         ant.mkdir dir: config.downloads.dir
+	// maxtime is set to this value to ensure that travis-ci can download this file
         ant.get dest: config.downloads.dir, maxtime: 1524, verbose: true, {
             ant.url url: config.soapui.download.url
         }
