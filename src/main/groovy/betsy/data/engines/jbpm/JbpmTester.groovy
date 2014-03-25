@@ -59,6 +59,9 @@ class JbpmTester {
             }else{
                 kSession.startProcess(name)
             }
+            if(testCase.delay != 0){
+                WaitTasks.sleep(testCase.delay)
+            }
         }catch (RuntimeException e){
             try{
                 BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));

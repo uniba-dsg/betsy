@@ -10,9 +10,18 @@ class BPMNEventProcesses {
 //    public static final BPMNProcess TIMER_EVENT = builder.buildEventProcess(
 //            "TimerStartEvent", "de.uniba.dsg", "1.0", "Tests for the TimerEvent",
 //            [
-//                    new BPMNTestCase(number: 1, selfStarting: true, delay: 2000).buildSimple()
+//                    new BPMNTestCase(number: 1, selfStarting: true, delay: 5000).buildSimple(),
+//                    new BPMNTestCase(number: 2, selfStarting: true, delay: 1000).buildSimple()
 //            ]
 //    )
+
+    public static final BPMNProcess TIMER_INTERMEDIATE_EVENT = builder.buildEventProcess(
+            "TimerIntermediateEvent", "de.uniba.dsg", "1.0", "Tests for the TimerIntermediateEvent",
+            [
+                    new BPMNTestCase(number: 1, selfStarting: false, delay: 5000).buildTimerIntermediateEventOnTime(),
+                    new BPMNTestCase(number: 2, selfStarting: false, delay: 1000).buildTimerIntermediateEventNotOnTime()
+            ]
+    )
 
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
             "ErrorEndEvent", "de.uniba.dsg", "1.0", "A simple test for the ErrorEndEvent",
@@ -163,7 +172,8 @@ class BPMNEventProcesses {
     )
 
     public static final List<BPMNProcess> EVENTS = [
-//            TIMER_EVENT,
+            //TIMER_EVENT,
+            TIMER_INTERMEDIATE_EVENT,
             ERROR_END,
             ERROR_INTERMEDIATE,
             ERROR_START,

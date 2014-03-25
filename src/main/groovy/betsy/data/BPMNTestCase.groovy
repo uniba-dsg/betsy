@@ -39,6 +39,28 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSuccess())
     }
 
+    public BPMNTestCase buildTimerIntermediateEventOnTime(){
+
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+
+        addStep(new BPMNTestStep().assertStarted().assertSuccess())
+    }
+
+    public BPMNTestCase buildTimerIntermediateEventNotOnTime(){
+
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+
+        addStep(new BPMNTestStep().assertStarted())
+    }
+
     public BPMNTestCase buildMulti3(){
 
         addStep(new BPMNTestStep().assertSuccess().assertMulti().assertMulti().assertMulti())
