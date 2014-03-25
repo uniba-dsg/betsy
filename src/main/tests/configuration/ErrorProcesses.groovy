@@ -10,6 +10,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+import static configuration.ProcessBuilder.DECLARED_FAULT_CODE
+
 class ErrorProcesses {
 
     public static final Map<String, String> inputToErrorCode = [
@@ -129,8 +131,23 @@ class ErrorProcesses {
         process
     }
 
+    public static final BetsyProcess BACKDOOR_ROBUSTNESS = new ProcessBuilder().buildProcessWithPartner(
+            "errorsbase/BackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
+            ]
+    )
+
+    public static final BetsyProcess IMPROVED_BACKDOOR_ROBUSTNESS = new ProcessBuilder().buildProcessWithPartner(
+            // only used for error processes. but may also be used as a test
+            "errorsbase/ImprovedBackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
+            ]
+    )
+
     private static List<BetsyProcess> createTestsForCatchAll(Path errorsDir) {
-        BetsyProcess baseProcess = ScopeProcesses.SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE
+        BetsyProcess baseProcess = BACKDOOR_ROBUSTNESS
 
         List<BetsyProcess> result = new LinkedList<>();
 
@@ -152,7 +169,7 @@ class ErrorProcesses {
     }
 
     private static List<BetsyProcess> createTestsForCatchAllInvokeValidate(Path errorsDir) {
-        BetsyProcess baseProcess = ScopeProcesses.SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE
+        BetsyProcess baseProcess = IMPROVED_BACKDOOR_ROBUSTNESS
 
         List<BetsyProcess> result = new LinkedList<>();
 
