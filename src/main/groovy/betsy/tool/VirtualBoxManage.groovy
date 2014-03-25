@@ -211,7 +211,6 @@ public class VirtualBoxManage {
 			return true
 		}catch(Exception e) {
 			throw new VirtualBoxException("Exporting the VM failed", e)
-			return false
 		}
 	}
 	
@@ -227,7 +226,6 @@ public class VirtualBoxManage {
 			return true
 		}catch(Exception e) {
 			throw new VirtualBoxException("Deleting port forwarding rules failed", e)
-			return false
 		}
 	}
 	
@@ -240,7 +238,6 @@ public class VirtualBoxManage {
 			return true
 		}catch(e) {
 			throw new VirtualBoxException("Establishing SSH port forwarding failed", e)
-			return false
 		}
 	}
 	
