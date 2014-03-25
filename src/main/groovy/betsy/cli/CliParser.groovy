@@ -45,8 +45,8 @@ class CliParser {
         options.h
     }
 
-    public String usage() {
-        return cli.usage()
+    public void printUsage() {
+        cli.usage()
     }
 
     public boolean openResultsInBrowser() {
