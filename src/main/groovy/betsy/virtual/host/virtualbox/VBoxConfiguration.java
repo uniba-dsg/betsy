@@ -56,7 +56,7 @@ public class VBoxConfiguration {
      *
      * @return file of VirtualBox Manage
      */
-    Path getVBoxManage() {
+    public Path getVBoxManage() {
     	if(SystemUtils.IS_OS_WINDOWS) {
     		return getVboxDir().resolve("VBoxManage.exe");
     	}else if(SystemUtils.IS_OS_UNIX) {

@@ -3,8 +3,6 @@ package betsy.config;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 
-import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Files;

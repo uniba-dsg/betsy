@@ -1,8 +1,5 @@
 package betsy.virtual.host.virtualbox.utils;
 
-/**
- * Created by sh on 17.12.13.
- */
 public interface Timeouts {
 
     public static final int SECOND = 1_000;
