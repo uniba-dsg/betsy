@@ -83,7 +83,16 @@ public class ${name} {
         }
 
         //check if the asserted count of values exists
-        assertEquals(assertionList.length, valueList.size());
+        String message = "[Assertion List: ";
+        for(String s: assertionList){
+            message += s + " ";
+        }
+        message += " | Value List: ";
+        for(String s: valueList){
+            message += s + " ";
+        }
+        message += "]";
+        assertEquals(message, assertionList.length, valueList.size());
 
         //check if all asserted Elements are also in the returned values
         for(String asrt: assertionList){
@@ -96,7 +105,7 @@ public class ${name} {
                     result = false;
                 }
             }
-            assertTrue(result);
+            assertTrue("Could not find '" + asrt + "' in value list", result);
         }
     }
 
