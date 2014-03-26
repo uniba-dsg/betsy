@@ -154,9 +154,7 @@ class JbpmEngine extends BPMNEngine {
 
     void buildTest(BPMNProcess process){
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
-                name: process.name,
                 logDir: serverPath,
-                unitTestDir: process.targetTestSrcPath,
                 process: process
         ).buildTests()
     }

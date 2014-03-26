@@ -57,9 +57,7 @@ class CamundaEngine extends BPMNEngine {
     @Override
     void buildTest(BPMNProcess process){
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
-                name: process.name,
                 logDir: tomcatDir.resolve("bin"),
-                unitTestDir: process.targetTestSrcPath,
                 process: process
         ).buildTests()
     }
