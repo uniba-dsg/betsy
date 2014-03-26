@@ -9,14 +9,14 @@ class BPMNMiscProcesses {
     public static final BPMNProcess POOL = builder.buildMiscProcess(
             "Pool", "de.uniba.dsg", "1.0", "A test for a pool",
             [
-                    new BPMNTestCase(1).buildSimple()
+                    new BPMNTestCase(1).assertSuccess()
             ]
     )
 
     public static final BPMNProcess LANES = builder.buildMiscProcess(
             "Lanes", "de.uniba.dsg", "1.0", "A test for a pool with 2 lanes",
             [
-                    new BPMNTestCase(1).buildTwoLanes()
+                    new BPMNTestCase(1).assertLane1().assertLane2().assertSuccess()
             ]
     )
 

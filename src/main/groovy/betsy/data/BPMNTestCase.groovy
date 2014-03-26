@@ -1,437 +1,190 @@
 package betsy.data
 
-import betsy.data.steps.BPMNTestStep
+
 import org.json.JSONObject
 
 class BPMNTestCase {
 
-    int number
-    List<BPMNTestStep> testSteps = []
+    private int number
+    private List<String> assertions = []
 
-    boolean selfStarting = false
-    int delay = 0
+    private boolean selfStarting = false
+    private int delay = 0
 
-//variables to be sent for a test case
+    //variables to be sent for a test case
     JSONObject variables
 
     public BPMNTestCase(){
         number = 1
+        initializeTestCaseNumber()
     }
 
     public BPMNTestCase(int number){
         this.number = number
+        initializeTestCaseNumber()
     }
 
-    public BPMNTestCase addStep(BPMNTestStep testStep){
-        testSteps.add(testStep)
+    private void initializeTestCaseNumber(){
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+    }
+
+    //add inputs
+    private BPMNTestCase addInputTestString(String value){
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("value", value)
+        jsonObject.put("type", "String")
+        variables.put("test", jsonObject)
 
         this
     }
 
-    public BPMNTestCase buildSimple(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertSuccess())
+    public BPMNTestCase inputA(){
+        addInputTestString("a")
     }
 
-    public BPMNTestCase buildEscalationEventSubprocessInterrupting(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertTask1().assertInterrupted())
+    public BPMNTestCase inputB(){
+        addInputTestString("b")
     }
 
-    public BPMNTestCase buildConditionalEventStart(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "a")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertSuccess())
+    public BPMNTestCase inputAB(){
+        addInputTestString("ab")
     }
 
-    public BPMNTestCase buildTimerIntermediateEventOnTime(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertStarted().assertSuccess())
+    public BPMNTestCase inputC(){
+        addInputTestString("c")
     }
 
-    public BPMNTestCase buildTimerIntermediateEventNotOnTime(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertStarted())
+    //add assertions
+    private BPMNTestCase addAssertions(String assertion){
+        assertions.add(assertion)
+        this
     }
 
-    public BPMNTestCase buildTimerBoundaryOnTime(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertStarted().assertSuccess().assertTimerInternal().assertTimerExternal())
+    public BPMNTestCase assertSuccess(){
+        addAssertions("success")
     }
 
-    public BPMNTestCase buildTimerBoundaryCancelingOnTime(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertStarted().assertTimerExternal())
+    public BPMNTestCase assertTask1(){
+        addAssertions("task1")
     }
 
-    public BPMNTestCase buildMulti3(){
-
-        addStep(new BPMNTestStep().assertSuccess().assertMulti().assertMulti().assertMulti())
+    public BPMNTestCase assertTask2(){
+        addAssertions("task2")
     }
 
-    public BPMNTestCase buildSubprocess(){
-        addStep(new BPMNTestStep().assertSuccess().assertSubprocess())
+    public BPMNTestCase assertTrue(){
+        addAssertions("true")
     }
 
-    public BPMNTestCase buildSignaled(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertSuccess().assertSignaled())
+    public BPMNTestCase assertFalse(){
+        addAssertions("false")
     }
 
-    public BPMNTestCase buildSimpleError(){
-
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
-
-        addStep(new BPMNTestStep().assertSuccess().assertThrownErrorEvent())
+    public BPMNTestCase assertDefault(){
+        addAssertions("default")
     }
 
-    public BPMNTestCase buildAnd(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "a")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertAnd())
+    public BPMNTestCase assertRuntimeException(){
+        addAssertions("runtimeException")
     }
 
-    public BPMNTestCase buildXorTrue(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "a")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertXorTrue())
-
+    public BPMNTestCase assertThrownErrorEvent(){
+        addAssertions("thrownErrorEvent")
     }
 
-    public BPMNTestCase buildXorFalse(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "b")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertXorFalse())
+    public BPMNTestCase assertSubprocess(){
+        addAssertions("subprocess")
     }
 
-    public BPMNTestCase buildBothFalse(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "c")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertRuntimeException())
+    public BPMNTestCase assertLane1(){
+        addAssertions("lane1")
     }
 
-    public BPMNTestCase buildXorWithDefaultBothFalse(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "c")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertDefault())
+    public BPMNTestCase assertLane2(){
+        addAssertions("lane2")
     }
 
-    public BPMNTestCase buildXorBothTrue(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "ab")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertXorTrue())
+    public BPMNTestCase assertMulti(){
+        addAssertions("multi")
     }
 
-    public BPMNTestCase buildOrSingleFlow1(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "a")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertOrSingleFlow1())
+    public BPMNTestCase assertInterrupted(){
+        addAssertions("interrupted")
     }
 
-    public BPMNTestCase buildOrSingleFlow2(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "b")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertOrSingleFlow2())
+    public BPMNTestCase assertSignaled(){
+        addAssertions("signaled")
     }
 
-    public BPMNTestCase buildOrMultiFlow(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "ab")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertOrMultiFlow())
+    public BPMNTestCase assertNormalTask(){
+        addAssertions("normalTask")
     }
 
-    public BPMNTestCase buildParallelInExclusiveOut(){
-
-        variables = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertParallelInExclusiveOut())
+    public BPMNTestCase assertErrorTask(){
+        addAssertions("errorTask")
     }
 
-    public BPMNTestCase buildDefault(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "c")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertDefault())
+    public BPMNTestCase assertTransactionTask(){
+        addAssertions("transaction")
     }
 
-    public BPMNTestCase buildExclusiveInParallelOutTrue(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "a")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertTrue())
+    public BPMNTestCase assertCompensate(){
+        addAssertions("compensate")
     }
 
-    public BPMNTestCase buildExclusiveInParallelOutFalse(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "b")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertFalse())
+    public BPMNTestCase assertNotInterrupted(){
+        addAssertions("notInterrupted")
     }
 
-    public BPMNTestCase buildExclusiveInParallelOutBothTrue(){
-
-        variables = new JSONObject()
-        JSONObject value1 = new JSONObject()
-        JSONObject value2 = new JSONObject()
-        value1.put("value", "ab")
-        value1.put("type", "String")
-        value2.put("value", number)
-        value2.put("type","Integer")
-        variables.put("test", value1)
-        variables.put("testCaseNumber", value2)
-
-        addStep(new BPMNTestStep().assertTrue())
+    public BPMNTestCase assertStarted(){
+        addAssertions("started")
     }
 
-    public BPMNTestCase buildEventBasedGateway(){
-        addStep(new BPMNTestStep().assertTask1().assertSuccess())
+    public BPMNTestCase assertTimerInternal(){
+        addAssertions("timerInternal")
     }
 
-    public BPMNTestCase buildTwoLanes(){
-
-        addStep(new BPMNTestStep().assertTwoLanes())
+    public BPMNTestCase assertTimerExternal(){
+        addAssertions("timerExternal")
     }
 
-    public BPMNTestCase buildErrorStartEvent1(){
-
-        addStep(new BPMNTestStep().assertErrorStartEvent())
+    //add options
+    public BPMNTestCase optionDelay(int delay){
+        this.delay = delay
+        this
     }
 
-    public BPMNTestCase buildErrorStartEvent2(){
-
-        addStep(new BPMNTestStep().assertErrorStartEvent().assertSuccess())
+    public BPMNTestCase optionSelfStarting(){
+        selfStarting = true
+        this
     }
 
-    public BPMNTestCase buildSignaledSubprocess1(){
-
-        addStep(new BPMNTestStep().assertSignaledSubprocess())
-    }
-
-    public BPMNTestCase buildSignaledSubprocess2(){
-
-        addStep(new BPMNTestStep().assertSignaledSubprocess().assertSuccess())
-    }
-
-    public BPMNTestCase buildSignaledSubprocessNotInterrupted(){
-
-        addStep(new BPMNTestStep().assertSignaledSubprocess().assertNotInterrupted())
-    }
-
-    public BPMNTestCase buildSignaledBoundary(){
-
-        addStep(new BPMNTestStep().assertSignaledBoundary())
-    }
-
-    public BPMNTestCase buildTwoSignaled(){
-
-        addStep(new BPMNTestStep().assertSignaled().assertSignaled().assertSuccess())
-    }
-
-    public BPMNTestCase buildTransaction(){
-
-        addStep(new BPMNTestStep().assertTransaction())
-    }
-
-    public BPMNTestCase buildCompensate(){
-
-        addStep(new BPMNTestStep().assertCompensated())
-    }
-
-    //Getter and Setter
-
+    //Getter
     boolean getSelfStarting() {
-        return selfStarting
-    }
-
-    void setSelfStarting(boolean selfStarting) {
-        this.selfStarting = selfStarting
+        selfStarting
     }
 
     int getNumber() {
-        return number
-    }
-
-    void setNumber(int number) {
-        this.number = number
+        number
     }
 
     int getDelay() {
-        return delay
+        delay
     }
 
-    void setDelay(int delay) {
-        this.delay = delay
+    List<String> getAssertions(){
+        assertions
     }
 
     @Override
     public String toString(){
         String string = "test${number}Assert"
-        for (BPMNTestStep step : testSteps){
-            string += step.toString()
+        for (String assertion : assertions){
+            string += assertion.capitalize()
         }
         return string
     }

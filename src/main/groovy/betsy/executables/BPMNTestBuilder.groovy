@@ -26,7 +26,7 @@ class BPMNTestBuilder {
 
             Path logFile = logDir.resolve("log${testCase.number}.txt")
 
-            List<String> assertionList = testCase.testSteps.get(0).assertions
+            List<String> assertionList = testCase.assertions
 
             //assemble array of assertion for unitTestString
             String assertionListString = "{";
