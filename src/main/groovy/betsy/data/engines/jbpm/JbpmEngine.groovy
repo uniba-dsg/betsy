@@ -46,11 +46,13 @@ class JbpmEngine extends BPMNEngine {
     void deploy(BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
         Path mavenPath = Paths.get("maven/apache-maven-3.2.1/bin")
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn -q clean install"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn -q clean install"))
+        //wait for maven to deploy
         Thread.sleep(1500)
+
         //preparing ssh
-        // delete known_hosts file for do not getting trouble with changing remote finger print
+        //delete known_hosts file for do not getting trouble with changing remote finger print
         //FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
         FileTasks.createFile(Paths.get(homeDir + "/.ssh/config"), """Host localhost
     StrictHostKeyChecking no""")
@@ -100,8 +102,8 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant start.demo.noeclipse"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant start.demo.noeclipse"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q start.demo.noeclipse"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q start.demo.noeclipse"))
 
         //waiting for jboss to startup
         ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
@@ -114,13 +116,13 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant stop.demo"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant stop.demo"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q stop.demo"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q stop.demo"))
         //waiting for shutdown
         WaitTasks.sleep(5000)
         // clean up data (with db and config files in the users home directory)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant clean.demo"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant clean.demo"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q clean.demo"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q clean.demo"))
     }
 
     @Override
