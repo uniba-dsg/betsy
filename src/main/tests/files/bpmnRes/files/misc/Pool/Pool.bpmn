@@ -14,7 +14,7 @@
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log1.txt");
+java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
 f.createNewFile();
 }catch(java.io.IOException e){}]]></bpmn2:script>
     </bpmn2:scriptTask>
@@ -23,7 +23,7 @@ f.createNewFile();
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 bw.append("success");
 bw.close();
 }catch(java.io.IOException e){}]]></bpmn2:script>

@@ -19,7 +19,7 @@
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 bw.append("task2");
 bw.newLine();
 bw.close();
@@ -29,7 +29,7 @@ bw.close();
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 bw.append("task1");
 bw.newLine();
 bw.close();
@@ -44,7 +44,7 @@ bw.close();
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log1.txt");
+java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
 f.createNewFile();
 }catch(java.io.IOException e){
 
@@ -59,7 +59,7 @@ f.createNewFile();
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 bw.append("success");
 bw.close();
 }catch(java.io.IOException e){

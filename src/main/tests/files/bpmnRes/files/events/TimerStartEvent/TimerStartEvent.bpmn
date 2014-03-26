@@ -5,9 +5,9 @@
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
       <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log1.txt");
+java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
 f.createNewFile();
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 bw.append("success");
 bw.newLine();
 bw.close();
