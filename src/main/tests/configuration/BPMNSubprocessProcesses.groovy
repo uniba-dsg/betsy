@@ -20,8 +20,16 @@ class BPMNSubprocessProcesses {
             ]
     )
 
+//    public static final BPMNProcess ADHOC = builder.buildSubprocessProcess(
+//            "AdHoc", "de.uniba.dsg", "1.0", "A simple test for a Ad-Hoc subprocess",
+//            [
+//                    new BPMNTestCase(1).buildSimple()
+//            ]
+//    )
+
     public static final List<BPMNProcess> SUBPROCESSES = [
             SUBPROCESS,
-            TRANSACTION
+            TRANSACTION//,
+            //ADHOC
     ].flatten() as List<BPMNProcess>
 }

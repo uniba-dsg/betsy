@@ -216,6 +216,28 @@ class BPMNEventProcesses {
             ]
     )
 
+    //not supported either by camunda or jbpm
+    public static final BPMNProcess ESCALATION_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "EscalationEventSubprocessInterrupting", "de.uniba.dsg", "1.0", "A test for an escalation event interrupting a subprocess",
+            [
+                    new BPMNTestCase(1).buildEscalationEventSubprocessInterrupting()
+            ]
+    )
+
+//    public static final BPMNProcess CONDITIONAL_EVENT_START = builder.buildEventProcess(
+//            "ConditionalEventStart", "de.uniba.dsg", "1.0", "A test for an conditional start event",
+//            [
+//                    new BPMNTestCase(1).buildConditionalEventStart()
+//            ]
+//    )
+
+//    public static final BPMNProcess CONDITIONAL_EVENT_INTERMEDIATE = builder.buildEventProcess(
+//            "ConditionalEventIntermediate", "de.uniba.dsg", "1.0", "A test for an intermediate conditional event",
+//            [
+//                    new BPMNTestCase(1).buildSimple()
+//            ]
+//    )
+
     public static final List<BPMNProcess> EVENTS = [
             //TIMER_EVENT,
             TIMER_INTERMEDIATE_EVENT,
@@ -244,7 +266,10 @@ class BPMNEventProcesses {
             COMPENSATION_BOUNDARY_TASK_THROW,
             COMPENSATION_BOUNDARY_TASK_END,
             COMPENSATION_EVENT_SUBPROCESS_END,
-            COMPENSATION_EVENT_SUBPROCESS_THROW
+            COMPENSATION_EVENT_SUBPROCESS_THROW,
+            ESCALATION_EVENT_SUBPROCESS_INTERRUPTING//,
+            //CONDITIONAL_EVENT_INTERMEDIATE,
+            //CONDITIONAL_EVENT_START
     ].flatten() as List<BPMNProcess>
 
 }

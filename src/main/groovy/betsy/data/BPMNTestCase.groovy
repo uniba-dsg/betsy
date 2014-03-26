@@ -39,6 +39,32 @@ class BPMNTestCase {
         addStep(new BPMNTestStep().assertSuccess())
     }
 
+    public BPMNTestCase buildEscalationEventSubprocessInterrupting(){
+
+        variables = new JSONObject()
+        JSONObject value = new JSONObject()
+        value.put("value", number)
+        value.put("type","Integer")
+        variables.put("testCaseNumber", value)
+
+        addStep(new BPMNTestStep().assertTask1().assertInterrupted())
+    }
+
+    public BPMNTestCase buildConditionalEventStart(){
+
+        variables = new JSONObject()
+        JSONObject value1 = new JSONObject()
+        JSONObject value2 = new JSONObject()
+        value1.put("value", "a")
+        value1.put("type", "String")
+        value2.put("value", number)
+        value2.put("type","Integer")
+        variables.put("test", value1)
+        variables.put("testCaseNumber", value2)
+
+        addStep(new BPMNTestStep().assertSuccess())
+    }
+
     public BPMNTestCase buildTimerIntermediateEventOnTime(){
 
         variables = new JSONObject()

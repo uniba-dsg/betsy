@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_6WTKYLQQEeOn5oj4oiKgyA">
+  <bpmn2:process id="EscalationEventSubprocessInterrupting" isExecutable="true">
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:subProcess id="SubProcess_1">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:startEvent id="StartEvent_2">
+        <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+      </bpmn2:startEvent>
+      <bpmn2:scriptTask id="task1" name="Task1">
+        <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+        <bpmn2:script><![CDATA[try{
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+bw.append("task1");
+bw.newLine();
+bw.close();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+      </bpmn2:scriptTask>
+      <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="StartEvent_2" targetRef="task1"/>
+      <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_1">
+        <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+        <bpmn2:escalationEventDefinition id="EscalationEventDefinition_2"/>
+      </bpmn2:intermediateThrowEvent>
+      <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="task1" targetRef="IntermediateThrowEvent_1"/>
+      <bpmn2:scriptTask id="task2" name="Task 2">
+        <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+        <bpmn2:script><![CDATA[try{
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+bw.append("task2");
+bw.newLine();
+bw.close();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+      </bpmn2:scriptTask>
+      <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="IntermediateThrowEvent_1" targetRef="task2"/>
+      <bpmn2:endEvent id="EndEvent_3">
+        <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      </bpmn2:endEvent>
+      <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="task2" targetRef="EndEvent_3"/>
+    </bpmn2:subProcess>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="SubProcess_1" targetRef="end"/>
+    <bpmn2:endEvent id="EndEvent_2">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:scriptTask id="interrupted" name="Interrupted">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:script><![CDATA[try{
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+bw.append("interrupted");
+bw.newLine();
+bw.close();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="interrupted" targetRef="EndEvent_2"/>
+    <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="SubProcess_1">
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:escalationEventDefinition id="EscalationEventDefinition_1"/>
+    </bpmn2:boundaryEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="BoundaryEvent_1" targetRef="interrupted"/>
+    <bpmn2:scriptTask id="end" name="End">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:script><![CDATA[try{
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+bw.append("success");
+bw.newLine();
+bw.close();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="end" targetRef="EndEvent_1"/>
+    <bpmn2:endEvent id="EndEvent_1">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:scriptTask id="start" name="Start">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:script><![CDATA[try{
+java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
+f.createNewFile();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="StartEvent_1" targetRef="start"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" name="" sourceRef="start" targetRef="SubProcess_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EscalationEventSubprocessInterrupting">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_9" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="48.0" y="371.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_SubProcess_2" bpmnElement="SubProcess_1" isExpanded="true">
+        <dc:Bounds height="150.0" width="553.0" x="264.0" y="314.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_33" bpmnElement="end">
+        <dc:Bounds height="80.0" width="100.0" x="864.0" y="349.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_SubProcess_2" targetElement="_BPMNShape_ScriptTask_33">
+        <di:waypoint xsi:type="dc:Point" x="816.0" y="389.0"/>
+        <di:waypoint xsi:type="dc:Point" x="864.0" y="389.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="839.0" y="389.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_11" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="1021.0" y="371.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="1039.0" y="412.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="_BPMNShape_ScriptTask_33" targetElement="_BPMNShape_EndEvent_11">
+        <di:waypoint xsi:type="dc:Point" x="964.0" y="389.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1021.0" y="389.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="986.0" y="389.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_BoundaryEvent_2" bpmnElement="BoundaryEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="671.0" y="446.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="686.0" y="487.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_34" bpmnElement="interrupted">
+        <dc:Bounds height="80.0" width="100.0" x="836.0" y="528.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="_BPMNShape_BoundaryEvent_2" targetElement="_BPMNShape_ScriptTask_34">
+        <di:waypoint xsi:type="dc:Point" x="689.0" y="482.0"/>
+        <di:waypoint xsi:type="dc:Point" x="689.0" y="567.0"/>
+        <di:waypoint xsi:type="dc:Point" x="836.0" y="568.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="686.0" y="557.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_12" bpmnElement="EndEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="986.0" y="550.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="1004.0" y="591.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="_BPMNShape_ScriptTask_34" targetElement="_BPMNShape_EndEvent_12">
+        <di:waypoint xsi:type="dc:Point" x="936.0" y="568.0"/>
+        <di:waypoint xsi:type="dc:Point" x="986.0" y="568.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="1148.0" y="572.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_10" bpmnElement="StartEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="289.0" y="372.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="307.0" y="413.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_35" bpmnElement="task1">
+        <dc:Bounds height="80.0" width="100.0" x="375.0" y="350.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="_BPMNShape_StartEvent_10" targetElement="_BPMNShape_ScriptTask_35">
+        <di:waypoint xsi:type="dc:Point" x="325.0" y="390.0"/>
+        <di:waypoint xsi:type="dc:Point" x="375.0" y="390.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="347.0" y="390.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_IntermediateThrowEvent_4" bpmnElement="IntermediateThrowEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="525.0" y="372.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="543.0" y="413.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="_BPMNShape_ScriptTask_35" targetElement="_BPMNShape_IntermediateThrowEvent_4">
+        <di:waypoint xsi:type="dc:Point" x="475.0" y="390.0"/>
+        <di:waypoint xsi:type="dc:Point" x="525.0" y="390.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="497.0" y="390.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_36" bpmnElement="task2">
+        <dc:Bounds height="80.0" width="100.0" x="611.0" y="350.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="_BPMNShape_IntermediateThrowEvent_4" targetElement="_BPMNShape_ScriptTask_36">
+        <di:waypoint xsi:type="dc:Point" x="561.0" y="390.0"/>
+        <di:waypoint xsi:type="dc:Point" x="611.0" y="390.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="583.0" y="390.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_13" bpmnElement="EndEvent_3">
+        <dc:Bounds height="36.0" width="36.0" x="761.0" y="372.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="779.0" y="413.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="_BPMNShape_ScriptTask_36" targetElement="_BPMNShape_EndEvent_13">
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="390.0"/>
+        <di:waypoint xsi:type="dc:Point" x="761.0" y="390.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="733.0" y="390.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_37" bpmnElement="start">
+        <dc:Bounds height="80.0" width="100.0" x="134.0" y="349.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="_BPMNShape_StartEvent_9" targetElement="_BPMNShape_ScriptTask_37">
+        <di:waypoint xsi:type="dc:Point" x="84.0" y="389.0"/>
+        <di:waypoint xsi:type="dc:Point" x="134.0" y="389.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="_BPMNShape_ScriptTask_37" targetElement="_BPMNShape_SubProcess_2">
+        <di:waypoint xsi:type="dc:Point" x="234.0" y="389.0"/>
+        <di:waypoint xsi:type="dc:Point" x="264.0" y="389.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

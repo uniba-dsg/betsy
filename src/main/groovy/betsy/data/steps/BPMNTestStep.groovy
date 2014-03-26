@@ -133,6 +133,10 @@ class BPMNTestStep {
         addAssertions("multi")
     }
 
+    public BPMNTestStep assertInterrupted(){
+        addAssertions("interrupted")
+    }
+
     public BPMNTestStep assertSignaled(){
         addAssertions("signaled")
     }
