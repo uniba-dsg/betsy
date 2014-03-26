@@ -12,7 +12,7 @@ class BPMNCliParser {
         BPMNProcessRepository processRepository = new BPMNProcessRepository()
 
         cli = new CliBuilder(
-                usage: "betsy [options] <engines> <processes>",
+                usage: "betsy2 [options] <engines> <processes>",
                 header: "\nOptions:\n",
                 footer: "\nGROUPS for <engines> and <processes> are in CAPITAL LETTERS.\n<engines>: ${engineRepository.names.join(", ")}\n\n\n<processes>: ${processRepository.names.join(", ")}"
         )
