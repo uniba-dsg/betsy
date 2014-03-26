@@ -15,6 +15,14 @@ jbpmdeployer {
     }
 }
 
+jbpmdependencies {
+    home = "jbpmdependencies"
+    download {
+        url = "https://lspi.wiai.uni-bamberg.de/svn/betsy/jbpm-dependencies.zip"
+        filename = "jbpm-dependencies.zip"
+    }
+}
+
 maven {
     container = "maven"
     home = "maven/apache-maven-3.2.1"
