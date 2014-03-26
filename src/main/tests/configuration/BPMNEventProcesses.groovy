@@ -47,6 +47,30 @@ class BPMNEventProcesses {
             ]
     )
 
+    public static final BPMNProcess TIMER_START_SUBPROCESS = builder.buildEventProcess(
+            "TimerStartEventSubprocess", "de.uniba.dsg", "1.0", "Tests for the non interrupting timer start event of a event sub process",
+            [
+                    new BPMNTestCase(1).assertStarted().optionDelay(100),
+                    new BPMNTestCase(2).assertStarted().assertTimerEvent().assertTimerInternal().assertSuccess().optionDelay(5000)
+            ]
+    )
+
+    public static final BPMNProcess TIMER_START_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
+            "TimerStartEventSubprocessInterrupting1", "de.uniba.dsg", "1.0", "Tests for the interrupting timer start event of a event sub process",
+            [
+                    new BPMNTestCase(1).assertStarted().optionDelay(100),
+                    new BPMNTestCase(2).assertStarted().assertTimerEvent().assertTimerInternal().optionDelay(5000)
+            ]
+    )
+
+    public static final BPMNProcess TIMER_START_SUBPROCESS_INTERRUPTING_2 = builder.buildEventProcess(
+            "TimerStartEventSubprocessInterrupting2", "de.uniba.dsg", "1.0", "Tests for the interrupting timer start event of a event sub process with a following normal sequence flow",
+            [
+                    new BPMNTestCase(1).assertStarted().optionDelay(100),
+                    new BPMNTestCase(2).assertStarted().assertTimerEvent().assertTimerInternal().assertSuccess().optionDelay(5000)
+            ]
+    )
+
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
             "ErrorEndEvent", "de.uniba.dsg", "1.0", "A simple test for the ErrorEndEvent",
             [
@@ -244,6 +268,9 @@ class BPMNEventProcesses {
             TIMER_INTERMEDIATE_BOUNDARY_EVENT,
             TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_1,
             TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2,
+            TIMER_START_SUBPROCESS,
+            TIMER_START_SUBPROCESS_INTERRUPTING_1,
+            TIMER_START_SUBPROCESS_INTERRUPTING_2,
             ERROR_END,
             ERROR_INTERMEDIATE_1,
             ERROR_INTERMEDIATE_2,
