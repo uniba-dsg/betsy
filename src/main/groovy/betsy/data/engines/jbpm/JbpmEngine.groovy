@@ -47,6 +47,7 @@ class JbpmEngine extends BPMNEngine {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
         Path mavenPath = Paths.get("maven/apache-maven-3.2.1/bin")
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn clean install"))
         Thread.sleep(1500)
         //preparing ssh
         // delete known_hosts file for do not getting trouble with changing remote finger print
@@ -64,7 +65,7 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void buildArchives(BPMNProcess process) {
-        ant.xslt(in: process.resourcePath.resolve("process/${process.name}.bpmn"),
+        ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn"),
                 out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2"),
                 style: xsltPath.resolve("jbpm.xsl"))
         new JbpmResourcesGenerator(

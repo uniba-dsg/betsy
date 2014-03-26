@@ -38,7 +38,7 @@ class CamundaResourcesGenerator {
 
         //copy process image
         ant.copy(todir: classesDir){
-            fileset(file: srcDir.resolve("process").resolve("${processName}.png"))
+            fileset(file: srcDir.resolve("${processName}.png"))
         }
         //generate pom
         generatePom(pomDir)
