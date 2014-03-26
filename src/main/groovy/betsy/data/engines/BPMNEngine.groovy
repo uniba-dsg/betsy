@@ -55,4 +55,16 @@ abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI{
     public Path getServerPath() {
         return Paths.get("server").resolve(getName());
     }
+
+    /**
+     * Builds test for the BPMN process
+     * @param process
+     */
+    abstract void buildTest(BPMNProcess process);
+
+    /**
+     * performs test for the BPMN Process
+     * @param process
+     */
+    abstract void testProcess(BPMNProcess process);
 }
