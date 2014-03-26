@@ -143,9 +143,9 @@ class JbpmEngine extends BPMNEngine {
                     name: process.name,
                     deploymentId: "${process.groupId}:${process.name}:${process.version}",
                     baseUrl: new URL(getEndpointUrl(process)),
-                    testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
-                    reportPath: process.targetReportsPath.resolve("case${testCase.number}"),
-                    testBin: process.targetTestBinPath.resolve("case${testCase.number}"),
+                    testSrc: process.getTargetTestSrcPathWithCase(testCase.number),
+                    reportPath: process.getTargetReportsPathWithCase(testCase.number),
+                    testBin: process.getTargetTestBinPathWithCase(testCase.number),
                     logDir: serverPath
             ).runTest()
         }

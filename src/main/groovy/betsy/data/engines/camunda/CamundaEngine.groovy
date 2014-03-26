@@ -117,10 +117,10 @@ class CamundaEngine extends BPMNEngine {
     void testProcess(BPMNProcess process){
         for (BPMNTestCase testCase : process.testCases){
             new CamundaTester(testCase: testCase,
-                    testSrc: process.targetTestSrcPath.resolve("case${testCase.number}"),
+                    testSrc: process.getTargetTestSrcPathWithCase(testCase.number),
                     restURL: getEndpointUrl(process),
-                    reportPath: process.targetReportsPath.resolve("case${testCase.number}"),
-                    testBin: process.targetTestBinPath.resolve("case${testCase.number}"),
+                    reportPath: process.getTargetReportsPathWithCase(testCase.number),
+                    testBin: process.getTargetTestBinPathWithCase(testCase.number),
                     key: process.name,
                     logDir: tomcatDir.resolve("logs")).runTest()
         }
