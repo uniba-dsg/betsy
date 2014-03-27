@@ -156,6 +156,10 @@ class BPMNTestCase {
         addAssertions("timerEvent")
     }
 
+    public BPMNTestCase assertCalled(){
+        addAssertions("called")
+    }
+
     //add options
     public BPMNTestCase optionDelay(int delay){
         this.delay = delay

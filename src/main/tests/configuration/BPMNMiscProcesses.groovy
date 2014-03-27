@@ -20,8 +20,16 @@ class BPMNMiscProcesses {
             ]
     )
 
+    public static final BPMNProcess CALL_ACTIVITY = builder.buildMiscProcess(
+            "CallActivity", "de.uniba.dsg", "1.0", "A test for a call activity with two pools",
+            [
+                    new BPMNTestCase(1).assertCalled().assertSuccess()
+            ]
+    )
+
     public static final List<BPMNProcess> MISCS = [
             POOL,
-            LANES
+            LANES,
+            CALL_ACTIVITY
     ].flatten() as List<BPMNProcess>
 }
