@@ -26,33 +26,4 @@ bw.close();
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="end"/>
   </bpmn2:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="TimerStartEvent">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_6" bpmnElement="StartEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="180.0" y="384.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="0.0" x="198.0" y="425.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_24" bpmnElement="end">
-        <dc:Bounds height="80.0" width="100.0" x="287.0" y="362.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_7" bpmnElement="EndEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="437.0" y="384.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_ScriptTask_24" targetElement="_BPMNShape_EndEvent_7">
-        <di:waypoint xsi:type="dc:Point" x="387.0" y="402.0"/>
-        <di:waypoint xsi:type="dc:Point" x="437.0" y="402.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_StartEvent_6" targetElement="_BPMNShape_ScriptTask_24">
-        <di:waypoint xsi:type="dc:Point" x="216.0" y="402.0"/>
-        <di:waypoint xsi:type="dc:Point" x="251.0" y="403.0"/>
-        <di:waypoint xsi:type="dc:Point" x="251.0" y="402.0"/>
-        <di:waypoint xsi:type="dc:Point" x="287.0" y="402.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="248.0" y="402.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

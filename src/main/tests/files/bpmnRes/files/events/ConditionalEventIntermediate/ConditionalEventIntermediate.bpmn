@@ -40,45 +40,4 @@ bw.close();
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
   </bpmn2:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ConditionalEventIntermediate">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_13" bpmnElement="StartEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="161.0" y="335.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_44" bpmnElement="start">
-        <dc:Bounds height="80.0" width="100.0" x="247.0" y="313.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="_BPMNShape_StartEvent_13" targetElement="_BPMNShape_ScriptTask_44">
-        <di:waypoint xsi:type="dc:Point" x="197.0" y="353.0"/>
-        <di:waypoint xsi:type="dc:Point" x="247.0" y="353.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_20" bpmnElement="EndEvent_5">
-        <dc:Bounds height="36.0" width="36.0" x="618.0" y="335.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="0.0" x="636.0" y="376.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_IntermediateCatchEvent_6" bpmnElement="IntermediateCatchEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="397.0" y="335.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_ScriptTask_44" targetElement="_BPMNShape_IntermediateCatchEvent_6">
-        <di:waypoint xsi:type="dc:Point" x="347.0" y="353.0"/>
-        <di:waypoint xsi:type="dc:Point" x="397.0" y="353.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_ScriptTask_58" bpmnElement="end">
-        <dc:Bounds height="80.0" width="100.0" x="483.0" y="313.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_IntermediateCatchEvent_6" targetElement="_BPMNShape_ScriptTask_58">
-        <di:waypoint xsi:type="dc:Point" x="433.0" y="353.0"/>
-        <di:waypoint xsi:type="dc:Point" x="483.0" y="353.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="_BPMNShape_ScriptTask_58" targetElement="_BPMNShape_EndEvent_20">
-        <di:waypoint xsi:type="dc:Point" x="583.0" y="353.0"/>
-        <di:waypoint xsi:type="dc:Point" x="618.0" y="353.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="598.0" y="353.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
 </bpmn2:definitions>
