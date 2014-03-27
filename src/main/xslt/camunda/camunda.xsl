@@ -26,6 +26,14 @@
         </bpmn2:conditionExpression>
     </xsl:template>
 
+    <!-- for conditional event definitions -->
+    <xsl:template match="bpmn2:condition">
+        <bpmn2:condition>
+            <xsl:apply-templates select="@*"/>
+            ${<xsl:value-of select="." />}
+        </bpmn2:condition>
+    </xsl:template>
+
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>

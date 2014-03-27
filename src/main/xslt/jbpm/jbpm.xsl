@@ -74,6 +74,14 @@
         </bpmn2:conditionExpression>
     </xsl:template>
 
+    <!-- for conditional event definitions -->
+    <xsl:template match="bpmn2:condition">
+        <bpmn2:condition language="http://www.java.com/java">
+            <xsl:apply-templates select="@*"/>
+            return <xsl:value-of select="." />;
+        </bpmn2:condition>
+    </xsl:template>
+
     <!-- for parallel gateways-->
     <xsl:template match="bpmn2:parallelGateway[@id='ParallelGateway_1']">
         <bpmn2:parallelGateway gatewayDirection="Diverging">

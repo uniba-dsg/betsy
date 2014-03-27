@@ -248,19 +248,21 @@ class BPMNEventProcesses {
             ]
     )
 
-//    public static final BPMNProcess CONDITIONAL_EVENT_START = builder.buildEventProcess(
-//            "ConditionalEventStart", "de.uniba.dsg", "1.0", "A test for an conditional start event",
-//            [
-//                    new BPMNTestCase(1).inputA().assertSuccess()
-//            ]
-//    )
+    public static final BPMNProcess CONDITIONAL_EVENT_START = builder.buildEventProcess(
+            "ConditionalEventStart", "de.uniba.dsg", "1.0", "A test for an conditional start event",
+            [
+                    new BPMNTestCase(1).inputA().assertStarted().assertTask1().assertSuccess(),
+                    new BPMNTestCase(2).inputB().assertStarted()
+            ]
+    )
 
-//    public static final BPMNProcess CONDITIONAL_EVENT_INTERMEDIATE = builder.buildEventProcess(
-//            "ConditionalEventIntermediate", "de.uniba.dsg", "1.0", "A test for an intermediate conditional event",
-//            [
-//                    new BPMNTestCase(1).assertSuccess()
-//            ]
-//    )
+    public static final BPMNProcess CONDITIONAL_EVENT_INTERMEDIATE = builder.buildEventProcess(
+            "ConditionalEventIntermediate", "de.uniba.dsg", "1.0", "A test for an intermediate conditional event",
+            [
+                    new BPMNTestCase(1).inputA().assertStarted().assertSuccess(),
+                    new BPMNTestCase(2).inputB().assertStarted()
+            ]
+    )
 
     public static final List<BPMNProcess> EVENTS = [
             //TIMER_EVENT,
@@ -294,9 +296,9 @@ class BPMNEventProcesses {
             COMPENSATION_BOUNDARY_TASK_END,
             COMPENSATION_EVENT_SUBPROCESS_END,
             COMPENSATION_EVENT_SUBPROCESS_THROW,
-            ESCALATION_EVENT_SUBPROCESS_INTERRUPTING//,
-            //CONDITIONAL_EVENT_INTERMEDIATE,
-            //CONDITIONAL_EVENT_START
+            ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
+            CONDITIONAL_EVENT_INTERMEDIATE,
+            CONDITIONAL_EVENT_START
     ].flatten() as List<BPMNProcess>
 
 }
