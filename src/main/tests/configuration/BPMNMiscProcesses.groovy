@@ -27,9 +27,17 @@ class BPMNMiscProcesses {
             ]
     )
 
+    public static final BPMNProcess CALL_ACTIVITY_GLOBAL_TASK = builder.buildMiscProcess(
+            "CallActivityGlobalTask", "de.uniba.dsg", "1.0", "A test for a call activity with a global script task",
+            [
+                    new BPMNTestCase(1).assertCalled().assertSuccess()
+            ]
+    )
+
     public static final List<BPMNProcess> MISCS = [
             POOL,
             LANES,
-            CALL_ACTIVITY
+            CALL_ACTIVITY,
+            CALL_ACTIVITY_GLOBAL_TASK
     ].flatten() as List<BPMNProcess>
 }
