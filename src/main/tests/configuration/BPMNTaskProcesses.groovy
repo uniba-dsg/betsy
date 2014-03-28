@@ -13,6 +13,14 @@ class BPMNTaskProcesses {
             ]
     )
 
+    public static final BPMNProcess SEQUENCE_CONDITIONAL = builder.buildTaskProcess(
+            "SequenceFlowConditional", "de.uniba.dsg", "1.0", "A Test for a conditional sequence flow",
+            [
+                    new BPMNTestCase(1).inputA().assertSuccess().assertCondition(),
+                    new BPMNTestCase(2).inputB().assertSuccess()
+            ]
+    )
+
     public static final BPMNProcess MULTI_SEQUENTIAL = builder.buildTaskProcess(
             "MultiSequencialTask", "de.uniba.dsg", "1.0", "A simple Test for a 3 times sequentially instantiated script task",
             [
@@ -36,6 +44,7 @@ class BPMNTaskProcesses {
 
     public static final List<BPMNProcess> TASKS = [
             SIMPLE,
+            SEQUENCE_CONDITIONAL,
             MULTI_SEQUENTIAL,
             MULTI_PARALLEL,
             LOOP

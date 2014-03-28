@@ -160,6 +160,10 @@ class BPMNTestCase {
         addAssertions("called")
     }
 
+    public BPMNTestCase assertCondition(){
+        addAssertions("condition")
+    }
+
     //add options
     public BPMNTestCase optionDelay(int delay){
         this.delay = delay
