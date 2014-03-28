@@ -36,6 +36,20 @@ class BPMNTaskProcesses {
             ]
     )
 
+    public static final BPMNProcess MULTI_SEQUENTIAL_NONE = builder.buildTaskProcess(
+            "MultiSequencialTaskNoneBehavior", "de.uniba.dsg", "1.0", "A Test for a 3 times sequentially instantiated script task with a none multi instance behavior",
+            [
+                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSignaled().assertSignaled().assertSignaled()
+            ]
+    )
+
+    public static final BPMNProcess MULTI_SEQUENTIAL_ONE = builder.buildTaskProcess(
+            "MultiSequencialTaskOneBehavior", "de.uniba.dsg", "1.0", "A Test for a 3 times sequentially instantiated script task with a one multi instance behavior",
+            [
+                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSignaled()
+            ]
+    )
+
     public static final BPMNProcess MULTI_PARALLEL = builder.buildTaskProcess(
             "MultiParallelTask", "de.uniba.dsg", "1.0", "A simple Test for a 3 times parallel instantiated script task",
             [
@@ -55,6 +69,8 @@ class BPMNTaskProcesses {
             SEQUENCE_CONDITIONAL,
             SEQUENCE_CONDITIONAL_DEFAULT,
             MULTI_SEQUENTIAL,
+            MULTI_SEQUENTIAL_NONE,
+            MULTI_SEQUENTIAL_ONE,
             MULTI_PARALLEL,
             LOOP
     ].flatten() as List<BPMNProcess>
