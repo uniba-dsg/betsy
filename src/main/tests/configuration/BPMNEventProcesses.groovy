@@ -240,11 +240,19 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess CONDITIONAL_EVENT_START = builder.buildEventProcess(
-            "ConditionalEventStart", "de.uniba.dsg", "1.0", "A test for an conditional start event",
+    public static final BPMNProcess CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
+            "ConditionalStartEventSubprocessInterrupting1", "de.uniba.dsg", "1.0", "A test for an interrupting conditional start event in an event sub process",
+            [
+                    new BPMNTestCase(1).inputA().assertStarted().assertTask1(),
+                    new BPMNTestCase(2).inputB().assertStarted().assertNormalTask()
+            ]
+    )
+
+    public static final BPMNProcess CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2 = builder.buildEventProcess(
+            "ConditionalStartEventSubprocessInterrupting2", "de.uniba.dsg", "1.0", "A test for an interrupting conditional start event in an event sub process in a sub process with a following normal sequence flow",
             [
                     new BPMNTestCase(1).inputA().assertStarted().assertTask1().assertSuccess(),
-                    new BPMNTestCase(2).inputB().assertStarted()
+                    new BPMNTestCase(2).inputB().assertStarted().assertNormalTask().assertSuccess()
             ]
     )
 
@@ -296,7 +304,8 @@ class BPMNEventProcesses {
             COMPENSATION_EVENT_SUBPROCESS_THROW,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_EVENT_INTERMEDIATE,
-            CONDITIONAL_EVENT_START,
+            CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1,
+            CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2,
             TERMINATE_EVENT
     ].flatten() as List<BPMNProcess>
 
