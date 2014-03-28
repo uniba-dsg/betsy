@@ -28,10 +28,12 @@ class BPMNTestBuilder {
 
             //assemble array of assertion for unitTestString
             String assertionListString = "{";
-            for(String assertString: assertionList){
-                assertionListString = assertionListString + "\"" + assertString + "\","
+            if(assertionList.size() > 0 ){
+                for(String assertString: assertionList){
+                    assertionListString = assertionListString + "\"" + assertString + "\","
+                }
+                assertionListString = assertionListString.substring(0, (assertionListString.length() - 1))
             }
-            assertionListString = assertionListString.substring(0, (assertionListString.length() - 1))
             assertionListString = assertionListString + "}"
 
             String unitTestString = """package ${packageString};

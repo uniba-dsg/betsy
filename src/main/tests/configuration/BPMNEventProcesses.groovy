@@ -271,6 +271,44 @@ class BPMNEventProcesses {
             ]
     )
 
+    /*
+    //It is not possible to create a signal engine independent and in this case the missing signal is ignored by the engines.
+    //The process is wrongly started and for that simulates a correct result
+    public static final BPMNProcess SIGNAL_START = builder.buildEventProcess(
+            "SignalStartEvent", "de.uniba.dsg", "1.0", "A test with a signal start event",
+            [
+                    new BPMNTestCase(1).assertSuccess()
+            ]
+    )
+
+    //The same behavior as for signal start event could be recognized for camunda here. jbpm complains about a missing message.
+    public static final BPMNProcess MESSAGE_START = builder.buildEventProcess(
+            "MessageStartEvent", "de.uniba.dsg", "1.0", "A test with a message start event",
+            [
+                    new BPMNTestCase(1).assertSuccess()
+            ]
+    )
+
+    //Jbpm can not use the with the start transmitted variable 'test' as it needs an instantiated process for access to
+    //the variables. Camunda does not support conditional and ignores it like in signal start event.
+    public static final BPMNProcess CONDITIONAL_START = builder.buildEventProcess(
+            "ConditionalStartEvent", "de.uniba.dsg", "1.0", "A test with a conditional start event",
+            [
+                    new BPMNTestCase(1).inputA().assertSuccess(),
+                    new BPMNTestCase(2).inputB()
+            ]
+    )
+
+    //Timer start event is not tested because guessing the time which is needed until the process really starts is environment specific
+    public static final BPMNProcess TIMER_START = builder.buildEventProcess(
+            "TimerStartEvent", "de.uniba.dsg", "1.0", "A test with a timer start event",
+            [
+                    new BPMNTestCase(1).assertSuccess().optionSelfStarting().optionDelay(5000),
+                    new BPMNTestCase(2).optionSelfStarting()
+            ]
+    )
+    */
+
     public static final List<BPMNProcess> EVENTS = [
             TIMER_INTERMEDIATE_EVENT,
             TIMER_INTERMEDIATE_BOUNDARY_EVENT,
@@ -306,7 +344,11 @@ class BPMNEventProcesses {
             CONDITIONAL_EVENT_INTERMEDIATE,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2,
-            TERMINATE_EVENT
+            TERMINATE_EVENT,
+            /*SIGNAL_START,
+            MESSAGE_START,
+            CONDITIONAL_START,
+            TIMER_START*/
     ].flatten() as List<BPMNProcess>
 
 }

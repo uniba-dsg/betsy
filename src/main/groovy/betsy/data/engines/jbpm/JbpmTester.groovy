@@ -38,9 +38,9 @@ class JbpmTester {
         RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
 
-        //setup variables and start process
-        try {
-            if(testCase.variables != null){
+        if(!testCase.selfStarting){
+            //setup variables and start process
+            try {
                 Map<String, Object> variables = new HashMap<>()
                 for(String key : testCase.variables.keySet()){
                     variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
@@ -56,18 +56,20 @@ class JbpmTester {
                         bw.close();
                     }catch(IOException ioe){}
                 }
-            }else{
-                kSession.startProcess(name)
+                //delay for timer intermediate event
+                if(testCase.delay != 0){
+                    WaitTasks.sleep(testCase.delay)
+                }
+            }catch (RuntimeException e){
+                try{
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
+                    bw.append("runtimeException");
+                    bw.close();
+                }catch(IOException ioe){}
             }
-            if(testCase.delay != 0){
-                WaitTasks.sleep(testCase.delay)
-            }
-        }catch (RuntimeException e){
-            try{
-                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
-                bw.append("runtimeException");
-                bw.close();
-            }catch(IOException ioe){}
+        }else{
+            //delay for self starting
+            WaitTasks.sleep(testCase.delay)
         }
 
         //setup path to 'tools.jar' for the javac ant task
