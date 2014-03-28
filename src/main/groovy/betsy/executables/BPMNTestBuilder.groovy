@@ -105,7 +105,7 @@ public class ${process.name} {
                     result = false;
                 }
             }
-            assertTrue("Could not find '" + asrt + "' in value list", result);
+            assertTrue("Could not find '" + asrt + "' in value list. " + message, result);
         }
     }
 
