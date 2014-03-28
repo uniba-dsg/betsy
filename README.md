@@ -19,7 +19,7 @@ This software is licensed under the LGPL Version 3 Open Source License!
 ## Licensing
 LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
-## Usage
+## Usage for BPEL engine testing
 
 Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
 
@@ -68,8 +68,41 @@ $ betsy ode Sequence # Running Sequence test for Apache ODE
 $ betsy ode Invoke-Catch # Running Invoke-Catch test for Apache ODE
 $ betsy -t sequence.xsl,pick.xsl ode_v # Running all tests for the virtualised Apache ODE with sequence.xsl and pick.xsl CoreBPEL transformations
 $ betsy -o # Opens the results in the default browser after a successful run
+```
 
-# Administrative gradlew tasks
+## Usage for BPMN engine testing
+
+Requirements (see above) have to be fulfilled to execute `betsy-bpmn` on the command line.
+
+See `Config.groovy` for more detailed configuration options.
+
+```
+usage: betsy-bpmn [options] <engines> <processes>
+
+Options:
+ -o,--open-results-in-browser          Opens results in default browser
+ -b,--build-only                       Builds only the artifacts. Does
+                                       nothing else.
+ -h,--help                             Print out usage information
+
+GROUPS for <engines> and <processes> are in CAPITAL LETTERS.
+<engines>:
+ALL (install and execute all engines),
+camunda, jbpm
+
+<processes>: ALL, GATEWAYS, TASKS, EVENTS, SUBPROCESSES, MISCS
+
+# Examples
+$ betsy-bpmn # Running all tests for all engines
+$ betsy-bpmn camunda # Running all tests for Camunda
+$ betsy-bpmn ALL SequenceFlow # Running SequenceFlow test ( = basic test) for all engines
+$ betsy-bpmn ALL SequenceFlow,ExclusiveGateway # Running SequenceFlow and ExclusiveGateway test for all engines
+$ betsy-bpmn camunda SequenceFlow # Running SequenceFlow test for Camunda
+$ betsy-bpmn -o # Opens the results in the default browser after a successful run
+```
+
+## Administrative gradlew tasks
+```
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
@@ -86,12 +119,13 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
     server/ # engine installation directory
     test/ # execution results and reports
     src/main/tests/ # the bpel, wsdl, xsd files and test configuration
+    src/main/tests/files/bpmnRes # the bpmn and bpmn engine specific files
     src/main/xslt/[engine/] # common and engine specific xslt scripts
-    src/main/resources/[engine/] # common and engine specific xsds and other resources
+    src/main/resources/[engine/] # bpel common and engine specific xsds and other resources
     src/main/groovy # the main source code
     src/main/java # mock web service implementation
 
-## Test Structure
+## Test Structure for BPEL Engines
 
 	test/
 	test/reports/
@@ -107,9 +141,22 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 	[test/$engine/$process/binding/ # binding package]
 	[test/$engine/$process/composite/ # composite package]
 
+## Test Structure for BPMN Engines
+
+	test/
+	test/reports/
+    test/reports/html/ # html junit reports
+    test/reports/imgs/ # process images
+	test/$engine/
+	test/$engine/$process/
+	test/$engine/$process/war|project/ # the deployable war (camunda) or maven project (jbpm) files
+	test/$engine/$process/test*/ # the junit test bin and source files
+	test/$engine/$process/logs/ # server and engine log files and test case log files
+	test/$engine/$process/reports/ # junit test reports for each test case and a combined one
+
 # Authors (in alphabetical order)
 
-[Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Christian Preißinger and Cedric Röck
+Mathias Casar, [Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Christian Preißinger, Cedric Röck and Andreas Vorndran
 
 # Publications
 The following scientific publications are either about betsy, have used betsy to present benchmarks or use and build upon data obtained through betsy:
