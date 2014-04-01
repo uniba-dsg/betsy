@@ -91,11 +91,18 @@ class BPMNLatexSerializer {
         if(testCase.variables.has("test")){
             input = ((JSONObject)testCase.variables.get("test")).get("value")
         }
+        String options = ""
+        if(testCase.selfStarting){
+            options += "selfStarting "
+        }
+        if(testCase.delay){
+            options += "Delay: " + testCase.delay + "ms "
+        }
         writer.println("Test case ${testCase.number} & ")
-        writer.println("\\begin{tabular}[t]{|p{1cm}|p{9cm}|}")
+        writer.println("\\begin{tabular}[t]{|p{1cm}|p{7.5cm}|p{1.5cm}|}")
         writer.println("\\hline")
-        writer.println("input & assertions \\\\\\hline")
-        writer.println(input + " & " + assertions + "\\\\\\hline")
+        writer.println("input & assertions & options\\\\\\hline")
+        writer.println(input + " & " + assertions + " & " + options + "\\\\\\hline")
         writer.println("\\end{tabular}")
         writer.println("\\\\\\hline")
     }
