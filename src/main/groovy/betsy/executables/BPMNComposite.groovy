@@ -4,7 +4,7 @@ import ant.tasks.AntUtil
 import betsy.data.BPMNProcess
 import betsy.data.BPMNTestSuite
 import betsy.data.engines.BPMNEngine
-import betsy.executables.analytics.Analyzer
+import betsy.executables.analytics.BPMNAnalyzer
 import betsy.executables.reporting.BPMNReporter
 import betsy.executables.util.LogUtil
 import betsy.tasks.FileTasks
@@ -61,7 +61,7 @@ class BPMNComposite {
     protected createReports() {
         log testSuite.reportsPath, {
             new BPMNReporter(tests: testSuite).createReports()
-            new Analyzer(csvFilePath: testSuite.csvFilePath,
+            new BPMNAnalyzer(csvFilePath: testSuite.csvFilePath,
                     reportsFolderPath: testSuite.reportsPath).createAnalytics()
         }
     }
