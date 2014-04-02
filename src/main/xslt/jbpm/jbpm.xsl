@@ -4,10 +4,20 @@
 
     <!-- in the case of a second process rename the properties -->
     <xsl:template match="bpmn2:process[@id='Process_2']">
-        <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process" processType="Private">
+        <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process 2" processType="Private">
             <xsl:apply-templates select="@*"/>
             <bpmn2:property id="test2" itemSubjectRef="testItem" />
             <bpmn2:property id="testCaseNumber2" itemSubjectRef="testCaseNumberItem" />
+            <xsl:apply-templates select="node()"/>
+        </bpmn2:process>
+    </xsl:template>
+
+    <!-- in the case of a third process rename the properties -->
+    <xsl:template match="bpmn2:process[@id='Process_1']">
+        <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process 3" processType="Private">
+            <xsl:apply-templates select="@*"/>
+            <bpmn2:property id="test3" itemSubjectRef="testItem" />
+            <bpmn2:property id="testCaseNumber3" itemSubjectRef="testCaseNumberItem" />
             <xsl:apply-templates select="node()"/>
         </bpmn2:process>
     </xsl:template>
