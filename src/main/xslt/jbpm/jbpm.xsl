@@ -26,9 +26,6 @@
     <xsl:template match="bpmn2:definitions">
         <bpmn2:definitions xmlns="http://www.jboss.org/drools" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd">
             <xsl:namespace name="tns" select="'http://www.jboss.org/drools'" />
-            <xsl:namespace name="bpmndi" select="'http://www.omg.org/spec/BPMN/20100524/DI'" />
-            <xsl:namespace name="dc" select="'http://www.omg.org/spec/DD/20100524/DC'" />
-            <xsl:namespace name="di" select="'http://www.omg.org/spec/DD/20100524/DI'" />
             <xsl:apply-templates select="@*"/>
             <bpmn2:itemDefinition id="testItem" structureRef="String" />
             <bpmn2:itemDefinition id="testCaseNumberItem" structureRef="Integer" />
