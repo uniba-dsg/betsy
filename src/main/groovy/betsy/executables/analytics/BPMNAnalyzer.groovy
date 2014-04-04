@@ -1,14 +1,11 @@
 package betsy.executables.analytics;
 
-import ant.tasks.AntUtil;
 import betsy.executables.analytics.html.HtmlAnalytics;
 import betsy.executables.analytics.model.CsvReport;
-import groovy.util.AntBuilder;
 
 import java.nio.file.Path;
 
 public class BPMNAnalyzer {
-    final AntBuilder ant = AntUtil.builder()
 
     Path csvFilePath
     Path reportsFolderPath

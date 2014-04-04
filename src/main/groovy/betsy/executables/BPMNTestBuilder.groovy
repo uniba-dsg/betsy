@@ -16,9 +16,6 @@ class BPMNTestBuilder {
     BPMNProcess process
 
     public void buildTests() {
-
-
-
         //Build test for each Test Case
         for(BPMNTestCase testCase: process.testCases){
 

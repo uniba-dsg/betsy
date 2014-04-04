@@ -6,7 +6,6 @@ import betsy.data.BPMNTestSuite
 import betsy.data.engines.BPMNEngine
 import betsy.executables.analytics.BPMNAnalyzer
 import betsy.executables.reporting.BPMNReporter
-import betsy.executables.util.LogUtil
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 import org.apache.log4j.MDC
@@ -67,7 +66,6 @@ class BPMNComposite {
     }
 
     protected void executeProcess(BPMNProcess process) {
-        //TODO Retry?
         log process.targetPath, {
             try {
                 buildPackageAndTest(process)

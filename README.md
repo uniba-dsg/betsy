@@ -1,6 +1,6 @@
-# betsy (BPEL Engine Test System) [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
+# betsy (BPEL Engine Test System) and Betsy-BPMN [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
 
-Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
+Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard. It also contains Betsy-BPMN for testing BPMN engines.
 
 This software is licensed under the LGPL Version 3 Open Source License!
 
@@ -106,7 +106,7 @@ $ betsy-bpmn -o # Opens the results in the default browser after a successful ru
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
-$ gradlew enginecontrol # Opens a Swing GUI that allows to install, start and stop supported engines
+$ gradlew enginecontrol # Opens a Swing GUI that allows to install, start and stop supported BPEL engines
 ```
 
 ## Downloads

@@ -28,6 +28,9 @@ class JbpmTester {
     String user = "admin"
     String password = "admin"
 
+    /**
+     * Runs a single test
+     */
     public void runTest(){
         //make bin dir
         FileTasks.mkdirs(testBin)
