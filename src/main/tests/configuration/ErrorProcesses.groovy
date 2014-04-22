@@ -47,7 +47,8 @@ class ErrorProcesses {
             "60018" : "soap-xsd-rm-elem",
             "60024" : "soap-xsd-mod_ns-rm_ns",
             "60025" : "soap-xsd-mod_ns-wrong_ns",
-            "60026" : "soap-xsd-mod_ns-unbound_prefix"
+            "60026" : "soap-xsd-mod_ns-unbound_prefix",
+            "50003" : "tcp-request_timeout"
     ]
 
     public static List<BetsyProcess> getProcesses() {
