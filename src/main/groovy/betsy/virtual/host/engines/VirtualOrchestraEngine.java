@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualOrchestraEngine extends VirtualEngine {
 
@@ -69,7 +68,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.orchestra_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.orchestra_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.orchestra_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.orchestra_v.deploymentTimeout")));
 
         return operation;
     }

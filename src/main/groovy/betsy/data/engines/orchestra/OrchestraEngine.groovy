@@ -60,7 +60,7 @@ class OrchestraEngine extends LocalEngine {
         new OrchestraDeployer(
                 orchestraHome: serverPath.resolve("orchestra-cxf-tomcat-4.9.0"),
                 packageFilePath: process.targetPackageFilePath,
-                antBinFolder: Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
+                antBinFolder: Configuration.antHome.resolve("bin").toAbsolutePath()
         ).deploy()
     }
 

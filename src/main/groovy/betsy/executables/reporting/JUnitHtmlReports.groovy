@@ -19,7 +19,7 @@ class JUnitHtmlReports {
     Path path
 
     public void create() {
-        Path antBinFolder = Configuration.getPath("ant.home").resolve("bin").toAbsolutePath()
+        Path antBinFolder = Configuration.antHome.resolve("bin").toAbsolutePath()
 
         log.info "creating reporting ant scripts"
         ant.echo(message: createAntReportFile(), file: path.resolve("build.xml"))

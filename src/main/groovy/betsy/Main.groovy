@@ -12,7 +12,7 @@ import betsy.data.engines.LocalEngine
 import betsy.executables.ws.ExternalTestPartnerService
 import betsy.virtual.host.VirtualBox
 import betsy.virtual.host.engines.VirtualEngine
-import betsy.virtual.host.virtualbox.VBoxConfiguration
+
 import betsy.virtual.host.virtualbox.VBoxWebService
 import betsy.virtual.host.virtualbox.VirtualBoxImpl
 import com.sun.xml.internal.ws.server.ServerRtException
@@ -142,7 +142,7 @@ class Main {
             String partner = Configuration.get("partner.ipAndPort")
             if (partner.contains("0.0.0.0") || partner.contains("127.0.0.1")) {
                 throw new IllegalStateException("Virtual engines require your local IP-Address to be set. " +
-                        "This can either be done via the -p option or directly in the Config.groovy file.")
+                        "This can either be done via the -p option or directly in the config.properties file.")
             }
         }
     }
@@ -193,7 +193,7 @@ class Main {
             }
 
             log.info "Setting Partner IP and Port to ${newPartnerAddress} from previous setting ${Configuration.get("partner.ipAndPort")}"
-            Configuration.set("partner.ipAndPort", newPartnerAddress)
+            Configuration.setPartnerIpAndPort(newPartnerAddress)
         }
     }
 
@@ -209,7 +209,6 @@ class Main {
     protected static void virtualEngines(List<Engine> engines) {
         if (engines.any { it instanceof VirtualEngine }) {
             // verify all mandatory config options
-            new VBoxConfiguration().verify()
             new VBoxWebService().startAndInstall()
 
             VirtualBox vb = new VirtualBoxImpl()

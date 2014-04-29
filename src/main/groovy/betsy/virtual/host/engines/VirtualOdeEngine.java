@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualOdeEngine extends VirtualEngine {
     public static final int HTTP_PORT = 8080;
@@ -61,7 +60,7 @@ public class VirtualOdeEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.ode_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.ode_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.ode_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.ode_v.deploymentTimeout")));
 
         return operation;
     }

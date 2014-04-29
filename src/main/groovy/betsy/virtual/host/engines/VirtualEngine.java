@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Set;
 
 /**
@@ -50,10 +49,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     private VirtualBoxMachine vm = null;
 
-    private static Path getDownloadPath() {
-        return Paths.get("vm_download");
-    }
-
     public void setVirtualBox(VirtualBox virtualBox) {
         this.virtualBox = virtualBox;
     }
@@ -65,7 +60,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     @Override
     public void startup() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return;
         }
 
@@ -92,13 +87,13 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     }
 
     private void setHeadlessMode() {
-        boolean headless = Configuration.getValueAsBoolean("virtual.engines." + getName() + ".headless");
+        boolean headless = Boolean.valueOf(Configuration.get("virtual.engines." + getName() + ".headless"));
         this.vm.setHeadlessMode(headless);
     }
 
     @Override
     public void shutdown() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return;
         }
 
@@ -106,7 +101,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         // stop communication
         // if there is no virtualMachine then there is nothing to stop
         if (this.vm != null) {
-            boolean saveState = Configuration.getValueAsBoolean("virtual.engines." + getName() + ".shutdownSaveState");
+            boolean saveState = Boolean.valueOf(Configuration.get("virtual.engines." + getName() + ".shutdownSaveState"));
             if (saveState) {
                 this.vm.saveState();
             } else {
@@ -118,7 +113,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     @Override
     public void install() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return;
         }
 
@@ -151,7 +146,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     private VirtualBoxMachine getOrImportVirtualMachine() throws VirtualBoxException {
         return virtualBox.importVirtualMachine(getVirtualMachineName(), getName(),
-                getDownloadPath());
+                Configuration.getVirtualDownloadDir());
     }
 
     @Override
@@ -214,7 +209,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     @Override
     public boolean isRunning() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return false;
         }
 
@@ -229,10 +224,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         }
 
         return vm.isActive();
-    }
-
-    private boolean useRunningVM() {
-        return Configuration.getValueAsBoolean("virtual.useRunningVM");
     }
 
     private VirtualBoxMachine getVirtualMachine() throws VirtualBoxException {

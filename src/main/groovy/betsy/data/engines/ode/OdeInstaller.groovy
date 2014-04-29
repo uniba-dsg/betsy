@@ -24,7 +24,7 @@ class OdeInstaller {
         TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir)
         tomcatInstaller.install()
 
-        Path downloadDir = Configuration.getPath("downloads.dir")
+        Path downloadDir = Configuration.downloadsDir
 
         ant.get(dest: downloadDir, skipexisting: true) {
             ant.url url: downloadUrl

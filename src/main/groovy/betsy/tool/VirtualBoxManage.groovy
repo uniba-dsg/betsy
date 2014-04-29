@@ -1,13 +1,13 @@
-package betsy.tool;
+package betsy.tool
+
+import betsy.config.Configuration;
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths;
 
 import org.apache.commons.lang.StringUtils
 
 import betsy.virtual.host.VirtualBoxException
-import betsy.virtual.host.virtualbox.VBoxConfiguration
 
 public class VirtualBoxManage {
 
@@ -15,14 +15,13 @@ public class VirtualBoxManage {
 		println "ERROR >> ${msg}"
 	}
 	
-	private VBoxConfiguration config
 	private Path vboxManage
 	private boolean verbose
 	
-	VirtualBoxManage(VBoxConfiguration config, def verbose) {
+	VirtualBoxManage(def verbose) {
 		this.config = Objects.requireNonNull(config)
 		// make sure path is absolute!
-		this.vboxManage = config.getVBoxManage().toAbsolutePath()
+		this.vboxManage = Configuration.getVBoxManage().toAbsolutePath()
 		this.verbose = verbose ? true : false
 	}
 	

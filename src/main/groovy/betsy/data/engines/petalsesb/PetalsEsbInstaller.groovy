@@ -29,7 +29,7 @@ class PetalsEsbInstaller {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName), dest: serverDir
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: serverDir
         ant.unzip src: sourceFile, dest: serverDir
 
         // install bpel service engine and binding connector for soap messages

@@ -89,7 +89,7 @@ public class SnapshotCreator {
     }
 
     private void failIfEngineServicesTimeout(String engineName, List<ServiceAddress> engineServices) throws VirtualEngineServiceException {
-        final int secondsToWait = Configuration.getValueAsInteger("virtual.engines." + engineName + ".serviceTimeout");
+        final int secondsToWait = Integer.parseInt(Configuration.get("virtual.engines." + engineName + ".serviceTimeout"));
 
         try {
             if (!ServiceValidator.isEngineReady(engineServices, secondsToWait)) {

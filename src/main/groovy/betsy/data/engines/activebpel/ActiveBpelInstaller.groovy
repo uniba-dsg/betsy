@@ -27,11 +27,11 @@ class ActiveBpelInstaller {
                 downloadUrl: "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-5.5.36.zip")
         tomcatInstaller.install()
 
-        ant.get(dest: Configuration.getPath("downloads.dir"), skipexisting: true) {
+        ant.get(dest: Configuration.downloadsDir, skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName), dest: serverDir
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: serverDir
 
         LinkedHashMap<String, String> environment = ["CATALINA_HOME": tomcatInstaller.tomcatDestinationDir.toString()]
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.bat"), environment)

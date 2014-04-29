@@ -22,7 +22,8 @@ sourceSets {
 }
 
 ext {
-    config = new ConfigSlurper().parse(new File(project.rootDir, "Config.groovy").toURI().toURL())
+    props = new Properties()
+    props.load(new File(project.rootDir, "config.properties").newInputStream())
 }
 
 configurations {
@@ -43,8 +44,8 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
 
-    external files(fileTree(dir: "${config.soapui.home}/bin", includes: ['*.jar']))
-    external files(fileTree(dir: "${config.soapui.home}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
 
     compile configurations.internal
     compile configurations.external
@@ -55,47 +56,47 @@ task wrapper(type: Wrapper) {
 }
 
 task downloadSoapUI {
-    outputs.file new File("${config.downloads.dir}/${config.soapui.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("soapui.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
+        ant.mkdir dir: props.getProperty("downloads.dir")
 	// maxtime is set to this value to ensure that travis-ci can download this file
-        ant.get dest: config.downloads.dir, maxtime: 1524, verbose: true, {
-            ant.url url: config.soapui.download.url
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 1524, verbose: true, {
+            ant.url url: props.getProperty("soapui.download.url")
         }
     }
 }
 
 task installSoapUI {
-    ext.srcFile = new File("${config.downloads.dir}/${config.soapui.download.filename}")
-    ext.destDir = new File(config.soapui.container)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("soapui.download.filename")}")
+    ext.destDir = props.getProperty("soapui.container")
 
     inputs.file srcFile
     outputs.dir destDir
 
     doLast {
-        ant.mkdir dir: new File(config.soapui.home)
+        ant.mkdir dir: props.getProperty("soapui.home")
         ant.unzip src: srcFile, dest: destDir
     }
 }
 
 task downloadAnt {
-    outputs.file new File("${config.downloads.dir}/${config.ant.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("ant.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 120, {
-            ant.url url: config.ant.download.url
+        ant.mkdir dir: props.getProperty("downloads.dir")
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 120, {
+            ant.url url: props.getProperty("ant.download.url")
         }
     }
 }
 
 task installAnt {
-    ext.srcFile = new File("${config.downloads.dir}/${config.ant.download.filename}")
-    ext.destDir = new File(config.ant.container)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("ant.download.filename")}")
+    ext.destDir = props.getProperty("ant.container")
 
     inputs.file srcFile
-    outputs.dir new File(config.ant.home)
+    outputs.dir props.getProperty("ant.home")
 
     doLast {
         ant.mkdir dir: destDir
@@ -154,7 +155,7 @@ task zipSingleTestRun(type: Zip) {
     from files("betsy_time.log")
 
     if(project.hasProperty("zipArchiveBaseName")) {
-        baseName = project.zipArchiveBaseName
+        baseName = project.zipArchiveBaseName.toString()
     } else {
         // use default
         baseName = "test-folder-and-logs"

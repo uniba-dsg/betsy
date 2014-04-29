@@ -38,7 +38,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
             ant.url url: "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
         }
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName), dest: getServerPath()
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: getServerPath()
 
         FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat")
         FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd ${getBinDir().toAbsolutePath()} && call wso2server.bat")

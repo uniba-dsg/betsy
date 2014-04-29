@@ -19,15 +19,15 @@ class TomcatInstaller {
     String tomcatName = "apache-tomcat-7.0.26"
 
     public void install() {
-        FileTasks.mkdirs(Configuration.getPath("downloads.dir"))
-        ant.get dest: Configuration.get("downloads.dir"), skipexisting: true, {
+        FileTasks.mkdirs(Configuration.downloadsDir)
+        ant.get dest: Configuration.downloadsDir, skipexisting: true, {
             ant.url url: downloadUrl
         }
 
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(tomcatArchiveFileName), dest: destinationDir
+        ant.unzip src: Configuration.downloadsDir.resolve(tomcatArchiveFileName), dest: destinationDir
 
         FileTasks.createFile(destinationDir.resolve("tomcat_startup.bat"), """SET CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
 cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat""")

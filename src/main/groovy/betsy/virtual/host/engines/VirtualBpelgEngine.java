@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualBpelgEngine extends VirtualEngine {
 
@@ -70,7 +69,7 @@ public class VirtualBpelgEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.bpelg_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.bpelg_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.bpelg_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.bpelg_v.deploymentTimeout")));
 
         return operation;
     }

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualOpenEsbEngine extends VirtualEngine {
 
@@ -76,7 +75,7 @@ public class VirtualOpenEsbEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.openesb_v.deploymentFile"));
         operation.setDeploymentDir(get("virtual.engines.openesb_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.openesb_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.openesb_v.deploymentTimeout")));
 
         return operation;
     }
