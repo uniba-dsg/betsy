@@ -118,7 +118,7 @@ public class VBoxController {
      */
     public VirtualBoxMachine getVirtualMachine(final String name)
             throws VirtualMachineNotFoundException {
-        // TODO warum diese zwischenspeicherung der VMs? Ist dies aus Performanzgründen notwendig?
+
         if (virtualMachines.containsKey(name)) {
             return virtualMachines.get(name);
         } else {

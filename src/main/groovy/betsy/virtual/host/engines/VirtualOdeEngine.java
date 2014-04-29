@@ -20,9 +20,6 @@ import static betsy.config.Configuration.get;
 public class VirtualOdeEngine extends VirtualEngine {
     public static final int HTTP_PORT = 8080;
 
-    // TODO each engine has different logic and different files. on message per engine? or a general one?
-    // TODO FileMessage + Deployer with correctly prefilled Attributes?
-
     public VirtualOdeEngine() {
         super();
         this.defaultEngine = new OdeEngine();

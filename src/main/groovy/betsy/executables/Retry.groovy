@@ -36,7 +36,7 @@ class Retry {
 
                     WaitTasks.sleep(500);
                     FileTasks.mkdirs(archiveDir)
-                    // TODO does not work. fails for petalsesb
+
                     ant.move(file: process.targetPath, tofile: archiveDir, force: true, performGCOnFailedDelete: true)
 
                 } else if (testCount > 1) {

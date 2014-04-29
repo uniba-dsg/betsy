@@ -156,8 +156,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         try {
             log.info("Deploying virtualized engine " + getName() + ", process: " + process.toString() + " ...");
 
-            // TODO evtl. wiederholen des deployments
-
             DeployRequest container = buildDeployRequest(process);
             comm.deployOperation(container);
             log.info("...deploy done!");
@@ -177,8 +175,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         log.debug("Storing logs for engine " + getName() + " ...");
 
         LogFilesRequest request = buildLogFilesRequest();
-
-        // TODO evtl. mittels RETRY wiederholen lassen.
 
         try {
             LogFilesResponse response = comm.collectLogFilesOperation(request);

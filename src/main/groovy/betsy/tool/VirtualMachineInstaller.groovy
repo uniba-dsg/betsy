@@ -185,7 +185,6 @@ class VirtualMachineInstaller {
 					// handle export failed
 					error "Export failed: The .ova file for the engine '${engine.name}' already exists. Please use the '-f' option to overwrite the file, change the directory or manually delte this file."
 				}else {
-					// TODO export the engine
 					vbox.exportVM(cloneUuid, ovaFile)
 				}
 			}
