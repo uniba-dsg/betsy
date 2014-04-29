@@ -87,9 +87,10 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     }
 
     private void setHeadlessMode() {
-        boolean headless = Boolean.valueOf(Configuration.get("virtual.engines." + getName() + ".headless"));
-        this.vm.setHeadlessMode(headless);
+        this.vm.setHeadlessMode(getHeadlessModeOption());
     }
+
+    public abstract boolean getHeadlessModeOption();
 
     @Override
     public void shutdown() {
@@ -101,8 +102,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         // stop communication
         // if there is no virtualMachine then there is nothing to stop
         if (this.vm != null) {
-            boolean saveState = Boolean.valueOf(Configuration.get("virtual.engines." + getName() + ".shutdownSaveState"));
-            if (saveState) {
+            if (saveStateInsteadOfShutdown()) {
                 this.vm.saveState();
             } else {
                 this.vm.stop();
@@ -110,6 +110,8 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         }
         log.trace("...shutdown done!");
     }
+
+    public abstract boolean saveStateInsteadOfShutdown();
 
     @Override
     public void install() {

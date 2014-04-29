@@ -1,5 +1,6 @@
 package betsy.virtual.host.engines;
 
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.openesb.OpenEsbEngine;
 import betsy.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -86,5 +87,15 @@ public class VirtualOpenEsbEngine extends VirtualEngine {
         request.getPaths().add(get("virtual.engines.openesb_v.bvmsDir") + "/log");
         request.getPaths().add(get("virtual.engines.openesb_v.logfileDir"));
         return request;
+    }
+
+    @Override
+    public boolean getHeadlessModeOption() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.openesb_v.headless"));
+    }
+
+    @Override
+    public boolean saveStateInsteadOfShutdown() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.openesb_v.shutdownSaveState"));
     }
 }

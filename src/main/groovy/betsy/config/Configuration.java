@@ -4,6 +4,7 @@ import org.apache.commons.lang.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,7 +42,7 @@ public class Configuration {
 
     static {
 
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get("config.properties"))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get("config.properties"), StandardCharsets.UTF_8)) {
 
             Properties props = new Properties();
             props.load(reader);

@@ -1,5 +1,6 @@
 package betsy.virtual.host.engines;
 
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.orchestra.OrchestraEngine;
 import betsy.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -80,4 +81,15 @@ public class VirtualOrchestraEngine extends VirtualEngine {
         request.getPaths().add(get("virtual.engines.orchestra_v.logfileDir"));
         return request;
     }
+
+    @Override
+    public boolean getHeadlessModeOption() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.orchestra_v.headless"));
+    }
+
+    @Override
+    public boolean saveStateInsteadOfShutdown() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.orchestra_v.shutdownSaveState"));
+    }
+
 }

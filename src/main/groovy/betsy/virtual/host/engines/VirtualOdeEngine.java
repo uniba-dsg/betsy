@@ -1,5 +1,6 @@
 package betsy.virtual.host.engines;
 
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.ode.OdeEngine;
 import betsy.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -82,6 +83,16 @@ public class VirtualOdeEngine extends VirtualEngine {
     @Override
     public Path getXsltPath() {
         return defaultEngine.getXsltPath();
+    }
+
+    @Override
+    public boolean getHeadlessModeOption() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.ode_v.headless"));
+    }
+
+    @Override
+    public boolean saveStateInsteadOfShutdown() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.ode_v.shutdownSaveState"));
     }
 
 }
