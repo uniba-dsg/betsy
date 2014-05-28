@@ -12,7 +12,7 @@ This software is licensed under the LGPL Version 3 Open Source License!
 
 ## Software Requirements
 - Windows 7
-- JDK 1.7.0_03 (64 Bit) or higher
+- JDK 1.8.0_05 (64 Bit) or higher
   - `JAVA_HOME` should point to the jdk directory
   - `PATH` should include `JAVA_HOME/bin`
 
