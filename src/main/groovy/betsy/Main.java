@@ -14,7 +14,6 @@ import betsy.virtual.host.VirtualBox;
 import betsy.virtual.host.engines.VirtualEngine;
 import betsy.virtual.host.virtualbox.VBoxWebService;
 import betsy.virtual.host.virtualbox.VirtualBoxImpl;
-import com.sun.xml.internal.ws.server.ServerRtException;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -173,14 +172,12 @@ public class Main {
             // test the correctness
             try {
                 betsy.getComposite().getTestPartner().publish();
-            } catch (ServerRtException e) {
+            } catch (Exception e) {
                 throw new IllegalStateException("the given partner address is not bindable for this system", e);
             } finally {
                 betsy.getComposite().getTestPartner().unpublish();
             }
-
         }
-
     }
 
     private static void useExternalPartnerService(CliParser parser, Betsy betsy) {
@@ -189,11 +186,9 @@ public class Main {
             betsy.getComposite().setTestPartner(new ExternalTestPartnerService());
             betsy.getComposite().setRequestTimeout(15 * 1000);// increase request timeout as invoking external service
         }
-
     }
 
     protected static String activateLogging() {
-
         // activate log4j logging
         DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
 

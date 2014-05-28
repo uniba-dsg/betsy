@@ -44,11 +44,10 @@ class OpenEsbCompositePackager {
         ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
         Path catalogFile = bindingMetaDir.resolve("catalog.xml")
 
-        ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        FileTasks.createFile(catalogFile, """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-</catalog>
-        """
-        ant.echo file: bindingMetaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
+</catalog>""");
+        FileTasks.createFile(bindingMetaDir.resolve("MANIFEST.MF"), "Manifest-Version: 1.0");
 
         ant.copy(todir: bindingDir.resolve(process.name)) {
             fileset(dir: process.targetBpelPath, includes: "*.xsd")

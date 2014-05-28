@@ -89,7 +89,7 @@ class ActiveBpelEngine extends LocalEngine {
 
         // create deployment descriptor
         Path metaDir = process.targetBpelPath.resolve("META-INF")
-        ant.echo file: metaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
+        FileTasks.createFile(metaDir.resolve("MANIFEST.MF"), "Manifest-Version: 1.0");
         ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.name}.pdd", style: xsltPath.resolve("active-bpel_to_deploy_xml.xsl"))
         ant.xslt(in: process.bpelFilePath, out: metaDir.resolve("catalog.xml"), style: xsltPath.resolve("active-bpel_to_catalog.xsl"))
 

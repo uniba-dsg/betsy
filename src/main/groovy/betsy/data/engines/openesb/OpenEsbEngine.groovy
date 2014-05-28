@@ -83,11 +83,10 @@ class OpenEsbEngine extends LocalEngine {
         Path metaDir = process.targetBpelPath.resolve("META-INF")
         Path catalogFile = metaDir.resolve("catalog.xml")
         FileTasks.mkdirs(metaDir)
-        ant.echo file: catalogFile, message: """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        FileTasks.createFile(catalogFile, """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-</catalog>
-        """
-        ant.echo file: metaDir.resolve("MANIFEST.MF"), message: "Manifest-Version: 1.0"
+</catalog>""");
+        FileTasks.createFile(metaDir.resolve("MANIFEST.MF"), "Manifest-Version: 1.0");
         ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"),
                 style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
     }

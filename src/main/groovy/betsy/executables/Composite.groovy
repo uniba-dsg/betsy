@@ -164,7 +164,7 @@ class Composite {
 
     protected void buildTest(BetsyProcess process) {
         log "${process.targetPath}/build_test", {
-            captureIO { new TestBuilder(process: process, requestTimeout: requestTimeout).buildTest() }
+            captureIO { new TestBuilder(process, requestTimeout).buildTest() }
         }
     }
 
