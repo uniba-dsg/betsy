@@ -74,7 +74,7 @@ class ErrorProcesses {
         Path newPath = errorsDir.resolve("${filename}.bpel")
         Files.copy(process.bpel, newPath)
 
-        // update filename
+        // update fileName
         GPathResult root = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile())
         root.@name = filename
         root.@targetNamespace = filename

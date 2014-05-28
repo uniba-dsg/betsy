@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.data.engines.tomcat.TomcatInstaller
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -13,7 +14,6 @@ class OdeInstaller {
     AntBuilder ant = AntUtil.builder()
 
     String fileName = "apache-ode-war-1.3.5.zip"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
     Path serverDir = Paths.get("server/ode")
     String odeName = "apache-ode-war-1.3.5"
 
@@ -25,10 +25,7 @@ class OdeInstaller {
         tomcatInstaller.install()
 
         Path downloadDir = Configuration.downloadsDir
-
-        ant.get(dest: downloadDir, skipexisting: true) {
-            ant.url url: downloadUrl
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
         ant.unzip src: downloadDir.resolve(fileName), dest: serverDir
         ant.unzip src: odeWar, dest: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/ode")

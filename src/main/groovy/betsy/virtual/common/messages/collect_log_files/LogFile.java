@@ -29,7 +29,7 @@ public class LogFile implements Serializable{
     @Override
     public String toString() {
         return "LogFile{" +
-                "filename='" + filename + '\'' +
+                "fileName='" + filename + '\'' +
                 ", content-lines=" + content.size() +
                 '}';
     }

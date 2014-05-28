@@ -2,15 +2,12 @@ package betsy.executables.analytics;
 
 import betsy.executables.analytics.model.*;
 import betsy.tasks.FileTasks;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class CsvReportLoader {
     private final Path csvFile;

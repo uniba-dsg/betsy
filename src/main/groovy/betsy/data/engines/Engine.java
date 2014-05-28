@@ -51,9 +51,7 @@ public abstract class Engine implements EngineAPI {
 
         Engine engine = (Engine) o;
 
-        if (!getName().equals(engine.getName())) return false;
-
-        return true;
+        return getName().equals(engine.getName());
     }
 
     @Override

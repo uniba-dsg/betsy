@@ -16,7 +16,7 @@ public class TestSuite {
     /**
      * List of engines to be tested in this test suite. The engines contain their own TestCases.
      */
-    private List<Engine> engines = new ArrayList<Engine>();
+    private List<Engine> engines = new ArrayList<>();
 
     /**
      * Factory method for a list of engines and processes.

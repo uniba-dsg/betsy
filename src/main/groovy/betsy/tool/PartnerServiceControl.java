@@ -36,25 +36,13 @@ public class PartnerServiceControl extends JFrame {
 
     private void createStartButton() {
         JButton start = new JButton("startup");
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                publisher.publish();
-            }
-
-        });
+        start.addActionListener(e -> publisher.publish());
         this.add(start);
     }
 
     private void createStopButton() {
         JButton stop = new JButton("stop");
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                publisher.unpublish();
-            }
-
-        });
+        stop.addActionListener(e -> publisher.unpublish());
         this.add(stop);
     }
 

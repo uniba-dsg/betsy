@@ -38,12 +38,7 @@ public class VBoxWebService {
         this.start();
         // install a ShutdownHook to terminate the service if the application
         // is being closed
-        Thread shutdownThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                VBoxWebService.this.stop();
-            }
-        });
+        Thread shutdownThread = new Thread(VBoxWebService.this::stop);
         Runtime.getRuntime().addShutdownHook(shutdownThread);
     }
 

@@ -70,7 +70,7 @@ class CsvReport {
     String getRelativePath(Group group, Engine engine, Test test) {
         try {
             String path = new FileNameFinder().getFileNames("test/reports/html/soapui/${engine.name}/${group.name}", "*_${test.fullName}.html").first()
-            String parentPath = new File(file).parentFile.absolutePath
+            String parentPath = file.toFile().parentFile.absolutePath
             String relativePath = path.substring(parentPath.length() + 1)
 
             return relativePath

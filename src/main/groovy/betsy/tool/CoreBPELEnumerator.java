@@ -70,12 +70,7 @@ public class CoreBPELEnumerator {
                 Path tmpDirectory = processDirectory.resolve("tmp");
                 Files.createDirectories(tmpDirectory);
 
-                CoreBPEL l = new CoreBPEL();
-
-
-                l.setTemporaryDirectory(tmpDirectory);
-                l.setBpelFilePath(targetBpelFilePath);
-                l.toCoreBPEL(transformation);
+                new CoreBPEL(tmpDirectory, targetBpelFilePath).toCoreBPEL(transformation);
             }
 
 

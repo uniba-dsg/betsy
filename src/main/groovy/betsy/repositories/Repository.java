@@ -33,13 +33,13 @@ public class Repository<T> {
             throw new IllegalArgumentException("Name '" + key + "' does not exist in repository.");
         }
 
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         result.addAll(repository.get(key));
         return result;
     }
 
     public List<T> getByNames(final String[] names) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
 
         for (String name : names) {
             result.addAll(getByName(name));

@@ -22,11 +22,8 @@ public class CoreBPELEngineExtension {
             @Override
             public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
                 super.createFolderAndCopyProcessFilesToTarget(process);
-                CoreBPEL coreBPEL = new CoreBPEL();
+                CoreBPEL coreBPEL = new CoreBPEL(process.getTargetTmpPath(), process.getTargetBpelFilePath());
 
-
-                coreBPEL.setTemporaryDirectory(process.getTargetTmpPath());
-                coreBPEL.setBpelFilePath(process.getTargetBpelFilePath());
                 try {
                     coreBPEL.toCoreBPEL(transformations);
                 } catch (IOException | TransformerException e) {

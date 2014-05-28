@@ -5,6 +5,7 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 import betsy.tasks.WaitTasks
 
 import java.nio.file.Path
@@ -34,9 +35,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
 
         String fileName = getZipFileName()
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
         ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: getServerPath()
 

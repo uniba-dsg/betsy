@@ -66,7 +66,7 @@ class VirtualMachineInstaller {
 		// parsing processes and engines
 		List<Engine> engines = null
 		try {
-			engines = new EngineParser(args: options.arguments() as String[]).parse()
+			engines = new EngineParser(options.arguments() as String[]).parse()
 		} catch (IllegalArgumentException e) {
 			println "----------------------"
 			println "ERROR - ${e.message} - Did you misspell the name?"

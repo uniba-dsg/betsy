@@ -17,6 +17,7 @@ public class TestPartnerServicePublisherInternal implements TestPartnerService {
         new TestPartnerServicePublisherInternal().publish();
     }
 
+    @Override
     public void publish() {
         publishRegularEndpoint(getRegularUrl());
         publishDummyEndpoint(getDummyUrl());
@@ -34,6 +35,7 @@ public class TestPartnerServicePublisherInternal implements TestPartnerService {
         log.info("Published regular TestPartnerService to " + url);
     }
 
+    @Override
     public void unpublish() {
         unpublishEndpoint(regularEndpoint, getRegularUrl());
         unpublishEndpoint(dummyEndpoint, getDummyUrl());

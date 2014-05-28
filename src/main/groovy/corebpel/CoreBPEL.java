@@ -1,5 +1,6 @@
 package corebpel;
 
+import betsy.tasks.FileTasks;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import javax.xml.transform.*;
@@ -16,11 +17,28 @@ import java.util.List;
 import java.util.Map;
 
 public class CoreBPEL {
-    public static final List<String> XSL_SHEETS = Arrays.asList("remove-optional-extensions.xsl", "remove-documentation.xsl", "default-message-exchanges.xsl", "process.xsl", "repeatUntil.xsl", "if.xsl", "scope.xsl", "receive.xsl", "invoke.xsl", "pick.xsl", "reply.xsl", "default-handlers.xsl", "sequence.xsl", "default-conditions.xsl", "default-attribute-values-simple.xsl", "default-attribute-values-global.xsl", "default-attribute-values-inherited.xsl", "standard-attributes-elements.xsl", "remove-redundant-attributes.xsl", "repeatUntil-improved.xsl");
-    public static final List<String> ALL_OPTION = Arrays.asList("remove-optional-extensions.xsl", "remove-documentation.xsl", "default-message-exchanges.xsl", "process.xsl", "repeatUntil.xsl", "if.xsl", "scope.xsl", "receive.xsl", "invoke.xsl", "pick.xsl", "reply.xsl", "default-handlers.xsl", "sequence.xsl", "default-conditions.xsl", "default-attribute-values-simple.xsl", "default-attribute-values-global.xsl", "default-attribute-values-inherited.xsl", "standard-attributes-elements.xsl", "remove-redundant-attributes.xsl");
+    public static final List<String> XSL_SHEETS = Arrays.asList("remove-optional-extensions.xsl", "remove-documentation.xsl",
+            "default-message-exchanges.xsl", "process.xsl", "repeatUntil.xsl", "if.xsl", "scope.xsl", "receive.xsl",
+            "invoke.xsl", "pick.xsl", "reply.xsl", "default-handlers.xsl", "sequence.xsl", "default-conditions.xsl",
+            "default-attribute-values-simple.xsl", "default-attribute-values-global.xsl", "default-attribute-values-inherited.xsl",
+            "standard-attributes-elements.xsl", "remove-redundant-attributes.xsl", "repeatUntil-improved.xsl");
+    public static final List<String> ALL_OPTION = Arrays.asList("remove-optional-extensions.xsl", "remove-documentation.xsl",
+            "default-message-exchanges.xsl", "process.xsl", "repeatUntil.xsl", "if.xsl", "scope.xsl", "receive.xsl",
+            "invoke.xsl", "pick.xsl", "reply.xsl", "default-handlers.xsl", "sequence.xsl", "default-conditions.xsl",
+            "default-attribute-values-simple.xsl", "default-attribute-values-global.xsl", "default-attribute-values-inherited.xsl",
+            "standard-attributes-elements.xsl", "remove-redundant-attributes.xsl");
+
     private static Map<String, Templates> nameToTransformation = new HashMap<>();
-    private Path temporaryDirectory;
-    private Path bpelFilePath;
+
+    private final Path temporaryDirectory;
+    private final Path bpelFilePath;
+
+    public CoreBPEL(Path temporaryDirectory, Path bpelFilePath) {
+        this.temporaryDirectory = temporaryDirectory;
+        this.bpelFilePath = bpelFilePath;
+
+        FileTasks.assertFile(bpelFilePath);
+    }
 
     private static Transformer getTransformerByName(String name) throws TransformerConfigurationException {
         return getTemplatesByName(name).newTransformer();
@@ -73,19 +91,4 @@ public class CoreBPEL {
         Files.copy(temporaryAfterBpelFilePath, bpelFilePath, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public Path getTemporaryDirectory() {
-        return temporaryDirectory;
-    }
-
-    public void setTemporaryDirectory(Path temporaryDirectory) {
-        this.temporaryDirectory = temporaryDirectory;
-    }
-
-    public Path getBpelFilePath() {
-        return bpelFilePath;
-    }
-
-    public void setBpelFilePath(Path bpelFilePath) {
-        this.bpelFilePath = bpelFilePath;
-    }
 }

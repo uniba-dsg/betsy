@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 
 import java.nio.file.Path
 
@@ -14,20 +15,17 @@ class TomcatInstaller {
     Path destinationDir
     String additionalVmParam = ""
 
-    String tomcatArchiveFileName = "apache-tomcat-7.0.26-windows-x64.zip"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-7.0.26-windows-x64.zip"
+    String fileName = "apache-tomcat-7.0.26-windows-x64.zip"
     String tomcatName = "apache-tomcat-7.0.26"
 
     public void install() {
         FileTasks.mkdirs(Configuration.downloadsDir)
-        ant.get dest: Configuration.downloadsDir, skipexisting: true, {
-            ant.url url: downloadUrl
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        ant.unzip src: Configuration.downloadsDir.resolve(tomcatArchiveFileName), dest: destinationDir
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: destinationDir
 
         FileTasks.createFile(destinationDir.resolve("tomcat_startup.bat"), """SET CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
 cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat""")
