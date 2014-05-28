@@ -31,7 +31,4 @@ public class EngineParser {
 
     }
 
-    public final String[] getArgs() {
-        return args;
-    }
 }

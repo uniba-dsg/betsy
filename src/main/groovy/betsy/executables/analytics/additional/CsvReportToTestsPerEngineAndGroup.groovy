@@ -46,6 +46,6 @@ class CsvReportToTestsPerEngineAndGroup {
     }
 
     public static void main(String[] args) {
-        new CsvReportToTestsPerEngineAndGroup(report: new CsvReportLoader(csvFile: Paths.get(args[0])).load()).toCsvReport(System.out)
+        new CsvReportToTestsPerEngineAndGroup(report: new CsvReportLoader(Paths.get(args[0])).load()).toCsvReport(System.out)
     }
 }

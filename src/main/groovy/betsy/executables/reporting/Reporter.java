@@ -3,7 +3,12 @@ package betsy.executables.reporting;
 import betsy.data.TestSuite;
 
 public class Reporter {
-    private TestSuite tests;
+
+    private final TestSuite tests;
+
+    public Reporter(TestSuite tests) {
+        this.tests = tests;
+    }
 
     public void createReports() {
         MessageExchangesIntoSoapUIReportsMerger merger = new MessageExchangesIntoSoapUIReportsMerger();
@@ -22,11 +27,4 @@ public class Reporter {
         row.create();
     }
 
-    public TestSuite getTests() {
-        return tests;
-    }
-
-    public void setTests(TestSuite tests) {
-        this.tests = tests;
-    }
 }

@@ -70,11 +70,10 @@ class Composite {
 
     }
 
-    protected createReports() {
+    protected void createReports() {
         log testSuite.reportsPath, {
-            new Reporter(tests: testSuite).createReports()
-            new Analyzer(csvFilePath: testSuite.csvFilePath,
-                    reportsFolderPath: testSuite.reportsPath).createAnalytics()
+            new Reporter(testSuite).createReports()
+            new Analyzer(testSuite.csvFilePath, testSuite.reportsPath).createAnalytics()
         }
     }
 
@@ -147,8 +146,7 @@ class Composite {
     protected void testSoapUi(BetsyProcess process) {
         log "${process.targetPath}/test_soapui", {
             captureIO {
-                new SoapUiRunner(soapUiProjectFile: process.targetSoapUIFilePath,
-                        reportingDirectory: process.targetReportsPath).run()
+                new SoapUiRunner(process.targetSoapUIFilePath, process.targetReportsPath).run()
             }
         }
 

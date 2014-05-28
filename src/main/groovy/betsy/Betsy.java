@@ -5,7 +5,6 @@ import betsy.data.TestSuite;
 import betsy.data.engines.Engine;
 import betsy.executables.Composite;
 import betsy.executables.Validator;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,9 +16,7 @@ public class Betsy {
     private Composite composite = new Composite();
 
     public void execute() throws Exception {
-        Validator validator = new Validator();
-        validator.setProcesses(processes);
-        validator.validate();
+        validate();
 
         Collections.sort(processes);
 
@@ -27,6 +24,12 @@ public class Betsy {
 
         composite.setTestSuite(testSuite);
         composite.execute();
+    }
+
+    private void validate() {
+        Validator validator = new Validator();
+        validator.setProcesses(processes);
+        validator.validate();
     }
 
     public List<Engine> getEngines() {

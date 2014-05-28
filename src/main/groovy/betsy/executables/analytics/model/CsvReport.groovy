@@ -1,9 +1,11 @@
 package betsy.executables.analytics.model
 
+import java.nio.file.Path
+
 
 class CsvReport {
 
-    String file
+    Path file
     final SortedMap<String, Test> nameToTest = new TreeMap<String, Test>()
     final SortedMap<String, Group> nameToGroup = new TreeMap<String, Group>()
     final SortedMap<String, Engine> nameToEngine = new TreeMap<String, Engine>()

@@ -20,10 +20,6 @@ public class ProcessParser {
         } else {
             return repository.getByNames(args[1].split(","));
         }
-
     }
 
-    public String[] getArgs() {
-        return args;
-    }
 }
