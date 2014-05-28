@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger
         targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
         endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
         wsdlLocation = "TestPartner.wsdl")
-class TestPartnerServiceMock implements TestPartnerPortType {
+class TestPartnerPortTypeRegular implements TestPartnerPortType {
 
-    private static final Logger log = Logger.getLogger(TestPartnerServiceMock.class)
+    private static final Logger log = Logger.getLogger(TestPartnerPortTypeRegular.class)
 
     public static final int CONCURRENCY_TIMEOUT = 1000
 
@@ -33,7 +33,7 @@ class TestPartnerServiceMock implements TestPartnerPortType {
 
     private final AtomicInteger totalAccesses = new AtomicInteger(0)
 
-    public TestPartnerServiceMock(boolean replyInput) {
+    public TestPartnerPortTypeRegular(boolean replyInput) {
         this.replyInput = replyInput
     }
 

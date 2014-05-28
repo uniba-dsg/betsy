@@ -2,9 +2,9 @@ package betsy.executables.ws;
 
 import org.apache.log4j.Logger;
 
-public class ExternalTestPartnerService implements TestPartnerService {
+public class TestPartnerServicePublisherExternal implements TestPartnerService {
 
-    private static final Logger log = Logger.getLogger(ExternalTestPartnerService.class);
+    private static final Logger log = Logger.getLogger(TestPartnerServicePublisherExternal.class);
 
     @Override
     public void publish() {

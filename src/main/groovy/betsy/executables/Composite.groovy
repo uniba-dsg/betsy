@@ -9,7 +9,7 @@ import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.util.Stopwatch
 import betsy.executables.ws.TestPartnerService
-import betsy.executables.ws.TestPartnerServicePublisher
+import betsy.executables.ws.TestPartnerServicePublisherInternal
 import betsy.logging.LogContext
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
@@ -28,7 +28,7 @@ class Composite {
 
     private static Logger logger = Logger.getLogger(Composite.class);
 
-    TestPartnerService testPartner = new TestPartnerServicePublisher()
+    TestPartnerService testPartner = new TestPartnerServicePublisherInternal()
     TestSuite testSuite
     int requestTimeout = 15000
 

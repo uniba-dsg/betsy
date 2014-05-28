@@ -1,6 +1,6 @@
 package betsy.tool;
 
-import betsy.executables.ws.TestPartnerServicePublisher;
+import betsy.executables.ws.TestPartnerServicePublisherInternal;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +16,11 @@ public class PartnerServiceControl extends JFrame {
         new PartnerServiceControl().setVisible(true);
     }
 
-    private final TestPartnerServicePublisher publisher;
+    private final TestPartnerServicePublisherInternal publisher;
 
     public PartnerServiceControl() {
         layoutFrame();
-        publisher = new TestPartnerServicePublisher();
+        publisher = new TestPartnerServicePublisherInternal();
 
         createStartButton();
 

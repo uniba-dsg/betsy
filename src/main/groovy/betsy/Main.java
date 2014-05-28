@@ -9,7 +9,7 @@ import betsy.data.BetsyProcess;
 import betsy.data.TestCase;
 import betsy.data.engines.Engine;
 import betsy.data.engines.LocalEngine;
-import betsy.executables.ws.ExternalTestPartnerService;
+import betsy.executables.ws.TestPartnerServicePublisherExternal;
 import betsy.virtual.host.VirtualBox;
 import betsy.virtual.host.engines.VirtualEngine;
 import betsy.virtual.host.virtualbox.VBoxWebService;
@@ -183,7 +183,7 @@ public class Main {
     private static void useExternalPartnerService(CliParser parser, Betsy betsy) {
         // do not use internal partner service
         if (parser.useExternalPartnerService()) {
-            betsy.getComposite().setTestPartner(new ExternalTestPartnerService());
+            betsy.getComposite().setTestPartner(new TestPartnerServicePublisherExternal());
             betsy.getComposite().setRequestTimeout(15 * 1000);// increase request timeout as invoking external service
         }
     }
