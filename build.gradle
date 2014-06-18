@@ -147,6 +147,8 @@ task internalClasses(dependsOn: classes) {
 }
 
 task zipSingleTestRun(type: Zip) {
+    zip64 true
+
     into("test") {
         from files("test")
     }
