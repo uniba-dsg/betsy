@@ -1,4 +1,7 @@
-# betsy (BPEL Engine Test System) [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
+# betsy (BPEL Engine Test System) 
+
+[![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
+[![Dependency Status](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f)
 
 Betsy is a tool to check the degree of conformance of a BPEL engine against the BPEL standard.
 
