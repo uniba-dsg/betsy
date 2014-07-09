@@ -23,8 +23,7 @@ class ActiveBpelInstaller {
 
         TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir,
                 additionalVmParam: "-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl",
-                fileName: "apache-tomcat-5.5.36.zip", tomcatName: "apache-tomcat-5.5.36",
-                downloadUrl: "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-5.5.36.zip")
+                fileName: "apache-tomcat-5.5.36.zip", tomcatName: "apache-tomcat-5.5.36")
         tomcatInstaller.install()
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);

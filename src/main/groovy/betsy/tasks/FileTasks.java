@@ -15,6 +15,9 @@ public class FileTasks {
     private static final Logger log = Logger.getLogger(FileTasks.class);
 
     public static void createFile(Path file, String content) {
+        // ensure existence of parent directory
+        mkdirs(file.getParent());
+
         String[] lines = content.split("\n");
 
         String showOutput = "" + lines.length + " lines";
