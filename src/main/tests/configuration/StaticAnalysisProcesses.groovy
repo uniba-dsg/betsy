@@ -34,6 +34,31 @@ class StaticAnalysisProcesses {
         return result
     }
 
+    public static Map<String, List<BetsyProcess>> getGroupsPerRuleForSAProcesses(List<BetsyProcess> processes) {
+        Map<String, List<BetsyProcess>> result = new HashMap<>();
+
+        for(int i = 1; i <= 95; i++) {
+            String rule = convertIntegerToSARuleNumber(i)
+            List<BetsyProcess> processList = processes.findAll { it.name.startsWith(rule) }
+
+            if(!processList.isEmpty()) {
+                result.put(rule, processList);
+            }
+        }
+
+
+        return result;
+    }
+
+    private static String convertIntegerToSARuleNumber(int i) {
+        String ruleNumber = "" + i;
+        if (ruleNumber.length() == 1) {
+            ruleNumber = "0" + ruleNumber;
+        }
+        String rule = "SA000" + ruleNumber;
+        rule
+    }
+
     private static ArrayList<Path> createXSDPaths(File dir, String testDir) {
         List<Path> xsds = []
         dir.list().each { elem ->

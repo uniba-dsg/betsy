@@ -43,6 +43,11 @@ class ProcessRepository {
             }
         }
 
+        Map<String, List<BetsyProcess>> ruleGroups = getGroupsPerRuleForSAProcesses(STATIC_ANALYSIS)
+        for(Map.Entry<String, List<BetsyProcess>> entry : ruleGroups) {
+            repo.put(entry.getKey(), entry.getValue())
+        }
+
         repo.put(
                 "FAULTS",
                 repo.getByName("ALL").findAll { BetsyProcess process ->
