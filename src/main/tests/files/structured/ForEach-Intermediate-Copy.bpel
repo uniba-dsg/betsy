@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="ForEach-Intermediate-Copy"
+    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/forEachIntermediateCopy"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" >
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+        <variable name="Temp" type="xsd:int"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="InitializeReplyDataToZero">
+            <copy>
+                <from>0</from>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <forEach name="ForEach" parallel="no" counterName="ForEachCounter">
+            <startCounterValue>1</startCounterValue>
+            <finalCounterValue>$InitData.inputPart</finalCounterValue>
+            <scope name="Scope1">
+                <assign name="AddTurnNumberToReplyData">
+                    <copy>
+                        <from variable="ForEachCounter"/>
+                        <to variable="Temp"/>
+                    </copy>
+                    <copy>
+                        <from>$ReplyData.outputPart + $Temp + $ForEachCounter</from>
+                        <to variable="ReplyData" part="outputPart"/>
+                    </copy>
+                </assign>
+            </scope>
+        </forEach>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>
