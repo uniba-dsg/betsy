@@ -302,6 +302,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess PROCESS_FAULT_HANDLERS_FAULT_ELEMENT = builder.buildScopeProcess(
+            "Process-FaultHandlers-FaultElement", "A process with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level faultHandler that uses a faultVariable and faultElement configuration. Inside this faultHandler is the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_FAULT_HANDLERS_FAULT_ELEMENT = builder.buildScopeProcess(
             "Scope-FaultHandlers-FaultElement", "A scope with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level faultHandler that uses a faultVariable and faultElement configuration. Inside this faultHandler is the reply to the initial receive.",
             [
@@ -344,6 +351,7 @@ class ScopeProcesses {
             SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE,
             SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE,
             SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL,
+            PROCESS_FAULT_HANDLERS_FAULT_ELEMENT,
             SCOPE_FAULT_HANDLERS_FAULT_ELEMENT,
             SCOPE_FAULT_HANDLERS_FAULT_MESSAGE_TYPE,
             SCOPE_EXIT_ON_STANDARD_FAULT,
