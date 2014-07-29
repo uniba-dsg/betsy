@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-    name="ForEach-Intermediate-Copy"
-    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/forEachIntermediateCopy"
+    name="ForEach-Read-Counter"
+    targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/forEachReadCounter"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" >
