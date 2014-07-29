@@ -246,8 +246,8 @@ class StructuredActivityProcesses {
             ]
     )
 
-    public static final BetsyProcess FOR_EACH_INTERMEDIATE_COPY = builder.buildStructuredActivityProcess(
-            "ForEach-Intermediate-Copy", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. Each iteration the current loop number is added twice to the final result.",
+    public static final BetsyProcess FOR_EACH_READ_COUNTER = builder.buildStructuredActivityProcess(
+            "ForEach-Read-Counter", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. Each iteration the current loop number is added twice to the final result.",
             [
                     new TestCase().checkDeployment().sendSync(0, 0),
                     new TestCase().checkDeployment().sendSync(1, 2),
@@ -255,8 +255,8 @@ class StructuredActivityProcesses {
             ]
     )
 
-    public static final BetsyProcess FOR_EACH_SKIP_COUNTER = builder.buildStructuredActivityProcess(
-            "ForEach-Skip-Counter", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. The loop contains an if activity, so each odd iteration of the current loop number is added to the final result, when it also has a successor in range.",
+    public static final BetsyProcess FOR_EACH_WRITE_COUNTER = builder.buildStructuredActivityProcess(
+            "ForEach-Write-Counter", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. The loop contains an if activity, so each odd iteration of the current loop number is added to the final result, when it also has a successor in range.",
             [
                     new TestCase().checkDeployment().sendSync(0, 0),
                     new TestCase().checkDeployment().sendSync(2, 1),
@@ -354,8 +354,8 @@ class StructuredActivityProcesses {
 
     public static final List<BetsyProcess> STRUCTURED_ACTIVITIES_FOR_EACH = [
             FOR_EACH,
-            FOR_EACH_INTERMEDIATE_COPY,
-            FOR_EACH_SKIP_COUNTER,
+            FOR_EACH_READ_COUNTER,
+            FOR_EACH_WRITE_COUNTER,
             FOR_EACH_FLOW,
             FOR_EACH_NEGATIVE_STOP_COUNTER,
             FOR_EACH_COMPLETION_CONDITION,
