@@ -256,11 +256,11 @@ class StructuredActivityProcesses {
     )
 
     public static final BetsyProcess FOR_EACH_SKIP_COUNTER = builder.buildStructuredActivityProcess(
-            "ForEach-Skip-Counter", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. Each odd iteration the current loop number is added to the final result.",
+            "ForEach-Skip-Counter", "A receive-reply pair with an intermediate forEach that loops for n times, where n is equal to the input. The loop contains an if activity, so each odd iteration of the current loop number is added to the final result, when it also has a successor in range.",
             [
                     new TestCase().checkDeployment().sendSync(0, 0),
-                    new TestCase().checkDeployment().sendSync(1, 1),
-                    new TestCase().checkDeployment().sendSync(5, 9),
+                    new TestCase().checkDeployment().sendSync(2, 1),
+                    new TestCase().checkDeployment().sendSync(6, 9),
             ]
     )
 

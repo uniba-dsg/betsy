@@ -24,16 +24,19 @@
             <startCounterValue>1</startCounterValue>
             <finalCounterValue>$InitData.inputPart</finalCounterValue>
             <scope name="Scope1">
-                <assign>
-                    <copy>
-                        <from>$ReplyData.outputPart + $ForEachCounter</from>
-                        <to variable="ReplyData" part="outputPart"/>
-                    </copy>
-                    <copy>
-                        <from>$ForEachCounter + 1</from>
-                        <to variable="ForEachCounter"/>
-                    </copy>
-                </assign>
+                <if name="TestIfInputIsEven">
+                    <condition>$ForEachCounter mod 2 = 0</condition>
+                    <assign>
+                        <copy>
+                            <from>$ForEachCounter - 1</from>
+                            <to variable="ForEachCounter"/>
+                        </copy>
+                        <copy>
+                            <from>$ReplyData.outputPart + $ForEachCounter</from>
+                            <to variable="ReplyData" part="outputPart"/>
+                        </copy>
+                    </assign>
+                </if>
             </scope>
         </forEach>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
