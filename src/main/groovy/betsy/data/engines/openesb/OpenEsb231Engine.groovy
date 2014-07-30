@@ -19,7 +19,6 @@ class OpenEsb231Engine  extends OpenEsbEngine {
     void install() {
         new OpenEsbInstaller(fileName: "openesb-v231-installer-windows.exe",
                 serverDir: Paths.get("server/openesb231"),
-                downloadUrl: "https://lspi.wiai.uni-bamberg.de/svn/betsy/openesb-v231-installer-windows.exe",
                 stateXmlTemplate: Paths.get(OpenEsbInstaller.class.getResource("/openesb231/state.xml.template").toURI())
         ).install()
     }

@@ -40,7 +40,6 @@ class BpelgInstaller {
         return "BpelgInstaller{" +
                 "serverDir='" + serverDir + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", downloadUrl='" + downloadUrl + '\'' +
                 '}';
     }
 }
