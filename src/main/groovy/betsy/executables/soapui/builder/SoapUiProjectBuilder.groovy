@@ -37,7 +37,9 @@ class SoapUiProjectBuilder {
 
     private void importWsdlFiles() {
         for(String it : process.targetWsdlPaths) {
-            interfaceFactory.importWsdl project, it, false
+            if(!it.contains("TestIF")) {
+                interfaceFactory.importWsdl project, it, false
+            }
         }
     }
 
