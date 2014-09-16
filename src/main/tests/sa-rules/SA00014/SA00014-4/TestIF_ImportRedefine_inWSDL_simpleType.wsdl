@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TestInterface"
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types>
+        <xsd:schema targetNamespace="http://xml.netbeans.org/schema/CalculatorSchema">
+            <xsd:redefine schemaLocation="CalculatorSchema_WithSimpleTypeGroupAndAttributeGroup.xsd">
+                <xsd:simpleType name="myCustomSimpleType">
+                    <xsd:restriction base="xsd:int">
+                        <xsd:minInclusive value="4"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:redefine>
+        </xsd:schema>
+    </types>
+
+</definitions>

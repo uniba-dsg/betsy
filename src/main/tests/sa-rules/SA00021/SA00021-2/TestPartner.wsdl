@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TestPartner"
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
+             xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+             xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+             xmlns:mon="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+    <plink:partnerLinkType name="TestPartnerLinkType">
+        <plink:role name="testPartnerRole" portType="tns:TestPartnerPortType"/>
+    </plink:partnerLinkType>
+
+    <vprop:propertyAlias messageType="tns:executeProcessSyncRequest" part="inputPart" propertyName="ti:correlationId"/>
+    <vprop:propertyAlias messageType="tns:executeProcessSyncResponse" part="alienAliasPart" propertyName="ti:correlationId" />
+    <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="ti:correlationId"/>
+
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months" location="months.xsd"/>
+
+    <types>
+        <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
+            <xsd:element name="testElementSyncRequest" type="xsd:int"/>
+            <xsd:element name="testElementAsyncRequest" type="xsd:int"/>
+            <xsd:element name="testElementSyncResponse" type="xsd:int"/>
+            <xsd:element name="monthNumber" type="mon:monthInteger"/>
+            <xsd:element name="testElementFault" type="xsd:int" />
+        </xsd:schema>
+    </types>
+
+    <message name="executeProcessSyncRequest">
+        <part name="inputPart" element="tns:testElementSyncRequest"/>
+    </message>
+    <message name="executeProcessAsyncRequest">
+        <part name="inputPart" element="tns:testElementAsyncRequest"/>
+    </message>
+    <message name="executeProcessSyncResponse">
+        <part name="outputPart" element="tns:testElementSyncResponse"/>
+        <part name="alienAliasPart" element="tns:monthNumber"/>
+    </message>
+    <message name="emptyMessage"/>
+    <message name="faultMessage">
+        <part name="outputPart" element="tns:testElementFault" />
+    </message>
+
+    <portType name="TestPartnerPortType">
+        <operation name="startProcessAsync">
+            <input name="asyncInput" message="tns:executeProcessAsyncRequest"/>
+        </operation>
+        <operation name="startProcessSync">
+            <input name="syncInput" message="tns:executeProcessSyncRequest"/>
+            <output name="syncOutput" message="tns:executeProcessSyncResponse"/>
+            <fault name="CustomFault" message="tns:faultMessage" />
+        </operation>
+        <operation name="startProcessWithEmptyMessage">
+            <input name="emptyInput" message="tns:emptyMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="TestPartnerPortTypeBinding" type="tns:TestPartnerPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="startProcessAsync">
+            <soap:operation/>
+            <input name="asyncInput">
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+        <operation name="startProcessSync">
+            <soap:operation/>
+            <input name="syncInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="syncOutput">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="CustomFault">
+                <soap:fault name="CustomFault" use="literal" />
+            </fault>
+        </operation>
+        <operation name="startProcessWithEmptyMessage">
+            <soap:operation/>
+            <input name="emptyInput">
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+    </binding>
+
+    <service name="TestService">
+        <port name="TestPort" binding="tns:TestPartnerPortTypeBinding">
+            <soap:address location="http://PARTNER_IP_AND_PORT/bpel-testpartner"/>
+        </port>
+    </service>
+
+</definitions>

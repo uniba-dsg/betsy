@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://xml.netbeans.org/schema/CalculatorSchema"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xsd:redefine schemaLocation="CalculatorSchema_WithSimpleTypeGroupAndAttributeGroup.xsd">
+        <xsd:attributeGroup name="myCustomAttributeGroup">
+            <xsd:attribute name="myAttribute" type="xsd:int"/>
+        </xsd:attributeGroup>
+    </xsd:redefine>
+</xsd:schema>

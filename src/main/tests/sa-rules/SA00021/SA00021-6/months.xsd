@@ -1,0 +1,12 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months">
+
+    <xs:simpleType name="monthInteger">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</schema>

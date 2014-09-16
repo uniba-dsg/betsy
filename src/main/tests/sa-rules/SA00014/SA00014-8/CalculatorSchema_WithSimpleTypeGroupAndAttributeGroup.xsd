@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://xml.netbeans.org/schema/CalculatorSchema"
+    xmlns:tns="http://xml.netbeans.org/schema/CalculatorSchema"
+    elementFormDefault="qualified" attributeFormDefault="unqualified">
+        
+    <xsd:complexType name="calculationInputType">
+        <xsd:sequence>
+            <xsd:element name="Operand1" type="xsd:int"/>
+            <xsd:element name="Operand2" type="xsd:int"/>
+            <xsd:element name="Operation">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="ADD"/>
+                        <xsd:enumeration value="SUB"/>
+                        <xsd:enumeration value="MULT"/>
+                        <xsd:enumeration value="DIV"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="calculationInput" type="tns:calculationInputType"/>
+    <xsd:element name="calculationResult" type="xsd:int"/>
+
+    <xsd:simpleType name="myCustomSimpleType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="4"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:attributeGroup name="myCustomAttributeGroup">
+        <xsd:attribute name="myAttribute" type="xsd:int"/>
+    </xsd:attributeGroup>
+
+    <xsd:group name="myCustomGroup">
+        <xsd:sequence>
+            <xsd:element name="myElement" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:group>
+</xsd:schema>
