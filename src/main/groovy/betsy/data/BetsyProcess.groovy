@@ -259,7 +259,9 @@ class BetsyProcess implements Cloneable, Comparable {
 
         // abbreviate common names
         name = name.replaceAll("Receive", "REC");
+        name = name.replaceAll("Rec", "REC");
         name = name.replaceAll("Request", "REQ");
+        name = name.replaceAll("Req", "REQ");
         name = name.replaceAll("Reply", "REP");
         name = name.replaceAll("Invoke", "INV");
 
