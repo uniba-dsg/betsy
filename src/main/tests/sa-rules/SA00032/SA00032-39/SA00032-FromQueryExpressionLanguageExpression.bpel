@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00032-ToPropertyPartnerLink" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-ToPropertyPartnerLink">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00032-FromQueryExpressionLanguageExpression" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-FromQueryExpressionLanguageExpression">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
@@ -12,8 +12,11 @@
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignReplyData">
             <copy>
-                <from variable="InitData" part="inputPart"/>
-                <to variable="ReplyData" property="ti:correlationId" partnerLink="TestPartnerLink"/>
+                <from variable="InitData" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                    <query>.</query>
+                    $InitData.inputPart
+                </from>
+                <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>

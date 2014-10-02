@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00032-ToExpressionPartnerLink" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-ToExpressionPartnerLink">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00032-ToExpressionWithLanguagePartnerLink" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-ToExpressionWithLanguagePartnerLink">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
-        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole" partnerRole="testInterfaceRole"/>
     </partnerLinks>
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
@@ -13,7 +13,7 @@
         <assign name="AssignReplyData">
             <copy>
                 <from variable="InitData" part="inputPart"/>
-                <to partnerLink="TestPartnerLink">$ReplyData.outputPart</to>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" partnerLink="MyRoleLink">$ReplyData.outputPart</to>
             </copy>
         </assign>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>

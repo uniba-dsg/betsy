@@ -47,6 +47,7 @@
     <message name="executeProcessSyncStringResponse">
         <part name="outputPart" element="tns:testElementSyncStringResponse"/>
     </message>
+    <message name="emptyMessage"/>
 
     <portType name="TestInterfacePortType">
         <operation name="startProcessAsync">
@@ -61,6 +62,10 @@
             <input name="syncInputString" message="tns:executeProcessSyncStringRequest"/>
             <output name="syncOutputString" message="tns:executeProcessSyncStringResponse"/>
         </operation>
+        <operation name="startProcessSyncWithEmptyMessage">
+            <input message="tns:emptyMessage" name="emptyInput"/>
+            <output message="tns:emptyMessage" name="emptyOutput"/>
+         </operation>
     </portType>
 
     <binding name="TestInterfacePortTypeBinding" type="tns:TestInterfacePortType">
@@ -89,6 +94,15 @@
                 <soap:body use="literal"/>
             </input>
             <output name="syncOutputString">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="startProcessSyncWithEmptyMessage">
+            <soap:operation></soap:operation>
+            <input name="emptyInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="emptyOutput">
                 <soap:body use="literal"/>
             </output>
         </operation>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" xmlns:addr="http://www.w3.org/2005/08/addressing" xmlns:sref="http://docs.oasis-open.org/wsbpel/2.0/serviceref" name="SA00032-ToPartnerLinkExpression" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-ToPartnerLinkExpression">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" xmlns:addr="http://www.w3.org/2005/08/addressing" xmlns:sref="http://docs.oasis-open.org/wsbpel/2.0/serviceref" name="SA00010-UndefinedType-Receive" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00010/bpel/SA00010-UndefinedType-Receive">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" location="TestPartner.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
@@ -13,7 +13,7 @@
         <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
     </variables>
     <sequence>
-        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="undefined" portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignPartnerLinkAndInitData">
             <copy>
                 <from variable="InitData" part="inputPart"/>
@@ -29,9 +29,7 @@
                         </sref:service-ref>
                     </literal>
                 </from>
-                <to partnerLink="TestPartnerLink">
-                    $ReplyData.outputPart
-                </to>
+                <to partnerLink="TestPartnerLink"/>
             </copy>
         </assign>
         <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync" portType="tp:TestPartnerPortType" inputVariable="PartnerInitData" outputVariable="PartnerReplyData"/>

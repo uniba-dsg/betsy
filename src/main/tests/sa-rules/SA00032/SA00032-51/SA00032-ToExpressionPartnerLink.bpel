@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00032-FromLiteralExpression" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-FromLiteralExpression">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00032-ToExpressionPartnerLink" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00032/bpel/SA00032-ToExpressionPartnerLink">
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
-        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole" partnerRole="testInterfaceRole"/>
     </partnerLinks>
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
@@ -12,13 +12,8 @@
         <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignReplyData">
             <copy>
-                <from>
-                    <literal>
-                        1
-                    </literal>
-                    $InitData.inputPart
-                </from>
-                <to variable="ReplyData" part="outputPart"/>
+                <from variable="InitData" part="inputPart"/>
+                <to partnerLink="MyRoleLink">$ReplyData.outputPart</to>
             </copy>
         </assign>
         <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>

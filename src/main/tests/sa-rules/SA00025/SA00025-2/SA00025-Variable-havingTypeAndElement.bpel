@@ -5,7 +5,7 @@
         <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
     </partnerLinks>
     <variables>
-        <variable name="ReplyData" type="xs:int" element="xs:attribute"/>
+        <variable name="ReplyData" type="xs:int" element="ti:testElementSyncResponse"/>
         <variable name="SimpleInt" type="xs:int">
             <from>
                 10
