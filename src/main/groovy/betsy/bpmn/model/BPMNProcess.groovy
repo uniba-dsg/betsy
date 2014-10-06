@@ -12,8 +12,8 @@ class BPMNProcess implements Cloneable, Comparable {
     String name
     String group
 
-    String groupId
-    String version
+    String groupId = "de.uniba.dsg"
+    String version = "1.0"
 
     List<BPMNTestCase> testCases = []
 
