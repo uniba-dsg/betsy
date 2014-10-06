@@ -1,11 +1,11 @@
 package betsy.bpel.engines.activebpel
 
 import ant.tasks.AntUtil
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.engines.tomcat.TomcatInstaller
-import betsy.tasks.ConsoleTasks
-import betsy.tasks.FileTasks
-import betsy.tasks.NetworkTasks
+import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
+import betsy.common.tasks.NetworkTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths

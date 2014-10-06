@@ -1,6 +1,6 @@
 package corebpel;
 
-import betsy.tasks.FileTasks;
+import betsy.common.tasks.FileTasks;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import javax.xml.transform.*;

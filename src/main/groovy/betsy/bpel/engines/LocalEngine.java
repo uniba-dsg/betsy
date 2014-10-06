@@ -1,6 +1,6 @@
 package betsy.bpel.engines;
 
-import betsy.engines.LocalEngineAPI;
+import betsy.common.engines.LocalEngineAPI;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

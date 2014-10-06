@@ -1,7 +1,7 @@
 package betsy.bpmn.engines.jbpm
 
 import ant.tasks.AntUtil
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
 

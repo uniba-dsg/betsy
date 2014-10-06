@@ -2,8 +2,8 @@ package betsy.bpmn.engines
 
 import ant.tasks.AntUtil
 import betsy.bpmn.model.BPMNProcess
-import betsy.engines.EngineAPI
-import betsy.engines.LocalEngineAPI
+import betsy.common.engines.EngineAPI
+import betsy.common.engines.LocalEngineAPI
 
 import java.nio.file.Path
 import java.nio.file.Paths

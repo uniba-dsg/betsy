@@ -1,6 +1,6 @@
 package betsy.bpel.tools
 
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 
 import java.nio.file.Files
 import java.nio.file.Path

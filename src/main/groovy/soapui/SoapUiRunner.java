@@ -1,6 +1,6 @@
 package soapui;
 
-import betsy.tasks.FileTasks;
+import betsy.common.tasks.FileTasks;
 import com.eviware.soapui.tools.SoapUITestCaseRunner;
 import org.apache.log4j.Logger;
 

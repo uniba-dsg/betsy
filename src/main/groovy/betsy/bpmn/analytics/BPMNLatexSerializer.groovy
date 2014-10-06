@@ -2,11 +2,11 @@ package betsy.bpmn.analytics
 
 import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestCase
-import betsy.executables.analytics.model.CsvReport
-import betsy.executables.analytics.model.Engine
-import betsy.executables.analytics.model.Group
-import betsy.executables.analytics.model.Test
-import configuration.BPMNProcessRepository
+import betsy.common.executables.analytics.model.CsvReport
+import betsy.common.executables.analytics.model.Engine
+import betsy.common.executables.analytics.model.Group
+import betsy.common.executables.analytics.model.Test
+import configuration.bpmn.BPMNProcessRepository
 import org.json.JSONObject
 
 import java.nio.file.Path

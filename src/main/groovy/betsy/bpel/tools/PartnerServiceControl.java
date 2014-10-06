@@ -1,6 +1,6 @@
 package betsy.bpel.tools;
 
-import betsy.executables.ws.TestPartnerServicePublisherInternal;
+import betsy.bpel.ws.TestPartnerServicePublisherInternal;
 
 import javax.swing.*;
 import java.awt.*;

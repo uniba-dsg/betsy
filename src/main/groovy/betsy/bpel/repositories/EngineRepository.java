@@ -17,7 +17,7 @@ import betsy.bpel.engines.petalsesb.PetalsEsbEngine;
 import betsy.bpel.engines.wso2.Wso2Engine_v2_1_2;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_0_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_1_0;
-import betsy.repositories.Repository;
+import betsy.common.repositories.Repository;
 import betsy.bpel.virtual.host.engines.*;
 
 import java.util.ArrayList;

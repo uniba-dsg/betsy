@@ -1,8 +1,8 @@
 package betsy.bpel.virtual.host.virtualbox
 
-import betsy.config.Configuration
-import betsy.tasks.FileTasks
-import betsy.tasks.NetworkTasks;
+import betsy.common.config.Configuration
+import betsy.common.tasks.FileTasks
+import betsy.common.tasks.NetworkTasks;
 import org.apache.log4j.Logger
 
 import java.nio.file.Path

@@ -1,8 +1,8 @@
 package betsy.bpel.cli
 
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.repositories.EngineRepository
-import configuration.ProcessRepository
+import configuration.bpel.ProcessRepository
 
 /**
  * Parses the command line options and provides a stable interface for handling the options.

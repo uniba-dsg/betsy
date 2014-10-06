@@ -1,7 +1,7 @@
 package betsy.bpel.virtual.host.virtualbox;
 
-import betsy.config.Configuration;
-import betsy.tasks.WaitTasks;
+import betsy.common.config.Configuration;
+import betsy.common.tasks.WaitTasks;
 import betsy.bpel.virtual.host.ServiceAddress;
 import betsy.bpel.virtual.host.VirtualBoxException;
 import betsy.bpel.virtual.host.VirtualBoxMachine;

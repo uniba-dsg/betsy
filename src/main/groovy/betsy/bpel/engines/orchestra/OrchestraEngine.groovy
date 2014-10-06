@@ -1,10 +1,10 @@
 package betsy.bpel.engines.orchestra
 
-import betsy.config.Configuration
+import betsy.common.config.Configuration
 import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.bpel.engines.tomcat.Tomcat
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 
 class OrchestraEngine extends LocalEngine {
 

@@ -1,9 +1,9 @@
 package betsy.bpel.engines.petalsesb
 
 import ant.tasks.AntUtil
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.model.BetsyProcess
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
 

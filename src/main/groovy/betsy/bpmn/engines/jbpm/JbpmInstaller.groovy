@@ -1,9 +1,9 @@
 package betsy.bpmn.engines.jbpm
 
 import ant.tasks.AntUtil
-import betsy.config.Configuration
-import betsy.tasks.ConsoleTasks
-import betsy.tasks.FileTasks
+import betsy.common.config.Configuration
+import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
 

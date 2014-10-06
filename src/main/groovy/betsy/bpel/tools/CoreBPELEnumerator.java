@@ -1,7 +1,7 @@
 package betsy.bpel.tools;
 
 import betsy.bpel.model.BetsyProcess;
-import configuration.ProcessRepository;
+import configuration.bpel.ProcessRepository;
 import corebpel.CoreBPEL;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 

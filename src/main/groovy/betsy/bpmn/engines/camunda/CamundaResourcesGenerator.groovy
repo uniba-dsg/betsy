@@ -1,7 +1,7 @@
 package betsy.bpmn.engines.camunda
 
 import ant.tasks.AntUtil
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path

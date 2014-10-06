@@ -1,7 +1,7 @@
 package betsy.bpel.engines.openesb
 
-import betsy.tasks.ConsoleTasks
-import betsy.tasks.FileTasks
+import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
 
 import java.nio.file.Path

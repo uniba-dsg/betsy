@@ -5,9 +5,9 @@ import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.engines.BPMNEngine
 import betsy.bpmn.model.BPMNTestBuilder
 import betsy.bpmn.reporting.BPMNTestcaseMerger
-import betsy.tasks.ConsoleTasks
-import betsy.tasks.FileTasks
-import betsy.tasks.WaitTasks
+import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
+import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths

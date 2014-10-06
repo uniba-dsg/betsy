@@ -1,6 +1,6 @@
 package betsy.bpel.tools;
 
-import configuration.ProcessRepository;
+import configuration.bpel.ProcessRepository;
 
 import java.util.Collections;
 import java.util.LinkedList;

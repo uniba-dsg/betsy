@@ -4,16 +4,16 @@ import ant.tasks.AntUtil
 import betsy.bpmn.engines.BPMNEngine
 import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestSuite
-import betsy.executables.Progress
+import betsy.common.util.Progress
 import betsy.bpmn.analytics.BPMNAnalyzer
 import betsy.bpmn.reporting.BPMNReporter
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
 import org.apache.log4j.MDC
 
 import java.nio.file.Path
 
-import static betsy.util.IOCapture.captureIO
+import static betsy.common.util.IOCapture.captureIO
 
 class BPMNComposite {
     final static AntBuilder ant = AntUtil.builder()
@@ -138,10 +138,10 @@ class BPMNComposite {
     }
 
     protected static log(String name, Closure closure){
-        betsy.util.LogUtil.log(name, logger, closure)
+        betsy.common.util.LogUtil.log(name, logger, closure)
     }
 
     protected static log(Path path, Closure closure){
-        betsy.util.LogUtil.log(path, logger, closure)
+        betsy.common.util.LogUtil.log(path, logger, closure)
     }
 }

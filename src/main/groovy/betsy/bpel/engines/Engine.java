@@ -2,7 +2,7 @@ package betsy.bpel.engines;
 
 import ant.tasks.AntUtil;
 import betsy.bpel.model.BetsyProcess;
-import betsy.engines.EngineAPI;
+import betsy.common.engines.EngineAPI;
 import groovy.util.AntBuilder;
 
 import java.net.URISyntaxException;

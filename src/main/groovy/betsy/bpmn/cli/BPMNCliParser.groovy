@@ -1,7 +1,7 @@
 package betsy.bpmn.cli
 
 import betsy.bpmn.repositories.BPMNEngineRepository
-import configuration.BPMNProcessRepository
+import configuration.bpmn.BPMNProcessRepository
 
 class BPMNCliParser {
     private CliBuilder cli

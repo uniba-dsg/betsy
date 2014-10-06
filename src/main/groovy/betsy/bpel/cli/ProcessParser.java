@@ -1,7 +1,7 @@
 package betsy.bpel.cli;
 
 import betsy.bpel.model.BetsyProcess;
-import configuration.ProcessRepository;
+import configuration.bpel.ProcessRepository;
 
 import java.util.List;
 

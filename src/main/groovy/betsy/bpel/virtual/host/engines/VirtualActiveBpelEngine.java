@@ -1,6 +1,6 @@
 package betsy.bpel.virtual.host.engines;
 
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.engines.activebpel.ActiveBpelEngine;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static betsy.config.Configuration.get;
+import static betsy.common.config.Configuration.get;
 
 public class VirtualActiveBpelEngine extends VirtualEngine {
 

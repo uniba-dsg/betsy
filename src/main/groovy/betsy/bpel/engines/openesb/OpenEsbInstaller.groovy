@@ -1,10 +1,10 @@
 package betsy.bpel.engines.openesb
 
 import ant.tasks.AntUtil
-import betsy.config.Configuration;
-import betsy.tasks.ConsoleTasks
-import betsy.tasks.FileTasks
-import betsy.tasks.NetworkTasks
+import betsy.common.config.Configuration;
+import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
+import betsy.common.tasks.NetworkTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths

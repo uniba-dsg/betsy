@@ -1,9 +1,9 @@
 package betsy.bpel.engines
 
 import ant.tasks.AntUtil
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.model.BetsyProcess
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
 
 public class EnginePackageBuilder {

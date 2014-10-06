@@ -1,12 +1,12 @@
 package betsy.bpel.engines.wso2
 
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
-import betsy.tasks.ConsoleTasks
-import betsy.tasks.FileTasks
-import betsy.tasks.NetworkTasks
-import betsy.tasks.WaitTasks
+import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
+import betsy.common.tasks.NetworkTasks
+import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths

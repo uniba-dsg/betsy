@@ -1,10 +1,10 @@
 package betsy.bpel;
 
 import betsy.bpel.model.BetsyProcess;
-import betsy.model.TestSuite;
+import betsy.common.model.TestSuite;
 import betsy.bpel.engines.Engine;
-import betsy.executables.Composite;
-import betsy.executables.Validator;
+import betsy.bpel.Composite;
+import betsy.bpel.Validator;
 
 import java.util.ArrayList;
 import java.util.Collections;

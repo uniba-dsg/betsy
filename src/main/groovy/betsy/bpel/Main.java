@@ -3,13 +3,13 @@ package betsy.bpel;
 import betsy.bpel.cli.CliParser;
 import betsy.bpel.cli.EngineParser;
 import betsy.bpel.cli.ProcessParser;
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.corebpel.CoreBPELEngineExtension;
 import betsy.bpel.model.BetsyProcess;
-import betsy.model.TestCase;
+import betsy.common.model.TestCase;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.LocalEngine;
-import betsy.executables.ws.TestPartnerServicePublisherExternal;
+import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.engines.VirtualEngine;
 import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
@@ -113,7 +113,7 @@ public class Main {
 
     public static void onlyBuildSteps(CliParser cliParser, Betsy betsy) {
         if (cliParser.onlyBuildSteps()) {
-            betsy.setComposite(new betsy.executables.Composite() {
+            betsy.setComposite(new Composite() {
                 @Override
                 protected void testSoapUi(BetsyProcess process) {
                 }

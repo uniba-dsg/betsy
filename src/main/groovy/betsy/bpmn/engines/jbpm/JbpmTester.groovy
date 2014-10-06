@@ -2,8 +2,8 @@ package betsy.bpmn.engines.jbpm
 
 import ant.tasks.AntUtil
 import betsy.bpmn.model.BPMNTestCase
-import betsy.tasks.FileTasks
-import betsy.tasks.WaitTasks
+import betsy.common.tasks.FileTasks
+import betsy.common.tasks.WaitTasks
 import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONObject
 import org.kie.api.runtime.KieSession

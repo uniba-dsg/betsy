@@ -4,8 +4,8 @@ import betsy.bpel.Betsy;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.EnginePackageBuilder;
-import betsy.executables.Composite;
-import configuration.ProcessRepository;
+import betsy.bpel.Composite;
+import configuration.bpel.ProcessRepository;
 import org.junit.Test;
 
 import java.nio.file.Path;

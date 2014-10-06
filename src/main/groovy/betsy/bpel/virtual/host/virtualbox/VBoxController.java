@@ -1,6 +1,6 @@
 package betsy.bpel.virtual.host.virtualbox;
 
-import betsy.tasks.FileTasks;
+import betsy.common.tasks.FileTasks;
 import betsy.bpel.virtual.host.VirtualBoxMachine;
 import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import org.apache.commons.lang.StringUtils;

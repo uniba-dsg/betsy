@@ -1,7 +1,7 @@
 package betsy.bpel.model
 
 import betsy.bpel.engines.Engine
-import betsy.model.TestCase
+import betsy.common.model.TestCase
 
 import java.nio.file.Path
 

@@ -1,7 +1,7 @@
 package betsy.bpel.tools;
 
 import betsy.bpel.engines.Engine;
-import betsy.engines.EngineAPI;
+import betsy.common.engines.EngineAPI;
 import betsy.bpel.repositories.EngineRepository;
 
 import javax.swing.*;

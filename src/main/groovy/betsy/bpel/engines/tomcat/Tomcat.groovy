@@ -1,7 +1,7 @@
 package betsy.bpel.engines.tomcat
 
 import ant.tasks.AntUtil
-import betsy.tasks.ConsoleTasks
+import betsy.common.tasks.ConsoleTasks
 
 import java.nio.file.Path
 /**

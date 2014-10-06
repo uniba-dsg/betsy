@@ -1,6 +1,6 @@
 package betsy.bpel.virtual.host.engines;
 
-import betsy.config.Configuration;
+import betsy.common.config.Configuration;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.virtual.common.Constants;

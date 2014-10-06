@@ -3,7 +3,7 @@ package betsy.bpel.engines.activebpel
 import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.bpel.engines.tomcat.Tomcat
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
 
 import java.nio.file.Path

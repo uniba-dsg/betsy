@@ -1,6 +1,6 @@
 package betsy.bpel.engines.wso2
 
-import betsy.tasks.FileTasks
+import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
 

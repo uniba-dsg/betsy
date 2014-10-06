@@ -3,7 +3,7 @@ package betsy.bpmn.repositories
 import betsy.bpmn.engines.BPMNEngine
 import betsy.bpmn.engines.camunda.CamundaEngine
 import betsy.bpmn.engines.jbpm.JbpmEngine
-import betsy.repositories.Repository
+import betsy.common.repositories.Repository
 
 class BPMNEngineRepository {
 
