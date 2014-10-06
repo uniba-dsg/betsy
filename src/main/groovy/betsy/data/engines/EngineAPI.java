@@ -1,6 +1,6 @@
 package betsy.data.engines;
 
-interface EngineAPI<P> extends EngineLifecycle {
+public interface EngineAPI<P> extends EngineLifecycle {
 
     /**
      * The name of the engine.

@@ -24,7 +24,7 @@ class CamundaInstaller {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
+        ant.unzip src: Configuration.getDownloadsDir().resolve(fileName),
                 dest: destinationDir
 
         ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: "src/main/tests/files/bpmnRes/camunda/groovy-all-2.2.0.jar")

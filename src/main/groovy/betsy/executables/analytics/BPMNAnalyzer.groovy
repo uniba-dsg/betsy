@@ -12,7 +12,7 @@ public class BPMNAnalyzer {
 
     public void createAnalytics() {
         // load model
-        CsvReport csvModel = new CsvReportLoader(csvFile: csvFilePath).load()
+        CsvReport csvModel = new CsvReportLoader(csvFilePath).load()
 
         // analytics
         new HtmlAnalytics(report: csvModel).toHtmlReport(reportsFolderPath.resolve("results.html"))

@@ -8,7 +8,7 @@ import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
 import betsy.executables.ws.TestPartnerService
-import betsy.executables.ws.TestPartnerServicePublisher
+import betsy.executables.ws.TestPartnerServicePublisherInternal
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
 import org.apache.log4j.Logger
@@ -25,7 +25,7 @@ class Composite {
 
     private static Logger logger = Logger.getLogger(Composite.class);
 
-    TestPartnerService testPartner = new TestPartnerServicePublisher()
+    TestPartnerService testPartner = new TestPartnerServicePublisherInternal()
     TestSuite testSuite
     int requestTimeout = 15000
 
@@ -67,7 +67,7 @@ class Composite {
 
     }
 
-    protected createReports() {
+    protected void createReports() {
         log testSuite.reportsPath, {
             new Reporter(tests: testSuite).createReports()
             new Analyzer(csvFilePath: testSuite.csvFilePath,
