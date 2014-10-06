@@ -4,8 +4,10 @@ import ant.tasks.AntUtil
 import betsy.bpmn.engines.BPMNEngine
 import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestSuite
+import betsy.bpmn.reporting.BPMNCsvReport
+import betsy.common.analytics.Analyzer
+import betsy.common.util.LogUtil
 import betsy.common.util.Progress
-import betsy.bpmn.analytics.BPMNAnalyzer
 import betsy.bpmn.reporting.BPMNReporter
 import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
@@ -61,8 +63,8 @@ class BPMNComposite {
     protected createReports() {
         log testSuite.reportsPath, {
             new BPMNReporter(tests: testSuite).createReports()
-            new BPMNAnalyzer(csvFilePath: testSuite.csvFilePath,
-                    reportsFolderPath: testSuite.reportsPath).createAnalytics()
+            new Analyzer(testSuite.csvFilePath,
+                    testSuite.reportsPath).createAnalytics(new BPMNCsvReport())
         }
     }
 
@@ -138,10 +140,10 @@ class BPMNComposite {
     }
 
     protected static log(String name, Closure closure){
-        betsy.common.util.LogUtil.log(name, logger, closure)
+        LogUtil.log(name, logger, closure)
     }
 
     protected static log(Path path, Closure closure){
-        betsy.common.util.LogUtil.log(path, logger, closure)
+        LogUtil.log(path, logger, closure)
     }
 }

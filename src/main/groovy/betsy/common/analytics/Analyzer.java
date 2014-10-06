@@ -18,9 +18,9 @@ public class Analyzer {
         FileTasks.assertDirectory(reportsFolderPath);
     }
 
-    public void createAnalytics() {
+    public void createAnalytics(CsvReport csvReport) {
         // load model
-        CsvReportLoader loader = new CsvReportLoader(csvFilePath);
+        CsvReportLoader loader = new CsvReportLoader(csvFilePath, csvReport);
         CsvReport csvModel = loader.load();
 
         // analytics

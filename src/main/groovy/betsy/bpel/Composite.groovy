@@ -2,6 +2,7 @@ package betsy.bpel
 
 import ant.tasks.AntUtil
 import betsy.bpel.model.BetsyProcess
+import betsy.bpel.reporting.BPELCsvReport
 import betsy.common.model.TestSuite
 import betsy.bpel.engines.Engine
 import betsy.common.analytics.Analyzer
@@ -73,7 +74,7 @@ class Composite {
         log testSuite.reportsPath, {
             new Reporter(testSuite).createReports()
             new Analyzer(testSuite.csvFilePath,
-                    testSuite.reportsPath).createAnalytics()
+                    testSuite.reportsPath).createAnalytics(new BPELCsvReport())
         }
     }
 

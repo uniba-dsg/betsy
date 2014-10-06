@@ -3,7 +3,7 @@ package betsy.common.analytics.model
 import java.nio.file.Path
 
 
-class CsvReport {
+public class CsvReport {
 
     Path file
     final SortedMap<String, Test> nameToTest = new TreeMap<String, Test>()
@@ -67,27 +67,8 @@ class CsvReport {
         successfulTests
     }
 
-    String getRelativePath(Group group, Engine engine, Test test) {
-        try {
-            String path = new FileNameFinder().getFileNames("test/reports/html/soapui/${engine.name}/${group.name}", "*_${test.fullName}.html").first()
-            String parentPath = file.toFile().parentFile.absolutePath
-            String relativePath = path.substring(parentPath.length() + 1)
-
-            return relativePath
-        } catch (Exception e){
-            //try it without soapui for the bpmn cases
-            try {
-                String path = new FileNameFinder().getFileNames("test/reports/html/${engine.name}/${group.name}", "*_${test.fullName}.html").first()
-                String parentPath = new File(file).parentFile.absolutePath
-                String relativePath = path.substring(parentPath.length() + 1)
-
-                return relativePath
-            } catch (Exception e2){
-                println e2.getMessage()
-                return "#"
-            }
-        }
+    public String getRelativePath(Group group, Engine engine, Test test) {
+        return "#";
     }
-
 
 }

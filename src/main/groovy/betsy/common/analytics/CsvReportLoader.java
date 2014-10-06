@@ -11,16 +11,17 @@ import java.util.List;
 
 public class CsvReportLoader {
     private final Path csvFile;
+    private final CsvReport csvReport;
 
-    public CsvReportLoader(Path csvFile) {
+    public CsvReportLoader(Path csvFile, CsvReport csvReport) {
         this.csvFile = csvFile;
+        this.csvReport = csvReport;
 
         FileTasks.assertFile(csvFile);
     }
 
     public CsvReport load() {
-        CsvReport report = new CsvReport();
-        report.setFile(csvFile);
+        csvReport.setFile(csvFile);
 
         for (String line : readCsvFile()) {
             String[] fields = line.split(";");
@@ -31,19 +32,19 @@ public class CsvReportLoader {
             Integer totalTests = Integer.parseInt(fields[5]);
             Boolean deployable = fields[6].equals("1");
 
-            Group group = report.getGroup(testGroup);
-            Engine engine = report.getEngine(engineName);
+            Group group = csvReport.getGroup(testGroup);
+            Engine engine = csvReport.getEngine(engineName);
             Result result = new Result();
 
             result.setFailed(failedTests);
             result.setTotal(totalTests);
             result.setDeployable(deployable);
-            Test test = report.getTest(testName);
+            Test test = csvReport.getTest(testName);
             test.getEngineToResult().put(engine, result);
             group.getTests().add(test);
         }
 
-        return report;
+        return csvReport;
     }
 
     private List<String> readCsvFile() {
