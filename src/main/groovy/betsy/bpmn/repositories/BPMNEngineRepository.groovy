@@ -1,8 +1,9 @@
-package betsy.repositories
+package betsy.bpmn.repositories
 
-import betsy.data.engines.BPMNEngine
-import betsy.data.engines.camunda.CamundaEngine
-import betsy.data.engines.jbpm.JbpmEngine
+import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.engines.camunda.CamundaEngine
+import betsy.bpmn.engines.jbpm.JbpmEngine
+import betsy.repositories.Repository
 
 class BPMNEngineRepository {
 

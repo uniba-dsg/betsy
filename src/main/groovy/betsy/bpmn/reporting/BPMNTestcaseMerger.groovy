@@ -1,4 +1,4 @@
-package betsy.executables.reporting
+package betsy.bpmn.reporting
 
 import groovy.io.FileType
 import org.w3c.dom.Document

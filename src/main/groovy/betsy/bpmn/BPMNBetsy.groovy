@@ -1,9 +1,8 @@
-package betsy
+package betsy.bpmn
 
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestSuite
-import betsy.data.engines.BPMNEngine
-import betsy.executables.BPMNComposite
+import betsy.bpmn.model.BPMNProcess
+import betsy.bpmn.model.BPMNTestSuite
+import betsy.bpmn.engines.BPMNEngine
 
 class BPMNBetsy {
     List<BPMNEngine> engines = []

@@ -1,7 +1,7 @@
-package betsy.data.engines.jbpm
+package betsy.bpmn.engines.jbpm
 
 import ant.tasks.AntUtil
-import betsy.data.BPMNTestCase
+import betsy.bpmn.model.BPMNTestCase
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
 import org.codehaus.groovy.tools.RootLoader

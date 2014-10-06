@@ -1,7 +1,7 @@
-package betsy.cli
+package betsy.bpmn.cli
 
-import betsy.data.engines.BPMNEngine
-import betsy.repositories.BPMNEngineRepository
+import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.repositories.BPMNEngineRepository
 
 class BPMNEngineParser {
     /**

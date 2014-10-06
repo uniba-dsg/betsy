@@ -1,10 +1,11 @@
-package betsy
+package betsy.bpmn
 
-import betsy.cli.BPMNCliParser
-import betsy.cli.BPMNEngineParser
-import betsy.cli.BPMNProcessParser
-import betsy.data.BPMNProcess
-import betsy.data.engines.BPMNEngine
+import betsy.Main
+import betsy.bpmn.cli.BPMNCliParser
+import betsy.bpmn.cli.BPMNEngineParser
+import betsy.bpmn.cli.BPMNProcessParser
+import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.model.BPMNProcess
 import org.apache.log4j.Logger
 import org.apache.log4j.xml.DOMConfigurator
 import org.codehaus.groovy.runtime.StackTraceUtils
@@ -89,7 +90,7 @@ class BPMNMain {
 
     static void onlyBuildSteps(BPMNCliParser cliParser, BPMNBetsy betsy) {
         if(cliParser.onlyBuildSteps()){
-            betsy.composite = new betsy.executables.BPMNComposite() {
+            betsy.composite = new BPMNComposite() {
 
                 @Override
                 protected void collect(BPMNProcess process) {

@@ -1,8 +1,6 @@
-package betsy.executables
+package betsy.bpmn.model
 
 import ant.tasks.AntUtil
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestCase
 
 import java.nio.file.Path
 import java.nio.file.Paths

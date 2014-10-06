@@ -1,7 +1,7 @@
 package configuration
 
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestCase
+import betsy.bpmn.model.BPMNProcess
+import betsy.bpmn.model.BPMNTestCase
 
 class BPMNTaskProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()

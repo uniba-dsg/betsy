@@ -1,4 +1,4 @@
-package betsy.data.engines.jbpm
+package betsy.bpmn.engines.jbpm
 
 import ant.tasks.AntUtil
 import betsy.tasks.FileTasks

@@ -1,11 +1,7 @@
 package configuration
 
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestCase
-import betsy.data.engines.BPMNEngine
-
-import java.nio.file.Path
-import java.nio.file.Paths
+import betsy.bpmn.model.BPMNProcess
+import betsy.bpmn.model.BPMNTestCase
 
 class BPMNProcessBuilder {
 

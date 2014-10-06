@@ -1,6 +1,6 @@
 package configuration
 
-import betsy.data.BPMNProcess
+import betsy.bpmn.model.BPMNProcess
 import betsy.repositories.Repository
 
 import java.lang.reflect.Field

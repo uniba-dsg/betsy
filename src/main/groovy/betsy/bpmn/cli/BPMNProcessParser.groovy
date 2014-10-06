@@ -1,6 +1,6 @@
-package betsy.cli
+package betsy.bpmn.cli
 
-import betsy.data.BPMNProcess
+import betsy.bpmn.model.BPMNProcess
 import configuration.BPMNProcessRepository
 
 class BPMNProcessParser {

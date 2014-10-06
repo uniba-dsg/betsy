@@ -295,7 +295,7 @@ task install(type: JavaExec, dependsOn: jarServer) {
 task runBPMN(type: JavaExec, dependsOn: classes) {
     description = 'Starts BPMNMain'
     classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.BPMNMain"
+    main = "betsy.bpmn.BPMNMain"
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }

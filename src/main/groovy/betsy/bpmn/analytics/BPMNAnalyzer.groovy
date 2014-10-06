@@ -1,5 +1,6 @@
-package betsy.executables.analytics;
+package betsy.bpmn.analytics
 
+import betsy.executables.analytics.CsvReportLoader;
 import betsy.executables.analytics.html.HtmlAnalytics;
 import betsy.executables.analytics.model.CsvReport;
 

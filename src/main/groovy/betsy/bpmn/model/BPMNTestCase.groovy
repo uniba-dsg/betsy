@@ -1,4 +1,4 @@
-package betsy.data
+package betsy.bpmn.model
 
 
 import org.json.JSONObject

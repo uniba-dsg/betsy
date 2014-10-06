@@ -1,10 +1,10 @@
-package betsy.data.engines.camunda
+package betsy.bpmn.engines.camunda
 
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestCase
-import betsy.data.engines.BPMNEngine
-import betsy.executables.BPMNTestBuilder
-import betsy.executables.reporting.BPMNTestcaseMerger
+import betsy.bpmn.model.BPMNProcess
+import betsy.bpmn.model.BPMNTestCase
+import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.model.BPMNTestBuilder
+import betsy.bpmn.reporting.BPMNTestcaseMerger
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks

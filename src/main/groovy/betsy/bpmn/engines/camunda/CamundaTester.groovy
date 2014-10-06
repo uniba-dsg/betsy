@@ -1,8 +1,7 @@
-package betsy.data.engines.camunda
+package betsy.bpmn.engines.camunda
 
 import ant.tasks.AntUtil
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestCase
+import betsy.bpmn.model.BPMNTestCase
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
 import groovy.io.FileType

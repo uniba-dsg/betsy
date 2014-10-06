@@ -1,7 +1,7 @@
-package betsy.executables.analytics
+package betsy.bpmn.analytics
 
-import betsy.data.BPMNProcess
-import betsy.data.BPMNTestCase
+import betsy.bpmn.model.BPMNProcess
+import betsy.bpmn.model.BPMNTestCase
 import betsy.executables.analytics.model.CsvReport
 import betsy.executables.analytics.model.Engine
 import betsy.executables.analytics.model.Group

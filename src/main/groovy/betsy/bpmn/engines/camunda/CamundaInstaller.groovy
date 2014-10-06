@@ -1,4 +1,4 @@
-package betsy.data.engines.camunda
+package betsy.bpmn.engines.camunda
 
 import ant.tasks.AntUtil
 import betsy.config.Configuration
