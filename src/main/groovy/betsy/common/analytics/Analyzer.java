@@ -1,7 +1,7 @@
-package betsy.common.executables.analytics;
+package betsy.common.analytics;
 
-import betsy.common.executables.analytics.html.HtmlAnalytics;
-import betsy.common.executables.analytics.model.CsvReport;
+import betsy.common.analytics.html.HtmlAnalytics;
+import betsy.common.analytics.model.CsvReport;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;

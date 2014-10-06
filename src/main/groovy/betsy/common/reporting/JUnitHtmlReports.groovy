@@ -1,4 +1,4 @@
-package betsy.common.executables.reporting
+package betsy.common.reporting
 
 import betsy.common.config.Configuration;
 import betsy.common.tasks.ConsoleTasks

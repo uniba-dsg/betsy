@@ -1,4 +1,4 @@
-package betsy.common.executables.analytics.model
+package betsy.common.analytics.model
 
 
 class Group implements Comparable<Group> {

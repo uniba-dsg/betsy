@@ -1,8 +1,8 @@
 package betsy.bpmn.reporting
 
 import betsy.bpmn.model.BPMNTestSuite
-import betsy.common.executables.reporting.JUnitHtmlReports
-import betsy.common.executables.reporting.JUnitXmlResultToCsvRow
+import betsy.common.reporting.JUnitHtmlReports
+import betsy.common.reporting.JUnitXmlResultToCsvRow
 
 class BPMNReporter {
     BPMNTestSuite tests

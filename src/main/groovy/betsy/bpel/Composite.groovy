@@ -4,7 +4,7 @@ import ant.tasks.AntUtil
 import betsy.bpel.model.BetsyProcess
 import betsy.common.model.TestSuite
 import betsy.bpel.engines.Engine
-import betsy.common.executables.analytics.Analyzer
+import betsy.common.analytics.Analyzer
 import betsy.bpel.reporting.Reporter
 import betsy.bpel.soapui.TestBuilder
 import betsy.bpel.ws.TestPartnerService

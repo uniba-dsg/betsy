@@ -1,4 +1,4 @@
-package betsy.common.executables.reporting
+package betsy.common.reporting
 
 import java.nio.file.Path
 import java.util.stream.Collectors

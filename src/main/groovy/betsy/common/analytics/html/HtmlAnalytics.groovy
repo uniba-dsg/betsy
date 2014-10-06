@@ -1,7 +1,7 @@
-package betsy.common.executables.analytics.html
+package betsy.common.analytics.html
 
-import betsy.common.executables.analytics.CsvReportLoader
-import betsy.common.executables.analytics.model.CsvReport
+import betsy.common.analytics.CsvReportLoader
+import betsy.common.analytics.model.CsvReport
 import betsy.common.tasks.FileTasks
 import groovy.text.SimpleTemplateEngine
 

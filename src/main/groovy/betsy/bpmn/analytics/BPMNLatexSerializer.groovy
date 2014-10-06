@@ -2,10 +2,10 @@ package betsy.bpmn.analytics
 
 import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestCase
-import betsy.common.executables.analytics.model.CsvReport
-import betsy.common.executables.analytics.model.Engine
-import betsy.common.executables.analytics.model.Group
-import betsy.common.executables.analytics.model.Test
+import betsy.common.analytics.model.CsvReport
+import betsy.common.analytics.model.Engine
+import betsy.common.analytics.model.Group
+import betsy.common.analytics.model.Test
 import configuration.bpmn.BPMNProcessRepository
 import org.json.JSONObject
 

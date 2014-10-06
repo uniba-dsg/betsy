@@ -1,13 +1,7 @@
 package betsy.bpmn;
 
-import betsy.bpel.Betsy;
-import betsy.bpel.Composite;
-import betsy.bpel.engines.Engine;
-import betsy.bpel.engines.EnginePackageBuilder;
-import betsy.bpel.model.BetsyProcess;
 import betsy.bpmn.engines.BPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
-import configuration.bpel.ProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
 

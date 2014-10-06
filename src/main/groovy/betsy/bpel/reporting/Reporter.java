@@ -1,7 +1,7 @@
 package betsy.bpel.reporting;
 
-import betsy.common.executables.reporting.JUnitHtmlReports;
-import betsy.common.executables.reporting.JUnitXmlResultToCsvRow;
+import betsy.common.reporting.JUnitHtmlReports;
+import betsy.common.reporting.JUnitXmlResultToCsvRow;
 import betsy.common.model.TestSuite;
 
 public class Reporter {

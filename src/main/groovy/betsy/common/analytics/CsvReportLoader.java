@@ -1,6 +1,6 @@
-package betsy.common.executables.analytics;
+package betsy.common.analytics;
 
-import betsy.common.executables.analytics.model.*;
+import betsy.common.analytics.model.*;
 import betsy.common.tasks.FileTasks;
 
 import java.io.IOException;

@@ -1,8 +1,8 @@
 package betsy.bpmn.analytics
 
-import betsy.common.executables.analytics.CsvReportLoader;
-import betsy.common.executables.analytics.html.HtmlAnalytics;
-import betsy.common.executables.analytics.model.CsvReport;
+import betsy.common.analytics.CsvReportLoader;
+import betsy.common.analytics.html.HtmlAnalytics;
+import betsy.common.analytics.model.CsvReport;
 
 import java.nio.file.Path;
 

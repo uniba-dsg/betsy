@@ -1,8 +1,8 @@
-package betsy.common.executables.analytics.additional
+package betsy.common.analytics.additional
 
-import betsy.common.executables.analytics.CsvReportLoader
-import betsy.common.executables.analytics.model.CsvReport
-import betsy.common.executables.analytics.model.Result
+import betsy.common.analytics.CsvReportLoader
+import betsy.common.analytics.model.CsvReport
+import betsy.common.analytics.model.Result
 
 import java.nio.file.Paths
 
