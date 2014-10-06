@@ -22,7 +22,7 @@ public class CommunicationTest {
         Protocol protocol = new Protocol() {
             @Override
             public LogFilesResponse collectLogFilesOperation(LogFilesRequest request) throws CommunicationException {
-                return new LogFilesResponse(new LinkedList<LogFiles>());
+                return new LogFilesResponse(new LinkedList<>());
             }
 
             @Override
@@ -48,7 +48,7 @@ public class CommunicationTest {
         Protocol protocol = new Protocol() {
             @Override
             public LogFilesResponse collectLogFilesOperation(LogFilesRequest request) throws CommunicationException {
-                return new LogFilesResponse(new LinkedList<LogFiles>());
+                return new LogFilesResponse(new LinkedList<>());
             }
 
             @Override
@@ -72,7 +72,7 @@ public class CommunicationTest {
         Protocol protocol = new Protocol() {
             @Override
             public LogFilesResponse collectLogFilesOperation(LogFilesRequest request) throws CommunicationException {
-                return new LogFilesResponse(new LinkedList<LogFiles>());
+                return new LogFilesResponse(new LinkedList<>());
             }
 
             @Override
@@ -102,7 +102,7 @@ public class CommunicationTest {
         Protocol protocol = new Protocol() {
             @Override
             public LogFilesResponse collectLogFilesOperation(LogFilesRequest request) throws CommunicationException {
-                return new LogFilesResponse(new LinkedList<LogFiles>());
+                return new LogFilesResponse(new LinkedList<>());
             }
 
             @Override
