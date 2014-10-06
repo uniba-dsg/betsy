@@ -19,12 +19,11 @@ class JbpmInstaller {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
+        ant.get(dest: Configuration.getDownloadsDir(), skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
-                dest: destinationDir
+        ant.unzip src: Configuration.getDownloadsDir().resolve(fileName), dest: destinationDir
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant -q install.demo.noeclipse"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant -q install.demo.noeclipse"))

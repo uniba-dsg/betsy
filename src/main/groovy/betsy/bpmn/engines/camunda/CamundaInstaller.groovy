@@ -22,18 +22,17 @@ class CamundaInstaller {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
+        ant.get(dest: Configuration.getDownloadsDir(), skipexisting: true) {
             ant.url url: downloadUrl
         }
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
+        ant.get(dest: Configuration.getDownloadsDir(), skipexisting: true) {
             ant.url url: groovyUrl
         }
 
-        ant.unzip src: Configuration.getDownloadsDir().resolve(fileName),
-                dest: destinationDir
+        ant.unzip src: Configuration.getDownloadsDir().resolve(fileName), dest: destinationDir
 
-        ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: Configuration.get("downloads.dir") + "/" + groovyFile)
+        ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: Configuration.getDownloadsDir().resolve(groovyFile))
 
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat")
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
