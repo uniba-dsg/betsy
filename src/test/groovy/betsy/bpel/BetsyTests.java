@@ -1,4 +1,4 @@
-package betsy;
+package betsy.bpel;
 
 import betsy.bpel.Betsy;
 import betsy.bpel.model.BetsyProcess;

@@ -1,4 +1,4 @@
-package betsy;
+package betsy.bpel;
 
 import betsy.bpel.model.BetsyProcess;
 import configuration.bpel.ProcessRepository;

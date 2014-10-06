@@ -1,4 +1,4 @@
-package betsy;
+package betsy.bpel;
 
 import betsy.bpel.Validator;
 import configuration.bpel.ProcessRepository;
