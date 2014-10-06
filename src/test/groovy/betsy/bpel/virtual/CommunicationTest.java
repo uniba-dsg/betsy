@@ -78,7 +78,7 @@ public class CommunicationTest {
             @Override
             public DeployResponse deployOperation(DeployRequest request) throws CommunicationException {
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
