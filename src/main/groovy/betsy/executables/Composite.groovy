@@ -1,9 +1,9 @@
 package betsy.executables
 
 import ant.tasks.AntUtil
-import betsy.data.BetsyProcess
-import betsy.data.TestSuite
-import betsy.data.engines.Engine
+import betsy.bpel.model.BetsyProcess
+import betsy.model.TestSuite
+import betsy.bpel.engines.Engine
 import betsy.executables.analytics.Analyzer
 import betsy.executables.reporting.Reporter
 import betsy.executables.soapui.builder.TestBuilder
@@ -17,7 +17,7 @@ import soapui.SoapUiRunner
 
 import java.nio.file.Path
 
-import static betsy.executables.util.IOCapture.captureIO
+import static betsy.util.IOCapture.captureIO
 
 class Composite {
 
@@ -174,10 +174,10 @@ class Composite {
     }
 
     protected static log(String name, Closure closure){
-        betsy.executables.util.LogUtil.log(name, logger, closure)
+        betsy.util.LogUtil.log(name, logger, closure)
     }
 
     protected static log(Path path, Closure closure){
-        betsy.executables.util.LogUtil.log(path, logger, closure)
+        betsy.util.LogUtil.log(path, logger, closure)
     }
 }

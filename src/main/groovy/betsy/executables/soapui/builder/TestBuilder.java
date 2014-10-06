@@ -1,6 +1,6 @@
 package betsy.executables.soapui.builder;
 
-import betsy.data.BetsyProcess;
+import betsy.bpel.model.BetsyProcess;
 import betsy.tasks.FileTasks;
 import org.apache.log4j.Logger;
 

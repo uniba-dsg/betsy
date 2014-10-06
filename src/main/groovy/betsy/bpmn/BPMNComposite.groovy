@@ -13,7 +13,7 @@ import org.apache.log4j.MDC
 
 import java.nio.file.Path
 
-import static betsy.executables.util.IOCapture.captureIO
+import static betsy.util.IOCapture.captureIO
 
 class BPMNComposite {
     final static AntBuilder ant = AntUtil.builder()
@@ -138,10 +138,10 @@ class BPMNComposite {
     }
 
     protected static log(String name, Closure closure){
-        betsy.executables.util.LogUtil.log(name, logger, closure)
+        betsy.util.LogUtil.log(name, logger, closure)
     }
 
     protected static log(Path path, Closure closure){
-        betsy.executables.util.LogUtil.log(path, logger, closure)
+        betsy.util.LogUtil.log(path, logger, closure)
     }
 }

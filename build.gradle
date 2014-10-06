@@ -4,7 +4,7 @@ apply plugin: "eclipse"
 apply plugin: "application"
 
 // Main class of betsy
-mainClassName = "betsy.Main"
+mainClassName = "betsy.bpel.Main"
 
 repositories {
     mavenCentral()
@@ -220,13 +220,13 @@ run {
 task enginecontrol(type: JavaExec, dependsOn: build) {
     description = 'Starts Engine Control GUI'
     classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.tool.EngineControl"
+    main = "betsy.bpel.tools.EngineControl"
 }
 
 task partnerservice(type: JavaExec, dependsOn: build) {
     description = 'Starts test case partner service only'
     classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.tool.PartnerServiceControl"
+    main = "betsy.bpel.tools.PartnerServiceControl"
 }
 
 test {
@@ -278,14 +278,14 @@ task jarServer(type: Jar, dependsOn: [classes, internalClasses]) {
     baseName = 'betsy'
 
     manifest {
-        attributes 'Main-Class': 'betsy.virtual.server.BetsyVirtualMachineServer', 'Implementation-Title': 'Betsy-VirtualMachineServer'
+        attributes 'Main-Class': 'betsy.bpel.virtual.server.BetsyVirtualMachineServer', 'Implementation-Title': 'Betsy-VirtualMachineServer'
     }
 }
 
 task install(type: JavaExec, dependsOn: jarServer) {
     description = 'Install virtual machines to use the virtual engines'
     classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.tool.VirtualMachineInstaller"
+    main = "betsy.bpel.tools.VirtualMachineInstaller"
 
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')

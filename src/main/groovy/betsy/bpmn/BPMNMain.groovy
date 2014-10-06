@@ -1,6 +1,6 @@
 package betsy.bpmn
 
-import betsy.Main
+import betsy.bpel.Main
 import betsy.bpmn.cli.BPMNCliParser
 import betsy.bpmn.cli.BPMNEngineParser
 import betsy.bpmn.cli.BPMNProcessParser

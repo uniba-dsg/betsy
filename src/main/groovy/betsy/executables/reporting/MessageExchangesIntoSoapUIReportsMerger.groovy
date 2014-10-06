@@ -1,8 +1,8 @@
 package betsy.executables.reporting
 
-import betsy.data.BetsyProcess
-import betsy.data.TestSuite
-import betsy.data.engines.Engine
+import betsy.bpel.model.BetsyProcess
+import betsy.model.TestSuite
+import betsy.bpel.engines.Engine
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 

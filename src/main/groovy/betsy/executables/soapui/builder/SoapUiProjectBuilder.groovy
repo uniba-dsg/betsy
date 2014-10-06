@@ -1,7 +1,7 @@
 package betsy.executables.soapui.builder
 
-import betsy.data.BetsyProcess
-import betsy.data.TestCase
+import betsy.bpel.model.BetsyProcess
+import betsy.model.TestCase
 import com.eviware.soapui.impl.WsdlInterfaceFactory
 import com.eviware.soapui.impl.wsdl.WsdlProject
 import com.eviware.soapui.impl.wsdl.WsdlProjectFactory

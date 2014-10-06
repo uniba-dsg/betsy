@@ -1,11 +1,11 @@
 package betsy.executables.soapui.builder
 
-import betsy.data.steps.SoapTestStep
-import betsy.data.TestAssertion
-import betsy.data.TestStep
-import betsy.data.assertions.ExitAssertion
-import betsy.data.assertions.SoapFaultTestAssertion
-import betsy.data.assertions.XpathTestAssertion
+import betsy.model.steps.SoapTestStep
+import betsy.model.TestAssertion
+import betsy.model.TestStep
+import betsy.model.assertions.ExitAssertion
+import betsy.model.assertions.SoapFaultTestAssertion
+import betsy.model.assertions.XpathTestAssertion
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest

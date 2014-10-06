@@ -1,7 +1,7 @@
 package configuration
 
-import betsy.data.BetsyProcess
-import betsy.data.TestCase
+import betsy.bpel.model.BetsyProcess
+import betsy.model.TestCase
 import betsy.tasks.FileTasks
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil

@@ -1,8 +1,9 @@
 package betsy;
 
-import betsy.data.BetsyProcess;
-import betsy.data.engines.Engine;
-import betsy.data.engines.EnginePackageBuilder;
+import betsy.bpel.Betsy;
+import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.EnginePackageBuilder;
 import betsy.executables.Composite;
 import configuration.ProcessRepository;
 import org.junit.Test;

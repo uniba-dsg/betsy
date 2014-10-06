@@ -1,6 +1,6 @@
 package betsy.executables.reporting;
 
-import betsy.data.TestSuite;
+import betsy.model.TestSuite;
 
 public class Reporter {
 

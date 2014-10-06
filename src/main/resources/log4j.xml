@@ -51,7 +51,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="betsy.virtual.host.utils.InputStreamLogger">
+    <logger name="betsy.bpel.virtual.host.utils.InputStreamLogger">
         <level value="TRACE"/>
     </logger>
 

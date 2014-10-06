@@ -1,8 +1,8 @@
 package configuration
 
-import betsy.data.BetsyProcess
-import betsy.data.TestCase
-import betsy.data.assertions.SoapFaultTestAssertion
+import betsy.bpel.model.BetsyProcess
+import betsy.model.TestCase
+import betsy.model.assertions.SoapFaultTestAssertion
 
 class StructuredActivityProcesses {
 

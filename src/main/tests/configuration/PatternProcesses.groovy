@@ -1,8 +1,8 @@
 package configuration
 
-import betsy.data.BetsyProcess
-import betsy.data.TestCase
-import betsy.data.assertions.ExitAssertion
+import betsy.bpel.model.BetsyProcess
+import betsy.model.TestCase
+import betsy.model.assertions.ExitAssertion
 
 import static configuration.ProcessBuilder.buildPatternProcess
 import static configuration.ProcessBuilder.buildPatternProcessWithPartner

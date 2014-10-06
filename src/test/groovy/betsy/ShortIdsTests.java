@@ -1,6 +1,6 @@
 package betsy;
 
-import betsy.data.BetsyProcess;
+import betsy.bpel.model.BetsyProcess;
 import configuration.ProcessRepository;
 import org.junit.Assert;
 import org.junit.Test;

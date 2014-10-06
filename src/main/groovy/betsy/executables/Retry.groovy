@@ -1,10 +1,10 @@
 package betsy.executables
 
 import ant.tasks.AntUtil
-import betsy.data.BetsyProcess
+import betsy.bpel.model.BetsyProcess
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
-import betsy.virtual.host.exceptions.TemporaryFailedTestException
+import betsy.bpel.virtual.host.exceptions.TemporaryFailedTestException
 import org.apache.log4j.Logger
 
 import java.nio.file.Path

@@ -1,6 +1,6 @@
 package betsy.executables
 
-import betsy.data.BetsyProcess
+import betsy.bpel.model.BetsyProcess
 
 import java.nio.file.Files
 import java.nio.file.Path

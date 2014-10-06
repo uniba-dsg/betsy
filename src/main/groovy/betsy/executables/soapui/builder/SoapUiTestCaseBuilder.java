@@ -1,7 +1,7 @@
 package betsy.executables.soapui.builder;
 
-import betsy.data.TestCase;
-import betsy.data.TestStep;
+import betsy.model.TestCase;
+import betsy.model.TestStep;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
