@@ -21,7 +21,7 @@ class HtmlAnalytics {
 
     void toHtmlReport(Path filename) {
         SimpleTemplateEngine engine = new SimpleTemplateEngine()
-        Path templatePath = Paths.get(HtmlAnalytics.class.getResource("/betsy/executables/analytics/html/HtmlAnalytics.template").toURI())
+        Path templatePath = Paths.get(HtmlAnalytics.class.getResource("HtmlAnalytics.template").toURI())
         def template = engine.createTemplate(templatePath.toFile().text).make([
                 "report": report
         ])
