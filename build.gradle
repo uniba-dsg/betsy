@@ -50,18 +50,19 @@ dependencies {
     internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-api-6.0.1.Final.jar']))
     internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-internal-6.0.1.Final.jar']))
     internal files(fileTree(dir: "jbpmdependencies", includes: ['jbpm-shared-services-6.0.1.Final.jar']))
-
-    internal 'javax:javaee-api:7.0'
-    internal 'org.drools:drools-core:6.0.1.Final'
     //internal 'org.kie:kie-api:6.0.1.Final'
     //internal 'org.kie:kie-internal:6.0.1.Final'
     //internal 'org.kie.remote:kie-services-client:6.0.1.Final'
+    //internal 'org.jbpm:jbpm-shared-services:6.0.1.Final'
+
+    internal 'javax:javaee-api:7.0'
+    internal 'org.drools:drools-core:6.0.1.Final'
     internal 'org.jboss.resteasy:resteasy-jaxrs:3.0.6.Final'
     internal 'org.jboss.resteasy:resteasy-jaxb-provider:3.0.6.Final'
     internal 'org.jbpm:jbpm-audit:6.0.1.Final'
     internal 'org.jbpm:jbpm-human-task-core:6.0.1.Final'
     internal 'org.jbpm:jbpm-runtime-manager:6.0.1.Final'
-    //internal 'org.jbpm:jbpm-shared-services:6.0.1.Final'
+
     internal 'org.slf4j:slf4j-api:1.7.6'
     internal 'org.slf4j:slf4j-simple:1.7.6'
 
