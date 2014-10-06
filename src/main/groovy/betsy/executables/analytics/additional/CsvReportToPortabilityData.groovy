@@ -158,6 +158,6 @@ class CsvReportToPortabilityData {
     }
 
     public static void main(String[] args) {
-        new CsvReportToPortabilityData(report: new CsvReportLoader(csvFile: Paths.get(args[0])).load()).toCsvReport(System.out)
+        new CsvReportToPortabilityData(report: new CsvReportLoader(Paths.get(args[0])).load()).toCsvReport(System.out)
     }
 }

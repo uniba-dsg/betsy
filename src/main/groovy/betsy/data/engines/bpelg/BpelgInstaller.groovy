@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.data.engines.tomcat.TomcatInstaller
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -15,7 +16,6 @@ class BpelgInstaller {
     Path serverDir
 
     String fileName = "bpel-g-5.3.war"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
 
     public void install() {
         // setup engine folder
@@ -25,11 +25,9 @@ class BpelgInstaller {
                 additionalVmParam: "-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl")
         tomcatInstaller.install()
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: downloadUrl
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName),
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName),
                 dest: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps").resolve("bpel-g")
         ant.copy file: Paths.get(BpelgInstaller.class.getResource("/bpelg/log4j.properties").toURI()),
                 todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/bpel-g/WEB-INF"), overwrite: true
@@ -42,7 +40,6 @@ class BpelgInstaller {
         return "BpelgInstaller{" +
                 "serverDir='" + serverDir + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", downloadUrl='" + downloadUrl + '\'' +
                 '}';
     }
 }

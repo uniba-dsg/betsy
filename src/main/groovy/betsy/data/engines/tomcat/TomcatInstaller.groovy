@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 
 import java.nio.file.Path
 
@@ -14,26 +15,23 @@ class TomcatInstaller {
     Path destinationDir
     String additionalVmParam = ""
 
-    String tomcatArchiveFileName = "apache-tomcat-7.0.26-windows-x64.zip"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-7.0.26-windows-x64.zip"
+    String fileName = "apache-tomcat-7.0.26-windows-x64.zip"
     String tomcatName = "apache-tomcat-7.0.26"
 
     public void install() {
-        FileTasks.mkdirs(Configuration.getPath("downloads.dir"))
-        ant.get dest: Configuration.get("downloads.dir"), skipexisting: true, {
-            ant.url url: downloadUrl
-        }
+        FileTasks.mkdirs(Configuration.downloadsDir)
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(tomcatArchiveFileName), dest: destinationDir
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: destinationDir
 
         FileTasks.createFile(destinationDir.resolve("tomcat_startup.bat"), """SET CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
 cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat""")
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
 
-        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), """CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
+        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), """CATALINA_OPTS=\"-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}\"
 cd ${tomcatBinFolder.toAbsolutePath()} && ./startup.sh""")
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd ${tomcatBinFolder.toAbsolutePath()} && ./shutdown.sh")
 

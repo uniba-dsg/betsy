@@ -72,7 +72,7 @@ public class SnapshotCreator {
 
             // ensure all is up and running
             failIfEngineServicesTimeout(engineName, engineServices);
-            failIfBetsyServerTimesout();
+            failIfBetsyServerTimesOut();
 
             WaitTasks.sleep(30000);
 
@@ -89,7 +89,7 @@ public class SnapshotCreator {
     }
 
     private void failIfEngineServicesTimeout(String engineName, List<ServiceAddress> engineServices) throws VirtualEngineServiceException {
-        final int secondsToWait = Configuration.getValueAsInteger("virtual.engines." + engineName + ".serviceTimeout");
+        final int secondsToWait = getServiceTimeout(engineName);
 
         try {
             if (!ServiceValidator.isEngineReady(engineServices, secondsToWait)) {
@@ -115,7 +115,11 @@ public class SnapshotCreator {
         }
     }
 
-    private void failIfBetsyServerTimesout() throws VirtualEngineServiceException {
+    private int getServiceTimeout(String engineName) {
+        return Integer.parseInt(Configuration.get("virtual.engines." + engineName + ".serviceTimeout"));
+    }
+
+    private void failIfBetsyServerTimesOut() throws VirtualEngineServiceException {
         if (!ServiceValidator.isBetsyServerReady(Timeouts.FIFTEEN_SECONDS)) {
             log.warn("betsy server not found withing 15s");
             throw new VirtualEngineServiceException(

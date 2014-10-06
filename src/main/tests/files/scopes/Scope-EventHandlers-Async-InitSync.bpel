@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+        name="Scope-EventHandlers-Async-InitSync"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/bpel/scopeEventHandlersAsync-sync"
+        xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+        xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+        >
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+            location="../TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="FinalReplyData" messageType="ti:executeProcessSyncStringResponse"/>
+        <variable name="SecondInitData" messageType="ti:executeProcessSyncStringRequest"/>
+        <variable name="replyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+
+    <correlationSets>
+        <correlationSet name="CorrelationSet" properties="ti:correlationId"/>
+    </correlationSets>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync"
+                 portType="ti:TestInterfacePortType" variable="InitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="AssignReplyData">
+            <copy>
+                <from><literal>2</literal></from>
+                <to variable="replyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="CorrelatedReply" partnerLink="MyRoleLink" operation="startProcessSync"
+               portType="ti:TestInterfacePortType" variable="replyData"/>
+        <scope name="OuterScope">
+            <eventHandlers>
+                <onEvent partnerLink="MyRoleLink" operation="startProcessAsync" portType="ti:TestInterfacePortType"
+                         variable="InitDataAsync" messageType="ti:executeProcessAsyncRequest">
+                    <correlations>
+                        <correlation set="CorrelationSet" initiate="no"/>
+                    </correlations>
+                    <scope>
+                        <assign name="AssignReplyData">
+                            <copy>
+                                <from><literal>event</literal></from>
+                                <to variable="FinalReplyData" part="outputPart"/>
+                            </copy>
+                        </assign>
+                    </scope>
+                </onEvent>
+            </eventHandlers>
+
+            <wait name="WaitFor10Seconds">
+                <for>'P0Y0M0DT0H0M10.0S'</for>
+            </wait>
+        </scope>
+        <receive name="InitialReceive" partnerLink="MyRoleLink" operation="startProcessSyncString"
+                 portType="ti:TestInterfacePortType" variable="SecondInitData">
+            <correlations>
+                <correlation set="CorrelationSet" initiate="no"/>
+            </correlations>
+        </receive>
+        <reply name="CorrelatedReply" partnerLink="MyRoleLink" operation="startProcessSyncString"
+               portType="ti:TestInterfacePortType" variable="FinalReplyData"/>
+    </sequence>
+</process>
+

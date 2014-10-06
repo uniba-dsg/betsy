@@ -1,5 +1,6 @@
 package betsy.virtual.host.engines;
 
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.ode.OdeEngine;
 import betsy.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -15,13 +16,9 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualOdeEngine extends VirtualEngine {
     public static final int HTTP_PORT = 8080;
-
-    // TODO each engine has different logic and different files. on message per engine? or a general one?
-    // TODO FileMessage + Deployer with correctly prefilled Attributes?
 
     public VirtualOdeEngine() {
         super();
@@ -61,7 +58,7 @@ public class VirtualOdeEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.ode_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.ode_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.ode_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.ode_v.deploymentTimeout")));
 
         return operation;
     }
@@ -83,6 +80,16 @@ public class VirtualOdeEngine extends VirtualEngine {
     @Override
     public Path getXsltPath() {
         return defaultEngine.getXsltPath();
+    }
+
+    @Override
+    public boolean getHeadlessModeOption() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.ode_v.headless"));
+    }
+
+    @Override
+    public boolean saveStateInsteadOfShutdown() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.ode_v.shutdownSaveState"));
     }
 
 }

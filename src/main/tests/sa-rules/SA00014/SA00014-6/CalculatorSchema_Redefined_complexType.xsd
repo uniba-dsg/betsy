@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://xml.netbeans.org/schema/CalculatorSchema"
+	xmlns:tns="http://xml.netbeans.org/schema/CalculatorSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xsd:redefine schemaLocation="CalculatorSchema_WithSimpleTypeGroupAndAttributeGroup.xsd">
+		<xsd:complexType name="calculationInputType">
+			<xsd:complexContent>
+				<xsd:extension base="tns:calculationInputType">
+					<xsd:sequence>
+						<xsd:element name="evaluation" minOccurs="1" maxOccurs="1">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="LAZY" />
+									<xsd:enumeration value="EAGER" />
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:redefine>
+</xsd:schema>

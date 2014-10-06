@@ -1,12 +1,12 @@
 language: java
 jdk:
-  - openjdk7
+  - oraclejdk8
 
 before_install:
   - chmod +x gradlew
 
 install:
-  - TERM=dumb travis_retry ./gradlew assemble
+  - TERM=dumb travis_retry ./gradlew assemble --info
 
 script:
-  - TERM=dumb ./gradlew check --stacktrace
+  - TERM=dumb ./gradlew check --info

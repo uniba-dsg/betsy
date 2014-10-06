@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TestInterface"
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types>
+        <xsd:schema targetNamespace="http://xml.netbeans.org/schema/CalculatorSchema" xmlns:calc="http://xml.netbeans.org/schema/CalculatorSchema">
+            <xsd:redefine schemaLocation="../CalculatorSchema.xsd">
+                <xsd:complexType name="calculationInputType">
+                    <xsd:complexContent>
+                        <xsd:extension base="calc:calculationInputType">
+                            <xsd:sequence>
+                                <xsd:element name="evaluation" minOccurs="1" maxOccurs="1">
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:enumeration value="LAZY" />
+                                            <xsd:enumeration value="EAGER" />
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:extension>
+                    </xsd:complexContent>
+                </xsd:complexType>
+            </xsd:redefine>
+        </xsd:schema>
+    </types>
+
+</definitions>

@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 import com.google.common.io.Files
 
 import java.nio.file.Path
@@ -15,16 +16,13 @@ class OpenEsbInstaller {
 
     Path serverDir = Paths.get("server/openesb")
     String fileName = "glassfishesb-v2.2-full-installer-windows.exe"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
     Path stateXmlTemplate = Paths.get(OpenEsbInstaller.class.getResource("/openesb/state.xml.template").toURI())
 
     public void install() {
         // setup engine folder
         FileTasks.mkdirs(serverDir)
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: downloadUrl
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
         FileTasks.deleteDirectory(serverDir)
         FileTasks.mkdirs(serverDir)
@@ -47,7 +45,7 @@ class OpenEsbInstaller {
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(
                 reinstallGlassFishBatPath).values(
-                Configuration.getPath("downloads.dir").resolve(fileName).toString(),
+                Configuration.downloadsDir.resolve(fileName).toString(),
                 stateXmlPath.toString())
         )
 

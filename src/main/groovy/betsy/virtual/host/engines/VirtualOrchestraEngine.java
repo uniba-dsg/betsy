@@ -1,5 +1,6 @@
 package betsy.virtual.host.engines;
 
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.orchestra.OrchestraEngine;
 import betsy.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualOrchestraEngine extends VirtualEngine {
 
@@ -69,7 +69,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.orchestra_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.orchestra_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.orchestra_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.orchestra_v.deploymentTimeout")));
 
         return operation;
     }
@@ -81,4 +81,15 @@ public class VirtualOrchestraEngine extends VirtualEngine {
         request.getPaths().add(get("virtual.engines.orchestra_v.logfileDir"));
         return request;
     }
+
+    @Override
+    public boolean getHeadlessModeOption() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.orchestra_v.headless"));
+    }
+
+    @Override
+    public boolean saveStateInsteadOfShutdown() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.orchestra_v.shutdownSaveState"));
+    }
+
 }

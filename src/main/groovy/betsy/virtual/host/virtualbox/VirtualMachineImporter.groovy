@@ -2,7 +2,8 @@ package betsy.virtual.host.virtualbox
 
 import ant.tasks.AntUtil
 import betsy.config.Configuration
-import betsy.tasks.FileTasks;
+import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks;
 import org.apache.log4j.Logger
 
 import java.nio.file.Path
@@ -43,7 +44,7 @@ public class VirtualMachineImporter {
     public void makeVMAvailable() {
         log.info("Downloading VM " + vmName + " to " + downloadPath);
         FileTasks.mkdirs(downloadPath);
-        AntUtil.builder().get(dest: downloadPath, src: downloadUrl, skipexisting: true);
+        NetworkTasks.downloadFile(new URL(downloadUrl), downloadPath);
 
         log.info("Importing VM " + vmName + " into VirtualBox");
         vbc.importVirtualMachine(vmName, engineName, getDownloadArchiveFile());
@@ -57,7 +58,7 @@ public class VirtualMachineImporter {
 
     private Path getDownloadArchiveFile() {
         String url = getDownloadUrl();
-        // get only the filename + extension without the directory structure
+        // get only the fileName + extension without the directory structure
         String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
         return downloadPath.resolve(fileName);
     }

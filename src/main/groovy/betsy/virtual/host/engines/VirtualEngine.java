@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Set;
 
 /**
@@ -50,10 +49,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     private VirtualBoxMachine vm = null;
 
-    private static Path getDownloadPath() {
-        return Paths.get("vm_download");
-    }
-
     public void setVirtualBox(VirtualBox virtualBox) {
         this.virtualBox = virtualBox;
     }
@@ -65,7 +60,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     @Override
     public void startup() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return;
         }
 
@@ -92,13 +87,14 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     }
 
     private void setHeadlessMode() {
-        boolean headless = Configuration.getValueAsBoolean("virtual.engines." + getName() + ".headless");
-        this.vm.setHeadlessMode(headless);
+        this.vm.setHeadlessMode(getHeadlessModeOption());
     }
+
+    public abstract boolean getHeadlessModeOption();
 
     @Override
     public void shutdown() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return;
         }
 
@@ -106,8 +102,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         // stop communication
         // if there is no virtualMachine then there is nothing to stop
         if (this.vm != null) {
-            boolean saveState = Configuration.getValueAsBoolean("virtual.engines." + getName() + ".shutdownSaveState");
-            if (saveState) {
+            if (saveStateInsteadOfShutdown()) {
                 this.vm.saveState();
             } else {
                 this.vm.stop();
@@ -116,9 +111,11 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         log.trace("...shutdown done!");
     }
 
+    public abstract boolean saveStateInsteadOfShutdown();
+
     @Override
     public void install() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return;
         }
 
@@ -151,15 +148,13 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     private VirtualBoxMachine getOrImportVirtualMachine() throws VirtualBoxException {
         return virtualBox.importVirtualMachine(getVirtualMachineName(), getName(),
-                getDownloadPath());
+                Configuration.getVirtualDownloadDir());
     }
 
     @Override
     public void deploy(BetsyProcess process) {
         try {
             log.info("Deploying virtualized engine " + getName() + ", process: " + process.toString() + " ...");
-
-            // TODO evtl. wiederholen des deployments
 
             DeployRequest container = buildDeployRequest(process);
             comm.deployOperation(container);
@@ -180,8 +175,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         log.debug("Storing logs for engine " + getName() + " ...");
 
         LogFilesRequest request = buildLogFilesRequest();
-
-        // TODO evtl. mittels RETRY wiederholen lassen.
 
         try {
             LogFilesResponse response = comm.collectLogFilesOperation(request);
@@ -214,7 +207,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     @Override
     public boolean isRunning() {
-        if (useRunningVM()) {
+        if (Configuration.useRunningVM()) {
             return false;
         }
 
@@ -229,10 +222,6 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         }
 
         return vm.isActive();
-    }
-
-    private boolean useRunningVM() {
-        return Configuration.getValueAsBoolean("virtual.useRunningVM");
     }
 
     private VirtualBoxMachine getVirtualMachine() throws VirtualBoxException {

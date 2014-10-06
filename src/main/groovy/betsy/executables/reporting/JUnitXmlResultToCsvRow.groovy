@@ -1,6 +1,8 @@
 package betsy.executables.reporting
 
 import java.nio.file.Path
+import java.util.stream.Collectors
+import java.util.stream.Stream
 
 class JUnitXmlResultToCsvRow {
 
@@ -20,11 +22,11 @@ class JUnitXmlResultToCsvRow {
         String deployable
 
         String getBinaryResult() {
-            totalFailures == "0" ? "1" : "0"
+            totalFailures.equals("0") ? "1" : "0"
         }
 
         String toRow() {
-            [name, engine, group, binaryResult, totalFailures, tests, deployable].join(";")
+            return Stream.of(name, engine, group, binaryResult, totalFailures, tests, deployable).collect(Collectors.joining(";"));
         }
     }
 

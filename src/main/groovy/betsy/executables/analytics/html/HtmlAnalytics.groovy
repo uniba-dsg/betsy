@@ -16,7 +16,7 @@ class HtmlAnalytics {
         Path input = Paths.get(args[0]);
         Path output = input.parent.resolve("myreport.html").toAbsolutePath()
 
-        new HtmlAnalytics(report: new CsvReportLoader(csvFile: input).load()).toHtmlReport(output)
+        new HtmlAnalytics(report: new CsvReportLoader(input).load()).toHtmlReport(output)
     }
 
     void toHtmlReport(Path filename) {

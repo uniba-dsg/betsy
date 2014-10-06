@@ -72,7 +72,7 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
         Properties properties = new Properties()
         properties.load(CsvReportToTestsPerEngineAndGroupAndActivity.class.getResourceAsStream("groups.properties"))
         new CsvReportToTestsPerEngineAndGroupAndActivity(
-                report: new CsvReportLoader(csvFile: Paths.get(args[0])).load(),
+                report: new CsvReportLoader(Paths.get(args[0])).load(),
                 properties: properties
         ).toCsvReport(System.out)
     }

@@ -15,8 +15,8 @@ import com.eviware.soapui.impl.wsdl.WsdlTestSuite
  */
 class SoapUiProjectBuilder {
 
-    final WsdlProjectFactory projectFactory = new WsdlProjectFactory()
-    final WsdlInterfaceFactory interfaceFactory = new WsdlInterfaceFactory()
+    private final WsdlProjectFactory projectFactory = new WsdlProjectFactory()
+    private final WsdlInterfaceFactory interfaceFactory = new WsdlInterfaceFactory()
 
     BetsyProcess process
     int requestTimeout
@@ -37,7 +37,9 @@ class SoapUiProjectBuilder {
 
     private void importWsdlFiles() {
         for(String it : process.targetWsdlPaths) {
-            interfaceFactory.importWsdl project, it, false
+            if(!it.contains("TestIF")) {
+                interfaceFactory.importWsdl project, it, false
+            }
         }
     }
 

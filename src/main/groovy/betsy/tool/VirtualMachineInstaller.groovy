@@ -4,12 +4,9 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
-import betsy.cli.CliParser
 import betsy.cli.EngineParser
-import betsy.config.Configuration;
 import betsy.data.engines.Engine
 import betsy.virtual.host.engines.VirtualEngine
-import betsy.virtual.host.virtualbox.VBoxConfiguration
 
 /**
  * The {@link VirtualMachineInstaller} simplifies the task to create new virtual box machines for the virtual engines that are supported by betsy.<br>
@@ -69,7 +66,7 @@ class VirtualMachineInstaller {
 		// parsing processes and engines
 		List<Engine> engines = null
 		try {
-			engines = new EngineParser(args: options.arguments() as String[]).parse()
+			engines = new EngineParser(options.arguments() as String[]).parse()
 		} catch (IllegalArgumentException e) {
 			println "----------------------"
 			println "ERROR - ${e.message} - Did you misspell the name?"
@@ -87,14 +84,12 @@ class VirtualMachineInstaller {
 	}
 
 	def install() {
-		VBoxConfiguration vConfig = new VBoxConfiguration()
-
 		def betsyHome = options.b ?:""
 		def betsyEnginesHome = options.e ?:"../betsy-engines"
 		// basic virtual machine with name "betsy_basic_cloneable" or by given name/uuid
 		def basicUuid = options.u ?: "betsy_basic_cloneable"
 
-		vbox = new VirtualBoxManage(vConfig, options.v)
+		vbox = new VirtualBoxManage(options.v)
 		// verify all mandatory config options related to the VirtualBox installation
 		if(!vbox.isValid()) {
 			error "VirtualBox installation could not be verified, aborting installation"
@@ -190,7 +185,6 @@ class VirtualMachineInstaller {
 					// handle export failed
 					error "Export failed: The .ova file for the engine '${engine.name}' already exists. Please use the '-f' option to overwrite the file, change the directory or manually delte this file."
 				}else {
-					// TODO export the engine
 					vbox.exportVM(cloneUuid, ovaFile)
 				}
 			}

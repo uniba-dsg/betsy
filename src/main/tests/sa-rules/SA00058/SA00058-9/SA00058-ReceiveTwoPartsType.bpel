@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00058-ReceiveTwoPartsType" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00058/bpel/SA00058-ReceiveTwoPartsType">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" type="xsd:int"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessTwoPartsSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <assign name="AssignReplyData">
+            <copy>
+                <from variable="InitData"/>
+                <to variable="ReplyData" part="outputPart"/>
+            </copy>
+        </assign>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessTwoPartsSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

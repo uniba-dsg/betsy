@@ -3,6 +3,7 @@ package betsy.data.engines.petalsesb
 import ant.tasks.AntUtil
 import betsy.config.Configuration;
 import betsy.tasks.FileTasks
+import betsy.tasks.NetworkTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -14,7 +15,6 @@ class PetalsEsbInstaller {
     Path serverDir = Paths.get("server/petalsesb")
 
     String fileName = "petals-esb-distrib-4.0.zip"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
 
     Path targetEsbInstallDir = serverDir.resolve("petals-esb-4.0/install")
     Path bpelComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip")
@@ -25,11 +25,9 @@ class PetalsEsbInstaller {
         FileTasks.deleteDirectory(serverDir)
         FileTasks.mkdirs(serverDir)
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: downloadUrl
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
-        ant.unzip src: Configuration.getPath("downloads.dir").resolve(fileName), dest: serverDir
+        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: serverDir
         ant.unzip src: sourceFile, dest: serverDir
 
         // install bpel service engine and binding connector for soap messages

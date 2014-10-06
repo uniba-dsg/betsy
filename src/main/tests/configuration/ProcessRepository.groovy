@@ -23,16 +23,14 @@ class ProcessRepository {
                 BASIC_ACTIVITIES +
                         SCOPES +
                         STRUCTURED_ACTIVITIES +
-                        CONTROL_FLOW_PATTERNS +
-                        STATIC_ANALYSIS
+                        CONTROL_FLOW_PATTERNS
                 as List<BetsyProcess>)
 
         Field[] fields = [
                 BasicActivityProcesses.class.declaredFields +
                         ScopeProcesses.class.declaredFields +
                         StructuredActivityProcesses.class.declaredFields +
-                        PatternProcesses.class.declaredFields +
-                        StaticAnalysisProcesses.class.declaredFields
+                        PatternProcesses.class.declaredFields
         ].flatten()
 
         fields.each { Field f ->
@@ -41,6 +39,12 @@ class ProcessRepository {
                 // f.get(null) returns the value of the field. the null parameter is ignored as the field is static.
                 repo.put(f.name, f.get(null) as List<BetsyProcess>)
             }
+        }
+
+        repo.put("STATIC_ANALYSIS", STATIC_ANALYSIS)
+        Map<String, List<BetsyProcess>> ruleGroups = getGroupsPerRuleForSAProcesses(STATIC_ANALYSIS)
+        for(Map.Entry<String, List<BetsyProcess>> entry : ruleGroups) {
+            repo.put(entry.getKey(), entry.getValue())
         }
 
         repo.put(
@@ -67,6 +71,11 @@ class ProcessRepository {
 
         // insert every process into the map
         repo.getByName("ALL").each { BetsyProcess process ->
+            repo.put(process.name, [process])
+        }
+
+        // insert every process into the map
+        repo.getByName("STATIC_ANALYSIS").each { BetsyProcess process ->
             repo.put(process.name, [process])
         }
     }

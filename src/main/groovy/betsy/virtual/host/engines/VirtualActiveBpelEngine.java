@@ -1,5 +1,6 @@
 package betsy.virtual.host.engines;
 
+import betsy.config.Configuration;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.activebpel.ActiveBpelEngine;
 import betsy.virtual.common.messages.collect_log_files.LogFilesRequest;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import static betsy.config.Configuration.get;
-import static betsy.config.Configuration.getValueAsInteger;
 
 public class VirtualActiveBpelEngine extends VirtualEngine {
 
@@ -71,7 +71,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.active_bpel_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.active_bpel_v.deploymentDir"));
-        operation.setDeployTimeout(getValueAsInteger("virtual.engines.active_bpel_v.deploymentTimeout"));
+        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.active_bpel_v.deploymentTimeout")));
 
         return operation;
     }
@@ -82,5 +82,15 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
         request.getPaths().add(get("virtual.engines.active_bpel_v.bvmsDir") + "/log");
         request.getPaths().add(get("virtual.engines.active_bpel_v.logfileDir"));
         return request;
+    }
+
+    @Override
+    public boolean getHeadlessModeOption() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.active_bpel_v.headless"));
+    }
+
+    @Override
+    public boolean saveStateInsteadOfShutdown() {
+        return Boolean.valueOf(Configuration.get("virtual.engines.active_bpel_v.shutdownSaveState"));
     }
 }

@@ -18,7 +18,6 @@ class OpenEsb23Engine extends OpenEsbEngine {
     void install() {
         new OpenEsbInstaller(fileName: "openesb-v23-installer-windows.exe",
                 serverDir: Paths.get("server/openesb23"),
-                downloadUrl: "https://lspi.wiai.uni-bamberg.de/svn/betsy/openesb-v23-installer-windows.exe",
                 stateXmlTemplate: Paths.get(OpenEsbInstaller.class.getResource("/openesb23/state.xml.template").toURI())
         ).install()
     }

@@ -24,7 +24,6 @@ public class VBoxWebService {
     private static final Logger log = Logger.getLogger(VBoxWebService.class);
 
     private final AntBuilder ant = AntUtil.builder();
-    private final VBoxConfiguration vBoxConfiguration = new VBoxConfiguration();
 
     private Process vboxServiceProcess;
 
@@ -39,12 +38,7 @@ public class VBoxWebService {
         this.start();
         // install a ShutdownHook to terminate the service if the application
         // is being closed
-        Thread shutdownThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                VBoxWebService.this.stop();
-            }
-        });
+        Thread shutdownThread = new Thread(VBoxWebService.this::stop);
         Runtime.getRuntime().addShutdownHook(shutdownThread);
     }
 
@@ -58,7 +52,7 @@ public class VBoxWebService {
 
         // start VBoxService
         Runtime r = Runtime.getRuntime();
-        String[] startArgs = new String[]{vBoxConfiguration.getVBoxWebSrv().toAbsolutePath().toString(), "-A", "null", "-t", "0"};
+        String[] startArgs = new String[]{Configuration.getVBoxWebSrv().toAbsolutePath().toString(), "-A", "null", "-t", "0"};
         log.debug("Starting '" + Arrays.toString(startArgs) + "'");
         vboxServiceProcess = r.exec(startArgs);
 
@@ -79,7 +73,7 @@ public class VBoxWebService {
         errorStream.start();
 
         // give the webSrv some time to start
-        Integer startHaltDuration = Configuration.getValueAsInteger("virtual.vbox.websrv.wait");
+        Integer startHaltDuration = Configuration.getTimeToStartVboxWebService();
 
         log.debug("Waiting " + startHaltDuration + " seconds for the VBoxWebSrv to start...");
 

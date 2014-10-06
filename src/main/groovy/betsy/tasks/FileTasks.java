@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +15,9 @@ public class FileTasks {
     private static final Logger log = Logger.getLogger(FileTasks.class);
 
     public static void createFile(Path file, String content) {
+        // ensure existence of parent directory
+        mkdirs(file.getParent());
+
         String[] lines = content.split("\n");
 
         String showOutput = "" + lines.length + " lines";
@@ -65,7 +67,9 @@ public class FileTasks {
     }
 
     public static void assertDirectory(Path dir) {
+        log.info("Assert that directory " + dir + " is present.");
         if (!Files.isDirectory(dir)) {
+            log.info("Directory " + dir + " is not present but should be.");
             throw new IllegalArgumentException("the path " + dir + " is no directory");
         }
     }
@@ -108,6 +112,22 @@ public class FileTasks {
             Files.delete(file);
         } catch (IOException e) {
             throw new IllegalStateException("Could not delete file " + file, e);
+        }
+    }
+
+    public static Path findFirstMatchInFolder(Path folder, String glob) {
+        log.info("Finding first file in dir ${folder} with pattern ${glob}");
+
+        try {
+            FileTasks.assertDirectory(folder);
+        } catch (Exception ignore) {
+            return null;
+        }
+
+        try {
+            return Files.newDirectoryStream(folder, glob).iterator().next();
+        } catch (IOException e) {
+            throw new RuntimeException("could not iterate in folder " + folder, e);
         }
     }
 }

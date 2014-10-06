@@ -1,6 +1,6 @@
 package betsy.tool;
 
-import betsy.executables.ws.TestPartnerServicePublisher;
+import betsy.executables.ws.TestPartnerServicePublisherInternal;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +16,11 @@ public class PartnerServiceControl extends JFrame {
         new PartnerServiceControl().setVisible(true);
     }
 
-    private final TestPartnerServicePublisher publisher;
+    private final TestPartnerServicePublisherInternal publisher;
 
     public PartnerServiceControl() {
         layoutFrame();
-        publisher = new TestPartnerServicePublisher();
+        publisher = new TestPartnerServicePublisherInternal();
 
         createStartButton();
 
@@ -36,25 +36,13 @@ public class PartnerServiceControl extends JFrame {
 
     private void createStartButton() {
         JButton start = new JButton("startup");
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                publisher.publish();
-            }
-
-        });
+        start.addActionListener(e -> publisher.publish());
         this.add(start);
     }
 
     private void createStopButton() {
         JButton stop = new JButton("stop");
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                publisher.unpublish();
-            }
-
-        });
+        stop.addActionListener(e -> publisher.unpublish());
         this.add(stop);
     }
 

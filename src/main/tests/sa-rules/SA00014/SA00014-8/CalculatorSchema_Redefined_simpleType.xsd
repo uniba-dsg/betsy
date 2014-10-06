@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://xml.netbeans.org/schema/CalculatorSchema"
+            xmlns:tns="http://xml.netbeans.org/schema/CalculatorSchema"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xsd:redefine schemaLocation="CalculatorSchema_WithSimpleTypeGroupAndAttributeGroup.xsd">
+        <xsd:simpleType name="myCustomSimpleType">
+            <xsd:restriction base="tns:myCustomSimpleType">
+                <xsd:minInclusive value="4"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:redefine>
+</xsd:schema>

@@ -116,6 +116,13 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess SCOPE_EVENT_HANDLER_ASYNC_INIT_SYNC = builder.buildScopeProcess(
+            "Scope-EventHandlers-Async-InitSync", "A receive-reply pair followed by a wait in a scope and an onEvent eventHandler on this level. A second receive-reply pair which responses the 'event' (initialized in the onEvent), follows the scope. The first receive initiates a correlationSet on which the onEvent correlates with an asynchronous operation and the second receive correlates with a synchronous operation.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 2).waitFor(3000).sendAsync(1).sendSyncString(1, "event")
+            ]
+    )
+
     public static final BetsyProcess SCOPE_EVENT_HANDLER_INIT_ASYNC = builder.buildScopeProcess(
             "Scope-EventHandlers-InitAsync", "An asynchronous receive followed by a wait and a process-level onMessage eventHandler. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
             [
@@ -215,6 +222,7 @@ class ScopeProcesses {
     )
 
     public static final List<BetsyProcess> SCOPES_EVENT_HANDLERS = [
+            SCOPE_EVENT_HANDLER_ASYNC_INIT_SYNC,
             SCOPE_EVENT_HANDLER_INIT_ASYNC,
             SCOPE_EVENT_HANDLER_ELEMENT_INIT_ASYNC,
             SCOPE_EVENT_HANDLER_ELEMENT_INIT_SYNC,
@@ -280,10 +288,24 @@ class ScopeProcesses {
             ]
     )
 
+    public static final BetsyProcess PROCESS_FAULT_HANDLERS_CATCH_ORDER = builder.buildScopeProcess(
+            "Process-FaultHandlers-CatchOrder", "A process with a receive followed by a intermediate throw. The scope is associated with mulitple faultHandlers. A specific one of these should catch the fault and only inside this faultHandler is the reply to the initial receive. The process is adapted from the example in Spec. 12.5.",
+            [
+                    new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
     public static final BetsyProcess SCOPE_FAULT_HANDLERS_CATCH_ORDER = builder.buildScopeProcess(
             "Scope-FaultHandlers-CatchOrder", "A scope with a receive followed by a intermediate throw. The scope is associated with mulitple faultHandlers. A specific one of these should catch the fault and only inside this faultHandler is the reply to the initial receive. The process is adapted from the example in Spec. 12.5.",
             [
                     new TestCase().checkDeployment().sendSync(1, 1)
+            ]
+    )
+
+    public static final BetsyProcess PROCESS_FAULT_HANDLERS_FAULT_ELEMENT = builder.buildScopeProcess(
+            "Process-FaultHandlers-FaultElement", "A process with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level faultHandler that uses a faultVariable and faultElement configuration. Inside this faultHandler is the reply to the initial receive.",
+            [
+                    new TestCase().checkDeployment().sendSync(5, 5)
             ]
     )
 
@@ -329,10 +351,12 @@ class ScopeProcesses {
             SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE,
             SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE,
             SCOPE_FAULT_HANDLERS_OUTBOUND_LINK_CATCH_ALL,
+            PROCESS_FAULT_HANDLERS_FAULT_ELEMENT,
             SCOPE_FAULT_HANDLERS_FAULT_ELEMENT,
             SCOPE_FAULT_HANDLERS_FAULT_MESSAGE_TYPE,
             SCOPE_EXIT_ON_STANDARD_FAULT,
             SCOPE_EXIT_ON_STANDARD_FAULT_JOIN_FAILURE,
+            PROCESS_FAULT_HANDLERS_CATCH_ORDER,
             SCOPE_FAULT_HANDLERS_CATCH_ORDER,
             SCOPE_FAULT_HANDLERS_FAULT_VARIABLE_DATA
     ].flatten() as List<BetsyProcess>

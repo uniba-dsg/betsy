@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" name="SA00007-CompensateScopeInElse" targetNamespace="http://dsg.wiai.uniba.de/betsy/rules/sa00007/bpel/SA00007-CompensateScopeInElse">
+    <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="TestInterface.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="MyRoleLink" partnerLinkType="ti:TestInterfacePartnerLinkType" myRole="testInterfaceRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
+        <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
+    </variables>
+    <sequence>
+        <receive name="InitialReceive" createInstance="yes" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="InitData"/>
+        <if name="TestIfInputIsEven">
+            <condition>$InitData.inputPart mod 2 = 0</condition>
+            <assign name="AssignTrueToReplyData">
+                <copy>
+                    <from>1</from>
+                    <to variable="ReplyData" part="outputPart"/>
+                </copy>
+            </assign>
+            <else>
+                <compensateScope name="CompensateScope" target="compensationScope"/>
+            </else>
+        </if>
+        <scope name="compensationScope"><compensationHandler><empty/></compensationHandler><empty/></scope>
+        <reply name="ReplyToInitialReceive" partnerLink="MyRoleLink" operation="startProcessSync" portType="ti:TestInterfacePortType" variable="ReplyData"/>
+    </sequence>
+</process>

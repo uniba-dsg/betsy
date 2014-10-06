@@ -35,7 +35,7 @@ public class FileMessage implements Serializable {
     public FileMessage(final String filename, final byte[] data) {
         if (StringUtils.isBlank(filename)) {
             throw new IllegalArgumentException(
-                    "filename must not be null or empty");
+                    "fileName must not be null or empty");
         }
 
         this.filename = filename;

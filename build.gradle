@@ -23,7 +23,8 @@ sourceSets {
 }
 
 ext {
-    config = new ConfigSlurper().parse(new File(project.rootDir, "Config.groovy").toURI().toURL())
+    props = new Properties()
+    props.load(new File(project.rootDir, "config.properties").newInputStream())
 }
 
 configurations {
@@ -32,16 +33,15 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.2.0'
+    internal 'org.codehaus.groovy:groovy-all:2.3.3'
 
-    internal 'org.apache.ant:ant:1.9.2'
+    internal 'org.apache.ant:ant:1.9.4'
     internal 'log4j:log4j:1.2.17'
     internal 'org.virtualbox:vboxjws:4.2.8'
-    internal 'commons-daemon:commons-daemon:1.0.12'
-    //internal 'org.apache.commons:commons-io:1.3.2'
+    internal 'commons-daemon:commons-daemon:1.0.15'
     internal 'commons-io:commons-io:2.4'
-    internal 'commons-lang:commons-lang:2.4'
-    internal 'org.apache.ant:ant-apache-log4j:1.9.2'
+    internal 'commons-lang:commons-lang:2.6'
+    internal 'org.apache.ant:ant-apache-log4j:1.9.4'
     internal 'org.json:json:20140107'
     internal 'org.apache.ant:ant-junit:1.9.3'
 
@@ -67,130 +67,131 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
 
-    external files(fileTree(dir: "${config.soapui.home}/bin", includes: ['*.jar']))
-    external files(fileTree(dir: "${config.soapui.home}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
 
     compile configurations.internal
     compile configurations.external
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '2.1'
 }
 
 task downloadJbpmDependencies {
-    outputs.file new File("${config.downloads.dir}/${config.jbpmdependencies.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdependencies.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 240, {
-            ant.url url: config.jbpmdependencies.download.url
+        ant.mkdir dir: props.getProperty("downloads.dir")
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
+            ant.url url: props.getProperty("jbpmdependencies.download.url")
         }
     }
 }
 
 task installJbpmDependencies {
-    ext.srcFile = new File("${config.downloads.dir}/${config.jbpmdependencies.download.filename}")
-    ext.destDir = new File(config.jbpmdependencies.home)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdependencies.download.filename")}")
+    ext.destDir = new File(props.getProperty("jbpmdependencies.home"))
 
     inputs.file srcFile
     outputs.dir destDir
 
     doLast {
-        ant.mkdir dir: new File(config.jbpmdependencies.home)
+        ant.mkdir dir: new File(props.getProperty("jbpmdependencies.home"))
         ant.unzip src: srcFile, dest: destDir
     }
 }
 
 task downloadMaven {
-    outputs.file new File("${config.downloads.dir}/${config.maven.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("maven.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 240, {
-            ant.url url: config.maven.download.url
+        ant.mkdir dir: props.getProperty("downloads.dir")
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
+            ant.url url: props.getProperty("maven.download.url")
         }
     }
 }
 
 task installMaven {
-    ext.srcFile = new File("${config.downloads.dir}/${config.maven.download.filename}")
-    ext.destDir = new File(config.maven.container)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("maven.download.filename")}")
+    ext.destDir = new File(props.getProperty("maven.container"))
 
     inputs.file srcFile
     outputs.dir destDir
 
     doLast {
-        ant.mkdir dir: new File(config.maven.home)
+        ant.mkdir dir: new File(props.getProperty("maven.home"))
         ant.unzip src: srcFile, dest: destDir
     }
 }
 
 task downloadJPBMDeployer {
-    outputs.file new File("${config.downloads.dir}/${config.jbpmdeployer.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdeployer.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 240, {
-            ant.url url: config.jbpmdeployer.download.url
+        ant.mkdir dir: props.getProperty("downloads.dir")
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
+            ant.url url: props.getProperty("jbpmdeployer.download.url")
         }
     }
 }
 
 task installJBPMDeployer {
-    ext.srcFile = new File("${config.downloads.dir}/${config.jbpmdeployer.download.filename}")
-    ext.destDir = new File(config.jbpmdeployer.home)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdeployer.download.filename")}")
+    ext.destDir = new File(props.getProperty("jbpmdeployer.home"))
 
     inputs.file srcFile
     outputs.dir destDir
 
     doLast {
-        ant.mkdir dir: new File(config.jbpmdeployer.home)
+        ant.mkdir dir: new File(props.getProperty("jbpmdeployer.home"))
         ant.unzip src: srcFile, dest: destDir
     }
 }
 
 task downloadSoapUI {
-    outputs.file new File("${config.downloads.dir}/${config.soapui.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("soapui.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 240, {
-            ant.url url: config.soapui.download.url
+        ant.mkdir dir: props.getProperty("downloads.dir")
+	// maxtime is set to this value to ensure that travis-ci can download this file
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 1524, verbose: true, {
+            ant.url url: props.getProperty("soapui.download.url")
         }
     }
 }
 
 task installSoapUI {
-    ext.srcFile = new File("${config.downloads.dir}/${config.soapui.download.filename}")
-    ext.destDir = new File(config.soapui.container)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("soapui.download.filename")}")
+    ext.destDir = props.getProperty("soapui.container")
 
     inputs.file srcFile
     outputs.dir destDir
 
     doLast {
-        ant.mkdir dir: new File(config.soapui.home)
+        ant.mkdir dir: props.getProperty("soapui.home")
         ant.unzip src: srcFile, dest: destDir
     }
 }
 
 task downloadAnt {
-    outputs.file new File("${config.downloads.dir}/${config.ant.download.filename}")
+    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("ant.download.filename")}")
 
     doLast {
-        ant.mkdir dir: config.downloads.dir
-        ant.get dest: config.downloads.dir, maxtime: 120, {
-            ant.url url: config.ant.download.url
+        ant.mkdir dir: props.getProperty("downloads.dir")
+        ant.get dest: props.getProperty("downloads.dir"), maxtime: 120, {
+            ant.url url: props.getProperty("ant.download.url")
         }
     }
 }
 
 task installAnt {
-    ext.srcFile = new File("${config.downloads.dir}/${config.ant.download.filename}")
-    ext.destDir = new File(config.ant.container)
+    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("ant.download.filename")}")
+    ext.destDir = props.getProperty("ant.container")
 
     inputs.file srcFile
-    outputs.dir new File(config.ant.home)
+    outputs.dir props.getProperty("ant.home")
 
     doLast {
         ant.mkdir dir: destDir
@@ -247,6 +248,8 @@ task internalClasses(dependsOn: classes) {
 }
 
 task zipSingleTestRun(type: Zip) {
+    zip64 true
+
     into("test") {
         from files("test")
     }
@@ -255,7 +258,7 @@ task zipSingleTestRun(type: Zip) {
     from files("betsy_time.log")
 
     if(project.hasProperty("zipArchiveBaseName")) {
-        baseName = project.zipArchiveBaseName
+        baseName = project.zipArchiveBaseName.toString()
     } else {
         // use default
         baseName = "test-folder-and-logs"
