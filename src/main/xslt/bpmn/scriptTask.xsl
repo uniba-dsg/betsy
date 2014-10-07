@@ -11,6 +11,17 @@ f.createNewFile();
 }catch(java.io.IOException e){}]]></bpmn2:script>
         </xsl:when>
 
+        <xsl:when test="contains(text(),'CREATE_LOG_FILE,')">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[try{
+java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
+f.createNewFile();
+}catch(java.io.IOException e){}
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+try{
+bw.append("</xsl:text><xsl:value-of select="substring-after(text(),',')"/> <xsl:text disable-output-escaping="yes">");
+}catch(java.io.IOException e){}finally{if(bw != null){try{bw.close();}catch(java.io.IOException e){}}}]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
+        </xsl:when>
+
         <xsl:otherwise>
             <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 try{
