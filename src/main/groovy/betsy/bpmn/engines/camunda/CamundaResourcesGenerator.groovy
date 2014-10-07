@@ -31,11 +31,7 @@ class CamundaResourcesGenerator {
         FileTasks.mkdirs(srcDestDir)
 
         //generate pom.properties
-        PrintWriter pw = new PrintWriter(pomDir.resolve("pom.properties").toString(), "UTF-8")
-        pw.println("version=${version}")
-        pw.println("groupId=${groupId}")
-        pw.println("artifactId=${processName}")
-        pw.close()
+        FileTasks.createFile(pomDir.resolve("pom.properties"), "version=${version}\ngroupId=${groupId}\nartifactId=${processName}")
 
         //generate pom
         generatePom(pomDir)
@@ -47,10 +43,12 @@ class CamundaResourcesGenerator {
             javaHome = javaHome.substring(0, javaHome.length() - 4)
         }
         RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader()
+
+        URL toolsJarUrl = new URL("file:///${javaHome}/lib/tools.jar")
         if(rl == null){
-            Thread.currentThread().getContextClassLoader().addURL(new URL("file:///${javaHome}/lib/tools.jar"))
+            Thread.currentThread().getContextClassLoader().addURL(toolsJarUrl)
         }else{
-            rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
+            rl.addURL(toolsJarUrl)
         }
 
         NetworkTasks.downloadFileFromBetsyRepo("javaee-api-7.0.jar");
@@ -119,7 +117,7 @@ class CamundaResourcesGenerator {
 
 </project>
 """
-        ant.echo(message: pomString, file: pomDir.resolve("pom.xml"))
+        FileTasks.createFile(pomDir.resolve("pom.xml"), pomString);
     }
 
     private void generateProcessesXml(Path classesDir){
@@ -138,7 +136,7 @@ class CamundaResourcesGenerator {
 
 </process-application>
 """
-        ant.echo(message: processesXmlString, file: classesDir.resolve("META-INF/processes.xml"))
+        FileTasks.createFile(classesDir.resolve("META-INF/processes.xml"), processesXmlString);
     }
 
     private void generateServletProcessApplication(Path srcDestDir){
@@ -153,7 +151,7 @@ public class ProcessTestApplication extends ServletProcessApplication{
 }
 
 """
-        ant.echo(message: fileString, file: Paths.get("${srcDestDir}/${groupId.replaceAll('.', '/')}/ProcessTestApplication.java"))
+        FileTasks.createFile(srcDestDir.resolve(groupId.replaceAll('.', '/')).resolve("ProcessTestApplication.java"), fileString);
     }
 }
 

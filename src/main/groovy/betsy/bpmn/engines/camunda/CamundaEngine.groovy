@@ -34,7 +34,7 @@ class CamundaEngine extends BPMNEngine {
     @Override
     void deploy(BPMNProcess process) {
         new CamundaDeployer(processName: process.name,
-                packageFilePath: Paths.get("${process.targetPath}/war/${process.name}.war"),
+                packageFilePath: process.targetPath.resolve("war").resolve("${process.name}.war"),
                 deploymentDirPath: tomcatDir.resolve("webapps")
         ).deploy()
 

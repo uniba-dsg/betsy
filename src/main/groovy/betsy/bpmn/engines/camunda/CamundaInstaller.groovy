@@ -38,7 +38,7 @@ class CamundaInstaller {
     }
 
     public Path getTomcatDestinationDir() {
-        destinationDir.resolve("server/" + tomcatName)
+        destinationDir.resolve("server").resolve(tomcatName)
     }
 
     public Path getTomcatBinFolder() {
