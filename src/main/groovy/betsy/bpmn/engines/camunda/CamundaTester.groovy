@@ -1,18 +1,15 @@
 package betsy.bpmn.engines.camunda
 
-import ant.tasks.AntUtil
+import betsy.bpmn.engines.BPMNTester
 import betsy.bpmn.model.BPMNTestCase
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
 import groovy.io.FileType
-import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONObject
 
 import java.nio.file.Path
 
 class CamundaTester {
-
-    private static final AntBuilder ant = AntUtil.builder()
 
     BPMNTestCase testCase
     String restURL
@@ -48,7 +45,7 @@ class CamundaTester {
             }
         }
         if (unsupportedMessage != null) {
-            writeToLog(unsupportedMessage);
+            BPMNTester.writeToLog(getFileName(), unsupportedMessage);
         } else {
             //first request to get id
             JSONObject response = JsonHelper.get(restURL + "/process-definition?key=${key}")
@@ -72,26 +69,9 @@ class CamundaTester {
             }
         }
 
-        //setup path to 'tools.jar' for the javac ant task
-        String javaHome = System.getProperty("java.home")
-        if (javaHome.endsWith("jre")) {
-            javaHome = javaHome.substring(0, javaHome.length() - 4)
-        }
-        RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader()
-        if (rl == null) {
-            Thread.currentThread().getContextClassLoader().addURL(new URL("file:///${javaHome}/lib/tools.jar"))
-        } else {
-            rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
-        }
 
-        String systemClasspath = System.getProperty('java.class.path')
-
-        // compile test sources
-        ant.javac(srcdir: testSrc, destdir: testBin, includeantruntime: false) {
-            classpath {
-                pathelement(path: systemClasspath)
-            }
-        }
+        BPMNTester.setupPathToToolsJarForJavacAntTask(this)
+        BPMNTester.compileTest(testSrc, testBin)
 
         //look up log for runtime exception if process could be started
         if (unsupportedMessage == null) {
@@ -111,38 +91,16 @@ class CamundaTester {
                 }
             }
             if (runtimeExceptionFound) {
-                writeToLog("runtimeException");
+                BPMNTester.writeToLog(getFileName(), "runtimeException");
             }
         }
 
-        //start test
-        ant.junit(printsummary: "on", fork: "true", haltonfailure: "no") {
-            classpath {
-                pathelement(path: systemClasspath)
-                pathelement(location: testBin)
-            }
-            formatter(type: "xml")
-            batchtest(todir: reportPath) {
-                fileset(dir: testSrc) {
-                    include(name: "**/*.java")
-                }
-            }
-        }
-
+        BPMNTester.executeTest(testSrc, testBin, reportPath)
     }
 
-    private void writeToLog(String s) {
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(getFileName(), true));
-            bw.append(s);
-            bw.newLine()
-            bw.close();
-        } catch (IOException ignored) {
-        }
-    }
 
-    private String getFileName() {
-        "${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt"
+    private Path getFileName() {
+        logDir.resolve("..").normalize().resolve("bin").resolve("log" + testCase.number + ".txt")
     }
 
 

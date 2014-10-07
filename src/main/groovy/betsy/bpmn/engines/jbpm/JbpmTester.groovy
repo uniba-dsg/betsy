@@ -1,10 +1,9 @@
 package betsy.bpmn.engines.jbpm
 
-import ant.tasks.AntUtil
+import betsy.bpmn.engines.BPMNTester
 import betsy.bpmn.model.BPMNTestCase
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
-import org.codehaus.groovy.tools.RootLoader
 import org.json.JSONObject
 import org.kie.api.runtime.KieSession
 import org.kie.api.runtime.manager.RuntimeEngine
@@ -14,8 +13,6 @@ import org.kie.services.client.api.RemoteRestRuntimeFactory
 import java.nio.file.Path
 
 class JbpmTester {
-
-    private static final AntBuilder ant = AntUtil.builder()
 
     BPMNTestCase testCase
     String name
@@ -31,87 +28,47 @@ class JbpmTester {
     /**
      * Runs a single test
      */
-    public void runTest(){
+    public void runTest() {
         //make bin dir
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
         //connect to remote
         RemoteRestRuntimeFactory factory = new RemoteRestRuntimeFactory(deploymentId, baseUrl, user, password)
-        RuntimeEngine  remoteEngine = factory.newRuntimeEngine()
+        RuntimeEngine remoteEngine = factory.newRuntimeEngine()
         KieSession kSession = remoteEngine.getKieSession()
 
-        if(!testCase.selfStarting){
+        if (!testCase.selfStarting) {
             //setup variables and start process
             try {
                 Map<String, Object> variables = new HashMap<>()
-                for(String key : testCase.variables.keySet()){
-                    variables.put(key, ((JSONObject)testCase.variables.get(key)).get("value"))
+                for (String key : testCase.variables.keySet()) {
+                    variables.put(key, ((JSONObject) testCase.variables.get(key)).get("value"))
                 }
                 ProcessInstance instance = kSession.startProcess(name, variables)
                 //look for error end event special case
                 WaitTasks.sleep(200)
-                if(instance.getState() == ProcessInstance.STATE_ABORTED){
-                    writeToLog("thrownErrorEvent");
-                 }
+                if (instance.getState() == ProcessInstance.STATE_ABORTED) {
+                    BPMNTester.writeToLog(getFileName(), "thrownErrorEvent");
+                }
                 //delay for timer intermediate event
-                if(testCase.delay != 0){
+                if (testCase.delay != 0) {
                     WaitTasks.sleep(testCase.delay)
                 }
-            }catch (RuntimeException ignored){
-                writeToLog("runtimeException");
+            } catch (RuntimeException ignored) {
+                BPMNTester.writeToLog(getFileName(), "runtimeException");
             }
-        }else{
+        } else {
             //delay for self starting
             WaitTasks.sleep(testCase.delay)
         }
 
-        //setup path to 'tools.jar' for the javac ant task
-        String javaHome = System.getProperty("java.home")
-        if(javaHome.endsWith("jre")){
-            javaHome = javaHome.substring(0, javaHome.length() - 4)
-        }
-        RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader()
-        if(rl == null){
-            Thread.currentThread().getContextClassLoader().addURL(new URL("file:///${javaHome}/lib/tools.jar"))
-        }else{
-            rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
-        }
-
-        String systemClasspath = System.getProperty('java.class.path')
-
-        // compile test sources
-        ant.javac(srcdir: testSrc, destdir: testBin, includeantruntime: false) {
-            classpath{
-                pathelement(path: systemClasspath)
-            }
-        }
-
-        //runt test
-        ant.junit(printsummary: "on", fork: "true", haltonfailure: "no"){
-            classpath{
-                pathelement(path: systemClasspath)
-                pathelement(location: testBin)
-            }
-            formatter(type: "xml")
-            batchtest(todir: reportPath){
-                fileset(dir: testSrc){
-                    include(name: "**/*.java")
-                }
-            }
-        }
+        BPMNTester.setupPathToToolsJarForJavacAntTask(this)
+        BPMNTester.compileTest(testSrc, testBin)
+        BPMNTester.executeTest(testSrc, testBin, reportPath)
     }
 
-    private void writeToLog(String s) {
-        try{
-            BufferedWriter bw = new BufferedWriter(new FileWriter(getFileName(), true));
-            bw.append(s);
-            bw.newLine()
-            bw.close();
-        }catch(IOException ignored){}
-    }
-
-    private String getFileName() {
-        "${logDir}/log" + testCase.number + ".txt"
+    private Path getFileName() {
+        logDir.resolve("log" + testCase.number + ".txt")
     }
 }
