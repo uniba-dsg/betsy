@@ -70,10 +70,10 @@ class JbpmEngine extends BPMNEngine {
         ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn"),
                 out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2-temp"),
                 style: xsltPath.resolve("../scriptTask.xsl"))
-        ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn-temp"),
+        ant.xslt(in: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2-temp"),
                 out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2"),
                 style: xsltPath.resolve("jbpm.xsl"))
-        ant.delete(file: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"))
+        ant.delete(file: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn2-temp"))
         new JbpmResourcesGenerator(
                 jbpmSrcDir: Paths.get("src/main/tests/files/bpmnRes/jbpm"),
                 destDir: process.targetPath.resolve("project"),
