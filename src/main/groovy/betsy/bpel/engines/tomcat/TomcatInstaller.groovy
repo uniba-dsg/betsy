@@ -15,8 +15,8 @@ class TomcatInstaller {
     Path destinationDir
     String additionalVmParam = ""
 
-    String fileName = "apache-tomcat-7.0.26-windows-x64.zip"
-    String tomcatName = "apache-tomcat-7.0.26"
+    String fileName = "apache-tomcat-7.0.53-windows-x64.zip"
+    String tomcatName = "apache-tomcat-7.0.53"
 
     public void install() {
         FileTasks.mkdirs(Configuration.downloadsDir)
@@ -40,6 +40,14 @@ cd ${tomcatBinFolder.toAbsolutePath()} && ./startup.sh""")
 
     public Path getTomcatDestinationDir() {
         destinationDir.resolve(tomcatName)
+    }
+
+    public Path getTomcatWebappsFolder() {
+        getTomcatDestinationDir().resolve("webapps")
+    }
+
+    public void deployWar(Path war) {
+        FileTasks.copyFileIntoFolder(war, getTomcatWebappsFolder())
     }
 
     public Path getTomcatBinFolder() {

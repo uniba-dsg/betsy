@@ -2,14 +2,14 @@ package betsy.bpel.engines.tomcat
 
 import ant.tasks.AntUtil
 import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.URLTasks
+import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
 /**
  * Responsible for starting and stopping tomcat as well as all tomcat related paths and properties.
  */
 class Tomcat {
-
-    final AntBuilder ant = AntUtil.builder()
 
     /**
      * the port of the tomcat
@@ -18,11 +18,11 @@ class Tomcat {
 
     /**
      * The directory in which the tomcat has its directory.
-     * Should contain a directory called <code>apache-tomcat-7.0.26</code>
+     * Should contain a directory called <code>apache-tomcat-7.0.53</code>
      */
     Path engineDir
 
-    String tomcatName = "apache-tomcat-7.0.26"
+    String tomcatName = "apache-tomcat-7.0.53"
 
     Path getTomcatDir() {
         engineDir.resolve(tomcatName)
@@ -43,9 +43,7 @@ class Tomcat {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir, "tomcat_startup.bat"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir.resolve("tomcat_startup.sh")))
 
-        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-            http url: tomcatUrl
-        }
+        WaitTasks.waitForAvailabilityOfUrl(30000, 500, getTomcatUrl());
 
     }
 
@@ -61,11 +59,7 @@ class Tomcat {
      * Throw exception if the tomcat is still running.
      */
     void checkIfIsRunning() {
-        ant.fail(message: "tomcat for engine ${engineDir} is still running") {
-            condition() {
-                http url: tomcatUrl
-            }
-        }
+        URLTasks.isUrlAvailable(getTomcatUrl());
     }
 
 }
