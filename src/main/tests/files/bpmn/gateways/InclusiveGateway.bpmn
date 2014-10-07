@@ -13,22 +13,12 @@
     <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("task2");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>task2</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_1" name="Task 1">
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("task1");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>task1</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="InclusiveGateway_2" targetRef="end"/>
     <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="InclusiveGateway_2"/>
@@ -50,11 +40,7 @@ boolean x = true;]]></bpmn2:script>
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("success");
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
     <bpmn2:inclusiveGateway id="InclusiveGateway_1">

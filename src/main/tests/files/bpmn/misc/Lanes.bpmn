@@ -22,42 +22,25 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Start">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
-f.createNewFile();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_2" targetRef="ScriptTask_1"/>
     <bpmn2:scriptTask id="ScriptTask_2" name="Lane 1">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("lane1");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>lane1</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="ScriptTask_1" targetRef="ScriptTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ScriptTask_2" targetRef="ScriptTask_3"/>
     <bpmn2:scriptTask id="ScriptTask_3" name="Lane 2">
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("lane2");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>lane2</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_4" name="End">
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("success");
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ScriptTask_3" targetRef="ScriptTask_4"/>
     <bpmn2:endEvent id="EndEvent_1">

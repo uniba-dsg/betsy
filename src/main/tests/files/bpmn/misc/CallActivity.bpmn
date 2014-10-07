@@ -23,12 +23,7 @@ f.createNewFile();
     <bpmn2:scriptTask id="ScriptTask_5" name="End">
       <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
-bw.append("success");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="ScriptTask_5" targetRef="EndEvent_1"/>
     <bpmn2:callActivity id="CallActivity_1" name="Call" calledElement="Process_2">
@@ -45,12 +40,7 @@ bw.close();
     <bpmn2:scriptTask id="ScriptTask_1" name="Called">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log1.txt", true));
-bw.append("called");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>called</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
     <bpmn2:endEvent id="EndEvent_2">

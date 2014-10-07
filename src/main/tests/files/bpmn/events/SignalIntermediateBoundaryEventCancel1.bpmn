@@ -9,10 +9,7 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Start">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
-f.createNewFile();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="ScriptTask_1" targetRef="SubProcess_1"/>
     <bpmn2:subProcess id="SubProcess_1" name="Subprocess">
@@ -25,12 +22,7 @@ f.createNewFile();
       <bpmn2:scriptTask id="ScriptTask_3" name="normal sub Task">
         <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
         <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
-        <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("normalTask");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+        <bpmn2:script>normalTask</bpmn2:script>
       </bpmn2:scriptTask>
       <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ScriptTask_3" targetRef="EndEvent_2"/>
       <bpmn2:endEvent id="EndEvent_2">
@@ -44,12 +36,7 @@ bw.close();
     <bpmn2:scriptTask id="ScriptTask_4" name="signaled">
       <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("signaled");
-bw.newLine();
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>signaled</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ScriptTask_4" targetRef="EndEvent_3"/>
     <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="SubProcess_1">

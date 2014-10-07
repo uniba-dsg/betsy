@@ -11,19 +11,12 @@
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
-f.createNewFile();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
-bw.append("success");
-bw.close();
-}catch(java.io.IOException e){}]]></bpmn2:script>
+      <bpmn2:script>success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="start"/>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="start" targetRef="end"/>
