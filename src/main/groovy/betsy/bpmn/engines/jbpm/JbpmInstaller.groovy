@@ -5,6 +5,7 @@ import betsy.common.config.Configuration
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.tasks.ZipTasks
 
 import java.nio.file.Path
 
@@ -18,11 +19,8 @@ class JbpmInstaller {
     public void install() {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
-
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
-
-        ant.unzip src: Configuration.getDownloadsDir().resolve(fileName), dest: destinationDir
-
+        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir)
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant -q install.demo.noeclipse"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant -q install.demo.noeclipse"))
     }

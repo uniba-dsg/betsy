@@ -7,6 +7,7 @@ import betsy.bpmn.model.BPMNTestBuilder
 import betsy.bpmn.reporting.BPMNTestcaseMerger
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.URLTasks
 import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
@@ -48,8 +49,9 @@ class JbpmEngine extends BPMNEngine {
         Path mavenPath = Paths.get("maven/apache-maven-3.2.1/bin")
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn -q clean install"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.targetPath.resolve("project"), "${mavenPath.toAbsolutePath()}/mvn -q clean install"))
+
         //wait for maven to deploy
-        Thread.sleep(1500)
+        WaitTasks.sleep(1500)
 
         //preparing ssh
         //delete known_hosts file for do not getting trouble with changing remote finger print
@@ -105,10 +107,7 @@ class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q start.demo.noeclipse"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q start.demo.noeclipse"))
 
-        //waiting for jboss to startup
-        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-            http url: jbpmnUrl
-        }
+        WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getJbpmnUrl());
 
         //waiting for jbpm-console for deployment and instantiating
         WaitTasks.sleep(120000)
@@ -127,16 +126,7 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     boolean isRunning() {
-        try{
-            ant.fail(message: "JBoss for engine ${serverPath} is still running") {
-                condition() {
-                    http url: jbpmnUrl
-                }
-            }
-            return false
-        } catch (Exception ignore) {
-            return true
-        }
+        URLTasks.isUrlAvailable(getJbpmnUrl());
     }
 
     void testProcess(BPMNProcess process){

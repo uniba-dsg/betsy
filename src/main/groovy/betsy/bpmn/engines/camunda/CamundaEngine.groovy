@@ -7,6 +7,7 @@ import betsy.bpmn.model.BPMNTestBuilder
 import betsy.bpmn.reporting.BPMNTestcaseMerger
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.URLTasks
 import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
@@ -91,10 +92,7 @@ class CamundaEngine extends BPMNEngine {
     void startup() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "camunda_startup.bat"))
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath.resolve("camunda_startup.sh")))
-
-        ant.waitfor(maxwait: "30", maxwaitunit: "second", checkevery: "500") {
-            http url: camundaUrl
-        }
+        WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());
     }
 
     @Override
@@ -105,16 +103,7 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     boolean isRunning() {
-        try{
-            ant.fail(message: "tomcat for engine ${serverPath} is still running") {
-                condition() {
-                    http url: camundaUrl
-                }
-            }
-            return false
-        } catch (Exception ignore) {
-            return true
-        }
+        URLTasks.isUrlAvailable(getCamundaUrl());
     }
 
     @Override

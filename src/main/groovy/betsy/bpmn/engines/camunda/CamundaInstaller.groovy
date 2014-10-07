@@ -5,6 +5,7 @@ import betsy.common.config.Configuration
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.tasks.ZipTasks
 
 import java.nio.file.Path
 
@@ -23,10 +24,8 @@ class CamundaInstaller {
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
         NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
-
-        ant.unzip src: Configuration.getDownloadsDir().resolve(fileName), dest: destinationDir
-
-        ant.copy(toDir: tomcatDestinationDir.resolve("lib"), file: Configuration.getDownloadsDir().resolve(groovyFile))
+        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir)
+        FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile), tomcatDestinationDir.resolve("lib"))
 
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat")
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
