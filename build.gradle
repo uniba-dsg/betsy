@@ -59,6 +59,8 @@ dependencies {
     internal 'org.jbpm:jbpm-human-task-core:6.0.1.Final'
     internal 'org.jbpm:jbpm-runtime-manager:6.0.1.Final'
 
+    internal 'com.mashape.unirest:unirest-java:1.3.20' // for rest api calls
+
     internal 'org.slf4j:slf4j-api:1.7.6'
     internal 'org.slf4j:slf4j-simple:1.7.6'
 

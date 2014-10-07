@@ -3,26 +3,28 @@ package betsy.bpmn.engines.activiti
 import betsy.bpel.engines.tomcat.Tomcat
 import betsy.bpel.engines.tomcat.TomcatInstaller;
 import betsy.bpmn.engines.BPMNEngine
-import betsy.bpmn.engines.camunda.CamundaResourcesGenerator
-import betsy.bpmn.engines.camunda.CamundaTester;
 import betsy.bpmn.model.BPMNProcess
-import betsy.bpmn.model.BPMNTestBuilder
-import betsy.bpmn.model.BPMNTestCase
-import betsy.bpmn.reporting.BPMNTestcaseMerger
 import betsy.common.config.Configuration
-import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
-import betsy.common.tasks.WaitTasks
 import betsy.common.tasks.ZipTasks
 import betsy.common.util.ClasspathHelper
+import com.mashape.unirest.http.HttpResponse
+import com.mashape.unirest.http.JsonNode
+import com.mashape.unirest.http.Unirest
+import com.mashape.unirest.http.exceptions.UnirestException
+import org.apache.log4j.Logger
 
 import java.nio.file.Path;
 
 public class ActivitiEngine extends BPMNEngine {
 
+    private static final Logger log = Logger.getLogger(ActivitiEngine.class);
+
+    public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest"
+
     @Override
     void testProcess(BPMNProcess process){
-        
+
     }
 
     @Override
@@ -32,12 +34,59 @@ public class ActivitiEngine extends BPMNEngine {
 
     @Override
     public void deploy(BPMNProcess process) {
+        deployBpmnProcess(getTargetProcessBpmnFile(process))
+    }
 
+    public static boolean deployBpmnProcess(Path bpmnFile) {
+        try {
+            log.info("Deploying file " + bpmnFile.toAbsolutePath());
+
+            String deploymentUrl = URL + "/service/repository/deployments";
+            log.info("HTTP POST to " + deploymentUrl);
+
+            HttpResponse<JsonNode> jsonResponse = Unirest.post(deploymentUrl)
+                    .header("type", "multipart/form-data")
+                    .field("file", bpmnFile.toFile())
+                    .asJson();
+
+            log.info("HTTP RESPONSE code: " + jsonResponse.getCode());
+            log.info("HTTP RESPONSE body: " + jsonResponse.getBody());
+
+            return 201 == jsonResponse.getCode();
+
+        } catch (UnirestException e) {
+            throw new RuntimeException("Could not deploy", e);
+        } finally {
+            try {
+                Unirest.shutdown();
+            } catch (IOException e) {
+                log.error("problem during shutdown of unirest lib", e);
+            }
+        }
+    }
+
+    @Override
+    Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda");
     }
 
     @Override
     void buildArchives(BPMNProcess process) {
+        ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn"),
+                out: getTargetProcessFolder(process).resolve("${process.name}.bpmn-temp"),
+                style: xsltPath.resolve("../scriptTask.xsl"))
+        ant.xslt(in: getTargetProcessFolder(process).resolve("${process.name}.bpmn-temp"),
+                out: getTargetProcessBpmnFile(process),
+                style: xsltPath.resolve("camunda.xsl"))
+        ant.delete(file: getTargetProcessFolder(process).resolve("${process.name}.bpmn-temp"))
+    }
 
+    private Path getTargetProcessBpmnFile(BPMNProcess process) {
+        getTargetProcessFolder(process).resolve(process.getName() + ".bpmn")
+    }
+
+    private Path getTargetProcessFolder(BPMNProcess process) {
+        process.targetPath.resolve("process")
     }
 
     @Override
@@ -47,7 +96,7 @@ public class ActivitiEngine extends BPMNEngine {
 
     @Override
     String getEndpointUrl(BPMNProcess process) {
-        "http://kermit:kermit@localhost:8080/activiti-rest/service/repository/"
+        URL + "/service/repository/"
     }
 
     @Override
