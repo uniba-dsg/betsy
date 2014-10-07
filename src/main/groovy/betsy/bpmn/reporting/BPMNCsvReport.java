@@ -12,10 +12,9 @@ public class BPMNCsvReport extends CsvReport {
     public String getRelativePath(final Group group, final Engine engine, final Test test) {
         try {
             String path = new FileNameFinder().getFileNames("test/reports/html/" + engine.getName() + "/" + group.getName(), "*_" + test.getFullName() + ".html").get(0);
-            String parentPath = getFile().toFile().getParentFile().getAbsolutePath();
-            String relativePath = path.substring(parentPath.length() + 1);
+            String parentPath = getFile().getParent().toAbsolutePath().toString();
 
-            return relativePath;
+            return path.substring(parentPath.length() + 1);
         } catch (Exception e) {
             return "#";
         }

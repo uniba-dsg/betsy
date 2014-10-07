@@ -12,10 +12,9 @@ public class BPELCsvReport extends CsvReport {
     public String getRelativePath(Group group, Engine engine, Test test) {
         try {
             String path = new FileNameFinder().getFileNames("test/reports/html/soapui/${engine.name}/${group.name}", "*_${test.fullName}.html").get(0);
-            String parentPath = getFile().toFile().getParentFile().getAbsolutePath();
-            String relativePath = path.substring(parentPath.length() + 1);
+            String parentPath = getFile().getParent().toAbsolutePath().toString();
 
-            return relativePath;
+            return path.substring(parentPath.length() + 1);
         } catch (Exception e){
             return "#";
         }
