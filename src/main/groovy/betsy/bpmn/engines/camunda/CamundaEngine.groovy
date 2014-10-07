@@ -45,8 +45,12 @@ class CamundaEngine extends BPMNEngine {
     @Override
     void buildArchives(BPMNProcess process) {
         ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn"),
+                out: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"),
+                style: xsltPath.resolve("../scriptTask.xsl"))
+        ant.xslt(in: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"),
                 out: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn"),
                 style: xsltPath.resolve("camunda.xsl"))
+        ant.delete(file: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"))
         new CamundaResourcesGenerator(groupId: process.groupId,
                 processName: process.name,
                 srcDir: process.resourcePath,
