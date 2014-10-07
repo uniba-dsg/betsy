@@ -44,7 +44,7 @@ public class Sprinkle {
 				}
 				return false
 			}
-		}catch(e) {
+		}catch(ignored) {
 			error "The ruby gem 'Sprinkle' is currently not installed on your system"
 			return false
 		}

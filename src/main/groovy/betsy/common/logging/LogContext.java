@@ -2,6 +2,8 @@ package betsy.common.logging;
 
 import org.apache.log4j.MDC;
 
+import java.util.Objects;
+
 public class LogContext {
 
     public static final String CONTEXT_KEY_PATH = "path";
@@ -12,7 +14,8 @@ public class LogContext {
     }
 
     public static String getContext() {
-        return MDC.get(CONTEXT_KEY_PATH).toString();
+        Object context = MDC.get(CONTEXT_KEY_PATH);
+        return Objects.requireNonNull(context, "no context found for " + CONTEXT_KEY_PATH).toString();
     }
 
     public static void setContext(String context) {

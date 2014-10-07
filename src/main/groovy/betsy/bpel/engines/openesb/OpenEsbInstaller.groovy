@@ -6,6 +6,7 @@ import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -39,7 +40,7 @@ class OpenEsbInstaller {
         }
 
         Path reinstallGlassFishBatPath = serverDir.resolve("reinstallGlassFish.bat")
-        java.nio.file.Files.copy(Paths.get(OpenEsbInstaller.class.getResource("/openesb/reinstallGlassFish.bat").toURI()),
+        Files.copy(Paths.get(OpenEsbInstaller.class.getResource("/openesb/reinstallGlassFish.bat").toURI()),
                 reinstallGlassFishBatPath)
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(

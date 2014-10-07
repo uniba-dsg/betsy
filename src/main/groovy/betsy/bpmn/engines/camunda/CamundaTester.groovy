@@ -114,7 +114,7 @@ class CamundaTester {
                                 BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
                                 bw.append("thrownErrorEvent");
                                 bw.close();
-                            } catch (IOException e) {
+                            } catch (IOException ignored) {
                             }
                         }
                     }

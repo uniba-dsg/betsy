@@ -35,7 +35,7 @@ public class VirtualBoxManage {
 		
 		try {
 			return executeCommand("-v", 5_000)
-		}catch(e) {
+		}catch(ignored) {
 			return false
 		}
 	}

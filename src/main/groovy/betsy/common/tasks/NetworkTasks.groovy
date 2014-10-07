@@ -5,13 +5,14 @@ import betsy.common.config.Configuration
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class NetworkTasks {
 
+    public static final String BETSY_SVN_BASE_URL = "https://lspi.wiai.uni-bamberg.de/svn/betsy/"
+
     public static void downloadFile(URL url, Path fileOrFolder) {
         // ensure that the folders in this path are created
-        if(Files.isDirectory(fileOrFolder)) {
+        if (Files.isDirectory(fileOrFolder)) {
             FileTasks.mkdirs(fileOrFolder);
         }
 
@@ -19,8 +20,7 @@ class NetworkTasks {
     }
 
     public static void downloadFileFromBetsyRepo(String filename) {
-        downloadFile(new URL("https://lspi.wiai.uni-bamberg.de/svn/betsy/" + filename),
-                Paths.get(Configuration.get("downloads.dir")));
+        downloadFile(new URL(BETSY_SVN_BASE_URL + filename), Configuration.getDownloadsDir());
     }
 
 }

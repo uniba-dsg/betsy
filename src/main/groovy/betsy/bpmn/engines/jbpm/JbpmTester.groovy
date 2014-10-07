@@ -57,13 +57,13 @@ class JbpmTester {
                         bw.append("thrownErrorEvent");
                         bw.newLine()
                         bw.close();
-                    }catch(IOException ioe){}
+                    }catch(IOException ignored){}
                 }
                 //delay for timer intermediate event
                 if(testCase.delay != 0){
                     WaitTasks.sleep(testCase.delay)
                 }
-            }catch (RuntimeException e){
+            }catch (RuntimeException ignored){
                 try{
                     BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
                     bw.append("runtimeException");

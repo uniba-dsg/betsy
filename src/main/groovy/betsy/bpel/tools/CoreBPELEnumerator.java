@@ -63,7 +63,7 @@ public class CoreBPELEnumerator {
 
                 // copy WSDL files and XSD files
                 for (Path wsdl : process.getWsdlPaths()) {
-                    Files.copy(wsdl, processDirectory.resolve(DefaultGroovyMethods.last(wsdl).toString()));
+                    Files.copy(wsdl, processDirectory.resolve(wsdl.getFileName().toString()));
                 }
 
 

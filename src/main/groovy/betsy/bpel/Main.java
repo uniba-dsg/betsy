@@ -188,12 +188,12 @@ public class Main {
         }
     }
 
-    protected static String activateLogging() {
+    protected static void activateLogging() {
         // activate log4j logging
         DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
 
         // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
-        return System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
+        System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
     protected static void printSelectedEnginesAndProcesses(List<Engine> engines, final List<BetsyProcess> processes) {

@@ -26,7 +26,7 @@ class BPMNMain {
 
         // usage information if required
         if (parser.showUsage()) {
-            println parser.usage()
+            parser.printUsage()
             System.exit(0)
         }
 

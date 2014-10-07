@@ -135,7 +135,7 @@ class VirtualMachineInstaller {
 		def vmExists = false
 		try {
 			vmExists = vbox.executeCommand("showvminfo ${cloneName} --machinereadable", 5_000)
-		}catch(e) {
+		}catch(ignored) {
 			// VM with this name does not exist
 		}
 
@@ -199,7 +199,7 @@ class VirtualMachineInstaller {
 		}finally {
 			try {
 				vbox.stopVM(cloneUuid)
-			}catch(e) {
+			}catch(ignored) {
 				// ignore errors
 			}
 
@@ -209,7 +209,7 @@ class VirtualMachineInstaller {
 					// sleep required, otherwise machine is not always ready
 					Thread.sleep(2000)
 					vbox.deleteVM(cloneUuid)
-				}catch(e) {
+				}catch(ignored) {
 					error "Deleting the dirty VM failed, please delete the VM with the name manually!"
 					System.exit(1)
 				}
