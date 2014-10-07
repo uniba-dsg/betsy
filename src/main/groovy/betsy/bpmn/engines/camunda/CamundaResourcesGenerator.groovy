@@ -21,9 +21,9 @@ class CamundaResourcesGenerator {
 
     void generateWar(){
         //directory structure
-        Path pomDir = destDir.resolve("META-INF/maven/${groupId}/${processName}")
+        Path pomDir = destDir.resolve("META-INF/maven").resolve(groupId).resolve(processName)
         Path classesDir = destDir.resolve("WEB-INF/classes")
-        Path srcDestDir = destDir.resolve("../src").normalize()
+        Path srcDestDir = destDir.resolve("../src").normalize().toAbsolutePath()
 
         //setup infrastructure
         FileTasks.mkdirs(pomDir)
@@ -56,7 +56,7 @@ class CamundaResourcesGenerator {
 
         // generate and compile sources
         generateServletProcessApplication(srcDestDir)
-        ant.javac(srcdir: "${srcDestDir}", destdir: classesDir, includeantruntime: false) {
+        ant.javac(srcdir: srcDestDir, destdir: classesDir, includeantruntime: false) {
             classpath{
                 pathelement(location: Configuration.getDownloadsDir().resolve("camunda-engine-7.0.0-Final.jar"))
                 pathelement(location: Configuration.getDownloadsDir().resolve("javaee-api-7.0.jar"))
@@ -151,7 +151,11 @@ public class ProcessTestApplication extends ServletProcessApplication{
 }
 
 """
-        FileTasks.createFile(srcDestDir.resolve(groupId.replaceAll('.', '/')).resolve("ProcessTestApplication.java"), fileString);
+        FileTasks.createFile(srcDestDir.resolve(getGroupIdAsPathValues()).resolve("ProcessTestApplication.java"), fileString);
+    }
+
+    private String getGroupIdAsPathValues() {
+        groupId.replaceAll('\\.', '/')
     }
 }
 
