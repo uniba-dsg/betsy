@@ -52,23 +52,14 @@ class JbpmTester {
                 //look for error end event special case
                 WaitTasks.sleep(200)
                 if(instance.getState() == ProcessInstance.STATE_ABORTED){
-                    try{
-                        BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
-                        bw.append("thrownErrorEvent");
-                        bw.newLine()
-                        bw.close();
-                    }catch(IOException ignored){}
-                }
+                    writeToLog("thrownErrorEvent");
+                 }
                 //delay for timer intermediate event
                 if(testCase.delay != 0){
                     WaitTasks.sleep(testCase.delay)
                 }
             }catch (RuntimeException ignored){
-                try{
-                    BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir}/log" + testCase.number + ".txt", true));
-                    bw.append("runtimeException");
-                    bw.close();
-                }catch(IOException ioe){}
+                writeToLog("runtimeException");
             }
         }else{
             //delay for self starting
@@ -109,5 +100,18 @@ class JbpmTester {
                 }
             }
         }
+    }
+
+    private void writeToLog(String s) {
+        try{
+            BufferedWriter bw = new BufferedWriter(new FileWriter(getFileName(), true));
+            bw.append(s);
+            bw.newLine()
+            bw.close();
+        }catch(IOException ignored){}
+    }
+
+    private String getFileName() {
+        "${logDir}/log" + testCase.number + ".txt"
     }
 }

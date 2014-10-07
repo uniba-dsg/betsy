@@ -48,12 +48,7 @@ class CamundaTester {
             }
         }
         if (unsupportedMessage != null) {
-            try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt"));
-                bw.writeLine(unsupportedMessage);
-                bw.close();
-            } catch (IOException ignore) {
-            }
+            writeToLog(unsupportedMessage);
         } else {
             //first request to get id
             JSONObject response = JsonHelper.get(restURL + "/process-definition?key=${key}")
@@ -110,23 +105,13 @@ class CamundaTester {
                         }
                         //special case for error end event
                         if (line.contains("EndEvent_2 throws error event with errorCode 'ERR-1'")) {
-                            try {
-                                BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
-                                bw.append("thrownErrorEvent");
-                                bw.close();
-                            } catch (IOException ignored) {
-                            }
+                            writeToLog("thrownErrorEvent")
                         }
                     }
                 }
             }
             if (runtimeExceptionFound) {
-                try {
-                    BufferedWriter bw = new BufferedWriter(new FileWriter("${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt", true));
-                    bw.append("runtimeException");
-                    bw.close();
-                } catch (IOException ignore) {
-                }
+                writeToLog("runtimeException");
             }
         }
 
@@ -144,6 +129,20 @@ class CamundaTester {
             }
         }
 
+    }
+
+    private void writeToLog(String s) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(getFileName(), true));
+            bw.append(s);
+            bw.newLine()
+            bw.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    private String getFileName() {
+        "${logDir.resolve("..").normalize()}/bin/log" + testCase.number + ".txt"
     }
 
 
