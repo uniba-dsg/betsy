@@ -26,11 +26,7 @@
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[try{
-java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
-f.createNewFile();
-}catch(java.io.IOException e){}
-boolean x = true;]]></bpmn2:script>
+      <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="InclusiveGateway_1"/>
     <bpmn2:startEvent id="StartEvent_1" name="Start">
