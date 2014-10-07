@@ -1,10 +1,11 @@
 package betsy.bpmn.engines.jbpm
 
-import betsy.bpmn.model.BPMNProcess
-import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestBuilder
+import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.reporting.BPMNTestcaseMerger
+import betsy.common.config.Configuration
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.URLTasks
@@ -14,6 +15,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 class JbpmEngine extends BPMNEngine {
+
     @Override
     String getName() {
         "jbpm"
@@ -41,6 +43,10 @@ class JbpmEngine extends BPMNEngine {
             homeDir = System.getProperty("user.home")
         }
         return homeDir
+    }
+
+    Path getAntPath() {
+        Configuration.getAntHome().resolve("bin");
     }
 
     @Override
@@ -108,8 +114,8 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q start.demo.noeclipse"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q start.demo.noeclipse"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"))
 
         WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getJbpmnUrl());
 
@@ -119,13 +125,13 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q stop.demo"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q stop.demo"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q stop.demo"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q stop.demo"))
         //waiting for shutdown
         WaitTasks.sleep(5000)
         // clean up data (with db and config files in the users home directory)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q clean.demo"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "ant -q clean.demo"))
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q clean.demo"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q clean.demo"))
     }
 
     @Override
