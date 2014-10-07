@@ -34,10 +34,7 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     void deploy(BPMNProcess process) {
-        new CamundaDeployer(processName: process.name,
-                packageFilePath: process.targetPath.resolve("war").resolve("${process.name}.war"),
-                deploymentDirPath: tomcatDir.resolve("webapps")
-        ).deploy()
+        FileTasks.copyFileIntoFolder(process.targetPath.resolve("war").resolve("${process.name}.war"), tomcatDir.resolve("webapps"))
 
         //wait until it is deployed
         WaitTasks.sleep(15000)
