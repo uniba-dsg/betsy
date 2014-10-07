@@ -58,7 +58,7 @@ class Tomcat {
     /**
      * Throw exception if the tomcat is still running.
      */
-    void checkIfIsRunning() {
+    boolean checkIfIsRunning() {
         URLTasks.isUrlAvailable(getTomcatUrl());
     }
 

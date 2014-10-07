@@ -76,12 +76,7 @@ class OdeEngine extends LocalEngine {
 
     @Override
     boolean isRunning() {
-        try {
-            tomcat.checkIfIsRunning()
-            return false;
-        } catch (Exception ignore) {
-            return true;
-        }
+        tomcat.checkIfIsRunning()
     }
 
 }
