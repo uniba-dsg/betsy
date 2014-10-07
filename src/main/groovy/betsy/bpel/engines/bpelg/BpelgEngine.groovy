@@ -4,6 +4,7 @@ import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.common.engines.Util
 import betsy.bpel.engines.tomcat.Tomcat
+import betsy.common.model.steps.WsdlOperation
 import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
@@ -80,7 +81,7 @@ class BpelgEngine extends LocalEngine {
                 style: xsltPath.resolve("bpelg_bpel_to_deploy_xml.xsl"))
 
         // remove unimplemented methods
-        Util.computeMatchingPattern(process).each { pattern ->
+        computeMatchingPattern(process).each { pattern ->
             ant.copy(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
                     tofile: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"))
             ant.xslt(in: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"),
@@ -101,6 +102,26 @@ class BpelgEngine extends LocalEngine {
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
+    }
+
+    public static String[] computeMatchingPattern(BetsyProcess process) {
+        // This method works based on the knowledge that we have no more than two operations available anyway
+        String text = process.bpelFilePath.toFile().getText()
+        String canonicalText = Util.canonicalizeXML(text)
+
+        def operations = [WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC]
+        def implementedOperations = []
+
+        canonicalText.eachLine { line ->
+            operations.each { operation ->
+                if (line.contains("operation=\"${operation.name}\"") && !line.contains("invoke")) {
+                    implementedOperations << operation;
+                }
+            }
+        }
+
+        def unimplementedOperations = operations - implementedOperations
+        unimplementedOperations.collect{it.name}
     }
 
 }
