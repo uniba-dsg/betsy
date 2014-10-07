@@ -16,13 +16,17 @@ class JbpmInstaller {
 
     String fileName = "jbpm-installer.zip"
 
+    Path antPath = Configuration.getAntHome().resolve("bin");
+
     public void install() {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
+
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant -q install.demo.noeclipse"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "ant -q install.demo.noeclipse"))
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "${antPath.toAbsolutePath()}/ant -q install.demo.noeclipse"))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, "${antPath.toAbsolutePath()}/ant -q install.demo.noeclipse"))
     }
 
     @Override
