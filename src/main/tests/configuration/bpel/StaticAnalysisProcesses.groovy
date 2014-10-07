@@ -9,7 +9,7 @@ import java.nio.file.Paths
 class StaticAnalysisProcesses {
 
     public static List<BetsyProcess> getStaticAnalysisProcesses() {
-        String path = "src/main/tests/sa-rules"
+        String path = "src/main/tests/files/bpel/sa-rules"
 
         if (!new File(path).exists()) {
             return []

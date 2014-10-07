@@ -68,7 +68,7 @@ class BPMNProcess implements Cloneable, Comparable {
     }
 
     Path getResourcePath(){
-        Paths.get("src/main/tests/files/bpmnRes").resolve("files").resolve(group).resolve(name)
+        Paths.get("src/main/tests/files/bpmn").resolve(group).resolve(name)
     }
 
     /**

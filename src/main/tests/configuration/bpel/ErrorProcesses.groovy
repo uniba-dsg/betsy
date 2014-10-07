@@ -51,7 +51,7 @@ class ErrorProcesses {
 
     public static List<BetsyProcess> getProcesses() {
 
-        Path errorsDir = Paths.get("src/main/tests/files/errors")
+        Path errorsDir = Paths.get("src/main/tests/files/bpel/errors")
         FileTasks.deleteDirectory(errorsDir)
         FileTasks.mkdirs(errorsDir)
 

@@ -31,5 +31,5 @@ vm_extraction/
 /jbpmdependencies
 
 # ignore this directory which is created on demand
-src/main/tests/files/errors/
+src/main/tests/files/bpel/errors/
 ovas
