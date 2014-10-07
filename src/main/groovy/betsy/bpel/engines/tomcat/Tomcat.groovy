@@ -1,7 +1,7 @@
 package betsy.bpel.engines.tomcat
 
-import ant.tasks.AntUtil
 import betsy.common.tasks.ConsoleTasks
+import betsy.common.tasks.FileTasks
 import betsy.common.tasks.URLTasks
 import betsy.common.tasks.WaitTasks
 
@@ -30,6 +30,18 @@ class Tomcat {
 
     Path getTomcatLogsDir() {
         tomcatDir.resolve("logs")
+    }
+
+    Path getTomcatBinDir() {
+        tomcatDir.resolve("bin")
+    }
+
+    Path getTomcatWebappsDir() {
+        tomcatDir.resolve("bin")
+    }
+
+    public void deployWar(Path war) {
+        FileTasks.copyFileIntoFolder(war, getTomcatWebappsDir())
     }
 
     String getTomcatUrl() {

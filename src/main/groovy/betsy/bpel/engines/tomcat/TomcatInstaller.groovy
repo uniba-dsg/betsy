@@ -28,30 +28,22 @@ class TomcatInstaller {
         ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: destinationDir
 
         FileTasks.createFile(destinationDir.resolve("tomcat_startup.bat"), """SET CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}
-cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat""")
-        FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call shutdown.bat")
+cd ${getTomcat().getTomcatBinDir().toAbsolutePath()} && call startup.bat""")
+        FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.bat"), "cd ${getTomcat().getTomcatBinDir().toAbsolutePath()} && call shutdown.bat")
 
         FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), """CATALINA_OPTS=\"-Xmx3048M -XX:MaxPermSize=2048m ${additionalVmParam}\"
-cd ${tomcatBinFolder.toAbsolutePath()} && ./startup.sh""")
-        FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd ${tomcatBinFolder.toAbsolutePath()} && ./shutdown.sh")
+cd ${getTomcat().getTomcatBinDir().toAbsolutePath()} && ./startup.sh""")
+        FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd ${getTomcat().getTomcatBinDir().toAbsolutePath()} && ./shutdown.sh")
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", destinationDir.toAbsolutePath().toString()))
     }
 
-    public Path getTomcatDestinationDir() {
-        destinationDir.resolve(tomcatName)
-    }
+    public Tomcat getTomcat() {
+        Tomcat tomcat = new Tomcat()
+        tomcat.setEngineDir(destinationDir)
+        tomcat.setTomcatName(tomcatName)
 
-    public Path getTomcatWebappsFolder() {
-        getTomcatDestinationDir().resolve("webapps")
-    }
-
-    public void deployWar(Path war) {
-        FileTasks.copyFileIntoFolder(war, getTomcatWebappsFolder())
-    }
-
-    public Path getTomcatBinFolder() {
-        tomcatDestinationDir.resolve("bin")
+        tomcat
     }
 
 }
