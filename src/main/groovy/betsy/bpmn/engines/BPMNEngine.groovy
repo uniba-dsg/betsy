@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.bpmn.model.BPMNProcess
 import betsy.common.engines.EngineAPI
 import betsy.common.engines.LocalEngineAPI
+import betsy.common.util.ClasspathHelper
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -21,7 +22,7 @@ abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI{
      * @return the path <code>src/main/xslt/$engine</code>
      */
     Path getXsltPath() {
-        Paths.get(BPMNEngine.class.getResource("/" + name).toURI())
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/" + getName());
     }
 
     /**

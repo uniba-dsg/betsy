@@ -3,11 +3,10 @@ package betsy.bpel.engines;
 import ant.tasks.AntUtil;
 import betsy.bpel.model.BetsyProcess;
 import betsy.common.engines.EngineAPI;
+import betsy.common.util.ClasspathHelper;
 import groovy.util.AntBuilder;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +23,7 @@ public abstract class Engine implements EngineAPI<BetsyProcess> {
      * @return the path <code>src/main/xslt/$engine</code>
      */
     public Path getXsltPath() {
-        try {
-            return Paths.get(Engine.class.getResource("/" + getName()).toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("path not found", e);
-        }
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/" + getName());
     }
 
     /**
