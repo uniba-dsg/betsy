@@ -15,9 +15,6 @@ public class FileTasks {
     private static final Logger log = Logger.getLogger(FileTasks.class);
 
     public static void createFile(Path file, String content) {
-        // ensure existence of parent directory
-        mkdirs(file.getParent());
-
         String[] lines = content.split("\n");
 
         String showOutput = "" + lines.length + " lines";
@@ -25,7 +22,7 @@ public class FileTasks {
             showOutput = content.replace("\n", "@LINE_BREAK@");
         }
 
-        String message = "Creating file " + file + " with " + showOutput;
+        String message = "Creating file " + file.toAbsolutePath() + " with " + showOutput;
         log.info(message);
         try {
             Files.write(file, Arrays.asList(lines), StandardCharsets.UTF_8);
@@ -35,7 +32,7 @@ public class FileTasks {
     }
 
     public static void deleteDirectory(Path directory) {
-        log.info("Deleting directory " + directory);
+        log.info("Deleting directory " + directory.toAbsolutePath());
         if (Files.isDirectory(directory)) {
             try {
                 FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
@@ -55,22 +52,20 @@ public class FileTasks {
 
     public static void mkdirs(Path dir) {
         try {
-            log.info("Creating directory " + dir);
+            log.info("Creating directory " + dir.toAbsolutePath());
             if (Files.isDirectory(dir)) {
                 log.info("Directory already there - skipping creation");
             } else {
                 Files.createDirectories(dir);
             }
         } catch (IOException e) {
-            throw new IllegalStateException("could not create directory " + dir, e);
+            throw new IllegalStateException("could not create directory " + dir.toAbsolutePath(), e);
         }
     }
 
     public static void assertDirectory(Path dir) {
-        log.info("Assert that directory " + dir + " is present.");
         if (!Files.isDirectory(dir)) {
-            log.info("Directory " + dir + " is not present but should be.");
-            throw new IllegalArgumentException("the path " + dir + " is no directory");
+            throw new IllegalArgumentException("the path " + dir.toAbsolutePath() + " is no directory");
         }
     }
 
@@ -78,7 +73,7 @@ public class FileTasks {
         assertFile(p);
 
         if (!Files.isExecutable(p)) {
-            throw new IllegalArgumentException("the file " + p + " is not executable but should be executed");
+            throw new IllegalArgumentException("the file " + p.toAbsolutePath() + " is not executable but should be executed");
         }
     }
 
@@ -88,22 +83,26 @@ public class FileTasks {
         }
     }
 
-    public static void deleteLine(Path path, int lineNumber) throws IOException {
-        log.info("Deleting line #" + lineNumber + " from file " + path);
+    public static void deleteLine(Path path, int lineNumber) {
+        log.info("Deleting line #" + lineNumber + " from file " + path.toAbsolutePath());
 
-        // line numbers start with 1, not with 0!
-        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-        log.info("File has " + lines.size() + " lines -> removing #" + lineNumber + " with content " + lines.get(lineNumber - 1));
+        try {
+            // line numbers start with 1, not with 0!
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            log.info("File has " + lines.size() + " lines -> removing #" + lineNumber + " with content " + lines.get(lineNumber - 1));
 
-        lines.remove(lineNumber - 1);
+            lines.remove(lineNumber - 1);
 
-        Files.write(path, lines, StandardCharsets.UTF_8);
+            Files.write(path, lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not delete line #" + lineNumber + " in file " + path, e);
+        }
     }
 
     public static void deleteFile(Path file) {
-        log.info("Deleting file " + file);
+        log.info("Deleting file " + file.toAbsolutePath());
 
-        if(!Files.isRegularFile(file)) {
+        if (!Files.isRegularFile(file)) {
             log.info("File does not exist - must not be deleted");
             return;
         }
@@ -112,6 +111,60 @@ public class FileTasks {
             Files.delete(file);
         } catch (IOException e) {
             throw new IllegalStateException("Could not delete file " + file, e);
+        }
+    }
+
+    public static void copyFileIntoFolder(Path file, Path targetFolder) {
+        assertFile(file);
+        assertDirectory(targetFolder);
+
+        try {
+            log.info("Copying file " + file.toAbsolutePath() + " into folder " + targetFolder.toAbsolutePath());
+            Files.copy(file, targetFolder.resolve(file.getFileName()));
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder);
+        }
+    }
+
+    public static boolean hasFile(Path file) {
+        log.info("Checking for the existence of file " + file.toAbsolutePath());
+        return Files.isRegularFile(file);
+    }
+
+    public static boolean hasFolder(Path folder) {
+        log.info("Checking for the existence of folder " + folder.toAbsolutePath());
+        return Files.isDirectory(folder);
+    }
+
+    public static boolean hasNoFile(Path file) {
+        log.info("Checking for the absence of file " + file);
+        return !Files.isRegularFile(file);
+    }
+
+    public static boolean hasFileSpecificSubstring(Path path, String substring) {
+        log.info("Searching for substring " + substring + " in file " + path.toAbsolutePath());
+        try {
+            assertFile(path);
+            List<String> lines = Files.readAllLines(path);
+
+            for (String line : lines) {
+                if (line.contains(substring)) {
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            log.info("Could not read file " + path, e);
+        }
+        return false;
+    }
+
+    public static void move(Path from, Path to) {
+        log.info("Moving file " + from + " to " + to);
+        try {
+            Files.move(from, to);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not move file " + from + " to " + to);
         }
     }
 
