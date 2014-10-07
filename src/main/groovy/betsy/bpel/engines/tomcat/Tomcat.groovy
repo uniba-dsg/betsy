@@ -37,7 +37,7 @@ class Tomcat {
     }
 
     Path getTomcatWebappsDir() {
-        tomcatDir.resolve("bin")
+        tomcatDir.resolve("webapps")
     }
 
     public void deployWar(Path war) {

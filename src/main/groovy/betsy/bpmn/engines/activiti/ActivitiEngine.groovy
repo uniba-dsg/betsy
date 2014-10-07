@@ -2,22 +2,27 @@ package betsy.bpmn.engines.activiti
 
 import betsy.bpel.engines.tomcat.Tomcat
 import betsy.bpel.engines.tomcat.TomcatInstaller;
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.engines.camunda.CamundaResourcesGenerator
+import betsy.bpmn.engines.camunda.CamundaTester;
 import betsy.bpmn.model.BPMNProcess
+import betsy.bpmn.model.BPMNTestBuilder
+import betsy.bpmn.model.BPMNTestCase
+import betsy.bpmn.reporting.BPMNTestcaseMerger
 import betsy.common.config.Configuration
+import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
-import betsy.common.tasks.ZipTasks;
+import betsy.common.tasks.WaitTasks
+import betsy.common.tasks.ZipTasks
+import betsy.common.util.ClasspathHelper
+
+import java.nio.file.Path;
 
 public class ActivitiEngine extends BPMNEngine {
 
     @Override
-    public void buildTest(BPMNProcess process) {
-
-    }
-
-    @Override
-    public void testProcess(BPMNProcess process) {
-
+    void testProcess(BPMNProcess process){
+        
     }
 
     @Override
@@ -31,13 +36,18 @@ public class ActivitiEngine extends BPMNEngine {
     }
 
     @Override
-    public void buildArchives(BPMNProcess process) {
+    void buildArchives(BPMNProcess process) {
 
     }
 
     @Override
-    public String getEndpointUrl(BPMNProcess process) {
-        return null;
+    void buildTest(BPMNProcess process){
+
+    }
+
+    @Override
+    String getEndpointUrl(BPMNProcess process) {
+        "http://kermit:kermit@localhost:8080/activiti-rest/service/repository/"
     }
 
     @Override
@@ -58,7 +68,7 @@ public class ActivitiEngine extends BPMNEngine {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
 
         // deploy
-        tomcatInstaller.deployWar(getServerPath().resolve("activiti-5.16.3").resolve("wars").resolve("activiti-rest.war"))
+        getTomcat().deployWar(getServerPath().resolve("activiti-5.16.3").resolve("wars").resolve("activiti-rest.war"))
     }
 
     Tomcat getTomcat() {
