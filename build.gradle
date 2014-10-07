@@ -50,10 +50,6 @@ dependencies {
     internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-api-6.0.1.Final.jar']))
     internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-internal-6.0.1.Final.jar']))
     internal files(fileTree(dir: "jbpmdependencies", includes: ['jbpm-shared-services-6.0.1.Final.jar']))
-    //internal 'org.kie:kie-api:6.0.1.Final'
-    //internal 'org.kie:kie-internal:6.0.1.Final'
-    //internal 'org.kie.remote:kie-services-client:6.0.1.Final'
-    //internal 'org.jbpm:jbpm-shared-services:6.0.1.Final'
 
     internal 'javax:javaee-api:7.0'
     internal 'org.drools:drools-core:6.0.1.Final'
