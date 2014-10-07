@@ -1,6 +1,7 @@
 package betsy.bpmn.repositories
 
 import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.engines.camunda.Camunda710Engine
 import betsy.bpmn.engines.camunda.CamundaEngine
 import betsy.bpmn.engines.jbpm.JbpmEngine
 import betsy.common.repositories.Repository
@@ -8,6 +9,7 @@ import betsy.common.repositories.Repository
 class BPMNEngineRepository {
 
     private static final CamundaEngine CAMUNDA = new CamundaEngine()
+    private static final CamundaEngine CAMUNDA_7_1_0 = new Camunda710Engine()
     private static final JbpmEngine JBPM = new JbpmEngine()
 
     private Repository<BPMNEngine> repo = new Repository<>()
@@ -15,6 +17,7 @@ class BPMNEngineRepository {
     public BPMNEngineRepository(){
         List<BPMNEngine> all = [
                 CAMUNDA,
+                CAMUNDA_7_1_0,
                 JBPM
         ]
         repo.put("ALL", all)

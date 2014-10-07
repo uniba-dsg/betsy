@@ -84,7 +84,7 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     void install() {
-        new CamundaInstaller(destinationDir: serverPath).install()
+        new CamundaInstaller(destinationDir: serverPath, tomcatName: getTomcatName()).install()
     }
 
     @Override

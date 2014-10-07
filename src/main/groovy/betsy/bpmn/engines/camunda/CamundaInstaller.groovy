@@ -15,7 +15,7 @@ class CamundaInstaller {
 
     String fileName = "camunda-bpm-tomcat-7.0.0-Final.zip"
     String groovyFile = "groovy-all-2.2.0.jar"
-    String tomcatName = "apache-tomcat-7.0.33"
+    String tomcatName
 
     public void install() {
         FileTasks.deleteDirectory(destinationDir)
