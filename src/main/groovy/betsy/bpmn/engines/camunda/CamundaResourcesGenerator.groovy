@@ -3,6 +3,7 @@ package betsy.bpmn.engines.camunda
 import ant.tasks.AntUtil
 import betsy.common.config.Configuration
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.NetworkTasks
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path
@@ -56,20 +57,15 @@ class CamundaResourcesGenerator {
             rl.addURL(new URL("file:///${javaHome}/lib/tools.jar"))
         }
 
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: "https://lspi.wiai.uni-bamberg.de/svn/betsy/javaee-api-7.0.jar"
-        }
-
-        ant.get(dest: Configuration.get("downloads.dir"), skipexisting: true) {
-            ant.url url: "https://lspi.wiai.uni-bamberg.de/svn/betsy/camunda-engine-7.0.0-Final.jar"
-        }
+        NetworkTasks.downloadFileFromBetsyRepo("javaee-api-7.0.jar");
+        NetworkTasks.downloadFileFromBetsyRepo("camunda-engine-7.0.0-Final.jar");
 
         // generate and compile sources
         generateServletProcessApplication(srcDestDir)
         ant.javac(srcdir: "${srcDestDir}", destdir: classesDir, includeantruntime: false) {
             classpath{
-                pathelement(location: "${Configuration.get("downloads.dir")}/camunda-engine-7.0.0-Final.jar")
-                pathelement(location: "${Configuration.get("downloads.dir")}/javaee-api-7.0.jar")
+                pathelement(location: Configuration.getDownloadsDir().resolve("camunda-engine-7.0.0-Final.jar"))
+                pathelement(location: Configuration.getDownloadsDir().resolve("javaee-api-7.0.jar"))
             }
         }
         //pack war

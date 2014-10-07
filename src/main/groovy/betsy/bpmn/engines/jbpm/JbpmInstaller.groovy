@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.common.config.Configuration
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.NetworkTasks
 
 import java.nio.file.Path
 
@@ -13,15 +14,12 @@ class JbpmInstaller {
     Path destinationDir
 
     String fileName = "jbpm-installer.zip"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/${fileName}"
 
     public void install() {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        ant.get(dest: Configuration.getDownloadsDir(), skipexisting: true) {
-            ant.url url: downloadUrl
-        }
+        NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
         ant.unzip src: Configuration.getDownloadsDir().resolve(fileName), dest: destinationDir
 
@@ -34,7 +32,6 @@ class JbpmInstaller {
         return "JBPMInstaller{" +
                 "destinationDir='" + destinationDir + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", downloadUrl='" + downloadUrl + '\'' +
                 '}';
     }
 }
