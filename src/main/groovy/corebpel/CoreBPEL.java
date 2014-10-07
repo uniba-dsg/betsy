@@ -1,7 +1,6 @@
 package corebpel;
 
 import betsy.common.tasks.FileTasks;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
@@ -64,7 +63,7 @@ public class CoreBPEL {
     }
 
     public String getBpelFileName() {
-        return DefaultGroovyMethods.last(bpelFilePath).toString();
+        return bpelFilePath.getFileName().toString();
     }
 
     public Path getTemporaryBpelFilePath(final String suffix) {
