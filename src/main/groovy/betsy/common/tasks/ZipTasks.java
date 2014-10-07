@@ -17,7 +17,10 @@ public class ZipTasks {
         Zip.WhenEmpty whenEmpty = new Zip.WhenEmpty();
         whenEmpty.setValue("create");
         zip.setWhenempty(whenEmpty);
+
         zip.setProject(new AntBuilder().getAntProject());
+        zip.setTaskName("zip");
+
         zip.execute();
     }
 
@@ -27,7 +30,10 @@ public class ZipTasks {
         Expand expand = new Expand();
         expand.setDest(tempExtractedFolder.toFile());
         expand.setSrc(tempZipFile.toFile());
+
         expand.setProject(new AntBuilder().getAntProject());
+        expand.setTaskName("unzip");
+
         expand.execute();
     }
 
