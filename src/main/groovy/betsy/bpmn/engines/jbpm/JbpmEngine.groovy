@@ -19,7 +19,7 @@ class JbpmEngine extends BPMNEngine {
     }
 
     String getJbpmnUrl() {
-        "http://localhost:8080"
+        "http://localhost:8080/jbpm-console"
     }
 
     String getSystemURL() {
@@ -124,10 +124,9 @@ class JbpmEngine extends BPMNEngine {
                 ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"),
                 ["JAVA_HOME": pathToJava7.toString()])
 
-        WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getJbpmnUrl());
-
         //waiting for jbpm-console for deployment and instantiating
-        WaitTasks.sleep(120000)
+        WaitTasks.sleep(60000)
+        WaitTasks.waitForAvailabilityOfUrl(60_000, 1000, getJbpmnUrl());
     }
 
     @Override
