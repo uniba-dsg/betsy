@@ -44,6 +44,7 @@ class CamundaTester {
                 }
             }
         }
+
         if (unsupportedMessage != null) {
             BPMNTester.appendToFile(getFileName(), unsupportedMessage);
         } else {

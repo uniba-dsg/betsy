@@ -76,6 +76,8 @@ class CamundaEngine extends BPMNEngine {
     @Override
     void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
+
+        // TODO only copy log files from tomcat, the other files are files for the test
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcatDir.resolve("logs"))
             for(BPMNTestCase tc: process.testCases){

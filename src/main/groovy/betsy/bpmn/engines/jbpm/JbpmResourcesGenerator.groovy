@@ -51,6 +51,6 @@ class JbpmResourcesGenerator {
   </repositories>
 </project>
 """
-        ant.echo(message: pomString, file: destDir.resolve("pom.xml"))
+        FileTasks.createFile(destDir.resolve("pom.xml"), pomString);
     }
 }

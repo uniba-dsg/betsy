@@ -6,10 +6,7 @@ import betsy.bpmn.model.BPMNTestBuilder
 import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.reporting.BPMNTestcaseMerger
 import betsy.common.config.Configuration
-import betsy.common.tasks.ConsoleTasks
-import betsy.common.tasks.FileTasks
-import betsy.common.tasks.URLTasks
-import betsy.common.tasks.WaitTasks
+import betsy.common.tasks.*
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -21,25 +18,25 @@ class JbpmEngine extends BPMNEngine {
         "jbpm"
     }
 
-    String getJbpmnUrl(){
+    String getJbpmnUrl() {
         "http://localhost:8080"
     }
 
-    String getSystemURL(){
+    String getSystemURL() {
         "ssh://admin@localhost:8001/system"
     }
 
-    String getJbossName(){
+    String getJbossName() {
         "jboss-as-7.1.1.Final"
     }
 
-    Path getJbossStandaloneDir(){
+    Path getJbossStandaloneDir() {
         serverPath.resolve(jbossName).resolve("standalone")
     }
 
-    String getHomeDir(){
+    String getHomeDir() {
         String homeDir = System.getenv("HOME")
-        if(homeDir == null){
+        if (homeDir == null) {
             homeDir = System.getProperty("user.home")
         }
         return homeDir
@@ -75,13 +72,15 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void buildArchives(BPMNProcess process) {
-        ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn"),
-                out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2-temp"),
-                style: xsltPath.resolve("../scriptTask.xsl"))
-        ant.xslt(in: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2-temp"),
-                out: process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2"),
-                style: xsltPath.resolve("jbpm.xsl"))
-        ant.delete(file: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn2-temp"))
+
+        XSLTTasks.transform(xsltPath.resolve("../scriptTask.xsl"),
+                process.resourcePath.resolve("${process.name}.bpmn"),
+                process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2-temp"))
+        XSLTTasks.transform(xsltPath.resolve("jbpm.xsl"),
+                process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2-temp"),
+                process.targetPath.resolve("project/src/main/resources/${process.name}.bpmn2"))
+        FileTasks.deleteFile(process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn2-temp"))
+
         new JbpmResourcesGenerator(
                 jbpmSrcDir: Paths.get("src/main/tests/files/bpmnRes/jbpm"),
                 destDir: process.targetPath.resolve("project"),
@@ -99,9 +98,11 @@ class JbpmEngine extends BPMNEngine {
     @Override
     void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
+
+        // TODO only copy log files from tomcat, the other files are files for the test
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: jbossStandaloneDir.resolve("log"))
-            for(BPMNTestCase tc: process.testCases){
+            for (BPMNTestCase tc : process.testCases) {
                 ant.fileset(file: serverPath.resolve("log${tc.number}.txt"))
             }
         }
@@ -139,8 +140,8 @@ class JbpmEngine extends BPMNEngine {
         URLTasks.isUrlAvailable(getJbpmnUrl());
     }
 
-    void testProcess(BPMNProcess process){
-        for (BPMNTestCase testCase : process.testCases){
+    void testProcess(BPMNProcess process) {
+        for (BPMNTestCase testCase : process.testCases) {
             new JbpmTester(testCase: testCase,
                     name: process.name,
                     deploymentId: "${process.groupId}:${process.name}:${process.version}",
@@ -154,7 +155,7 @@ class JbpmEngine extends BPMNEngine {
         new BPMNTestcaseMerger(reportPath: process.targetReportsPath).mergeTestCases()
     }
 
-    void buildTest(BPMNProcess process){
+    void buildTest(BPMNProcess process) {
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 logDir: serverPath,
                 process: process
