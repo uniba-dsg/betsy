@@ -45,7 +45,7 @@ class CamundaTester {
             }
         }
         if (unsupportedMessage != null) {
-            BPMNTester.writeToLog(getFileName(), unsupportedMessage);
+            BPMNTester.appendToFile(getFileName(), unsupportedMessage);
         } else {
             //first request to get id
             JSONObject response = JsonHelper.get(restURL + "/process-definition?key=${key}")
@@ -85,13 +85,13 @@ class CamundaTester {
                         }
                         //special case for error end event
                         if (line.contains("EndEvent_2 throws error event with errorCode 'ERR-1'")) {
-                            writeToLog("thrownErrorEvent")
+                            BPMNTester.appendToFile(getFileName(),"thrownErrorEvent")
                         }
                     }
                 }
             }
             if (runtimeExceptionFound) {
-                BPMNTester.writeToLog(getFileName(), "runtimeException");
+                BPMNTester.appendToFile(getFileName(), "runtimeException");
             }
         }
 

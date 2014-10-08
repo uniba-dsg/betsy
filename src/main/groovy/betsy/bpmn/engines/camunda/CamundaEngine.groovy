@@ -9,6 +9,7 @@ import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.URLTasks
 import betsy.common.tasks.WaitTasks
+import betsy.common.tasks.XSLTTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths;
@@ -42,13 +43,16 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     void buildArchives(BPMNProcess process) {
-        ant.xslt(in: process.resourcePath.resolve("${process.name}.bpmn"),
-                out: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"),
-                style: xsltPath.resolve("../scriptTask.xsl"))
-        ant.xslt(in: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"),
-                out: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn"),
-                style: xsltPath.resolve("camunda.xsl"))
-        ant.delete(file: process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"))
+        XSLTTasks.transform(xsltPath.resolve("../scriptTask.xsl"),
+                process.resourcePath.resolve("${process.name}.bpmn"),
+                process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"))
+
+        XSLTTasks.transform(xsltPath.resolve("camunda.xsl"),
+                process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"),
+                process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn"))
+
+        FileTasks.deleteFile(process.targetPath.resolve("war/WEB-INF/classes/${process.name}.bpmn-temp"))
+
         new CamundaResourcesGenerator(groupId: process.groupId,
                 processName: process.name,
                 srcDir: process.resourcePath,

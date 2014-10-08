@@ -12,6 +12,7 @@ class BPMNProcess implements Cloneable, Comparable {
     String name
     String group
 
+    // groupId and version is not required for activiti
     String groupId = "de.uniba.dsg"
     String version = "1.0"
 

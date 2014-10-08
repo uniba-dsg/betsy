@@ -49,14 +49,14 @@ class JbpmTester {
                 //look for error end event special case
                 WaitTasks.sleep(200)
                 if (instance.getState() == ProcessInstance.STATE_ABORTED) {
-                    BPMNTester.writeToLog(getFileName(), "thrownErrorEvent");
+                    BPMNTester.appendToFile(getFileName(), "thrownErrorEvent");
                 }
                 //delay for timer intermediate event
                 if (testCase.delay != 0) {
                     WaitTasks.sleep(testCase.delay)
                 }
             } catch (RuntimeException ignored) {
-                BPMNTester.writeToLog(getFileName(), "runtimeException");
+                BPMNTester.appendToFile(getFileName(), "runtimeException");
             }
         } else {
             //delay for self starting

@@ -85,6 +85,14 @@ public class FileTasks {
         }
     }
 
+    public static void assertFileExtension(Path path, String extension) {
+        assertFile(path);
+
+        if(!path.getFileName().toString().endsWith(extension)) {
+            throw new IllegalArgumentException("the file " + path + " does not have the extension " + extension);
+        }
+    }
+
     public static void deleteLine(Path path, int lineNumber) {
         log.info("Deleting line #" + lineNumber + " from file " + path.toAbsolutePath());
 
@@ -185,4 +193,6 @@ public class FileTasks {
             throw new RuntimeException("could not iterate in folder " + folder, e);
         }
     }
+
+
 }
