@@ -5,6 +5,7 @@ import betsy.bpmn.engines.BPMNTester
 import betsy.common.config.Configuration
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.util.ClasspathHelper
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path
@@ -57,62 +58,24 @@ class CamundaResourcesGenerator {
         }
     }
 
+    private String getResourcesPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/xslt/").toAbsolutePath();
+    }
+
     private void generatePom(Path pomDir){
-        String pomString = """<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>${groupId}</groupId>
-	<artifactId>${processName}</artifactId>
-	<version>${version}</version>
-	<packaging>war</packaging>
-	<name>${processName}</name>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.camunda.bpm</groupId>
-			<artifactId>camunda-engine</artifactId>
-			<version>7.0.0-Final</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<repositories>
-		<repository>
-			<id>camunda-bpm-nexus</id>
-			<name>camunda-bpm-nexus</name>
-			<url>https://app.camunda.com/nexus/content/groups/public</url>
-		</repository>
-	</repositories>
-
-</project>
-"""
-        FileTasks.createFile(pomDir.resolve("pom.xml"), pomString);
+        FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/pom.xml"), pomDir)
+        ant.replace(file: pomDir.resolve("pom.xml"))   {
+            replacefilter(token: "GROUP_ID", value: groupId)
+            replacefilter(token: "PROCESS_NAME", value: processName)
+            replacefilter(token: "_VERSION_", value: version)
+        }
     }
 
     private void generateProcessesXml(Path classesDir){
-        String processesFile = classesDir.resolve("META-INF/processes.xml")
-        ant.copy(file: "/src/main/resources/camunda/processes.xml", tofile: processesFile)
-        ant.replace(file: processesFile, token: "PROCESS_NAME", value: ${processName})
+        Path processesDir = classesDir.resolve("META-INF")
+        FileTasks.mkdirs(processesDir)
+        FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/processes.xml"), processesDir)
+        ant.replace(file: processesDir.resolve("processes.xml"), token: "PROCESS_NAME", value: processName)
     }
 
     private void generateServletProcessApplication(Path srcDestDir){
