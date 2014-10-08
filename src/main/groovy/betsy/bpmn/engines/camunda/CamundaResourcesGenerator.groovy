@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.camunda
 
 import ant.tasks.AntUtil
+import betsy.bpmn.engines.BPMNTester
 import betsy.common.config.Configuration
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
@@ -37,19 +38,7 @@ class CamundaResourcesGenerator {
         generatePom(pomDir)
         generateProcessesXml(classesDir)
 
-        //setup path to 'tools.jar' for the javac ant task
-        String javaHome = System.getProperty("java.home")
-        if(javaHome.endsWith("jre")){
-            javaHome = javaHome.substring(0, javaHome.length() - 4)
-        }
-        RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader()
-
-        URL toolsJarUrl = new URL("file:///${javaHome}/lib/tools.jar")
-        if(rl == null){
-            Thread.currentThread().getContextClassLoader().addURL(toolsJarUrl)
-        }else{
-            rl.addURL(toolsJarUrl)
-        }
+        BPMNTester.setupPathToToolsJarForJavacAntTask(this)
 
         NetworkTasks.downloadFileFromBetsyRepo("javaee-api-7.0.jar");
         NetworkTasks.downloadFileFromBetsyRepo("camunda-engine-7.0.0-Final.jar");
