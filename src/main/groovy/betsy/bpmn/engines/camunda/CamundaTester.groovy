@@ -58,20 +58,13 @@ class CamundaTester {
             requestBody.put("businessKey", "key-${key}")
 
 
-            if (testCase.selfStarting) {
-                //just wait until process starts itself
-                WaitTasks.sleep(testCase.delay);
-            } else {
+            if (!testCase.selfStarting) {
                 //second request to start process using id and Json to get the process instance id
                 JsonHelper.post(restURL + "/process-definition/${id}/start", requestBody)
-
-                WaitTasks.sleep(testCase.delay)
             }
+
+            WaitTasks.sleep(testCase.delay)
         }
-
-
-        BPMNTester.setupPathToToolsJarForJavacAntTask(this)
-        BPMNTester.compileTest(testSrc, testBin)
 
         //look up log for runtime exception if process could be started
         if (unsupportedMessage == null) {
@@ -95,6 +88,8 @@ class CamundaTester {
             }
         }
 
+        BPMNTester.setupPathToToolsJarForJavacAntTask(this)
+        BPMNTester.compileTest(testSrc, testBin)
         BPMNTester.executeTest(testSrc, testBin, reportPath)
     }
 

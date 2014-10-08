@@ -1,18 +1,13 @@
 package betsy.bpmn.engines.camunda
 
-import betsy.bpmn.model.BPMNProcess
-import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.engines.BPMNEngine
+import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestBuilder
+import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.reporting.BPMNTestcaseMerger
-import betsy.common.tasks.ConsoleTasks
-import betsy.common.tasks.FileTasks
-import betsy.common.tasks.URLTasks
-import betsy.common.tasks.WaitTasks
-import betsy.common.tasks.XSLTTasks
+import betsy.common.tasks.*
 
 import java.nio.file.Path
-import java.nio.file.Paths;
 
 class CamundaEngine extends BPMNEngine {
 
@@ -21,15 +16,15 @@ class CamundaEngine extends BPMNEngine {
         "camunda"
     }
 
-    String getCamundaUrl(){
+    String getCamundaUrl() {
         "http://localhost:8080"
     }
 
-    String getTomcatName(){
+    String getTomcatName() {
         "apache-tomcat-7.0.33"
     }
 
-    Path getTomcatDir(){
+    Path getTomcatDir() {
         serverPath.resolve("server").resolve(tomcatName)
     }
 
@@ -61,7 +56,7 @@ class CamundaEngine extends BPMNEngine {
     }
 
     @Override
-    void buildTest(BPMNProcess process){
+    void buildTest(BPMNProcess process) {
         new BPMNTestBuilder(packageString: "${name}.${process.group}",
                 logDir: tomcatDir.resolve("bin"),
                 process: process
@@ -78,11 +73,10 @@ class CamundaEngine extends BPMNEngine {
         FileTasks.mkdirs(process.targetLogsPath)
 
         // TODO only copy log files from tomcat, the other files are files for the test
-        ant.copy(todir: process.targetLogsPath) {
-            ant.fileset(dir: tomcatDir.resolve("logs"))
-            for(BPMNTestCase tc: process.testCases){
-                ant.fileset(file: tomcatDir.resolve("bin").resolve("log${tc.number}.txt"))
-            }
+        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatDir().resolve("logs"), process.getTargetLogsPath());
+
+        for (BPMNTestCase tc : process.getTestCases()) {
+            FileTasks.copyFileIntoFolder(getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
         }
     }
 
@@ -110,8 +104,8 @@ class CamundaEngine extends BPMNEngine {
     }
 
     @Override
-    void testProcess(BPMNProcess process){
-        for (BPMNTestCase testCase : process.testCases){
+    void testProcess(BPMNProcess process) {
+        for (BPMNTestCase testCase : process.testCases) {
             new CamundaTester(testCase: testCase,
                     testSrc: process.getTargetTestSrcPathWithCase(testCase.number),
                     restURL: getEndpointUrl(process),

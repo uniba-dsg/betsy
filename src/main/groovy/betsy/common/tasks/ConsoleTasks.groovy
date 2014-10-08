@@ -115,12 +115,20 @@ class ConsoleTasks {
         execute("windows", cliCommand, false, new HashMap<>())
     }
 
+    public static void executeOnWindowsAndIgnoreError(CliCommand cliCommand, environment) {
+        execute("windows", cliCommand, false, environment)
+    }
+
     public static void executeOnUnix(CliCommand cliCommand) {
         execute("unix", cliCommand, true, new HashMap<>())
     }
 
     public static void executeOnUnixAndIgnoreError(CliCommand cliCommand) {
         execute("unix", cliCommand, false, new HashMap<>())
+    }
+
+    public static void executeOnUnixAndIgnoreError(CliCommand cliCommand, environment) {
+        execute("unix", cliCommand, false, environment)
     }
 
 }

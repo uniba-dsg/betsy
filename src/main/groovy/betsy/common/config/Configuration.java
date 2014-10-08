@@ -116,4 +116,14 @@ public class Configuration {
     public static void setPartnerIpAndPort(String newPartnerAddress) {
         properties.setProperty("partner.ipAndPort", newPartnerAddress);
     }
+
+    public static Path getJava7Home() {
+        Path java7home = Paths.get(properties.getProperty("java7.home"));
+
+        if (!Files.isDirectory(java7home)) {
+            throw new ConfigurationException("Found [" + java7home + "] for key [java7.home] " + "Path to JAVA_HOME for Java 7 directory");
+        }
+
+        return java7home;
+    }
 }

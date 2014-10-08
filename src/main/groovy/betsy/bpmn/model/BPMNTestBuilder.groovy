@@ -1,13 +1,10 @@
 package betsy.bpmn.model
 
-import ant.tasks.AntUtil
+import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class BPMNTestBuilder {
-
-    private static final AntBuilder ant = AntUtil.builder()
 
     String packageString
     Path logDir
@@ -15,7 +12,7 @@ class BPMNTestBuilder {
 
     public void buildTests() {
         //Build test for each Test Case
-        for(BPMNTestCase testCase: process.testCases){
+        for (BPMNTestCase testCase : process.testCases) {
 
             Path logFile = logDir.resolve("log${testCase.number}.txt")
 
@@ -23,8 +20,8 @@ class BPMNTestBuilder {
 
             //assemble array of assertion for unitTestString
             String assertionListString = "{";
-            if(assertionList.size() > 0 ){
-                for(String assertString: assertionList){
+            if (assertionList.size() > 0) {
+                for (String assertString : assertionList) {
                     assertionListString = assertionListString + "\"" + assertString + "\","
                 }
                 assertionListString = assertionListString.substring(0, (assertionListString.length() - 1))
@@ -119,7 +116,8 @@ public class ${process.name} {
 
 }
 """
-            ant.echo(message: unitTestString, file: Paths.get("${process.targetTestSrcPath}/case${testCase.number}/${packageString.replace('.', '/')}/${process.name}.java"))
+            FileTasks.createFile(process.targetTestSrcPath.resolve("case${testCase.number}").resolve(packageString.replace('.', '/')).resolve("${process.name}.java"),
+                    unitTestString);
         }
     }
 }

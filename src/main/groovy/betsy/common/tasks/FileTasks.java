@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -191,6 +192,23 @@ public class FileTasks {
             return Files.newDirectoryStream(folder, glob).iterator().next();
         } catch (IOException e) {
             throw new RuntimeException("could not iterate in folder " + folder, e);
+        }
+    }
+
+    public static void copyFilesInFolderIntoOtherFolder(Path from, Path to) {
+        log.info("Copying files from " + from + " to folder " + to);
+
+        assertDirectory(from);
+        assertDirectory(to);
+
+        try(DirectoryStream<Path> stream = Files.newDirectoryStream(from)) {
+            for(Path path : stream) {
+                if(Files.isRegularFile(path)) {
+                    FileTasks.copyFileIntoFolder(path, to);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Could not copy files from " + from + " to " + to, e);
         }
     }
 

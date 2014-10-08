@@ -100,11 +100,10 @@ class JbpmEngine extends BPMNEngine {
         FileTasks.mkdirs(process.targetLogsPath)
 
         // TODO only copy log files from tomcat, the other files are files for the test
-        ant.copy(todir: process.targetLogsPath) {
-            ant.fileset(dir: jbossStandaloneDir.resolve("log"))
-            for (BPMNTestCase tc : process.testCases) {
-                ant.fileset(file: serverPath.resolve("log${tc.number}.txt"))
-            }
+        FileTasks.copyFilesInFolderIntoOtherFolder(jbossStandaloneDir.resolve("log"), process.getTargetLogsPath());
+
+        for (BPMNTestCase tc : process.getTestCases()) {
+            FileTasks.copyFileIntoFolder(serverPath.resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
         }
     }
 
@@ -115,8 +114,15 @@ class JbpmEngine extends BPMNEngine {
 
     @Override
     void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"))
+        Path pathToJava7 = Configuration.getJava7Home();
+        FileTasks.assertDirectory(pathToJava7)
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(
+                ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"),
+                ["JAVA_HOME": pathToJava7.toString()])
+        ConsoleTasks.executeOnUnixAndIgnoreError(
+                ConsoleTasks.CliCommand.build(serverPath, "${antPath.toAbsolutePath()}/ant -q start.demo.noeclipse"),
+                ["JAVA_HOME": pathToJava7.toString()])
 
         WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getJbpmnUrl());
 
