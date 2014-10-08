@@ -158,7 +158,10 @@ class JbpmEngine extends BPMNEngine {
                     logDir: serverPath
             ).runTest()
         }
-        new BPMNTestcaseMerger(reportPath: process.targetReportsPath).mergeTestCases()
+
+        BPMNTestcaseMerger merger = new BPMNTestcaseMerger();
+        merger.setReportPath(process.getTargetReportsPath());
+        merger.mergeTestCases();
     }
 
     void buildTest(BPMNProcess process) {
