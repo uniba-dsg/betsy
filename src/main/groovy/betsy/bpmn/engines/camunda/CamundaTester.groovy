@@ -64,9 +64,8 @@ class CamundaTester {
             } else {
                 //second request to start process using id and Json to get the process instance id
                 JsonHelper.post(restURL + "/process-definition/${id}/start", requestBody)
-                if (testCase.delay != 0) {
-                    WaitTasks.sleep(testCase.delay)
-                }
+
+                WaitTasks.sleep(testCase.delay)
             }
         }
 

@@ -51,10 +51,10 @@ class JbpmTester {
                 if (instance.getState() == ProcessInstance.STATE_ABORTED) {
                     BPMNTester.appendToFile(getFileName(), "thrownErrorEvent");
                 }
+
                 //delay for timer intermediate event
-                if (testCase.delay != 0) {
-                    WaitTasks.sleep(testCase.delay)
-                }
+                WaitTasks.sleep(testCase.delay)
+
             } catch (RuntimeException ignored) {
                 BPMNTester.appendToFile(getFileName(), "runtimeException");
             }

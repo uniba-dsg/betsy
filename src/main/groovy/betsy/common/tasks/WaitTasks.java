@@ -14,6 +14,11 @@ public class WaitTasks {
      * @param milliseconds the duration to sleep/wait
      */
     public static void sleep(final int milliseconds) {
+        if(milliseconds <= 0) {
+            log.info("Did not sleep because value is " + milliseconds + "ms");
+            return;
+        }
+
         log.info("Sleep for " + String.valueOf(milliseconds) + " ms NOW");
         long max = System.currentTimeMillis() + milliseconds;
         while (max > System.currentTimeMillis()) {
