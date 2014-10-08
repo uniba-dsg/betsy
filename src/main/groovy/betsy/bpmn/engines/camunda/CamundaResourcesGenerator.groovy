@@ -110,22 +110,9 @@ class CamundaResourcesGenerator {
     }
 
     private void generateProcessesXml(Path classesDir){
-        String processesXmlString = """<?xml version="1.0" encoding="UTF-8" ?>
-
-<process-application
-	xmlns="http://www.camunda.org/schema/1.0/ProcessApplication" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-	<process-archive name="${processName}">
-		<process-engine>default</process-engine>
-		<properties>
-			<property name="isDeleteUponUndeploy">true</property>
-			<property name="isScanForProcessDefinitions">true</property>
-		</properties>
-	</process-archive>
-
-</process-application>
-"""
-        FileTasks.createFile(classesDir.resolve("META-INF/processes.xml"), processesXmlString);
+        String processesFile = classesDir.resolve("META-INF/processes.xml")
+        ant.copy(file: "/src/main/resources/camunda/processes.xml", tofile: processesFile)
+        ant.replace(file: processesFile, token: "PROCESS_NAME", value: ${processName})
     }
 
     private void generateServletProcessApplication(Path srcDestDir){
