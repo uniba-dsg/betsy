@@ -4,6 +4,9 @@ import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.engines.tomcat.TomcatInstaller;
 import betsy.bpmn.engines.BPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
+import betsy.bpmn.model.BPMNTestBuilder;
+import betsy.bpmn.model.BPMNTestCase;
+import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
@@ -17,13 +20,24 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
 
 public class ActivitiEngine extends BPMNEngine {
     @Override
     public void testProcess(BPMNProcess process) {
+        for (BPMNTestCase testCase : process.getTestCases()) {
+            ActivitiTester tester = new ActivitiTester();
+            tester.setTestCase(testCase);
+            tester.setTestSrc(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
+            tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
+            tester.setRestURL(URL);
+            tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+            tester.setKey(process.getName());
+            tester.setLogDir(getTomcat().getTomcatLogsDir());
 
+            tester.runTest();
+        }
+        new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }
 
     @Override
@@ -91,7 +105,12 @@ public class ActivitiEngine extends BPMNEngine {
 
     @Override
     public void buildTest(BPMNProcess process) {
+        BPMNTestBuilder bpmnTestBuilder = new BPMNTestBuilder();
+        bpmnTestBuilder.setPackageString(getName() + "." + process.getGroup());
+        bpmnTestBuilder.setLogDir(getTomcat().getTomcatBinDir());
+        bpmnTestBuilder.setProcess(process);
 
+        bpmnTestBuilder.buildTests();
     }
 
     @Override
@@ -101,7 +120,14 @@ public class ActivitiEngine extends BPMNEngine {
 
     @Override
     public void storeLogs(BPMNProcess process) {
+        FileTasks.mkdirs(process.getTargetLogsPath());
 
+        // TODO only copy log files from tomcat, the other files are files for the test
+        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
+
+        for (BPMNTestCase tc : process.getTestCases()) {
+            FileTasks.copyFileIntoFolder(getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
+        }
     }
 
     @Override
@@ -123,7 +149,7 @@ public class ActivitiEngine extends BPMNEngine {
     public Tomcat getTomcat() {
         Tomcat tomcat = new Tomcat();
         tomcat.setEngineDir(getServerPath());
-        return null;
+        return tomcat;
     }
 
     @Override
