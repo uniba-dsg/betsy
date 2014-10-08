@@ -9,9 +9,12 @@ This software is licensed under the LGPL Version 3 Open Source License!
 
 ## Releases
 
-- [Release December 2013 (latest)](https://github.com/uniba-dsg/betsy/archive/icsoc-2013.zip)
-- [Release December 2012](https://github.com/uniba-dsg/betsy/archive/soca-2012.zip)
-- [Release July 2012](https://github.com/uniba-dsg/betsy/archive/techrep-july-2012.zip)
+- [Release v1.1.0 October 2014](https://github.com/uniba-dsg/betsy/archive/soca2014.zip)
+- [Release v1.0.0 February 2014](https://github.com/uniba-dsg/betsy/archive/v1.0.0.zip)
+- [Release v0.4.0 February 2014](https://github.com/uniba-dsg/betsy/archive/icst2014.zip)
+- [Release v0.3.0 December 2013](https://github.com/uniba-dsg/betsy/archive/icsoc-2013.zip)
+- [Release v0.2.0 December 2012](https://github.com/uniba-dsg/betsy/archive/soca-2012.zip)
+- [Release v0.1.0 July 2012](https://github.com/uniba-dsg/betsy/archive/techrep-july-2012.zip)
 
 ## Software Requirements
 - Windows 7
@@ -26,7 +29,7 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
 Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
 
-See `Config.groovy` for more detailed configuration options.
+See `config.properties` for more detailed configuration options.
 
 ```
 usage: betsy [options] <engines> <processes>
