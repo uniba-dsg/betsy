@@ -7,7 +7,7 @@ import java.nio.file.Path
 
 public class BPMNTester {
 
-    public static void setupPathToToolsJarForJavacAntTask(Object object) throws MalformedURLException {
+    public static void setupPathToToolsJarForJavacAntTask(Object object) {
         String javaHome = System.getProperty("java.home");
         if (javaHome.endsWith("jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);

@@ -34,8 +34,8 @@ class BPMNMain {
         List<BPMNEngine> engines = null
         List<BPMNProcess> processes = null
         try {
-            engines = new BPMNEngineParser(args: parser.arguments()).parse()
-            processes = new BPMNProcessParser(args: parser.arguments()).parse()
+            engines = new BPMNEngineParser(parser.arguments()).parse()
+            processes = new BPMNProcessParser(parser.arguments()).parse()
         } catch (IllegalArgumentException e) {
             println "----------------------"
             println "ERROR - ${e.message} - Did you misspell the name?"
