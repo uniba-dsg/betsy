@@ -3,7 +3,7 @@ package betsy.bpmn.model
 
 import org.json.JSONObject
 
-class BPMNTestCase {
+classBPMNTestCase {
 
     private int number
     private List<String> assertions = []
