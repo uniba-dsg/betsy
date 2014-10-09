@@ -64,18 +64,23 @@ class CamundaResourcesGenerator {
 
     private void generatePom(Path pomDir){
         FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/pom.xml"), pomDir)
-        ant.replace(file: pomDir.resolve("pom.xml"))   {
-            replacefilter(token: "GROUP_ID", value: groupId)
-            replacefilter(token: "PROCESS_NAME", value: processName)
-            replacefilter(token: "_VERSION_", value: version)
-        }
+        //ant.replace(file: pomDir.resolve("pom.xml"))   {
+        //    replacefilter(token: "GROUP_ID", value: groupId)
+        //    replacefilter(token: "PROCESS_NAME", value: processName)
+        //    replacefilter(token: "_VERSION_", value: version)
+        //}
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("GROUP_ID", groupId)
+        replacements.put("PROCESS_NAME", processName)
+        replacements.put("_VERSION_", version)
+        FileTasks.replaceTokensInFile(pomDir.resolve("pom.xml"), replacements)
     }
 
     private void generateProcessesXml(Path classesDir){
         Path processesDir = classesDir.resolve("META-INF")
         FileTasks.mkdirs(processesDir)
         FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/processes.xml"), processesDir)
-        ant.replace(file: processesDir.resolve("processes.xml"), token: "PROCESS_NAME", value: processName)
+        FileTasks.replaceTokenInFile(processesDir.resolve("processes.xml"), "PROCESS_NAME", processName)
     }
 
     private void generateServletProcessApplication(Path srcDestDir){
