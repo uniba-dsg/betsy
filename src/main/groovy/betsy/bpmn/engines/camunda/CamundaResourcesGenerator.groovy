@@ -80,7 +80,7 @@ class CamundaResourcesGenerator {
 
     private void generateServletProcessApplication(Path srcDestDir){
         Path processApplication = srcDestDir.resolve(getGroupIdAsPathValues()).resolve("ProcessTestApplication.java")
-        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/ProcessApplicationTemplate.txt"), processApplication)
+        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/ProcessApplication.template"), processApplication)
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("GROUP_ID", groupId)
         replacements.put("PROCESS_NAME", processName)
