@@ -1,0 +1,87 @@
+package PACKAGE_STRING;
+
+import org.junit.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import junit.framework.JUnit4TestAdapter;
+
+public class PROCESS_NAME {
+
+    static BufferedReader br;
+    String[] assertionList = ASSERTION_LIST_STRING;
+
+    @BeforeClass
+    public static void setup(){
+        try {
+            br = new BufferedReader(new FileReader("${logFile.toUri().toString().substring(8)}"));
+        }catch (FileNotFoundException fnfe){
+            fnfe.printStackTrace();
+        }
+    }
+
+    @Test
+    public void TEST_CASE(){
+        String line;
+        List<String> valueList = new ArrayList<String>();
+        Boolean result = false;
+
+        //assemble list of returned values
+        try{
+             while ((line = br.readLine()) != null){
+                 valueList.add(line);
+             }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        //check if the asserted count of values exists
+        String message = "[Assertion List: ";
+        for(String s: assertionList){
+            message += s + " ";
+        }
+        message += " | Value List: ";
+        for(String s: valueList){
+            message += s + " ";
+        }
+        message += "]";
+        assertEquals(message, assertionList.length, valueList.size());
+
+        //check if all asserted Elements are also in the returned values
+        for(String asrt: assertionList){
+            for(String val: valueList){
+                if(val.contentEquals(asrt)){
+                    result = true;
+                    valueList.remove(val);
+                    break;
+                }else{
+                    result = false;
+                }
+            }
+            assertTrue("Could not find '" + asrt + "' in value list. " + message, result);
+        }
+    }
+
+    @AfterClass
+    public static void tearDown(){
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static junit.framework.Test suite() {
+        return new JUnit4TestAdapter(PROCESS_NAME.class);
+    }
+
+}
