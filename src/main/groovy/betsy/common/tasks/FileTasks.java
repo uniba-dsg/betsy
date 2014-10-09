@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,19 @@ public class FileTasks {
             Files.copy(file, targetFolder.resolve(file.getFileName()));
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder);
+        }
+    }
+
+    public static void copyFileContentsToNewFile(Path source, Path target) {
+        assertFile(source);
+
+        try {
+            log.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath());
+            List<String> lines = Files.readAllLines(source);
+            mkdirs(target.getParent());
+            Files.write(target,lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not copy contents of file " + source + " to file " + target, e);
         }
     }
 

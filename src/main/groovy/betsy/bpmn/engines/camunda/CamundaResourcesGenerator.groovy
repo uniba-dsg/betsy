@@ -79,18 +79,12 @@ class CamundaResourcesGenerator {
     }
 
     private void generateServletProcessApplication(Path srcDestDir){
-        String fileString = """package ${groupId};
-
-import org.camunda.bpm.application.ProcessApplication;
-import org.camunda.bpm.application.impl.ServletProcessApplication;
-
-@ProcessApplication("${processName} Application")
-public class ProcessTestApplication extends ServletProcessApplication{
-    //empty implementation
-}
-
-"""
-        FileTasks.createFile(srcDestDir.resolve(getGroupIdAsPathValues()).resolve("ProcessTestApplication.java"), fileString);
+        Path processApplication = srcDestDir.resolve(getGroupIdAsPathValues()).resolve("ProcessTestApplication.java")
+        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/ProcessApplicationTemplate.txt"), processApplication)
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("GROUP_ID", groupId)
+        replacements.put("PROCESS_NAME", processName)
+        FileTasks.replaceTokensInFile(processApplication, replacements)
     }
 
     private String getGroupIdAsPathValues() {
