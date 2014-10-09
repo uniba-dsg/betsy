@@ -5,6 +5,7 @@ import betsy.common.config.Configuration;
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.util.ClasspathHelper
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -16,7 +17,7 @@ class OpenEsbInstaller {
 
     Path serverDir = Paths.get("server/openesb")
     String fileName = "glassfishesb-v2.2-full-installer-windows.exe"
-    Path stateXmlTemplate = Paths.get(OpenEsbInstaller.class.getResource("/openesb/state.xml.template").toURI())
+    Path stateXmlTemplate = ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")
 
     public void install() {
         // setup engine folder
@@ -28,19 +29,16 @@ class OpenEsbInstaller {
         FileTasks.mkdirs(serverDir)
 
         Path stateXmlPath = serverDir.resolve("state.xml").toAbsolutePath()
-        ant.copy file: stateXmlTemplate, tofile: stateXmlPath, {
-            filterchain {
-                replacetokens {
-                    token key: "INSTALL_PATH", value: serverDir.toAbsolutePath()
-                    token key: "JDK_LOCATION", value: System.getenv()['JAVA_HOME']
-                    token key: "HTTP_PORT", value: 8383
-                    token key: "HTTPS_PORT", value: 8384
-                }
-            }
-        }
+        FileTasks.copyFileContentsToNewFile(stateXmlTemplate, stateXmlPath)
+        Map<String, Object> replacements = new HashMap<>();
+        replacements.put("INSTALL_PATH", serverDir.toAbsolutePath());
+        replacements.put("JDK_LOCATION", System.getenv()['JAVA_HOME']);
+        replacements.put("HTTP_PORT", 8383);
+        replacements.put("HTTPS_PORT", 8384);
+        FileTasks.replaceTokensInFile(stateXmlPath, replacements)
 
         Path reinstallGlassFishBatPath = serverDir.resolve("reinstallGlassFish.bat")
-        Files.copy(Paths.get(OpenEsbInstaller.class.getResource("/openesb/reinstallGlassFish.bat").toURI()),
+        Files.copy(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/reinstallGlassFish.bat"),
                 reinstallGlassFishBatPath)
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(

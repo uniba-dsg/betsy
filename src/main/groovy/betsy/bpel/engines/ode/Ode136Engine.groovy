@@ -1,5 +1,7 @@
 package betsy.bpel.engines.ode
 
+import betsy.common.util.ClasspathHelper
+
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -11,7 +13,7 @@ class Ode136Engine extends OdeEngine {
     }
 
     Path getXsltPath() {
-        Paths.get(Ode136Engine.class.getResource("/ode").toURI())
+        ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode")
     }
 
     @Override

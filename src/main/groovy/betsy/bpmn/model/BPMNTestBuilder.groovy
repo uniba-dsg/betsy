@@ -20,7 +20,7 @@ class BPMNTestBuilder {
 
             Path testClass = process.targetTestSrcPath.resolve("case${testCase.number}").resolve(packageString.replace('.', '/')).resolve("${process.name}.java")
 
-            FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/ProcessTestClass.template"), testClass)
+            FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/ProcessTestClass.template"), testClass)
 
             HashMap<String, String> replacements = new HashMap<>();
             replacements.put("PROCESS_NAME", process.name)

@@ -59,7 +59,7 @@ class CamundaResourcesGenerator {
     }
 
     private void generatePom(Path pomDir){
-        FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/pom.xml"), pomDir)
+        FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda/pom.xml"), pomDir)
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("GROUP_ID", groupId)
         replacements.put("PROCESS_NAME", processName)
@@ -70,13 +70,13 @@ class CamundaResourcesGenerator {
     private void generateProcessesXml(Path classesDir){
         Path processesDir = classesDir.resolve("META-INF")
         FileTasks.mkdirs(processesDir)
-        FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/processes.xml"), processesDir)
+        FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda/processes.xml"), processesDir)
         FileTasks.replaceTokenInFile(processesDir.resolve("processes.xml"), "PROCESS_NAME", processName)
     }
 
     private void generateServletProcessApplication(Path srcDestDir){
         Path processApplication = srcDestDir.resolve(getGroupIdAsPathValues()).resolve("ProcessTestApplication.java")
-        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/ProcessApplication.template"), processApplication)
+        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda/ProcessApplication.template"), processApplication)
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("GROUP_ID", groupId)
         replacements.put("PROCESS_NAME", processName)

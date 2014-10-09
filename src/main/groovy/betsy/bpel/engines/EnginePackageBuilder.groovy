@@ -37,12 +37,13 @@ public class EnginePackageBuilder {
 
     public void replaceEndpointTokenWithValue(BetsyProcess process) {
         log.info "Setting WSDL endpoint to ${process.endpoint}"
-        ant.replace(file: "${process.targetBpelPath}/TestInterface.wsdl", token: "ENDPOINT_URL", value: process.endpoint)
+        FileTasks.replaceTokenInFile(process.targetBpelPath.resolve("TestInterface.wsdl"), "ENDPOINT_URL", process.endpoint)
     }
 
     public void replacePartnerTokenWithValue(BetsyProcess process) {
         log.info "Setting Partner Address to ${Configuration.get("partner.ipAndPort")}"
-        ant.replace(dir: process.targetBpelPath, token: "PARTNER_IP_AND_PORT", value: Configuration.get("partner.ipAndPort"))
+
+        FileTasks.replaceTokenInFile(process.targetBpelPath, "PARTNER_IP_AND_PORT", Configuration.get("partner.ipAndPort"))
     }
 
 }

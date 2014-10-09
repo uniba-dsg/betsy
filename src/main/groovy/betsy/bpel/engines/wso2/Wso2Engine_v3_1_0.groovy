@@ -7,6 +7,7 @@ import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
 import betsy.common.tasks.WaitTasks
+import betsy.common.util.ClasspathHelper
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -19,7 +20,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
 
     @Override
     Path getXsltPath() {
-        Paths.get(Wso2Engine_v3_1_0.class.getResource("/ode").toURI())
+        ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode");
     }
 
     @Override

@@ -10,7 +10,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.camunda.bpm</groupId>
+            <groupId>org.bpmn.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
             <version>7.0.0-Final</version>
             <scope>provided</scope>
@@ -40,7 +40,7 @@
         <repository>
             <id>camunda-bpm-nexus</id>
             <name>camunda-bpm-nexus</name>
-            <url>https://app.camunda.com/nexus/content/groups/public</url>
+            <url>https://app.bpmn.camunda.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
 

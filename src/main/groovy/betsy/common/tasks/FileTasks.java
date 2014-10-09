@@ -164,7 +164,7 @@ public class FileTasks {
     }
 
     public static boolean hasNoFile(Path file) {
-        log.info("Checking for the absence of file " + file);
+        log.info("Checking for the absence of file " + file.toAbsolutePath());
         return !Files.isRegularFile(file);
     }
 
@@ -228,8 +228,8 @@ public class FileTasks {
         }
     }
 
-    public static void replaceTokensInFile(Path targetFile, Map<String, String> replacements) {
-        log.info("Replacing tokens in " + targetFile + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
+    public static void replaceTokensInFile(Path targetFile, Map<String, ?> replacements) {
+        log.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
 
         assertFile(targetFile);
 
@@ -237,7 +237,7 @@ public class FileTasks {
         replaceTask.setFile(targetFile.toFile());
 
         for (String token : replacements.keySet()) {
-            String value = replacements.get(token);
+            String value = String.valueOf(replacements.get(token));
             org.apache.tools.ant.taskdefs.Replace.Replacefilter filter = replaceTask.createReplacefilter();
             filter.setToken(token);
             filter.setValue(value);
