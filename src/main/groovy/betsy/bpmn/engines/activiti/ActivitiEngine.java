@@ -3,6 +3,7 @@ package betsy.bpmn.engines.activiti;
 import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.engines.tomcat.TomcatInstaller;
 import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -13,13 +14,8 @@ import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.tasks.ZipTasks;
 import betsy.common.util.ClasspathHelper;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 public class ActivitiEngine extends BPMNEngine {
@@ -50,31 +46,9 @@ public class ActivitiEngine extends BPMNEngine {
         deployBpmnProcess(getTargetProcessBpmnFile(process));
     }
 
-    public static boolean deployBpmnProcess(Path bpmnFile) {
-        try {
-            log.info("Deploying file " + bpmnFile.toAbsolutePath());
-
-            String deploymentUrl = URL + "/service/repository/deployments";
-            log.info("HTTP POST to " + deploymentUrl);
-
-            HttpResponse<JsonNode> jsonResponse = Unirest.post(deploymentUrl).header("type", "multipart/form-data").field("file", bpmnFile.toFile()).asJson();
-
-            log.info("HTTP RESPONSE code: " + jsonResponse.getCode());
-            log.info("HTTP RESPONSE body: " + jsonResponse.getBody());
-
-            return 201 == jsonResponse.getCode();
-
-        } catch (UnirestException e) {
-            throw new RuntimeException("Could not deploy", e);
-        } finally {
-            try {
-                Unirest.shutdown();
-            } catch (IOException e) {
-                log.error("problem during shutdown of unirest lib", e);
-            }
-
-        }
-
+    public static void deployBpmnProcess(Path bpmnFile) {
+        log.info("Deploying file " + bpmnFile.toAbsolutePath());
+        JsonHelper.post(URL + "/service/repository/deployments", bpmnFile, 201);
     }
 
     @Override
@@ -144,6 +118,10 @@ public class ActivitiEngine extends BPMNEngine {
 
         // deploy
         getTomcat().deployWar(getServerPath().resolve("activiti-5.16.3").resolve("wars").resolve("activiti-rest.war"));
+
+        String groovyFile = "groovy-all-2.2.0.jar";
+        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
+        getTomcat().addLib(Configuration.getDownloadsDir().resolve(groovyFile));
     }
 
     public Tomcat getTomcat() {

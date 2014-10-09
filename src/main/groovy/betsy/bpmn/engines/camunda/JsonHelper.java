@@ -1,95 +1,107 @@
 package betsy.bpmn.engines.camunda;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.http.options.Option;
+import com.mashape.unirest.http.options.Options;
+import com.mashape.unirest.http.utils.SyncIdleConnectionMonitorThread;
+import net.sf.json.JSON;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.nio.file.Path;
 
 public class JsonHelper {
 
-    /**
-     * GET request to Camunda REST Interface
-     *
-     * @param url Camunda REST URL
-     * @return JSONObject with response data
-     */
-    public static JSONObject get(String url) {
-        try {
-            URL requestUrl = new URL(url);
-            URLConnection conn = requestUrl.openConnection();
-            if (conn instanceof HttpURLConnection) {
-                HttpURLConnection http = (HttpURLConnection) conn;
-                int code = http.getResponseCode();
-                if (code > 0 && code < 400) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream()));
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line);
-                        sb.append("\n");
-                    }
-                    br.close();
-                    String jsonResponse = sb.toString();
-                    JSONArray jsonArray = new JSONArray(jsonResponse);
-
-                    return (JSONObject) jsonArray.get(0);
-                }
-            }
-        } catch (IOException ignored) {
-            ignored.printStackTrace();
-        }
-
-        return null;
+    static {
+        // do not use this annoying thread
+        SyncIdleConnectionMonitorThread syncIdleConnectionMonitorThread = (SyncIdleConnectionMonitorThread) Options.getOption(Option.SYNC_MONITOR);
+        syncIdleConnectionMonitorThread.shutdown();
     }
 
-    /**
-     * POST request to Camunda REST Interface
-     *
-     * @param url         Camunda REST URL
-     * @param requestBody JSONObject with request data to be uploaded
-     * @return JSONObject with response data
-     */
-    public static JSONObject post(String url, JSONObject requestBody) {
+    public static JSONObject get(String url, int expectedCode) {
+        log.info("HTTP GET " + url);
 
         try {
+            HttpResponse<JsonNode> response = Unirest.get(url).asJson();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
 
-            URL startUrl = new URL(url);
-            HttpURLConnection startCall = (HttpURLConnection) startUrl.openConnection();
-            startCall.setRequestMethod("POST");
-            startCall.setDoOutput(true);
-            startCall.setDoInput(true);
-            startCall.setRequestProperty("Content-Type", "application/json");
-
-            //Send request
-            DataOutputStream wr = new DataOutputStream(startCall.getOutputStream());
-            wr.writeBytes(requestBody.toString());
-            wr.flush();
-            wr.close();
-
-            //get response
-            BufferedReader br = new BufferedReader(new InputStreamReader(startCall.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
+            if(response.getBody().isArray()) {
+                return response.getBody().getArray().getJSONObject(0);
+            } else {
+                return response.getBody().getObject();
             }
-            br.close();
-            String jsonResponse = sb.toString();
-
-            return new JSONObject(jsonResponse);
-
-        } catch (IOException ignored) {
-            ignored.printStackTrace();
+        } catch (UnirestException e) {
+            throw new RuntimeException("rest call to " + url + " failed", e);
         }
-
-        return null;
-
     }
+
+    public static JSONObject post(String url, JSONObject requestBody, int expectedCode) {
+        log.info("HTTP POST " + url);
+        log.info("CONTENT: " + requestBody.toString(2));
+
+        try {
+            HttpResponse<JsonNode> response = Unirest.post(url).header("Content-Type", "application/json").body(requestBody.toString()).asJson();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+            return response.getBody().getObject();
+        } catch (UnirestException e) {
+            throw new RuntimeException("rest call to " + url + " failed", e);
+        }
+    }
+
+    public static JSONObject post(String url, Path path, int expectedCode) {
+        log.info("HTTP POST " + url);
+        log.info("FILE: " + path);
+
+        try {
+            HttpResponse<JsonNode> response = Unirest.post(url).field("file", path.toFile()).asJson();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+            return response.getBody().getObject();
+        } catch (UnirestException e) {
+            throw new RuntimeException("rest call to " + url + " failed", e);
+        }
+    }
+
+    private static void assertHttpCode(int expectedCode, HttpResponse<JsonNode> response) {
+        int code = response.getCode();
+        if (expectedCode != code) {
+            throw new RuntimeException("expected " + expectedCode + ", got " + code + "; " +
+                    "reason: " + response.getBody());
+        } else {
+            log.info("Response returned with expected status code " + expectedCode);
+        }
+    }
+
+    private static void logResponse(JSONArray response) {
+        if (response == null) {
+            log.info("HTTP RESPONSE is empty.");
+        } else {
+            log.info("HTTP RESPONSE: " + response.toString(2));
+        }
+    }
+
+    private static void logResponse(JSONObject response) {
+        if (response == null) {
+            log.info("HTTP RESPONSE is empty.");
+        } else {
+            log.info("HTTP RESPONSE: " + response.toString(2));
+        }
+    }
+
+    private static void logResponse(JsonNode response) {
+        if(response.isArray()) {
+            logResponse(response.getArray());
+        } else {
+            logResponse(response.getObject());
+        }
+    }
+
+    private static final Logger log = Logger.getLogger(JsonHelper.class);
 
 }

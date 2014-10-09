@@ -22,9 +22,10 @@ class CamundaInstaller {
         FileTasks.deleteDirectory(destinationDir)
         FileTasks.mkdirs(destinationDir)
 
-        NetworkTasks.downloadFileFromBetsyRepo(fileName);
-        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
+        NetworkTasks.downloadFileFromBetsyRepo(fileName)
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir)
+
+        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
         FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile), tomcatDestinationDir.resolve("lib"))
 
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), "cd ${tomcatBinFolder.toAbsolutePath()} && call startup.bat")

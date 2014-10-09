@@ -1,8 +1,6 @@
 package betsy.bpmn.model
 
 
-import org.json.JSONObject
-
 class BPMNTestCase {
 
     private int number
@@ -12,7 +10,7 @@ class BPMNTestCase {
     private int delay = 0
 
     //variables to be sent for a test case
-    JSONObject variables
+    List<BPMNTestCaseVariable> variables = new LinkedList<>()
 
     public BPMNTestCase(){
         number = 1
@@ -25,19 +23,12 @@ class BPMNTestCase {
     }
 
     private void initializeTestCaseNumber(){
-        variables = new JSONObject()
-        JSONObject value = new JSONObject()
-        value.put("value", number)
-        value.put("type","Integer")
-        variables.put("testCaseNumber", value)
+        variables.add(new BPMNTestCaseVariable("testCaseNumber", "Integer", number))
     }
 
     //add inputs
     private BPMNTestCase addInputTestString(String value){
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("value", value)
-        jsonObject.put("type", "String")
-        variables.put("test", jsonObject)
+        variables.add(new BPMNTestCaseVariable("test", "String", value));
 
         this
     }

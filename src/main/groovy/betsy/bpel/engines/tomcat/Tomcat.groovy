@@ -74,4 +74,8 @@ class Tomcat {
         URLTasks.isUrlAvailable(getTomcatUrl());
     }
 
+    public void addLib(Path path) {
+        FileTasks.copyFileIntoFolder(path, getTomcatDir().resolve("lib"));
+    }
+
 }

@@ -2,9 +2,11 @@ package betsy.bpmn.engines.camunda
 
 import betsy.bpmn.engines.BPMNTester
 import betsy.bpmn.model.BPMNTestCase
+import betsy.bpmn.model.BPMNTestCaseVariable
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
 import groovy.io.FileType
+import net.sf.json.JSONArray
 import org.json.JSONObject
 
 import java.nio.file.Path
@@ -48,19 +50,19 @@ class CamundaTester {
         if (unsupportedMessage != null) {
             BPMNTester.appendToFile(getFileName(), unsupportedMessage);
         } else {
-            //first request to get id
-            JSONObject response = JsonHelper.get(restURL + "/process-definition?key=${key}")
-            String id = response.get("id")
-
-            //assembling JSONObject for second request
-            JSONObject requestBody = new JSONObject()
-            requestBody.put("variables", testCase.variables)
-            requestBody.put("businessKey", "key-${key}")
-
 
             if (!testCase.selfStarting) {
+                //first request to get id
+                JSONObject response = JsonHelper.get(restURL + "/process-definition?key=${key}", 200)
+                String id = response.get("id")
+
+                //assembling JSONObject for second request
+                JSONObject requestBody = new JSONObject()
+                requestBody.put("variables", mapToArrayWithMaps(testCase.variables))
+                requestBody.put("businessKey", "key-${key}")
+
                 //second request to start process using id and Json to get the process instance id
-                JsonHelper.post(restURL + "/process-definition/${id}/start", requestBody)
+                JsonHelper.post(restURL + "/process-definition/${id}/start?key=${key}", requestBody, 200)
             }
 
             WaitTasks.sleep(testCase.delay)
@@ -91,6 +93,19 @@ class CamundaTester {
         BPMNTester.setupPathToToolsJarForJavacAntTask(this)
         BPMNTester.compileTest(testSrc, testBin)
         BPMNTester.executeTest(testSrc, testBin, reportPath)
+    }
+
+    public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestCaseVariable> variables) {
+        Map<String, Object> map = new HashMap<>();
+
+        for (BPMNTestCaseVariable entry : variables) {
+            Map<String, Object> submap = new HashMap<>();
+            submap.put("value", entry.getValue());
+            submap.put("type", entry.getType());
+            map.put(entry.getName(), submap);
+        }
+
+        return map;
     }
 
 

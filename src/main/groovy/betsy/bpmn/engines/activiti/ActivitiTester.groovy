@@ -3,13 +3,11 @@ package betsy.bpmn.engines.activiti
 import betsy.bpmn.engines.BPMNTester
 import betsy.bpmn.engines.camunda.JsonHelper
 import betsy.bpmn.model.BPMNTestCase
+import betsy.bpmn.model.BPMNTestCaseVariable
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
-import com.mashape.unirest.http.HttpResponse
-import com.mashape.unirest.http.JsonNode
-import com.mashape.unirest.http.Unirest
-import com.mashape.unirest.http.exceptions.UnirestException
 import org.apache.log4j.Logger
+import org.json.JSONArray
 import org.json.JSONObject
 
 import java.nio.file.Path
@@ -32,20 +30,8 @@ class ActivitiTester {
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
-        //first request to get id
-
-        JSONObject response = JsonHelper.get(restURL + "/service/repository/process-definition?key=${key}")
-        String id = response.get("id")
-
-        //assembling JSONObject for second request
-        JSONObject requestBody = new JSONObject()
-        requestBody.put("variables", testCase.variables)
-        requestBody.put("businessKey", "key-${key}")
-
-
         if (!testCase.selfStarting) {
-            //second request to start process using id and Json to get the process instance id
-            JsonHelper.post(restURL + "/service/repository/process-definition/${id}/start", requestBody)
+            startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.variables));
         }
 
         WaitTasks.sleep(testCase.delay)
@@ -55,41 +41,38 @@ class ActivitiTester {
         BPMNTester.executeTest(testSrc, testBin, reportPath)
     }
 
-
     private Path getFileName() {
         logDir.resolve("..").normalize().resolve("bin").resolve("log" + testCase.number + ".txt")
     }
 
-    public static boolean createInstance(String url, String key) {
-        return true;
-//
-//        try {
-//            log.info("Deploying file " + bpmnFile.toAbsolutePath());
-//
-//            String deploymentUrl = URL + "/service/repository/deployments";
-//            log.info("HTTP POST to " + deploymentUrl);
-//
-//            HttpResponse<JsonNode> jsonResponse = Unirest.post(deploymentUrl).header("type", "multipart/form-data").field("file", bpmnFile.toFile()).asJson();
-//
-//            log.info("HTTP RESPONSE code: " + jsonResponse.getCode());
-//            log.info("HTTP RESPONSE body: " + jsonResponse.getBody());
-//
-//            return 201 == jsonResponse.getCode();
-//
-//        } catch (UnirestException e) {
-//            throw new RuntimeException("Could not deploy", e);
-//        } finally {
-//            try {
-//                Unirest.shutdown();
-//            } catch (IOException e) {
-//                log.error("problem during shutdown of unirest lib", e);
-//            }
-//
-//        }
+    public static void startProcess(String id, Object[] variables) {
+        log.info("Start process instance for " + id);
+        String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
 
+        Map<String, Object> request = new HashMap<>();
+        request.put("processDefinitionKey", id);
+        request.put("variables", variables)
+        request.put("businessKey", "key-" + id)
+
+        JSONObject jsonRequest = new JSONObject(request)
+        log.info("With json message: " + jsonRequest.toString())
+
+        JsonHelper.post(deploymentUrl, jsonRequest, 201)
+    }
+
+    public static String getIdByName(String key) {
+        log.info("Get Process Definition By Key " + key);
+
+        String deploymentUrl = ActivitiEngine.URL + "/service/repository/process-definitions?key=" + key;
+
+        JSONObject jsonResponse = JsonHelper.get(deploymentUrl, 200);
+
+        JSONObject object = jsonResponse;
+        JSONArray dataObject = object.getJSONArray("data");
+        JSONObject entry = dataObject.getJSONObject(0)
+        return entry.get("id");
     }
 
     private static final Logger log = Logger.getLogger(ActivitiTester.class);
-
 
 }

@@ -2,6 +2,7 @@ package betsy.bpmn.engines.jbpm
 
 import betsy.bpmn.engines.BPMNTester
 import betsy.bpmn.model.BPMNTestCase
+import betsy.bpmn.model.BPMNTestCaseVariable
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
 import org.json.JSONObject
@@ -42,8 +43,8 @@ class JbpmTester {
             //setup variables and start process
             try {
                 Map<String, Object> variables = new HashMap<>()
-                for (String key : testCase.variables.keySet()) {
-                    variables.put(key, ((JSONObject) testCase.variables.get(key)).get("value"))
+                for (BPMNTestCaseVariable variable : testCase.variables) {
+                    variables.put(variable.getName(), variable.getValue());
                 }
                 ProcessInstance instance = kSession.startProcess(name, variables)
                 //look for error end event special case
