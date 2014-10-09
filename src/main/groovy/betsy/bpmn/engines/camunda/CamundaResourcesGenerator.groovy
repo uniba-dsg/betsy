@@ -58,10 +58,6 @@ class CamundaResourcesGenerator {
         }
     }
 
-    private String getResourcesPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/xslt/").toAbsolutePath();
-    }
-
     private void generatePom(Path pomDir){
         FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/pom.xml"), pomDir)
         HashMap<String, String> replacements = new HashMap<>();
