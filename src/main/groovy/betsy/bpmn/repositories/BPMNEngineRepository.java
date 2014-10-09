@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BPMNEngineRepository {
     public BPMNEngineRepository() {
-        List<BPMNEngine> all = new ArrayList<BPMNEngine>(Arrays.asList(new CamundaEngine(), new Camunda710Engine(), new ActivitiEngine(), new JbpmEngine(), new JbpmEngine610()));
+        List<BPMNEngine> all = new ArrayList<>(Arrays.asList(new CamundaEngine(), new Camunda710Engine(), new ActivitiEngine(), new JbpmEngine(), new JbpmEngine610()));
         repo.put("ALL", all);
 
         // insert every engine into the map
@@ -36,5 +36,5 @@ public class BPMNEngineRepository {
         return repo.getNames();
     }
 
-    private Repository<BPMNEngine> repo = new Repository<BPMNEngine>();
+    private Repository<BPMNEngine> repo = new Repository<>();
 }

@@ -7,7 +7,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.http.options.Option;
 import com.mashape.unirest.http.options.Options;
 import com.mashape.unirest.http.utils.SyncIdleConnectionMonitorThread;
-import net.sf.json.JSON;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,7 +29,7 @@ public class JsonHelper {
             assertHttpCode(expectedCode, response);
             logResponse(response.getBody());
 
-            if(response.getBody().isArray()) {
+            if (response.getBody().isArray()) {
                 return response.getBody().getArray().getJSONObject(0);
             } else {
                 return response.getBody().getObject();
@@ -95,7 +94,7 @@ public class JsonHelper {
     }
 
     private static void logResponse(JsonNode response) {
-        if(response.isArray()) {
+        if (response.isArray()) {
             logResponse(response.getArray());
         } else {
             logResponse(response.getObject());

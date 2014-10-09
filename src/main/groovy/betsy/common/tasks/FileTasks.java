@@ -1,20 +1,17 @@
 package betsy.common.tasks;
 
-import org.apache.tools.ant.taskdefs.Replace;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.taskdefs.Replace;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.tools.ant.taskdefs.Replace.*;
 
 public class FileTasks {
 
@@ -94,7 +91,7 @@ public class FileTasks {
     public static void assertFileExtension(Path path, String extension) {
         assertFile(path);
 
-        if(!path.getFileName().toString().endsWith(extension)) {
+        if (!path.getFileName().toString().endsWith(extension)) {
             throw new IllegalArgumentException("the file " + path + " does not have the extension " + extension);
         }
     }
@@ -149,7 +146,7 @@ public class FileTasks {
             log.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath());
             List<String> lines = Files.readAllLines(source);
             mkdirs(target.getParent());
-            Files.write(target,lines, StandardCharsets.UTF_8);
+            Files.write(target, lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy contents of file " + source + " to file " + target, e);
         }
@@ -219,9 +216,9 @@ public class FileTasks {
         assertDirectory(from);
         assertDirectory(to);
 
-        try(DirectoryStream<Path> stream = Files.newDirectoryStream(from)) {
-            for(Path path : stream) {
-                if(Files.isRegularFile(path)) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(from)) {
+            for (Path path : stream) {
+                if (Files.isRegularFile(path)) {
                     FileTasks.copyFileIntoFolder(path, to);
                 }
             }
@@ -230,7 +227,7 @@ public class FileTasks {
         }
     }
 
-    public static void replaceTokensInFile(Path targetFile, Map<String,String> replacements){
+    public static void replaceTokensInFile(Path targetFile, Map<String, String> replacements) {
         log.info("Replacing tokens in " + targetFile);
 
         assertFile(targetFile);
@@ -238,7 +235,7 @@ public class FileTasks {
         Replace replaceTask = new Replace();
         replaceTask.setFile(targetFile.toFile());
 
-        for(String token: replacements.keySet()){
+        for (String token : replacements.keySet()) {
             String value = replacements.get(token);
             org.apache.tools.ant.taskdefs.Replace.Replacefilter filter = replaceTask.createReplacefilter();
             filter.setToken(token);
@@ -249,7 +246,7 @@ public class FileTasks {
         replaceTask.execute();
     }
 
-    public static void replaceTokenInFile(Path targetFile, String token, String value){
+    public static void replaceTokenInFile(Path targetFile, String token, String value) {
         log.info("Replacing tokens in " + targetFile);
 
         assertFile(targetFile);
