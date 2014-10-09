@@ -64,11 +64,6 @@ class CamundaResourcesGenerator {
 
     private void generatePom(Path pomDir){
         FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/camunda/pom.xml"), pomDir)
-        //ant.replace(file: pomDir.resolve("pom.xml"))   {
-        //    replacefilter(token: "GROUP_ID", value: groupId)
-        //    replacefilter(token: "PROCESS_NAME", value: processName)
-        //    replacefilter(token: "_VERSION_", value: version)
-        //}
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("GROUP_ID", groupId)
         replacements.put("PROCESS_NAME", processName)
