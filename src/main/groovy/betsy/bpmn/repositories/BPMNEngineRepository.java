@@ -5,6 +5,7 @@ import betsy.bpmn.engines.activiti.ActivitiEngine;
 import betsy.bpmn.engines.camunda.Camunda710Engine;
 import betsy.bpmn.engines.camunda.CamundaEngine;
 import betsy.bpmn.engines.jbpm.JbpmEngine;
+import betsy.bpmn.engines.jbpm.JbpmEngine610;
 import betsy.common.repositories.Repository;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class BPMNEngineRepository {
     public BPMNEngineRepository() {
-        List<BPMNEngine> all = new ArrayList<BPMNEngine>(Arrays.asList(new CamundaEngine(), new Camunda710Engine(), new ActivitiEngine(), new JbpmEngine()));
+        List<BPMNEngine> all = new ArrayList<BPMNEngine>(Arrays.asList(new CamundaEngine(), new Camunda710Engine(), new ActivitiEngine(), new JbpmEngine(), new JbpmEngine610()));
         repo.put("ALL", all);
 
         // insert every engine into the map

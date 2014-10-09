@@ -1,5 +1,6 @@
 package betsy.common.tasks;
 
+import org.apache.tools.ant.taskdefs.Replace;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -8,8 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import static org.apache.tools.ant.taskdefs.Replace.*;
 
 public class FileTasks {
 
@@ -137,6 +142,19 @@ public class FileTasks {
         }
     }
 
+    public static void copyFileContentsToNewFile(Path source, Path target) {
+        assertFile(source);
+
+        try {
+            log.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath());
+            List<String> lines = Files.readAllLines(source);
+            mkdirs(target.getParent());
+            Files.write(target,lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not copy contents of file " + source + " to file " + target, e);
+        }
+    }
+
     public static boolean hasFile(Path file) {
         log.info("Checking for the existence of file " + file.toAbsolutePath());
         return Files.isRegularFile(file);
@@ -210,6 +228,39 @@ public class FileTasks {
         } catch (IOException e) {
             throw new RuntimeException("Could not copy files from " + from + " to " + to, e);
         }
+    }
+
+    public static void replaceTokensInFile(Path targetFile, Map<String,String> replacements){
+        log.info("Replacing tokens in " + targetFile);
+
+        assertFile(targetFile);
+
+        Replace replaceTask = new Replace();
+        replaceTask.setFile(targetFile.toFile());
+
+        for(String token: replacements.keySet()){
+            String value = replacements.get(token);
+            org.apache.tools.ant.taskdefs.Replace.Replacefilter filter = replaceTask.createReplacefilter();
+            filter.setToken(token);
+            filter.setValue(value);
+        }
+
+        replaceTask.validateReplacefilters();
+        replaceTask.execute();
+    }
+
+    public static void replaceTokenInFile(Path targetFile, String token, String value){
+        log.info("Replacing tokens in " + targetFile);
+
+        assertFile(targetFile);
+
+        Replace replaceTask = new Replace();
+        replaceTask.setFile(targetFile.toFile());
+        replaceTask.setToken(token);
+        replaceTask.setValue(value);
+
+        replaceTask.validateAttributes();
+        replaceTask.execute();
     }
 
 
