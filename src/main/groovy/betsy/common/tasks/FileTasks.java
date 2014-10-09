@@ -10,6 +10,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -228,7 +229,7 @@ public class FileTasks {
     }
 
     public static void replaceTokensInFile(Path targetFile, Map<String, String> replacements) {
-        log.info("Replacing tokens in " + targetFile);
+        log.info("Replacing tokens in " + targetFile + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
 
         assertFile(targetFile);
 
@@ -247,17 +248,9 @@ public class FileTasks {
     }
 
     public static void replaceTokenInFile(Path targetFile, String token, String value) {
-        log.info("Replacing tokens in " + targetFile);
-
-        assertFile(targetFile);
-
-        Replace replaceTask = new Replace();
-        replaceTask.setFile(targetFile.toFile());
-        replaceTask.setToken(token);
-        replaceTask.setValue(value);
-
-        replaceTask.validateAttributes();
-        replaceTask.execute();
+        Map<String, String> replacements = new HashMap<>();
+        replacements.put(token, value);
+        replaceTokensInFile(targetFile, replacements);
     }
 
 
