@@ -1,13 +1,6 @@
 package betsy.common.engines;
 
-public interface EngineAPI<P> extends EngineLifecycle {
-
-    /**
-     * The name of the engine.
-     *
-     * @return the unique name of the engine
-     */
-    String getName();
+public interface EngineAPI<P> extends EngineLifecycle, Nameable {
 
     /**
      * Deploy the given <code>process</code> to the current engine.
