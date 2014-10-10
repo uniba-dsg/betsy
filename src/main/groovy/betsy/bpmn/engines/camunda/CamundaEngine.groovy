@@ -5,6 +5,7 @@ import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestBuilder
 import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.reporting.BPMNTestcaseMerger
+import betsy.common.config.Configuration
 import betsy.common.tasks.*
 
 import java.nio.file.Path
@@ -87,8 +88,14 @@ class CamundaEngine extends BPMNEngine {
 
     @Override
     void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "camunda_startup.bat"))
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath.resolve("camunda_startup.sh")))
+        Path pathToJava7 = Configuration.getJava7Home();
+        FileTasks.assertDirectory(pathToJava7)
+
+        Path pathToJre7 = Configuration.getJre7Home();
+        FileTasks.assertDirectory(pathToJre7)
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath, "camunda_startup.bat"), ["JAVA_HOME": pathToJava7.toString(), "JRE_HOME": pathToJre7.toString()])
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(serverPath.resolve("camunda_startup.sh")), ["JAVA_HOME": pathToJava7.toString(), "JRE_HOME": pathToJre7.toString()])
         WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());
     }
 
