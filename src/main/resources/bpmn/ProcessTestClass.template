@@ -1,83 +1,32 @@
 package PACKAGE_STRING;
 
-import org.junit.Test;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 public class PROCESS_NAME {
 
-    static BufferedReader br;
-    String[] assertionList = ASSERTION_LIST_STRING;
-
-    @BeforeClass
-    public static void setup(){
-        try {
-            br = new BufferedReader(new FileReader("LOGFILE_PATH"));
-        }catch (FileNotFoundException fnfe){
-            fnfe.printStackTrace();
-        }
-    }
+    String[] expectedValues = ASSERTION_LIST_STRING;
 
     @Test
-    public void TEST_CASE(){
-        String line;
-        List<String> valueList = new ArrayList<String>();
-        Boolean result = false;
+    public void TEST_CASE() throws IOException{
+        List<String> lines = Files.readAllLines(Paths.get("LOGFILE_PATH"),
+                StandardCharsets.UTF_8);
+		String[] gotValues = lines.toArray(new String[lines.size()]);
 
-        //assemble list of returned values
-        try{
-             while ((line = br.readLine()) != null){
-                 valueList.add(line);
-             }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        Arrays.sort(gotValues);
+        Arrays.sort(expectedValues);
 
-        //check if the asserted count of values exists
-        String message = "[Assertion List: ";
-        for(String s: assertionList){
-            message += s + " ";
-        }
-        message += " | Value List: ";
-        for(String s: valueList){
-            message += s + " ";
-        }
-        message += "]";
-        assertEquals(message, assertionList.length, valueList.size());
-
-        //check if all asserted Elements are also in the returned values
-        for(String asrt: assertionList){
-            for(String val: valueList){
-                if(val.contentEquals(asrt)){
-                    result = true;
-                    valueList.remove(val);
-                    break;
-                }else{
-                    result = false;
-                }
-            }
-            assertTrue("Could not find '" + asrt + "' in value list. " + message, result);
-        }
-    }
-
-    @AfterClass
-    public static void tearDown(){
-        try {
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String message = "expected " + Arrays.toString(expectedValues) + " but got " + Arrays.toString(gotValues);
+        Assert.assertArrayEquals(message, expectedValues, gotValues);
     }
 
     public static junit.framework.Test suite() {
