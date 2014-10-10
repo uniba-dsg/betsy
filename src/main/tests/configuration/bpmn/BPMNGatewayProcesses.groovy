@@ -6,8 +6,9 @@ import betsy.bpmn.model.BPMNTestCase
 class BPMNGatewayProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
-    public static final BPMNProcess XOR = builder.buildGatewayProcess(
-            "ExclusiveGateway", "Tests for the exclusive gateway with testing the combination of the sequence flow conditions",
+    public static final BPMNProcess EXCLUSIVE_GATEWAY = builder.buildGatewayProcess(
+            "ExclusiveGateway", "A process with three scriptTasks and exclusiveGateways. " +
+            "The execution of two of the tasks is controlled by the exclusiveGateways and only one of the tasks is actually executed.",
             [
                     new BPMNTestCase(1).inputB().assertFalse().assertSuccess(),
                     new BPMNTestCase(2).inputA().assertTrue().assertSuccess(),
@@ -16,8 +17,10 @@ class BPMNGatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess XOR_DEFAULT = builder.buildGatewayProcess(
-            "ExclusiveGatewayWithDefault", "Tests for the exclusive gateway with default sequence flow",
+    public static final BPMNProcess EXCLUSIVE_GATEWAY_DEFAULT = builder.buildGatewayProcess(
+            "ExclusiveGatewayWithDefault", "A process with four scriptTasks and exclusiveGateways. " +
+            "The execution of three of the tasks is controlled by the exclusiveGateways and only one of the tasks is actually executed." +
+            "Two tasks are triggered through sequenceFlows with conditionExpressions and one is triggered through a sequenceFlow which is marked as default",
             [
                     new BPMNTestCase(1).inputB().assertFalse().assertSuccess(),
                     new BPMNTestCase(2).inputA().assertTrue().assertSuccess(),
@@ -26,22 +29,25 @@ class BPMNGatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess AND = builder.buildGatewayProcess(
-            "ParallelGateway", "A simple test for the parallel gateway",
+    public static final BPMNProcess PARALLEL_GATEWAY = builder.buildGatewayProcess(
+            "ParallelGateway", "A process with four scriptTasks and two parallelGateways. " +
+            "Two of the scriptTasks are executed in parallel.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2().assertSuccess()
             ]
     )
 
-    public static final BPMNProcess AND_CONDITION = builder.buildGatewayProcess(
+    public static final BPMNProcess PARALLEL_GATEWAY_CONDITION = builder.buildGatewayProcess(
+            //TODO: this seems invalid
             "ParallelGatewayWithConditions", "A test for the parallel gateway to ignore conditions",
             [
                     new BPMNTestCase(1).inputA().assertTask1().assertTask2().assertSuccess()
             ]
     )
 
-    public static final BPMNProcess OR = builder.buildGatewayProcess(
-            "InclusiveGateway", "Tests for the inclusive gateway with two sequence flows and their combination of conditions",
+    public static final BPMNProcess INCLUSIVE_GATEWAY = builder.buildGatewayProcess(
+            "InclusiveGateway", "Two scriptTasks encapsulated by inclusiveGateways. " +
+            "Either one, none, or both of the scriptTasks are enabled based on input data.",
             [
                     new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertSuccess(),
                     new BPMNTestCase(2).inputA().assertTask1().assertSuccess(),
@@ -50,8 +56,9 @@ class BPMNGatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess OR_DEFAULT = builder.buildGatewayProcess(
-            "InclusiveGatewayWithDefault", "Tests for the inclusive gateway with two conditioned sequence flows and a default sequence flow",
+    public static final BPMNProcess INCLUSIVE_GATEWAY_DEFAULT = builder.buildGatewayProcess(
+            "InclusiveGatewayWithDefault", "Three scriptTasks encapsulated by inclusiveGateways. " +
+            "Either one, two, or one task marked as default, are enabled based on input data.",
             [
                     new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertSuccess(),
                     new BPMNTestCase(2).inputA().assertTask1().assertSuccess(),
@@ -108,12 +115,12 @@ class BPMNGatewayProcesses {
     )
 
     public static final List<BPMNProcess> GATEWAYS = [
-            XOR,
-            XOR_DEFAULT,
-            AND,
-            AND_CONDITION,
-            OR,
-            OR_DEFAULT,
+            EXCLUSIVE_GATEWAY,
+            EXCLUSIVE_GATEWAY_DEFAULT,
+            PARALLEL_GATEWAY,
+            PARALLEL_GATEWAY_CONDITION,
+            INCLUSIVE_GATEWAY,
+            INCLUSIVE_GATEWAY_DEFAULT,
             PARALLEL_IN_EXCLUSIVE_OUT,
             PARALLEL_IN_INCLUSIVE_OUT,
             EXCLUSIVE_IN_PARALLEL_OUT,
