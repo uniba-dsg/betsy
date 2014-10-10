@@ -37,7 +37,7 @@ public class CsvReport {
         if (nameToEngine.containsKey(name)) {
             return nameToEngine.get(name)
         } else {
-            Engine engine = new Engine(name: name)
+            Engine engine = new Engine(name)
             nameToEngine.put(name, engine)
 
             return engine
