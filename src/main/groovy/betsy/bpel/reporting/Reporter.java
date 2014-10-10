@@ -17,10 +17,7 @@ public class Reporter {
 
         merger.setTests(tests);
         merger.merge();
-        JUnitHtmlReports reports = new JUnitHtmlReports();
-
-        reports.setPath(tests.getPath());
-        reports.create();
+        new JUnitHtmlReports(tests.getPath()).create();
         JUnitXmlResultToCsvRow row = new JUnitXmlResultToCsvRow();
 
 

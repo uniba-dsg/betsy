@@ -1,0 +1,15 @@
+<project name="PROJECT_NAME" default="reports">
+
+    <target name="reports">
+
+        <mkdir dir="reports"/>
+        <junitreport todir="reports">
+            <fileset dir=".">
+                <include name="**/TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="reports/html"/>
+        </junitreport>
+
+    </target>
+
+</project>

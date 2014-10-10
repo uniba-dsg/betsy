@@ -24,10 +24,7 @@ public class Analyzer {
         CsvReport csvModel = loader.load();
 
         // analytics
-        HtmlAnalytics analytics = new HtmlAnalytics();
-
-        analytics.setReport(csvModel);
-        analytics.toHtmlReport(reportsFolderPath.resolve("results.html"));
+        new HtmlAnalytics(csvModel).toHtmlReport(reportsFolderPath.resolve("results.html"));
     }
 
 }
