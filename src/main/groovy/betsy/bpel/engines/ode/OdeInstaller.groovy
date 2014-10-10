@@ -5,6 +5,7 @@ import betsy.common.config.Configuration;
 import betsy.bpel.engines.tomcat.TomcatInstaller
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.util.ClasspathHelper
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -29,7 +30,7 @@ class OdeInstaller {
 
         ant.unzip src: downloadDir.resolve(fileName), dest: serverDir
         ant.unzip src: odeWar, dest: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/ode")
-        ant.copy file: Paths.get(OdeInstaller.class.getResource("/ode/log4j.properties").toURI()), todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/ode/WEB-INF/classes"), overwrite: true
+        ant.copy file: ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode/log4j.properties"), todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/ode/WEB-INF/classes"), overwrite: true
     }
 
     Path getOdeWar() {

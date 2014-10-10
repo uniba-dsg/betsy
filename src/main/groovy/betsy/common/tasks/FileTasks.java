@@ -1,5 +1,6 @@
 package betsy.common.tasks;
 
+import ant.tasks.AntUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Replace;
@@ -242,6 +243,31 @@ public class FileTasks {
             filter.setToken(token);
             filter.setValue(value);
         }
+
+        replaceTask.setTaskName("replace");
+        replaceTask.setProject(AntUtil.builder().getProject());
+
+        replaceTask.validateReplacefilters();
+        replaceTask.execute();
+    }
+
+    public static void replaceTokensInFolder(Path targetFile, Map<String, ?> replacements) {
+        log.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
+
+        assertDirectory(targetFile);
+
+        Replace replaceTask = new Replace();
+        replaceTask.setDir(targetFile.toFile());
+
+        for (String token : replacements.keySet()) {
+            String value = String.valueOf(replacements.get(token));
+            org.apache.tools.ant.taskdefs.Replace.Replacefilter filter = replaceTask.createReplacefilter();
+            filter.setToken(token);
+            filter.setValue(value);
+        }
+
+        replaceTask.setTaskName("replace");
+        replaceTask.setProject(AntUtil.builder().getProject());
 
         replaceTask.validateReplacefilters();
         replaceTask.execute();

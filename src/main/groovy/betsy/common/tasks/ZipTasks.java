@@ -1,5 +1,6 @@
 package betsy.common.tasks;
 
+import ant.tasks.AntUtil;
 import groovy.util.AntBuilder;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Expand;
@@ -18,7 +19,7 @@ public class ZipTasks {
         whenEmpty.setValue("create");
         zip.setWhenempty(whenEmpty);
 
-        zip.setProject(new AntBuilder().getAntProject());
+        zip.setProject(AntUtil.builder().getProject());
         zip.setTaskName("zip");
 
         zip.execute();
@@ -31,7 +32,7 @@ public class ZipTasks {
         expand.setDest(tempExtractedFolder.toFile());
         expand.setSrc(tempZipFile.toFile());
 
-        expand.setProject(new AntBuilder().getAntProject());
+        expand.setProject(AntUtil.builder().getProject());
         expand.setTaskName("unzip");
 
         expand.execute();
