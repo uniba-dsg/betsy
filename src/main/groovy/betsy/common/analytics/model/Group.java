@@ -36,4 +36,8 @@ public class Group implements Comparable<Group> {
 
     private final String name;
     private SortedSet<Test> tests = new TreeSet<Test>();
+
+    public String getName() {
+        return name;
+    }
 }
