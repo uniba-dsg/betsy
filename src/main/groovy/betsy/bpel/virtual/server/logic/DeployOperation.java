@@ -74,8 +74,7 @@ public class DeployOperation {
             deployer.setAntBinFolder(Paths.get("/usr/share/ant/bin"));
             deployer.deploy();
         } else if ("openesb_v".equals(request.getEngineName())) {
-            OpenEsbCLI cli = new OpenEsbCLI();
-            cli.setGlassfishHome(Paths.get("/opt/openesb/glassfish"));
+            OpenEsbCLI cli = new OpenEsbCLI(Paths.get("/opt/openesb/glassfish"));
 
             OpenEsbDeployer deployer = new OpenEsbDeployer();
             deployer.setTmpFolder(Paths.get("/opt/betsy"));

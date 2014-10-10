@@ -1,7 +1,7 @@
 package betsy.bpel.engines.petalsesb
 
-import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
+import betsy.bpel.model.BetsyProcess
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
@@ -48,7 +48,7 @@ class PetalsEsbEngine extends LocalEngine {
     @Override
     void storeLogs(BetsyProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(file: petalsLogFile, todir: process.targetLogsPath)
+        FileTasks.copyFileIntoFolder(petalsLogFile, process.targetLogsPath)
     }
 
     @Override

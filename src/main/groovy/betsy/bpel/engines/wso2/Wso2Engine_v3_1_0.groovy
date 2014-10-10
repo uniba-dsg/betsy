@@ -7,6 +7,8 @@ import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
 import betsy.common.tasks.WaitTasks
+import betsy.common.tasks.XSLTTasks
+import betsy.common.tasks.ZipTasks
 import betsy.common.util.ClasspathHelper
 
 import java.nio.file.Path
@@ -38,7 +40,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
-        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: getServerPath()
+        ZipTasks.unzip(Configuration.downloadsDir.resolve(fileName), getServerPath());
 
         FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat")
         FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd ${getBinDir().toAbsolutePath()} && call wso2server.bat")
@@ -117,9 +119,17 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
-        ant.xslt(in: process.bpelFilePath, out: process.targetBpelPath.resolve("deploy.xml"), style: xsltPath.resolve("bpel_to_ode_deploy_xml.xsl"))
-        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"), token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
-        ant.replace(file: process.targetBpelPath.resolve("deploy.xml"), token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
+        XSLTTasks.transform(xsltPath.resolve("bpel_to_ode_deploy_xml.xsl"),
+                process.bpelFilePath,
+                process.targetBpelPath.resolve("deploy.xml"))
+
+        FileTasks.replaceTokenInFile(process.targetBpelPath.resolve("TestInterface.wsdl"),
+                "TestInterfaceService",
+                process.name + "TestInterfaceService")
+
+        FileTasks.replaceTokenInFile(process.targetBpelPath.resolve("deploy.xml"),
+                "TestInterfaceService",
+                process.name + "TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

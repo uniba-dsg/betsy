@@ -30,7 +30,7 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     OpenEsbCLI getCli() {
-        new OpenEsbCLI(glassfishHome: getGlassfishHome())
+        new OpenEsbCLI(getGlassfishHome())
     }
 
     protected Path getGlassfishHome() {
