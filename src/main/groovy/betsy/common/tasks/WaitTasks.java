@@ -14,12 +14,16 @@ public class WaitTasks {
      * @param milliseconds the duration to sleep/wait
      */
     public static void sleep(final int milliseconds) {
-        if(milliseconds <= 0) {
+        if (milliseconds <= 0) {
             log.info("Did not sleep because value is " + milliseconds + "ms");
             return;
         }
 
         log.info("Sleep for " + String.valueOf(milliseconds) + " ms NOW");
+        sleepInternal(milliseconds);
+    }
+
+    private static void sleepInternal(int milliseconds) {
         long max = System.currentTimeMillis() + milliseconds;
         while (max > System.currentTimeMillis()) {
             try {
@@ -30,6 +34,7 @@ public class WaitTasks {
     }
 
     public static void waitFor(int untilMilliSeconds, int checkEveryMilliseconds, Callable<Boolean> c) {
+        log.info("wait for at most " + untilMilliSeconds + "ms or until condition is met.");
         long max = System.currentTimeMillis() + untilMilliSeconds;
 
         try {
@@ -37,11 +42,13 @@ public class WaitTasks {
                 if (c.call()) {
                     return;
                 }
-                sleep(checkEveryMilliseconds);
+                sleepInternal(checkEveryMilliseconds);
             }
             if (!c.call()) {
-                log.info("Condition not met of wait task within the specified time");
+                log.info("Condition of wait task NOT met within the specified time");
                 throw new IllegalStateException("waited for " + untilMilliSeconds + "ms, but condition was not met");
+            } else {
+                log.info("Condition of wait task was met -> proceeding");
             }
 
         } catch (IllegalStateException e) {
