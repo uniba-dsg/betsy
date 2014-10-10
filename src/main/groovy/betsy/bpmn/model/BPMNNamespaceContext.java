@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class BPMNNamespaceContext implements NamespaceContext {
 
-    public static final String BPMN_NAMESPACE = "http://docs.oasis-open.org/wsbpel/2.0/process/executable";
+    public static final String BPMN_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
 
     @Override
     public String getNamespaceURI(String prefix) {

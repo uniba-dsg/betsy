@@ -6,7 +6,6 @@ public class ProcessValidatorTest {
 
     @Test
     public void testValidityOfAllProcesses() {
-        ProcessValidator validator = new ProcessValidator();
-        validator.validate();
+        new ProcessValidator().validate();
     }
 }
