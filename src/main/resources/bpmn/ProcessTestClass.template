@@ -23,7 +23,7 @@ public class PROCESS_NAME {
     @BeforeClass
     public static void setup(){
         try {
-            br = new BufferedReader(new FileReader("${logFile.toUri().toString().substring(8)}"));
+            br = new BufferedReader(new FileReader("LOGFILE_PATH"));
         }catch (FileNotFoundException fnfe){
             fnfe.printStackTrace();
         }

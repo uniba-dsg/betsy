@@ -15,6 +15,8 @@ class BPMNTestBuilder {
         //Build test for each Test Case
         for (BPMNTestCase testCase : process.testCases) {
 
+            String logFilePath = logDir.resolve("log${testCase.number}.txt").toUri().toString().substring(8)
+
             //assemble array of assertion for unitTestString
             String assertionListString = getAssertionString(testCase)
 
@@ -27,6 +29,7 @@ class BPMNTestBuilder {
             replacements.put("PACKAGE_STRING", packageString)
             replacements.put("TEST_CASE", testCase.toString())
             replacements.put("ASSERTION_LIST_STRING", assertionListString)
+            replacements.put("LOGFILE_PATH", logFilePath)
 
             FileTasks.replaceTokensInFile(testClass, replacements)
         }
