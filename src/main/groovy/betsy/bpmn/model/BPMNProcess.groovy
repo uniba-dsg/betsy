@@ -95,7 +95,7 @@ class BPMNProcess implements Cloneable, Comparable {
     }
 
     Path getTargetReportsPathWithCase(int c) {
-        targetPath.resolve("reports").resolve("case" + c)
+        getTargetReportsPath().resolve("case" + c)
     }
 
     Path getTargetTestBinPath(){
@@ -103,7 +103,7 @@ class BPMNProcess implements Cloneable, Comparable {
     }
 
     Path getTargetTestBinPathWithCase(int c){
-        targetPath.resolve("testBin").resolve("case" + c)
+        getTargetTestBinPath().resolve("case" + c)
     }
 
     Path getTargetTestSrcPath(){
@@ -111,7 +111,7 @@ class BPMNProcess implements Cloneable, Comparable {
     }
 
     Path getTargetTestSrcPathWithCase(int c){
-        targetPath.resolve("testSrc").resolve("case" + c)
+        getTargetTestSrcPath().resolve("case" + c)
     }
 
     List<BPMNTestCase> getTestCases(){
