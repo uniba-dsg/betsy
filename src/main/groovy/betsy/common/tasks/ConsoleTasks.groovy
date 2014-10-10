@@ -41,7 +41,12 @@ class ConsoleTasks {
          * Execute dir $ command args[0] args[1] ...
          */
         public static CliCommand build(Path dir, String command) {
-            new CliCommand(dir: dir.toAbsolutePath(), command: command, values: new String[0])
+            CliCommand cmd = new CliCommand();
+            cmd.setDir(dir.toAbsolutePath());
+            cmd.setCommand(command);
+            cmd.setValues(new String[0]);
+
+            return cmd;
         }
 
         /**
@@ -58,7 +63,15 @@ class ConsoleTasks {
         }
 
         public String toString() {
-            "${dir} \$ ${command} ${values.join(" ")}"
+            dir + " \$ " + command + " " + getSpaceSeparatedValues()
+        }
+
+        private String getSpaceSeparatedValues() {
+            StringJoiner joiner = new StringJoiner(" ");
+            for(String value : values) {
+                joiner.add(value);
+            }
+            return joiner.toString();
         }
     }
 
@@ -72,7 +85,7 @@ class ConsoleTasks {
         execute("windows", cliCommand, true, environment)
     }
 
- private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, environment) {
+ private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, Map<String, String> environment) {
         log.info("Executing on $osfamily $cliCommand")
 
         FileTasks.assertDirectory(cliCommand.dir)
@@ -86,7 +99,7 @@ class ConsoleTasks {
     }
 
     private
-    static Object internalExecuteOnWindows(boolean failOnError, CliCommand cliCommand, environment) {
+    static Object internalExecuteOnWindows(boolean failOnError, CliCommand cliCommand, Map<String, String> environment) {
         AntUtil.builder().exec(executable: "cmd", failOnError: failOnError, osfamily: "windows", dir: cliCommand.dir) {
             arg(value: "/c")
             arg(value: cliCommand.command)
@@ -100,7 +113,7 @@ class ConsoleTasks {
     }
 
     private
-    static Object internalExecuteOnUnix(boolean failOnError, CliCommand cliCommand, environment) {
+    static Object internalExecuteOnUnix(boolean failOnError, CliCommand cliCommand, Map<String, String> environment) {
         AntUtil.builder().exec(executable: cliCommand.command, failOnError: failOnError, osfamily: "unix", dir: cliCommand.dir) {
             for (String value : cliCommand.values) {
                 arg(value: value)
@@ -115,7 +128,7 @@ class ConsoleTasks {
         execute("windows", cliCommand, false, new HashMap<>())
     }
 
-    public static void executeOnWindowsAndIgnoreError(CliCommand cliCommand, environment) {
+    public static void executeOnWindowsAndIgnoreError(CliCommand cliCommand, Map<String, String> environment) {
         execute("windows", cliCommand, false, environment)
     }
 
@@ -127,7 +140,7 @@ class ConsoleTasks {
         execute("unix", cliCommand, false, new HashMap<>())
     }
 
-    public static void executeOnUnixAndIgnoreError(CliCommand cliCommand, environment) {
+    public static void executeOnUnixAndIgnoreError(CliCommand cliCommand, Map<String, String> environment) {
         execute("unix", cliCommand, false, environment)
     }
 
