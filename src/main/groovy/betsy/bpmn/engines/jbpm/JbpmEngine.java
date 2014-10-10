@@ -141,6 +141,8 @@ public class JbpmEngine extends BPMNEngine {
         // clean up data (with db and config files in the users home directory)
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
+
+        WaitTasks.sleep(5000);
     }
 
     @Override
