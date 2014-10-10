@@ -40,6 +40,7 @@ public class WaitTasks {
         try {
             while (max > System.currentTimeMillis()) {
                 if (c.call()) {
+                    log.info("Condition of wait task was met -> proceeding");
                     return;
                 }
                 sleepInternal(checkEveryMilliseconds);
@@ -47,8 +48,6 @@ public class WaitTasks {
             if (!c.call()) {
                 log.info("Condition of wait task NOT met within the specified time");
                 throw new IllegalStateException("waited for " + untilMilliSeconds + "ms, but condition was not met");
-            } else {
-                log.info("Condition of wait task was met -> proceeding");
             }
 
         } catch (IllegalStateException e) {
