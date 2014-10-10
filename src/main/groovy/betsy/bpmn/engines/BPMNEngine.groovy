@@ -1,18 +1,15 @@
 package betsy.bpmn.engines
 
-import ant.tasks.AntUtil
 import betsy.bpmn.model.BPMNProcess
 import betsy.common.engines.EngineAPI
 import betsy.common.engines.LocalEngineAPI
 import betsy.common.tasks.FileTasks
 import betsy.common.util.ClasspathHelper
 
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI{
-    AntBuilder ant = AntUtil.builder()
+abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI {
 
     Path parentFolder
 

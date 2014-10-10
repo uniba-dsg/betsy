@@ -1,6 +1,7 @@
 package betsy.bpmn.model;
 
 import betsy.bpmn.engines.BPMNEngine;
+import betsy.common.engines.Nameable;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.nio.file.Path;
@@ -8,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BPMNProcess implements Cloneable, Comparable {
+public class BPMNProcess implements Cloneable, Comparable, Nameable {
 
     @Override
     protected Object clone() {

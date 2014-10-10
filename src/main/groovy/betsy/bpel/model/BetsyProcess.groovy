@@ -1,11 +1,12 @@
 package betsy.bpel.model
 
 import betsy.bpel.engines.Engine
+import betsy.common.engines.Nameable
 import betsy.common.model.TestCase
 
 import java.nio.file.Path
 
-class BetsyProcess implements Cloneable, Comparable {
+class BetsyProcess implements Cloneable, Comparable, Nameable {
 
     Path bpel
 

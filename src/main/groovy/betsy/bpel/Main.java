@@ -6,6 +6,7 @@ import betsy.bpel.cli.ProcessParser;
 import betsy.common.config.Configuration;
 import betsy.bpel.corebpel.CoreBPELEngineExtension;
 import betsy.bpel.model.BetsyProcess;
+import betsy.common.engines.Nameable;
 import betsy.common.model.TestCase;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.LocalEngine;
@@ -196,10 +197,10 @@ public class Main {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<Engine> engines, final List<BetsyProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<Engine> engines, List<BetsyProcess> processes) {
         // print selection of engines and processes
-        log.info("Engines " + engines.size() + ": " + engines.stream().map(Engine::getName).collect(Collectors.joining(", ")));
-        log.info("Processes " + processes.size() + ": " + processes.stream().map(BetsyProcess::getName).collect(Collectors.joining(", ")));
+        log.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
+        log.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
     protected static void customPartnerAddress(CliParser parser) {

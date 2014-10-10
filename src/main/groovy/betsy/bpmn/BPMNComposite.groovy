@@ -60,7 +60,7 @@ class BPMNComposite {
         }
     }
 
-    protected createReports() {
+    protected void createReports() {
         log testSuite.reportsPath, {
             new BPMNReporter(testSuite).createReports()
             new Analyzer(testSuite.csvFilePath,
