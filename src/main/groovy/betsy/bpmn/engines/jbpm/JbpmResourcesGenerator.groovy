@@ -21,7 +21,7 @@ class JbpmResourcesGenerator {
         //setup directories
         FileTasks.mkdirs(destDir.resolve("src").resolve("main").resolve("java"))
         FileTasks.mkdirs(destDir.resolve("src").resolve("test").resolve("java"))
-        FileTasks.mkdirs(destDir.resolve("src").resolve("test").resolve("resources"))
+        FileTasks.mkdirs(resDir)
 
         //copy files
         ant.copy(todir: resDir.resolve("META-INF")){
@@ -31,11 +31,10 @@ class JbpmResourcesGenerator {
             fileset(file: jbpmSrcDir.resolve("project.imports")){ }
         }
 
-        //generate pom.xml
-        generatePom()
+        generatePomXml()
     }
 
-    private void generatePom(){
+    private void generatePomXml(){
         FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/jbpm/pom.xml"), destDir)
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("GROUP_ID", groupId)

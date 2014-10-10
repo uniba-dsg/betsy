@@ -5,7 +5,7 @@ import configuration.bpmn.BPMNProcessRepository
 
 class BPMNCliParser {
     private CliBuilder cli
-    private def options
+    private OptionAccessor options
 
     public BPMNCliParser(){
         BPMNEngineRepository engineRepository = new BPMNEngineRepository()
