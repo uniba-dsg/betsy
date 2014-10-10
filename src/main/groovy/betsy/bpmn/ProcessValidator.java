@@ -12,15 +12,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
-/**
- * Created by joerg on 10.10.2014.
- */
 public class ProcessValidator {
 
-    List<BPMNProcess> processes;
+    private List<BPMNProcess> processes;
+
+    private DocumentBuilder builder;
+
+    private XPath xpath;
 
     public void validate() {
         String[] args = {"ALL"};
@@ -29,24 +29,41 @@ public class ProcessValidator {
     }
 
     private void assertNamingConventionsCorrect() {
+        try {
+            setUpXmlObjects();
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException("Could not validate process files",e);
+        }
 
         for (BPMNProcess process : processes) {
             try {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
                 Document doc = builder.parse(process.getResourceFile().toString());
-                XPathFactory xPathfactory = XPathFactory.newInstance();
-                XPath xpath = xPathfactory.newXPath();
-                xpath.setNamespaceContext(new BPMNNamespaceContext());
-                XPathExpression expr = xpath.compile("//*[local-name() = 'definitions' and @id='" + process.getName() + "Test']");
-                NodeList nodeList = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+
+                XPathExpression definitionExpression = xpath.compile("//*[local-name() = 'definitions' and @id='" + process.getName() + "Test']");
+                NodeList nodeList = (NodeList) definitionExpression.evaluate(doc, XPathConstants.NODESET);
                 if (nodeList.getLength() != 1) {
                     throw new IllegalStateException("No definitions element with id '" + process.getName() + "Test' found in process " + process.getName());
                 }
-            } catch (ParserConfigurationException | SAXException | XPathExpressionException | IOException e) {
+
+                XPathExpression processExpression = xpath.compile("//*[local-name() = 'process' and @id='" + process.getName() + "']");
+                nodeList = (NodeList) processExpression.evaluate(doc, XPathConstants.NODESET);
+                if (nodeList.getLength() != 1) {
+                    throw new IllegalStateException("No process element with id '" + process.getName() + "' found in process " + process.getName());
+                }
+
+            } catch ( SAXException | XPathExpressionException | IOException e) {
                 throw new IllegalStateException("Validation failed for file " + process.getResourceFile().toString(), e);
             }
         }
 
+
+    }
+
+    private void setUpXmlObjects() throws ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        builder = factory.newDocumentBuilder();
+        XPathFactory xPathfactory = XPathFactory.newInstance();
+        xpath = xPathfactory.newXPath();
+        xpath.setNamespaceContext(new BPMNNamespaceContext());
     }
 }
