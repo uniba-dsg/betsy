@@ -74,7 +74,13 @@ public class TestSuite {
     }
 
     public int getProcessesCount() {
-        return (int) engines.stream().map(e -> e.getProcesses().size()).count();
+        int result = 0;
+
+        for (Engine engine : getEngines()) {
+            result += engine.getProcesses().size();
+        }
+
+        return result;
     }
 
     @Override
