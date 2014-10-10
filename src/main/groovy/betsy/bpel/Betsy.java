@@ -27,9 +27,7 @@ public class Betsy {
     }
 
     private void validate() {
-        Validator validator = new Validator();
-        validator.setProcesses(processes);
-        validator.validate();
+        new Validator(processes).validate();
     }
 
     public List<Engine> getEngines() {

@@ -10,7 +10,11 @@ import java.nio.file.Path
  */
 class Validator {
 
-    List<BetsyProcess> processes
+    private final List<BetsyProcess> processes
+
+    Validator(List<BetsyProcess> processes) {
+        this.processes = processes
+    }
 
     public void validate() {
         // checks for two processes referencing the same BPEL file
