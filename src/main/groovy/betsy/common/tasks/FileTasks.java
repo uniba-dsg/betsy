@@ -42,13 +42,13 @@ public class FileTasks {
         if (Files.isDirectory(directory)) {
             try {
                 FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
-            } catch (IOException e) {
-                log.info("Deletion failed -> retrying after short wait, reason: " + e.getMessage());
+            } catch (IOException outerException) {
+                log.info("Deletion failed -> retrying after short wait, reason: " + outerException.getMessage());
                 WaitTasks.sleep(3000);
                 try {
                     FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
-                } catch (IOException e1) {
-                    throw new IllegalStateException("could not delete directory " + directory, e);
+                } catch (IOException innerException) {
+                    throw new IllegalStateException("could not delete directory " + directory, innerException);
                 }
             }
         } else {
