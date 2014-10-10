@@ -10,6 +10,8 @@ import java.util.List;
 
 public class BPMNBetsy {
     public void execute() throws Exception {
+        new ProcessValidator().validate();
+
         Collections.sort(processes);
         BPMNTestSuite testSuite = BPMNTestSuite.createTests(engines, processes);
 

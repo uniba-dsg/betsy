@@ -71,6 +71,10 @@ public class BPMNProcess implements Cloneable, Comparable, Nameable {
         return Paths.get("src/main/tests/files/bpmn").resolve(group);
     }
 
+    public Path getResourceFile() {
+        return Paths.get("src/main/tests/files/bpmn").resolve(group).resolve(name + ".bpmn");
+    }
+
     /**
      * The path <code>test/$engine/$process</code>
      *
