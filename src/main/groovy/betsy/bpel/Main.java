@@ -3,18 +3,18 @@ package betsy.bpel;
 import betsy.bpel.cli.CliParser;
 import betsy.bpel.cli.EngineParser;
 import betsy.bpel.cli.ProcessParser;
-import betsy.common.config.Configuration;
 import betsy.bpel.corebpel.CoreBPELEngineExtension;
-import betsy.bpel.model.BetsyProcess;
-import betsy.common.engines.Nameable;
-import betsy.common.model.TestCase;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.LocalEngine;
-import betsy.bpel.ws.TestPartnerServicePublisherExternal;
+import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.engines.VirtualEngine;
 import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
 import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
+import betsy.bpel.ws.TestPartnerServicePublisherExternal;
+import betsy.common.config.Configuration;
+import betsy.common.engines.Nameable;
+import betsy.common.model.TestCase;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -169,6 +169,7 @@ public class Main {
     }
 
     private static void testBindabilityOfInternalPartnerService(CliParser parser, Betsy betsy) {
+
         if (!parser.useExternalPartnerService()) {
             // test the correctness
             try {
