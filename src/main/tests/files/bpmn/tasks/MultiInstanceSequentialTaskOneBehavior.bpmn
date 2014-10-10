@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="MultiSequencialTaskNoneBehaviorTest">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="MultiInstanceSequentialTaskOneBehaviorTest">
   <bpmn2:signal id="Signal_1" name="Signal"/>
   <bpmn2:signalEventDefinition id="_SignalEventDefinition_4" signalRef="Signal_1"/>
-  <bpmn2:process id="MultiSequencialTaskNoneBehavior" isExecutable="true">
+  <bpmn2:process id="MultiInstanceSequentialTaskOneBehavior" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
@@ -24,7 +24,7 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Multi sequencial">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-      <bpmn2:multiInstanceLoopCharacteristics isSequential="true" behavior="None" noneBehaviorEventRef="_SignalEventDefinition_4">
+      <bpmn2:multiInstanceLoopCharacteristics isSequential="true" behavior="One" oneBehaviorEventRef="_SignalEventDefinition_4">
         <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
       </bpmn2:multiInstanceLoopCharacteristics>
       <bpmn2:script>multi</bpmn2:script>

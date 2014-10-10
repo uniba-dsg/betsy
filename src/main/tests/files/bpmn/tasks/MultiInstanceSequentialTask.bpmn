@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="MultiSequencialTaskOneBehaviorTest">
-  <bpmn2:signal id="Signal_1" name="Signal"/>
-  <bpmn2:signalEventDefinition id="_SignalEventDefinition_4" signalRef="Signal_1"/>
-  <bpmn2:process id="MultiSequencialTaskOneBehavior" isExecutable="true">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="MultiInstanceSequentialTaskTest">
+  <bpmn2:process id="MultiInstanceSequentialTask" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
     </bpmn2:endEvent>
     <bpmn2:startEvent id="StartEvent_1" name="Start">
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -24,26 +23,12 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Multi sequencial">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-      <bpmn2:multiInstanceLoopCharacteristics isSequential="true" behavior="One" oneBehaviorEventRef="_SignalEventDefinition_4">
+      <bpmn2:multiInstanceLoopCharacteristics isSequential="true">
         <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
       </bpmn2:multiInstanceLoopCharacteristics>
       <bpmn2:script>multi</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="ScriptTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ScriptTask_1" targetRef="end"/>
-    <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="ScriptTask_1">
-      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-      <bpmn2:signalEventDefinition id="_SignalEventDefinition_3" signalRef="Signal_1"/>
-    </bpmn2:boundaryEvent>
-    <bpmn2:scriptTask id="ScriptTask_2" name="Signaled">
-      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
-      <bpmn2:script>signaled</bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="BoundaryEvent_1" targetRef="ScriptTask_2"/>
-    <bpmn2:endEvent id="EndEvent_1">
-      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
-    </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ScriptTask_2" targetRef="EndEvent_1"/>
   </bpmn2:process>
 </bpmn2:definitions>

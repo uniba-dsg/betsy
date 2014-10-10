@@ -34,28 +34,28 @@ class BPMNTaskProcesses {
     )
 
     public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL = builder.buildTaskProcess(
-            "MultiSequencialTask", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
+            "MultiInstanceSequentialTask", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
             [
                     new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
             ]
     )
 
     public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL_NONE = builder.buildTaskProcess(
-            "MultiSequencialTaskNoneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to none",
+            "MultiInstanceSequentialTaskNoneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to none",
             [
                     new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSignaled().assertSignaled().assertSignaled()
             ]
     )
 
     public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL_ONE = builder.buildTaskProcess(
-            "MultiSequencialTaskOneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to one",
+            "MultiInstanceSequentialTaskOneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to one",
             [
                     new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSignaled()
             ]
     )
 
     public static final BPMNProcess MULTI_INSTANCE_PARALLEL = builder.buildTaskProcess(
-            "MultiParallelTask", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
+            "MultiInstanceParallelTask", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
             [
                     new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
             ]
