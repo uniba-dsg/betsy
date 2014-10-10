@@ -67,7 +67,7 @@ class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("jbpmdeployer/JPBM-Deployer-1.1"), "java -jar Jbpm-deployer-1.1.jar ${process.groupId} ${process.name} ${process.version} ${systemURL}"))
 
         //waiting for the result of the deployment
-        WaitTasks.sleep(3000)
+        WaitTasks.waitForSubstringInFile(20000, 1000, jbossStandaloneDir.resolve("log").resolve("server.log"), "KieModule was added:ZipKieModule[ ReleaseId=de.uniba.dsg")
     }
 
     @Override
@@ -125,8 +125,7 @@ class JbpmEngine extends BPMNEngine {
                 ["JAVA_HOME": pathToJava7.toString()])
 
         //waiting for jbpm-console for deployment and instantiating
-        WaitTasks.sleep(60000)
-        WaitTasks.waitForAvailabilityOfUrl(60_000, 1000, getJbpmnUrl());
+        WaitTasks.waitForSubstringInFile(120000, 5000, jbossStandaloneDir.resolve("log").resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
     }
 
     @Override
