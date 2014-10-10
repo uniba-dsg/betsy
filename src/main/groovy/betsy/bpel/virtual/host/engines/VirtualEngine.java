@@ -137,6 +137,16 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         log.trace("...installation done!");
     }
 
+    @Override
+    public void uninstall() {
+        throw new UnsupportedOperationException("uninstall is not supported");
+    }
+
+    @Override
+    public boolean isInstalled() {
+        throw new UnsupportedOperationException("uninstall is not supported");
+    }
+
     private void createAndResetToLatestSnapshot() throws VirtualBoxException, InterruptedException {
         this.setHeadlessMode();
 

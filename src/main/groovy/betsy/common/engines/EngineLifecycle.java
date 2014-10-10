@@ -8,6 +8,18 @@ public interface EngineLifecycle {
     void install();
 
     /**
+     * Uninstall the engine.
+     */
+    void uninstall();
+
+    /**
+     * Is the engine currently installed?
+     *
+     * @return true if it is installed, false otherwise
+     */
+    boolean isInstalled();
+
+    /**
      * Start the engine and wait until it started.
      */
     void startup();
@@ -25,3 +37,4 @@ public interface EngineLifecycle {
     boolean isRunning();
 
 }
+

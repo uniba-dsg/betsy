@@ -31,6 +31,16 @@ public class BetsyTests {
         public void install() {
         }
 
+        @Override
+        public void uninstall() {
+
+        }
+
+        @Override
+        public boolean isInstalled() {
+            return false;
+        }
+
         public void startup() {
         }
 
