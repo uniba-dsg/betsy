@@ -63,7 +63,7 @@ class ConsoleTasks {
         }
 
         public String toString() {
-            dir + " \$ " + command + " " + getSpaceSeparatedValues()
+            dir.toString() + " \$ " + command + " " + getSpaceSeparatedValues()
         }
 
         private String getSpaceSeparatedValues() {
