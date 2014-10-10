@@ -7,6 +7,8 @@ import java.nio.file.Path
 
 class BPMNTestBuilder {
 
+    public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\""
+
     String packageString
     Path logDir
     BPMNProcess process
@@ -18,9 +20,9 @@ class BPMNTestBuilder {
             String logFilePath = logDir.resolve("log${testCase.number}.txt").toUri().toString().substring(8)
 
             //assemble array of assertion for unitTestString
-            String assertionListString = getAssertionString(testCase)
+            String assertionListString = getAssertionString(testCase.getAssertions())
 
-            Path testClass = process.targetTestSrcPath.resolve("case${testCase.number}").resolve(packageString.replace('.', '/')).resolve("${process.name}.java")
+            Path testClass = process.getTargetTestSrcPathWithCase(testCase.number).resolve(packageString.replace('.', '/')).resolve(process.name + ".java")
 
             FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/ProcessTestClass.template"), testClass)
 
@@ -35,19 +37,13 @@ class BPMNTestBuilder {
         }
     }
 
-    private String getAssertionString(BPMNTestCase testCase){
-        List<String> assertionList = testCase.assertions
+    public static String getAssertionString(List<String> assertions){
+        StringJoiner joiner = new StringJoiner(",", "{", "}")
 
-        String result = "{";
-
-        if (assertionList.size() > 0) {
-            for (String assertString : assertionList) {
-                result = result + "\"" + assertString + "\","
-            }
-            result = result.substring(0, (result.length() - 1))
+        for(String string : assertions) {
+            joiner.add(ESCAPED_DOUBLE_QUOTATION_MARK + string + ESCAPED_DOUBLE_QUOTATION_MARK);
         }
 
-        result = result + "}"
-        return result
+        return joiner.toString();
     }
 }
