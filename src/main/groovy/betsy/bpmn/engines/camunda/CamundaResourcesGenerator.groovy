@@ -46,7 +46,7 @@ class CamundaResourcesGenerator {
 
         // generate and compile sources
         generateServletProcessApplication(srcDestDir)
-        ant.javac(srcdir: srcDestDir, destdir: classesDir, includeantruntime: false) {
+        ant.javac(srcdir: srcDestDir, destdir: classesDir, includeantruntime: false, source: "1.7", target: "1.7") {
             classpath{
                 pathelement(location: Configuration.getDownloadsDir().resolve("camunda-engine-7.0.0-Final.jar"))
                 pathelement(location: Configuration.getDownloadsDir().resolve("javaee-api-7.0.jar"))
