@@ -92,7 +92,7 @@ public class CsvReport {
     }
 
     private Path file;
-    private final SortedMap<String, Test> nameToTest = new TreeMap<String, Test>();
-    private final SortedMap<String, Group> nameToGroup = new TreeMap<String, Group>();
-    private final SortedMap<String, Engine> nameToEngine = new TreeMap<String, Engine>();
+    private final SortedMap<String, Test> nameToTest = new TreeMap<>();
+    private final SortedMap<String, Group> nameToGroup = new TreeMap<>();
+    private final SortedMap<String, Engine> nameToEngine = new TreeMap<>();
 }

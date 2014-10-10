@@ -47,5 +47,5 @@ public class Test implements Comparable<Test> {
     }
 
     private String name;
-    private SortedMap<Engine, Result> engineToResult = new TreeMap<Engine, Result>();
+    private SortedMap<Engine, Result> engineToResult = new TreeMap<>();
 }

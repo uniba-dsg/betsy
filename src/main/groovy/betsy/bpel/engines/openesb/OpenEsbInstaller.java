@@ -23,7 +23,7 @@ public class OpenEsbInstaller {
 
         Path stateXmlPath = serverDir.resolve("state.xml").toAbsolutePath();
         FileTasks.copyFileContentsToNewFile(stateXmlTemplate, stateXmlPath);
-        Map<String, Object> replacements = new HashMap<String, Object>();
+        Map<String, Object> replacements = new HashMap<>();
         replacements.put("INSTALL_PATH", serverDir.toAbsolutePath());
         replacements.put("JDK_LOCATION", System.getenv().get("JAVA_HOME"));
         replacements.put("HTTP_PORT", 8383);

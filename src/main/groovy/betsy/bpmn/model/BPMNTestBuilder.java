@@ -22,7 +22,7 @@ public class BPMNTestBuilder {
 
             FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/ProcessTestClass.template"), testClass);
 
-            HashMap<String, String> replacements = new HashMap<String, String>();
+            HashMap<String, String> replacements = new HashMap<>();
             replacements.put("PROCESS_NAME", process.getName());
             replacements.put("PACKAGE_STRING", packageString);
             replacements.put("TEST_CASE", testCase.toString());

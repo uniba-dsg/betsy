@@ -90,5 +90,5 @@ public abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineA
     }
 
     private Path parentFolder;
-    private final List<BPMNProcess> processes = new ArrayList<BPMNProcess>();
+    private final List<BPMNProcess> processes = new ArrayList<>();
 }

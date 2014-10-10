@@ -42,7 +42,7 @@ public class ActivitiTester {
         log.info("Start process instance for " + id);
         String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
 
-        Map<String, Object> request = new HashMap<String, Object>();
+        Map<String, Object> request = new HashMap<>();
         request.put("processDefinitionKey", id);
         request.put("variables", variables);
         request.put("businessKey", "key-" + id);
