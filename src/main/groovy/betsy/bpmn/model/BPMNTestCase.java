@@ -91,7 +91,7 @@ public class BPMNTestCase {
         return addAssertions("lane2");
     }
 
-    public BPMNTestCase assertMulti() {
+    public BPMNTestCase assertInstanceExecution() {
         return addAssertions("multi");
     }
 

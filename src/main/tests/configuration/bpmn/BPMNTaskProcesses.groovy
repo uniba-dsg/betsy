@@ -6,72 +6,76 @@ import betsy.bpmn.model.BPMNTestCase
 class BPMNTaskProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
-    public static final BPMNProcess SIMPLE = builder.buildTaskProcess(
-            "SequenceFlow", "A Test for the basic process using a script task",
+    public static final BPMNProcess SEQUENCE_FLOW = builder.buildTaskProcess(
+            "SequenceFlow", "A process with two scriptTasks connected by sequenceFlows",
             [
                     new BPMNTestCase().assertSuccess()
             ]
     )
 
-    public static final BPMNProcess SEQUENCE_CONDITIONAL = builder.buildTaskProcess(
-            "SequenceFlowConditional", "A Test for a conditional sequence flow",
+    public static final BPMNProcess SEQUENCE_FLOW_CONDITIONAL = builder.buildTaskProcess(
+            "SequenceFlowConditional", "A process with three scriptTasks connected by sequenceFlows. " +
+            "The first scriptTask points to the other task with sequenceFlows. " +
+            "One of these sequenceFlows is associated with a conditionExpression",
             [
                     new BPMNTestCase(1).inputA().assertSuccess().assertCondition(),
                     new BPMNTestCase(2).inputB().assertSuccess()
             ]
     )
 
-    public static final BPMNProcess SEQUENCE_CONDITIONAL_DEFAULT = builder.buildTaskProcess(
-            "SequenceFlowConditionalDefault", "A Test for a conditional and a default sequence flow",
+    public static final BPMNProcess SEQUENCE_FLOW_CONDITIONAL_DEFAULT = builder.buildTaskProcess(
+            "SequenceFlowConditionalDefault", "A process with three scriptTasks connected by sequenceFlows. " +
+            "The first scriptTask points to the other task with sequenceFlows. " +
+            "One of these sequenceFlows is associated with a conditionExpression, the other one is marked as default",
             [
                     new BPMNTestCase(1).inputA().assertCondition(),
                     new BPMNTestCase(2).inputB().assertSuccess()
             ]
     )
 
-    public static final BPMNProcess MULTI_SEQUENTIAL = builder.buildTaskProcess(
-            "MultiSequencialTask", "A simple Test for a 3 times sequentially instantiated script task",
+    public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL = builder.buildTaskProcess(
+            "MultiSequencialTask", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
             [
-                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSuccess()
+                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
             ]
     )
 
-    public static final BPMNProcess MULTI_SEQUENTIAL_NONE = builder.buildTaskProcess(
-            "MultiSequencialTaskNoneBehavior", "A Test for a 3 times sequentially instantiated script task with a none multi instance behavior",
+    public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL_NONE = builder.buildTaskProcess(
+            "MultiSequencialTaskNoneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to none",
             [
-                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSignaled().assertSignaled().assertSignaled()
+                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSignaled().assertSignaled().assertSignaled()
             ]
     )
 
-    public static final BPMNProcess MULTI_SEQUENTIAL_ONE = builder.buildTaskProcess(
-            "MultiSequencialTaskOneBehavior", "A Test for a 3 times sequentially instantiated script task with a one multi instance behavior",
+    public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL_ONE = builder.buildTaskProcess(
+            "MultiSequencialTaskOneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to one",
             [
-                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSignaled()
+                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSignaled()
             ]
     )
 
-    public static final BPMNProcess MULTI_PARALLEL = builder.buildTaskProcess(
-            "MultiParallelTask", "A simple Test for a 3 times parallel instantiated script task",
+    public static final BPMNProcess MULTI_INSTANCE_PARALLEL = builder.buildTaskProcess(
+            "MultiParallelTask", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
             [
-                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSuccess()
+                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
             ]
     )
 
     public static final BPMNProcess LOOP = builder.buildTaskProcess(
-            "LoopTask", "A simple Test for a 3 times looped script task",
+            "LoopTask", "A scriptTask with standardLoopCharacteristics and a loopMaximum set to three",
             [
-                    new BPMNTestCase().assertMulti().assertMulti().assertMulti().assertSuccess()
+                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
             ]
     )
 
     public static final List<BPMNProcess> TASKS = [
-            SIMPLE,
-            SEQUENCE_CONDITIONAL,
-            SEQUENCE_CONDITIONAL_DEFAULT,
-            MULTI_SEQUENTIAL,
-            MULTI_SEQUENTIAL_NONE,
-            MULTI_SEQUENTIAL_ONE,
-            MULTI_PARALLEL,
+            SEQUENCE_FLOW,
+            SEQUENCE_FLOW_CONDITIONAL,
+            SEQUENCE_FLOW_CONDITIONAL_DEFAULT,
+            MULTI_INSTANCE_SEQUENTIAL,
+            MULTI_INSTANCE_SEQUENTIAL_NONE,
+            MULTI_INSTANCE_SEQUENTIAL_ONE,
+            MULTI_INSTANCE_PARALLEL,
             LOOP
     ].flatten() as List<BPMNProcess>
 }
