@@ -2,7 +2,6 @@ package betsy.common.util;
 
 import betsy.common.logging.LogContext;
 import betsy.common.tasks.FileTasks;
-import groovy.lang.Closure;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
@@ -14,7 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class LogUtil {
-    public static Object log(final String name, Logger logger, Closure closure) {
+    public static void log(final String name, Logger logger, Runnable closure) {
         String previous = LogContext.getContext();
         try {
             LogContext.setContext(name);
@@ -26,12 +25,12 @@ public class LogUtil {
             stopwatch.start();
 
             try {
-                return closure.call();
+                closure.run();
             } finally {
                 stopwatch.stop();
                 logger.info("... finished in " + stopwatch.getFormattedDiff() + " | (" + stopwatch.getDiff() + "ms)");
                 Path timingsCsv = Paths.get("test/timings.csv");
-                try(BufferedWriter writer = Files.newBufferedWriter(timingsCsv,StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
+                try (BufferedWriter writer = Files.newBufferedWriter(timingsCsv, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
                     writer.append(String.valueOf(stopwatch.getDiff()));
                     writer.append(";");
                     writer.append(name);
@@ -50,8 +49,8 @@ public class LogUtil {
 
     }
 
-    public static Object log(Path path, Logger logger, Closure closure) {
-        return log(path.toString(), logger, closure);
+    public static void log(Path path, Logger logger, Runnable closure) {
+        log(path.toString(), logger, closure);
     }
 
 }

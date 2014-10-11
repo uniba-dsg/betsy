@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class IOCapture {
-    public static void captureIO(Closure closure) {
+    public static void captureIO(Runnable closure) {
         //stdout
         ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
         PrintStream newOut = new PrintStream(bufOut);
