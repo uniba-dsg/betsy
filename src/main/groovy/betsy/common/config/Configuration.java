@@ -41,6 +41,14 @@ public class Configuration {
         return Paths.get(properties.getProperty("ant.home"));
     }
 
+    public static Path getMavenHome() {
+        return Paths.get(properties.getProperty("maven.home"));
+    }
+
+    public static Path getJbpmDeployerHome() {
+        return Paths.get(properties.getProperty("jbpmdeployer.home"));
+    }
+
     static {
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("config.properties"), StandardCharsets.UTF_8)) {

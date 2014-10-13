@@ -55,9 +55,10 @@ public class JbpmEngine extends BPMNEngine {
     @Override
     public void deploy(final BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
-        final Path mavenPath = Paths.get("maven/apache-maven-3.2.1/bin");
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), String.valueOf(mavenPath.toAbsolutePath()) + "/mvn -q clean install"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), String.valueOf(mavenPath.toAbsolutePath()) + "/mvn -q clean install"));
+        final Path mavenPath = Configuration.getMavenHome().resolve("bin");
+        final String mvnCommand = String.valueOf(mavenPath.toAbsolutePath()) + "/mvn -q clean install";
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
 
         //wait for maven to deploy
         WaitTasks.sleep(1500);
@@ -68,8 +69,11 @@ public class JbpmEngine extends BPMNEngine {
         FileTasks.createFile(Paths.get(getHomeDir() + "/.ssh/config"), "Host localhost\n    StrictHostKeyChecking no");
 
         //deploy by creating a deployment unit, which can be started
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("jbpmdeployer/JPBM-Deployer-1.1"), "java -jar Jbpm-deployer-1.1.jar " + process.getGroupId() + " " + process.getName() + " " + process.getVersion() + " " + getSystemURL()));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("jbpmdeployer/JPBM-Deployer-1.1"), "java -jar Jbpm-deployer-1.1.jar " + process.getGroupId() + " " + process.getName() + " " + process.getVersion() + " " + getSystemURL()));
+        final Path jbpmDeployerPath = Configuration.getJbpmDeployerHome();
+        final String deployCommand = "java -jar " + Configuration.get("jbpmdeployer.jar") + " "
+                + process.getGroupId() + " " + process.getName() + " " + process.getVersion() + " " + getSystemURL();
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
 
         //waiting for the result of the deployment
         WaitTasks.waitForSubstringInFile(20000, 1000, getJbossStandaloneDir().resolve("log").resolve("server.log"), "de.uniba.dsg");
@@ -83,7 +87,6 @@ public class JbpmEngine extends BPMNEngine {
         FileTasks.deleteFile(process.getTargetPath().resolve("war/WEB-INF/classes/" + process.getName() + ".bpmn2-temp"));
 
         JbpmResourcesGenerator generator = new JbpmResourcesGenerator();
-
 
         generator.setJbpmSrcDir(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/jbpm"));
         generator.setDestDir(process.getTargetPath().resolve("project"));
