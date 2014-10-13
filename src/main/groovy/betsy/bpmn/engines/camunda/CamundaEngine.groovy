@@ -34,7 +34,8 @@ class CamundaEngine extends BPMNEngine {
         FileTasks.copyFileIntoFolder(process.targetPath.resolve("war").resolve("${process.name}.war"), tomcatDir.resolve("webapps"))
 
         //wait until it is deployed
-        WaitTasks.sleep(15000)
+        Path logFile = FileTasks.findFirstMatchInFolder(getTomcatDir().resolve("logs"), "catalina*")
+        WaitTasks.waitForSubstringInFile(15000, 500, logFile, "Process Application " + process.getName() + " Application successfully deployed.")
     }
 
     @Override
