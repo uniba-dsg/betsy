@@ -130,7 +130,7 @@ public class Configuration {
         }
 
         if (!Files.isDirectory(java7home)) {
-            throw new ConfigurationException("Found [" + java7home + "] for key [java7.home] " + "Path to JAVA_HOME for Java 7 directory");
+            throw new ConfigurationException("Found [" + java7home + "] for key [java7.home] " + "Path to JAVA_HOME, but the directory does not exist!");
         }
 
         return java7home;
@@ -149,7 +149,7 @@ public class Configuration {
         }
 
         if (!Files.isDirectory(jre7home)) {
-            throw new ConfigurationException("Found [" + jre7home + "] for key [jre7.home] " + "Path to JRE_HOME for Java 7 directory");
+            throw new ConfigurationException("Found [" + jre7home + "] for key [jre7.home] " + "Path to JRE_HOME, but the directory does not exist!");
         }
 
         return jre7home;
