@@ -35,6 +35,9 @@ class CamundaEngine extends BPMNEngine {
 
         //wait until it is deployed
         Path logFile = FileTasks.findFirstMatchInFolder(getTomcatDir().resolve("logs"), "catalina*")
+        if(logFile == null) {
+            throw new IllegalStateException("Could not find catalina log file in " + getTomcatDir().resolve("logs"))
+        }
         WaitTasks.waitForSubstringInFile(15000, 500, logFile, "Process Application " + process.getName() + " Application successfully deployed.")
     }
 
