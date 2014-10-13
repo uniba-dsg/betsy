@@ -206,7 +206,9 @@ public class FileTasks {
         }
 
         try {
-            return Files.newDirectoryStream(folder, glob).iterator().next();
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, glob)) {
+                return stream.iterator().next();
+            }
         } catch (IOException e) {
             throw new RuntimeException("could not iterate in folder " + folder, e);
         }
