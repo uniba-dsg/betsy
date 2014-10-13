@@ -5,7 +5,6 @@ import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.model.BPMNTestCaseVariable
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
-import org.json.JSONObject
 import org.kie.api.runtime.KieSession
 import org.kie.api.runtime.manager.RuntimeEngine
 import org.kie.api.runtime.process.ProcessInstance
@@ -52,6 +51,7 @@ class JbpmTester {
                 if (instance.getState() == ProcessInstance.STATE_ABORTED) {
                     BPMNTester.appendToFile(getFileName(), "thrownErrorEvent");
                 }
+                //TODO use log files instead of this api
 
                 //delay for timer intermediate event
                 WaitTasks.sleep(testCase.delay)
