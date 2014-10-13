@@ -8,6 +8,7 @@ import java.nio.file.Path
 public class BPMNTester {
 
     public static void setupPathToToolsJarForJavacAntTask(Object object) {
+        // required for javac task in Apache Ant
         String javaHome = System.getProperty("java.home");
         if (javaHome.endsWith("jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
