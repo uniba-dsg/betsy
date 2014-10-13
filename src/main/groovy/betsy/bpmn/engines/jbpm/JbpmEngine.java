@@ -7,6 +7,7 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
+import betsy.common.util.ClasspathHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -84,7 +85,7 @@ public class JbpmEngine extends BPMNEngine {
         JbpmResourcesGenerator generator = new JbpmResourcesGenerator();
 
 
-        generator.setJbpmSrcDir(Paths.get("src/main/tests/files/bpmnRes/jbpm"));
+        generator.setJbpmSrcDir(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/jbpm"));
         generator.setDestDir(process.getTargetPath().resolve("project"));
         generator.setProcessName(process.getName());
         generator.setGroupId(process.getGroupId());
