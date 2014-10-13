@@ -1,6 +1,7 @@
 package betsy.common.config;
 
 import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -122,11 +123,11 @@ public class Configuration {
         String java7env = System.getenv("JAVA7_HOME");
         Path java7home;
 
-        if(java7env!=null) {
+        if (java7env != null) {
             java7home = Paths.get(java7env);
-        } else{
+        } else {
             // Fallback to properties file
-            java7home  = Paths.get(properties.getProperty("java7.home"));
+            java7home = Paths.get(properties.getProperty("java7.home"));
         }
 
         if (!Files.isDirectory(java7home)) {
@@ -139,19 +140,31 @@ public class Configuration {
     public static Path getJre7Home() {
         // Trying to determine JDK7 Path using SysEnv
         String jre7env = System.getenv("JRE7_HOME");
-        Path jre7home;
+        Path result;
 
-        if(jre7env!=null) {
-            jre7home = Paths.get(jre7env);
-        } else{
+        if (jre7env != null) {
+            result = Paths.get(jre7env);
+        } else {
             // Fallback to properties file
-            jre7home  = Paths.get(properties.getProperty("jre7.home"));
+            result = Paths.get(properties.getProperty("jre7.home"));
         }
 
-        if (!Files.isDirectory(jre7home)) {
-            throw new ConfigurationException("Found [" + jre7home + "] for key [jre7.home] " + "Path to JRE_HOME, but the directory does not exist!");
+        if (!Files.isDirectory(result)) {
+            log.info("Found [" + result + "] for key [jre7.home] " + "Path to JRE_HOME, but the directory does not exist! -> trying JDK7 HOME");
+
+
+            Path jreInJava7Home = getJava7Home().resolve("jre");
+
+            if(!Files.isDirectory(jreInJava7Home)) {
+                throw new ConfigurationException("No JRE of Java 7 could be found!");
+            }
+
+            result = jreInJava7Home;
         }
 
-        return jre7home;
+        return result;
     }
+
+    private static final Logger log = Logger.getLogger(Configuration.class);
+
 }
