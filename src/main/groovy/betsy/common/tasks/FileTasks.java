@@ -199,7 +199,7 @@ public class FileTasks {
     }
 
     public static Path findFirstMatchInFolder(Path folder, String glob) {
-        log.info("Finding first file in dir ${folder} with pattern ${glob}");
+        log.info("Finding first file in dir [" + folder + "] with pattern [" + glob + "]");
 
         try {
             FileTasks.assertDirectory(folder);
