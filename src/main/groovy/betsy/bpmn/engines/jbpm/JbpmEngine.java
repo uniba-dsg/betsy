@@ -141,7 +141,7 @@ public class JbpmEngine extends BPMNEngine {
 
         try {
             //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(60000, 1000, getJbossStandaloneDir().resolve("log").resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(60000, 5000, getJbossStandaloneDir().resolve("log").resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
