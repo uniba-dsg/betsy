@@ -5,10 +5,9 @@ import betsy.bpmn.model.BPMNTestCase
 import betsy.bpmn.model.BPMNTestCaseVariable
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
-import groovy.io.FileType
-import net.sf.json.JSONArray
 import org.json.JSONObject
 
+import java.nio.file.Files
 import java.nio.file.Path
 
 class CamundaTester {
@@ -29,26 +28,14 @@ class CamundaTester {
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
-        //look up log for deployment error caused by unsupported activity type
-        String unsupportedMessage = null
-        File dir = new File(logDir.toString())
-        dir.eachFile(FileType.FILES) { file ->
-            if (file.name.contains("catalina")) {
-                BufferedReader br = new BufferedReader(new FileReader(file))
-                br.eachLine(150) { line ->
-                    if (line.contains("Ignoring unsupported activity type")) {
-                        unsupportedMessage = line
-                    }
-                    if (line.startsWith("org.camunda.bpm.engine.ProcessEngineException")) {
-                        unsupportedMessage = line
-                    }
-                    //TODO what happens in all the other cases?
-                }
-            }
-        }
+        CamundaLogFileAnalyzer analyzer = new CamundaLogFileAnalyzer(FileTasks.findFirstMatchInFolder(logDir, "catalina*"));
 
-        if (unsupportedMessage != null) {
-            BPMNTester.appendToFile(getFileName(), unsupportedMessage);
+        Set<String> deploymentErrors = analyzer.getDeploymentErrors();
+
+        if (!deploymentErrors.isEmpty()) {
+            for (String deploymentError: deploymentErrors) {
+                BPMNTester.appendToFile(getFileName(), deploymentError);
+            }
         } else {
 
             if (!testCase.selfStarting) {
@@ -66,29 +53,12 @@ class CamundaTester {
             }
 
             WaitTasks.sleep(testCase.delay)
+
+            for (String deploymentError: analyzer.getRuntimeErrors()) {
+                BPMNTester.appendToFile(getFileName(), deploymentError);
+            }
         }
 
-        //look up log for runtime exception if process could be started
-        if (unsupportedMessage == null) {
-            boolean runtimeExceptionFound = false
-            dir.eachFile(FileType.FILES) { file ->
-                if (file.name.contains("catalina")) {
-                    BufferedReader br = new BufferedReader(new FileReader(file))
-                    br.eachLine(170) { line ->
-                        if (line.startsWith("org.camunda.bpm.engine.ProcessEngineException")) {
-                            runtimeExceptionFound = true
-                        }
-                        //special case for error end event
-                        if (line.contains("EndEvent_2 throws error event with errorCode 'ERR-1'")) {
-                            BPMNTester.appendToFile(getFileName(),"thrownErrorEvent")
-                        }
-                    }
-                }
-            }
-            if (runtimeExceptionFound) {
-                BPMNTester.appendToFile(getFileName(), "runtimeException");
-            }
-        }
 
         BPMNTester.setupPathToToolsJarForJavacAntTask(this)
         BPMNTester.compileTest(testSrc, testBin)
