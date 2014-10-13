@@ -58,21 +58,11 @@ public class WaitTasks {
     }
 
     public static void waitForSubstringInFile(int untilMilliSeconds, int checkEveryMilliseconds, Path path, String substring) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return FileTasks.hasFileSpecificSubstring(path, substring);
-            }
-        });
+        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> FileTasks.hasFileSpecificSubstring(path, substring));
     }
 
     public static void waitForAvailabilityOfUrl(int untilMilliSeconds, int checkEveryMilliseconds, URL url) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return URLTasks.isUrlAvailable(url);
-            }
-        });
+        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> URLTasks.isUrlAvailable(url));
     }
 
     public static void waitForAvailabilityOfUrl(int untilMilliSeconds, int checkEveryMilliseconds, String url) {
@@ -84,12 +74,7 @@ public class WaitTasks {
     }
 
     public static void waitForContentInUrl(int untilMilliSeconds, int checkEveryMilliseconds, URL url, String substring) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return URLTasks.hasUrlSubstring(url, substring);
-            }
-        });
+        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> URLTasks.hasUrlSubstring(url, substring));
     }
 
     private static final Logger log = Logger.getLogger(WaitTasks.class);
