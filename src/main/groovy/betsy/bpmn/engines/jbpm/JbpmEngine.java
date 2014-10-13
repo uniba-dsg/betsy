@@ -10,6 +10,7 @@ import betsy.common.tasks.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
@@ -121,10 +122,10 @@ public class JbpmEngine extends BPMNEngine {
         Path pathToJava7 = Configuration.getJava7Home();
         FileTasks.assertDirectory(pathToJava7);
 
-        Map<String, String> map = new LinkedHashMap<String, String>(1);
+        Map<String, String> map = new LinkedHashMap<>(1);
         map.put("JAVA_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q start.demo.noeclipse"), map);
-        Map<String, String> map1 = new LinkedHashMap<String, String>(1);
+        Map<String, String> map1 = new LinkedHashMap<>(1);
         map1.put("JAVA_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q start.demo.noeclipse"), map1);
 
@@ -136,13 +137,17 @@ public class JbpmEngine extends BPMNEngine {
     public void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q stop.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q stop.demo"));
-        //waiting for shutdown
-        WaitTasks.sleep(5000);
-        // clean up data (with db and config files in the users home directory)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
 
-        WaitTasks.sleep(5000);
+        try {
+            //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
+            WaitTasks.waitForSubstringInFile(60000, 1000, getJbossStandaloneDir().resolve("log").resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
+
+            // clean up data (with db and config files in the users home directory)
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
+        } catch (IllegalStateException ex) {
+            //swallow
+        }
     }
 
     @Override

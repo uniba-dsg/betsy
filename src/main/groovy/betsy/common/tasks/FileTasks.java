@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Replace;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -166,11 +167,11 @@ public class FileTasks {
         return !Files.isRegularFile(file);
     }
 
-    public static boolean hasFileSpecificSubstring(Path path, String substring) {
+    public static boolean hasFileSpecificSubstring(Path path, String substring, Charset charset) {
         log.info("Searching for substring " + substring + " in file " + path.toAbsolutePath());
         try {
             assertFile(path);
-            List<String> lines = Files.readAllLines(path);
+            List<String> lines = Files.readAllLines(path, charset);
 
             for (String line : lines) {
                 if (line.contains(substring)) {
@@ -182,6 +183,10 @@ public class FileTasks {
             log.info("Could not read file " + path, e);
         }
         return false;
+    }
+
+    public static boolean hasFileSpecificSubstring(Path path, String substring) {
+        return hasFileSpecificSubstring(path, substring, Charset.defaultCharset());
     }
 
     public static void move(Path from, Path to) {
