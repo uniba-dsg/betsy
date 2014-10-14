@@ -27,7 +27,7 @@
       <bpmn2:multiInstanceLoopCharacteristics isSequential="true" behavior="None" noneBehaviorEventRef="_SignalEventDefinition_4">
         <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
       </bpmn2:multiInstanceLoopCharacteristics>
-      <bpmn2:script>multi</bpmn2:script>
+      <bpmn2:script>taskInstanceExecuted</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="ScriptTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ScriptTask_1" targetRef="end"/>

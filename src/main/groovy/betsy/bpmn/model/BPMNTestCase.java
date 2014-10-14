@@ -92,7 +92,7 @@ public class BPMNTestCase {
     }
 
     public BPMNTestCase assertInstanceExecution() {
-        return addAssertions("multi");
+        return addAssertions("taskInstanceExecuted");
     }
 
     public BPMNTestCase assertInterrupted() {

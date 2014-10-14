@@ -23,8 +23,8 @@ public class ProcessValidator {
 
     private XPath xpath;
 
-    public static final String[] ALLOWED_ASSERTIONS = new String[]{
-            "notInterrupted", "called", "errorTask", "timerInternal", "multi", "timerEvent", "default", "timerExternal",
+    public static final String[] ALLOWED_LOG_MESSAGES = new String[]{
+            "notInterrupted", "called", "errorTask", "timerInternal", "taskInstanceExecuted", "timerEvent", "default", "timerExternal",
             "signaled", "lane2", "end", "lane1", "started", "task1", "CREATE_LOG_FILE", "task2",
             "task3", "false", "subprocess", "normalTask", "interrupted", "condition", "success",
             "true", "compensate", "transaction"

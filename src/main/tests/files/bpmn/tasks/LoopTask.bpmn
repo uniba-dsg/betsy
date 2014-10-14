@@ -26,7 +26,7 @@
       <bpmn2:standardLoopCharacteristics loopMaximum="3">
         <bpmn2:loopCondition>true</bpmn2:loopCondition>
       </bpmn2:standardLoopCharacteristics>
-      <bpmn2:script>multi</bpmn2:script>
+      <bpmn2:script>taskInstanceExecuted</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="ScriptTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ScriptTask_1" targetRef="end"/>
