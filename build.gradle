@@ -67,7 +67,7 @@ dependencies {
     testCompile 'junit:junit:4.11'
 
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
-    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*', 'http*', 'commons-http*']))
 
     compile configurations.internal
     compile configurations.external
