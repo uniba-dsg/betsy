@@ -36,7 +36,7 @@ class JbpmResourcesGenerator {
 
     private void generatePomXml(){
         FileTasks.copyFileIntoFolder(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/jbpm/pom.xml"), destDir)
-        HashMap<String, String> replacements = new HashMap<>();
+        Map<String, String> replacements = new HashMap<>();
         replacements.put("GROUP_ID", groupId)
         replacements.put("PROCESS_NAME", processName)
         replacements.put("_VERSION_", version)

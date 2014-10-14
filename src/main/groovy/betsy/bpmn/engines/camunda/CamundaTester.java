@@ -66,10 +66,10 @@ public class CamundaTester {
     }
 
     private void addRuntimeErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer2 = new LogFileAnalyzer(logFile);
-        analyzer2.addSubstring("Ignoring unsupported activity type");
-        analyzer2.addSubstring("org.camunda.bpm.engine.ProcessEngineException");
-        for (String deploymentError : analyzer2.getErrors()) {
+        LogFileAnalyzer logFileAnalyzer = new LogFileAnalyzer(logFile);
+        logFileAnalyzer.addSubstring("Ignoring unsupported activity type");
+        logFileAnalyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException");
+        for (String deploymentError : logFileAnalyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
         }
     }
