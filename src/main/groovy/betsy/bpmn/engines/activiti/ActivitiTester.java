@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
@@ -23,15 +24,42 @@ public class ActivitiTester {
         FileTasks.mkdirs(testBin);
         FileTasks.mkdirs(reportPath);
 
+        Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
+
+        addDeploymentErrorsToLogFile(logFile);
+
         if (!testCase.getSelfStarting()) {
-            startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
+            try {
+                startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
+            } catch (Exception e) {
+                log.info("Could not start test case", e);
+            }
         }
 
         WaitTasks.sleep(testCase.getDelay());
+        addRuntimeErrorsToLogFile(logFile);
 
         BPMNTester.setupPathToToolsJarForJavacAntTask(this);
         BPMNTester.compileTest(testSrc, testBin);
         BPMNTester.executeTest(testSrc, testBin, reportPath);
+    }
+
+    private void addDeploymentErrorsToLogFile(Path logFile) {
+        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
+        analyzer.addSubstring("org.activiti.engine.ActivitiException", "runtimeException");
+        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", "thrownErrorEvent");
+        for (String deploymentError : analyzer.getErrors()) {
+            BPMNTester.appendToFile(getFileName(), deploymentError);
+        }
+    }
+
+    private void addRuntimeErrorsToLogFile(Path logFile) {
+        LogFileAnalyzer analyzer2 = new LogFileAnalyzer(logFile);
+        analyzer2.addSubstring("Ignoring unsupported activity type");
+        analyzer2.addSubstring("org.activiti.engine.ActivitiException");
+        for (String deploymentError : analyzer2.getErrors()) {
+            BPMNTester.appendToFile(getFileName(), deploymentError);
+        }
     }
 
     private Path getFileName() {

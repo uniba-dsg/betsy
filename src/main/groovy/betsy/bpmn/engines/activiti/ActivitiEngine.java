@@ -48,7 +48,11 @@ public class ActivitiEngine extends BPMNEngine {
 
     public static void deployBpmnProcess(Path bpmnFile) {
         log.info("Deploying file " + bpmnFile.toAbsolutePath());
-        JsonHelper.post(URL + "/service/repository/deployments", bpmnFile, 201);
+        try {
+            JsonHelper.post(URL + "/service/repository/deployments", bpmnFile, 201);
+        } catch (Exception e) {
+            log.info("deployment failed", e);
+        }
     }
 
     @Override
