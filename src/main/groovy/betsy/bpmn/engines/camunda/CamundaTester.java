@@ -28,20 +28,23 @@ public class CamundaTester {
         addDeploymentErrorsToLogFile(logFile);
 
         if (!testCase.getSelfStarting()) {
-            //first request to get id
-            JSONObject response = JsonHelper.get(restURL + "/process-definition?key=" + key, 200);
-            final String id = String.valueOf(response.get("id"));
 
-            //assembling JSONObject for second request
-            JSONObject requestBody = new JSONObject();
-            requestBody.put("variables", mapToArrayWithMaps(testCase.getVariables()));
-            requestBody.put("businessKey", "key-" + key);
-
-            //second request to start process using id and Json to get the process instance id
             try {
+
+                //first request to get id
+                JSONObject response = JsonHelper.get(restURL + "/process-definition?key=" + key, 200);
+                final String id = String.valueOf(response.get("id"));
+
+                //assembling JSONObject for second request
+                JSONObject requestBody = new JSONObject();
+                requestBody.put("variables", mapToArrayWithMaps(testCase.getVariables()));
+                requestBody.put("businessKey", "key-" + key);
+
+                //second request to start process using id and Json to get the process instance id
                 JsonHelper.post(restURL + "/process-definition/" + id + "/start?key=" + key, requestBody, 200);
-            } catch (Exception e){
-                log.info("Starting failed", e);
+
+            } catch (Exception e) {
+                log.info("Could not start process", e);
             }
         }
 
