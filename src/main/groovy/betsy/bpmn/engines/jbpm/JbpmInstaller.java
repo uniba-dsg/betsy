@@ -17,8 +17,11 @@ public class JbpmInstaller {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir);
 
         Path antPath = Configuration.getAntHome().resolve("bin");
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.demo.noeclipse"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.demo.noeclipse"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
     }
 
     @Override

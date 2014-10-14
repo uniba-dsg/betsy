@@ -45,20 +45,6 @@ dependencies {
     internal 'org.json:json:20140107'
     internal 'org.apache.ant:ant-junit:1.9.3'
 
-    //imported from jars because of problems with the poms on remote host. Remote is commented out below.
-    internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-services-client-6.0.1.Final.jar']))
-    internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-api-6.0.1.Final.jar']))
-    internal files(fileTree(dir: "jbpmdependencies", includes: ['kie-internal-6.0.1.Final.jar']))
-    internal files(fileTree(dir: "jbpmdependencies", includes: ['jbpm-shared-services-6.0.1.Final.jar']))
-
-    internal 'javax:javaee-api:7.0'
-    internal 'org.drools:drools-core:6.0.1.Final'
-    internal 'org.jboss.resteasy:resteasy-jaxrs:3.0.6.Final'
-    internal 'org.jboss.resteasy:resteasy-jaxb-provider:3.0.6.Final'
-    internal 'org.jbpm:jbpm-audit:6.0.1.Final'
-    internal 'org.jbpm:jbpm-human-task-core:6.0.1.Final'
-    internal 'org.jbpm:jbpm-runtime-manager:6.0.1.Final'
-
     internal 'com.mashape.unirest:unirest-java:1.3.22' // for http requests and responses
 
     internal 'org.slf4j:slf4j-api:1.7.6'

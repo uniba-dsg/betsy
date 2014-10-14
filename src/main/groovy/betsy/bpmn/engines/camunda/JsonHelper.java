@@ -53,6 +53,20 @@ public class JsonHelper {
         }
     }
 
+    public static String postStringWithAuth(String url, JSONObject requestBody, int expectedCode, String username, String password) {
+        log.info("HTTP POST " + url);
+        log.info("CONTENT: " + requestBody.toString(2));
+
+        try {
+            HttpResponse<String> response = Unirest.post(url).header("Content-Type", "application/json").basicAuth("admin", "admin").body(requestBody.toString()).asString();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+            return response.getBody();
+        } catch (UnirestException e) {
+            throw new RuntimeException("rest call to " + url + " failed", e);
+        }
+    }
+
     public static JSONObject post(String url, Path path, int expectedCode) {
         log.info("HTTP POST " + url);
         log.info("FILE: " + path);
@@ -67,7 +81,7 @@ public class JsonHelper {
         }
     }
 
-    private static void assertHttpCode(int expectedCode, HttpResponse<JsonNode> response) {
+    private static void assertHttpCode(int expectedCode, HttpResponse<?> response) {
         int code = response.getCode();
         if (expectedCode != code) {
             throw new RuntimeException("expected " + expectedCode + ", got " + code + "; " +
@@ -82,6 +96,14 @@ public class JsonHelper {
             log.info("HTTP RESPONSE is empty.");
         } else {
             log.info("HTTP RESPONSE: " + response.toString(2));
+        }
+    }
+
+    private static void logResponse(String response) {
+        if (response == null) {
+            log.info("HTTP RESPONSE String is empty.");
+        } else {
+            log.info("HTTP RESPONSE: " + response);
         }
     }
 
