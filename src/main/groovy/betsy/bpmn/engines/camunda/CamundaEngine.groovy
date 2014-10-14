@@ -38,7 +38,10 @@ class CamundaEngine extends BPMNEngine {
         if(logFile == null) {
             throw new IllegalStateException("Could not find catalina log file in " + getTomcatDir().resolve("logs"))
         }
-        WaitTasks.waitForSubstringInFile(15000, 500, logFile, "Process Application " + process.getName() + " Application successfully deployed.")
+        WaitTasks.waitFor(15000, 500,
+                { FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + process.getName() + " Application successfully deployed.") ||
+                FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + process.getName() + "] startup failed due to previous errors") }
+        )
     }
 
     @Override
