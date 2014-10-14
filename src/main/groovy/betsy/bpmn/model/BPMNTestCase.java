@@ -107,10 +107,6 @@ public class BPMNTestCase {
         return addAssertions("normalTask");
     }
 
-    public BPMNTestCase assertErrorTask() {
-        return addAssertions("errorTask");
-    }
-
     public BPMNTestCase assertTransactionTask() {
         return addAssertions("transaction");
     }

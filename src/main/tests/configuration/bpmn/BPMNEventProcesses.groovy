@@ -87,14 +87,14 @@ class BPMNEventProcesses {
     public static final BPMNProcess ERROR_START_1 = builder.buildEventProcess(
             "ErrorStartEvent1", "A test for the error start event in an event triggered sub process",
             [
-                    new BPMNTestCase(1).assertNormalTask().assertErrorTask()
+                    new BPMNTestCase(1).assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess ERROR_START_2 = builder.buildEventProcess(
             "ErrorStartEvent2", "A test for the error start event in an event triggered sub process in a sub process with a following normal sequence flow",
             [
-                    new BPMNTestCase(1).assertNormalTask().assertErrorTask().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertSuccess()
             ]
     )
 
