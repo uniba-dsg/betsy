@@ -17,7 +17,7 @@ class Retry {
 
     BetsyProcess process
 
-    public void atMostThreeTimes(Closure closure) {
+    public void atMostThreeTimes(Runnable closure) {
         boolean testProcess = true
         int testCount = 0;
         while (testProcess) {
