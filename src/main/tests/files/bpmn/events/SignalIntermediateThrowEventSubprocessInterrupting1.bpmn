@@ -43,10 +43,10 @@
       </bpmn2:intermediateThrowEvent>
       <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_3" targetRef="IntermediateThrowEvent_1"/>
       <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="IntermediateThrowEvent_1" targetRef="ScriptTask_5"/>
-      <bpmn2:scriptTask id="ScriptTask_5" name="not interrutpted">
+      <bpmn2:scriptTask id="ScriptTask_5" name="not interrupted">
         <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
         <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
-        <bpmn2:script>notInterrupted</bpmn2:script>
+        <bpmn2:script>taskNotInterrupted</bpmn2:script>
       </bpmn2:scriptTask>
       <bpmn2:endEvent id="EndEvent_4">
         <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
