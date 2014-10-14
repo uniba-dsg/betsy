@@ -94,8 +94,7 @@ public class ProcessValidator {
         Arrays.sort(actualAssertions);
         Arrays.sort(ALLOWED_ASSERTIONS);
 
-        //TODO uncomment when solved the //empty Script issue
-        //Assert.assertArrayEquals(ALLOWED_ASSERTIONS, actualAssertions);
+        Assert.assertArrayEquals(ALLOWED_ASSERTIONS, actualAssertions);
     }
 
     private void addAssertion(Set<String> assertions, BPMNProcess process, String x) {
