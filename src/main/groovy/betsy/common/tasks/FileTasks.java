@@ -255,6 +255,12 @@ public class FileTasks {
         replaceTask.execute();
     }
 
+    public static void replaceTokensInFolder(Path targetFile, String token, Object replacement) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(token, replacement);
+        replaceTokensInFolder(targetFile, map);
+    }
+
     public static void replaceTokensInFolder(Path targetFile, Map<String, ?> replacements) {
         log.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
 
