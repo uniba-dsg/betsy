@@ -35,7 +35,7 @@ public class ProcessValidator {
 
         setUpXmlObjects();
         assertNamingConventionsCorrect();
-        assertAssertionsCorrect();
+        assertLogMessagesCorrect();
     }
 
     private void assertNamingConventionsCorrect() {
@@ -61,8 +61,8 @@ public class ProcessValidator {
         }
     }
 
-    private void assertAssertionsCorrect() {
-        Set<String> assertions = new HashSet<>();
+    private void assertLogMessagesCorrect() {
+        Set<String> messages = new HashSet<>();
 
         for (BPMNProcess process : processes) {
             try {
@@ -75,10 +75,10 @@ public class ProcessValidator {
 
                     if(textContent.contains(",")){
                         for(String x : textContent.split(",")) {
-                            addAssertion(assertions, process, x);
+                            addMessage(messages, process, x);
                         }
                     } else {
-                        addAssertion(assertions, process, textContent);
+                        addMessage(messages, process, textContent);
                     }
                 }
 
@@ -89,16 +89,16 @@ public class ProcessValidator {
 
         // TODO move this to the production code
 
-        String[] actualAssertions = assertions.toArray(new String[assertions.size()]);
+        String[] actualMessages = messages.toArray(new String[messages.size()]);
 
-        Arrays.sort(actualAssertions);
-        Arrays.sort(ALLOWED_ASSERTIONS);
+        Arrays.sort(actualMessages);
+        Arrays.sort(ALLOWED_LOG_MESSAGES);
 
-        Assert.assertArrayEquals(ALLOWED_ASSERTIONS, actualAssertions);
+        Assert.assertArrayEquals(ALLOWED_LOG_MESSAGES, actualMessages);
     }
 
-    private void addAssertion(Set<String> assertions, BPMNProcess process, String x) {
-        if(!Arrays.asList(ALLOWED_ASSERTIONS).contains(x)) {
+    private void addMessage(Set<String> assertions, BPMNProcess process, String x) {
+        if(!Arrays.asList(ALLOWED_LOG_MESSAGES).contains(x)) {
             System.out.println(x + " in " + process.getResourceFile());
         }
 
