@@ -31,9 +31,11 @@ class JbpmTester {
         FileTasks.mkdirs(testBin)
         FileTasks.mkdirs(reportPath)
 
+        // TODO check for deployment errors and omit test execution if process is not deployed
+
         if (!testCase.selfStarting) {
             //setup variables and start process
-            String baseUrl = "http://" + user + ":" + password + "@localhost:8080/jbpm-console/rest/runtime/" + deploymentId + "/process/" + name + "/start";
+            String baseUrl = "http://localhost:8080/jbpm-console/rest/runtime/" + deploymentId + "/process/" + name + "/start";
 
             Map<String, Object> variables = new HashMap<>()
             for (BPMNTestCaseVariable variable : testCase.variables) {
@@ -46,26 +48,18 @@ class JbpmTester {
             }
 
             String requestUrl = baseUrl + joiner.toString();
-            JsonHelper.post(requestUrl, new JSONObject(), 200)
+            try {
+                String response = JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
 
-            //look for error end event special case
-            WaitTasks.sleep(200)
+                //delay for timer intermediate event
+                WaitTasks.sleep(testCase.delay)
 
-/*
-if (instance.getState() == ProcessInstance.STATE_ABORTED) {
-    BPMNTester.appendToFile(getFileName(), "thrownErrorEvent");
-}
-//TODO read log file for exceptions or statements
+            } catch (RuntimeException ignored) {
+                BPMNTester.appendToFile(getFileName(), "runtimeException");
+            }
 
-//delay for timer intermediate event
-WaitTasks.sleep(testCase.delay)
-
-} catch (RuntimeException ignored) {
-BPMNTester.appendToFile(getFileName(), "runtimeException");
-}
-*/
         } else {
-//delay for self starting
+            //delay for self starting
             WaitTasks.sleep(testCase.delay)
         }
 
