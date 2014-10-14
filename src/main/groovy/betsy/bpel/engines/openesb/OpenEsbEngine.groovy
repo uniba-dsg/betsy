@@ -3,6 +3,7 @@ package betsy.bpel.engines.openesb
 import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
 
@@ -40,9 +41,7 @@ class OpenEsbEngine extends LocalEngine {
     @Override
     void startup() {
         cli.startDomain()
-        ant.waitfor(maxwait: "15", maxwaitunit: "second", checkevery: "500") {
-            http url: CHECK_URL
-        }
+        WaitTasks.waitForAvailabilityOfUrl(15_000,500, CHECK_URL)
     }
 
     @Override

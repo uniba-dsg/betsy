@@ -5,6 +5,7 @@ import betsy.common.config.Configuration;
 import betsy.bpel.engines.tomcat.TomcatInstaller
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.tasks.ZipTasks
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -26,7 +27,7 @@ class OrchestraInstaller {
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
-        ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: serverDir
+        ZipTasks.unzip(Configuration.downloadsDir.resolve(fileName), serverDir)
 
         ant.propertyfile(file: installDir.resolve("conf").resolve("install.properties")) {
             entry key: "catalina.home", value: "../apache-tomcat-7.0.26"

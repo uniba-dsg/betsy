@@ -5,6 +5,7 @@ import betsy.common.config.Configuration;
 import betsy.bpel.engines.tomcat.TomcatInstaller
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
+import betsy.common.tasks.ZipTasks
 import betsy.common.util.ClasspathHelper
 
 import java.nio.file.Path
@@ -28,8 +29,8 @@ class BpelgInstaller {
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
-        ant.unzip src: Configuration.downloadsDir.resolve(fileName),
-                dest: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps").resolve("bpel-g")
+        ZipTasks.unzip(Configuration.downloadsDir.resolve(fileName),
+                serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps").resolve("bpel-g"))
 
         ant.copy file: ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/bpelg/log4j.properties"),
                 todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/bpel-g/WEB-INF"), overwrite: true

@@ -4,6 +4,7 @@ import betsy.bpel.engines.LocalEngine
 import betsy.bpel.model.BetsyProcess
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.URLTasks
 import org.apache.log4j.Logger
 
 import java.nio.file.Files
@@ -131,16 +132,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     boolean isRunning() {
-        try {
-            ant.fail(message: "server for engine ${this} is still running") {
-                condition() {
-                    http url: CHECK_URL
-                }
-            }
-            return false;
-        } catch (Exception ignore) {
-            return true;
-        }
+        return URLTasks.isUrlAvailable(CHECK_URL)
     }
 
 }
