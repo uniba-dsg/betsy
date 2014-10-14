@@ -120,7 +120,7 @@ public class BPMNTestCase {
     }
 
     public BPMNTestCase assertNotInterrupted() {
-        return addAssertions("notInterrupted");
+        return addAssertions("taskNotInterrupted");
     }
 
     public BPMNTestCase assertStarted() {
