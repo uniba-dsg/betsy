@@ -15,10 +15,6 @@ import java.util.StringJoiner;
 public class ConsoleTasks {
     private static final Logger log = Logger.getLogger(ConsoleTasks.class);
 
-    public static void main(String[] args) {
-        executeOnWindows(CliCommand.build("dir"));
-    }
-
     public static void executeOnWindows(CliCommand cliCommand) {
         execute("windows", cliCommand, true, Collections.emptyMap());
     }
