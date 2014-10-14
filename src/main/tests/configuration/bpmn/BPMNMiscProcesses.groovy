@@ -23,14 +23,14 @@ class BPMNMiscProcesses {
     public static final BPMNProcess CALL_ACTIVITY = builder.buildMiscProcess(
             "CallActivity", "A collaboration with two pools. One process calls the other one through a callActivity",
             [
-                    new BPMNTestCase(1).assertCalled().assertSuccess()
+                    new BPMNTestCase(1).assertCallableElementExecuted().assertSuccess()
             ]
     )
 
     public static final BPMNProcess CALL_ACTIVITY_GLOBAL_TASK = builder.buildMiscProcess(
             "CallActivityGlobalTask", "A collaboration with a single pool. The pool contains a callActivity that calls a globalScriptTask",
             [
-                    new BPMNTestCase(1).assertCalled().assertSuccess()
+                    new BPMNTestCase(1).assertCallableElementExecuted().assertSuccess()
             ]
     )
 

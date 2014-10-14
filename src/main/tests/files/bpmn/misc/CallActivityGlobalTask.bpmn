@@ -4,7 +4,7 @@
     <bpmn2:participant id="_Participant_2" name="Pool" processRef="CallActivityGlobalTask"/>
   </bpmn2:collaboration>
   <bpmn2:globalScriptTask id="globalTask" name="Global Task">
-  	<bpmn2:script>called</bpmn2:script>	
+  	<bpmn2:script>callableElementExecuted</bpmn2:script>
   </bpmn2:globalScriptTask>
   <bpmn2:process id="CallActivityGlobalTask" isExecutable="true">
     <bpmn2:startEvent id="StartEvent_2">

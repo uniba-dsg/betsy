@@ -139,8 +139,8 @@ public class BPMNTestCase {
         return addAssertions("timerEvent");
     }
 
-    public BPMNTestCase assertCalled() {
-        return addAssertions("called");
+    public BPMNTestCase assertCallableElementExecuted() {
+        return addAssertions("callableElementExecuted");
     }
 
     public BPMNTestCase assertCondition() {

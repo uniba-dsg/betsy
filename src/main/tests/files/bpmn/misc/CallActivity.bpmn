@@ -37,7 +37,7 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Called">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-      <bpmn2:script>called</bpmn2:script>
+      <bpmn2:script>callableElementExecuted</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
     <bpmn2:endEvent id="EndEvent_2">
