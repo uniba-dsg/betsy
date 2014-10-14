@@ -85,7 +85,7 @@ class ActiveBpelEngine extends LocalEngine {
         // create deployment descriptor
         Path metaDir = process.targetBpelPath.resolve("META-INF")
         FileTasks.createFile(metaDir.resolve("MANIFEST.MF"), "Manifest-Version: 1.0");
-        ant.xslt(in: process.bpelFilePath, out: "$metaDir/${process.name}.pdd", style: xsltPath.resolve("active-bpel_to_deploy_xml.xsl"))
+        ant.xslt(in: process.bpelFilePath, out: metaDir.resolve("${process.name}.pdd"), style: xsltPath.resolve("active-bpel_to_deploy_xml.xsl"))
         ant.xslt(in: process.bpelFilePath, out: metaDir.resolve("catalog.xml"), style: xsltPath.resolve("active-bpel_to_catalog.xsl"))
 
         packageBuilder.replaceEndpointTokenWithValue(process)
@@ -93,7 +93,7 @@ class ActiveBpelEngine extends LocalEngine {
         packageBuilder.bpelFolderToZipFile(process)
 
         // create bpr file
-        ant.move(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))
+        FileTasks.move(process.targetPackageFilePath, process.getTargetPackageFilePath("bpr"))
     }
 
 }

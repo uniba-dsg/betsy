@@ -30,6 +30,7 @@ class BpelgInstaller {
 
         ant.unzip src: Configuration.downloadsDir.resolve(fileName),
                 dest: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps").resolve("bpel-g")
+
         ant.copy file: ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/bpelg/log4j.properties"),
                 todir: serverDir.resolve(tomcatInstaller.tomcatName).resolve("webapps/bpel-g/WEB-INF"), overwrite: true
 
