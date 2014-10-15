@@ -17,10 +17,11 @@ public class JbpmResourcesGenerator {
         FileTasks.mkdirs(destDir.resolve("src").resolve("main").resolve("java"));
         FileTasks.mkdirs(destDir.resolve("src").resolve("test").resolve("java"));
         FileTasks.mkdirs(resDir);
+        FileTasks.mkdirs(resDir.resolve("META-INF"));
 
         //copy files
         FileTasks.copyFilesInFolderIntoOtherFolder(jbpmSrcDir.resolve("META-INF"), resDir.resolve("META-INF"));
-        FileTasks.copyFilesInFolderIntoOtherFolder(jbpmSrcDir.resolve("project.imports"), destDir);
+        FileTasks.copyFileIntoFolder(jbpmSrcDir.resolve("project.imports"), destDir);
 
         generatePomXml();
     }
