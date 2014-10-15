@@ -9,14 +9,14 @@ class BPMNSubprocessProcesses {
     public static final BPMNProcess SUBPROCESS = builder.buildProcessWithSubProcess(
             "SubProcess", "A process that contains a subProcess",
             [
-                    new BPMNTestCase(1).assertSuccess().assertSubprocess()
+                    new BPMNTestCase(1).assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess TRANSACTION = builder.buildProcessWithSubProcess(
             "Transaction", "A process that contains a transaction",
             [
-                    new BPMNTestCase(1).assertTransactionTask().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2()
             ]
     )
 
