@@ -105,7 +105,6 @@ public class JbpmEngine extends BPMNEngine {
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
-        // TODO only copy log files from tomcat, the other files are files for the test
         FileTasks.copyFilesInFolderIntoOtherFolder(getJbossStandaloneDir().resolve("log"), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
