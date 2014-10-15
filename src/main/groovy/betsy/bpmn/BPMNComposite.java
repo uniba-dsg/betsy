@@ -16,6 +16,17 @@ import org.apache.log4j.MDC;
 import java.nio.file.Path;
 
 public class BPMNComposite {
+    private static Logger logger = Logger.getLogger(BPMNComposite.class);
+    private BPMNTestSuite testSuite;
+
+    protected static void log(String name, Runnable closure) {
+        LogUtil.log(name, logger, closure);
+    }
+
+    protected static void log(Path path, Runnable closure) {
+        LogUtil.log(path, logger, closure);
+    }
+
     public void execute() {
         final Progress progress = new Progress(testSuite.getProcessesCount());
         MDC.put("progress", progress.toString());
@@ -62,8 +73,8 @@ public class BPMNComposite {
 
     protected void executeProcess(final BPMNProcess process) {
         log(process.getTargetPath(), () -> {
+            buildPackageAndTest(process);
             try {
-                buildPackageAndTest(process);
                 installAndStart(process);
                 deploy(process);
                 test(process);
@@ -114,14 +125,6 @@ public class BPMNComposite {
                 () -> IOCapture.captureIO(() -> process.getEngine().buildArchives(process)));
     }
 
-    protected static void log(String name, Runnable closure) {
-        LogUtil.log(name, logger, closure);
-    }
-
-    protected static void log(Path path, Runnable closure) {
-        LogUtil.log(path, logger, closure);
-    }
-
     public BPMNTestSuite getTestSuite() {
         return testSuite;
     }
@@ -129,7 +132,4 @@ public class BPMNComposite {
     public void setTestSuite(BPMNTestSuite testSuite) {
         this.testSuite = testSuite;
     }
-
-    private static Logger logger = Logger.getLogger(BPMNComposite.class);
-    private BPMNTestSuite testSuite;
 }
