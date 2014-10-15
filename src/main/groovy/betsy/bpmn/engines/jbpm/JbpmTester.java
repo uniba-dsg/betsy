@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -23,7 +25,7 @@ public class JbpmTester {
         FileTasks.mkdirs(testBin);
         FileTasks.mkdirs(reportPath);
 
-        // TODO check for deployment errors and omit test execution if process is not deployed
+        addDeploymentErrorsToLogFile(serverLogFile);
 
         if (!testCase.getSelfStarting()) {
             //setup variables and start process
@@ -35,7 +37,7 @@ public class JbpmTester {
             }
 
 
-            StringJoiner joiner = new StringJoiner(",", "?", "");
+            StringJoiner joiner = new StringJoiner("&", "?", "");
             for (Map.Entry<String, Object> entry : variables.entrySet()) {
                 joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
             }
@@ -49,7 +51,7 @@ public class JbpmTester {
                 WaitTasks.sleep(testCase.getDelay());
 
             } catch (RuntimeException ignored) {
-                BPMNTester.appendToFile(getFileName(), "runtimeException");
+                BPMNTester.appendToFile(getFileName(), "ERROR_runtimeException");
             }
 
 
@@ -62,6 +64,14 @@ public class JbpmTester {
         BPMNTester.setupPathToToolsJarForJavacAntTask(this);
         BPMNTester.compileTest(testSrc, testBin);
         BPMNTester.executeTest(testSrc, testBin, reportPath);
+    }
+
+    private void addDeploymentErrorsToLogFile(Path logFile) {
+        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
+        analyzer.addSubstring("failed to deploy", "ERROR_deployment");
+        for (String deploymentError : analyzer.getErrors()) {
+            BPMNTester.appendToFile(getFileName(), deploymentError);
+        }
     }
 
     private Path getFileName() {
@@ -132,6 +142,14 @@ public class JbpmTester {
         this.logDir = logDir;
     }
 
+    public Path getServerLogFile() {
+        return serverLogFile;
+    }
+
+    public void setServerLogFile(Path serverLogFile) {
+        this.serverLogFile = serverLogFile;
+    }
+
     public String getUser() {
         return user;
     }
@@ -156,6 +174,7 @@ public class JbpmTester {
     private Path testBin;
     private Path testSrc;
     private Path logDir;
+    private Path serverLogFile;
     private String user = "admin";
     private String password = "admin";
 }

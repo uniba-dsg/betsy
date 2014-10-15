@@ -169,6 +169,7 @@ public class JbpmEngine extends BPMNEngine {
             tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
             tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
             tester.setLogDir(getServerPath());
+            tester.setServerLogFile(getJbossStandaloneDir().resolve("log").resolve("server.log"));
             tester.runTest();
         }
 
