@@ -9,7 +9,7 @@ class BPMNTaskProcesses {
     public static final BPMNProcess SEQUENCE_FLOW = builder.buildTaskProcess(
             "SequenceFlow", "A process with two scriptTasks connected by sequenceFlows",
             [
-                    new BPMNTestCase().assertSuccess()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
