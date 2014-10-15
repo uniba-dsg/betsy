@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="LoopTaskTest">
-  <bpmn2:process id="LoopTask" isExecutable="true">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+                   id="LoopTaskWithLoopMaximumTest" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopTaskWithLoopMaximum">
+  <bpmn2:process id="LoopTaskWithLoopMaximum" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
       <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
@@ -12,7 +15,7 @@
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>task2</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
     <bpmn2:scriptTask id="start" name="Start">
@@ -26,7 +29,7 @@
       <bpmn2:standardLoopCharacteristics loopMaximum="3">
         <bpmn2:loopCondition>true</bpmn2:loopCondition>
       </bpmn2:standardLoopCharacteristics>
-      <bpmn2:script>taskInstanceExecuted</bpmn2:script>
+      <bpmn2:script>task1</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="ScriptTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ScriptTask_1" targetRef="end"/>

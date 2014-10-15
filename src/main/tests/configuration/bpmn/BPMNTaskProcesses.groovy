@@ -62,9 +62,9 @@ class BPMNTaskProcesses {
     )
 
     public static final BPMNProcess LOOP = builder.buildTaskProcess(
-            "LoopTask", "A scriptTask with standardLoopCharacteristics and a loopMaximum set to three",
+            "LoopTaskWithLoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to three.",
             [
-                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
+                    new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
             ]
     )
 
