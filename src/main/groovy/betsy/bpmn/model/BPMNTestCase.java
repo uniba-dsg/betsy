@@ -59,6 +59,10 @@ public class BPMNTestCase {
         return addAssertions("task2");
     }
 
+    public BPMNTestCase assertTask3() {
+        return addAssertions("task3");
+    }
+
     public BPMNTestCase assertTrue() {
         return addAssertions("true");
     }
@@ -81,14 +85,6 @@ public class BPMNTestCase {
 
     public BPMNTestCase assertSubprocess() {
         return addAssertions("subprocess");
-    }
-
-    public BPMNTestCase assertLane1() {
-        return addAssertions("lane1");
-    }
-
-    public BPMNTestCase assertLane2() {
-        return addAssertions("lane2");
     }
 
     public BPMNTestCase assertInstanceExecution() {
@@ -133,10 +129,6 @@ public class BPMNTestCase {
 
     public BPMNTestCase assertTimerEvent() {
         return addAssertions("timerEvent");
-    }
-
-    public BPMNTestCase assertCallableElementExecuted() {
-        return addAssertions("callableElementExecuted");
     }
 
     public BPMNTestCase assertCondition() {

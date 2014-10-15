@@ -25,7 +25,7 @@ public class ProcessValidator {
 
     public static final String[] ALLOWED_LOG_MESSAGES = new String[]{
             "taskNotInterrupted", "timerInternal", "taskInstanceExecuted", "timerEvent", "default", "timerExternal",
-            "signaled", "lane2", "end", "lane1", "started", "task1", "CREATE_LOG_FILE", "task2",
+            "signaled", "end", "started", "task1", "CREATE_LOG_FILE", "task2",
             "task3", "false", "subprocess", "normalTask", "interrupted", "condition", "success",
             "true", "compensate", "transaction"
     };
@@ -92,9 +92,7 @@ public class ProcessValidator {
         String[] actualMessages = messages.toArray(new String[messages.size()]);
 
         Arrays.sort(actualMessages);
-        System.out.println(Arrays.toString(actualMessages));
         Arrays.sort(ALLOWED_LOG_MESSAGES);
-        System.out.println(Arrays.toString(ALLOWED_LOG_MESSAGES));
 
         Assert.assertArrayEquals(ALLOWED_LOG_MESSAGES, actualMessages);
     }

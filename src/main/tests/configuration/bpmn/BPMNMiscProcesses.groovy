@@ -6,17 +6,18 @@ import betsy.bpmn.model.BPMNTestCase
 class BPMNMiscProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
-    public static final BPMNProcess POOL = builder.buildMiscProcess(
-            "Pool", "A collaboration with a single pool",
+    public static final BPMNProcess PARTICIPANT = builder.buildMiscProcess(
+            "Participant", "A collaboration with a single participant",
             [
-                    new BPMNTestCase(1).assertSuccess()
+                    new BPMNTestCase(1).assertTask1()
             ]
     )
 
     public static final BPMNProcess LANES = builder.buildMiscProcess(
-            "Lanes", "A collaboration with a single pool with two lanes",
+            "Lanes", "A collaboration with a single participant with two lanes. Lanes have no effect on the " +
+            "execution and should be ignored.",
             [
-                    new BPMNTestCase(1).assertLane1().assertLane2().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
             ]
     )
 
@@ -35,7 +36,7 @@ class BPMNMiscProcesses {
     )
 
     public static final List<BPMNProcess> MISCS = [
-            POOL,
+            PARTICIPANT,
             LANES,
             CALL_ACTIVITY_PROCESS,
             CALL_ACTIVITY_GLOBAL_TASK
