@@ -61,10 +61,17 @@ class BPMNTaskProcesses {
             ]
     )
 
-    public static final BPMNProcess LOOP = builder.buildTaskProcess(
+    public static final BPMNProcess LOOP_WITH_LOOP_MAXIMUM = builder.buildTaskProcess(
             "LoopTaskWithLoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to three.",
             [
                     new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
+            ]
+    )
+
+    public static final BPMNProcess LOOP_NO_ITERATION = builder.buildTaskProcess(
+            "LoopTaskWithLoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false. Hence, the task should never be executed.",
+            [
+                    new BPMNTestCase().assertTask2()
             ]
     )
 
@@ -76,6 +83,7 @@ class BPMNTaskProcesses {
             MULTI_INSTANCE_SEQUENTIAL_NONE,
             MULTI_INSTANCE_SEQUENTIAL_ONE,
             MULTI_INSTANCE_PARALLEL,
-            LOOP
+            LOOP_WITH_LOOP_MAXIMUM,
+            LOOP_NO_ITERATION
     ].flatten() as List<BPMNProcess>
 }
