@@ -84,8 +84,8 @@ public class Composite {
         Retry retry = new Retry();
         retry.setProcess(process);
         retry.atMostThreeTimes(() -> log(process.getTargetPath(), () -> {
+            buildPackageAndTest(process);
             try {
-                buildPackageAndTest(process);
                 installAndStart(process);
                 deploy(process);
                 test(process);
