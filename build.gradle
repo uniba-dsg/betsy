@@ -50,6 +50,8 @@ dependencies {
     internal 'org.slf4j:slf4j-api:1.7.6'
     internal 'org.slf4j:slf4j-simple:1.7.6'
 
+    compile 'commons-cli:commons-cli:1.2' // for the CLI tools
+
     testCompile 'junit:junit:4.11'
 
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))

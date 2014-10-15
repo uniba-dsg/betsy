@@ -1,8 +1,6 @@
 package betsy.bpel;
 
-import betsy.bpel.cli.CliParser;
-import betsy.bpel.cli.EngineParser;
-import betsy.bpel.cli.ProcessParser;
+import betsy.bpel.cli.*;
 import betsy.bpel.corebpel.CoreBPELEngineExtension;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.LocalEngine;
@@ -34,47 +32,33 @@ public class Main {
         activateLogging();
 
         // parsing cli params
-        CliParser parser = new CliParser();
-        parser.parse(args);
+        BPELCliParser parser = new BPELCliParser(args);
+        BPELCliParameter params = parser.parse();
 
         // usage information if required
-        if (parser.showUsage()) {
+        if (params.showHelp()) {
             parser.printUsage();
-            System.exit(0);
+            return;
         }
 
-
-        customPartnerAddress(parser);
-
-        // parsing processes and engines
-        List<Engine> engines = null;
-        List<BetsyProcess> processes = null;
-        try {
-            engines = new EngineParser(parser.arguments()).parse();
-            processes = new ProcessParser(parser.arguments()).parse();
-        } catch (IllegalArgumentException e) {
-            System.out.println("----------------------");
-            System.out.println("ERROR - " + e.getMessage() + " - Did you misspell the name?");
-            System.exit(0);
-        }
-
+        customPartnerAddress(params);
 
         try {
-            printSelectedEnginesAndProcesses(engines, processes);
-            localhostPartnerAddressNotAllowedForTestingVirtualEngines(engines);
+            printSelectedEnginesAndProcesses(params.getEngines(), params.getProcesses());
+            localhostPartnerAddressNotAllowedForTestingVirtualEngines(params.getEngines());
 
             Betsy betsy = new Betsy();
-            useExternalPartnerService(parser, betsy);
-            testBindabilityOfInternalPartnerService(parser, betsy);
+            useExternalPartnerService(params, betsy);
+            testBindabilityOfInternalPartnerService(params, betsy);
 
-            checkDeployment(parser, processes);
-            coreBpel(parser, engines);
-            virtualEngines(engines);
+            checkDeployment(params, params.getProcesses());
+            coreBpel(params, params.getEngines());
+            virtualEngines(params.getEngines());
 
-            onlyBuildSteps(parser, betsy);
+            onlyBuildSteps(params, betsy);
 
-            betsy.setProcesses(processes);
-            betsy.setEngines(engines);
+            betsy.setProcesses(params.getProcesses());
+            betsy.setEngines(params.getEngines());
 
             // execute
             try {
@@ -86,7 +70,7 @@ public class Main {
 
 
             // open results in browser
-            if (parser.openResultsInBrowser()) {
+            if (params.openResultsInBrowser()) {
                 try {
                     Desktop.getDesktop().browse(Paths.get("test/reports/results.html").toUri());
                 } catch (Exception ignore) {
@@ -112,8 +96,8 @@ public class Main {
         System.exit(0);
     }
 
-    public static void onlyBuildSteps(CliParser cliParser, Betsy betsy) {
-        if (cliParser.onlyBuildSteps()) {
+    public static void onlyBuildSteps(BPELCliParameter params, Betsy betsy) {
+        if (params.buildArtifactsOnly()) {
             betsy.setComposite(new Composite() {
                 @Override
                 protected void testSoapUi(BetsyProcess process) {
@@ -168,9 +152,9 @@ public class Main {
         return engines.stream().filter(e -> e instanceof VirtualEngine).map(e -> (VirtualEngine) e).collect(Collectors.toList());
     }
 
-    private static void testBindabilityOfInternalPartnerService(CliParser parser, Betsy betsy) {
+    private static void testBindabilityOfInternalPartnerService(BPELCliParameter params, Betsy betsy) {
 
-        if (!parser.useExternalPartnerService()) {
+        if (!params.useExternalPartnerService()) {
             // test the correctness
             try {
                 betsy.getComposite().getTestPartner().publish();
@@ -182,9 +166,9 @@ public class Main {
         }
     }
 
-    private static void useExternalPartnerService(CliParser parser, Betsy betsy) {
+    private static void useExternalPartnerService(BPELCliParameter params, Betsy betsy) {
         // do not use internal partner service
-        if (parser.useExternalPartnerService()) {
+        if (params.useExternalPartnerService()) {
             betsy.getComposite().setTestPartner(new TestPartnerServicePublisherExternal());
             betsy.getComposite().setRequestTimeout(15 * 1000);// increase request timeout as invoking external service
         }
@@ -204,11 +188,11 @@ public class Main {
         log.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
-    protected static void customPartnerAddress(CliParser parser) {
+    protected static void customPartnerAddress(BPELCliParameter params) {
         // setting partner address
-        if (parser.hasCustomPartnerAddress()) {
+        if (params.hasCustomPartnerAddress()) {
 
-            final String newPartnerAddress = parser.getCustomPartnerAddress();
+            final String newPartnerAddress = params.getCustomPartnerAddress();
             if (!newPartnerAddress.contains(":")) {
                 throw new IllegalArgumentException("Port is missing in partner address [" + newPartnerAddress + "]");
             }
@@ -219,8 +203,8 @@ public class Main {
 
     }
 
-    protected static void checkDeployment(CliParser parser, List<BetsyProcess> processes) {
-        if (parser.checkDeployment()) {
+    protected static void checkDeployment(BPELCliParameter params, List<BetsyProcess> processes) {
+        if (params.checkDeployment()) {
             // check only whether the processes can be deployed
             for (BetsyProcess process : processes) {
                 process.setTestCases(Arrays.asList(new TestCase().checkDeployment()));
@@ -247,10 +231,10 @@ public class Main {
 
     }
 
-    protected static void coreBpel(CliParser parser, List<Engine> engines) {
-        if (parser.transformToCoreBpel()) {
+    protected static void coreBpel(BPELCliParameter params, List<Engine> engines) {
+        if (params.transformToCoreBpel()) {
 
-            String transformations = parser.getCoreBPELTransformations();
+            String transformations = params.getCoreBPELTransformations();
 
             switch (transformations) {
                 case "ALL":

@@ -1,9 +1,7 @@
 package betsy.bpmn;
 
 import betsy.bpel.Main;
-import betsy.bpmn.cli.BPMNCliParser;
-import betsy.bpmn.cli.BPMNEngineParser;
-import betsy.bpmn.cli.BPMNProcessParser;
+import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.BPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.engines.Nameable;
@@ -21,38 +19,24 @@ public class BPMNMain {
         activateLogging();
 
         // parsing cli params
-        BPMNCliParser parser = new BPMNCliParser();
-        parser.parse(args);
+        BPMNCliParser parser = new BPMNCliParser(args);
+        BPMNCliParameter params = parser.parse();
 
         // usage information if required
-        if (parser.showUsage()) {
+        if (params.showHelp()) {
             parser.printUsage();
-            System.exit(0);
+            return;
         }
 
-
-        // parsing processes and engines
-        List<BPMNEngine> engines = null;
-        List<BPMNProcess> processes = null;
         try {
-            engines = new BPMNEngineParser(parser.arguments()).parse();
-            processes = new BPMNProcessParser(parser.arguments()).parse();
-        } catch (IllegalArgumentException e) {
-            System.out.println("----------------------");
-            System.out.println("ERROR - " + e.getMessage() + " - Did you misspell the name?");
-            System.exit(0);
-        }
-
-
-        try {
-            printSelectedEnginesAndProcesses(engines, processes);
+            printSelectedEnginesAndProcesses(params.getEngines(), params.getProcesses());
 
             BPMNBetsy betsy = new BPMNBetsy();
 
-            onlyBuildSteps(parser, betsy);
+            onlyBuildSteps(params, betsy);
 
-            betsy.setEngines(engines);
-            betsy.setProcesses(processes);
+            betsy.setEngines(params.getEngines());
+            betsy.setProcesses(params.getProcesses());
 
             // execute
             try {
@@ -64,7 +48,7 @@ public class BPMNMain {
 
 
             // open results in browser
-            if (parser.openResultsInBrowser()) {
+            if (params.openResultsInBrowser()) {
                 try {
                     Desktop.getDesktop().browse(Paths.get("test/reports/results.html").toUri());
                 } catch (Exception ignore) {
@@ -94,8 +78,8 @@ public class BPMNMain {
         log.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
-    public static void onlyBuildSteps(BPMNCliParser cliParser, BPMNBetsy betsy) {
-        if (cliParser.onlyBuildSteps()) {
+    public static void onlyBuildSteps(BPMNCliParameter params, BPMNBetsy betsy) {
+        if (params.buildArtifactsOnly()) {
             betsy.setComposite(new BPMNComposite() {
                 @Override
                 protected void collect(BPMNProcess process) {
