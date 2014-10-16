@@ -186,7 +186,7 @@ class BPMNEventProcesses {
     public static final BPMNProcess CANCEL = builder.buildEventProcess(
             "CancelEvent", "A simple test for canceling a transaction",
             [
-                    new BPMNTestCase(1).assertTransactionTask().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2()
             ]
     )
 
