@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                   id="SequenceFlowTest" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/sequenceFlow">
+                   id="SequenceFlowTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/sequenceFlow">
   <bpmn2:process id="SequenceFlow" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>

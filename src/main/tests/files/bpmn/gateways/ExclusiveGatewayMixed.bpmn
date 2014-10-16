@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="ExclusiveGatewayMixedTest">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+                   id="ExclusiveGatewayMixedTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/exclusiveGatewayMixed">
   <bpmn2:process id="ExclusiveGatewayMixed" isExecutable="true">
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
@@ -66,7 +70,6 @@
     <bpmn2:sequenceFlow id="SequenceFlow_11" name="" sourceRef="ExclusiveGateway_2" targetRef="end"/>
     <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
-      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
     </bpmn2:endEvent>
     <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>

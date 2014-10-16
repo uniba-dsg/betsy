@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="SignalIntermediateThrowEventSubprocessInterrupting1Test">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+                   id="SignalIntermediateThrowEventSubprocessInterrupting1Test"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/signalIntermediateThrowEventSubprocessInterrupting">
   <bpmn2:signal id="signal" name="Signal" structureRef="String"/>
   <bpmn2:process id="SignalIntermediateThrowEventSubprocessInterrupting1" isExecutable="true">
     <bpmn2:scriptTask id="ScriptTask_1" name="Start">
