@@ -1,10 +1,6 @@
 package betsy.bpmn.model;
 
-import ant.tasks.AntUtil;
 import betsy.bpmn.engines.BPMNEngine;
-import groovy.lang.Closure;
-import groovy.util.AntBuilder;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

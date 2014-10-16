@@ -8,7 +8,6 @@ import com.eviware.soapui.impl.wsdl.WsdlProjectFactory;
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite;
 import com.eviware.soapui.support.SoapUIException;
 import org.apache.xmlbeans.XmlException;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.io.IOException;
 import java.nio.file.Path;

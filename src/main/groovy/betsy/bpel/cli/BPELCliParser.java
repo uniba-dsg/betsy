@@ -3,10 +3,8 @@ package betsy.bpel.cli;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.repositories.EngineRepository;
-import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.config.Configuration;
 import configuration.bpel.ProcessRepository;
-import configuration.bpmn.BPMNProcessRepository;
 import org.apache.commons.cli.*;
 
 import java.util.Collections;

@@ -1,7 +1,5 @@
 package betsy.common.analytics.model;
 
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
