@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.camunda;
 
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.Errors;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
@@ -58,18 +59,18 @@ public class CamundaTester {
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", "runtimeException");
-        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", "thrownErrorEvent");
+        analyzer.addSubstring("Ignoring unsupported activity type", Errors.ERROR_DEPLOYMENT);
+        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", Errors.ERROR_DEPLOYMENT);
         for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
         }
     }
 
     private void addRuntimeErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer logFileAnalyzer = new LogFileAnalyzer(logFile);
-        logFileAnalyzer.addSubstring("Ignoring unsupported activity type");
-        logFileAnalyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException");
-        for (String deploymentError : logFileAnalyzer.getErrors()) {
+        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
+        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", Errors.ERROR_RUNTIME);
+        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", Errors.ERROR_THROWNERROREVENT);
+        for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
         }
     }

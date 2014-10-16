@@ -1,5 +1,6 @@
 package betsy.bpmn.model;
 
+import betsy.bpmn.engines.Errors;
 import betsy.common.util.StringUtils;
 
 import java.util.ArrayList;
@@ -79,8 +80,8 @@ public class BPMNTestCase {
         return addAssertions("runtimeException");
     }
 
-    public BPMNTestCase assertThrownErrorEvent() {
-        return addAssertions("thrownErrorEvent");
+    public BPMNTestCase assertErrorThrownErrorEvent() {
+        return addAssertions(Errors.ERROR_THROWNERROREVENT);
     }
 
     public BPMNTestCase assertSubprocess() {

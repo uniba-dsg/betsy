@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.Errors;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNTestCase;
@@ -51,7 +52,7 @@ public class JbpmTester {
                 WaitTasks.sleep(testCase.getDelay());
 
             } catch (RuntimeException ignored) {
-                BPMNTester.appendToFile(getFileName(), "ERROR_runtimeException");
+                BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
             }
 
 
@@ -68,7 +69,7 @@ public class JbpmTester {
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("failed to deploy", "ERROR_deployment");
+        analyzer.addSubstring("failed to deploy", Errors.ERROR_DEPLOYMENT);
         for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
         }

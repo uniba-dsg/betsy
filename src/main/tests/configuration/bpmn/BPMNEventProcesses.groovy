@@ -66,7 +66,7 @@ class BPMNEventProcesses {
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
             "ErrorEndEvent", "A simple test for the ErrorEndEvent",
             [
-                    new BPMNTestCase(1).assertSuccess().assertThrownErrorEvent()
+                    new BPMNTestCase(1).assertTask1().assertErrorThrownErrorEvent()
             ]
     )
 
