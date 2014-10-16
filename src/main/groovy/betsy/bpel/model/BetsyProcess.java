@@ -25,7 +25,7 @@ public class BetsyProcess implements Cloneable, Comparable, Nameable {
     private static void uniqueifyTestCaseNames(List<TestCase> testCases) {
         // group by name of test case
         for (int counter = 1; counter < testCases.size(); counter++) {
-            TestCase testCase = testCases.get((int) counter - 1);
+            TestCase testCase = testCases.get(counter - 1);
             testCase.setName(testCase.getName() + "-" + counter);
         }
     }
@@ -81,7 +81,7 @@ public class BetsyProcess implements Cloneable, Comparable, Nameable {
     }
 
     public String getBpelFileNameWithoutExtension() {
-        return getBpelFileName().substring(0, (int) getBpelFileName().length() - 5);
+        return getBpelFileName().substring(0, getBpelFileName().length() - 5);
     }
 
     public Path getBpelFilePath() {
