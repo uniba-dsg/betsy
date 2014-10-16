@@ -3,7 +3,7 @@
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="CallActivityProcessTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/CallActivityProcess">
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/callActivityProcess">
     <bpmn2:collaboration id="collaboration">
         <bpmn2:participant id="Participant_2" name="Pool" processRef="CallActivityProcess"/>
         <bpmn2:participant id="Participant_1" name="Pool 2" processRef="CalledProcess"/>

@@ -3,7 +3,7 @@
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="SignalIntermediateThrowEventSubprocessInterrupting2Test"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/signalIntermediateThrowEventSubprocessIntrrupting2">
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/signalIntermediateThrowEventSubprocessInterrupting2">
   <bpmn2:signal id="signal" name="Signal" structureRef="String"/>
   <bpmn2:process id="SignalIntermediateThrowEventSubprocessInterrupting2" isExecutable="true">
     <bpmn2:scriptTask id="ScriptTask_1" name="Start">

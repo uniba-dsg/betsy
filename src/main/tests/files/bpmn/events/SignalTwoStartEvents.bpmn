@@ -3,7 +3,7 @@
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="SignalTwoStartEventsTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/signalTwoStartEvent">
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/signalTwoStartEvents">
   <bpmn2:collaboration id="collaboration">
     <bpmn2:participant id="_Participant_2" name="Pool" processRef="SignalTwoStartEvents"/>
     <bpmn2:participant id="Participant_1" name="Pool 2" processRef="Process_2"/>

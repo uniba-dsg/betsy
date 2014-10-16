@@ -2,7 +2,7 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd" id="LanesTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/Lanes">
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/lanes">
     <bpmn2:collaboration id="_Collaboration_3">
         <bpmn2:participant id="_Participant_3" name="Pool" processRef="Lanes"/>
     </bpmn2:collaboration>

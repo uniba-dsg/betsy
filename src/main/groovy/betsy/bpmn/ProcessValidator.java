@@ -26,7 +26,7 @@ public class ProcessValidator {
     public static final String[] ALLOWED_LOG_MESSAGES = new String[]{
             "taskNotInterrupted", "timerInternal", "taskInstanceExecuted", "timerEvent", "default", "timerExternal",
             "signaled", "end", "started", "task1", "CREATE_LOG_FILE", "task2",
-            "task3", "false", "subprocess", "normalTask", "interrupted", "condition", "success",
+            "task3", "false", "subprocess", "normalTask", "interrupted", "success",
             "true", "compensate", "transaction"
     };
 
@@ -55,6 +55,12 @@ public class ProcessValidator {
                     throw new IllegalStateException("No process element with id '" + process.getName() + "' found in process " + process.getName());
                 }
 
+                XPathExpression targetNamespaceExpression = xpath.compile("//*[local-name() = 'definitions' and @targetNamespace =  'http://dsg.wiai.uniba.de/betsy/bpmn/" + process.getName().substring(0, 1).toLowerCase() + process.getName().substring(1, process.getName().length()) + "']");
+                nodeList = (NodeList) targetNamespaceExpression.evaluate(doc, XPathConstants.NODESET);
+                if (nodeList.getLength() != 1) {
+                    throw new IllegalStateException("targetNamespace of definitions element of process '" + process.getName() + " is not http://dsg.wiai.uniba.de/betsy/bpmn/" + process.getName().substring(0, 1).toLowerCase() + process.getName().substring(1, process.getName().length()));
+                }
+
             } catch (SAXException | XPathExpressionException | IOException e) {
                 throw new IllegalStateException("Validation failed for file " + process.getResourceFile().toString(), e);
             }
@@ -73,8 +79,8 @@ public class ProcessValidator {
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     String textContent = nodeList.item(i).getTextContent();
 
-                    if(textContent.contains(",")){
-                        for(String x : textContent.split(",")) {
+                    if (textContent.contains(",")) {
+                        for (String x : textContent.split(",")) {
                             addMessage(messages, process, x);
                         }
                     } else {
@@ -98,7 +104,7 @@ public class ProcessValidator {
     }
 
     private void addMessage(Set<String> assertions, BPMNProcess process, String x) {
-        if(!Arrays.asList(ALLOWED_LOG_MESSAGES).contains(x)) {
+        if (!Arrays.asList(ALLOWED_LOG_MESSAGES).contains(x)) {
             System.out.println(x + " in " + process.getResourceFile());
         }
 

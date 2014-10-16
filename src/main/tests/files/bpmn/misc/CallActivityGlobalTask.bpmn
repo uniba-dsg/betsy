@@ -3,7 +3,7 @@
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="CallActivityGlobalTaskTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/CallActivityGlobalTask">
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/callActivityGlobalTask">
     <bpmn2:globalScriptTask id="globalTask" name="Global Task">
         <bpmn2:script>task1</bpmn2:script>
     </bpmn2:globalScriptTask>
