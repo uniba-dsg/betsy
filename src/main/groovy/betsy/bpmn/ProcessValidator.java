@@ -24,7 +24,7 @@ public class ProcessValidator {
     private XPath xpath;
 
     public static final String[] ALLOWED_LOG_MESSAGES = new String[]{
-            "taskNotInterrupted", "timerInternal", "taskInstanceExecuted", "timerEvent", "default", "timerExternal",
+            "taskNotInterrupted", "timerInternal", "timerEvent", "default", "timerExternal",
             "signaled", "end", "started", "task1", "CREATE_LOG_FILE", "task2",
             "task3", "false", "subprocess", "normalTask", "interrupted", "success",
             "true", "compensate", "transaction"
