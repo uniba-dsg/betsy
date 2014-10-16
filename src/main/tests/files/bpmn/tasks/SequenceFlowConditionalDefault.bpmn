@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="SequenceFlowConditionalDefaultTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/sequenceFlowConditionalDefault">
   <bpmn2:process id="SequenceFlowConditionalDefault" isExecutable="true">
