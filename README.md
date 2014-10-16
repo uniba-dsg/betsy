@@ -27,55 +27,80 @@ LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
 
 ## Usage
 
-Requirements (see above) have to be fulfilled to execute `betsy` on the command line.
+Requirements (see above) have to be fulfilled to execute `betsy` on the command line with the configuration from `config.properties`.
 
-See `config.properties` for more detailed configuration options.
+### BPEL
 
 ```
-usage: betsy [options] <engines> <processes>
+usage: betsy [OPTIONS] <ENGINES> <PROCESSES>
 
 Options:
- -p,--partner-address <ip-and-port>    Partner IP and Port (defaults to
-                                       141.13.4.93:2000)
- -t,--to-core-bpel <transformations>   Transform to Core BPEL
- -o,--open-results-in-browser          Opens results in default browser
- -c,--check-deployment                 Verifies deployment instead of test
-                                       success
- -b,--build-only                       Builds only the artifacts. Does
-                                       nothing else.
- -e,--use-external-partner-service     Use external partner service instead of internal one
- -h,--help                             Print out usage information
+ -b,--build-only                     Builds only the artifacts. Does
+                                     nothing else.
+ -c,--check-deployment               Verifies deployment instead of test
+                                     success
+ -e,--use-external-partner-service   Use external partner service instead
+                                     of internal one
+ -h,--help                           Print usage information.
+ -o,--open-results-in-browser        Opens results in default browser
+ -p,--partner-address <arg>          Partner IP and Port (defaults to
+                                     localhost:2000)
+ -t,--to-core-bpel <arg>             Transform to Core BPEL
 
-GROUPS for <engines> and <processes> are in CAPITAL LETTERS.
-<engines>:
-LOCALS (install and execute all engines locally),
-RECENT (install and execute all engines, in their most recent versions only, locally)
-VMS (install and execute all engines in virtual machines),
-ALL (install and execute all engines, in all versions supported, locally and in virtual machines),
-ode, bpelg, openesb, petalsesb, orchestra,
-active-bpel, openesb23, petalsesb41, ode_v, bpelg_v, openesb_v,
-petalsesb_v, orchestra_v, active_bpel_v
-
-<processes>: ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
+GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
+<ENGINES>: [ALL, LOCALS, VMS, RECENT, ode, bpelg, openesb, petalsesb,
+orchestra, active-bpel, openesb23, openesb231, petalsesb41, ode136,
+ode-in-memory, ode136-in-memory, bpelg-in-memory, wso2_v3_1_0,
+wso2_v3_0_0, wso2_v2_1_2, ode_v, bpelg_v, openesb_v, petalsesb_v,
+orchestra_v, active_bpel_v]
+<PROCESSES>: [ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
 BASIC_ACTIVITIES_RECEIVE, BASIC_ACTIVITIES_INVOKE,
 BASIC_ACTIVITIES_ASSIGN, BASIC_ACTIVITIES, SCOPES_EVENT_HANDLERS,
 SCOPES_FAULT_HANDLERS, SCOPES, STRUCTURED_ACTIVITIES_FLOW,
 STRUCTURED_ACTIVITIES_IF, STRUCTURED_ACTIVITIES_FOR_EACH,
 STRUCTURED_ACTIVITIES_PICK, STRUCTURED_ACTIVITIES, CONTROL_FLOW_PATTERNS,
-STATIC_ANALYSIS, FAULTS, WITH_EXIT_ASSERTION
+STATIC_ANALYSIS, SA00019, SA00018, SA00017, SA00012, SA00056, SA00011,
+SA00055, SA00010, SA00054, SA00053, SA00016, SA00015, SA00059, SA00014,
+SA00058, SA00013, SA00057, SA00063, SA00062, SA00061, SA00060, SA00023,
+SA00067, SA00022, SA00066, SA00021, SA00065, SA00020, SA00064, SA00025,
+SA00069, SA00024, SA00068, SA00070, SA00072, SA00071, SA00034, SA00078,
+SA00077, SA00032, SA00076, SA00037, SA00036, SA00035, SA00079, SA00081,
+SA00080, SA00085, SA00084, SA00083, SA00082, SA00008, SA00007, SA00006,
+SA00001, SA00045, SA00089, SA00044, SA00088, SA00087, SA00086, SA00005,
+SA00048, SA00003, SA00047, SA00002, SA00046, SA00092, SA00091, SA00090,
+SA00052, SA00051, SA00095, SA00050, SA00093, FAULTS, ERRORS, ...]
 
 # Examples
-$ betsy # Running all tests for all engines
-$ betsy ode # Running all tests for Apache ODE
-$ betsy ode,bpelg # Running all tests for Apache ODE and bpel-g
-$ betsy ALL Sequence # Running Sequence test for all engines
-$ betsy ALL Sequence,While # Running Sequence and While test for all engines
-$ betsy ode Sequence # Running Sequence test for Apache ODE
-$ betsy ode Invoke-Catch # Running Invoke-Catch test for Apache ODE
-$ betsy -t sequence.xsl,pick.xsl ode_v # Running all tests for the virtualised Apache ODE with sequence.xsl and pick.xsl CoreBPEL transformations
-$ betsy -o # Opens the results in the default browser after a successful run
+$ betsy bpel # Running all tests for all engines
+$ betsy bpel ode # Running all tests for Apache ODE
+$ betsy bpel ode,bpelg # Running all tests for Apache ODE and bpel-g
+$ betsy bpel ALL Sequence # Running Sequence test for all engines
+$ betsy bpel ALL Sequence,While # Running Sequence and While test for all engines
+$ betsy bpel ode Sequence # Running Sequence test for Apache ODE
+$ betsy bpel ode Invoke-Catch # Running Invoke-Catch test for Apache ODE
+$ betsy bpel -t sequence.xsl,pick.xsl ode_v # Running all tests for the virtualised Apache ODE with sequence.xsl and pick.xsl CoreBPEL transformations
+$ betsy bpel -o # Opens the results in the default browser after a successful run
+```
 
-# Administrative gradlew tasks
+### BPMN
+
+```
+usage: betsy bpmn [OPTIONS] <ENGINES> <PROCESSES>
+
+Options:
+ -b,--build-only                Builds only the artifacts. Does nothing
+                                else.
+ -h,--help                      Print usage information.
+ -o,--open-results-in-browser   Opens results in default browser
+
+GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
+<ENGINES>: [ALL, camunda, camunda710, activiti, jbpm, jbpm610]
+<PROCESSES>: [ALL, GATEWAYS, TASKS, EVENTS, SUBPROCESSES, MISCS, ...]
+```
+
+## Administrative Tasks
+
+```
 $ gradlew idea # Generating Intellij IDEA project files
 $ gradlew eclipse # Generating Eclipse project files
 $ gradlew groovydoc # Generating GroovyDoc
@@ -104,14 +129,17 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
     test/reports/html/ # html junit reports
 	test/$engine/
 	test/$engine/$process/
+
+	BPEL structure
 	test/$engine/$process/bpel/ # bpel file(s), wsdl file(s), xsd file(s)
 	test/$engine/$process/pgk/ # deployable zip files
 	test/$engine/$process/soapui/ # soapUI test suite
 	test/$engine/$process/reports/ # soapUI test reports
-
-    Optional directories
 	[test/$engine/$process/binding/ # binding package]
 	[test/$engine/$process/composite/ # composite package]
+
+	BPMN structure
+	TBA
 
 # Authors (in alphabetical order)
 

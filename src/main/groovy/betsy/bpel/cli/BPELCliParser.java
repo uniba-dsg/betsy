@@ -170,11 +170,11 @@ public class BPELCliParser {
     }
 
     public void printUsage() {
-        String firstLine = "betsy [OPTIONS] <ENGINES> <PROCESSES>";
+        String firstLine = "betsy bpel [OPTIONS] <ENGINES> <PROCESSES>";
         String header = "\nOptions:\n";
-        String footer = "\nGROUPS for <engines> and <processes> are in CAPITAL LETTERS.\n" +
-                "<engines>: " + new EngineRepository().getNames() + "\n\n\n" +
-                "<processes>: " + new ProcessRepository().getNames() + "\n\n\n" +
+        String footer = "\nGROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.\n" +
+                "<ENGINES>: " + new EngineRepository().getNames() + "\n\n\n" +
+                "<PROCESSES>: " + new ProcessRepository().getNames() + "\n\n\n" +
                 "Please report issues at https://github.com/uniba-dsg/betsy/issues";
         new HelpFormatter().printHelp(firstLine,
                 header,

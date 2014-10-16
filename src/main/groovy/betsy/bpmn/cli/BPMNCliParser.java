@@ -97,11 +97,11 @@ public class BPMNCliParser {
     }
 
     public void printUsage() {
-        String firstLine = "betsy-bpmn [OPTIONS] <ENGINES> <PROCESSES>";
+        String firstLine = "betsy bpmn [OPTIONS] <ENGINES> <PROCESSES>";
         String header = "\nOptions:\n";
-        String footer = "\nGROUPS for <engines> and <processes> are in CAPITAL LETTERS.\n" +
-                "<engines>: " + new BPMNEngineRepository().getNames() + "\n\n\n" +
-                "<processes>: " + new BPMNProcessRepository().getNames() + "\n\n\n" +
+        String footer = "\nGROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.\n" +
+                "<ENGINES>: " + new BPMNEngineRepository().getNames() + "\n\n\n" +
+                "<PROCESSES>: " + new BPMNProcessRepository().getNames() + "\n\n\n" +
                 "Please report issues at https://github.com/uniba-dsg/betsy/issues";
         new HelpFormatter().printHelp(firstLine,
                 header,
