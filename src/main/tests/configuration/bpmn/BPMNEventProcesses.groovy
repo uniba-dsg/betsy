@@ -243,8 +243,8 @@ class BPMNEventProcesses {
     public static final BPMNProcess CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
             "ConditionalStartEventSubprocessInterrupting1", "A test for an interrupting conditional start event in an event sub process",
             [
-                    new BPMNTestCase(1).inputA().assertStarted().assertTask1(),
-                    new BPMNTestCase(2).inputB().assertStarted().assertNormalTask()
+                    new BPMNTestCase(1).inputA().assertTask1(),
+                    new BPMNTestCase(2).inputB().assertTask2()
             ]
     )
 
