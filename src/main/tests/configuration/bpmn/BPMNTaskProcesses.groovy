@@ -7,7 +7,7 @@ class BPMNTaskProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess SEQUENCE_FLOW = builder.buildTaskProcess(
-            "SequenceFlow", "A process with two scriptTasks connected by sequenceFlows",
+            "SequenceFlow", "A process with two scriptTasks connected by a sequenceFlow",
             [
                     new BPMNTestCase().assertTask1()
             ]
@@ -15,11 +15,11 @@ class BPMNTaskProcesses {
 
     public static final BPMNProcess SEQUENCE_FLOW_CONDITIONAL = builder.buildTaskProcess(
             "SequenceFlowConditional", "A process with three scriptTasks connected by sequenceFlows. " +
-            "The first scriptTask points to the other task with sequenceFlows. " +
+            "The first scriptTask points to the other tasks with sequenceFlows. " +
             "One of these sequenceFlows is associated with a conditionExpression",
             [
-                    new BPMNTestCase(1).inputA().assertSuccess().assertCondition(),
-                    new BPMNTestCase(2).inputB().assertSuccess()
+                    new BPMNTestCase(1).inputA().assertTask1().assertTask2(),
+                    new BPMNTestCase(2).inputB().assertTask2()
             ]
     )
 
