@@ -46,7 +46,7 @@ class BPMNTaskProcesses {
     public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL = builder.buildTaskProcess(
             "MultiInstanceSequentialTask", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
             [
-                    new BPMNTestCase().assertInstanceExecution().assertInstanceExecution().assertInstanceExecution().assertSuccess()
+                    new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
             ]
     )
 
