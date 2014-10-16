@@ -28,8 +28,8 @@ class BPMNTaskProcesses {
             "The first scriptTask points to the other task with sequenceFlows. " +
             "One of these sequenceFlows is associated with a conditionExpression, the other one is marked as default",
             [
-                    new BPMNTestCase(1).inputA().assertCondition(),
-                    new BPMNTestCase(2).inputB().assertSuccess()
+                    new BPMNTestCase(1).inputA().assertTask1(),
+                    new BPMNTestCase(2).inputB().assertTask2()
             ]
     )
 
