@@ -79,14 +79,14 @@ class BPMNTaskProcesses {
     )
 
     public static final BPMNProcess LOOP_NO_ITERATION_TEST_BEFORE_FALSE = builder.buildTaskProcess(
-            "LoopTaskNoIteration-TestBeforeFalse", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false. Hence, the task should never be executed.",
+            "LoopTaskNoIteration-TestBeforeFalse", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false, but has testBefore set to false and, hence, should be executed once.",
             [
                     new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess LOOP_NO_ITERATION_TEST_BEFORE_TRUE = builder.buildTaskProcess(
-            "LoopTaskNoIteration-TestBeforeTrue", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false. Hence, the task should never be executed.",
+            "LoopTaskNoIteration-TestBeforeTrue", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false and has testBefore set to true. Hence, the task should never be executed.",
             [
                     new BPMNTestCase().assertTask2()
             ]
