@@ -33,3 +33,5 @@ vm_extraction/
 # ignore this directory which is created on demand
 src/main/tests/files/bpel/errors/
 ovas
+
+*.bpmn.png
