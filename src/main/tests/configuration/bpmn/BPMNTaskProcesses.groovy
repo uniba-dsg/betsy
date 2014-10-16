@@ -67,6 +67,14 @@ class BPMNTaskProcesses {
             ]
     )
 
+    public static final BPMNProcess MULTI_INSTANCE_ALL_BEHAVIOR = builder.buildTaskProcess(
+            "MultiInstanceTaskAllBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to all." +
+            "The task has a signal boundary event attached that points to another script task. The event should never be thrown.",
+            [
+                    new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
+            ]
+    )
+
     public static final BPMNProcess MULTI_INSTANCE_PARALLEL = builder.buildTaskProcess(
             "MultiInstanceParallelTask", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
             [
@@ -103,6 +111,7 @@ class BPMNTaskProcesses {
             MULTI_INSTANCE_SEQUENTIAL,
             MULTI_INSTANCE_NONE_BEHAVIOR,
             MULTI_INSTANCE_ONE_BEHAVIOR,
+            MULTI_INSTANCE_ALL_BEHAVIOR,
             MULTI_INSTANCE_PARALLEL,
             LOOP_WITH_LOOP_MAXIMUM,
             LOOP_NO_ITERATION_TEST_BEFORE_FALSE,
