@@ -4,7 +4,7 @@ apply plugin: "eclipse"
 apply plugin: "application"
 
 // Main class of betsy
-mainClassName = "betsy.bpel.Main"
+mainClassName = "betsy.Main"
 
 repositories {
     mavenCentral()
@@ -285,6 +285,15 @@ task runBPMN(type: JavaExec, dependsOn: classes) {
     description = 'Starts BPMNMain'
     classpath = sourceSets.main.runtimeClasspath
     main = "betsy.bpmn.BPMNMain"
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
+}
+
+task runBPEL(type: JavaExec, dependsOn: classes) {
+    description = 'Starts BPMNMain'
+    classpath = sourceSets.main.runtimeClasspath
+    main = "betsy.bpel.Main"
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }
