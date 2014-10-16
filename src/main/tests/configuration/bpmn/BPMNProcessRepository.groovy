@@ -17,7 +17,7 @@ class BPMNProcessRepository {
                 GATEWAYS +
                 BPMNTaskProcesses.TASKS +
                 EVENTS +
-                BPMNSubprocessProcesses.SUBPROCESSES +
+                BPMNSubprocessProcesses.SUB_PROCESSES +
                 MISCS
                 as List<BPMNProcess>)
 
