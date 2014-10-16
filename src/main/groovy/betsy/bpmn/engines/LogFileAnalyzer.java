@@ -11,7 +11,7 @@ public class LogFileAnalyzer {
 
     private final Path logFile;
 
-    private final Map<String,Optional<String>> substrings2error = new HashMap<>();
+    private final Map<String,String> substrings2error = new HashMap<>();
 
     public LogFileAnalyzer(Path logFile) {
         FileTasks.assertFile(logFile);
@@ -20,11 +20,8 @@ public class LogFileAnalyzer {
     }
 
     public void addSubstring(String substring, String error){
-        substrings2error.put(substring, Optional.of(Objects.requireNonNull(error, "error must not be null")));
-    }
-
-    public void addSubstring(String substring){
-        substrings2error.put(substring, Optional.empty());
+        substrings2error.put(Objects.requireNonNull(substring, "substring must not be null"),
+                Objects.requireNonNull(error, "error must not be null"));
     }
 
     public Set<String> getErrors() {
@@ -32,9 +29,9 @@ public class LogFileAnalyzer {
 
         List<String> lines = getLines();
         for (String line : lines) {
-            for(Map.Entry<String, Optional<String>> entry : substrings2error.entrySet()) {
+            for(Map.Entry<String, String> entry : substrings2error.entrySet()) {
                 if(line.contains(entry.getKey())){
-                    result.add(entry.getValue().orElse(line));
+                    result.add(entry.getValue());
                 }
             }
         }
