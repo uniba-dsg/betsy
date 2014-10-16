@@ -108,7 +108,7 @@ class BPMNEventProcesses {
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "LinkEvent", "A simple test for link events",
             [
-                    new BPMNTestCase(1).assertSuccess()
+                    new BPMNTestCase(1).assertTask1()
             ]
     )
 
