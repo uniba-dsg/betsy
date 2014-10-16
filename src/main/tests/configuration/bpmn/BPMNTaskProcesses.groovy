@@ -25,11 +25,21 @@ class BPMNTaskProcesses {
 
     public static final BPMNProcess SEQUENCE_FLOW_CONDITIONAL_DEFAULT = builder.buildTaskProcess(
             "SequenceFlowConditionalDefault", "A process with three scriptTasks connected by sequenceFlows. " +
-            "The first scriptTask points to the other task with sequenceFlows. " +
+            "The first scriptTask points to the other tasks with sequenceFlows. " +
             "One of these sequenceFlows is associated with a conditionExpression, the other one is marked as default",
             [
                     new BPMNTestCase(1).inputA().assertTask1(),
                     new BPMNTestCase(2).inputB().assertTask2()
+            ]
+    )
+
+    public static final BPMNProcess SEQUENCE_FLOW_CONDITIONAL_DEFAULT_NORMAL = builder.buildTaskProcess(
+            "SequenceFlowConditionalDefaultNormal", "A process with four scriptTasks connected by sequenceFlows. " +
+            "The first scriptTask points to the other three tasks with sequenceFlows. " +
+            "The first of these sequenceFlows is associated with a conditionExpression, the second one is marked as default and the third has no condition associated.",
+            [
+                    new BPMNTestCase(1).inputA().assertTask1().assertTask3(),
+                    new BPMNTestCase(2).inputB().assertTask2().assertTask3()
             ]
     )
 
@@ -79,6 +89,7 @@ class BPMNTaskProcesses {
             SEQUENCE_FLOW,
             SEQUENCE_FLOW_CONDITIONAL,
             SEQUENCE_FLOW_CONDITIONAL_DEFAULT,
+            SEQUENCE_FLOW_CONDITIONAL_DEFAULT_NORMAL,
             MULTI_INSTANCE_SEQUENTIAL,
             MULTI_INSTANCE_SEQUENTIAL_NONE,
             MULTI_INSTANCE_SEQUENTIAL_ONE,
