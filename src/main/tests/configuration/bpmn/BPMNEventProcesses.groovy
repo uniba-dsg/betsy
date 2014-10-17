@@ -190,10 +190,11 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess COMPENSATION_BOUNDARY_END = builder.buildEventProcess(
-            "CompensationBoundaryEnd", "A test for a compensation end and a compensation boundary event",
+    public static final BPMNProcess COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS = builder.buildEventProcess(
+            "CompensationEndEventBoundaryEventSubProcess", "A test with a subprocess whichs calls compensation on himself" +
+            "as the SubProcess is not completed, the compensation has to be ignored.",
             [
-                    new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask3()
             ]
     )
 
@@ -334,7 +335,7 @@ class BPMNEventProcesses {
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_TWO_STARTS,
             CANCEL,
-            COMPENSATION_BOUNDARY_END,
+            COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS,
             COMPENSATION_BOUNDARY_THROW,
             COMPENSATION_BOUNDARY_TASK_THROW,
             COMPENSATION_BOUNDARY_TASK_END,
