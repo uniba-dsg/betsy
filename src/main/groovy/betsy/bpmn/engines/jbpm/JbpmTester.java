@@ -50,8 +50,8 @@ public class JbpmTester {
                 //delay for timer intermediate event
                 WaitTasks.sleep(testCase.getDelay());
 
-            } catch (RuntimeException ignored) {
-                BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
+            } catch (RuntimeException ex) {
+                BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME+"("+ex.getMessage()+")");
             }
 
 
