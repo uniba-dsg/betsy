@@ -27,7 +27,7 @@ public class ProcessValidator {
             "taskNotInterrupted", "timerInternal", "timerEvent", "default", "timerExternal",
             "signaled", "end", "started", "task1", "CREATE_LOG_FILE", "task2",
             "task3", "false", "subprocess", "normalTask", "interrupted", "success",
-            "true", "transaction", "compensation"
+            "true", "transaction"
     };
 
     public void validate() {
