@@ -88,10 +88,15 @@ public class BPELCliParser {
         try {
             CommandLine cmd = parser.parse(getOptions(), args);
 
+            for(Option option : cmd.getOptions()) {
+                System.out.println(option.toString());
+            }
+
             if (cmd.hasOption(HELP)) {
                 printUsage();
                 System.exit(-1);
             }
+
 
             return new BPELCliParameter() {
                 @Override
