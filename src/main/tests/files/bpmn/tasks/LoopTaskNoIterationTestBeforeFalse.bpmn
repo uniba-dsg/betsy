@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="LoopTaskNoIteration-TestBeforeTrueTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopTaskNoIteration-TestBeforeTrue">
-    <bpmn2:process id="LoopTaskNoIteration-TestBeforeTrue" isExecutable="true">
+                   id="LoopTaskNoIterationTestBeforeFalseTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopTaskNoIterationTestBeforeFalse">
+    <bpmn2:process id="LoopTaskNoIterationTestBeforeFalse" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -23,7 +23,7 @@
         <bpmn2:scriptTask id="LoopTask" name="Loop">
             <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-            <bpmn2:standardLoopCharacteristics testBefore="true">
+            <bpmn2:standardLoopCharacteristics testBefore="false">
                 <bpmn2:loopCondition>false</bpmn2:loopCondition>
             </bpmn2:standardLoopCharacteristics>
             <bpmn2:script>task1</bpmn2:script>
