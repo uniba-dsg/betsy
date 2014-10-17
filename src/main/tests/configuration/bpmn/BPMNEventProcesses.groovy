@@ -190,14 +190,19 @@ class BPMNEventProcesses {
             ]
     )
 
+
+
+    // This test should be correct already
     public static final BPMNProcess COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS = builder.buildEventProcess(
-            "CompensationEndEventBoundaryEventSubProcess", "A test with a subprocess whichs calls compensation on himself" +
+            "CompensationEndEventBoundaryEventSubProcess", "A test with a subprocess which calls compensation on himself" +
             "as the SubProcess is not completed, the compensation has to be ignored.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask3()
             ]
     )
 
+    /*
+    // TODO Compensation tests need major rework
     public static final BPMNProcess COMPENSATION_BOUNDARY_THROW = builder.buildEventProcess(
             "CompensationBoundaryThrow", "A test for a compensation throw and a compensation boundary event",
             [
@@ -231,7 +236,7 @@ class BPMNEventProcesses {
             [
                     new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
             ]
-    )
+    )*/
 
     //not supported either by camunda or jbpm
     public static final BPMNProcess ESCALATION_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
@@ -336,11 +341,11 @@ class BPMNEventProcesses {
             SIGNAL_TWO_STARTS,
             CANCEL,
             COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS,
-            COMPENSATION_BOUNDARY_THROW,
-            COMPENSATION_BOUNDARY_TASK_THROW,
-            COMPENSATION_BOUNDARY_TASK_END,
-            COMPENSATION_EVENT_SUBPROCESS_END,
-            COMPENSATION_EVENT_SUBPROCESS_THROW,
+//            COMPENSATION_BOUNDARY_THROW,
+//            COMPENSATION_BOUNDARY_TASK_THROW,
+//            COMPENSATION_BOUNDARY_TASK_END,
+//            COMPENSATION_EVENT_SUBPROCESS_END,
+//            COMPENSATION_EVENT_SUBPROCESS_THROW,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_EVENT_INTERMEDIATE,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1,
