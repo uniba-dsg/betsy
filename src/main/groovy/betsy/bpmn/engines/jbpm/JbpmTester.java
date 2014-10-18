@@ -47,14 +47,24 @@ public class JbpmTester {
             try {
                 JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
 
-                //delay for timer intermediate event
-                WaitTasks.sleep(testCase.getDelay());
+
 
             } catch (RuntimeException ex) {
-                BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME+"("+ex.getMessage()+")");
+                if(ex.getMessage()!=null && ex.getMessage().contains("No runtime manager could be found")) {
+                    //retry after delay
+                    WaitTasks.sleep(10000);
+                    try{
+                        JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
+                    } catch (RuntimeException innerEx) {
+                        BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME+"("+ex.getMessage()+")");
+                    }
+                } else {
+                    BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME+"("+ex.getMessage()+")");
+                }
             }
 
-
+//delay for timer intermediate event
+            WaitTasks.sleep(testCase.getDelay());
         } else {
             //delay for self starting
             WaitTasks.sleep(testCase.getDelay());
