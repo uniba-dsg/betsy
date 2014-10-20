@@ -54,11 +54,11 @@ public class JbpmTester {
                     try{
                         JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                     } catch (RuntimeException innerEx) {
-                        log.info(Errors.ERROR_DEPLOYMENT+": Instantiation still not possible. Aborting test.", innerEx);
+                        log.info(Errors.ERROR_RUNTIME+": Instantiation still not possible. Aborting test.", innerEx);
                         BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                     }
                 } else {
-                    log.info(Errors.ERROR_DEPLOYMENT+": Instantiation of process failed. Reason:", ex);
+                    log.info(Errors.ERROR_RUNTIME+": Instantiation of process failed. Reason:", ex);
                     BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                 }
             }

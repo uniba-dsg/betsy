@@ -262,11 +262,13 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess CONDITIONAL_EVENT_INTERMEDIATE = builder.buildEventProcess(
-            "ConditionalEventIntermediate", "A test for an intermediate conditional event",
+    public static final BPMNProcess CONDITIONAL_INTERMEDIATE_EVENT = builder.buildEventProcess(
+            "ConditionalIntermediateEvent", "A test for an intermediate conditional event: ConditionIntermediate checks " +
+            "a condition set at process instantiation. If the condition is fulfilled the process completes, if not the " +
+            "process is locked at the event and should not complete.",
             [
-                    new BPMNTestCase(1).inputA().assertStarted().assertSuccess(),
-                    new BPMNTestCase(2).inputB().assertStarted()
+                    new BPMNTestCase(1).inputA().assertTask1().assertTask2(),
+                    new BPMNTestCase(2).inputB().assertTask1()
             ]
     )
 
@@ -347,7 +349,7 @@ class BPMNEventProcesses {
 //            COMPENSATION_EVENT_SUBPROCESS_END,
 //            COMPENSATION_EVENT_SUBPROCESS_THROW,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
-            CONDITIONAL_EVENT_INTERMEDIATE,
+            CONDITIONAL_INTERMEDIATE_EVENT,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2,
             TERMINATE_EVENT,
