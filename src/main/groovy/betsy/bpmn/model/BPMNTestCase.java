@@ -77,7 +77,7 @@ public class BPMNTestCase {
     }
 
     public BPMNTestCase assertRuntimeException() {
-        return addAssertions("runtimeException");
+        return addAssertions(Errors.ERROR_RUNTIME);
     }
 
     public BPMNTestCase assertErrorThrownErrorEvent() {
