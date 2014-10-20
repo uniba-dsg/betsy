@@ -102,11 +102,11 @@ public class ProcessValidator {
         if(actualMessages.length<ALLOWED_LOG_MESSAGES.length) {
             List<String> allowedMsgList = new LinkedList<>(Arrays.asList(ALLOWED_LOG_MESSAGES));
             allowedMsgList.removeAll(Arrays.asList(actualMessages));
-            System.out.println("Allowed Log Messages "+Arrays.toString(allowedMsgList.toArray())+" are not used anymore.");
+            System.out.println("Allowed Log Messages "+allowedMsgList+" are not used anymore.");
         } else if(actualMessages.length>ALLOWED_LOG_MESSAGES.length) {
             List<String> actualMsgList = new LinkedList<>(Arrays.asList(actualMessages));
             actualMsgList.removeAll(Arrays.asList(ALLOWED_LOG_MESSAGES));
-            System.out.println("Log Messages "+Arrays.toString(actualMsgList.toArray())+" are used but not allowed anymore.");
+            System.out.println("Log Messages "+actualMsgList+" are used but not allowed anymore.");
         }
         Assert.assertArrayEquals(ALLOWED_LOG_MESSAGES, actualMessages);
     }
