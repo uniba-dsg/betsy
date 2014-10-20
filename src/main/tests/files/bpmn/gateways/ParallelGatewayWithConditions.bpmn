@@ -21,12 +21,12 @@
     <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
-      <bpmn2:script>task2</bpmn2:script>
+      <bpmn2:script>SCRIPT_task2</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_1" name="Task 1">
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
-      <bpmn2:script>task1</bpmn2:script>
+      <bpmn2:script>SCRIPT_task1</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="ParallelGateway_2" targetRef="end"/>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ParallelGateway_1" targetRef="ScriptTask_1">
@@ -50,7 +50,7 @@
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
   </bpmn2:process>

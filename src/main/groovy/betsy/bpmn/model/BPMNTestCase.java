@@ -49,31 +49,31 @@ public class BPMNTestCase {
     }
 
     public BPMNTestCase assertSuccess() {
-        return addAssertions("success");
+        return addAssertions("SCRIPT_success");
     }
 
     public BPMNTestCase assertTask1() {
-        return addAssertions("task1");
+        return addAssertions("SCRIPT_task1");
     }
 
     public BPMNTestCase assertTask2() {
-        return addAssertions("task2");
+        return addAssertions("SCRIPT_task2");
     }
 
     public BPMNTestCase assertTask3() {
-        return addAssertions("task3");
+        return addAssertions("SCRIPT_task3");
     }
 
     public BPMNTestCase assertTrue() {
-        return addAssertions("true");
+        return addAssertions("SCRIPT_true");
     }
 
     public BPMNTestCase assertFalse() {
-        return addAssertions("false");
+        return addAssertions("SCRIPT_false");
     }
 
     public BPMNTestCase assertDefault() {
-        return addAssertions("default");
+        return addAssertions("SCRIPT_default");
     }
 
     public BPMNTestCase assertRuntimeException() {
@@ -85,55 +85,55 @@ public class BPMNTestCase {
     }
 
     public BPMNTestCase assertSubprocess() {
-        return addAssertions("subprocess");
+        return addAssertions("SCRIPT_subprocess");
     }
 
     public BPMNTestCase assertInstanceExecution() {
-        return addAssertions("taskInstanceExecuted");
+        return addAssertions("SCRIPT_taskInstanceExecuted");
     }
 
     public BPMNTestCase assertInterrupted() {
-        return addAssertions("interrupted");
+        return addAssertions("SCRIPT_interrupted");
     }
 
     public BPMNTestCase assertSignaled() {
-        return addAssertions("signaled");
+        return addAssertions("SCRIPT_signaled");
     }
 
     public BPMNTestCase assertNormalTask() {
-        return addAssertions("normalTask");
+        return addAssertions("SCRIPT_normalTask");
     }
 
     public BPMNTestCase assertTransactionTask() {
-        return addAssertions("transaction");
+        return addAssertions("SCRIPT_transaction");
     }
 
     public BPMNTestCase assertCompensate() {
-        return addAssertions("compensate");
+        return addAssertions("SCRIPT_compensate");
     }
 
     public BPMNTestCase assertNotInterrupted() {
-        return addAssertions("taskNotInterrupted");
+        return addAssertions("SCRIPT_taskNotInterrupted");
     }
 
     public BPMNTestCase assertStarted() {
-        return addAssertions("started");
+        return addAssertions("SCRIPT_started");
     }
 
     public BPMNTestCase assertTimerInternal() {
-        return addAssertions("timerInternal");
+        return addAssertions("SCRIPT_timerInternal");
     }
 
     public BPMNTestCase assertTimerExternal() {
-        return addAssertions("timerExternal");
+        return addAssertions("SCRIPT_timerExternal");
     }
 
     public BPMNTestCase assertTimerEvent() {
-        return addAssertions("timerEvent");
+        return addAssertions("SCRIPT_timerEvent");
     }
 
     public BPMNTestCase assertCondition() {
-        return addAssertions("condition");
+        return addAssertions("SCRIPT_condition");
     }
 
     public BPMNTestCase optionDelay(int delay) {

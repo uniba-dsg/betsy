@@ -31,7 +31,7 @@
                                                     noneBehaviorEventRef="_SignalEventDefinition_4">
                 <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
             </bpmn2:multiInstanceLoopCharacteristics>
-            <bpmn2:script>task1</bpmn2:script>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
         </bpmn2:scriptTask>
 
         <bpmn2:boundaryEvent id="BoundaryEvent" name="" attachedToRef="multiInstanceTask">
@@ -44,7 +44,7 @@
         <bpmn2:scriptTask id="end" name="End">
             <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-            <bpmn2:script>task2</bpmn2:script>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
         <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
@@ -58,7 +58,7 @@
         <bpmn2:scriptTask id="SignalTask" name="SignalTask">
             <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
-            <bpmn2:script>task3</bpmn2:script>
+            <bpmn2:script>SCRIPT_task3</bpmn2:script>
         </bpmn2:scriptTask>
 
         <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="SignalTask" targetRef="EndEvent_1"/>

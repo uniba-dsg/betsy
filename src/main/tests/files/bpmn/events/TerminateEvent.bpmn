@@ -11,13 +11,13 @@
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
-      <bpmn2:script>CREATE_LOG_FILE,started</bpmn2:script>
+      <bpmn2:script>CREATE_LOG_FILE,SCRIPT_started</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="StartEvent_1" targetRef="start"/>
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>

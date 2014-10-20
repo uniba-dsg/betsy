@@ -19,7 +19,7 @@
     <bpmn2:scriptTask id="ScriptTask_2" name="End">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
@@ -35,7 +35,7 @@
       <bpmn2:scriptTask id="ScriptTask_3" name="normal sub Task">
         <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
         <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
-        <bpmn2:script>normalTask</bpmn2:script>
+        <bpmn2:script>SCRIPT_normalTask</bpmn2:script>
       </bpmn2:scriptTask>
       <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ScriptTask_3" targetRef="EndEvent_2"/>
       <bpmn2:endEvent id="EndEvent_2">
@@ -50,7 +50,7 @@
     <bpmn2:scriptTask id="ScriptTask_4" name="signaled">
       <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-      <bpmn2:script>signaled</bpmn2:script>
+      <bpmn2:script>SCRIPT_signaled</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ScriptTask_4" targetRef="EndEvent_3"/>
     <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="SubProcess_1" cancelActivity="false">

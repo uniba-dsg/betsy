@@ -5,7 +5,7 @@
                    id="CallActivityGlobalTaskTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/callActivityGlobalTask">
     <bpmn2:globalScriptTask id="globalTask" name="Global Task">
-        <bpmn2:script>task1</bpmn2:script>
+        <bpmn2:script>SCRIPT_task1</bpmn2:script>
     </bpmn2:globalScriptTask>
     <bpmn2:process id="CallActivityGlobalTask" isExecutable="true">
         <bpmn2:startEvent id="StartEvent_2">
@@ -32,7 +32,7 @@
         <bpmn2:scriptTask id="ScriptTask_5" name="End">
             <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-            <bpmn2:script>task2</bpmn2:script>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
         <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="ScriptTask_5" targetRef="EndEvent_1"/>

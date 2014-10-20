@@ -15,7 +15,7 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Task 1">
       <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
-      <bpmn2:script>task1</bpmn2:script>
+      <bpmn2:script>SCRIPT_task1</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="start" name="Start">
       <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
@@ -34,12 +34,12 @@
     <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
       <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
-      <bpmn2:script>task2</bpmn2:script>
+      <bpmn2:script>SCRIPT_task2</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_3" name="Task 3&#xD;&#xA;">
       <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_18</bpmn2:outgoing>
-      <bpmn2:script>task3</bpmn2:script>
+      <bpmn2:script>SCRIPT_task3</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="StartEvent_1" targetRef="start"/>
     <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="start" targetRef="ComplexGateway_1"/>
@@ -62,7 +62,7 @@
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_20</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_20" name="" sourceRef="end" targetRef="EndEvent_2"/>
   </bpmn2:process>

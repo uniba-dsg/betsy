@@ -17,7 +17,7 @@
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="start"/>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="start" targetRef="end"/>

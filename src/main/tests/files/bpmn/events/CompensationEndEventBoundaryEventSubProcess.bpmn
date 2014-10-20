@@ -31,7 +31,7 @@
             <bpmn2:scriptTask id="ScriptTask_2" name="Subprocess Task">
                 <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
                 <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-                <bpmn2:script>task1</bpmn2:script>
+                <bpmn2:script>SCRIPT_task1</bpmn2:script>
             </bpmn2:scriptTask>
 
             <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ScriptTask_2" targetRef="EndEvent_3"/>
@@ -47,7 +47,7 @@
         </bpmn2:boundaryEvent>
 
         <bpmn2:scriptTask id="ScriptTask_1" name="Compensate" isForCompensation="true">
-            <bpmn2:script>task2</bpmn2:script>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
 
@@ -56,7 +56,7 @@
         <bpmn2:scriptTask id="end" name="End">
             <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
-            <bpmn2:script>task3</bpmn2:script>
+            <bpmn2:script>SCRIPT_task3</bpmn2:script>
         </bpmn2:scriptTask>
 
         <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="end" targetRef="EndEvent_2"/>

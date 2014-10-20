@@ -24,7 +24,7 @@
     <bpmn2:scriptTask id="ScriptTask_1" name="Signaled">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-      <bpmn2:script>signaled</bpmn2:script>
+      <bpmn2:script>SCRIPT_signaled</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="IntermediateThrowEvent_1" targetRef="ScriptTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="ScriptTask_1" targetRef="EndEvent_1"/>
@@ -39,7 +39,7 @@
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script>success</bpmn2:script>
+      <bpmn2:script>SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
     <bpmn2:endEvent id="EndEvent_1">

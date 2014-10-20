@@ -8,7 +8,7 @@
     <bpmn2:scriptTask id="end" name="End">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-      <bpmn2:script>CREATE_LOG_FILE,success</bpmn2:script>
+      <bpmn2:script>CREATE_LOG_FILE,SCRIPT_success</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
