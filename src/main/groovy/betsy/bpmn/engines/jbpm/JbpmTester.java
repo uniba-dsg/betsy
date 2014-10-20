@@ -8,6 +8,7 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -36,40 +37,38 @@ public class JbpmTester {
                 variables.put(variable.getName(), variable.getValue());
             }
 
-
             StringJoiner joiner = new StringJoiner("&", "?", "");
             for (Map.Entry<String, Object> entry : variables.entrySet()) {
                 joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
             }
 
-
             String requestUrl = baseUrl + joiner.toString();
             try {
+                log.info("Trying to start process \""+name+"\".");
                 JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-
-
-
             } catch (RuntimeException ex) {
                 if(ex.getMessage()!=null && ex.getMessage().contains("No runtime manager could be found")) {
+                    log.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
                     //retry after delay
                     WaitTasks.sleep(10000);
                     try{
                         JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                     } catch (RuntimeException innerEx) {
-                        BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME+"("+ex.getMessage()+")");
+                        log.info(Errors.ERROR_DEPLOYMENT+": Instantiation still not possible. Aborting test.", innerEx);
+                        BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                     }
                 } else {
-                    BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME+"("+ex.getMessage()+")");
+                    log.info(Errors.ERROR_DEPLOYMENT+": Instantiation of process failed. Reason:", ex);
+                    BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                 }
             }
 
-//delay for timer intermediate event
+            //delay for timer intermediate event
             WaitTasks.sleep(testCase.getDelay());
         } else {
             //delay for self starting
             WaitTasks.sleep(testCase.getDelay());
         }
-
 
         BPMNTester.setupPathToToolsJarForJavacAntTask(this);
         BPMNTester.compileTest(testSrc, testBin);
@@ -81,6 +80,7 @@ public class JbpmTester {
         analyzer.addSubstring("failed to deploy", Errors.ERROR_DEPLOYMENT);
         for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
+            log.info(Errors.ERROR_DEPLOYMENT+": "+deploymentId+", "+name+": Deployment error detected.");
         }
     }
 
@@ -187,4 +187,6 @@ public class JbpmTester {
     private Path serverLogFile;
     private String user = "admin";
     private String password = "admin";
+
+    private static final Logger log = Logger.getLogger(JbpmTester.class);
 }
