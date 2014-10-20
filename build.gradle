@@ -300,3 +300,35 @@ task runBPEL(type: JavaExec, dependsOn: classes) {
 }
 
 
+apply plugin: 'pmd'
+pmd {
+    ignoreFailures = true
+    ruleSets = [
+            'java-basic',
+            'java-braces',
+            'java-finalizers',
+            'java-imports',
+            'java-empty',
+            'java-unnecessary',
+            'java-junit',
+            'java-unusedcode'
+
+            /*
+            'java-codesize',
+            'java-comments',
+            'java-controversial',
+            'java-design',
+            'java-typeresolution',
+            'java-strings',
+            'java-sunsecure',
+            'java-optimizations',
+            'java-naming',
+            'java-strictexception',
+            'java-migrating',
+            'java-coupling',
+            'java-clone',
+            */
+    ]
+}
+
+
