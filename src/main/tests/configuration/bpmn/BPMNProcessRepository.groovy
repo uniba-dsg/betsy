@@ -17,7 +17,7 @@ class BPMNProcessRepository {
                 GATEWAYS +
                 BPMNTaskProcesses.TASKS +
                 EVENTS +
-                BPMNSubprocessProcesses.SUB_PROCESSES +
+                BPMNSubProcesses.SUB_PROCESSES +
                 MISCS
                 as List<BPMNProcess>)
 
@@ -25,7 +25,7 @@ class BPMNProcessRepository {
             BPMNGatewayProcesses.class.declaredFields +
             BPMNTaskProcesses.class.declaredFields +
             BPMNEventProcesses.class.declaredFields +
-            BPMNSubprocessProcesses.class.declaredFields +
+            BPMNSubProcesses.class.declaredFields +
             BPMNMiscProcesses.class.declaredFields
         ].flatten()
 
