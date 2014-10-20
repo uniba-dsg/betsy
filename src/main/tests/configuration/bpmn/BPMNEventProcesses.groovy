@@ -279,6 +279,16 @@ class BPMNEventProcesses {
             ]
     )
 
+    // jBPM can not use the variable 'test' as it needs an instantiated process to access the variables.
+    // Camunda does not support conditional and ignores it like in signal start event.
+    public static final BPMNProcess CONDITIONAL_START_EVENT = builder.buildEventProcess(
+            "ConditionalStartEvent", "A test with a conditional start event",
+            [
+                    new BPMNTestCase(1).inputA().assertSuccess(),
+                    new BPMNTestCase(2).inputB()
+            ]
+    )
+
     /*
     //It is not possible to create a signal engine independent and in this case the missing signal is ignored by the engines.
     //The process is wrongly started and for that simulates a correct result
@@ -297,15 +307,7 @@ class BPMNEventProcesses {
             ]
     )
 
-    //Jbpm can not use the with the start transmitted variable 'test' as it needs an instantiated process for access to
-    //the variables. Camunda does not support conditional and ignores it like in signal start event.
-    public static final BPMNProcess CONDITIONAL_START = builder.buildEventProcess(
-            "ConditionalStartEvent", "A test with a conditional start event",
-            [
-                    new BPMNTestCase(1).inputA().assertSuccess(),
-                    new BPMNTestCase(2).inputB()
-            ]
-    )
+
 
     //Timer start event is not tested because guessing the time which is needed until the process really starts is environment specific
     public static final BPMNProcess TIMER_START = builder.buildEventProcess(
@@ -349,6 +351,7 @@ class BPMNEventProcesses {
 //            COMPENSATION_EVENT_SUBPROCESS_END,
 //            COMPENSATION_EVENT_SUBPROCESS_THROW,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
+            CONDITIONAL_START_EVENT,
             CONDITIONAL_INTERMEDIATE_EVENT,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1,
             CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2,
