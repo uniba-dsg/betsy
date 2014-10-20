@@ -77,7 +77,7 @@ public class CollectLogFilesOperation {
                     List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
                     list.add(new LogFile(filename, lines));
                 } catch (IOException e) {
-                    throw new CommunicationException("Log file " + filename + " could not be read");
+                    throw new CommunicationException("Log file " + filename + " could not be read", e);
                 }
             }
         }

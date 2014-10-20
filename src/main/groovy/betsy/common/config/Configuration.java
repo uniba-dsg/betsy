@@ -131,11 +131,11 @@ public class Configuration {
         String java7env = System.getenv("JAVA7_HOME");
         Path java7home;
 
-        if (java7env != null) {
-            java7home = Paths.get(java7env);
-        } else {
+        if (java7env == null) {
             // Fallback to properties file
             java7home = Paths.get(properties.getProperty("java7.home"));
+        } else {
+            java7home = Paths.get(java7env);
         }
 
         if (!Files.isDirectory(java7home)) {
@@ -150,11 +150,11 @@ public class Configuration {
         String jre7env = System.getenv("JRE7_HOME");
         Path result;
 
-        if (jre7env != null) {
-            result = Paths.get(jre7env);
-        } else {
+        if (jre7env == null) {
             // Fallback to properties file
             result = Paths.get(properties.getProperty("jre7.home"));
+        } else {
+            result = Paths.get(jre7env);
         }
 
         if (!Files.isDirectory(result)) {

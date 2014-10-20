@@ -3,7 +3,6 @@ package betsy.bpel.tools;
 import betsy.bpel.model.BetsyProcess;
 import configuration.bpel.ProcessRepository;
 import corebpel.CoreBPEL;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import javax.xml.transform.TransformerException;
 import java.io.IOException;

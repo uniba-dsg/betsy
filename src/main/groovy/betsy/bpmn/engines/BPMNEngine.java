@@ -36,8 +36,12 @@ public abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineA
     }
 
     public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!getClass().equals(o.getClass())) return false;
+        if (o == this) {
+            return true;
+        }
+        if (!getClass().equals(o.getClass())) {
+            return false;
+        }
 
         BPMNEngine engine = (BPMNEngine) o;
 
@@ -45,7 +49,7 @@ public abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineA
     }
 
     public int hashCode() {
-        return (getName() != null ? getName().hashCode() : 0);
+        return getName() == null ? 0 : getName().hashCode();
     }
 
     @Override

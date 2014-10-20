@@ -8,27 +8,28 @@ import org.apache.tools.ant.types.Environment;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
 public class ConsoleTasks {
     private static final Logger log = Logger.getLogger(ConsoleTasks.class);
+    public static final String WINDOWS = "windows";
+    public static final String UNIX = "unix";
 
     public static void executeOnWindows(CliCommand cliCommand) {
-        execute("windows", cliCommand, true, Collections.emptyMap());
+        execute(WINDOWS, cliCommand, true, Collections.emptyMap());
     }
 
-    public static void executeOnWindows(CliCommand cliCommand, HashMap<String, String> environment) {
-        execute("windows", cliCommand, true, environment);
+    public static void executeOnWindows(CliCommand cliCommand, Map<String, String> environment) {
+        execute(WINDOWS, cliCommand, true, environment);
     }
 
     private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, Map<String, String> environment) {
-        log.info("Executing on " + osfamily + " " + String.valueOf(cliCommand));
+        log.info("Executing on " + osfamily + " " + cliCommand);
 
         FileTasks.assertDirectory(cliCommand.getDir());
 
-        if ("windows".equals(osfamily)) {
+        if (WINDOWS.equals(osfamily)) {
             internalExecuteOnWindows(failOnError, cliCommand, environment);
         } else {
             internalExecuteOnUnix(failOnError, cliCommand, environment);
@@ -38,7 +39,7 @@ public class ConsoleTasks {
     private static void internalExecuteOnWindows(boolean failOnError, final CliCommand cliCommand, Map<String, String> environment) {
         ExecTask execute = new ExecTask();
 
-        execute.setOsFamily("windows");
+        execute.setOsFamily(WINDOWS);
         execute.setExecutable("cmd");
         execute.setFailonerror(failOnError);
         execute.setDir(cliCommand.getDir().toFile());
@@ -66,7 +67,7 @@ public class ConsoleTasks {
     private static void internalExecuteOnUnix(boolean failOnError, final CliCommand cliCommand, Map<String, String> environment) {
         ExecTask execute = new ExecTask();
 
-        execute.setOsFamily("unix");
+        execute.setOsFamily(UNIX);
         execute.setExecutable(cliCommand.getCommand());
         execute.setFailonerror(failOnError);
         execute.setDir(cliCommand.getDir().toFile());
@@ -89,23 +90,23 @@ public class ConsoleTasks {
     }
 
     public static void executeOnWindowsAndIgnoreError(CliCommand cliCommand) {
-        execute("windows", cliCommand, false, Collections.emptyMap());
+        execute(WINDOWS, cliCommand, false, Collections.emptyMap());
     }
 
     public static void executeOnWindowsAndIgnoreError(CliCommand cliCommand, Map<String, String> environment) {
-        execute("windows", cliCommand, false, environment);
+        execute(WINDOWS, cliCommand, false, environment);
     }
 
     public static void executeOnUnix(CliCommand cliCommand) {
-        execute("unix", cliCommand, true, Collections.emptyMap());
+        execute(UNIX, cliCommand, true, Collections.emptyMap());
     }
 
     public static void executeOnUnixAndIgnoreError(CliCommand cliCommand) {
-        execute("unix", cliCommand, false, Collections.emptyMap());
+        execute(UNIX, cliCommand, false, Collections.emptyMap());
     }
 
     public static void executeOnUnixAndIgnoreError(CliCommand cliCommand, Map<String, String> environment) {
-        execute("unix", cliCommand, false, environment);
+        execute(UNIX, cliCommand, false, environment);
     }
 
     /**

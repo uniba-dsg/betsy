@@ -7,7 +7,7 @@ public interface Nameable {
 
     String getName();
 
-    public static List<String> getNames(List<? extends Nameable> engines) {
+    static List<String> getNames(List<? extends Nameable> engines) {
         return engines.stream().map(Nameable::getName).collect(Collectors.toList());
     }
 

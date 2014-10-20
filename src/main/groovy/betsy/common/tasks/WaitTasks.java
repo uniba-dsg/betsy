@@ -20,7 +20,7 @@ public class WaitTasks {
             return;
         }
 
-        log.info("Sleep for " + String.valueOf(milliseconds) + " ms NOW");
+        log.info("Sleep for " + milliseconds + " ms NOW");
         sleepInternal(milliseconds);
     }
 

@@ -6,7 +6,7 @@ package betsy.common.util;
 public class Progress {
 
     private final int max;
-    private int current = 0;
+    private int current;
 
     public Progress(int max) {
         this.max = max;

@@ -135,7 +135,7 @@ public class FileTasks {
             log.info("Copying file " + file.toAbsolutePath() + " into folder " + targetFolder.toAbsolutePath());
             Files.copy(file, targetFolder.resolve(file.getFileName()));
         } catch (IOException e) {
-            throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder);
+            throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder, e);
         }
     }
 
@@ -194,7 +194,7 @@ public class FileTasks {
         try {
             Files.move(from, to);
         } catch (IOException e) {
-            throw new IllegalStateException("Could not move file " + from + " to " + to);
+            throw new IllegalStateException("Could not move file " + from + " to " + to, e);
         }
     }
 
@@ -243,7 +243,7 @@ public class FileTasks {
 
         for (String token : replacements.keySet()) {
             String value = String.valueOf(replacements.get(token));
-            org.apache.tools.ant.taskdefs.Replace.Replacefilter filter = replaceTask.createReplacefilter();
+            Replace.Replacefilter filter = replaceTask.createReplacefilter();
             filter.setToken(token);
             filter.setValue(value);
         }
@@ -271,7 +271,7 @@ public class FileTasks {
 
         for (String token : replacements.keySet()) {
             String value = String.valueOf(replacements.get(token));
-            org.apache.tools.ant.taskdefs.Replace.Replacefilter filter = replaceTask.createReplacefilter();
+            Replace.Replacefilter filter = replaceTask.createReplacefilter();
             filter.setToken(token);
             filter.setValue(value);
         }

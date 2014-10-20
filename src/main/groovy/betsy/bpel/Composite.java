@@ -48,7 +48,7 @@ public class Composite {
             // fail fast
             for (Engine engine : testSuite.getEngines()) {
                 if (engine.isRunning()) {
-                    throw new IllegalStateException("Engine " + String.valueOf(engine) + " is running");
+                    throw new IllegalStateException("Engine " + engine + " is running");
                 }
             }
 
@@ -99,21 +99,21 @@ public class Composite {
     }
 
     protected void shutdown(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/engine_shutdown", () -> process.getEngine().shutdown());
+        log(process.getTargetPath() + "/engine_shutdown", () -> process.getEngine().shutdown());
     }
 
     protected void deploy(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/deploy", () -> process.getEngine().deploy(process));
+        log(process.getTargetPath() + "/deploy", () -> process.getEngine().deploy(process));
     }
 
     protected void installAndStart(final BetsyProcess process) {
         // setup infrastructure
-        log(String.valueOf(process.getTargetPath()) + "/engine_install", () -> process.getEngine().install());
-        log(String.valueOf(process.getTargetPath()) + "/engine_startup", () -> process.getEngine().startup());
+        log(process.getTargetPath() + "/engine_install", () -> process.getEngine().install());
+        log(process.getTargetPath() + "/engine_startup", () -> process.getEngine().startup());
     }
 
     protected void test(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/test", () -> {
+        log(process.getTargetPath() + "/test", () -> {
             try {
                 try {
                     testPartner.publish();
@@ -131,29 +131,29 @@ public class Composite {
     }
 
     protected void collect(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/collect", () -> process.getEngine().storeLogs(process));
+        log(process.getTargetPath() + "/collect", () -> process.getEngine().storeLogs(process));
     }
 
     protected void testSoapUi(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/test_soapui", () -> IOCapture.captureIO(() ->
+        log(process.getTargetPath() + "/test_soapui", () -> IOCapture.captureIO(() ->
                 new SoapUiRunner(process.getTargetSoapUIFilePath(), process.getTargetReportsPath()).run()));
         WaitTasks.sleep(500);
     }
 
     protected void buildPackageAndTest(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/build", () -> {
+        log(process.getTargetPath() + "/build", () -> {
             buildPackage(process);
             buildTest(process);
         });
     }
 
     protected void buildTest(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/build_test", () ->
+        log(process.getTargetPath() + "/build_test", () ->
                 IOCapture.captureIO(() -> new TestBuilder(process, requestTimeout).buildTest()));
     }
 
     protected void buildPackage(final BetsyProcess process) {
-        log(String.valueOf(process.getTargetPath()) + "/build_package",
+        log(process.getTargetPath() + "/build_package",
                 () -> IOCapture.captureIO(
                         () -> process.getEngine().buildArchives(process)));
     }

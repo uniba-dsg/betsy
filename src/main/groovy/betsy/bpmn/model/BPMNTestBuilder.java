@@ -13,7 +13,7 @@ public class BPMNTestBuilder {
         //Build test for each Test Case
         for (BPMNTestCase testCase : process.getTestCases()) {
 
-            String logFilePath = logDir.resolve("log" + String.valueOf(testCase.getNumber()) + ".txt").toUri().toString().substring(8);
+            String logFilePath = logDir.resolve("log" + testCase.getNumber() + ".txt").toUri().toString().substring(8);
 
             //assemble array of assertion for unitTestString
             String assertionListString = getAssertionString(testCase.getAssertions());

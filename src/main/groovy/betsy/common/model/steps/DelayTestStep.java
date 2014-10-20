@@ -10,7 +10,7 @@ public class DelayTestStep extends TestStep {
 
     @Override
     public String toString() {
-        return "DelayTestStep{description=" + getDescription() + ", timeToWaitAfterwards=" + String.valueOf(timeToWaitAfterwards) + "}";
+        return "DelayTestStep{description=" + getDescription() + ", timeToWaitAfterwards=" + timeToWaitAfterwards + "}";
     }
 
     public Integer getTimeToWaitAfterwards() {

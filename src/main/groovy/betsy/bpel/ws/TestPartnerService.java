@@ -2,8 +2,8 @@ package betsy.bpel.ws;
 
 public interface TestPartnerService {
 
-    public void publish();
+    void publish();
 
-    public void unpublish();
+    void unpublish();
 
 }

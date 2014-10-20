@@ -75,7 +75,7 @@ public class BPMNTestcaseMerger {
                 }
             });
         } catch (IOException e) {
-            throw new RuntimeException("could not read files in file tree");
+            throw new RuntimeException("could not read files in file tree", e);
         }
 
 
@@ -191,7 +191,7 @@ public class BPMNTestcaseMerger {
                 }
             });
         } catch (IOException e) {
-            throw new RuntimeException("could not rename the files in " + path);
+            throw new RuntimeException("could not rename the files in " + path, e);
         }
     }
 

@@ -46,7 +46,7 @@ public class VirtualMachineTcpServer extends ShutdownableThread {
 
         } catch (IOException exception) {
             throw new RuntimeException("The Server could not be "
-                    + "started: The server socket could not be opened!");
+                    + "started: The server socket could not be opened!", exception);
         }
 
         log.info("Server is shut down");

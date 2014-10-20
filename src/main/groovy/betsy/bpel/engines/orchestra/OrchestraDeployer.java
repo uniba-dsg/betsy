@@ -6,8 +6,12 @@ import java.nio.file.Path;
 
 public class OrchestraDeployer {
     public void deploy() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant.bat")).values("deploy", "-Dbar=" + String.valueOf(packageFilePath.toAbsolutePath())));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant")).values("deploy", "-Dbar=" + String.valueOf(packageFilePath.toAbsolutePath())));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(
+                ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant.bat")).
+                        values("deploy", "-Dbar=" + packageFilePath.toAbsolutePath()));
+        ConsoleTasks.executeOnUnixAndIgnoreError(
+                ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant")).
+                        values("deploy", "-Dbar=" + packageFilePath.toAbsolutePath()));
     }
 
     public Path getOrchestraHome() {

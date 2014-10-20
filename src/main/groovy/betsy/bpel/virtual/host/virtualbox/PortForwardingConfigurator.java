@@ -116,12 +116,9 @@ public class PortForwardingConfigurator {
             int guestPort = Integer.parseInt(rds[5]);
             // verify both are equal, ignoring any other manually created
             // redirection
-            if (hostPort == guestPort) {
-                // verify is in list
-                if (forwardingPorts.contains(hostPort)) {
-                    // is ok, increase count
-                    matchingForwards++;
-                }
+            if (hostPort == guestPort && forwardingPorts.contains(hostPort)) {
+                // is ok, increase count
+                matchingForwards++;
             }
         }
 

@@ -13,8 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 
-import static betsy.common.tasks.FileTasks.*;
-
 public class URLTasks {
 
     public static boolean isUrlAvailable(URL url) {
@@ -76,7 +74,7 @@ public class URLTasks {
     private static final Logger log = Logger.getLogger(URLTasks.class);
 
     public static void downloadInto(URL url, Path downloadFolder) {
-        mkdirs(downloadFolder);
+        FileTasks.mkdirs(downloadFolder);
 
         Get get = new Get();
         get.setSrc(url);

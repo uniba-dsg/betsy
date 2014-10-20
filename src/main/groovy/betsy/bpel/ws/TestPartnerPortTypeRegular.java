@@ -29,23 +29,23 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
     }
 
     private static void logInfo(final String message) {
-        log.info("[" + String.valueOf(new Date()) + "] " + message);
+        log.info("[" + new Date() + "] " + message);
     }
 
     private static void logInfo(final String message, final Exception e) {
-        log.info("[" + String.valueOf(new Date()) + "] " + message, e);
+        log.info("[" + new Date() + "] " + message, e);
     }
 
     public void startProcessAsync(final int inputPart) {
-        logInfo("Partner: startProcessAsync with " + String.valueOf(inputPart));
+        logInfo("Partner: startProcessAsync with " + inputPart);
     }
 
     public int startProcessSync(final int inputPart) throws FaultMessage {
-        logInfo("Partner: startProcessSync with " + String.valueOf(inputPart));
+        logInfo("Partner: startProcessSync with " + inputPart);
         totalAccesses.incrementAndGet();
 
         if (inputPart == -5) {
-            logInfo("Partner: startProcessSync with " + String.valueOf(inputPart) + " - Throwing CustomFault");
+            logInfo("Partner: startProcessSync with " + inputPart + " - Throwing CustomFault");
             try {
                 SOAPFactory fac = SOAPFactory.newInstance();
                 SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"));
@@ -57,7 +57,7 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
                 throw new RuntimeException("could not create response", e);
             }
         } else if (inputPart == -6) {
-            logInfo("Partner: startProcessSync with " + String.valueOf(inputPart) + " - Throwing Fault");
+            logInfo("Partner: startProcessSync with " + inputPart + " - Throwing Fault");
             throw new FaultMessage("expected Error", inputPart);
         } else if (replyInput) {
             return testWithConcurrency(inputPart);

@@ -24,7 +24,7 @@ public interface VirtualEngineAPI {
      *
      * @return name of the engine's VirtualMachine
      */
-    public String getVirtualMachineName();
+    String getVirtualMachineName();
 
     /**
      * Get every {@link ServiceAddress} that must be available for the engine
@@ -32,17 +32,17 @@ public interface VirtualEngineAPI {
      *
      * @return the list of required services for the engine
      */
-    public List<ServiceAddress> getVerifiableServiceAddresses();
+    List<ServiceAddress> getVerifiableServiceAddresses();
 
     /**
      * Get all ports that are required by the engine to be testable.
      *
      * @return list of required ports
      */
-    public Set<Integer> getRequiredPorts();
+    Set<Integer> getRequiredPorts();
 
-    public DeployRequest buildDeployRequest(BetsyProcess process) throws IOException;
+    DeployRequest buildDeployRequest(BetsyProcess process) throws IOException;
 
-    public LogFilesRequest buildLogFilesRequest();
+    LogFilesRequest buildLogFilesRequest();
 
 }

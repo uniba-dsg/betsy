@@ -30,7 +30,7 @@ public interface TestPartnerPortType {
      */
     @WebMethod
     @Oneway
-    public void startProcessAsync(
+    void startProcessAsync(
         @WebParam(name = "testElementAsyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
         int inputPart);
 
@@ -43,7 +43,7 @@ public interface TestPartnerPortType {
      */
     @WebMethod
     @WebResult(name = "testElementSyncResponse", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "outputPart")
-    public int startProcessSync(
+    int startProcessSync(
         @WebParam(name = "testElementSyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart")
         int inputPart)
         throws FaultMessage
@@ -54,6 +54,6 @@ public interface TestPartnerPortType {
      */
     @WebMethod
     @Oneway
-    public void startProcessWithEmptyMessage();
+    void startProcessWithEmptyMessage();
 
 }

@@ -122,8 +122,12 @@ public class BPMNProcess implements Cloneable, Comparable, Nameable {
     }
 
     public boolean equals(Object o) {
-        if (DefaultGroovyMethods.is(this, o)) return true;
-        if (!getClass().equals(o.getClass())) return false;
+        if (DefaultGroovyMethods.is(this, o)) {
+            return true;
+        }
+        if (!getClass().equals(o.getClass())) {
+            return false;
+        }
 
         BPMNProcess that = (BPMNProcess) o;
 

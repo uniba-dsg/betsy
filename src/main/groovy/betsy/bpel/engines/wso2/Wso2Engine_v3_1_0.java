@@ -9,6 +9,9 @@ import betsy.common.util.ClasspathHelper;
 import java.nio.file.Path;
 
 public class Wso2Engine_v3_1_0 extends LocalEngine {
+
+    public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
+
     @Override
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode");
@@ -91,9 +94,9 @@ public class Wso2Engine_v3_1_0 extends LocalEngine {
         // engine specific steps
         XSLTTasks.transform(getXsltPath().resolve("bpel_to_ode_deploy_xml.xsl"), process.getBpelFilePath(), process.getTargetBpelPath().resolve("deploy.xml"));
 
-        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("TestInterface.wsdl"), "TestInterfaceService", process.getName() + "TestInterfaceService");
+        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("TestInterface.wsdl"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
 
-        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("deploy.xml"), "TestInterfaceService", process.getName() + "TestInterfaceService");
+        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("deploy.xml"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
 
         getPackageBuilder().replaceEndpointTokenWithValue(process);
         getPackageBuilder().replacePartnerTokenWithValue(process);
@@ -103,7 +106,7 @@ public class Wso2Engine_v3_1_0 extends LocalEngine {
 
     @Override
     public String getEndpointUrl(final BetsyProcess process) {
-        return CHECK_URL + "/services/" + process.getName() + "TestInterfaceService";
+        return CHECK_URL + "/services/" + process.getName() + TEST_INTERFACE_SERVICE;
     }
 
     @Override

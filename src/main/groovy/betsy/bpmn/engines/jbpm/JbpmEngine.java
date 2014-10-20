@@ -56,7 +56,7 @@ public class JbpmEngine extends BPMNEngine {
     public void deploy(final BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
         final Path mavenPath = Configuration.getMavenHome().resolve("bin");
-        final String mvnCommand = String.valueOf(mavenPath.toAbsolutePath()) + "/mvn -q clean install";
+        final String mvnCommand = mavenPath.toAbsolutePath() + "/mvn -q clean install";
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
 
@@ -76,7 +76,7 @@ public class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
 
         //waiting for the result of the deployment
-        WaitTasks.waitForSubstringInFile(20000, 1000, getJbossStandaloneDir().resolve("log").resolve("server.log"), "de.uniba.dsg");
+        WaitTasks.waitForSubstringInFile(20000, 1000, getJbossLogDir().resolve("server.log"), "de.uniba.dsg");
     }
 
     @Override
@@ -105,7 +105,7 @@ public class JbpmEngine extends BPMNEngine {
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
-        FileTasks.copyFilesInFolderIntoOtherFolder(getJbossStandaloneDir().resolve("log"), process.getTargetLogsPath());
+        FileTasks.copyFilesInFolderIntoOtherFolder(getJbossLogDir(), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
             FileTasks.copyFileIntoFolder(getServerPath().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
@@ -127,27 +127,31 @@ public class JbpmEngine extends BPMNEngine {
 
         Map<String, String> map = new LinkedHashMap<>(1);
         map.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q start.demo.noeclipse"), map);
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map);
         Map<String, String> map1 = new LinkedHashMap<>(1);
         map1.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q start.demo.noeclipse"), map1);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
-        WaitTasks.waitForSubstringInFile(120000, 5000, getJbossStandaloneDir().resolve("log").resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
+        WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
+    }
+
+    private Path getJbossLogDir() {
+        return getJbossStandaloneDir().resolve("log");
     }
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q stop.demo"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q stop.demo"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
 
         try {
             //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(60000, 5000, getJbossStandaloneDir().resolve("log").resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(60000, 5000, getJbossLogDir().resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
-            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), String.valueOf(getAntPath().toAbsolutePath()) + "/ant -q clean.demo"));
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
         } catch (IllegalStateException ex) {
             //swallow
         }
@@ -169,10 +173,9 @@ public class JbpmEngine extends BPMNEngine {
             tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
             tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
             tester.setLogDir(getServerPath());
-            tester.setServerLogFile(getJbossStandaloneDir().resolve("log").resolve("server.log"));
+            tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
             tester.runTest();
         }
-
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }

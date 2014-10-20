@@ -8,5 +8,5 @@ public interface LocalEngineAPI {
      *
      * @return the path <code>server/$engine</code>
      */
-    public abstract Path getServerPath();
+    Path getServerPath();
 }

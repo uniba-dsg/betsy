@@ -64,7 +64,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.info("Startup virtual engine " + getName() + " ...");
+        log.info("Startup virtual engine " + getName());
         // required for compatibility with EngineControl
         try {
             // verify port usage
@@ -76,14 +76,14 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             this.vm.applyPortForwarding(ports);
             setHeadlessMode();
             this.vm.start();
-            log.info("...VM started");
+            log.info("VM started");
         } catch (PortRedirectException exception) {
             throw new TemporaryFailedTestException("The VM could not be "
                     + "started properly:", exception);
         } catch (VirtualBoxException e) {
             throw new PermanentFailedTestException(e);
         }
-        log.trace("...startup done!");
+        log.trace("startup done!");
     }
 
     private void setHeadlessMode() {
@@ -98,7 +98,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.debug("Shutdown virtual engine " + getName() + " ...");
+        log.debug("Shutdown virtual engine " + getName());
         // stop communication
         // if there is no virtualMachine then there is nothing to stop
         if (this.vm != null) {
@@ -108,7 +108,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
                 this.vm.stop();
             }
         }
-        log.trace("...shutdown done!");
+        log.trace("shutdown done!");
     }
 
     public abstract boolean saveStateInsteadOfShutdown();
@@ -119,7 +119,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.debug("Install virtualized engine " + getName() + " ...");
+        log.debug("Install virtualized engine " + getName());
 
         try {
             this.vm = getOrImportVirtualMachine();
@@ -134,7 +134,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         } catch (VirtualBoxException e) {
             throw new PermanentFailedTestException(e);
         }
-        log.trace("...installation done!");
+        log.trace("installation done!");
     }
 
     @Override
@@ -164,25 +164,25 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     @Override
     public void deploy(BetsyProcess process) {
         try {
-            log.info("Deploying virtualized engine " + getName() + ", process: " + process.toString() + " ...");
+            log.info("Deploying virtualized engine " + getName() + ", process: " + process.toString());
 
             DeployRequest container = buildDeployRequest(process);
             comm.deployOperation(container);
-            log.info("...deploy done!");
+            log.info("deploy done!");
         } catch (Exception exception) {
             log.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
             try {
                 storeLogs(process);
                 throw new RuntimeException(exception);
             } catch (Exception exception2) {
-                throw new RuntimeException("Could not store logfiles of the failed deployment.", exception);
+                throw new RuntimeException("Could not store logfiles of the failed deployment.", exception2);
             }
         }
     }
 
     @Override
     public void storeLogs(BetsyProcess process) {
-        log.debug("Storing logs for engine " + getName() + " ...");
+        log.debug("Storing logs for engine " + getName());
 
         LogFilesRequest request = buildLogFilesRequest();
 

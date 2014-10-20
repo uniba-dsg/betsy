@@ -35,9 +35,9 @@ public class CamundaEngine extends BPMNEngine {
         FileTasks.copyFileIntoFolder(process.getTargetPath().resolve("war").resolve(process.getName() + ".war"), getTomcatDir().resolve("webapps"));
 
         //wait until it is deployed
-        final Path logFile = FileTasks.findFirstMatchInFolder(getTomcatDir().resolve("logs"), "catalina*");
+        final Path logFile = FileTasks.findFirstMatchInFolder(getTomcatLogsDir(), "catalina*");
         if (logFile == null) {
-            throw new IllegalStateException("Could not find catalina log file in " + getTomcatDir().resolve("logs"));
+            throw new IllegalStateException("Could not find catalina log file in " + getTomcatLogsDir());
         }
 
         WaitTasks.waitFor(15000, 500, () ->
@@ -85,12 +85,16 @@ public class CamundaEngine extends BPMNEngine {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
         // TODO only copy log files from tomcat, the other files are files for the test
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatDir().resolve("logs"), process.getTargetLogsPath());
+        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
             FileTasks.copyFileIntoFolder(getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
         }
 
+    }
+
+    private Path getTomcatLogsDir() {
+        return getTomcatDir().resolve("logs");
     }
 
     @Override
@@ -143,7 +147,7 @@ public class CamundaEngine extends BPMNEngine {
             tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
             tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
             tester.setKey(process.getName());
-            tester.setLogDir(getTomcatDir().resolve("logs"));
+            tester.setLogDir(getTomcatLogsDir());
             tester.runTest();
         }
 

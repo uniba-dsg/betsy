@@ -19,13 +19,19 @@ public class CamundaInstaller {
         NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
         FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile), getTomcatDestinationDir().resolve("lib"));
 
-        FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), "cd " + String.valueOf(getTomcatBinFolder().toAbsolutePath()) + " && call startup.bat");
-        FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), "cd " + String.valueOf(getTomcatBinFolder().toAbsolutePath()) + " && call shutdown.bat");
+        //TODO use templates for creating these files
+        FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), cdToTomcatBinFolder() + " && call startup.bat");
+        FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), cdToTomcatBinFolder() + " && call shutdown.bat");
 
-        FileTasks.createFile(destinationDir.resolve("camunda_startup.sh"), "cd " + String.valueOf(getTomcatBinFolder().toAbsolutePath()) + " && ./startup.sh");
-        FileTasks.createFile(destinationDir.resolve("camunda_shutdown.sh"), "cd " + String.valueOf(getTomcatBinFolder().toAbsolutePath()) + " && ./shutdown.sh");
+        //TODO use templates for creating these files
+        FileTasks.createFile(destinationDir.resolve("camunda_startup.sh"), cdToTomcatBinFolder() + " && ./startup.sh");
+        FileTasks.createFile(destinationDir.resolve("camunda_shutdown.sh"), cdToTomcatBinFolder() + " && ./shutdown.sh");
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", destinationDir.toAbsolutePath().toString()));
+    }
+
+    private String cdToTomcatBinFolder() {
+        return "cd " + getTomcatBinFolder().toAbsolutePath();
     }
 
     public Path getTomcatDestinationDir() {

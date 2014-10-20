@@ -9,6 +9,9 @@ import betsy.common.tasks.XSLTTasks;
 import java.nio.file.Path;
 
 public class OdeEngine extends LocalEngine {
+
+    public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
+
     @Override
     public String getName() {
         return "ode";
@@ -69,8 +72,8 @@ public class OdeEngine extends LocalEngine {
         // engine specific steps
         XSLTTasks.transform(getXsltPath().resolve("bpel_to_ode_deploy_xml.xsl"), process.getBpelFilePath(), process.getTargetBpelPath().resolve("deploy.xml"));
 
-        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("TestInterface.wsdl"), "TestInterfaceService", process.getName() + "TestInterfaceService");
-        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("deploy.xml"), "TestInterfaceService", process.getName() + "TestInterfaceService");
+        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("TestInterface.wsdl"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
+        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("deploy.xml"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
 
         getPackageBuilder().replaceEndpointTokenWithValue(process);
         getPackageBuilder().replacePartnerTokenWithValue(process);

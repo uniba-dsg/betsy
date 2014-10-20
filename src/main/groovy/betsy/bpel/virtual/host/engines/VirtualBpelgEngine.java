@@ -1,8 +1,7 @@
 package betsy.bpel.virtual.host.engines;
 
-import betsy.common.config.Configuration;
-import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.engines.bpelg.BpelgEngine;
+import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.FileMessage;
@@ -85,11 +84,11 @@ public class VirtualBpelgEngine extends VirtualEngine {
 
     @Override
     public boolean getHeadlessModeOption() {
-        return Boolean.valueOf(Configuration.get("virtual.engines.bpelg_v.headless"));
+        return Boolean.valueOf(get("virtual.engines.bpelg_v.headless"));
     }
 
     @Override
     public boolean saveStateInsteadOfShutdown() {
-        return Boolean.valueOf(Configuration.get("virtual.engines.bpelg_v.shutdownSaveState"));
+        return Boolean.valueOf(get("virtual.engines.bpelg_v.shutdownSaveState"));
     }
 }

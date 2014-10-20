@@ -1,10 +1,8 @@
 package betsy.bpel;
 
+import betsy.bpel.engines.Engine;
 import betsy.bpel.model.BetsyProcess;
 import betsy.common.model.TestSuite;
-import betsy.bpel.engines.Engine;
-import betsy.bpel.Composite;
-import betsy.bpel.Validator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +13,7 @@ public class Betsy {
     private List<BetsyProcess> processes = new ArrayList<>();
     private Composite composite = new Composite();
 
-    public void execute() throws Exception {
+    public void execute() {
         validate();
 
         Collections.sort(processes);

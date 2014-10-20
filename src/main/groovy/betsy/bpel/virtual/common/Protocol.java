@@ -18,11 +18,11 @@ public interface Protocol {
     /**
      * Collect log files.
      */
-    public LogFilesResponse collectLogFilesOperation(LogFilesRequest request) throws Exception;
+    LogFilesResponse collectLogFilesOperation(LogFilesRequest request) throws Exception;
 
     /**
      * Deploy.
      */
-    public DeployResponse deployOperation(DeployRequest request) throws Exception;
+    DeployResponse deployOperation(DeployRequest request) throws Exception;
 
 }

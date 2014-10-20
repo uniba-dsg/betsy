@@ -1,7 +1,6 @@
 package betsy.common.tasks;
 
 import ant.tasks.AntUtil;
-import groovy.util.AntBuilder;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.Zip;
@@ -10,7 +9,7 @@ import java.nio.file.Path;
 
 public class ZipTasks {
     public static void zipFolder(Path tempZipFile, Path folder) {
-        log.info("Creating zip archive " + String.valueOf(tempZipFile) + " using the contents of " + String.valueOf(folder));
+        log.info("Creating zip archive " + tempZipFile + " using the contents of " + folder);
 
         Zip zip = new Zip();
         zip.setDestFile(tempZipFile.toFile());
@@ -26,7 +25,7 @@ public class ZipTasks {
     }
 
     public static void unzip(Path tempZipFile, Path tempExtractedFolder) {
-        log.info("Unzipping " + String.valueOf(tempZipFile) + " to " + String.valueOf(tempExtractedFolder));
+        log.info("Unzipping " + tempZipFile + " to " + tempExtractedFolder);
 
         Expand expand = new Expand();
         expand.setDest(tempExtractedFolder.toFile());

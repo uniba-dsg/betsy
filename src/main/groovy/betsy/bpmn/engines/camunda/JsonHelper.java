@@ -83,11 +83,11 @@ public class JsonHelper {
 
     private static void assertHttpCode(int expectedCode, HttpResponse<?> response) {
         int code = response.getCode();
-        if (expectedCode != code) {
+        if (expectedCode == code) {
+            log.info("Response returned with expected status code " + expectedCode);
+        } else {
             throw new RuntimeException("expected " + expectedCode + ", got " + code + "; " +
                     "reason: " + response.getBody());
-        } else {
-            log.info("Response returned with expected status code " + expectedCode);
         }
     }
 

@@ -44,21 +44,21 @@ public class JbpmTester {
 
             String requestUrl = baseUrl + joiner.toString();
             try {
-                log.info("Trying to start process \""+name+"\".");
+                log.info("Trying to start process \"" + name + "\".");
                 JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
             } catch (RuntimeException ex) {
-                if(ex.getMessage()!=null && ex.getMessage().contains("No runtime manager could be found")) {
+                if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
                     log.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
                     //retry after delay
                     WaitTasks.sleep(10000);
-                    try{
+                    try {
                         JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                     } catch (RuntimeException innerEx) {
-                        log.info(Errors.ERROR_RUNTIME+": Instantiation still not possible. Aborting test.", innerEx);
+                        log.info(Errors.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
                         BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                     }
                 } else {
-                    log.info(Errors.ERROR_RUNTIME+": Instantiation of process failed. Reason:", ex);
+                    log.info(Errors.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
                     BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                 }
             }
@@ -80,7 +80,7 @@ public class JbpmTester {
         analyzer.addSubstring("failed to deploy", Errors.ERROR_DEPLOYMENT);
         for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
-            log.info(Errors.ERROR_DEPLOYMENT+": "+deploymentId+", "+name+": Deployment error detected.");
+            log.info(Errors.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
         }
     }
 

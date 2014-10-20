@@ -42,7 +42,7 @@ public class EngineRepository {
     private static final PetalsEsbEngine PETALS = new PetalsEsbEngine();
     private static final Wso2Engine_v3_1_0 WSO2_310 = new Wso2Engine_v3_1_0();
     private static final OpenEsb231Engine OPENESB231 = new OpenEsb231Engine();
-    private Repository<Engine> repo = new Repository<>();
+    private final Repository<Engine> repo = new Repository<>();
 
     public EngineRepository() {
         List<Engine> locals = Arrays.asList(ODE, BPELG, OPENESB, PETALS, ORCHESTRA, ACTIVE_BPEL, OPENESB_23, OPENESB231,

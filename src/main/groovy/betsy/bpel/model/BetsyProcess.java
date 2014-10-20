@@ -3,9 +3,6 @@ package betsy.bpel.model;
 import betsy.bpel.engines.Engine;
 import betsy.common.engines.Nameable;
 import betsy.common.model.TestCase;
-import groovy.lang.Closure;
-import groovy.lang.GString;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -225,8 +222,12 @@ public class BetsyProcess implements Cloneable, Comparable, Nameable {
     }
 
     public boolean equals(Object o) {
-        if (DefaultGroovyMethods.is(this, o)) return true;
-        if (!getClass().equals(o.getClass())) return false;
+        if (o == this) {
+            return true;
+        }
+        if (!getClass().equals(o.getClass())) {
+            return false;
+        }
 
         BetsyProcess that = (BetsyProcess) o;
 

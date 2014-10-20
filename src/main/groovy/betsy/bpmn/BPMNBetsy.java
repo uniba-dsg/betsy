@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class BPMNBetsy {
-    public void execute() throws Exception {
+    public void execute() {
         new ProcessValidator().validate();
 
         Collections.sort(processes);

@@ -88,7 +88,7 @@ public class VirtualMachineTcpConnection extends ShutdownableThread {
         try {
             // read incoming messages, blocks until msg received
             Object o = ois.readObject();
-            log.debug("Message Received: " + String.valueOf(o));
+            log.debug("Message Received: " + o);
             return o;
         } catch (ClassNotFoundException exception) {
             // send invalid request message

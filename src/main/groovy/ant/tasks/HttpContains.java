@@ -21,6 +21,9 @@ import java.net.URLConnection;
  * http://stackoverflow.com/questions/2160514/how-can-i-get-ant-to-load-and-check-a-url-resource-in-a-waitfor-task
  */
 public class HttpContains extends ProjectComponent implements Condition {
+
+    public static final String RESULT_CODE_FOR = "Result code for ";
+
     /**
      * Set the url attribute
      *
@@ -51,7 +54,7 @@ public class HttpContains extends ProjectComponent implements Condition {
                 if (conn instanceof HttpURLConnection) {
                     HttpURLConnection http = (HttpURLConnection) conn;
                     int code = http.getResponseCode();
-                    log("Result code for " + spec + " was " + code, Project.MSG_VERBOSE);
+                    log(RESULT_CODE_FOR + spec + " was " + code, Project.MSG_VERBOSE);
                     int errorsBeginAt = 400;
                     return code > 0 && code < errorsBeginAt && evalContents(url);
                 }
@@ -84,17 +87,17 @@ public class HttpContains extends ProjectComponent implements Condition {
             input.close();
             contents = buffer.toString();
 
-            log("Result code for " + contents, Project.MSG_VERBOSE);
+            log(RESULT_CODE_FOR + contents, Project.MSG_VERBOSE);
 
             if (contents.contains(contains)) {
-                log("Result code for " + contents.indexOf(contains), Project.MSG_VERBOSE);
+                log(RESULT_CODE_FOR + contents.indexOf(contains), Project.MSG_VERBOSE);
                 return true;
             }
 
             return false;
         } catch (Exception e) {
             e.printStackTrace();
-            log("Result code for " + e.toString(), Project.MSG_VERBOSE);
+            log(RESULT_CODE_FOR + e.toString(), Project.MSG_VERBOSE);
 
             return false;
         }
