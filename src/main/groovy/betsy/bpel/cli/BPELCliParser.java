@@ -4,7 +4,7 @@ import betsy.bpel.engines.Engine;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.repositories.EngineRepository;
 import betsy.common.config.Configuration;
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 import org.apache.commons.cli.*;
 
 import java.util.Collections;
@@ -177,7 +177,7 @@ public class BPELCliParser {
         String header = "\nOptions:\n";
         String footer = "\nGROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.\n" +
                 "<ENGINES>: " + new EngineRepository().getNames() + "\n\n\n" +
-                "<PROCESSES>: " + new ProcessRepository().getNames() + "\n\n\n" +
+                "<PROCESSES>: " + new BPELProcessRepository().getNames() + "\n\n\n" +
                 "Please report issues at https://github.com/uniba-dsg/betsy/issues";
         new HelpFormatter().printHelp(firstLine,
                 header,

@@ -1,7 +1,7 @@
 package betsy.bpel.tools;
 
 import betsy.bpel.model.BetsyProcess;
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 import corebpel.CoreBPEL;
 
 import javax.xml.transform.TransformerException;
@@ -41,7 +41,7 @@ public class CoreBPELEnumerator {
         Files.createDirectories(outputFolder);
 
         String[] groups = new String[]{"BASIC_ACTIVITIES", "SCOPES", "STRUCTURED_ACTIVITIES"};
-        List<BetsyProcess> processes = new ProcessRepository().getByNames(groups);
+        List<BetsyProcess> processes = new BPELProcessRepository().getByNames(groups);
 
         for (String transformation : CoreBPEL.XSL_SHEETS) {
 

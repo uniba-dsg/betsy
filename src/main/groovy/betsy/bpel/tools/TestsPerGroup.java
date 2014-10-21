@@ -1,6 +1,6 @@
 package betsy.bpel.tools;
 
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -13,7 +13,7 @@ public class TestsPerGroup {
 
     public static void main(String[] args) {
 
-        ProcessRepository processRepository = new ProcessRepository();
+        BPELProcessRepository processRepository = new BPELProcessRepository();
         List<String> names = processRepository.getNames();
 
         List<String> output = new LinkedList<>();

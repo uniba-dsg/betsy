@@ -1,11 +1,9 @@
 package betsy.bpel;
 
-import betsy.bpel.Betsy;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.EnginePackageBuilder;
-import betsy.bpel.Composite;
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -17,7 +15,7 @@ public class BetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
         Engine engine = new MockEngine();
-        List<BetsyProcess> processes = new ProcessRepository().getByName("ALL");
+        List<BetsyProcess> processes = new BPELProcessRepository().getByName("ALL");
         Betsy betsy = new Betsy();
 
 

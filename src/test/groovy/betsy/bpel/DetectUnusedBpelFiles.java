@@ -1,7 +1,7 @@
 package betsy.bpel;
 
 import betsy.bpel.model.BetsyProcess;
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class DetectUnusedBpelFiles {
 
     @Test
     public void detectUnusedBpelFiles() throws IOException {
-        ProcessRepository processRepository = new ProcessRepository();
+        BPELProcessRepository processRepository = new BPELProcessRepository();
         List<BetsyProcess> processed = processRepository.getByName("ALL");
 
         List<Path> bpelFiles = getBetsyProcessesPaths(processed);

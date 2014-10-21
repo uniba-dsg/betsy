@@ -6,7 +6,7 @@ import betsy.common.model.assertions.SoapFaultTestAssertion
 
 class StructuredActivityProcesses {
 
-    static ProcessBuilder builder = new ProcessBuilder()
+    static BPELProcessBuilder builder = new BPELProcessBuilder()
 
     public static final BetsyProcess SEQUENCE = builder.buildStructuredActivityProcess(
             "Sequence", "A receive-reply pair enclosed in a sequence.",

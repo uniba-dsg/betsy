@@ -7,7 +7,7 @@ import betsy.common.model.assertions.SoapFaultTestAssertion
 
 class BasicActivityProcesses {
 
-    static ProcessBuilder builder = new ProcessBuilder()
+    static BPELProcessBuilder builder = new BPELProcessBuilder()
 
     public static final BetsyProcess EMPTY = builder.buildBasicActivityProcess(
             "Empty", "A receive-reply pair with an intermediate empty.",
@@ -395,28 +395,28 @@ class BasicActivityProcesses {
     public static final BetsyProcess INVOKE_CATCH = builder.buildProcessWithPartner(
             "basic/Invoke-Catch", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
-                    new TestCase().checkDeployment().sendSync(ProcessBuilder.DECLARED_FAULT_CODE, 0)
+                    new TestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, 0)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic/Invoke-Catch-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             [
-                    new TestCase().checkDeployment().sendSync(ProcessBuilder.UNDECLARED_FAULT_CODE, 0)
+                    new TestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT_CODE, 0)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(ProcessBuilder.DECLARED_FAULT_CODE, -1)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
             ]
     )
 
     public static final BetsyProcess INVOKE_CATCHALL_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(ProcessBuilder.UNDECLARED_FAULT_CODE, 0)
+                    new TestCase(name: "Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT_CODE, 0)
             ]
     )
 

@@ -1,12 +1,12 @@
 package betsy.bpel;
 
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 
 public class ValidatorTest {
     @Test
     public void testValidityOfAllProcesses() {
-        new Validator(new ProcessRepository().getByName("ALL")).validate();
+        new Validator(new BPELProcessRepository().getByName("ALL")).validate();
     }
 
 }

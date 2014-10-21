@@ -1,7 +1,7 @@
 package betsy.bpel.cli;
 
 import betsy.bpel.model.BetsyProcess;
-import configuration.bpel.ProcessRepository;
+import configuration.bpel.BPELProcessRepository;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class ProcessParser {
     }
 
     public List<BetsyProcess> parse() {
-        ProcessRepository repository = new ProcessRepository();
+        BPELProcessRepository repository = new BPELProcessRepository();
         if (args.length <= 1) {
             return repository.getByName("ALL");
         } else {

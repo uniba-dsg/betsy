@@ -11,11 +11,11 @@ import java.lang.reflect.Field
 import static BasicActivityProcesses.BASIC_ACTIVITIES
 import static PatternProcesses.CONTROL_FLOW_PATTERNS
 
-class ProcessRepository {
+class BPELProcessRepository {
 
     private Repository<BetsyProcess> repo = new Repository<>();
 
-    public ProcessRepository() {
+    public BPELProcessRepository() {
         repo.put("ALL",
                 BASIC_ACTIVITIES +
                         ScopeProcesses.SCOPES +

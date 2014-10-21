@@ -5,11 +5,11 @@ import betsy.common.model.TestCase
 import betsy.common.model.assertions.ExitAssertion
 import betsy.common.model.assertions.SoapFaultTestAssertion
 
-import static ProcessBuilder.DECLARED_FAULT_CODE
+import static BPELProcessBuilder.DECLARED_FAULT_CODE
 
 class ScopeProcesses {
 
-    static ProcessBuilder builder = new ProcessBuilder()
+    static BPELProcessBuilder builder = new BPELProcessBuilder()
 
     public static final BetsyProcess COMPENSATE = builder.buildScopeProcess(
             "Scope-Compensate", "A scope with a receive-reply pair where the reply is located in a compensationHandler. The scope is followed by a throw and the compensationHandler is invoked from the process-level faultHandler that catches the fault using compensate.",

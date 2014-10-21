@@ -6,7 +6,7 @@ import betsy.common.model.TestCase
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class ProcessBuilder {
+class BPELProcessBuilder {
 
     public static Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel")
     public static final Path testInterface = PATH_PREFIX.resolve("TestInterface.wsdl")
