@@ -31,9 +31,9 @@ class BPMNGatewayProcesses {
 
     public static final BPMNProcess PARALLEL_GATEWAY = builder.buildGatewayProcess(
             "ParallelGateway", "A process with four scriptTasks and two parallelGateways. " +
-            "Two of the scriptTasks are executed in parallel.",
+            "Two of the scriptTasks are surrounded by the parallelGateways.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
             ]
     )
 
