@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
+import betsy.bpmn.BPMNMain;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.Errors;
 import betsy.bpmn.engines.LogFileAnalyzer;
@@ -8,6 +9,7 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
+import net.sf.saxon.trans.Err;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -65,14 +67,41 @@ public class JbpmTester {
 
             //delay for timer intermediate event
             WaitTasks.sleep(testCase.getDelay());
+
+            checkProcessOutcome();
+
+
         } else {
             //delay for self starting
             WaitTasks.sleep(testCase.getDelay());
         }
 
+
+
         BPMNTester.setupPathToToolsJarForJavacAntTask(this);
         BPMNTester.compileTest(testSrc, testBin);
         BPMNTester.executeTest(testSrc, testBin, reportPath);
+    }
+
+    private void checkProcessOutcome() {
+        // Caution: URL has changed in jBPM version >6.0.0
+        String requestUrl = "http://localhost:8080/jbpm-console/rest/runtime/" + deploymentId + "/history/instance/1";
+        try {
+            log.info("Trying to check process result status for "+name);
+            String result = JsonHelper.getStringWithAuth(requestUrl, 200, user, password);
+            if(result.contains("ERR-1")) {
+                log.info("Process has been aborted. Error with id ERR-1 detected.");
+                BPMNTester.appendToFile(getFileName(), Errors.ERROR_THROWN_ERROR_EVENT);
+            } else if(result.contains("<status>3</status>")) {
+                log.info("Process has been aborted with unknown error.");
+                BPMNTester.appendToFile(getFileName(), Errors.ERROR_PROCESS_ABORTED);
+            } else if(result.contains("<status>1</status>")) {
+                log.info("Process completed normally.");
+            }
+
+        } catch (RuntimeException innerEx) {
+            log.info("Checking process result status failed.", innerEx);
+        }
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
