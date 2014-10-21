@@ -246,19 +246,21 @@ class BPMNEventProcesses {
             ]
     )
 
-    public static final BPMNProcess CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
-            "ConditionalStartEventSubprocessInterrupting1", "A test for an interrupting conditional start event in an event sub process",
+    public static final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "ConditionalStartEvent_EventSubProcess_Interrupting", "A test for an interrupting conditional start event " +
+            "in an event sub process",
             [
                     new BPMNTestCase(1).inputA().assertTask1(),
                     new BPMNTestCase(2).inputB().assertTask2()
             ]
     )
 
-    public static final BPMNProcess CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2 = builder.buildEventProcess(
-            "ConditionalStartEventSubprocessInterrupting2", "A test for an interrupting conditional start event in an event sub process in a sub process with a following normal sequence flow",
+    public static final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "ConditionalStartEvent_EventSubProcess_NonInterrupting", "A test for an conditional start event in an event " +
+            "sub process which is marked as non interrupting.",
             [
-                    new BPMNTestCase(1).inputA().assertStarted().assertTask1().assertSuccess(),
-                    new BPMNTestCase(2).inputB().assertStarted().assertNormalTask().assertSuccess()
+                    new BPMNTestCase(1).inputA().assertTask1().assertTask2(),
+                    new BPMNTestCase(2).inputB().assertTask2()
             ]
     )
 
@@ -353,8 +355,8 @@ class BPMNEventProcesses {
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_START_EVENT,
             CONDITIONAL_INTERMEDIATE_EVENT,
-            CONDITIONAL_START_SUBPROCESS_INTERRUPTING_1,
-            CONDITIONAL_START_SUBPROCESS_INTERRUPTING_2,
+            CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+            CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TERMINATE_EVENT,
             /*SIGNAL_START,
             MESSAGE_START,
