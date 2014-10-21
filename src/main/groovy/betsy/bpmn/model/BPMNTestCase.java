@@ -92,10 +92,6 @@ public class BPMNTestCase {
         return addAssertions("SCRIPT_subprocess");
     }
 
-    public BPMNTestCase assertInstanceExecution() {
-        return addAssertions("SCRIPT_taskInstanceExecuted");
-    }
-
     public BPMNTestCase assertInterrupted() {
         return addAssertions("SCRIPT_interrupted");
     }
@@ -110,10 +106,6 @@ public class BPMNTestCase {
 
     public BPMNTestCase assertTransactionTask() {
         return addAssertions("SCRIPT_transaction");
-    }
-
-    public BPMNTestCase assertCompensate() {
-        return addAssertions("SCRIPT_compensate");
     }
 
     public BPMNTestCase assertNotInterrupted() {
@@ -134,10 +126,6 @@ public class BPMNTestCase {
 
     public BPMNTestCase assertTimerEvent() {
         return addAssertions("SCRIPT_timerEvent");
-    }
-
-    public BPMNTestCase assertCondition() {
-        return addAssertions("SCRIPT_condition");
     }
 
     public BPMNTestCase optionDelay(int delay) {
