@@ -55,11 +55,11 @@
         <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="task2" targetRef="InclusiveGateway_2"/>
 
 
-        <bpmn2:parallelGateway id="InclusiveGateway_2">
+        <bpmn2:inclusiveGateway id="InclusiveGateway_2">
             <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-        </bpmn2:parallelGateway>
+        </bpmn2:inclusiveGateway>
 
         <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="InclusiveGateway_2" targetRef="end"/>
 
