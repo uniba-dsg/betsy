@@ -18,7 +18,8 @@ class BPMNProcessRepository {
                 TaskProcesses.TASKS +
                 EVENTS +
                 SubProcesses.SUB_PROCESSES +
-                MISCS
+                MISCS +
+                ErrorProcesses.ERRORS
                 as List<BPMNProcess>)
 
         Field[] fields = [

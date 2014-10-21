@@ -37,14 +37,6 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess PARALLEL_GATEWAY_CONDITION = builder.buildGatewayProcess(
-            //TODO: this seems invalid
-            "ParallelGatewayWithConditions", "A test for the parallel gateway to ignore conditions",
-            [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2().assertSuccess()
-            ]
-    )
-
     public static final BPMNProcess INCLUSIVE_GATEWAY = builder.buildGatewayProcess(
             "InclusiveGateway", "Two scriptTasks encapsulated by inclusiveGateways. " +
             "Either one, none, or both of the scriptTasks are enabled based on input data.",
@@ -122,7 +114,6 @@ class GatewayProcesses {
             EXCLUSIVE_GATEWAY,
             EXCLUSIVE_GATEWAY_DEFAULT,
             PARALLEL_GATEWAY,
-            PARALLEL_GATEWAY_CONDITION,
             INCLUSIVE_GATEWAY,
             INCLUSIVE_GATEWAY_DEFAULT,
             PARALLEL_IN_EXCLUSIVE_OUT,
