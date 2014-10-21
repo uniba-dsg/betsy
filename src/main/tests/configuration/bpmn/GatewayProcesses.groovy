@@ -29,6 +29,17 @@ class GatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess EXCLUSIVE_DIVERING_INCLUSIVE_CONVERGING = builder.buildGatewayProcess(
+            "ExclusiveDivergingInclusiveConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging inclusiveGateway. " +
+            "Two of the tasks are enclosed between the gateways and only one of them is triggered depending on input data. " +
+            "The inclusiveGateway should merge the incoming branches.",
+            [
+                    new BPMNTestCase(2).inputA().assertTask1().assertTask3(),
+                    new BPMNTestCase(1).inputB().assertTask2().assertTask3(),
+                    new BPMNTestCase(3).inputAB().assertTask1().assertTask3(),
+            ]
+    )
+
     public static final BPMNProcess PARALLEL_GATEWAY = builder.buildGatewayProcess(
             "ParallelGateway", "A process with four scriptTasks and two parallelGateways. " +
             "Two of the scriptTasks are surrounded by the parallelGateways.",
@@ -108,12 +119,13 @@ class GatewayProcesses {
     public static final List<BPMNProcess> GATEWAYS = [
             EXCLUSIVE_GATEWAY,
             EXCLUSIVE_GATEWAY_WITH_DEFAULT,
+            EXCLUSIVE_GATEWAY_MIXED,
+            EXCLUSIVE_DIVERING_INCLUSIVE_CONVERGING,
             PARALLEL_GATEWAY,
             INCLUSIVE_GATEWAY,
             INCLUSIVE_GATEWAY_WITH_DEFAULT,
             PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING,
             PARALLEL_DIVERGING_INCLUSIVE_CONVERGING,
-            EXCLUSIVE_GATEWAY_MIXED,
             COMPLEX,
             EVENT_BASED
     ].flatten() as List<BPMNProcess>
