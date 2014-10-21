@@ -38,12 +38,12 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess INCLUSIVE_GATEWAY = builder.buildGatewayProcess(
-            "InclusiveGateway", "Two scriptTasks encapsulated by inclusiveGateways. " +
+            "InclusiveGateway", "A process with four scriptTasks, two of which are encapsulated by inclusiveGateways. " +
             "Either one, none, or both of the scriptTasks are enabled based on input data.",
             [
-                    new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertSuccess(),
-                    new BPMNTestCase(2).inputA().assertTask1().assertSuccess(),
-                    new BPMNTestCase(3).inputB().assertTask2().assertSuccess(),
+                    new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertTask3(),
+                    new BPMNTestCase(2).inputA().assertTask1().assertTask3(),
+                    new BPMNTestCase(3).inputB().assertTask2().assertTask3(),
                     new BPMNTestCase(4).inputC().assertRuntimeException()
             ]
     )
