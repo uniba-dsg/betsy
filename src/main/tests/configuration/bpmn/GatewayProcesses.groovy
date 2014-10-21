@@ -83,17 +83,17 @@ class GatewayProcesses {
             ]
     )
 
-    /*
-    * This process uses "\\empty"-scripts. We exclude it from execution until we know what to do about that
-    *
-    * public static final BPMNProcess EXCLUSIVE_MIXED = builder.buildGatewayProcess(
-    *        "ExclusiveGatewayMixed", "Tests for the exclusive gateway when joined with parallel gateway",
-    *        [
-    *                new BPMNTestCase(1).inputA().assertTrue().assertSuccess(),
-    *                new BPMNTestCase(2).inputB().assertFalse().assertSuccess()
-    *        ]
-    *)
-    */
+
+    public static final BPMNProcess EXCLUSIVE_GATEWAY_MIXED = builder.buildGatewayProcess(
+            "ExclusiveGatewayMixed", "A process with six scriptTasks and three exclusiveGateways." +
+            "One of the gateways acts as a mixed gateway. Each pair of exclusiveGateways encapsulates two script tasks." +
+            "The enabling of these scriptTasks depends on input data",
+            [
+                    new BPMNTestCase(1).inputA().assertTask2().assertTask4().assertTask5(),
+                    new BPMNTestCase(2).inputB().assertTask1().assertTask3().assertTask5(),
+                    new BPMNTestCase(3).inputAB().assertTask1().assertTask3().assertTask5(),
+            ]
+    )
 
     public static final BPMNProcess COMPLEX = builder.buildGatewayProcess(
             "ComplexGateway", "Tests for the complex gateway",
@@ -119,7 +119,7 @@ class GatewayProcesses {
             PARALLEL_IN_EXCLUSIVE_OUT,
             PARALLEL_IN_INCLUSIVE_OUT,
             EXCLUSIVE_IN_PARALLEL_OUT,
-            //EXCLUSIVE_MIXED,
+            EXCLUSIVE_GATEWAY_MIXED,
             COMPLEX,
             EVENT_BASED
     ].flatten() as List<BPMNProcess>
