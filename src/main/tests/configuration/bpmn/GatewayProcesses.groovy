@@ -70,6 +70,17 @@ class GatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess INCLUSIVE_DIVERGING_EXCLUSIVE_CONVERGING = builder.buildGatewayProcess(
+            "InclusiveDivergingExclusiveConverging", "A process with four scriptTasks, a diverging inclusiveGateway and a converging exclusiveGateway. " +
+            "Two of the tasks are encapsulated by the gateways. " +
+            "Either one, none, or both of the scriptTasks are enabled based on input data and as a result the exclusiveGateway should either fire once or twice.",
+            [
+                    new BPMNTestCase(1).inputAB().assertTask1().assertTask3().assertTask2().assertTask3(),
+                    new BPMNTestCase(2).inputA().assertTask1().assertTask3(),
+                    new BPMNTestCase(3).inputB().assertTask2().assertTask3()
+            ]
+    )
+
     public static final BPMNProcess PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING = builder.buildGatewayProcess(
             "ParallelDivergingExclusiveConverging", "A process with four tasks, a diverging parallelGateway and a converging exclusiveGateway. " +
             "Two of the tasks are executed in parallel and then merged by the exclusiveGateway. " +
@@ -86,9 +97,6 @@ class GatewayProcesses {
                     new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
             ]
     )
-
-
-
 
     public static final BPMNProcess EXCLUSIVE_GATEWAY_MIXED = builder.buildGatewayProcess(
             "ExclusiveGatewayMixed", "A process with six scriptTasks and three exclusiveGateways." +
@@ -121,12 +129,17 @@ class GatewayProcesses {
             EXCLUSIVE_GATEWAY_WITH_DEFAULT,
             EXCLUSIVE_GATEWAY_MIXED,
             EXCLUSIVE_DIVERING_INCLUSIVE_CONVERGING,
-            PARALLEL_GATEWAY,
+
             INCLUSIVE_GATEWAY,
             INCLUSIVE_GATEWAY_WITH_DEFAULT,
+            INCLUSIVE_DIVERGING_EXCLUSIVE_CONVERGING,
+
+            PARALLEL_GATEWAY,
             PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING,
             PARALLEL_DIVERGING_INCLUSIVE_CONVERGING,
+
             COMPLEX,
+
             EVENT_BASED
     ].flatten() as List<BPMNProcess>
 }
