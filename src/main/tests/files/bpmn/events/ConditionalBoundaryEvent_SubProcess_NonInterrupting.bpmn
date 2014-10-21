@@ -43,6 +43,7 @@
         </bpmn2:subProcess>
 
         <bpmn2:boundaryEvent attachedToRef="SubProcess_1" cancelActivity="false" id="BoundaryEvent_1" name="Boundary Event 1" parallelMultiple="false">
+            <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
             <bpmn2:conditionalEventDefinition>
                 <bpmn2:condition xsi:type="bpmn2:tFormalExpression">
                     test.contains("a")>
