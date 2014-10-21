@@ -7,12 +7,12 @@ class BPMNGatewayProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess EXCLUSIVE_GATEWAY = builder.buildGatewayProcess(
-            "ExclusiveGateway", "A process with three scriptTasks and exclusiveGateways. " +
+            "ExclusiveGateway", "A process with four scriptTasks and exclusiveGateways. " +
             "The execution of two of the tasks is controlled by the exclusiveGateways and only one of the tasks is actually executed.",
             [
-                    new BPMNTestCase(1).inputB().assertFalse().assertSuccess(),
-                    new BPMNTestCase(2).inputA().assertTrue().assertSuccess(),
-                    new BPMNTestCase(3).inputAB().assertTrue().assertSuccess(),
+                    new BPMNTestCase(2).inputA().assertTask1().assertTask3(),
+                    new BPMNTestCase(1).inputB().assertTask2().assertTask3(),
+                    new BPMNTestCase(3).inputAB().assertTask1().assertTask3(),
                     new BPMNTestCase(4).inputC().assertRuntimeException()
             ]
     )
