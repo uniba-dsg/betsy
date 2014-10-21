@@ -64,6 +64,10 @@ public class BPMNTestCase {
         return addAssertions("SCRIPT_task3");
     }
 
+    public BPMNTestCase assertTask4() {
+        return addAssertions("SCRIPT_task4");
+    }
+
     public BPMNTestCase assertTrue() {
         return addAssertions("SCRIPT_true");
     }

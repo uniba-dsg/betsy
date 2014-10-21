@@ -17,15 +17,15 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess EXCLUSIVE_GATEWAY_DEFAULT = builder.buildGatewayProcess(
-            "ExclusiveGatewayWithDefault", "A process with four scriptTasks and exclusiveGateways. " +
-            "The execution of three of the tasks is controlled by the exclusiveGateways and only one of the tasks is actually executed." +
-            "Two tasks are triggered through sequenceFlows with conditionExpressions and one is triggered through a sequenceFlow which is marked as default",
+    public static final BPMNProcess EXCLUSIVE_GATEWAY_WITH_DEFAULT = builder.buildGatewayProcess(
+            "ExclusiveGatewayWithDefault", "A process with five scriptTasks and exclusiveGateways. " +
+            "The execution of three of the tasks is controlled by the exclusiveGateways based on the input and only one of the tasks is actually executed." +
+            "Two tasks are triggered through sequenceFlows with conditionExpressions and one is triggered through a sequenceFlow which is marked as default.",
             [
-                    new BPMNTestCase(1).inputB().assertFalse().assertSuccess(),
-                    new BPMNTestCase(2).inputA().assertTrue().assertSuccess(),
-                    new BPMNTestCase(3).inputAB().assertTrue().assertSuccess(),
-                    new BPMNTestCase(4).inputC().assertDefault().assertSuccess()
+                    new BPMNTestCase(1).inputB().assertTask2().assertTask4(),
+                    new BPMNTestCase(2).inputA().assertTask1().assertTask4(),
+                    new BPMNTestCase(3).inputAB().assertTask1().assertTask4(),
+                    new BPMNTestCase(4).inputC().assertTask3().assertTask4()
             ]
     )
 
@@ -112,7 +112,7 @@ class GatewayProcesses {
 
     public static final List<BPMNProcess> GATEWAYS = [
             EXCLUSIVE_GATEWAY,
-            EXCLUSIVE_GATEWAY_DEFAULT,
+            EXCLUSIVE_GATEWAY_WITH_DEFAULT,
             PARALLEL_GATEWAY,
             INCLUSIVE_GATEWAY,
             INCLUSIVE_GATEWAY_DEFAULT,

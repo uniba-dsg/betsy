@@ -26,7 +26,7 @@ public class ProcessValidator {
     public static final String[] ALLOWED_LOG_MESSAGES = new String[]{
             "SCRIPT_taskNotInterrupted", "SCRIPT_timerInternal", "SCRIPT_timerEvent", "SCRIPT_default", "SCRIPT_timerExternal",
             "SCRIPT_signaled", "SCRIPT_end", "SCRIPT_started", "SCRIPT_task1", "CREATE_LOG_FILE", "SCRIPT_task2",
-            "SCRIPT_task3", "SCRIPT_false", "SCRIPT_subprocess", "SCRIPT_normalTask", "SCRIPT_interrupted", "SCRIPT_success",
+            "SCRIPT_task3", "SCRIPT_task4", "SCRIPT_false", "SCRIPT_subprocess", "SCRIPT_normalTask", "SCRIPT_interrupted", "SCRIPT_success",
             "SCRIPT_true", "SCRIPT_transaction"
     };
 
