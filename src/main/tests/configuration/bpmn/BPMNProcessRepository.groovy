@@ -5,9 +5,9 @@ import betsy.common.repositories.Repository
 
 import java.lang.reflect.Field
 
-import static BPMNGatewayProcesses.GATEWAYS
-import static BPMNEventProcesses.EVENTS
-import static BPMNMiscProcesses.MISCS
+import static GatewayProcesses.GATEWAYS
+import static EventProcesses.EVENTS
+import static MiscProcesses.MISCS
 
 class BPMNProcessRepository {
     private Repository<BPMNProcess> repo = new Repository<>()
@@ -15,18 +15,18 @@ class BPMNProcessRepository {
     public BPMNProcessRepository(){
         repo.put("ALL",
                 GATEWAYS +
-                BPMNTaskProcesses.TASKS +
+                TaskProcesses.TASKS +
                 EVENTS +
-                BPMNSubProcesses.SUB_PROCESSES +
+                SubProcesses.SUB_PROCESSES +
                 MISCS
                 as List<BPMNProcess>)
 
         Field[] fields = [
-            BPMNGatewayProcesses.class.declaredFields +
-            BPMNTaskProcesses.class.declaredFields +
-            BPMNEventProcesses.class.declaredFields +
-            BPMNSubProcesses.class.declaredFields +
-            BPMNMiscProcesses.class.declaredFields
+            GatewayProcesses.class.declaredFields +
+            TaskProcesses.class.declaredFields +
+            EventProcesses.class.declaredFields +
+            SubProcesses.class.declaredFields +
+            MiscProcesses.class.declaredFields
         ].flatten()
 
         fields.each { Field f ->

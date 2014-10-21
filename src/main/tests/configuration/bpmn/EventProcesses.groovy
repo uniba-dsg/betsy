@@ -3,7 +3,7 @@ package configuration.bpmn
 import betsy.bpmn.model.BPMNProcess
 import betsy.bpmn.model.BPMNTestCase
 
-class BPMNEventProcesses {
+class EventProcesses {
 
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
