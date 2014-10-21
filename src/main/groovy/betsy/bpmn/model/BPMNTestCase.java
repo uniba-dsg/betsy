@@ -80,10 +80,6 @@ public class BPMNTestCase {
         return addAssertions("SCRIPT_false");
     }
 
-    public BPMNTestCase assertDefault() {
-        return addAssertions("SCRIPT_default");
-    }
-
     public BPMNTestCase assertRuntimeException() {
         return addAssertions(Errors.ERROR_RUNTIME);
     }
