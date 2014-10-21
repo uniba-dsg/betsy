@@ -68,10 +68,11 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess PARALLEL_IN_INCLUSIVE_OUT = builder.buildGatewayProcess(
-            "ParallelInInclusiveOut", "Tests for the parallel gateway when joined with inclusive gateway",
+    public static final BPMNProcess PARALLEL_DIVERGING_INCLUSIVE_CONVERGING = builder.buildGatewayProcess(
+            "ParallelDivergingInclusiveConverging", "A process with four tasks, a diverging parallelGateway and a converging inclusiveGateway. " +
+            "Two of the tasks are executed in parallel and merged by the inclusiveGateway.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
             ]
     )
 
@@ -119,7 +120,7 @@ class GatewayProcesses {
             INCLUSIVE_GATEWAY,
             INCLUSIVE_GATEWAY_WITH_DEFAULT,
             PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING,
-            PARALLEL_IN_INCLUSIVE_OUT,
+            PARALLEL_DIVERGING_INCLUSIVE_CONVERGING,
             EXCLUSIVE_IN_PARALLEL_OUT,
             EXCLUSIVE_GATEWAY_MIXED,
             COMPLEX,
