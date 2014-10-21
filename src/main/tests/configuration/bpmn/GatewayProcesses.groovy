@@ -76,15 +76,7 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess EXCLUSIVE_IN_PARALLEL_OUT = builder.buildGatewayProcess(
-            "ExclusiveInParallelOut", "Tests for the exclusive gateway when joined with parallel gateway",
-            [
-                    new BPMNTestCase(1).inputA().assertTrue(),
-                    new BPMNTestCase(2).inputB().assertFalse(),
-                    new BPMNTestCase(3).inputAB().assertTrue(),
-                    new BPMNTestCase(4).inputC().assertRuntimeException()
-            ]
-    )
+
 
 
     public static final BPMNProcess EXCLUSIVE_GATEWAY_MIXED = builder.buildGatewayProcess(
@@ -121,7 +113,6 @@ class GatewayProcesses {
             INCLUSIVE_GATEWAY_WITH_DEFAULT,
             PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING,
             PARALLEL_DIVERGING_INCLUSIVE_CONVERGING,
-            EXCLUSIVE_IN_PARALLEL_OUT,
             EXCLUSIVE_GATEWAY_MIXED,
             COMPLEX,
             EVENT_BASED
