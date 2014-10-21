@@ -69,7 +69,7 @@ public class CamundaTester {
     private void addRuntimeErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", Errors.ERROR_RUNTIME);
-        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", Errors.ERROR_THROWNERROREVENT);
+        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", Errors.ERROR_THROWN_ERROR_EVENT);
         for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
         }

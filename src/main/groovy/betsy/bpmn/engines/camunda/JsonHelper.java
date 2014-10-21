@@ -39,6 +39,20 @@ public class JsonHelper {
         }
     }
 
+    public static String getStringWithAuth(String url, int expectedCode, String username, String password) {
+        log.info("HTTP GET " + url);
+
+        try {
+            HttpResponse<String> response = Unirest.get(url).basicAuth(username, password).asString();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+
+            return response.getBody();
+        } catch (UnirestException e) {
+            throw new RuntimeException("rest call to " + url + " failed", e);
+        }
+    }
+
     public static JSONObject post(String url, JSONObject requestBody, int expectedCode) {
         log.info("HTTP POST " + url);
         log.info("CONTENT: " + requestBody.toString(2));
@@ -58,7 +72,7 @@ public class JsonHelper {
         log.info("CONTENT: " + requestBody.toString(2));
 
         try {
-            HttpResponse<String> response = Unirest.post(url).header("Content-Type", "application/json").basicAuth("admin", "admin").body(requestBody.toString()).asString();
+            HttpResponse<String> response = Unirest.post(url).header("Content-Type", "application/json").basicAuth(username, password).body(requestBody.toString()).asString();
             assertHttpCode(expectedCode, response);
             logResponse(response.getBody());
             return response.getBody();

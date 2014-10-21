@@ -81,7 +81,7 @@ public class BPMNTestCase {
     }
 
     public BPMNTestCase assertErrorThrownErrorEvent() {
-        return addAssertions(Errors.ERROR_THROWNERROREVENT);
+        return addAssertions(Errors.ERROR_THROWN_ERROR_EVENT);
     }
 
     public BPMNTestCase assertSubprocess() {
