@@ -88,6 +88,10 @@ public class BPMNTestCase {
         return addAssertions(Errors.ERROR_THROWN_ERROR_EVENT);
     }
 
+    public BPMNTestCase assertErrorThrownEscalationEvent() {
+        return addAssertions(Errors.ERROR_THROWN_ESCALATION_EVENT);
+    }
+
     public BPMNTestCase assertSignaled() {
         return addAssertions("SCRIPT_signaled");
     }

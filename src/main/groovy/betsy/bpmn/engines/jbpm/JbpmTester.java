@@ -84,6 +84,9 @@ public class JbpmTester {
             if (result.contains("ERR-1")) {
                 log.info("Process has been aborted. Error with id ERR-1 detected.");
                 BPMNTester.appendToFile(getFileName(), Errors.ERROR_THROWN_ERROR_EVENT);
+            } else if (result.contains("ESC_1")) {
+                log.info("Process has been aborted. Escalation with id ESC_1 detected.");
+                BPMNTester.appendToFile(getFileName(), Errors.ERROR_THROWN_ESCALATION_EVENT);
             } else if (result.contains("<status>3</status>")) {
                 log.info("Process has been aborted with unknown error.");
                 BPMNTester.appendToFile(getFileName(), Errors.ERROR_PROCESS_ABORTED);

@@ -168,6 +168,13 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess ESCALATION_END_EVENT_TOPLEVEL = builder.buildEventProcess(
+            "EscalationEndEvent_TopLevel", "A test for an escalation end event in a top level process.",
+            [
+                    new BPMNTestCase(1).assertTask1().assertErrorThrownEscalationEvent()
+            ]
+    )
+
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "LinkEvent", "A simple test for link events",
             [
@@ -363,6 +370,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+            ESCALATION_END_EVENT_TOPLEVEL,
             LINK,
             // MESSAGE_START,
             SIGNAL_INTERMEDIATE_BOUNDARY,
