@@ -81,6 +81,7 @@ public class ActivitiTester {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("org.activiti.engine.ActivitiException", Errors.ERROR_RUNTIME);
         analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", Errors.ERROR_THROWN_ERROR_EVENT);
+        analyzer.addSubstring("No catching boundary event found for error with errorCode 'ERR-1'", Errors.ERROR_THROWN_ERROR_EVENT);
         for (String deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
         }
