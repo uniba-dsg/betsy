@@ -110,7 +110,9 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess COMPLEX_GATEWAY = builder.buildGatewayProcess(
-            "ComplexGateway", "Tests for the complex gateway",
+            "ComplexGateway", "A process with five scriptTasks and two complexGateways. " +
+            "Three of the tasks are enclosed by the complexGateways and each one is enabled based on input data. " +
+            "The activationCondition of the converging complexGate is set to 'activationCount >= 1', so the gateway should fire for any number of activated incoming branches.",
             [
                     new BPMNTestCase(1).inputA().assertTask1().assertTask4(),
                     new BPMNTestCase(2).inputB().assertTask2().assertTask4(),
