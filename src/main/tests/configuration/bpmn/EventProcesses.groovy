@@ -191,6 +191,25 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "EscalationStartEvent_EventSubProcess_Interrupting", "A test for the interrupting escalation start event in " +
+            "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. " +
+            "After the execution of the EventSubProcess the flow should continue normally, and therefore Task3 should " +
+            "be executed.",
+            [
+                    new BPMNTestCase(1).assertTask2().assertTask3()
+            ]
+    )
+
+    public static final BPMNProcess ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "EscalationStartEvent_EventSubProcess_NonInterrupting", "A test for the escalation start event in an event " +
+            "sub process which is marked as \"non interrupting\". Task2 within in the (normal) SubProcess and Task3 " +
+            "which is defined after the SubProcess should be executed.",
+            [
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
+            ]
+    )
+
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "LinkEvent", "A simple test for link events",
             [
@@ -389,6 +408,8 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             ESCALATION_END_EVENT_SUBPROCESS,
             ESCALATION_END_EVENT_TOPLEVEL,
             ESCALATION_INTERMEDIATE_THROW_EVENT,
+            ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+            ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             LINK,
             // MESSAGE_START,
             SIGNAL_INTERMEDIATE_BOUNDARY,
