@@ -33,9 +33,21 @@ class ErrorProcesses {
             ]
     )
 
+    public static final BPMNProcess INCLUSIVE_DIVERGING_PARALLEL_CONVERGING = builder.buildErrorProcess(
+            "InclusiveDivergingParallelConverging", "A process with four scriptTasks, a diverging inclusiveGateway and a converging parallelGateway. " +
+            "Two scriptTasks are enclosed by the gateways and the execution should deadlock if only one incoming branch of the parallelGateway " +
+            "is enabled. Hence, the scriptTask following the parallelGateway should only be executed in a single case.",
+            [
+                    new BPMNTestCase(1).inputA().assertTask1(),
+                    new BPMNTestCase(2).inputB().assertTask2(),
+                    new BPMNTestCase(3).inputAB().assertTask1().assertTask2().assertTask3(),
+            ]
+    )
+
 
     public static final List<BPMNProcess> ERRORS = [
             PARALLEL_GATEWAY_WITH_CONDITIONS,
-            EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING
+            EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
+            INCLUSIVE_DIVERGING_PARALLEL_CONVERGING
     ].flatten() as List<BPMNProcess>
 }
