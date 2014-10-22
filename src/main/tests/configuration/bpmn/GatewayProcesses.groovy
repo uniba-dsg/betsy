@@ -109,11 +109,13 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess COMPLEX = builder.buildGatewayProcess(
+    public static final BPMNProcess COMPLEX_GATEWAY = builder.buildGatewayProcess(
             "ComplexGateway", "Tests for the complex gateway",
             [
-                    new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertSuccess()
-                    //this gateway is actually not supported by camunda and jbpm for that reason there are no more test cases
+                    new BPMNTestCase(1).inputA().assertTask1().assertTask4(),
+                    new BPMNTestCase(2).inputB().assertTask2().assertTask4(),
+                    new BPMNTestCase(3).inputC().assertTask3().assertTask4(),
+                    new BPMNTestCase(4).inputAB().assertTask1().assertTask2().assertTask4()
             ]
     )
 
@@ -138,7 +140,7 @@ class GatewayProcesses {
             PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING,
             PARALLEL_DIVERGING_INCLUSIVE_CONVERGING,
 
-            COMPLEX,
+            COMPLEX_GATEWAY,
 
             EVENT_BASED
     ].flatten() as List<BPMNProcess>
