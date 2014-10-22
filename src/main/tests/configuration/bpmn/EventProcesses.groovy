@@ -150,11 +150,21 @@ class EventProcesses {
             ]
     )
 
-    //not supported either by camunda or jbpm
-    public static final BPMNProcess ESCALATION_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
-            "EscalationEventSubprocessInterrupting", "A test for an escalation event interrupting a subprocess",
+    public static final BPMNProcess ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "EscalationBoundaryEvent_SubProcess_Interrupting", "A test for an escalation event interrupting a subprocess." +
+            "The task (task2) following the Intermediate EscalationEvent and the Task (task4) following the normal " +
+            "outgoing sequence flow after the SubProcess must not be executed. " +
+            "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertInterrupted()
+                    new BPMNTestCase(1).assertTask1().assertTask3()
+            ]
+    )
+
+    public static final BPMNProcess ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "EscalationBoundaryEvent_SubProcess_NonInterrupting", "A test for an escalation event NOT interrupting a subprocess." +
+            "All tasks (Task1-4) should be executed.",
+            [
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().assertTask4()
             ]
     )
 
@@ -351,7 +361,8 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
             ERROR_END_EVENT_TOPLEVEL,
             ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
-            ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
+            ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+            ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             LINK,
             // MESSAGE_START,
             SIGNAL_INTERMEDIATE_BOUNDARY,

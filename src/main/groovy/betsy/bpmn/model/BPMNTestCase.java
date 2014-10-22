@@ -88,24 +88,12 @@ public class BPMNTestCase {
         return addAssertions(Errors.ERROR_THROWN_ERROR_EVENT);
     }
 
-    public BPMNTestCase assertSubprocess() {
-        return addAssertions("SCRIPT_subprocess");
-    }
-
-    public BPMNTestCase assertInterrupted() {
-        return addAssertions("SCRIPT_interrupted");
-    }
-
     public BPMNTestCase assertSignaled() {
         return addAssertions("SCRIPT_signaled");
     }
 
     public BPMNTestCase assertNormalTask() {
         return addAssertions("SCRIPT_normalTask");
-    }
-
-    public BPMNTestCase assertTransactionTask() {
-        return addAssertions("SCRIPT_transaction");
     }
 
     public BPMNTestCase assertNotInterrupted() {
