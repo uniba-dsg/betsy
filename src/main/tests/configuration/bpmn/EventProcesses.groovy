@@ -126,6 +126,15 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING = builder.buildEventProcess(
+            "ErrorBoundaryEvent_Transaction_Interrupting", "A test for the error boundary event attached to a transaction." +
+            "The task (task2) following the SequenceFlow originating from the boundary event should be executed. The Task (task3) " +
+            "following the normal outgoing sequence flow after the Transaction must not be executed.",
+            [
+                    new BPMNTestCase(1).assertTask1().assertTask2()
+            ]
+    )
+
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
             "ErrorEndEvent", "A simple test for the ErrorEndEvent",
             [
@@ -144,13 +153,6 @@ class EventProcesses {
             "ErrorStartEvent2", "A test for the error start event in an event triggered sub process in a sub process with a following normal sequence flow",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2().assertSuccess()
-            ]
-    )
-
-    public static final BPMNProcess ERROR_TRANSACTION = builder.buildEventProcess(
-            "ErrorTransaction", "A test for the error end event and an error boundary event in a transaction sub process",
-            [
-                    new BPMNTestCase(1).assertTransactionTask().assertSuccess()
             ]
     )
 
@@ -351,11 +353,11 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             CONDITIONAL_INTERMEDIATE_EVENT,
-            ERROR_END,
             ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+            ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
+            ERROR_END,
             ERROR_START_1,
             ERROR_START_2,
-            ERROR_TRANSACTION,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
             LINK,
             // MESSAGE_START,
