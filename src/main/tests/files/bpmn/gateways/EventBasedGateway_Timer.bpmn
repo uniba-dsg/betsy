@@ -30,6 +30,32 @@
         </bpmn2:eventBasedGateway>
 
 
+        <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="EventBasedGateway_1"
+                            targetRef="IntermediateCatchEvent_2"/>
+
+        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_2">
+            <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+            <bpmn2:timerEventDefinition id="_TimerEventDefinition_1">
+                <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT1S</bpmn2:timeDuration>
+            </bpmn2:timerEventDefinition>
+        </bpmn2:intermediateCatchEvent>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="IntermediateCatchEvent_2" targetRef="task2"/>
+
+        <bpmn2:scriptTask id="task2" name="Task 2">
+            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="task2" targetRef="EndEvent_2"/>
+
+        <bpmn2:endEvent id="EndEvent_2">
+            <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+
         <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="EventBasedGateway_1"
                             targetRef="IntermediateCatchEvent_1"/>
 
@@ -51,32 +77,6 @@
 
         <bpmn2:endEvent id="EndEvent_1">
             <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
-        </bpmn2:endEvent>
-
-
-        <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="EventBasedGateway_1"
-                            targetRef="IntermediateCatchEvent_2"/>
-
-        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_2">
-            <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
-            <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-            <bpmn2:timerEventDefinition id="_TimerEventDefinition_1">
-                <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT3S</bpmn2:timeDuration>
-            </bpmn2:timerEventDefinition>
-        </bpmn2:intermediateCatchEvent>
-
-        <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="IntermediateCatchEvent_2" targetRef="task2"/>
-
-        <bpmn2:scriptTask id="task2" name="Task 2">
-            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
-            <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-            <bpmn2:script>SCRIPT_task2</bpmn2:script>
-        </bpmn2:scriptTask>
-
-        <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="task2" targetRef="EndEvent_2"/>
-
-        <bpmn2:endEvent id="EndEvent_2">
-            <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
         </bpmn2:endEvent>
 
     </bpmn2:process>

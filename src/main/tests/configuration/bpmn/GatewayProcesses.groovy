@@ -135,7 +135,7 @@ class GatewayProcesses {
             "The parallelGateway points to the eventBasedGateway in one branch and, in the other branch, throws the signal. " +
             "This signal is caught by one of the branches following the eventBasedGateway.",
             [
-                    new BPMNTestCase(1).assertTask2()
+                    new BPMNTestCase(1).assertTask2().optionDelay(5000)
             ]
     )
 
