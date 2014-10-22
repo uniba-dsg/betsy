@@ -46,13 +46,13 @@
                 <![CDATA[test.contains("b")]]></bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
 
-        <bpmn2:scriptTask id="false" name="task2">
+        <bpmn2:scriptTask id="task2" name="task2">
             <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
             <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="false" targetRef="ParallelGateway_2"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="task2" targetRef="ParallelGateway_2"/>
 
 
         <bpmn2:parallelGateway id="ParallelGateway_2">

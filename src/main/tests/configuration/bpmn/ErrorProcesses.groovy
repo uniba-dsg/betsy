@@ -22,23 +22,20 @@ class ErrorProcesses {
             ]
     )
 
-    /*
-     * Currently crashes the build due to the (expected) deadlocking of the process. Maybe we should throw it out
-     *
-     * public static final BPMNProcess EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING = builder.buildErrorProcess(
-     *       "ExclusiveDivergingParallelConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging parallelGateway. " +
-     *       "Two scriptTasks are enclosed by the gateways and the execution should deadlock, because only one incoming branch of the parallelGateway " +
-     *       "should ever be executed. Hence, the scriptTask following the parallelGateway should never be executed.",
-     *       [
-     *               new BPMNTestCase(1).inputA().assertTask1(),
-     *               new BPMNTestCase(2).inputB().assertTask2(),
-     *               new BPMNTestCase(3).inputAB().assertTask2(),
-     *       ]
-     * )
-     */
+    public static final BPMNProcess EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING = builder.buildErrorProcess(
+            "ExclusiveDivergingParallelConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging parallelGateway. " +
+            "Two scriptTasks are enclosed by the gateways and the execution should deadlock, because only one incoming branch of the parallelGateway " +
+            "should ever be executed. Hence, the scriptTask following the parallelGateway should never be executed.",
+            [
+                    new BPMNTestCase(1).inputA().assertTask1(),
+                    new BPMNTestCase(2).inputB().assertTask2(),
+                    new BPMNTestCase(3).inputAB().assertTask1(),
+            ]
+    )
+
 
     public static final List<BPMNProcess> ERRORS = [
             PARALLEL_GATEWAY_WITH_CONDITIONS,
-           // EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING
+            EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING
     ].flatten() as List<BPMNProcess>
 }
