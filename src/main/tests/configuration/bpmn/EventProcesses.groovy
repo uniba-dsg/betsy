@@ -117,24 +117,19 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "ErrorBoundaryEvent_SubProcess_Interrupting", "A test for the error boundary event attached to a sub process." +
+            "The task (task2) following the SequenceFlow originating from the boundary event should be executed. The Task (task3) " +
+            "following the normal outgoing sequence flow after the SubProcess must not be executed.",
+            [
+                    new BPMNTestCase(1).assertTask1().assertTask2()
+            ]
+    )
+
     public static final BPMNProcess ERROR_END = builder.buildEventProcess(
             "ErrorEndEvent", "A simple test for the ErrorEndEvent",
             [
                     new BPMNTestCase(1).assertTask1().assertErrorThrownErrorEvent()
-            ]
-    )
-
-    public static final BPMNProcess ERROR_INTERMEDIATE_1 = builder.buildEventProcess(
-            "ErrorIntermediateEvent1", "A simple test for the error intermediate boundary event",
-            [
-                    new BPMNTestCase(1).assertSuccess().assertSubprocess()
-            ]
-    )
-
-    public static final BPMNProcess ERROR_INTERMEDIATE_2 = builder.buildEventProcess(
-            "ErrorIntermediateEvent2", "A simple test for the error intermediate boundary event on a sub process with a following normal sequence flow",
-            [
-                    new BPMNTestCase(1).assertSuccess().assertSubprocess()
             ]
     )
 
@@ -357,8 +352,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             CONDITIONAL_INTERMEDIATE_EVENT,
             ERROR_END,
-            ERROR_INTERMEDIATE_1,
-            ERROR_INTERMEDIATE_2,
+            ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ERROR_START_1,
             ERROR_START_2,
             ERROR_TRANSACTION,
