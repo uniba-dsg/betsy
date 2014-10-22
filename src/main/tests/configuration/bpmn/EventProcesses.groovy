@@ -142,17 +142,11 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess ERROR_START_1 = builder.buildEventProcess(
-            "ErrorStartEvent1", "A test for the error start event in an event triggered sub process",
+    public static final BPMNProcess ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "ErrorStartEvent_EventSubProcess_Interrupting", "A test for the error start event in an event sub process. " +
+            "After the execution of the EventSubProcess the flow should continue normally.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
-            ]
-    )
-
-    public static final BPMNProcess ERROR_START_2 = builder.buildEventProcess(
-            "ErrorStartEvent2", "A test for the error start event in an event triggered sub process in a sub process with a following normal sequence flow",
-            [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
             ]
     )
 
@@ -356,8 +350,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
             ERROR_END_EVENT_TOPLEVEL,
-            ERROR_START_1,
-            ERROR_START_2,
+            ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
             LINK,
             // MESSAGE_START,
