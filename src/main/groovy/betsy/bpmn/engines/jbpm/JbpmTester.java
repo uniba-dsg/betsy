@@ -11,7 +11,6 @@ import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +29,6 @@ public class JbpmTester {
 
         if (!testCase.getSelfStarting()) {
             //setup variables and start process
-            String baseUrl = "http://localhost:8080/jbpm-console/rest/runtime/" + deploymentId + "/process/" + name + "/start";
-
             Map<String, Object> variables = new HashMap<>();
             for (BPMNTestCaseVariable variable : testCase.getVariables()) {
                 variables.put(variable.getName(), variable.getValue());
@@ -42,7 +39,7 @@ public class JbpmTester {
                 joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
             }
 
-            String requestUrl = baseUrl + joiner.toString();
+            String requestUrl = processStartUrl + joiner.toString();
             try {
                 log.info("Trying to start process \"" + name + "\".");
                 JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
@@ -81,11 +78,9 @@ public class JbpmTester {
     }
 
     private void checkProcessOutcome() {
-        // Caution: URL has changed in jBPM version >6.0.0
-        String requestUrl = "http://localhost:8080/jbpm-console/rest/runtime/" + deploymentId + "/history/instance/1";
         try {
             log.info("Trying to check process result status for " + name);
-            String result = JsonHelper.getStringWithAuth(requestUrl, 200, user, password);
+            String result = JsonHelper.getStringWithAuth(processHistoryUrl, 200, user, password);
             if (result.contains("ERR-1")) {
                 log.info("Process has been aborted. Error with id ERR-1 detected.");
                 BPMNTester.appendToFile(getFileName(), Errors.ERROR_THROWN_ERROR_EVENT);
@@ -122,6 +117,22 @@ public class JbpmTester {
         this.testCase = testCase;
     }
 
+    public String getProcessStartUrl() {
+        return processStartUrl;
+    }
+
+    public void setProcessStartUrl(String processStartUrl) {
+        this.processStartUrl = processStartUrl;
+    }
+
+    public String getProcessHistoryUrl() {
+        return processHistoryUrl;
+    }
+
+    public void setProcessHistoryUrl(String processHistoryUrl) {
+        this.processHistoryUrl = processHistoryUrl;
+    }
+
     public String getName() {
         return name;
     }
@@ -136,14 +147,6 @@ public class JbpmTester {
 
     public void setDeploymentId(String deploymentId) {
         this.deploymentId = deploymentId;
-    }
-
-    public URL getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(URL baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     public Path getReportPath() {
@@ -203,9 +206,10 @@ public class JbpmTester {
     }
 
     private BPMNTestCase testCase;
+    private String processStartUrl;
+    private String processHistoryUrl;
     private String name;
     private String deploymentId;
-    private URL baseUrl;
     private Path reportPath;
     private Path testBin;
     private Path testSrc;
@@ -215,4 +219,5 @@ public class JbpmTester {
     private String password = "admin";
 
     private static final Logger log = Logger.getLogger(JbpmTester.class);
+
 }

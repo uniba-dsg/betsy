@@ -9,8 +9,6 @@ import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -168,7 +166,8 @@ public class JbpmEngine extends BPMNEngine {
             tester.setTestCase(testCase);
             tester.setName(process.getName());
             tester.setDeploymentId(process.getGroupId() + ":" + process.getName() + ":" + process.getVersion());
-            tester.setBaseUrl(getEndpointUrlAsUrl(process));
+            tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
+            tester.setProcessHistoryUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/history/instance/1");
             tester.setTestSrc(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
             tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
             tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
@@ -178,14 +177,6 @@ public class JbpmEngine extends BPMNEngine {
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
-    }
-
-    private URL getEndpointUrlAsUrl(BPMNProcess process) {
-        try {
-            return new URL(getEndpointUrl(process));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("malformed URL", e);
-        }
     }
 
     public void buildTest(final BPMNProcess process) {
