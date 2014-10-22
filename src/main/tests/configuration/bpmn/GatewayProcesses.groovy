@@ -130,6 +130,15 @@ class GatewayProcesses {
             ]
     )
 
+    public static final BPMNProcess EVENT_BASED_GATEWAY_TIMER = builder.buildGatewayProcess(
+            "EventBasedGateway_Timer", "A process with five scriptTasks a diverging parallelGateway, a converging eventBasedGateway, an intermediate signal throw event and two intermediate signal catch events. " +
+            "The parallelGateway points to the eventBasedGateway in one branch and, in the other branch, throws the signal. " +
+            "This signal is caught by one of the branches following the eventBasedGateway.",
+            [
+                    new BPMNTestCase(1).assertTask2()
+            ]
+    )
+
     public static final List<BPMNProcess> GATEWAYS = [
             EXCLUSIVE_GATEWAY,
             EXCLUSIVE_GATEWAY_WITH_DEFAULT,
@@ -146,6 +155,7 @@ class GatewayProcesses {
 
             COMPLEX_GATEWAY,
 
-            EVENT_BASED_GATEWAY_SIGNALS
+            EVENT_BASED_GATEWAY_SIGNALS,
+            EVENT_BASED_GATEWAY_TIMER
     ].flatten() as List<BPMNProcess>
 }
