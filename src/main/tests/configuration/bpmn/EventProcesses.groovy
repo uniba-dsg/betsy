@@ -135,8 +135,8 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess ERROR_END = builder.buildEventProcess(
-            "ErrorEndEvent", "A simple test for the ErrorEndEvent",
+    public static final BPMNProcess ERROR_END_EVENT_TOPLEVEL = builder.buildEventProcess(
+            "ErrorEndEvent_TopLevel", "A simple test for the ErrorEndEvent in a top level process.",
             [
                     new BPMNTestCase(1).assertTask1().assertErrorThrownErrorEvent()
             ]
@@ -355,7 +355,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             CONDITIONAL_INTERMEDIATE_EVENT,
             ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
-            ERROR_END,
+            ERROR_END_EVENT_TOPLEVEL,
             ERROR_START_1,
             ERROR_START_2,
             ESCALATION_EVENT_SUBPROCESS_INTERRUPTING,
