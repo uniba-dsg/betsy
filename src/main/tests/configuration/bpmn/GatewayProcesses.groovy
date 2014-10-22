@@ -122,7 +122,7 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess EVENT_BASED_GATEWAY_SIGNALS = builder.buildGatewayProcess(
-            "EventBasedGateway_Signals", "A process with five scriptTasks a diverging parallelGateway, a converging eventBasedGateway, an intermediate signal throw event and two intermediate signal catch events. " +
+            "EventBasedGateway_Signals", "A process with five scriptTasks, a diverging parallelGateway, a diverging eventBasedGateway, an intermediate signal throw event and two intermediate signal catch events. " +
             "The parallelGateway points to the eventBasedGateway in one branch and, in the other branch, throws the signal. " +
             "This signal is caught by one of the branches following the eventBasedGateway.",
             [
@@ -131,9 +131,9 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess EVENT_BASED_GATEWAY_TIMER = builder.buildGatewayProcess(
-            "EventBasedGateway_Timer", "A process with five scriptTasks a diverging parallelGateway, a converging eventBasedGateway, an intermediate signal throw event and two intermediate signal catch events. " +
-            "The parallelGateway points to the eventBasedGateway in one branch and, in the other branch, throws the signal. " +
-            "This signal is caught by one of the branches following the eventBasedGateway.",
+            "EventBasedGateway_Timer", "A process with three scriptTasks, a diverging eventBasedGateway and two intermediate catch events. " +
+            "One of the catch events refers to a signal that is never thrown and the other one to a timer. " +
+            "Only the branch of the timer should ever be executed.",
             [
                     new BPMNTestCase(1).assertTask2().optionDelay(5000)
             ]
