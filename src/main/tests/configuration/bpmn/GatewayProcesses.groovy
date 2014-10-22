@@ -121,10 +121,12 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess EVENT_BASED = builder.buildGatewayProcess(
-            "EventBasedGateway", "Tests for the complex gateway",
+    public static final BPMNProcess EVENT_BASED_GATEWAY_SIGNALS = builder.buildGatewayProcess(
+            "EventBasedGateway_Signals", "A process with five scriptTasks a diverging parallelGateway, a converging eventBasedGateway, an intermediate signal throw event and two intermediate signal catch events. " +
+            "The parallelGateway points to the eventBasedGateway in one branch and, in the other branch, throws the signal. " +
+            "This signal is caught by one of the branches following the eventBasedGateway.",
             [
-                    new BPMNTestCase(1).assertTask1().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask4()
             ]
     )
 
@@ -144,6 +146,6 @@ class GatewayProcesses {
 
             COMPLEX_GATEWAY,
 
-            EVENT_BASED
+            EVENT_BASED_GATEWAY_SIGNALS
     ].flatten() as List<BPMNProcess>
 }
