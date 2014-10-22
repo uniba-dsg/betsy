@@ -175,6 +175,14 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess ESCALATION_INTERMEDIATE_THROW_EVENT = builder.buildEventProcess(
+            "EscalationIntermediateThrowEvent", "A test for an escalation intermediate throw event: " +
+            "Task1 can only be executed if the event has been thrown (and caught).",
+            [
+                    new BPMNTestCase(1).assertTask1()
+            ]
+    )
+
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "LinkEvent", "A simple test for link events",
             [
@@ -371,6 +379,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             ESCALATION_END_EVENT_TOPLEVEL,
+            ESCALATION_INTERMEDIATE_THROW_EVENT,
             LINK,
             // MESSAGE_START,
             SIGNAL_INTERMEDIATE_BOUNDARY,
