@@ -31,12 +31,21 @@
             <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
         </bpmn2:parallelGateway>
 
-
         <bpmn2:sequenceFlow id="SequenceFlow_17" name="" sourceRef="ParallelGateway_1"
-                            targetRef="IntermediateThrowEvent_2"/>
+                            targetRef="IntermediateCatchEvent_2"/>
+
+        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_2">
+            <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+            <bpmn2:timerEventDefinition id="_TimerEventDefinition_1">
+                <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT5S</bpmn2:timeDuration>
+            </bpmn2:timerEventDefinition>
+        </bpmn2:intermediateCatchEvent>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="IntermediateCatchEvent_2" targetRef="IntermediateThrowEvent_2"/>
 
         <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_2">
-            <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_20</bpmn2:outgoing>
             <bpmn2:signalEventDefinition id="SignalEventDefinition_1" signalRef="signal"/>
         </bpmn2:intermediateThrowEvent>
@@ -55,12 +64,11 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_13" name="" sourceRef="ParallelGateway_1" targetRef="EventBasedGateway_1"/>
 
-        <bpmn2:eventBasedGateway id="EventBasedGateway_1">
+        <bpmn2:eventBasedGateway id="EventBasedGateway_1" gatewayDirection="Diverging">
             <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
             <bpmn2:outgoing>SequenceFlow_23</bpmn2:outgoing>
         </bpmn2:eventBasedGateway>
-
 
         <bpmn2:sequenceFlow id="SequenceFlow_15" name="" sourceRef="EventBasedGateway_1"
                             targetRef="IntermediateCatchEvent_3"/>
