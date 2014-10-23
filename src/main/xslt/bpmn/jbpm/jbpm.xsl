@@ -54,25 +54,6 @@
         </bpmn2:scriptTask>
     </xsl:template>
 
-    <!-- for Exclusive gateways-->
-    <xsl:template match="bpmn2:exclusiveGateway[@id='ExclusiveGateway_1']">
-        <bpmn2:exclusiveGateway gatewayDirection="Diverging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:exclusiveGateway>
-    </xsl:template>
-
-    <xsl:template match="bpmn2:exclusiveGateway[@id='ExclusiveGateway_2']">
-        <bpmn2:exclusiveGateway gatewayDirection="Converging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:exclusiveGateway>
-    </xsl:template>
-
-    <xsl:template match="bpmn2:exclusiveGateway[@id='ExclusiveGateway_X']">
-        <bpmn2:exclusiveGateway gatewayDirection="Mixed">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:exclusiveGateway>
-    </xsl:template>
-
     <!-- for gateways in general -->
     <xsl:template match="bpmn2:conditionExpression">
         <bpmn2:conditionExpression language="http://www.java.com/java">
@@ -89,44 +70,6 @@
         </bpmn2:condition>
     </xsl:template>
 
-    <!-- for parallel gateways-->
-    <xsl:template match="bpmn2:parallelGateway[@id='ParallelGateway_1']">
-        <bpmn2:parallelGateway gatewayDirection="Diverging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:parallelGateway>
-    </xsl:template>
-
-    <xsl:template match="bpmn2:parallelGateway[@id='ParallelGateway_2']">
-        <bpmn2:parallelGateway gatewayDirection="Converging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:parallelGateway>
-    </xsl:template>
-
-    <!-- for inclusive gateways -->
-    <xsl:template match="bpmn2:inclusiveGateway[@id='InclusiveGateway_1']">
-        <bpmn2:inclusiveGateway gatewayDirection="Diverging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:inclusiveGateway>
-    </xsl:template>
-
-    <xsl:template match="bpmn2:inclusiveGateway[@id='InclusiveGateway_2']">
-        <bpmn2:inclusiveGateway gatewayDirection="Converging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:inclusiveGateway>
-    </xsl:template>
-
-    <!-- for complex gateways -->
-    <xsl:template match="bpmn2:complexGateway[@id='ComplexGateway_1']">
-        <bpmn2:complexGateway gatewayDirection="Diverging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:complexGateway>
-    </xsl:template>
-
-    <xsl:template match="bpmn2:complexGateway[@id='ComplexGateway_2']">
-        <bpmn2:complexGateway gatewayDirection="Converging">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:complexGateway>
-    </xsl:template>
 
     <xsl:template match="node()|@*">
         <xsl:copy>
