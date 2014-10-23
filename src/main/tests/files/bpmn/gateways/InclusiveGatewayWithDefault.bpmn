@@ -20,7 +20,7 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="InclusiveGateway_1"/>
 
-        <bpmn2:inclusiveGateway id="InclusiveGateway_1" default="SequenceFlow_7">
+        <bpmn2:inclusiveGateway id="InclusiveGateway_1" default="SequenceFlow_7" gatewayDirection="Diverging">
             <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
             <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
@@ -65,7 +65,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_12" name="" sourceRef="ScriptTask_3" targetRef="InclusiveGateway_2"/>
 
 
-        <bpmn2:inclusiveGateway id="InclusiveGateway_2">
+        <bpmn2:inclusiveGateway id="InclusiveGateway_2" gatewayDirection="Converging">
             <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>

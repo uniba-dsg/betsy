@@ -25,7 +25,7 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_12" name="" sourceRef="start" targetRef="ParallelGateway_1"/>
 
-        <bpmn2:parallelGateway id="ParallelGateway_1">
+        <bpmn2:parallelGateway id="ParallelGateway_1" gatewayDirection="Diverging">
             <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
             <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
@@ -81,7 +81,7 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_22" name="" sourceRef="task1" targetRef="ParallelGateway_2"/>
 
-        <bpmn2:parallelGateway id="ParallelGateway_2">
+        <bpmn2:parallelGateway id="ParallelGateway_2" gatewayDirection="Converging">
             <bpmn2:incoming>SequenceFlow_27</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>

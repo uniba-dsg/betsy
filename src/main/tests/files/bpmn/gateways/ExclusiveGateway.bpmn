@@ -20,7 +20,7 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="ExclusiveGateway_1"/>
 
-        <bpmn2:exclusiveGateway id="ExclusiveGateway_1">
+        <bpmn2:exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Diverging">
             <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
             <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
@@ -53,7 +53,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="ExclusiveGateway_2"/>
 
 
-        <bpmn2:exclusiveGateway id="ExclusiveGateway_2">
+        <bpmn2:exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Converging">
             <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>

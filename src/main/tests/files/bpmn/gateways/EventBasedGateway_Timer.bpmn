@@ -23,7 +23,7 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="start" targetRef="EventBasedGateway_1"/>
 
-        <bpmn2:eventBasedGateway id="EventBasedGateway_1">
+        <bpmn2:eventBasedGateway id="EventBasedGateway_1" gatewayDirection="Diverging">
             <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
             <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
