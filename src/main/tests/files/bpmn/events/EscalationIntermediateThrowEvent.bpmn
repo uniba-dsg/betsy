@@ -65,7 +65,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="SubProcess_1" targetRef="EndEvent_1"/>
 
         <bpmn2:endEvent id="EndEvent_1">
-            <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
         </bpmn2:endEvent>
     </bpmn2:process>
 </bpmn2:definitions>
