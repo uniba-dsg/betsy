@@ -4,27 +4,36 @@
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="MessageStartEventTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/messageStartEvent">
-  <bpmn2:process id="MessageStartEvent" isExecutable="true">
-    <bpmn2:startEvent id="StartEvent_1" name="Start">
-      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-      <bpmn2:messageEventDefinition id="_MessageEventDefinition_2" messageRef="Message_1"/>
-    </bpmn2:startEvent>
-    <bpmn2:scriptTask id="start" name="Start">
-      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-      <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:scriptTask id="end" name="End">
-      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:script>SCRIPT_success</bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="start"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="start" targetRef="end"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
-    <bpmn2:endEvent id="EndEvent_2">
-      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
-    </bpmn2:endEvent>
-  </bpmn2:process>
-  <bpmn2:message id="Message_1" name="Messsage"/>
+
+    <bpmn2:message id="Message_1" name="Messsage"/>
+
+    <bpmn2:process id="MessageStartEvent" isExecutable="true">
+
+        <bpmn2:startEvent id="StartEvent_1" name="Start">
+            <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+            <bpmn2:messageEventDefinition id="_MessageEventDefinition_2" messageRef="Message_1"/>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent_1" targetRef="start"/>
+
+        <bpmn2:scriptTask id="start" name="Start">
+            <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="start" targetRef="end"/>
+
+        <bpmn2:scriptTask id="end" name="End">
+            <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
+
+        <bpmn2:endEvent id="EndEvent_2">
+            <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+        </bpmn2:endEvent>
+    </bpmn2:process>
 </bpmn2:definitions>

@@ -218,11 +218,11 @@ class EventProcesses {
     )
 
     /*
-    //The same behavior as for signal start event could be recognized for camunda here. jbpm complains about a missing message.
-    public static final BPMNProcess MESSAGE_START = builder.buildEventProcess(
+     * Since we know no engine-independent way to send message, this is future work
+    public static final BPMNProcess MESSAGE_START_EVENT = builder.buildEventProcess(
             "MessageStartEvent", "A test with a message start event",
             [
-                    new BPMNTestCase(1).assertSuccess()
+                    new BPMNTestCase(1).assertTask1()
             ]
     )
     */
@@ -401,7 +401,9 @@ class EventProcesses {
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             LINK,
-            // MESSAGE_START,
+
+            //MESSAGE_START_EVENT,
+
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
