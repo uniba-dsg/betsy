@@ -321,8 +321,7 @@ class EventProcesses {
     public static final BPMNProcess TIMER_INTERMEDIATE_EVENT = builder.buildEventProcess(
             "TimerIntermediateEvent", "Tests for the TimerIntermediateEvent",
             [
-                    new BPMNTestCase(1).assertStarted().assertSuccess().optionDelay(5000),
-                    new BPMNTestCase(2).assertStarted().optionDelay(1000)
+                    new BPMNTestCase(1).assertTask1().optionDelay(5000),
             ]
     )
 
