@@ -328,17 +328,18 @@ class EventProcesses {
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "TimerBoundaryEvent_SubProcess_NonInterrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
             "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
-            "In the meantime, a boundary timer event should fire without interruptin the process.",
+            "In the meantime, a boundary timer event should fire without interrupting the subProcess.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().optionDelay(5000),
             ]
     )
 
-    public static final BPMNProcess TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2 = builder.buildEventProcess(
-            "TimerIntermediateBoundaryEventCancel2", "Tests for the timer intermediate boundary event canceling a sub process with a following normal sequence flow",
+    public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "TimerBoundaryEvent_SubProcess_Interrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
+            "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
+            "In the meantime, a boundary timer event should fire and interrupt the subProcess.",
             [
-                    new BPMNTestCase(1).assertStarted().optionDelay(100),
-                    new BPMNTestCase(2).assertStarted().assertTimerExternal().optionDelay(5000)
+                    new BPMNTestCase(1).assertTask3().optionDelay(5000),
             ]
     )
 
@@ -417,7 +418,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             TERMINATE_EVENT,
             TIMER_INTERMEDIATE_EVENT,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2,
+            TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             // TIMER_START
             TIMER_START_SUBPROCESS,
             TIMER_START_SUBPROCESS_INTERRUPTING_1,
