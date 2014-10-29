@@ -104,7 +104,8 @@ public class ActivitiEngine extends BPMNEngine {
         FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
-            FileTasks.copyFileIntoFolder(getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
+            Path tomcatLog = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + ".txt");
+            FileTasks.copyFileIntoFolder(tomcatLog, process.getTargetLogsPath());
         }
     }
 

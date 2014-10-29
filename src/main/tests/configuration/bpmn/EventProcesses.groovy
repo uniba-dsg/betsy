@@ -343,16 +343,14 @@ class EventProcesses {
             ]
     )
 
-    /*
-//Timer start event is not tested because guessing the time which is needed until the process really starts is environment specific
-public static final BPMNProcess TIMER_START = builder.buildEventProcess(
-        "TimerStartEvent", "A test with a timer start event",
-        [
-                new BPMNTestCase(1).assertSuccess().optionSelfStarting().optionDelay(5000),
-                new BPMNTestCase(2).optionSelfStarting()
-        ]
-)
-*/
+    //TODO: This might work with very long timeouts, still experimental
+    public static final BPMNProcess TIMER_START_EVENT = builder.buildEventProcess(
+            "TimerStartEvent", "A test with a timer start event",
+            [
+                    new BPMNTestCase(1).assertTask1().optionDelay(90000),
+                    new BPMNTestCase(2)
+            ]
+    )
 
 
     public static final BPMNProcess TIMER_START_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
@@ -425,6 +423,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             TIMER_START_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_START_SUBPROCESS_INTERRUPTING_1,
             TIMER_START_SUBPROCESS_INTERRUPTING_2
+TIMER_START_EVENT,
     ].flatten() as List<BPMNProcess>
 
 }
