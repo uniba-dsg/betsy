@@ -319,7 +319,7 @@ class EventProcesses {
     )
 
     public static final BPMNProcess TIMER_INTERMEDIATE_EVENT = builder.buildEventProcess(
-            "TimerIntermediateEvent", "Tests for the TimerIntermediateEvent",
+            "TimerIntermediateEvent", "A process with two scriptTasks. There is a intermediateCatchEvent in between the tasks that delay the execution for a short period of time.",
             [
                     new BPMNTestCase(1).assertTask1().optionDelay(5000),
             ]
