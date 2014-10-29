@@ -325,10 +325,10 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess TIMER_BOUNDARY_EVENT = builder.buildEventProcess(
-            "TimerBoundaryEvent", "A process with multiple scriptTasks and a subProcess with timer events. " +
+    public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "TimerBoundaryEvent_SubProcess_NonInterrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
             "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
-            "In the meantime, a boundary timer event should fire.",
+            "In the meantime, a boundary timer event should fire without interruptin the process.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().optionDelay(5000),
             ]
@@ -416,7 +416,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             SIGNAL_TWO_STARTS,
             TERMINATE_EVENT,
             TIMER_INTERMEDIATE_EVENT,
-            TIMER_BOUNDARY_EVENT,
+            TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2,
             // TIMER_START
             TIMER_START_SUBPROCESS,
