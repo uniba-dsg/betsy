@@ -273,12 +273,12 @@ class EventProcesses {
     )
 
     /*
-    //It is not possible to create a signal engine independent and in this case the missing signal is ignored by the engines.
-    //The process is wrongly started and for that simulates a correct result
-    public static final BPMNProcess SIGNAL_START = builder.buildEventProcess(
+    * Until we have no way to actually send a starting signal, this test is of no use.
+    * The engines will simply ignore the signal and start the process
+    public static final BPMNProcess SIGNAL_START_EVENT = builder.buildEventProcess(
             "SignalStartEvent", "A test with a signal start event",
             [
-                    new BPMNTestCase(1).assertSuccess()
+                    new BPMNTestCase(1).assertTask1()
             ]
     )
     */
@@ -382,6 +382,7 @@ class EventProcesses {
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2,
+            //SIGNAL_START_EVENT
 
             TERMINATE_EVENT,
 
