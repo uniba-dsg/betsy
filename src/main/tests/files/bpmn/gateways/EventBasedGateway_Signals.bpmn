@@ -5,9 +5,9 @@
                    id="EventBasedGateway_SignalsTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/eventBasedGateway_Signals">
 
-    <bpmn2:signal id="signal" name="Signal" structureRef="String"/>
+    <bpmn2:signal id="signal" name="Signal"/>
 
-    <bpmn2:signal id="signal2" name="Signal2" structureRef="String"/>
+    <bpmn2:signal id="signal2" name="Signal2"/>
 
     <bpmn2:process id="EventBasedGateway_Signals" isExecutable="true">
 
