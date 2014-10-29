@@ -227,6 +227,7 @@ class EventProcesses {
     )
     */
 
+
     //removed due to inconsistency in the bpmn standard about the use of a signal intermediate catch event (page 253 says no, the oversight on page 261 yes)
     /*public static final BPMNProcess SIGNAL_INTERMEDIATE = builder.buildEventProcess(
             "SignalIntermediateEvent", "A simple test for signal intermediate events",
@@ -318,7 +319,7 @@ class EventProcesses {
     public static final BPMNProcess TERMINATE_EVENT = builder.buildEventProcess(
             "TerminateEvent", "A test for a terminate end event",
             [
-                    new BPMNTestCase(1).assertStarted()
+                    new BPMNTestCase(1)
             ]
     )
 
@@ -377,22 +378,26 @@ class EventProcesses {
 
     public static final List<BPMNProcess> EVENTS = [
             CANCEL,
+
             COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS,
 //            COMPENSATION_BOUNDARY_THROW,
 //            COMPENSATION_BOUNDARY_TASK_THROW,
 //            COMPENSATION_BOUNDARY_TASK_END,
 //            COMPENSATION_EVENT_SUBPROCESS_END,
 //            COMPENSATION_EVENT_SUBPROCESS_THROW,
+
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             CONDITIONAL_START_EVENT,
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             CONDITIONAL_INTERMEDIATE_EVENT,
+
             ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
             ERROR_END_EVENT_TOPLEVEL,
             ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+
             ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             ESCALATION_END_EVENT_SUBPROCESS,
@@ -400,6 +405,7 @@ class EventProcesses {
             ESCALATION_INTERMEDIATE_THROW_EVENT,
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
+
             LINK,
 
             //MESSAGE_START_EVENT,
@@ -413,7 +419,9 @@ class EventProcesses {
             SIGNAL_START_END,
             SIGNAL_INTERMEDIATE_START,
             SIGNAL_TWO_STARTS,
+
             TERMINATE_EVENT,
+
             TIMER_INTERMEDIATE_EVENT,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
