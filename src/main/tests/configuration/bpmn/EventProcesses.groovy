@@ -287,7 +287,7 @@ class EventProcesses {
     public static final BPMNProcess TERMINATE_EVENT = builder.buildEventProcess(
             "TerminateEvent", "A test for a terminate end event",
             [
-                    new BPMNTestCase(1).assertStarted()
+                    new BPMNTestCase(1)
             ]
     )
 
