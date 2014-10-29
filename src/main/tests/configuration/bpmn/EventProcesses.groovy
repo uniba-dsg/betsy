@@ -334,14 +334,6 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_1 = builder.buildEventProcess(
-            "TimerIntermediateBoundaryEventCancel1", "Tests for the timer intermediate boundary event canceling the activity",
-            [
-                    new BPMNTestCase(1).assertStarted().optionDelay(100),
-                    new BPMNTestCase(2).assertStarted().assertTimerExternal().optionDelay(5000)
-            ]
-    )
-
     public static final BPMNProcess TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2 = builder.buildEventProcess(
             "TimerIntermediateBoundaryEventCancel2", "Tests for the timer intermediate boundary event canceling a sub process with a following normal sequence flow",
             [
@@ -425,7 +417,6 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             TERMINATE_EVENT,
             TIMER_INTERMEDIATE_EVENT,
             TIMER_BOUNDARY_EVENT,
-            TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_1,
             TIMER_INTERMEDIATE_BOUNDARY_EVENT_CANCEL_2,
             // TIMER_START
             TIMER_START_SUBPROCESS,
