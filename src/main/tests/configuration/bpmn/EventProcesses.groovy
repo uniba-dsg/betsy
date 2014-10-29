@@ -353,8 +353,8 @@ class EventProcesses {
     )
 
 
-    public static final BPMNProcess TIMER_START_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
-            "TimerStartEvent_SubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess." +
+    public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "TimerStartEvent_EventSubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess." +
             "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
             "All activities should be executed without interruption.",
             [
@@ -420,7 +420,7 @@ class EventProcesses {
             TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             // TIMER_START
-            TIMER_START_EVENT_SUBPROCESS_NON_INTERRUPTING,
+            TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_START_SUBPROCESS_INTERRUPTING_1,
             TIMER_START_SUBPROCESS_INTERRUPTING_2,
             TIMER_START_EVENT,

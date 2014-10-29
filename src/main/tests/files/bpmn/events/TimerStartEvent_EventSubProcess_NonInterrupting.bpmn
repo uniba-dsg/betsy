@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="TimerStartEvent_SubProcess_NonInterruptingTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/timerStartEvent_SubProcess_NonInterrupting">
-    <bpmn2:process id="TimerStartEvent_SubProcess_NonInterrupting" isExecutable="true">
+                   id="TimerStartEvent_EventSubProcess_NonInterruptingTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/timerStartEvent_EventSubProcess_NonInterrupting">
+    <bpmn2:process id="TimerStartEvent_EventSubProcess_NonInterrupting" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent_1" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
