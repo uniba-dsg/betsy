@@ -88,8 +88,6 @@ class EventProcesses {
             ]
     )
 
-    // jBPM can not use the variable 'test' as it needs an instantiated process to access the variables.
-    // Camunda does not support conditional and ignores it like in signal start event.
     public static final BPMNProcess CONDITIONAL_START_EVENT = builder.buildEventProcess(
             "ConditionalStartEvent", "A test with a conditional start event",
             [
@@ -236,15 +234,6 @@ class EventProcesses {
             ]
     )*/
 
-
-
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_START = builder.buildEventProcess(
-            "SignalIntermediateStartEvent", "A test with 2 pools for signal start/intermediate events",
-            [
-                    new BPMNTestCase(1).assertSuccess().assertSignaled()
-            ]
-    )
-
     public static final BPMNProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "SignalBoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
             "All tasks (Task1-4) should be executed.",
@@ -260,13 +249,6 @@ class EventProcesses {
             "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask3()
-            ]
-    )
-
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_2 = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEventCancel2", "A test with a subprocess with a signal end event and an interrupting signal intermediate boundary event on a sub process with a following normal sequence flow",
-            [
-                    new BPMNTestCase(1).assertNormalTask().assertSignaled()
             ]
     )
 
@@ -302,24 +284,10 @@ class EventProcesses {
     )
     */
 
-    public static final BPMNProcess SIGNAL_START_END = builder.buildEventProcess(
-            "SignalStartEndEvent", "A test with 2 pools for signal start/end events",
-            [
-                    new BPMNTestCase(1).assertSuccess().assertSignaled()
-            ]
-    )
-
-    public static final BPMNProcess SIGNAL_TWO_STARTS = builder.buildEventProcess(
-            "SignalTwoStartEvents", "A test for signaling two signal start events in two pools",
-            [
-                    new BPMNTestCase(1).assertSignaled().assertSignaled().assertSuccess()
-            ]
-    )
-
     public static final BPMNProcess TERMINATE_EVENT = builder.buildEventProcess(
             "TerminateEvent", "A test for a terminate end event",
             [
-                    new BPMNTestCase(1)
+                    new BPMNTestCase(1).assertStarted()
             ]
     )
 
@@ -415,10 +383,6 @@ class EventProcesses {
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2,
-            // SIGNAL_START
-            SIGNAL_START_END,
-            SIGNAL_INTERMEDIATE_START,
-            SIGNAL_TWO_STARTS,
 
             TERMINATE_EVENT,
 
