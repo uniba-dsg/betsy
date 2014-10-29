@@ -366,19 +366,12 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess TIMER_START_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
-            "TimerStartEventSubprocessInterrupting1", "Tests for the interrupting timer start event of a event sub process",
+    public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "TimerStartEvent_EventSubProcess_Interrupting", "A process with an ordinary subProcess and an event subProcess." +
+            "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
+            "The event subProcess interrupts the activities of its parent subProcess.",
             [
-                    new BPMNTestCase(1).assertStarted().optionDelay(100),
-                    new BPMNTestCase(2).assertStarted().assertTimerEvent().assertTimerInternal().optionDelay(5000)
-            ]
-    )
-
-    public static final BPMNProcess TIMER_START_SUBPROCESS_INTERRUPTING_2 = builder.buildEventProcess(
-            "TimerStartEventSubprocessInterrupting2", "Tests for the interrupting timer start event of a event sub process with a following normal sequence flow",
-            [
-                    new BPMNTestCase(1).assertStarted().optionDelay(100),
-                    new BPMNTestCase(2).assertStarted().assertTimerEvent().assertTimerInternal().assertSuccess().optionDelay(5000)
+                    new BPMNTestCase(1).assertTask2().assertTask3().optionDelay(5000)
             ]
     )
 
@@ -424,8 +417,7 @@ class EventProcesses {
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             // TIMER_START
             TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            TIMER_START_SUBPROCESS_INTERRUPTING_1,
-            TIMER_START_SUBPROCESS_INTERRUPTING_2,
+            TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             TIMER_START_EVENT,
     ].flatten() as List<BPMNProcess>
 
