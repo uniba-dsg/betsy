@@ -225,13 +225,14 @@ class EventProcesses {
     */
 
 
-    //removed due to inconsistency in the bpmn standard about the use of a signal intermediate catch event (page 253 says no, the oversight on page 261 yes)
-    /*public static final BPMNProcess SIGNAL_INTERMEDIATE = builder.buildEventProcess(
-            "SignalIntermediateEvent", "A simple test for signal intermediate events",
+
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH = builder.buildEventProcess(
+            "SignalIntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one" +
+            "branch of the process awaits a signal which is thrown by the other branch.",
             [
-                    new BPMNTestCase(1).assertSuccess().assertSignaled()
+                    new BPMNTestCase(1).assertTask1().optionDelay(10000)
             ]
-    )*/
+    )
 
     public static final BPMNProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "SignalBoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
@@ -379,6 +380,7 @@ class EventProcesses {
 
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+            SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2,
