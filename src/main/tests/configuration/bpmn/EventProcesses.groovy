@@ -354,11 +354,13 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
 )
 */
 
-    public static final BPMNProcess TIMER_START_SUBPROCESS = builder.buildEventProcess(
-            "TimerStartEventSubprocess", "Tests for the non interrupting timer start event of a event sub process",
+
+    public static final BPMNProcess TIMER_START_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "TimerStartEvent_SubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess." +
+            "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
+            "All activities should be executed without interruption.",
             [
-                    new BPMNTestCase(1).assertStarted().optionDelay(100),
-                    new BPMNTestCase(2).assertStarted().assertTimerEvent().assertTimerInternal().assertSuccess().optionDelay(5000)
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().optionDelay(5000)
             ]
     )
 
@@ -420,7 +422,7 @@ public static final BPMNProcess TIMER_START = builder.buildEventProcess(
             TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             // TIMER_START
-            TIMER_START_SUBPROCESS,
+            TIMER_START_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_START_SUBPROCESS_INTERRUPTING_1,
             TIMER_START_SUBPROCESS_INTERRUPTING_2
     ].flatten() as List<BPMNProcess>
