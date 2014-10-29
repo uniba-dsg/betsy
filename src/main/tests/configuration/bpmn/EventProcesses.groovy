@@ -105,8 +105,7 @@ class EventProcesses {
             ]
     )
 
-    public static
-    final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+    public static final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "ConditionalStartEvent_EventSubProcess_NonInterrupting", "A test for an conditional start event in an event " +
             "sub process which is marked as non interrupting.",
             [
