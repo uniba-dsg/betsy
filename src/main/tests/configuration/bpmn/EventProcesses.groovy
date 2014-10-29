@@ -244,17 +244,21 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEvent", "A test with a subprocess with a signal end event and a not interrupting signal intermediate boundary event",
+    public static final BPMNProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "SignalBoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
+            "All tasks (Task1-4) should be executed.",
             [
-                    new BPMNTestCase(1).assertNormalTask().assertSignaled().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().assertTask4()
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_1 = builder.buildEventProcess(
-            "SignalIntermediateBoundaryEventCancel1", "A test with a subprocess with a signal end event and an interrupting signal intermediate boundary event",
+    public static final BPMNProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "SignalBoundaryEvent_SubProcess_Interrupting", "A test for a signal boundary event interrupting a subprocess." +
+            "The task (task2) following the Intermediate SignalEvent and the Task (task4) following the normal " +
+            "outgoing sequence flow after the SubProcess must not be executed. " +
+            "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
             [
-                    new BPMNTestCase(1).assertNormalTask().assertSignaled()
+                    new BPMNTestCase(1).assertTask1().assertTask3()
             ]
     )
 
@@ -405,9 +409,8 @@ class EventProcesses {
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             LINK,
             // MESSAGE_START,
-            SIGNAL_INTERMEDIATE_BOUNDARY,
-            SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_1,
-            SIGNAL_INTERMEDIATE_BOUNDARY_CANCEL_2,
+            SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+            SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1,
             SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2,
