@@ -47,52 +47,6 @@ class EventProcesses {
             ]
     )
 
-    // This test should be correct already
-    public static final BPMNProcess COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS = builder.buildEventProcess(
-            "CompensationEndEventBoundaryEventSubProcess", "A test with a subprocess which calls compensation on himself" +
-            "as the SubProcess is not completed, the compensation has to be ignored.",
-            [
-                    new BPMNTestCase(1).assertTask1().assertTask3()
-            ]
-    )
-
-    /*
-    // TODO Compensation tests need major rework
-    public static final BPMNProcess COMPENSATION_BOUNDARY_THROW = builder.buildEventProcess(
-            "CompensationBoundaryThrow", "A test for a compensation throw and a compensation boundary event",
-            [
-                    new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
-            ]
-    )
-
-    public static final BPMNProcess COMPENSATION_BOUNDARY_TASK_THROW = builder.buildEventProcess(
-            "CompensationBoundaryTaskThrow", "A test for a compensation throw and a compensation boundary event on task level",
-            [
-                    new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
-            ]
-    )
-
-    public static final BPMNProcess COMPENSATION_BOUNDARY_TASK_END = builder.buildEventProcess(
-            "CompensationBoundaryTaskEnd", "A test for a compensation end and a compensation boundary event on task level",
-            [
-                    new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
-            ]
-    )
-
-    public static final BPMNProcess COMPENSATION_EVENT_SUBPROCESS_END = builder.buildEventProcess(
-            "CompensationEventSubprocessEnd", "A test for a compensation end and an event subprocess with a compensation start event",
-            [
-                    new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
-            ]
-    )
-
-    public static final BPMNProcess COMPENSATION_EVENT_SUBPROCESS_THROW = builder.buildEventProcess(
-            "CompensationEventSubprocessThrow", "A test for a compensation throw and an event subprocess with a compensation start event",
-            [
-                    new BPMNTestCase(1).assertSubprocess().assertCompensate().assertSuccess()
-            ]
-    )*/
-
     public static final BPMNProcess CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
             "ConditionalBoundaryEvent_SubProcess_Interrupting", "A test for an conditional boundary event attached to a" +
             "sub process which is marked as interrupting.",
@@ -393,15 +347,9 @@ class EventProcesses {
             CANCEL,
 
             COMPENSATION_BOUNDARY_EVENT_SUBPROCESS,
-            COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS,
             COMPENSATION_END_EVENT_TOP_LEVEL,
             COMPENSATION_INTERMEDIATE_EVENT,
             COMPENSATION_START_EVENT_EVENT_SUBPROCESS,
-//            COMPENSATION_BOUNDARY_THROW,
-//            COMPENSATION_BOUNDARY_TASK_THROW,
-//            COMPENSATION_BOUNDARY_TASK_END,
-//            COMPENSATION_EVENT_SUBPROCESS_END,
-//            COMPENSATION_EVENT_SUBPROCESS_THROW,
 
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
