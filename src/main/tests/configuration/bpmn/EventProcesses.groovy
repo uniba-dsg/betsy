@@ -15,6 +15,30 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess COMPENSATION_BOUNDARY_EVENT_SUBPROCESS = builder.buildEventProcess(
+            "CompensationBoundaryEvent_SubProcess", "Tests whether the compensation boundary event can be attached to a" +
+            "sub process.",
+            [
+                    new BPMNTestCase(1).assertTask1()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_END_EVENT_TOP_LEVEL = builder.buildEventProcess(
+            "CompensationEndEvent_TopLevel", "A test with a top level compensation end event which should trigger the " +
+            "compensation of the task performed before.",
+            [
+                    new BPMNTestCase(1).assertTask1()
+            ]
+    )
+
+    public static final BPMNProcess COMPENSATION_INTERMEDIATE_EVENT = builder.buildEventProcess(
+            "CompensationIntermediateEvent", "A test with a top level compensation intermediate event which should " +
+            "trigger the compensation of the task performed before.",
+            [
+                    new BPMNTestCase(1).assertTask1()
+            ]
+    )
+
     // This test should be correct already
     public static final BPMNProcess COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS = builder.buildEventProcess(
             "CompensationEndEventBoundaryEventSubProcess", "A test with a subprocess which calls compensation on himself" +
@@ -112,7 +136,8 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+    public static
+    final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "ConditionalStartEvent_EventSubProcess_NonInterrupting", "A test for an conditional start event in an event " +
             "sub process which is marked as non interrupting.",
             [
@@ -205,7 +230,8 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+    public static
+    final BPMNProcess ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "EscalationStartEvent_EventSubProcess_NonInterrupting", "A test for the escalation start event in an event " +
             "sub process which is marked as \"non interrupting\". Task2 within in the (normal) SubProcess and Task3 " +
             "which is defined after the SubProcess should be executed.",
@@ -358,53 +384,56 @@ class EventProcesses {
     public static final List<BPMNProcess> EVENTS = [
             CANCEL,
 
+            COMPENSATION_BOUNDARY_EVENT_SUBPROCESS,
             COMPENSATION_END_EVENT_BOUNDARY_EVENT_SUB_PROCESS,
+            COMPENSATION_END_EVENT_TOP_LEVEL,
+            COMPENSATION_INTERMEDIATE_EVENT,
 //            COMPENSATION_BOUNDARY_THROW,
 //            COMPENSATION_BOUNDARY_TASK_THROW,
 //            COMPENSATION_BOUNDARY_TASK_END,
 //            COMPENSATION_EVENT_SUBPROCESS_END,
 //            COMPENSATION_EVENT_SUBPROCESS_THROW,
 
-            CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
-            CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            CONDITIONAL_INTERMEDIATE_EVENT,
-            //CONDITIONAL_START_EVENT,
-            CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
-            CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
+CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+CONDITIONAL_INTERMEDIATE_EVENT,
+//CONDITIONAL_START_EVENT,
+CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
-            ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
-            ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
-            ERROR_END_EVENT_TOPLEVEL,
-            ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
+ERROR_END_EVENT_TOPLEVEL,
+ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
 
-            ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
-            ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            ESCALATION_END_EVENT_SUBPROCESS,
-            ESCALATION_END_EVENT_TOPLEVEL,
-            ESCALATION_INTERMEDIATE_THROW_EVENT,
-            ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
-            ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
+ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+ESCALATION_END_EVENT_SUBPROCESS,
+ESCALATION_END_EVENT_TOPLEVEL,
+ESCALATION_INTERMEDIATE_THROW_EVENT,
+ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
-            LINK,
+LINK,
 
-            //MESSAGE_START_EVENT,
+//MESSAGE_START_EVENT,
 
-            SIGNAL_END_EVENT_SUBPROCESS,
-            SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
-            SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH,
-            //SIGNAL_START_EVENT,
-            SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
-            SIGNAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
+SIGNAL_END_EVENT_SUBPROCESS,
+SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH,
+//SIGNAL_START_EVENT,
+SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+SIGNAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
-            TERMINATE_EVENT,
+TERMINATE_EVENT,
 
-            TIMER_INTERMEDIATE_EVENT,
-            TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
-            TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
-            TIMER_START_EVENT,
+TIMER_INTERMEDIATE_EVENT,
+TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
+TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+TIMER_START_EVENT,
     ].flatten() as List<BPMNProcess>
 
 }
