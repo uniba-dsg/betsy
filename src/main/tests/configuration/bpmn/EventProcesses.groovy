@@ -266,7 +266,7 @@ class EventProcesses {
     )
 
     /*
-    * Until we have no way to actually send a starting signal, this test is of no use.
+    * Since we have no way to actually send a starting signal, this test is of no use.
     * The engines will simply ignore the signal and start the process
     public static final BPMNProcess SIGNAL_START_EVENT = builder.buildEventProcess(
             "SignalStartEvent", "A test with a signal start event",
