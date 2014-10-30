@@ -8,7 +8,8 @@ class EventProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess CANCEL = builder.buildEventProcess(
-            "CancelEvent", "A simple test for canceling a transaction",
+            "CancelEvent", "A simple test for canceling a transaction. This test uses the two allowed cancel event types:" +
+            "CancelEndEvent (within the transaction) and CancelBoundaryEvent (interrupting, attached to the transaction).",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2()
             ]
@@ -88,6 +89,11 @@ class EventProcesses {
             ]
     )
 
+    /*
+    * Since we know no engine-independent way to set condition prior process instantiation this is postponed to
+    * future work
+    * Using the current test, camunda and activiti simply ignore the conditionalEventDefinition, jBPM rejects the
+    * deployment of the process
     public static final BPMNProcess CONDITIONAL_START_EVENT = builder.buildEventProcess(
             "ConditionalStartEvent", "A test with a conditional start event",
             [
@@ -95,6 +101,7 @@ class EventProcesses {
                     new BPMNTestCase(2).inputB()
             ]
     )
+    */
 
     public static final BPMNProcess CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
             "ConditionalStartEvent_EventSubProcess_Interrupting", "A test for an interrupting conditional start event " +
@@ -224,16 +231,6 @@ class EventProcesses {
     )
     */
 
-
-
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH = builder.buildEventProcess(
-            "SignalIntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one" +
-            "branch of the process awaits a signal which is thrown by the other branch.",
-            [
-                    new BPMNTestCase(1).assertTask1().optionDelay(10000)
-            ]
-    )
-
     public static final BPMNProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "SignalBoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
             "All tasks (Task1-4) should be executed.",
@@ -252,24 +249,19 @@ class EventProcesses {
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS = builder.buildEventProcess(
-            "SignalIntermediateThrowEventSubprocess", "A test with a subprocess with a signal intermediate throw event and a not interrupting signal start event",
+    public static final BPMNProcess SIGNAL_END_EVENT_SUBPROCESS = builder.buildEventProcess(
+            "SignalEndEvent_SubProcess", "A test to test a signal end event placed in a SubProcess. " +
+            "The thrown signal is caught by an attached boundary event.",
             [
-                    new BPMNTestCase(1).assertNormalTask().assertSignaled().assertNotInterrupted()
+                    new BPMNTestCase(1).assertTask1()
             ]
     )
 
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1 = builder.buildEventProcess(
-            "SignalIntermediateThrowEventSubprocessInterrupting1", "A test with a subprocess with a signal intermediate throw event and an interrupting signal start event",
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH = builder.buildEventProcess(
+            "SignalIntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one" +
+            "branch of the process awaits a signal which is thrown by the other branch.",
             [
-                    new BPMNTestCase(1).assertNormalTask().assertSignaled()
-            ]
-    )
-
-    public static final BPMNProcess SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2 = builder.buildEventProcess(
-            "SignalIntermediateThrowEventSubprocessInterrupting2", "A test with a subprocess with a signal intermediate throw event and an interrupting signal start event in a sub process with a following normal sequence flow",
-            [
-                    new BPMNTestCase(1).assertNormalTask().assertSignaled().assertSuccess()
+                    new BPMNTestCase(1).assertTask1().optionDelay(10000)
             ]
     )
 
@@ -283,6 +275,25 @@ class EventProcesses {
             ]
     )
     */
+
+    public static final BPMNProcess SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
+            "SignalStartEvent_EventSubProcess_Interrupting", "A test for the interrupting signal start event in " +
+            "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. " +
+            "After the execution of the EventSubProcess the flow should continue normally, and therefore Task3 should " +
+            "be executed.",
+            [
+                    new BPMNTestCase(1).assertTask2().assertTask3()
+            ]
+    )
+
+    public static final BPMNProcess SIGNAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
+            "SignalStartEvent_EventSubProcess_NonInterrupting", "A test for the signal start event in an event " +
+            "sub process which is marked as \"non interrupting\". Task2 within in the (normal) SubProcess and Task3 " +
+            "which is defined after the SubProcess should be executed.",
+            [
+                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
+            ]
+    )
 
     public static final BPMNProcess TERMINATE_EVENT = builder.buildEventProcess(
             "TerminateEvent", "A test for a terminate end event",
@@ -356,10 +367,10 @@ class EventProcesses {
 
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            CONDITIONAL_START_EVENT,
+            CONDITIONAL_INTERMEDIATE_EVENT,
+            //CONDITIONAL_START_EVENT,
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            CONDITIONAL_INTERMEDIATE_EVENT,
 
             ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING,
@@ -378,13 +389,13 @@ class EventProcesses {
 
             //MESSAGE_START_EVENT,
 
+            SIGNAL_END_EVENT_SUBPROCESS,
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH,
-            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS,
-            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_1,
-            SIGNAL_INTERMEDIATE_THROW_SUBPROCESS_INTERRUPTING_2,
-            //SIGNAL_START_EVENT
+            //SIGNAL_START_EVENT,
+            SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+            SIGNAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
             TERMINATE_EVENT,
 
