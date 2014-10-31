@@ -22,14 +22,14 @@ class MiscProcesses {
     )
 
     public static final BPMNProcess CALL_ACTIVITY_PROCESS = builder.buildMiscProcess(
-            "CallActivityProcess", "A collaboration with two participants. One process calls the other one through a callActivity.",
+            "CallActivity_Process", "A collaboration with two participants. One process calls the other one through a callActivity.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess CALL_ACTIVITY_GLOBAL_TASK = builder.buildMiscProcess(
-            "CallActivityGlobalTask", "Definitions contains a GlobalScriptTask which is called by a CallActivity.",
+            "CallActivity_GlobalTask", "Definitions contains a GlobalScriptTask which is called by a CallActivity.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2()
             ]
