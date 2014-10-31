@@ -17,8 +17,8 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess EXCLUSIVE_GATEWAY_WITH_DEFAULT = builder.buildGatewayProcess(
-            "ExclusiveGatewayWithDefault", "A process with five scriptTasks and exclusiveGateways. " +
+    public static final BPMNProcess EXCLUSIVE_GATEWAY_DEFAULT = builder.buildGatewayProcess(
+            "ExclusiveGateway_Default", "A process with five scriptTasks and exclusiveGateways. " +
             "The execution of three of the tasks is controlled by the exclusiveGateways based on the input and only one of the tasks is actually executed." +
             "Two tasks are triggered through sequenceFlows with conditionExpressions and one is triggered through a sequenceFlow which is marked as default.",
             [
@@ -30,7 +30,7 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess EXCLUSIVE_DIVERING_INCLUSIVE_CONVERGING = builder.buildGatewayProcess(
-            "ExclusiveDivergingInclusiveConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging inclusiveGateway. " +
+            "ExclusiveDiverging_InclusiveConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging inclusiveGateway. " +
             "Two of the tasks are enclosed between the gateways and only one of them is triggered depending on input data. " +
             "The inclusiveGateway should merge the incoming branches.",
             [
@@ -59,8 +59,8 @@ class GatewayProcesses {
             ]
     )
 
-    public static final BPMNProcess INCLUSIVE_GATEWAY_WITH_DEFAULT = builder.buildGatewayProcess(
-            "InclusiveGatewayWithDefault", "A process with five scriptTasks, three of which are encapsulated by inclusiveGateways. " +
+    public static final BPMNProcess INCLUSIVE_GATEWAY_DEFAULT = builder.buildGatewayProcess(
+            "InclusiveGateway_Default", "A process with five scriptTasks, three of which are encapsulated by inclusiveGateways. " +
             "One of the scriptTasks acts as a default task. Either one, both of the others or the default task are executed based on input data.",
             [
                     new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertTask4(),
@@ -71,7 +71,7 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess INCLUSIVE_DIVERGING_EXCLUSIVE_CONVERGING = builder.buildGatewayProcess(
-            "InclusiveDivergingExclusiveConverging", "A process with four scriptTasks, a diverging inclusiveGateway and a converging exclusiveGateway. " +
+            "InclusiveDiverging_ExclusiveConverging", "A process with four scriptTasks, a diverging inclusiveGateway and a converging exclusiveGateway. " +
             "Two of the tasks are encapsulated by the gateways. " +
             "Either one, none, or both of the scriptTasks are enabled based on input data and as a result the exclusiveGateway should either fire once or twice.",
             [
@@ -82,7 +82,7 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING = builder.buildGatewayProcess(
-            "ParallelDivergingExclusiveConverging", "A process with four tasks, a diverging parallelGateway and a converging exclusiveGateway. " +
+            "ParallelDiverging_ExclusiveConverging", "A process with four tasks, a diverging parallelGateway and a converging exclusiveGateway. " +
             "Two of the tasks are executed in parallel and then merged by the exclusiveGateway. " +
             "As a result, the task following the exclusiveGateway should be followed twice.",
             [
@@ -91,7 +91,7 @@ class GatewayProcesses {
     )
 
     public static final BPMNProcess PARALLEL_DIVERGING_INCLUSIVE_CONVERGING = builder.buildGatewayProcess(
-            "ParallelDivergingInclusiveConverging", "A process with four tasks, a diverging parallelGateway and a converging inclusiveGateway. " +
+            "ParallelDiverging_InclusiveConverging", "A process with four tasks, a diverging parallelGateway and a converging inclusiveGateway. " +
             "Two of the tasks are executed in parallel and merged by the inclusiveGateway.",
             [
                     new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
@@ -141,12 +141,12 @@ class GatewayProcesses {
 
     public static final List<BPMNProcess> GATEWAYS = [
             EXCLUSIVE_GATEWAY,
-            EXCLUSIVE_GATEWAY_WITH_DEFAULT,
+            EXCLUSIVE_GATEWAY_DEFAULT,
             EXCLUSIVE_GATEWAY_MIXED,
             EXCLUSIVE_DIVERING_INCLUSIVE_CONVERGING,
 
             INCLUSIVE_GATEWAY,
-            INCLUSIVE_GATEWAY_WITH_DEFAULT,
+            INCLUSIVE_GATEWAY_DEFAULT,
             INCLUSIVE_DIVERGING_EXCLUSIVE_CONVERGING,
 
             PARALLEL_GATEWAY,

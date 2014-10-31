@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="ExclusiveDivergingInclusiveConvergingTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/exclusiveDivergingInclusiveConverging">
-    <bpmn2:process id="ExclusiveDivergingInclusiveConverging" isExecutable="true">
+                   id="ExclusiveDiverging_InclusiveConvergingTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/exclusiveDiverging_InclusiveConverging">
+    <bpmn2:process id="ExclusiveDiverging_InclusiveConverging" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent">
             <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
