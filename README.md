@@ -94,7 +94,7 @@ Options:
  -o,--open-results-in-browser   Opens results in default browser
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
-<ENGINES>: [ALL, camunda, camunda710, activiti, jbpm, jbpm610]
+<ENGINES>: [ALL, camunda, camunda710, activiti, jbpm]
 <PROCESSES>: [ALL, GATEWAYS, TASKS, EVENTS, SUBPROCESSES, MISCS, ...]
 ```
 
