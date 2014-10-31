@@ -23,6 +23,14 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess COMPENSATION_END_EVENT_SUBPROCESS = builder.buildEventProcess(
+            "CompensationEndEvent_SubProcess", "A test with a compensation end event placed in a sub process which " +
+            "should trigger the compensation of the task performed before.",
+            [
+                    new BPMNTestCase(1).assertTask1()
+            ]
+    )
+
     public static final BPMNProcess COMPENSATION_END_EVENT_TOP_LEVEL = builder.buildEventProcess(
             "CompensationEndEvent_TopLevel", "A test with a top level compensation end event which should trigger the " +
             "compensation of the task performed before.",
@@ -346,6 +354,7 @@ class EventProcesses {
     public static final List<BPMNProcess> EVENTS = [
             CANCEL,
 
+            COMPENSATION_END_EVENT_SUBPROCESS,
             COMPENSATION_BOUNDARY_EVENT_SUBPROCESS,
             COMPENSATION_END_EVENT_TOP_LEVEL,
             COMPENSATION_INTERMEDIATE_EVENT,
