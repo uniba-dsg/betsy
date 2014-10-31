@@ -74,7 +74,7 @@ public class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
 
         //waiting for the result of the deployment
-        WaitTasks.waitForSubstringInFile(20000, 1000, getJbossLogDir().resolve("server.log"), "de.uniba.dsg");
+        WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), "de.uniba.dsg");
     }
 
     @Override
@@ -131,7 +131,7 @@ public class JbpmEngine extends BPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
-        WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
+        WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
     }
 
     private Path getJbossLogDir() {
@@ -145,7 +145,7 @@ public class JbpmEngine extends BPMNEngine {
 
         try {
             //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(60000, 5000, getJbossLogDir().resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
