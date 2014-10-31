@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="Compensation_BoundaryEvent_SubProcessTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/compensation_BoundaryEvent_SubProcess">
+  <bpmn2:process id="Compensation_BoundaryEvent_SubProcess" isExecutable="true">
+      <bpmn2:startEvent id="StartEvent_1" isInterrupting="true" name="Start Event" parallelMultiple="false">
+          <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+      </bpmn2:startEvent>
+
+      <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="StartEvent_1" targetRef="SubProcess_1"/>
+
+      <bpmn2:subProcess id="SubProcess_1" name="SubProcess 1" triggeredByEvent="false">
+          <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+          <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+
+          <bpmn2:startEvent id="StartEvent_2" name="Start Event 2">
+              <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+          </bpmn2:startEvent>
+
+          <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="StartEvent_2" targetRef="ScriptTask_Start"/>
+          
+          <bpmn2:scriptTask id="ScriptTask_Start" name="Start">
+              <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+              <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+              <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+          </bpmn2:scriptTask>
+
+          <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ScriptTask_Start" targetRef="EndEvent_2"/>
+          
+          <bpmn2:endEvent id="EndEvent_2" name="End Event">
+              <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+          </bpmn2:endEvent>
+          
+      </bpmn2:subProcess>
+
+      <bpmn2:boundaryEvent attachedToRef="SubProcess_1" cancelActivity="true" id="BoundaryEvent_1" name="Boundary Event">
+          <bpmn2:compensateEventDefinition id="compensateEventDefinition_2" waitForCompletion="true"/>
+      </bpmn2:boundaryEvent>
+
+      <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="SubProcess_1" targetRef="IntermediateThrowEvent_1"/>
+      
+      <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_1" name="IntermediateThrow Event">
+          <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+          <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+          <bpmn2:compensateEventDefinition id="compensateEventDefinition_1" waitForCompletion="true"/>
+      </bpmn2:intermediateThrowEvent>
+
+      <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="IntermediateThrowEvent_1" targetRef="EndEvent_1"/>
+
+      <bpmn2:endEvent id="EndEvent_1" name="End Event">
+          <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      </bpmn2:endEvent>
+      
+      <bpmn2:scriptTask id="ScriptTask_1" isForCompensation="true" name="Task 1">
+          <bpmn2:script>SCRIPT_task1</bpmn2:script>
+      </bpmn2:scriptTask>
+      
+      <bpmn2:association associationDirection="One" id="_23" sourceRef="BoundaryEvent_1" targetRef="ScriptTask_1"/>
+  </bpmn2:process>
+</bpmn2:definitions>
