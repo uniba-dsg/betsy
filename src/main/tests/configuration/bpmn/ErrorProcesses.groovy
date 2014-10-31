@@ -47,6 +47,7 @@ class ErrorProcesses {
 
     public static final List<BPMNProcess> ERRORS = [
             PARALLEL_GATEWAY_WITH_CONDITIONS,
+
             EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
             INCLUSIVE_DIVERGING_PARALLEL_CONVERGING
     ].flatten() as List<BPMNProcess>

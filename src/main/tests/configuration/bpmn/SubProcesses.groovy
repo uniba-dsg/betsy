@@ -22,6 +22,7 @@ class SubProcesses {
 
     public static final List<BPMNProcess> SUB_PROCESSES = [
             SUB_PROCESS,
+
             TRANSACTION
     ].flatten() as List<BPMNProcess>
 }

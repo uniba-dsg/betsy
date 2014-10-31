@@ -37,7 +37,9 @@ class MiscProcesses {
 
     public static final List<BPMNProcess> MISCS = [
             PARTICIPANT,
+
             LANES,
+
             CALL_ACTIVITY_PROCESS,
             CALL_ACTIVITY_GLOBAL_TASK
     ].flatten() as List<BPMNProcess>
