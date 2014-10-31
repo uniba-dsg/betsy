@@ -11,7 +11,7 @@ class ErrorProcesses {
     static BPMNProcessBuilder builder = new BPMNProcessBuilder()
 
     public static final BPMNProcess PARALLEL_GATEWAY_WITH_CONDITIONS = builder.buildErrorProcess(
-            "ParallelGatewayWithConditions", "A process with four scriptTasks and two parallelGateways. " +
+            "ParallelGateway_Conditions", "A process with four scriptTasks and two parallelGateways. " +
             "Two of the scriptTasks are surrounded by the parallelGateways and the sequenceFlows pointing to the mergine gateway have conditions. " +
             "These conditions should be ignored by an engine.",
             [
@@ -23,7 +23,7 @@ class ErrorProcesses {
     )
 
     public static final BPMNProcess EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING = builder.buildErrorProcess(
-            "ExclusiveDivergingParallelConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging parallelGateway. " +
+            "ExclusiveDiverging_ParallelConverging", "A process with four scriptTasks, a diverging exclusiveGateway and a converging parallelGateway. " +
             "Two scriptTasks are enclosed by the gateways and the execution should deadlock, because only one incoming branch of the parallelGateway " +
             "should ever be executed. Hence, the scriptTask following the parallelGateway should never be executed.",
             [
@@ -34,7 +34,7 @@ class ErrorProcesses {
     )
 
     public static final BPMNProcess INCLUSIVE_DIVERGING_PARALLEL_CONVERGING = builder.buildErrorProcess(
-            "InclusiveDivergingParallelConverging", "A process with four scriptTasks, a diverging inclusiveGateway and a converging parallelGateway. " +
+            "InclusiveDiverging_ParallelConverging", "A process with four scriptTasks, a diverging inclusiveGateway and a converging parallelGateway. " +
             "Two scriptTasks are enclosed by the gateways and the execution should deadlock if only one incoming branch of the parallelGateway " +
             "is enabled. Hence, the scriptTask following the parallelGateway should only be executed in a single case.",
             [
