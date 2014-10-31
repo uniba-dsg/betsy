@@ -55,6 +55,15 @@ class EventProcesses {
             ]
     )
 
+    public static final BPMNProcess COMPENSATION_TRIGGERED_BY_CANCEL = builder.buildEventProcess(
+            "Compensation_TriggeredByCancel", "A test with a transaction which ends with a CancelEnd Event. In the " +
+            "course of canceling the transaction all successful executed tasks have to be compensated. Therefore, the " +
+            "compensational task Task1 has to be executed.",
+            [
+                    new BPMNTestCase(1).assertTask1()
+            ]
+    )
+
     public static final BPMNProcess CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
             "ConditionalBoundaryEvent_SubProcess_Interrupting", "A test for an conditional boundary event attached to a" +
             "sub process which is marked as interrupting.",
@@ -354,11 +363,12 @@ class EventProcesses {
     public static final List<BPMNProcess> EVENTS = [
             CANCEL,
 
-            COMPENSATION_END_EVENT_SUBPROCESS,
             COMPENSATION_BOUNDARY_EVENT_SUBPROCESS,
+            COMPENSATION_END_EVENT_SUBPROCESS,
             COMPENSATION_END_EVENT_TOP_LEVEL,
             COMPENSATION_INTERMEDIATE_EVENT,
             COMPENSATION_START_EVENT_EVENT_SUBPROCESS,
+            COMPENSATION_TRIGGERED_BY_CANCEL,
 
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
