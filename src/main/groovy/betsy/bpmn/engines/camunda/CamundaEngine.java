@@ -40,7 +40,7 @@ public class CamundaEngine extends BPMNEngine {
             throw new IllegalStateException("Could not find catalina log file in " + getTomcatLogsDir());
         }
 
-        WaitTasks.waitFor(15000, 500, () ->
+        WaitTasks.waitFor(20000, 500, () ->
                 FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + process.getName() + " Application successfully deployed.") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + process.getName() + "] startup failed due to previous errors"));
     }
@@ -84,7 +84,6 @@ public class CamundaEngine extends BPMNEngine {
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
-        // TODO only copy log files from tomcat, the other files are files for the test
         FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
