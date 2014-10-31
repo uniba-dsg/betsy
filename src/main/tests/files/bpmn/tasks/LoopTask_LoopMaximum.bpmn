@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="LoopTaskWithLoopMaximumTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopTaskWithLoopMaximum">
-  <bpmn2:process id="LoopTaskWithLoopMaximum" isExecutable="true">
+                   id="LoopTask_LoopMaximumTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopTask_LoopMaximum">
+  <bpmn2:process id="LoopTask_LoopMaximum" isExecutable="true">
     <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>

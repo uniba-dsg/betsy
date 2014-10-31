@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="MultiInstanceSequentialTaskTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiInstanceSequentialTask">
-    <bpmn2:process id="MultiInstanceSequentialTask" isExecutable="true">
+                   id="LoopTask_NoIteration_TestBeforeTrueTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopTask_NoIteration_TestBeforeTrue">
+    <bpmn2:process id="LoopTask_NoIteration_TestBeforeTrue" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -18,18 +18,18 @@
             <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="MultiInstanceTask"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="start" targetRef="LoopTask"/>
 
-        <bpmn2:scriptTask id="MultiInstanceTask" name="MultiInstanceTask">
+        <bpmn2:scriptTask id="LoopTask" name="Loop">
             <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-            <bpmn2:multiInstanceLoopCharacteristics isSequential="true">
-                <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
-            </bpmn2:multiInstanceLoopCharacteristics>
+            <bpmn2:standardLoopCharacteristics testBefore="true">
+                <bpmn2:loopCondition>false</bpmn2:loopCondition>
+            </bpmn2:standardLoopCharacteristics>
             <bpmn2:script>SCRIPT_task1</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="MultiInstanceTask" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="LoopTask" targetRef="end"/>
 
         <bpmn2:scriptTask id="end" name="End">
             <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
@@ -37,9 +37,9 @@
             <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
 
-        <bpmn2:endEvent id="EndEvent">
+        <bpmn2:endEvent id="EndEvent_2">
             <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
         </bpmn2:endEvent>
 

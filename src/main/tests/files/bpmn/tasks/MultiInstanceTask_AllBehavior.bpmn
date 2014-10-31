@@ -2,13 +2,13 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="MultiInstanceTaskAllBehaviorTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiInstanceTaskAllBehavior">
+                   id="MultiInstanceTask_AllBehaviorTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiInstanceTask_AllBehavior">
 
     <bpmn2:signal id="Signal" name="Signal"/>
     <bpmn2:signalEventDefinition id="_SignalEventDefinition_4" signalRef="Signal"/>
 
-    <bpmn2:process id="MultiInstanceTaskAllBehavior" isExecutable="true">
+    <bpmn2:process id="MultiInstanceTask_AllBehavior" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
