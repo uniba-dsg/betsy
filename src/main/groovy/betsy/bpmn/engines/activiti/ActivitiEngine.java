@@ -128,7 +128,8 @@ public class ActivitiEngine extends BPMNEngine {
         NetworkTasks.downloadFile("http://central.maven.org/maven2/org/codehaus/groovy/groovy-all/2.1.3/" + groovyFile, Configuration.getDownloadsDir());
         getTomcat().addLib(Configuration.getDownloadsDir().resolve(groovyFile));
 
-        FileTasks.createFile(getTomcat().getTomcatWebappsDir().resolve("activiti-rest").resolve("WEB-INF").resolve("classes").resolve("log4j.properties"), "log4j.rootLogger=DEBUG, CA, FILE\n" +
+        Path classes = getTomcat().getTomcatWebappsDir().resolve("activiti-rest").resolve("WEB-INF").resolve("classes");
+        FileTasks.createFile(classes.resolve("log4j.properties"), "log4j.rootLogger=DEBUG, CA, FILE\n" +
                 "\n" +
                 "# ConsoleAppender\n" +
                 "log4j.appender.CA=org.apache.log4j.ConsoleAppender\n" +
@@ -141,6 +142,7 @@ public class ActivitiEngine extends BPMNEngine {
                 "log4j.appender.FILE.Encoding=UTF-8\n" +
                 "log4j.appender.FILE.layout=org.apache.log4j.PatternLayout\n" +
                 "log4j.appender.FILE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n\n");
+        FileTasks.replaceTokenInFile(classes.resolve("activiti-context.xml"),"\t\t<property name=\"jobExecutorActivate\" value=\"false\" />","\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
     }
 
     public Tomcat getTomcat() {
