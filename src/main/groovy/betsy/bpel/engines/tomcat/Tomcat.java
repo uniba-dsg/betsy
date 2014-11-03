@@ -1,9 +1,6 @@
 package betsy.bpel.engines.tomcat;
 
-import betsy.common.tasks.ConsoleTasks;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.URLTasks;
-import betsy.common.tasks.WaitTasks;
+import betsy.common.tasks.*;
 
 import java.nio.file.Path;
 
@@ -29,6 +26,8 @@ public class Tomcat {
 
     public void deployWar(Path war) {
         FileTasks.copyFileIntoFolder(war, getTomcatWebappsDir());
+        String warFileNameWithoutExtension = FileTasks.getFilenameWithoutExtension(war);
+        ZipTasks.unzip(getTomcatWebappsDir().resolve(war.getFileName()), getTomcatWebappsDir().resolve(warFileNameWithoutExtension));
     }
 
     public String getTomcatUrl() {

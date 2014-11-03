@@ -11,10 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileTasks {
 
@@ -290,4 +287,20 @@ public class FileTasks {
     }
 
 
+    public static String getFilenameWithoutExtension(Path file) {
+        assertFile(file);
+
+        String[] elements = file.getFileName().toString().split("\\.");
+
+        if(elements.length == 1) {
+            return elements[0]; // no . in filename
+        }
+
+        StringJoiner joiner = new StringJoiner(".");
+        for(int i = 0; i < elements.length - 1; i++){
+            joiner.add(elements[i]);
+        }
+
+        return joiner.toString();
+    }
 }

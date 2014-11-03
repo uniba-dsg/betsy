@@ -124,9 +124,23 @@ public class ActivitiEngine extends BPMNEngine {
         // deploy
         getTomcat().deployWar(getServerPath().resolve("activiti-5.16.3").resolve("wars").resolve("activiti-rest.war"));
 
-        String groovyFile = "groovy-all-2.2.0.jar";
-        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
+        String groovyFile = "groovy-all-2.1.3.jar";
+        NetworkTasks.downloadFile("http://central.maven.org/maven2/org/codehaus/groovy/groovy-all/2.1.3/" + groovyFile, Configuration.getDownloadsDir());
         getTomcat().addLib(Configuration.getDownloadsDir().resolve(groovyFile));
+
+        FileTasks.createFile(getTomcat().getTomcatWebappsDir().resolve("activiti-rest").resolve("WEB-INF").resolve("classes").resolve("log4j.properties"), "log4j.rootLogger=DEBUG, CA, FILE\n" +
+                "\n" +
+                "# ConsoleAppender\n" +
+                "log4j.appender.CA=org.apache.log4j.ConsoleAppender\n" +
+                "log4j.appender.CA.layout=org.apache.log4j.PatternLayout\n" +
+                "log4j.appender.CA.layout.ConversionPattern= %d{hh:mm:ss,SSS} [%t] %-5p %c %x - %m%n\n" +
+                "\n" +
+                "log4j.appender.FILE=org.apache.log4j.DailyRollingFileAppender\n" +
+                "log4j.appender.FILE.File=${catalina.base}/logs/activiti.log\n" +
+                "log4j.appender.FILE.Append=true\n" +
+                "log4j.appender.FILE.Encoding=UTF-8\n" +
+                "log4j.appender.FILE.layout=org.apache.log4j.PatternLayout\n" +
+                "log4j.appender.FILE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n\n");
     }
 
     public Tomcat getTomcat() {

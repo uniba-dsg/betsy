@@ -20,7 +20,7 @@
 
         <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="start" targetRef="IntermediateCatchEvent"/>
 
-        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent">
+        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent" name="IntermediateCatchEventName">
             <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
             <bpmn2:timerEventDefinition id="_TimerEventDefinition">
