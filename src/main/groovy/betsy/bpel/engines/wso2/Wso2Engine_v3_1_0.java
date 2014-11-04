@@ -1,7 +1,7 @@
 package betsy.bpel.engines.wso2;
 
 import betsy.bpel.engines.LocalEngine;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
@@ -76,7 +76,7 @@ public class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    public void deploy(BetsyProcess process) {
+    public void deploy(BPELProcess process) {
         FileTasks.copyFileIntoFolder(process.getTargetPackageFilePath(), getDeploymentDir());
 
         WaitTasks.waitForSubstringInFile(60_000, 500, getLogsFolder().resolve("wso2carbon.log"), "{org.apache.ode.bpel.engine.BpelServerImpl} -  Registered process");
@@ -88,7 +88,7 @@ public class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    public void buildArchives(BetsyProcess process) {
+    public void buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
@@ -105,12 +105,12 @@ public class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BetsyProcess process) {
+    public String getEndpointUrl(final BPELProcess process) {
         return CHECK_URL + "/services/" + process.getName() + TEST_INTERFACE_SERVICE;
     }
 
     @Override
-    public void storeLogs(BetsyProcess process) {
+    public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
         FileTasks.copyFilesInFolderIntoOtherFolder(getLogsFolder(), process.getTargetLogsPath());
     }

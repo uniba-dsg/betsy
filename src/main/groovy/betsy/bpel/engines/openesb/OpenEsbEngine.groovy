@@ -1,6 +1,6 @@
 package betsy.bpel.engines.openesb
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
@@ -17,12 +17,12 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
+    String getEndpointUrl(BPELProcess process) {
         "${CHECK_URL}/${process.name}TestInterface"
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
+    void storeLogs(BPELProcess process) {
         Path logsFolder = process.targetPath.resolve("logs")
         FileTasks.mkdirs(logsFolder)
         ant.copy(todir: logsFolder) {
@@ -55,7 +55,7 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(BPELProcess process) {
         new OpenEsbDeployer(cli: cli,
                 processName: process.name,
                 packageFilePath: process.targetPackageCompositeFilePath,
@@ -63,7 +63,7 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    public void buildArchives(BetsyProcess process) {
+    public void buildArchives(BPELProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -78,7 +78,7 @@ class OpenEsbEngine extends LocalEngine {
         new OpenEsbCompositePackager(process: process).build()
     }
 
-    void buildDeploymentDescriptor(BetsyProcess process) {
+    void buildDeploymentDescriptor(BPELProcess process) {
         Path metaDir = process.targetBpelPath.resolve("META-INF")
         Path catalogFile = metaDir.resolve("catalog.xml")
         FileTasks.mkdirs(metaDir)

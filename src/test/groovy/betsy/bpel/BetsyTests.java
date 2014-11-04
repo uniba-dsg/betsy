@@ -1,6 +1,6 @@
 package betsy.bpel;
 
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.EnginePackageBuilder;
 import configuration.bpel.BPELProcessRepository;
@@ -15,7 +15,7 @@ public class BetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
         Engine engine = new MockEngine();
-        List<BetsyProcess> processes = new BPELProcessRepository().getByName("ALL");
+        List<BPELProcess> processes = new BPELProcessRepository().getByName("ALL");
         Betsy betsy = new Betsy();
 
 
@@ -49,17 +49,17 @@ public class BetsyTests {
             return false;
         }
 
-        public void deploy(BetsyProcess process) {
+        public void deploy(BPELProcess process) {
         }
 
-        public void storeLogs(BetsyProcess process) {
+        public void storeLogs(BPELProcess process) {
         }
 
-        public void buildArchives(BetsyProcess process) {
+        public void buildArchives(BPELProcess process) {
             new EnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
         }
 
-        public String getEndpointUrl(BetsyProcess process) {
+        public String getEndpointUrl(BPELProcess process) {
             return "myendpoint";
         }
 
@@ -75,12 +75,12 @@ public class BetsyTests {
 
     public class MockComposite extends Composite {
         @Override
-        protected void buildTest(BetsyProcess process) {
+        protected void buildTest(BPELProcess process) {
 
         }
 
         @Override
-        protected void test(BetsyProcess process) {
+        protected void test(BPELProcess process) {
 
         }
 

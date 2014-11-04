@@ -2,7 +2,7 @@ package betsy.bpel.engines.orchestra;
 
 import betsy.bpel.engines.LocalEngine;
 import betsy.bpel.engines.tomcat.Tomcat;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.FileTasks;
 
@@ -39,18 +39,18 @@ public class OrchestraEngine extends LocalEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BetsyProcess process) {
+    public String getEndpointUrl(final BPELProcess process) {
         return getTomcat().getTomcatUrl() + "/orchestra/" + process.getName() + "TestInterface";
     }
 
     @Override
-    public void storeLogs(BetsyProcess process) {
+    public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
         FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
     }
 
     @Override
-    public void deploy(BetsyProcess process) {
+    public void deploy(BPELProcess process) {
         OrchestraDeployer deployer = new OrchestraDeployer();
         deployer.setOrchestraHome(getServerPath().resolve("orchestra-cxf-tomcat-4.9.0"));
         deployer.setPackageFilePath(process.getTargetPackageFilePath());
@@ -58,7 +58,7 @@ public class OrchestraEngine extends LocalEngine {
         deployer.deploy();
     }
 
-    public void buildArchives(BetsyProcess process) {
+    public void buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps

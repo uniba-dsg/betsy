@@ -1,7 +1,7 @@
 package betsy.bpel.cli;
 
 import betsy.bpel.engines.Engine;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.repositories.EngineRepository;
 import betsy.common.config.Configuration;
 import configuration.bpel.BPELProcessRepository;
@@ -19,7 +19,7 @@ public class BPELCliParser {
         }
 
         @Override
-        public List<BetsyProcess> getProcesses() {
+        public List<BPELProcess> getProcesses() {
             return Collections.emptyList();
         }
 
@@ -105,7 +105,7 @@ public class BPELCliParser {
                 }
 
                 @Override
-                public List<BetsyProcess> getProcesses() {
+                public List<BPELProcess> getProcesses() {
                     return new ProcessParser(cmd.getArgs()).parse();
                 }
 

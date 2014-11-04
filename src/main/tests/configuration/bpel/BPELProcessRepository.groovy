@@ -1,6 +1,6 @@
 package configuration.bpel
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.model.steps.SoapTestStep
 import betsy.bpel.model.assertions.ExitAssertion
 import betsy.bpel.model.assertions.SoapFaultTestAssertion
@@ -13,7 +13,7 @@ import static PatternProcesses.CONTROL_FLOW_PATTERNS
 
 class BPELProcessRepository {
 
-    private Repository<BetsyProcess> repo = new Repository<>();
+    private Repository<BPELProcess> repo = new Repository<>();
 
     public BPELProcessRepository() {
         repo.put("ALL",
@@ -21,7 +21,7 @@ class BPELProcessRepository {
                         ScopeProcesses.SCOPES +
                         StructuredActivityProcesses.STRUCTURED_ACTIVITIES +
                         CONTROL_FLOW_PATTERNS
-                as List<BetsyProcess>)
+                as List<BPELProcess>)
 
         Field[] fields = [
                 BasicActivityProcesses.class.declaredFields +
@@ -34,19 +34,19 @@ class BPELProcessRepository {
             // adds only the static fields that are lists (groups)
             if (f.type == List.class) {
                 // f.get(null) returns the value of the field. the null parameter is ignored as the field is static.
-                repo.put(f.name, f.get(null) as List<BetsyProcess>)
+                repo.put(f.name, f.get(null) as List<BPELProcess>)
             }
         }
 
         repo.put("STATIC_ANALYSIS", StaticAnalysisProcesses.STATIC_ANALYSIS)
-        Map<String, List<BetsyProcess>> ruleGroups = StaticAnalysisProcesses.getGroupsPerRuleForSAProcesses(StaticAnalysisProcesses.STATIC_ANALYSIS)
-        for(Map.Entry<String, List<BetsyProcess>> entry : ruleGroups) {
+        Map<String, List<BPELProcess>> ruleGroups = StaticAnalysisProcesses.getGroupsPerRuleForSAProcesses(StaticAnalysisProcesses.STATIC_ANALYSIS)
+        for(Map.Entry<String, List<BPELProcess>> entry : ruleGroups) {
             repo.put(entry.getKey(), entry.getValue())
         }
 
         repo.put(
                 "FAULTS",
-                repo.getByName("ALL").findAll { BetsyProcess process ->
+                repo.getByName("ALL").findAll { BPELProcess process ->
                     process.testCases.any {
                         it.testSteps.any { it instanceof SoapTestStep && it.assertions.any { it instanceof SoapFaultTestAssertion } }
                     }
@@ -55,7 +55,7 @@ class BPELProcessRepository {
 
         repo.put("ERRORS", ErrorProcesses.processes)
         // insert every process into the map
-        repo.getByName("ERRORS").each { BetsyProcess process ->
+        repo.getByName("ERRORS").each { BPELProcess process ->
             repo.put(process.name, [process])
         }
 
@@ -67,21 +67,21 @@ class BPELProcessRepository {
         )
 
         // insert every process into the map
-        repo.getByName("ALL").each { BetsyProcess process ->
+        repo.getByName("ALL").each { BPELProcess process ->
             repo.put(process.name, [process])
         }
 
         // insert every process into the map
-        repo.getByName("STATIC_ANALYSIS").each { BetsyProcess process ->
+        repo.getByName("STATIC_ANALYSIS").each { BPELProcess process ->
             repo.put(process.name, [process])
         }
     }
 
-    public List<BetsyProcess> getByName(String name) {
+    public List<BPELProcess> getByName(String name) {
         return repo.getByName(name);
     }
 
-    public List<BetsyProcess> getByNames(String[] names) {
+    public List<BPELProcess> getByNames(String[] names) {
         return repo.getByNames(names);
     }
 

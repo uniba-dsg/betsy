@@ -1,6 +1,6 @@
 package betsy.bpel;
 
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,8 +15,8 @@ public class ShortIdsTests {
         List<String> shortIds = new LinkedList<>();
 
         BPELProcessRepository processRepository = new BPELProcessRepository();
-        List<BetsyProcess> processed = processRepository.getByName("ALL");
-        for(BetsyProcess process : processed){
+        List<BPELProcess> processed = processRepository.getByName("ALL");
+        for(BPELProcess process : processed){
             shortIds.add(process.getShortId());
         }
 

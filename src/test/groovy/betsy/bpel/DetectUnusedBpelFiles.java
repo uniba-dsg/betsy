@@ -1,6 +1,6 @@
 package betsy.bpel;
 
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class DetectUnusedBpelFiles {
     @Test
     public void detectUnusedBpelFiles() throws IOException {
         BPELProcessRepository processRepository = new BPELProcessRepository();
-        List<BetsyProcess> processed = processRepository.getByName("ALL");
+        List<BPELProcess> processed = processRepository.getByName("ALL");
 
         List<Path> bpelFiles = getBetsyProcessesPaths(processed);
         List<Path> bpelFilesInSrcTestDir = getBpelFiles(Paths.get("src/test"));
@@ -28,9 +28,9 @@ public class DetectUnusedBpelFiles {
         Assert.assertEquals("all bpel files should be referenced", "[]", bpelFilesInSrcTestDir.toString());
     }
 
-    private List<Path> getBetsyProcessesPaths(List<BetsyProcess> processed) {
+    private List<Path> getBetsyProcessesPaths(List<BPELProcess> processed) {
         List<Path> bpelFiles = new LinkedList<>();
-        for(BetsyProcess process : processed) {
+        for(BPELProcess process : processed) {
             bpelFiles.add(process.getBpelFilePath());
         }
         return bpelFiles;

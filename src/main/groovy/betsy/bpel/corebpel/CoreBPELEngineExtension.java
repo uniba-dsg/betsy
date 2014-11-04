@@ -1,6 +1,6 @@
 package betsy.bpel.corebpel;
 
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.EnginePackageBuilder;
 import corebpel.CoreBPEL;
@@ -20,7 +20,7 @@ public class CoreBPELEngineExtension {
 
         engine.setPackageBuilder(new EnginePackageBuilder() {
             @Override
-            public void createFolderAndCopyProcessFilesToTarget(BetsyProcess process) {
+            public void createFolderAndCopyProcessFilesToTarget(BPELProcess process) {
                 super.createFolderAndCopyProcessFilesToTarget(process);
                 CoreBPEL coreBPEL = new CoreBPEL(process.getTargetTmpPath(), process.getTargetBpelFilePath());
 

@@ -1,7 +1,7 @@
 package betsy.bpel.virtual.host.engines;
 
 import betsy.common.config.Configuration;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFile;
@@ -162,7 +162,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     }
 
     @Override
-    public void deploy(BetsyProcess process) {
+    public void deploy(BPELProcess process) {
         try {
             log.info("Deploying virtualized engine " + getName() + ", process: " + process.toString());
 
@@ -181,7 +181,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     }
 
     @Override
-    public void storeLogs(BetsyProcess process) {
+    public void storeLogs(BPELProcess process) {
         log.debug("Storing logs for engine " + getName());
 
         LogFilesRequest request = buildLogFilesRequest();

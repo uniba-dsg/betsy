@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPELTestSuite extends TestSuite<Engine, BetsyProcess> {
+public class BPELTestSuite extends TestSuite<Engine, BPELProcess> {
 
     /**
      * Factory method for a list of engines and processes.
@@ -16,16 +16,16 @@ public class BPELTestSuite extends TestSuite<Engine, BetsyProcess> {
      * @param processes a list of processes to be included in the test suite
      * @return a test suite where each engine tests all passed processes
      */
-    public static BPELTestSuite createTests(List<Engine> engines, List<BetsyProcess> processes) {
+    public static BPELTestSuite createTests(List<Engine> engines, List<BPELProcess> processes) {
         BPELTestSuite test = new BPELTestSuite();
         test.setPath(Paths.get("test"));
 
         for (Engine engine : engines) {
 
-            List<BetsyProcess> clonedProcesses = processes.stream().map(p -> (BetsyProcess) p.clone()).collect(Collectors.toList());
+            List<BPELProcess> clonedProcesses = processes.stream().map(p -> (BPELProcess) p.clone()).collect(Collectors.toList());
 
             // link them
-            for (BetsyProcess process : clonedProcesses) {
+            for (BPELProcess process : clonedProcesses) {
                 process.setEngine(engine);
                 engine.getProcesses().add(process);
             }

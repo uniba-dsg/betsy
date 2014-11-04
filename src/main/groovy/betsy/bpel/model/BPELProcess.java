@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BetsyProcess implements Cloneable, Comparable, Nameable {
+public class BPELProcess implements Cloneable, Comparable, Nameable {
     public void setTestCases(List<TestCase> testCases) {
         uniqueifyTestCaseNames(testCases);
         this.testCases = testCases;
@@ -29,7 +29,7 @@ public class BetsyProcess implements Cloneable, Comparable, Nameable {
 
     @Override
     public Object clone() {
-        BetsyProcess process = new BetsyProcess();
+        BPELProcess process = new BPELProcess();
         process.setBpel(bpel);
         process.setWsdls(wsdls);
         process.setAdditionalFiles(additionalFiles);
@@ -229,7 +229,7 @@ public class BetsyProcess implements Cloneable, Comparable, Nameable {
             return false;
         }
 
-        BetsyProcess that = (BetsyProcess) o;
+        BPELProcess that = (BPELProcess) o;
 
         return bpel.toString().equals(that.bpel.toString());
 
@@ -241,7 +241,7 @@ public class BetsyProcess implements Cloneable, Comparable, Nameable {
 
     @Override
     public int compareTo(Object o) {
-        return bpel.compareTo(((BetsyProcess) o).bpel);
+        return bpel.compareTo(((BPELProcess) o).bpel);
     }
 
     public String getShortId() {

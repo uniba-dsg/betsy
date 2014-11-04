@@ -1,7 +1,7 @@
 package betsy.bpel.engines.petalsesb
 
 import betsy.bpel.engines.LocalEngine
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.URLTasks
@@ -22,7 +22,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
+    String getEndpointUrl(BPELProcess process) {
         "$CHECK_URL/petals/services/${process.name}TestInterfaceService"
     }
 
@@ -47,7 +47,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
+    void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
         FileTasks.copyFileIntoFolder(petalsLogFile, process.targetLogsPath)
     }
@@ -91,7 +91,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(BPELProcess process) {
         new PetalsEsbDeployer(processName: process.name,
                 packageFilePath: process.targetPackageCompositeFilePath,
                 logFilePath: petalsLogFile,
@@ -104,7 +104,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    void buildArchives(BPELProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps

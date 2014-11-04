@@ -1,6 +1,6 @@
 package betsy.bpel.engines.activebpel
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.bpel.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
@@ -23,7 +23,7 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
+    String getEndpointUrl(BPELProcess process) {
         "${tomcat.tomcatUrl}/active-bpel/services/${process.name}TestInterfaceService"
     }
 
@@ -36,7 +36,7 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
+    void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
@@ -72,14 +72,14 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(BPELProcess process) {
         new ActiveBpelDeployer(deploymentDirPath: getDeploymentDir(),
                 logFilePath: getAeDeploymentLog(),
                 processName: process.name,
                 packageFilePath: process.getTargetPackageFilePath("bpr")).deploy()
     }
 
-    public void buildArchives(BetsyProcess process) {
+    public void buildArchives(BPELProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // create deployment descriptor

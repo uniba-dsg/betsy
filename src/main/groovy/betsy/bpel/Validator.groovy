@@ -1,6 +1,6 @@
 package betsy.bpel
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -10,9 +10,9 @@ import java.nio.file.Path
  */
 class Validator {
 
-    private final List<BetsyProcess> processes
+    private final List<BPELProcess> processes
 
-    Validator(List<BetsyProcess> processes) {
+    Validator(List<BPELProcess> processes) {
         this.processes = processes
     }
 

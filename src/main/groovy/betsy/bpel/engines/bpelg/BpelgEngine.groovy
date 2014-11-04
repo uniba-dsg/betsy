@@ -1,6 +1,6 @@
 package betsy.bpel.engines.bpelg
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.common.engines.Util
 import betsy.bpel.engines.tomcat.Tomcat
@@ -21,7 +21,7 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
+    void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.targetLogsPath)
         ant.copy(todir: process.targetLogsPath) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
@@ -34,7 +34,7 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
+    String getEndpointUrl(BPELProcess process) {
         "${tomcat.tomcatUrl}/bpel-g/services/${process.name}TestInterfaceService"
     }
 
@@ -58,7 +58,7 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(BPELProcess process) {
         new BpelgDeployer(processName: process.name,
                 packageFilePath: process.targetPackageFilePath,
                 deploymentDirPath: getDeploymentDir(),
@@ -67,7 +67,7 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    void buildArchives(BPELProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // deployment descriptor
@@ -99,7 +99,7 @@ class BpelgEngine extends LocalEngine {
         packageBuilder.bpelFolderToZipFile(process)
     }
 
-    public static String[] computeMatchingPattern(BetsyProcess process) {
+    public static String[] computeMatchingPattern(BPELProcess process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
         String text = process.bpelFilePath.toFile().getText()
         String canonicalText = Util.canonicalizeXML(text)

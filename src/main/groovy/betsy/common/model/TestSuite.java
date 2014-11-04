@@ -1,14 +1,10 @@
 package betsy.common.model;
 
-import betsy.bpel.engines.Engine;
-import betsy.bpel.model.BetsyProcess;
 import betsy.common.engines.EngineAPI;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TestSuite<E extends EngineAPI<P>,P> {
     /**

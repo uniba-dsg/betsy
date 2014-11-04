@@ -2,7 +2,7 @@ package betsy.bpel.engines.ode;
 
 import betsy.bpel.engines.LocalEngine;
 import betsy.bpel.engines.tomcat.Tomcat;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 
@@ -18,7 +18,7 @@ public class OdeEngine extends LocalEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BetsyProcess process) {
+    public String getEndpointUrl(final BPELProcess process) {
         return getTomcat().getTomcatUrl() + "/ode/processes/" + process.getName() + "TestInterface";
     }
 
@@ -43,7 +43,7 @@ public class OdeEngine extends LocalEngine {
     }
 
     @Override
-    public void storeLogs(BetsyProcess process) {
+    public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
         FileTasks.copyFilesInFolderIntoOtherFolder(process.getTargetLogsPath(), getTomcat().getTomcatLogsDir());
     }
@@ -56,7 +56,7 @@ public class OdeEngine extends LocalEngine {
     }
 
     @Override
-    public void deploy(BetsyProcess process) {
+    public void deploy(BPELProcess process) {
         OdeDeployer deployer = new OdeDeployer();
         deployer.setProcessName(process.getName());
         deployer.setLogFilePath(getTomcat().getTomcatLogsDir().resolve("ode.log"));
@@ -66,7 +66,7 @@ public class OdeEngine extends LocalEngine {
     }
 
     @Override
-    public void buildArchives(final BetsyProcess process) {
+    public void buildArchives(final BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps

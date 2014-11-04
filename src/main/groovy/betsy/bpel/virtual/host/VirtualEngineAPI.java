@@ -1,6 +1,6 @@
 package betsy.bpel.virtual.host;
 
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 
@@ -41,7 +41,7 @@ public interface VirtualEngineAPI {
      */
     Set<Integer> getRequiredPorts();
 
-    DeployRequest buildDeployRequest(BetsyProcess process) throws IOException;
+    DeployRequest buildDeployRequest(BPELProcess process) throws IOException;
 
     LogFilesRequest buildLogFilesRequest();
 

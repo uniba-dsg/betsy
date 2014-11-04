@@ -1,6 +1,6 @@
 package betsy.bpel.reporting
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.engines.Engine
 import betsy.bpel.model.BPELTestSuite
 import betsy.common.tasks.FileTasks
@@ -16,13 +16,13 @@ class MessageExchangesIntoSoapUIReportsMerger {
 
     public void merge() {
         for(Engine engine : tests.engines) {
-            for(BetsyProcess process : engine.processes) {
+            for(BPELProcess process : engine.processes) {
                 mergeMessageExchangeProtocolsIntoJUnitReportForProcess(process)
             }
         }
     }
 
-    private static void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(BetsyProcess process) {
+    private static void mergeMessageExchangeProtocolsIntoJUnitReportForProcess(BPELProcess process) {
         Path junitXml = FileTasks.findFirstMatchInFolder(process.targetReportsPath, "*.xml")
         if (junitXml == null) {
             log.warn "Cannot merge xml report from process ${process.name} as there is no xml report"

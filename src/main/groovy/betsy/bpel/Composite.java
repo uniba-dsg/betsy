@@ -1,7 +1,7 @@
 package betsy.bpel;
 
 import betsy.bpel.engines.Engine;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.bpel.soapui.TestBuilder;
@@ -56,7 +56,7 @@ public class Composite {
                 FileTasks.mkdirs(engine.getPath());
 
                 log(engine.getPath(), () -> {
-                    for (BetsyProcess process : engine.getProcesses()) {
+                    for (BPELProcess process : engine.getProcesses()) {
 
                         progress.next();
                         MDC.put("progress", progress.toString());
@@ -80,7 +80,7 @@ public class Composite {
         });
     }
 
-    protected void executeProcess(final BetsyProcess process) {
+    protected void executeProcess(final BPELProcess process) {
         Retry retry = new Retry();
         retry.setProcess(process);
         retry.atMostThreeTimes(() -> log(process.getTargetPath(), () -> {
@@ -98,21 +98,21 @@ public class Composite {
         }));
     }
 
-    protected void shutdown(final BetsyProcess process) {
+    protected void shutdown(final BPELProcess process) {
         log(process.getTargetPath() + "/engine_shutdown", () -> process.getEngine().shutdown());
     }
 
-    protected void deploy(final BetsyProcess process) {
+    protected void deploy(final BPELProcess process) {
         log(process.getTargetPath() + "/deploy", () -> process.getEngine().deploy(process));
     }
 
-    protected void installAndStart(final BetsyProcess process) {
+    protected void installAndStart(final BPELProcess process) {
         // setup infrastructure
         log(process.getTargetPath() + "/engine_install", () -> process.getEngine().install());
         log(process.getTargetPath() + "/engine_startup", () -> process.getEngine().startup());
     }
 
-    protected void test(final BetsyProcess process) {
+    protected void test(final BPELProcess process) {
         log(process.getTargetPath() + "/test", () -> {
             try {
                 try {
@@ -130,29 +130,29 @@ public class Composite {
         });
     }
 
-    protected void collect(final BetsyProcess process) {
+    protected void collect(final BPELProcess process) {
         log(process.getTargetPath() + "/collect", () -> process.getEngine().storeLogs(process));
     }
 
-    protected void testSoapUi(final BetsyProcess process) {
+    protected void testSoapUi(final BPELProcess process) {
         log(process.getTargetPath() + "/test_soapui", () -> IOCapture.captureIO(() ->
                 new SoapUiRunner(process.getTargetSoapUIFilePath(), process.getTargetReportsPath()).run()));
         WaitTasks.sleep(500);
     }
 
-    protected void buildPackageAndTest(final BetsyProcess process) {
+    protected void buildPackageAndTest(final BPELProcess process) {
         log(process.getTargetPath() + "/build", () -> {
             buildPackage(process);
             buildTest(process);
         });
     }
 
-    protected void buildTest(final BetsyProcess process) {
+    protected void buildTest(final BPELProcess process) {
         log(process.getTargetPath() + "/build_test", () ->
                 IOCapture.captureIO(() -> new TestBuilder(process, requestTimeout).buildTest()));
     }
 
-    protected void buildPackage(final BetsyProcess process) {
+    protected void buildPackage(final BPELProcess process) {
         log(process.getTargetPath() + "/build_package",
                 () -> IOCapture.captureIO(
                         () -> process.getEngine().buildArchives(process)));

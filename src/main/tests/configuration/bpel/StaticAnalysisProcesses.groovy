@@ -1,6 +1,6 @@
 package configuration.bpel
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.model.BPELTestCase
 
 import java.nio.file.Path
@@ -8,21 +8,21 @@ import java.nio.file.Paths
 
 class StaticAnalysisProcesses {
 
-    public static List<BetsyProcess> getStaticAnalysisProcesses() {
+    public static List<BPELProcess> getStaticAnalysisProcesses() {
         String path = "src/main/tests/files/bpel/sa-rules"
 
         if (!new File(path).exists()) {
             return []
         }
 
-        List<BetsyProcess> result = []
+        List<BPELProcess> result = []
 
         new File(path).eachDirRecurse { dir ->
             boolean isTestDirectory = dir.list().any({ String elem -> elem.endsWith(".bpel") })
             if (isTestDirectory) {
                 String testDir = dir.path.replace("\\", "/")
 
-                result.add(new BetsyProcess(
+                result.add(new BPELProcess(
                         bpel: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
                         wsdls: createWSDLPaths(dir, testDir),
                         additionalFiles: createXSDPaths(dir, testDir),
@@ -34,12 +34,12 @@ class StaticAnalysisProcesses {
         return result
     }
 
-    public static Map<String, List<BetsyProcess>> getGroupsPerRuleForSAProcesses(List<BetsyProcess> processes) {
-        Map<String, List<BetsyProcess>> result = new HashMap<>();
+    public static Map<String, List<BPELProcess>> getGroupsPerRuleForSAProcesses(List<BPELProcess> processes) {
+        Map<String, List<BPELProcess>> result = new HashMap<>();
 
         for(int i = 1; i <= 95; i++) {
             String rule = convertIntegerToSARuleNumber(i)
-            List<BetsyProcess> processList = processes.findAll { it.name.startsWith(rule) }
+            List<BPELProcess> processList = processes.findAll { it.name.startsWith(rule) }
 
             if(!processList.isEmpty()) {
                 result.put(rule, processList);
@@ -79,6 +79,6 @@ class StaticAnalysisProcesses {
         wsdls
     }
 
-    public static List<BetsyProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses()
+    public static List<BPELProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses()
 
 }

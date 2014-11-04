@@ -1,6 +1,6 @@
 package configuration.bpel
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.common.model.TestCase
 
 import java.nio.file.Path
@@ -15,44 +15,44 @@ class BPELProcessBuilder {
     public static final int UNDECLARED_FAULT_CODE = -5
     public static final int DECLARED_FAULT_CODE = -6
 
-    public static BetsyProcess buildPatternProcess(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: PATH_PREFIX.resolve("cfpatterns/${name}.bpel"),
+    public static BPELProcess buildPatternProcess(String name, List<TestCase> testCases) {
+        new BPELProcess(bpel: PATH_PREFIX.resolve("cfpatterns/${name}.bpel"),
                 wsdls: [testInterface],
                 testCases: testCases
         )
     }
 
-    public static BetsyProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: PATH_PREFIX.resolve("cfpatterns/${name}.bpel"),
+    public static BPELProcess buildPatternProcessWithPartner(String name, List<TestCase> testCases) {
+        new BPELProcess(bpel: PATH_PREFIX.resolve("cfpatterns/${name}.bpel"),
                 wsdls: [testInterface, partnerInterface],
                 testCases: testCases
         )
     }
 
-    public static BetsyProcess buildProcess(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
+    public static BPELProcess buildProcess(String name, List<TestCase> testCases) {
+        new BPELProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
                 wsdls: [testInterface],
                 testCases: testCases
         )
     }
 
-    public static BetsyProcess buildProcessWithXsd(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
+    public static BPELProcess buildProcessWithXsd(String name, List<TestCase> testCases) {
+        new BPELProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
                 wsdls: [testInterface],
                 testCases: testCases,
                 additionalFiles: [PATH_PREFIX.resolve("basic/months.xsd")],
         )
     }
 
-    public static BetsyProcess buildProcessWithPartner(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
+    public static BPELProcess buildProcessWithPartner(String name, List<TestCase> testCases) {
+        new BPELProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
                 wsdls: [testInterface, partnerInterface],
                 testCases: testCases
         )
     }
 
-    public static BetsyProcess buildProcessWithXslt(String name, List<TestCase> testCases) {
-        new BetsyProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
+    public static BPELProcess buildProcessWithXslt(String name, List<TestCase> testCases) {
+        new BPELProcess(bpel: PATH_PREFIX.resolve("${name}.bpel"),
                 wsdls: [testInterface],
                 additionalFiles: [PATH_PREFIX.resolve("basic/echo.xslt"),
                         PATH_PREFIX.resolve("basic/notCompileable.xslt")],
@@ -60,51 +60,51 @@ class BPELProcessBuilder {
         )
     }
 
-    public static BetsyProcess buildStructuredActivityProcess(String name, List<TestCase> testCases) {
+    public static BPELProcess buildStructuredActivityProcess(String name, List<TestCase> testCases) {
         buildProcess("structured/${name}", testCases)
     }
 
-    public static BetsyProcess buildScopeProcess(String name, List<TestCase> testCases) {
+    public static BPELProcess buildScopeProcess(String name, List<TestCase> testCases) {
         buildProcess("scopes/${name}", testCases)
     }
 
-    public static BetsyProcess buildBasicActivityProcess(String name, List<TestCase> testCases) {
+    public static BPELProcess buildBasicActivityProcess(String name, List<TestCase> testCases) {
         buildProcess("basic/${name}", testCases)
     }
 
     public
-    static BetsyProcess buildStructuredActivityProcess(String name, String description, List<TestCase> testCases) {
-        BetsyProcess process = buildStructuredActivityProcess(name, testCases)
+    static BPELProcess buildStructuredActivityProcess(String name, String description, List<TestCase> testCases) {
+        BPELProcess process = buildStructuredActivityProcess(name, testCases)
         process.description = description
         return process
     }
 
-    public static BetsyProcess buildScopeProcess(String name, String description, List<TestCase> testCases) {
-        BetsyProcess process = buildScopeProcess(name, testCases)
+    public static BPELProcess buildScopeProcess(String name, String description, List<TestCase> testCases) {
+        BPELProcess process = buildScopeProcess(name, testCases)
         process.description = description
         return process
     }
 
-    public static BetsyProcess buildBasicActivityProcess(String name, String description, List<TestCase> testCases) {
-        BetsyProcess process = buildBasicActivityProcess(name, testCases)
+    public static BPELProcess buildBasicActivityProcess(String name, String description, List<TestCase> testCases) {
+        BPELProcess process = buildBasicActivityProcess(name, testCases)
         process.description = description
         return process
     }
 
-    public static BetsyProcess buildProcessWithXsd(String name, String description, List<TestCase> testCases) {
-        BetsyProcess process = buildProcessWithXsd(name, testCases)
+    public static BPELProcess buildProcessWithXsd(String name, String description, List<TestCase> testCases) {
+        BPELProcess process = buildProcessWithXsd(name, testCases)
         process.description = description
         return process
     }
 
-    public static BetsyProcess buildProcessWithPartner(String name, String description, List<TestCase> testCases) {
-        BetsyProcess process = buildProcessWithPartner(name, testCases)
+    public static BPELProcess buildProcessWithPartner(String name, String description, List<TestCase> testCases) {
+        BPELProcess process = buildProcessWithPartner(name, testCases)
         process.description = description
         return process
     }
 
-    public static BetsyProcess buildProcessWithXslt(String name, String description, List<TestCase> testCases) {
-        BetsyProcess process = buildProcessWithXslt(name, testCases)
+    public static BPELProcess buildProcessWithXslt(String name, String description, List<TestCase> testCases) {
+        BPELProcess process = buildProcessWithXslt(name, testCases)
         process.description = description
         return process
     }

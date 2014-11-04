@@ -1,7 +1,7 @@
 package betsy.bpel.virtual.host.engines;
 
 import betsy.bpel.engines.orchestra.OrchestraEngine;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.FileMessage;
@@ -45,12 +45,12 @@ public class VirtualOrchestraEngine extends VirtualEngine {
     }
 
     @Override
-    public String getEndpointUrl(BetsyProcess process) {
+    public String getEndpointUrl(BPELProcess process) {
         return "http://localhost:" + HTTP_PORT + "/orchestra/" + process.getName() + "TestInterface";
     }
 
     @Override
-    public void buildArchives(BetsyProcess process) {
+    public void buildArchives(BPELProcess process) {
         // use default engine's operations
         defaultEngine.buildArchives(process);
     }
@@ -61,7 +61,7 @@ public class VirtualOrchestraEngine extends VirtualEngine {
     }
 
     @Override
-    public DeployRequest buildDeployRequest(BetsyProcess process) throws IOException {
+    public DeployRequest buildDeployRequest(BPELProcess process) throws IOException {
         DeployRequest operation = new DeployRequest();
         operation.setFileMessage(FileMessage.build(process.getTargetPackageFilePath("zip")));
         operation.setEngineName(getName());

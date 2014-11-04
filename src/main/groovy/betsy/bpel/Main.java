@@ -5,7 +5,7 @@ import betsy.bpel.corebpel.CoreBPELEngineExtension;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.LocalEngine;
 import betsy.bpel.model.BPELTestCase;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.engines.VirtualEngine;
 import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
@@ -13,7 +13,6 @@ import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.config.Configuration;
 import betsy.common.engines.Nameable;
-import betsy.common.model.TestCase;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -101,27 +100,27 @@ public class Main {
         if (params.buildArtifactsOnly()) {
             betsy.setComposite(new Composite() {
                 @Override
-                protected void testSoapUi(BetsyProcess process) {
+                protected void testSoapUi(BPELProcess process) {
                 }
 
                 @Override
-                protected void collect(BetsyProcess process) {
+                protected void collect(BPELProcess process) {
                 }
 
                 @Override
-                protected void test(BetsyProcess process) {
+                protected void test(BPELProcess process) {
                 }
 
                 @Override
-                protected void installAndStart(BetsyProcess process) {
+                protected void installAndStart(BPELProcess process) {
                 }
 
                 @Override
-                protected void deploy(BetsyProcess process) {
+                protected void deploy(BPELProcess process) {
                 }
 
                 @Override
-                protected void shutdown(BetsyProcess process) {
+                protected void shutdown(BPELProcess process) {
                 }
 
                 @Override
@@ -183,7 +182,7 @@ public class Main {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<Engine> engines, List<BetsyProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<Engine> engines, List<BPELProcess> processes) {
         // print selection of engines and processes
         log.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
         log.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
@@ -204,10 +203,10 @@ public class Main {
 
     }
 
-    protected static void checkDeployment(BPELCliParameter params, List<BetsyProcess> processes) {
+    protected static void checkDeployment(BPELCliParameter params, List<BPELProcess> processes) {
         if (params.checkDeployment()) {
             // check only whether the processes can be deployed
-            for (BetsyProcess process : processes) {
+            for (BPELProcess process : processes) {
                 process.setTestCases(Arrays.asList(new BPELTestCase().checkDeployment()));
             }
 

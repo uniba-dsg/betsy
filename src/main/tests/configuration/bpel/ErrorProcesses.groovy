@@ -1,6 +1,6 @@
 package configuration.bpel
 
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.model.BPELTestCase
 import betsy.common.tasks.FileTasks
 import groovy.util.slurpersupport.GPathResult
@@ -49,13 +49,13 @@ class ErrorProcesses {
             "50003" : "tcp-request_timeout"
     ]
 
-    public static List<BetsyProcess> getProcesses() {
+    public static List<BPELProcess> getProcesses() {
 
         Path errorsDir = Paths.get("src/main/tests/files/bpel/errors")
         FileTasks.deleteDirectory(errorsDir)
         FileTasks.mkdirs(errorsDir)
 
-        List<BetsyProcess> result = new LinkedList<>(); ;
+        List<BPELProcess> result = new LinkedList<>(); ;
 
         result.addAll(createTestsForCatchAll(errorsDir))
         result.addAll(createTestsForCatchAllInvokeValidate(errorsDir))
@@ -64,8 +64,8 @@ class ErrorProcesses {
     }
 
     private
-    static BetsyProcess cloneErrorBetsyProcess(BetsyProcess baseProcess, int number, String name, Path errorsDir) {
-        BetsyProcess process = (BetsyProcess) baseProcess.clone()
+    static BPELProcess cloneErrorBetsyProcess(BPELProcess baseProcess, int number, String name, Path errorsDir) {
+        BPELProcess process = (BPELProcess) baseProcess.clone()
 
         // copy file
         String filename = "${baseProcess.getShortId()}_ERR${number}_${name}"
@@ -82,14 +82,14 @@ class ErrorProcesses {
         process
     }
 
-    public static final BetsyProcess BACKDOOR_ROBUSTNESS = new BPELProcessBuilder().buildProcessWithPartner(
+    public static final BPELProcess BACKDOOR_ROBUSTNESS = new BPELProcessBuilder().buildProcessWithPartner(
             "errorsbase/BackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
                     new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
             ]
     )
 
-    public static final BetsyProcess IMPROVED_BACKDOOR_ROBUSTNESS = new BPELProcessBuilder().buildProcessWithPartner(
+    public static final BPELProcess IMPROVED_BACKDOOR_ROBUSTNESS = new BPELProcessBuilder().buildProcessWithPartner(
             // only used for error processes. but may also be used as a test
             "errorsbase/ImprovedBackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
@@ -97,12 +97,12 @@ class ErrorProcesses {
             ]
     )
 
-    private static List<BetsyProcess> createTestsForCatchAll(Path errorsDir) {
-        BetsyProcess baseProcess = BACKDOOR_ROBUSTNESS
+    private static List<BPELProcess> createTestsForCatchAll(Path errorsDir) {
+        BPELProcess baseProcess = BACKDOOR_ROBUSTNESS
 
-        List<BetsyProcess> result = new LinkedList<>();
+        List<BPELProcess> result = new LinkedList<>();
 
-        BetsyProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
+        BPELProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
         happyPathProcess.testCases = [new BPELTestCase().checkDeployment().sendSync(0, 0)]
         result.add(happyPathProcess)
 
@@ -110,7 +110,7 @@ class ErrorProcesses {
 
             int number = Integer.parseInt(entry.getKey())
             String name = entry.getValue()
-            BetsyProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
+            BPELProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
             process.testCases = [new BPELTestCase().checkDeployment().sendSync(number, -1)]
 
             result.add(process)
@@ -119,12 +119,12 @@ class ErrorProcesses {
         result
     }
 
-    private static List<BetsyProcess> createTestsForCatchAllInvokeValidate(Path errorsDir) {
-        BetsyProcess baseProcess = IMPROVED_BACKDOOR_ROBUSTNESS
+    private static List<BPELProcess> createTestsForCatchAllInvokeValidate(Path errorsDir) {
+        BPELProcess baseProcess = IMPROVED_BACKDOOR_ROBUSTNESS
 
-        List<BetsyProcess> result = new LinkedList<>();
+        List<BPELProcess> result = new LinkedList<>();
 
-        BetsyProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
+        BPELProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
         happyPathProcess.testCases = [new BPELTestCase().checkDeployment().sendSync(0, 0)]
         result.add(happyPathProcess)
 
@@ -132,7 +132,7 @@ class ErrorProcesses {
 
             int number = Integer.parseInt(entry.getKey())
             String name = entry.getValue()
-            BetsyProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
+            BPELProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
             process.testCases = [new BPELTestCase().checkDeployment().sendSync(number, -1)]
 
             result.add(process)

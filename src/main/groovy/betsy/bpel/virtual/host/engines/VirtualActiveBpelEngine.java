@@ -1,7 +1,7 @@
 package betsy.bpel.virtual.host.engines;
 
 import betsy.bpel.engines.activebpel.ActiveBpelEngine;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.FileMessage;
@@ -39,7 +39,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
     }
 
     @Override
-    public String getEndpointUrl(BetsyProcess process) {
+    public String getEndpointUrl(BPELProcess process) {
         // is not delegated because of the dependency to the local Tomcat
         return "http://localhost:" + HTTP_PORT + "/active-bpel/services/" + process.getName() + "TestInterfaceService";
     }
@@ -52,7 +52,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
     }
 
     @Override
-    public void buildArchives(BetsyProcess process) {
+    public void buildArchives(BPELProcess process) {
         // use default engine's operations
         defaultEngine.buildArchives(process);
     }
@@ -63,7 +63,7 @@ public class VirtualActiveBpelEngine extends VirtualEngine {
     }
 
     @Override
-    public DeployRequest buildDeployRequest(BetsyProcess process) throws IOException {
+    public DeployRequest buildDeployRequest(BPELProcess process) throws IOException {
         DeployRequest operation = new DeployRequest();
         operation.setFileMessage(FileMessage.build(process.getTargetPackageFilePath("bpr")));
         operation.setEngineName(getName());

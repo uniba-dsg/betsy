@@ -1,7 +1,7 @@
 package betsy.bpel.engines;
 
 import ant.tasks.AntUtil;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.EngineAPI;
 import betsy.common.util.ClasspathHelper;
 import groovy.util.AntBuilder;
@@ -10,9 +10,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Engine implements EngineAPI<BetsyProcess> {
+public abstract class Engine implements EngineAPI<BPELProcess> {
 
-    private final List<BetsyProcess> processes = new ArrayList<>();
+    private final List<BPELProcess> processes = new ArrayList<>();
     private AntBuilder ant = AntUtil.builder();
     private EnginePackageBuilder packageBuilder = new EnginePackageBuilder();
     private Path parentFolder;
@@ -83,7 +83,7 @@ public abstract class Engine implements EngineAPI<BetsyProcess> {
         this.parentFolder = parentFolder;
     }
 
-    public final List<BetsyProcess> getProcesses() {
+    public final List<BPELProcess> getProcesses() {
         return processes;
     }
 }

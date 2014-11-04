@@ -2,7 +2,7 @@ package betsy.bpel.engines.petalsesb
 
 import ant.tasks.AntUtil
 import betsy.common.config.Configuration;
-import betsy.bpel.model.BetsyProcess
+import betsy.bpel.model.BPELProcess
 import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
@@ -10,7 +10,7 @@ import java.nio.file.Path
 class PetalsEsbCompositePackager {
 
     final AntBuilder ant = AntUtil.builder()
-    BetsyProcess process
+    BPELProcess process
 
     void build() {
         createBinding()

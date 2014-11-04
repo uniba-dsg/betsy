@@ -1,7 +1,7 @@
 package betsy.bpel;
 
 import betsy.bpel.engines.Engine;
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Betsy {
     private List<Engine> engines = new ArrayList<>();
-    private List<BetsyProcess> processes = new ArrayList<>();
+    private List<BPELProcess> processes = new ArrayList<>();
     private Composite composite = new Composite();
 
     public void execute() {
@@ -36,11 +36,11 @@ public class Betsy {
         this.engines = engines;
     }
 
-    public List<BetsyProcess> getProcesses() {
+    public List<BPELProcess> getProcesses() {
         return processes;
     }
 
-    public void setProcesses(List<BetsyProcess> processes) {
+    public void setProcesses(List<BPELProcess> processes) {
         this.processes = processes;
     }
 

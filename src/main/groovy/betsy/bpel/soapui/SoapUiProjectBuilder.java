@@ -1,6 +1,6 @@
 package betsy.bpel.soapui;
 
-import betsy.bpel.model.BetsyProcess;
+import betsy.bpel.model.BPELProcess;
 import betsy.common.model.TestCase;
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
@@ -65,11 +65,11 @@ public class SoapUiProjectBuilder {
         }
     }
 
-    public BetsyProcess getProcess() {
+    public BPELProcess getProcess() {
         return process;
     }
 
-    public void setProcess(BetsyProcess process) {
+    public void setProcess(BPELProcess process) {
         this.process = process;
     }
 
@@ -82,7 +82,7 @@ public class SoapUiProjectBuilder {
     }
 
     private final WsdlProjectFactory projectFactory = new WsdlProjectFactory();
-    private BetsyProcess process;
+    private BPELProcess process;
     private int requestTimeout;
     private WsdlProject project;
 }
