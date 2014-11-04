@@ -4,6 +4,7 @@ import betsy.bpel.cli.*;
 import betsy.bpel.corebpel.CoreBPELEngineExtension;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.engines.LocalEngine;
+import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.BetsyProcess;
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.engines.VirtualEngine;
@@ -207,7 +208,7 @@ public class Main {
         if (params.checkDeployment()) {
             // check only whether the processes can be deployed
             for (BetsyProcess process : processes) {
-                process.setTestCases(Arrays.asList(new TestCase().checkDeployment()));
+                process.setTestCases(Arrays.asList(new BPELTestCase().checkDeployment()));
             }
 
         }
