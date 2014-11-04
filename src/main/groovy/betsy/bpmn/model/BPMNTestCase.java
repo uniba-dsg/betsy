@@ -43,41 +43,41 @@ public class BPMNTestCase {
         return addInputTestString("c");
     }
 
-    private BPMNTestCase addAssertions(String assertion) {
-        assertions.add(assertion);
+    private BPMNTestCase addAssertions(BPMNAssertion assertion) {
+        assertions.add(assertion.toString());
         return this;
     }
 
     public BPMNTestCase assertTask1() {
-        return addAssertions("SCRIPT_task1");
+        return addAssertions(BPMNAssertion.SCRIPT_task1);
     }
 
     public BPMNTestCase assertTask2() {
-        return addAssertions("SCRIPT_task2");
+        return addAssertions(BPMNAssertion.SCRIPT_task2);
     }
 
     public BPMNTestCase assertTask3() {
-        return addAssertions("SCRIPT_task3");
+        return addAssertions(BPMNAssertion.SCRIPT_task3);
     }
 
     public BPMNTestCase assertTask4() {
-        return addAssertions("SCRIPT_task4");
+        return addAssertions(BPMNAssertion.SCRIPT_task4);
     }
 
     public BPMNTestCase assertTask5() {
-        return addAssertions("SCRIPT_task5");
+        return addAssertions(BPMNAssertion.SCRIPT_task5);
     }
 
     public BPMNTestCase assertRuntimeException() {
-        return addAssertions(Errors.ERROR_RUNTIME);
+        return addAssertions(BPMNAssertion.ERROR_RUNTIME);
     }
 
     public BPMNTestCase assertErrorThrownErrorEvent() {
-        return addAssertions(Errors.ERROR_THROWN_ERROR_EVENT);
+        return addAssertions(BPMNAssertion.ERROR_THROWN_ERROR_EVENT);
     }
 
     public BPMNTestCase assertErrorThrownEscalationEvent() {
-        return addAssertions(Errors.ERROR_THROWN_ESCALATION_EVENT);
+        return addAssertions(BPMNAssertion.ERROR_THROWN_ESCALATION_EVENT);
     }
 
     public BPMNTestCase optionDelay(int delay) {

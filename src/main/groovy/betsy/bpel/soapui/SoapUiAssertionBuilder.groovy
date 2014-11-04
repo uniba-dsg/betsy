@@ -1,6 +1,7 @@
 package betsy.bpel.soapui
 
 import betsy.bpel.model.steps.SoapTestStep
+import betsy.common.model.AssertableTestStep
 import betsy.common.model.TestAssertion
 import betsy.common.model.TestStep
 import betsy.bpel.model.assertions.ExitAssertion
@@ -86,7 +87,7 @@ try {
 
 
 
-    public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
+    public static void addTestPartnerAssertion(AssertableTestStep testStep, WsdlTestRequestStep soapUiRequest) {
         for (TestAssertion assertion : testStep.assertions) {
             if (assertion instanceof XpathTestAssertion) {
                 addXpathTestAssertion(soapUiRequest, assertion)

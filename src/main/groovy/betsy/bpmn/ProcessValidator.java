@@ -1,5 +1,6 @@
 package betsy.bpmn;
 
+import betsy.bpmn.model.BPMNAssertion;
 import betsy.bpmn.model.BPMNNamespaceContext;
 import betsy.bpmn.model.BPMNProcess;
 import configuration.bpmn.BPMNProcessRepository;
@@ -14,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProcessValidator {
 
@@ -23,9 +26,7 @@ public class ProcessValidator {
 
     private XPath xpath;
 
-    public static final String[] ALLOWED_LOG_MESSAGES = new String[]{
-            "SCRIPT_task1", "CREATE_LOG_FILE", "SCRIPT_task2", "SCRIPT_task3", "SCRIPT_task4", "SCRIPT_task5"
-    };
+    public static final String[] ALLOWED_LOG_MESSAGES = getAllowedLogMessages();
 
     public void validate() {
         processes = new BPMNProcessRepository().getByName("ALL");
@@ -90,8 +91,6 @@ public class ProcessValidator {
             }
         }
 
-        // TODO move this to the production code
-
         String[] actualMessages = messages.toArray(new String[messages.size()]);
 
         Arrays.sort(actualMessages);
@@ -127,5 +126,13 @@ public class ProcessValidator {
         } catch (ParserConfigurationException e) {
             throw new IllegalStateException("Could not validate process files", e);
         }
+    }
+
+    public static String[] getAllowedLogMessages() {
+        List<String> allowedScriptTasks = Stream.of(BPMNAssertion.values()).map(Object::toString).filter((x) -> x.startsWith("SCRIPT")).collect(Collectors.toList());
+        List<String> allowedLogMessages = new LinkedList<>();
+        allowedLogMessages.addAll(allowedScriptTasks);
+        allowedLogMessages.add("CREATE_LOG_FILE");
+        return allowedLogMessages.toArray(new String[allowedLogMessages.size()]);
     }
 }

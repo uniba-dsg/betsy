@@ -1,5 +1,6 @@
 package betsy.bpmn.engines;
 
+import betsy.bpmn.model.BPMNAssertion;
 import betsy.common.tasks.FileTasks;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class LogFileAnalyzer {
 
     private final Path logFile;
 
-    private final Map<String,String> substrings2error = new HashMap<>();
+    private final Map<String,BPMNAssertion> substrings2error = new HashMap<>();
 
     public LogFileAnalyzer(Path logFile) {
         FileTasks.assertFile(logFile);
@@ -19,17 +20,17 @@ public class LogFileAnalyzer {
         this.logFile = logFile;
     }
 
-    public void addSubstring(String substring, String error){
+    public void addSubstring(String substring, BPMNAssertion error){
         substrings2error.put(Objects.requireNonNull(substring, "substring must not be null"),
                 Objects.requireNonNull(error, "error must not be null"));
     }
 
-    public Set<String> getErrors() {
-        Set<String> result = new HashSet<>();
+    public Set<BPMNAssertion> getErrors() {
+        Set<BPMNAssertion> result = new HashSet<>();
 
         List<String> lines = getLines();
         for (String line : lines) {
-            for(Map.Entry<String, String> entry : substrings2error.entrySet()) {
+            for(Map.Entry<String, BPMNAssertion> entry : substrings2error.entrySet()) {
                 if(line.contains(entry.getKey())){
                     result.add(entry.getValue());
                 }

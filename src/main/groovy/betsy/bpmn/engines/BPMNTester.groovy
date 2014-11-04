@@ -1,6 +1,7 @@
 package betsy.bpmn.engines
 
 import ant.tasks.AntUtil
+import betsy.bpmn.model.BPMNAssertion
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path
@@ -24,11 +25,11 @@ public class BPMNTester {
         }
     }
 
-    public static void appendToFile(Path fileName, String s) {
+    public static void appendToFile(Path fileName, BPMNAssertion s) {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(fileName.toFile(), true));
-            bw.append(s);
+            bw.append(s.toString());
             bw.newLine();
         } catch (IOException ignored) {
             // empty by intent

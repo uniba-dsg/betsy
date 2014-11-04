@@ -45,6 +45,8 @@ public class BPMNTestBuilder {
         return joiner.toString();
     }
 
+    public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\"";
+
     public String getPackageString() {
         return packageString;
     }
@@ -69,7 +71,7 @@ public class BPMNTestBuilder {
         this.process = process;
     }
 
-    public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\"";
+
     private String packageString;
     private Path logDir;
     private BPMNProcess process;
