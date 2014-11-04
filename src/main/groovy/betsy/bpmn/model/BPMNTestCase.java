@@ -48,10 +48,6 @@ public class BPMNTestCase {
         return this;
     }
 
-    public BPMNTestCase assertSuccess() {
-        return addAssertions("SCRIPT_success");
-    }
-
     public BPMNTestCase assertTask1() {
         return addAssertions("SCRIPT_task1");
     }
@@ -72,14 +68,6 @@ public class BPMNTestCase {
         return addAssertions("SCRIPT_task5");
     }
 
-    public BPMNTestCase assertTrue() {
-        return addAssertions("SCRIPT_true");
-    }
-
-    public BPMNTestCase assertFalse() {
-        return addAssertions("SCRIPT_false");
-    }
-
     public BPMNTestCase assertRuntimeException() {
         return addAssertions(Errors.ERROR_RUNTIME);
     }
@@ -92,46 +80,9 @@ public class BPMNTestCase {
         return addAssertions(Errors.ERROR_THROWN_ESCALATION_EVENT);
     }
 
-    public BPMNTestCase assertSignaled() {
-        return addAssertions("SCRIPT_signaled");
-    }
-
-    public BPMNTestCase assertNormalTask() {
-        return addAssertions("SCRIPT_normalTask");
-    }
-
-    public BPMNTestCase assertNotInterrupted() {
-        return addAssertions("SCRIPT_taskNotInterrupted");
-    }
-
-    public BPMNTestCase assertStarted() {
-        return addAssertions("SCRIPT_started");
-    }
-
-    public BPMNTestCase assertTimerInternal() {
-        return addAssertions("SCRIPT_timerInternal");
-    }
-
-    public BPMNTestCase assertTimerExternal() {
-        return addAssertions("SCRIPT_timerExternal");
-    }
-
-    public BPMNTestCase assertTimerEvent() {
-        return addAssertions("SCRIPT_timerEvent");
-    }
-
     public BPMNTestCase optionDelay(int delay) {
         this.delay = delay;
         return this;
-    }
-
-    public BPMNTestCase optionSelfStarting() {
-        selfStarting = true;
-        return this;
-    }
-
-    public boolean getSelfStarting() {
-        return selfStarting;
     }
 
     public int getNumber() {
@@ -166,7 +117,6 @@ public class BPMNTestCase {
 
     private int number;
     private List<String> assertions = new ArrayList<>();
-    private boolean selfStarting = false;
     private int delay = 0;
     private List<BPMNTestCaseVariable> variables = new LinkedList<>();
 }

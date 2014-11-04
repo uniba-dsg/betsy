@@ -27,49 +27,42 @@ public class JbpmTester {
 
         addDeploymentErrorsToLogFile(serverLogFile);
 
-        if (!testCase.getSelfStarting()) {
-            //setup variables and start process
-            Map<String, Object> variables = new HashMap<>();
-            for (BPMNTestCaseVariable variable : testCase.getVariables()) {
-                variables.put(variable.getName(), variable.getValue());
-            }
+        //setup variables and start process
+        Map<String, Object> variables = new HashMap<>();
+        for (BPMNTestCaseVariable variable : testCase.getVariables()) {
+            variables.put(variable.getName(), variable.getValue());
+        }
 
-            StringJoiner joiner = new StringJoiner("&", "?", "");
-            for (Map.Entry<String, Object> entry : variables.entrySet()) {
-                joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
-            }
+        StringJoiner joiner = new StringJoiner("&", "?", "");
+        for (Map.Entry<String, Object> entry : variables.entrySet()) {
+            joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
+        }
 
-            String requestUrl = processStartUrl + joiner.toString();
-            try {
-                log.info("Trying to start process \"" + name + "\".");
-                JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-            } catch (RuntimeException ex) {
-                if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
-                    log.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
-                    //retry after delay
-                    WaitTasks.sleep(10000);
-                    try {
-                        JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-                    } catch (RuntimeException innerEx) {
-                        log.info(Errors.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
-                        BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
-                    }
-                } else {
-                    log.info(Errors.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+        String requestUrl = processStartUrl + joiner.toString();
+        try {
+            log.info("Trying to start process \"" + name + "\".");
+            JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
+        } catch (RuntimeException ex) {
+            if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
+                log.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
+                //retry after delay
+                WaitTasks.sleep(10000);
+                try {
+                    JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
+                } catch (RuntimeException innerEx) {
+                    log.info(Errors.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
                     BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
                 }
+            } else {
+                log.info(Errors.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+                BPMNTester.appendToFile(getFileName(), Errors.ERROR_RUNTIME);
             }
-
-            //delay for timer intermediate event
-            WaitTasks.sleep(testCase.getDelay());
-
-            checkProcessOutcome();
-
-
-        } else {
-            //delay for self starting
-            WaitTasks.sleep(testCase.getDelay());
         }
+
+        //delay for timer intermediate event
+        WaitTasks.sleep(testCase.getDelay());
+
+        checkProcessOutcome();
 
 
         BPMNTester.setupPathToToolsJarForJavacAntTask(this);

@@ -52,12 +52,10 @@ public class ActivitiTester {
 
         addDeploymentErrorsToLogFile(logFile);
 
-        if (!testCase.getSelfStarting()) {
-            try {
-                startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
-            } catch (Exception e) {
-                log.info("Could not start test case", e);
-            }
+        try {
+            startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
+        } catch (Exception e) {
+            log.info("Could not start test case", e);
         }
 
         WaitTasks.sleep(testCase.getDelay());
