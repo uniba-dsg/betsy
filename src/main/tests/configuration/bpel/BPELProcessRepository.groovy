@@ -1,9 +1,9 @@
 package configuration.bpel
 
 import betsy.bpel.model.BetsyProcess
-import betsy.common.model.steps.SoapTestStep
-import betsy.common.model.assertions.ExitAssertion
-import betsy.common.model.assertions.SoapFaultTestAssertion
+import betsy.bpel.model.steps.SoapTestStep
+import betsy.bpel.model.assertions.ExitAssertion
+import betsy.bpel.model.assertions.SoapFaultTestAssertion
 import betsy.common.repositories.Repository
 
 import java.lang.reflect.Field

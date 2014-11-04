@@ -8,7 +8,7 @@ import betsy.bpel.soapui.TestBuilder;
 import betsy.bpel.ws.TestPartnerService;
 import betsy.bpel.ws.TestPartnerServicePublisherInternal;
 import betsy.common.analytics.Analyzer;
-import betsy.common.model.TestSuite;
+import betsy.bpel.model.BPELTestSuite;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.util.IOCapture;
@@ -23,7 +23,7 @@ import java.nio.file.Path;
 public class Composite {
     private static Logger logger = Logger.getLogger(Composite.class);
     private TestPartnerService testPartner = new TestPartnerServicePublisherInternal();
-    private TestSuite testSuite;
+    private BPELTestSuite testSuite;
     private int requestTimeout = 15000;
 
     protected static void log(String name, Runnable closure) {
@@ -166,11 +166,11 @@ public class Composite {
         this.testPartner = testPartner;
     }
 
-    public TestSuite getTestSuite() {
+    public BPELTestSuite getTestSuite() {
         return testSuite;
     }
 
-    public void setTestSuite(TestSuite testSuite) {
+    public void setTestSuite(BPELTestSuite testSuite) {
         this.testSuite = testSuite;
     }
 

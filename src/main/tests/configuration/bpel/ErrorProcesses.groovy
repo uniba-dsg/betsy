@@ -1,7 +1,7 @@
 package configuration.bpel
 
 import betsy.bpel.model.BetsyProcess
-import betsy.common.model.TestCase
+import betsy.bpel.model.BPELTestCase
 import betsy.common.tasks.FileTasks
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
@@ -85,7 +85,7 @@ class ErrorProcesses {
     public static final BetsyProcess BACKDOOR_ROBUSTNESS = new BPELProcessBuilder().buildProcessWithPartner(
             "errorsbase/BackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new TestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
             ]
     )
 
@@ -93,7 +93,7 @@ class ErrorProcesses {
             // only used for error processes. but may also be used as a test
             "errorsbase/ImprovedBackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new TestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
             ]
     )
 
@@ -103,7 +103,7 @@ class ErrorProcesses {
         List<BetsyProcess> result = new LinkedList<>();
 
         BetsyProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
-        happyPathProcess.testCases = [new TestCase().checkDeployment().sendSync(0, 0)]
+        happyPathProcess.testCases = [new BPELTestCase().checkDeployment().sendSync(0, 0)]
         result.add(happyPathProcess)
 
         for (Map.Entry<String, String> entry : inputToErrorCode) {
@@ -111,7 +111,7 @@ class ErrorProcesses {
             int number = Integer.parseInt(entry.getKey())
             String name = entry.getValue()
             BetsyProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
-            process.testCases = [new TestCase().checkDeployment().sendSync(number, -1)]
+            process.testCases = [new BPELTestCase().checkDeployment().sendSync(number, -1)]
 
             result.add(process)
         }
@@ -125,7 +125,7 @@ class ErrorProcesses {
         List<BetsyProcess> result = new LinkedList<>();
 
         BetsyProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir)
-        happyPathProcess.testCases = [new TestCase().checkDeployment().sendSync(0, 0)]
+        happyPathProcess.testCases = [new BPELTestCase().checkDeployment().sendSync(0, 0)]
         result.add(happyPathProcess)
 
         for (Map.Entry<String, String> entry : inputToErrorCode) {
@@ -133,7 +133,7 @@ class ErrorProcesses {
             int number = Integer.parseInt(entry.getKey())
             String name = entry.getValue()
             BetsyProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir)
-            process.testCases = [new TestCase().checkDeployment().sendSync(number, -1)]
+            process.testCases = [new BPELTestCase().checkDeployment().sendSync(number, -1)]
 
             result.add(process)
         }

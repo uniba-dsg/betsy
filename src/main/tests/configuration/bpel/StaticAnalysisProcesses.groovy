@@ -1,7 +1,7 @@
 package configuration.bpel
 
 import betsy.bpel.model.BetsyProcess
-import betsy.common.model.TestCase
+import betsy.bpel.model.BPELTestCase
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -26,7 +26,7 @@ class StaticAnalysisProcesses {
                         bpel: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
                         wsdls: createWSDLPaths(dir, testDir),
                         additionalFiles: createXSDPaths(dir, testDir),
-                        testCases: [new TestCase().checkFailedDeployment()]
+                        testCases: [new BPELTestCase().checkFailedDeployment()]
                 ))
             }
         }

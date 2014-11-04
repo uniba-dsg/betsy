@@ -4,7 +4,7 @@ import betsy.bpel.model.BetsyProcess
 import betsy.bpel.engines.LocalEngine
 import betsy.common.engines.Util
 import betsy.bpel.engines.tomcat.Tomcat
-import betsy.common.model.steps.WsdlOperation
+import betsy.bpel.model.steps.WsdlOperation
 import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path

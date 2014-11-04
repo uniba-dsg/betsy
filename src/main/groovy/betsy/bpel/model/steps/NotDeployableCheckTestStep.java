@@ -1,4 +1,4 @@
-package betsy.common.model.steps;
+package betsy.bpel.model.steps;
 
 import betsy.common.model.TestStep;
 

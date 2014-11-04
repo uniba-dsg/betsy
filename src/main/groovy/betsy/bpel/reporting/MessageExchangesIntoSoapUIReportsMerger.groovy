@@ -1,8 +1,8 @@
 package betsy.bpel.reporting
 
 import betsy.bpel.model.BetsyProcess
-import betsy.common.model.TestSuite
 import betsy.bpel.engines.Engine
+import betsy.bpel.model.BPELTestSuite
 import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
 
@@ -12,7 +12,7 @@ class MessageExchangesIntoSoapUIReportsMerger {
 
     private static final Logger log = Logger.getLogger(MessageExchangesIntoSoapUIReportsMerger.class)
 
-    TestSuite tests
+    BPELTestSuite tests
 
     public void merge() {
         for(Engine engine : tests.engines) {

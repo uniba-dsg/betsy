@@ -2,7 +2,7 @@ package betsy.bpel;
 
 import betsy.bpel.engines.Engine;
 import betsy.bpel.model.BetsyProcess;
-import betsy.common.model.TestSuite;
+import betsy.bpel.model.BPELTestSuite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +18,7 @@ public class Betsy {
 
         Collections.sort(processes);
 
-        TestSuite testSuite = TestSuite.createTests(engines, processes);
+        BPELTestSuite testSuite = BPELTestSuite.createTests(engines, processes);
 
         composite.setTestSuite(testSuite);
         composite.execute();

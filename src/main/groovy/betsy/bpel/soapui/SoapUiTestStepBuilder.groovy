@@ -1,12 +1,12 @@
 package betsy.bpel.soapui
 
-import betsy.common.model.steps.DelayTestStep
-import betsy.common.model.steps.DeployableCheckTestStep
-import betsy.common.model.steps.NotDeployableCheckTestStep
-import betsy.common.model.steps.SoapTestStep
+import betsy.bpel.model.steps.DelayTestStep
+import betsy.bpel.model.steps.DeployableCheckTestStep
+import betsy.bpel.model.steps.NotDeployableCheckTestStep
+import betsy.bpel.model.steps.SoapTestStep
 import betsy.common.model.TestCase
 import betsy.common.model.TestStep
-import betsy.common.model.steps.WsdlOperation
+import betsy.bpel.model.steps.WsdlOperation
 import com.eviware.soapui.config.TestStepConfig
 import com.eviware.soapui.impl.wsdl.WsdlInterface
 import com.eviware.soapui.impl.wsdl.WsdlProject

@@ -1,14 +1,14 @@
 package betsy.bpel.reporting;
 
+import betsy.bpel.model.BPELTestSuite;
 import betsy.common.reporting.JUnitHtmlReports;
 import betsy.common.reporting.JUnitXmlResultToCsvRow;
-import betsy.common.model.TestSuite;
 
 public class Reporter {
 
-    private final TestSuite tests;
+    private final BPELTestSuite tests;
 
-    public Reporter(TestSuite tests) {
+    public Reporter(BPELTestSuite tests) {
         this.tests = tests;
     }
 

@@ -2,6 +2,7 @@ package betsy.common.model;
 
 import betsy.bpel.engines.Engine;
 import betsy.bpel.model.BetsyProcess;
+import betsy.common.engines.EngineAPI;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TestSuite {
+public class TestSuite<E extends EngineAPI<P>,P> {
     /**
      * Base directory for the whole test suite.
      */
@@ -17,36 +18,16 @@ public class TestSuite {
     /**
      * List of engines to be tested in this test suite. The engines contain their own TestCases.
      */
-    private List<Engine> engines = new ArrayList<>();
+    private List<E> engines = new ArrayList<>();
 
-    /**
-     * Factory method for a list of engines and processes.
-     *
-     * @param engines   a list of engines to be included in the test suite
-     * @param processes a list of processes to be included in the test suite
-     * @return a test suite where each engine tests all passed processes
-     */
-    public static TestSuite createTests(List<Engine> engines, List<BetsyProcess> processes) {
-        TestSuite test = new TestSuite();
-        test.setPath(Paths.get("test"));
+    private int processesCount = 0;
 
-        for (Engine engine : engines) {
-            List<BetsyProcess> clonedProcesses = processes.stream().map(p -> (BetsyProcess) p.clone()).collect(Collectors.toList());
+    public int getProcessesCount() {
+        return processesCount;
+    }
 
-            // link them
-            for (BetsyProcess process : clonedProcesses) {
-                process.setEngine(engine);
-                engine.getProcesses().add(process);
-            }
-
-            // set parentFolder
-            engine.setParentFolder(test.path);
-        }
-
-
-        test.engines = engines;
-
-        return test;
+    public void setProcessesCount(int processesCount) {
+        this.processesCount = processesCount;
     }
 
     public static String getCsvFile() {
@@ -73,16 +54,6 @@ public class TestSuite {
         return getReportsPath().resolve("TESTS-TestSuites.xml");
     }
 
-    public int getProcessesCount() {
-        int result = 0;
-
-        for (Engine engine : getEngines()) {
-            result += engine.getProcesses().size();
-        }
-
-        return result;
-    }
-
     @Override
     public String toString() {
         return getPath().toString();
@@ -96,11 +67,11 @@ public class TestSuite {
         this.path = path;
     }
 
-    public List<Engine> getEngines() {
+    public List<E> getEngines() {
         return engines;
     }
 
-    public void setEngines(List<Engine> engines) {
+    public void setEngines(List<E> engines) {
         this.engines = engines;
     }
 }

@@ -1,16 +1,14 @@
-package betsy.bpmn.model;
+package betsy.bpel.model;
 
 import betsy.bpel.engines.Engine;
-import betsy.bpmn.engines.BPMNEngine;
 import betsy.common.model.TestSuite;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPMNTestSuite extends TestSuite<BPMNEngine, BPMNProcess> {
+public class BPELTestSuite extends TestSuite<Engine, BetsyProcess> {
+
     /**
      * Factory method for a list of engines and processes.
      *
@@ -18,16 +16,16 @@ public class BPMNTestSuite extends TestSuite<BPMNEngine, BPMNProcess> {
      * @param processes a list of processes to be included in the test suite
      * @return a test suite where each engine tests all passed processes
      */
-    public static BPMNTestSuite createTests(List<BPMNEngine> engines, final List<BPMNProcess> processes) {
-
-        BPMNTestSuite test = new BPMNTestSuite();
+    public static BPELTestSuite createTests(List<Engine> engines, List<BetsyProcess> processes) {
+        BPELTestSuite test = new BPELTestSuite();
         test.setPath(Paths.get("test"));
 
-        for (BPMNEngine engine : engines) {
-            List<BPMNProcess> clonedProcesses = processes.stream().map(p -> (BPMNProcess) p.clone()).collect(Collectors.toList());
+        for (Engine engine : engines) {
+
+            List<BetsyProcess> clonedProcesses = processes.stream().map(p -> (BetsyProcess) p.clone()).collect(Collectors.toList());
 
             // link them
-            for (BPMNProcess process : clonedProcesses) {
+            for (BetsyProcess process : clonedProcesses) {
                 process.setEngine(engine);
                 engine.getProcesses().add(process);
             }
@@ -42,13 +40,14 @@ public class BPMNTestSuite extends TestSuite<BPMNEngine, BPMNProcess> {
         return test;
     }
 
-    public static int getProcessesCount(List<BPMNEngine> engines) {
+    public static int getProcessesCount(List<Engine> engines) {
         int result = 0;
 
-        for (BPMNEngine engine : engines) {
+        for (Engine engine : engines) {
             result += engine.getProcesses().size();
         }
 
         return result;
     }
+
 }

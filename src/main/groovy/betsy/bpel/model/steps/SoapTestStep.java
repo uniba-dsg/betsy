@@ -1,8 +1,8 @@
-package betsy.common.model.steps;
+package betsy.bpel.model.steps;
 
 import betsy.common.model.TestAssertion;
 import betsy.common.model.TestStep;
-import betsy.common.model.assertions.XpathTestAssertion;
+import betsy.bpel.model.assertions.XpathTestAssertion;
 
 import java.util.ArrayList;
 import java.util.List;

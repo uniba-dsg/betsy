@@ -1,4 +1,4 @@
-package betsy.common.model.assertions;
+package betsy.bpel.model.assertions;
 
 import betsy.common.model.TestAssertion;
 
