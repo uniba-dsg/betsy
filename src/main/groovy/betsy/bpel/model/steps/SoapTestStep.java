@@ -1,17 +1,10 @@
 package betsy.bpel.model.steps;
 
-import betsy.common.model.TestAssertion;
-import betsy.common.model.TestStep;
 import betsy.bpel.model.assertions.XpathTestAssertion;
+import betsy.common.model.AssertableTestStep;
 
-import java.util.ArrayList;
-import java.util.List;
+public class SoapTestStep extends AssertableTestStep {
 
-public class SoapTestStep extends TestStep {
-    /**
-     * List of assertions which are evaluated after the test step has been executed/the messages have been sent.
-     */
-    private List<TestAssertion> assertions = new ArrayList<>();
     /**
      * The input value which is send using the <code>operation</code> to the system under test.
      */
@@ -32,7 +25,7 @@ public class SoapTestStep extends TestStep {
         assertion.setExpectedOutput(output);
         assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer");
         assertion.setOutput(output);
-        assertions.add(assertion);
+        getAssertions().add(assertion);
     }
 
     public void setPartnerOutput(String output) {
@@ -40,7 +33,7 @@ public class SoapTestStep extends TestStep {
         assertion.setExpectedOutput(output);
         assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';number(//test:testElementSyncResponse) cast as xs:integer");
         assertion.setOutput(output);
-        assertions.add(assertion);
+        getAssertions().add(assertion);
     }
 
     public void setStringOperationOutput(String output) {
@@ -48,7 +41,7 @@ public class SoapTestStep extends TestStep {
         assertion.setExpectedOutput(output);
         assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncStringResponse");
         assertion.setOutput(output);
-        assertions.add(assertion);
+        getAssertions().add(assertion);
     }
 
     public void setOutputAsLeast(final String output) {
@@ -56,20 +49,17 @@ public class SoapTestStep extends TestStep {
         assertion.setExpectedOutput("true");
         assertion.setXpathExpression("declare namespace test=\'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface\';//test:testElementSyncResponse >= " + output);
         assertion.setOutput(output);
-        assertions.add(assertion);
+        getAssertions().add(assertion);
     }
 
     @Override
     public String toString() {
-        return super.toString() + "SoapTestStep{" + "input='" + input + "\'" + ", operation=" + operation + ", testPartner=" + testPartner + ", concurrencyTest=" + concurrencyTest + ", assertions=" + assertions + "}";
-    }
-
-    public List<TestAssertion> getAssertions() {
-        return assertions;
-    }
-
-    public void setAssertions(List<TestAssertion> assertions) {
-        this.assertions = assertions;
+        return "SoapTestStep{" +
+                "input='" + input + '\'' +
+                ", operation=" + operation +
+                ", testPartner=" + testPartner +
+                ", concurrencyTest=" + concurrencyTest +
+                "} " + super.toString();
     }
 
     public String getInput() {
@@ -113,7 +103,7 @@ public class SoapTestStep extends TestStep {
             XpathTestAssertion assertion = new XpathTestAssertion();
             assertion.setExpectedOutput("true");
             assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse > 0");
-            assertions.add(assertion);
+            getAssertions().add(assertion);
         }
 
         this.concurrencyTest = concurrencyTest;
