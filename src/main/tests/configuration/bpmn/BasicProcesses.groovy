@@ -54,7 +54,7 @@ class BasicProcesses {
             "The first of these sequenceFlows is associated with a conditionExpression, the second one is marked as default and the third has no condition associated. " +
             "This is a special case document in Sec. 13.2.1, p. 427.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask3(),
+//                    new BPMNTestCase(1).inputA().assertTask1().assertTask3(),
                     new BPMNTestCase(2).inputB().assertTask2().assertTask3()
             ]
     )
