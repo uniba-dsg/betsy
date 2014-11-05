@@ -110,8 +110,8 @@ class EventProcesses {
             "Conditional_StartEvent_EventSubProcess_Interrupting", "A test for an interrupting conditional start event " +
             "in an event sub process",
             [
-                    new BPMNTestCase(1).inputA().assertTask1(),
-                    new BPMNTestCase(2).inputB().assertTask2()
+                    new BPMNTestCase(1).inputA().assertTask1()
+
             ]
     )
 
@@ -120,8 +120,7 @@ class EventProcesses {
             "Conditional_StartEvent_EventSubProcess_NonInterrupting", "A test for an conditional start event in an event " +
             "sub process which is marked as non interrupting.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2(),
-                    new BPMNTestCase(2).inputB().assertTask2()
+                    new BPMNTestCase(1).inputA().assertTask1().assertTask2()
             ]
     )
 
@@ -331,16 +330,6 @@ class EventProcesses {
                     new BPMNTestCase(1).assertTask3().optionDelay(5000),
             ]
     )
-
-    public static final BPMNProcess TIMER_START_EVENT = builder.buildEventProcess(
-            "Timer_StartEvent", "A test with a timer start event. Depending on the timeout for the test, " +
-            "a subsequent scriptTask should be executed or the process should be stopped before.",
-            [
-                    new BPMNTestCase(1).assertTask1().optionDelay(90000),
-                    new BPMNTestCase(2)
-            ]
-    )
-
 
     public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = builder.buildEventProcess(
             "Timer_StartEvent_EventSubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess." +
