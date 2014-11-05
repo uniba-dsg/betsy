@@ -2,7 +2,6 @@ package betsy.common.analytics.additional
 
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
-import betsy.common.analytics.model.Result
 import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
