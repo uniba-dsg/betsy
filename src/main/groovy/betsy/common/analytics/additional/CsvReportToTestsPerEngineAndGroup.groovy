@@ -3,6 +3,7 @@ package betsy.common.analytics.additional
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
 import betsy.common.analytics.model.Result
+import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
 
@@ -18,11 +19,11 @@ class CsvReportToTestsPerEngineAndGroup {
             int totalFailed = 0
             report.getGroups().each { group ->
                 Collection<Result> results = group.getResultsPerEngine(engine)
-                int successful = results.count { it.partial == Result.Support.TOTAL}
+                int successful = results.count { it.partial == Support.TOTAL}
                 totalSuccessful += successful
-                int partial = results.count { it.partial == Result.Support.PARTIAL}
+                int partial = results.count { it.partial == Support.PARTIAL}
                 totalPartial += partial
-                int failed = results.count { it.partial == Result.Support.NONE}
+                int failed = results.count { it.partial == Support.NONE}
                 totalFailed += failed
 
                 writer.println "$successful\t${partial == 0 ? '' : partial}\t$failed"
@@ -37,7 +38,7 @@ class CsvReportToTestsPerEngineAndGroup {
             int totalSuccessful = 0
             report.getGroups().each { group ->
                 Collection<Result> results = group.getResultsPerEngine(engine)
-                totalSuccessful += results.count { it.partial == Result.Support.TOTAL}
+                totalSuccessful += results.count { it.partial == Support.TOTAL}
             }
 
             def successfulInPercent = (int) Math.round(((double) totalSuccessful / total * 100))

@@ -3,6 +3,7 @@ package betsy.common.analytics.additional
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
 import betsy.common.analytics.model.Result
+import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
 
@@ -50,7 +51,7 @@ class CsvReportToPortabilityData {
 
         def arrays = report.engines.collect { engine ->
             new EngineResults(name: engine.name, results: report.getTests().sort {it.name}.collect { test ->
-                test.engineToResult.get(engine).partial == Result.Support.TOTAL ? 1 : 0
+                test.engineToResult.get(engine).partial == Support.TOTAL ? 1 : 0
             }
             )
         }
