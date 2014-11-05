@@ -4,6 +4,7 @@ import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
 import betsy.common.analytics.model.Engine
 import betsy.common.analytics.model.Result
+import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
 
@@ -36,7 +37,7 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
                 report.engines.each { engine ->
                     int successes = 0
                     values.each { test ->
-                        if (test.engineToResult.get(engine).partial == Result.Support.TOTAL) {
+                        if (test.engineToResult.get(engine).partial == Support.TOTAL) {
                             successes++;
                         }
                     }
@@ -67,9 +68,13 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
         return group;
     }
 
+    /**
+     *
+     * @param args - first elem: Path to CSV, second: properties file to use
+     */
     public static void main(String[] args) {
         Properties properties = new Properties()
-        properties.load(CsvReportToTestsPerEngineAndGroupAndActivity.class.getResourceAsStream("groups.properties"))
+        properties.load(CsvReportToTestsPerEngineAndGroupAndActivity.class.getResourceAsStream(args[1]))
         new CsvReportToTestsPerEngineAndGroupAndActivity(
                 report: new CsvReportLoader(Paths.get(args[0]), new CsvReport()).load(),
                 properties: properties
