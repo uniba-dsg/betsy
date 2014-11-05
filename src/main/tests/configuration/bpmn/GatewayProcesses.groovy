@@ -63,9 +63,6 @@ class GatewayProcesses {
             "InclusiveGateway_Default", "A process with five scriptTasks, three of which are encapsulated by inclusiveGateways. " +
             "One of the scriptTasks acts as a default task. Either one, both of the others or the default task are executed based on input data.",
             [
-                    new BPMNTestCase(1).inputAB().assertTask1().assertTask2().assertTask4(),
-                    new BPMNTestCase(2).inputA().assertTask1().assertTask4(),
-                    new BPMNTestCase(3).inputB().assertTask2().assertTask4(),
                     new BPMNTestCase(4).inputC().assertTask3().assertTask4()
             ]
     )
