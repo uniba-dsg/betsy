@@ -36,7 +36,7 @@
                 <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
                 <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
                 <bpmn2:timerEventDefinition id="_TimerEventDefinition_4">
-                    <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT3S</bpmn2:timeDuration>
+                    <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT1M</bpmn2:timeDuration>
                 </bpmn2:timerEventDefinition>
             </bpmn2:intermediateCatchEvent>
 
@@ -82,19 +82,10 @@
 
         </bpmn2:subProcess>
 
-
-        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="SubProcess_1" targetRef="end"/>
-
-        <bpmn2:scriptTask id="end" name="End">
-            <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
-            <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
-            <bpmn2:script>SCRIPT_task3</bpmn2:script>
-        </bpmn2:scriptTask>
-
-        <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="end" targetRef="EndEvent_2"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="SubProcess_1" targetRef="EndEvent_2"/>
 
         <bpmn2:endEvent id="EndEvent_2">
-            <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
         </bpmn2:endEvent>
     </bpmn2:process>
 </bpmn2:definitions>

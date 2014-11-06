@@ -200,11 +200,9 @@ class EventProcesses {
 
     public static final BPMNProcess ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
             "Escalation_StartEvent_EventSubProcess_Interrupting", "A test for the interrupting escalation start event in " +
-            "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. " +
-            "After the execution of the EventSubProcess the flow should continue normally, and therefore Task3 should " +
-            "be executed.",
+            "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. Task 2 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask2().assertTask3()
+                    new BPMNTestCase(1).assertTask2()
             ]
     )
 
@@ -282,11 +280,9 @@ class EventProcesses {
 
     public static final BPMNProcess SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = builder.buildEventProcess(
             "Signal_StartEvent_EventSubProcess_Interrupting", "A test for the interrupting signal start event in " +
-            "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. " +
-            "After the execution of the EventSubProcess the flow should continue normally, and therefore Task3 should " +
-            "be executed.",
+            "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. Task 2 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask2().assertTask3()
+                    new BPMNTestCase(1).assertTask2()
             ]
     )
 
@@ -345,7 +341,7 @@ class EventProcesses {
             "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
             "The event subProcess interrupts the activities of its parent subProcess.",
             [
-                    new BPMNTestCase(1).assertTask2().assertTask3().optionDelay(5000)
+                    new BPMNTestCase(1).assertTask2().optionDelay(5000)
             ]
     )
 
