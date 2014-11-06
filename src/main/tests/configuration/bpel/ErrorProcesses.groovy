@@ -65,7 +65,7 @@ class ErrorProcesses {
 
     private
     static BPELProcess cloneErrorBetsyProcess(BPELProcess baseProcess, int number, String name, Path errorsDir) {
-        BPELProcess process = (BPELProcess) baseProcess.clone()
+        BPELProcess process = baseProcess.createCopyWithoutEngine()
 
         // copy file
         String filename = "${baseProcess.getShortId()}_ERR${number}_${name}"
