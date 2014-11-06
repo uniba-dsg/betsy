@@ -1,10 +1,9 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.Errors;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
-import betsy.bpmn.model.BPMNAssertion;
+import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
 import betsy.common.tasks.FileTasks;
@@ -51,12 +50,12 @@ public class JbpmTester {
                 try {
                     JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {
-                    log.info(BPMNAssertion.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
-                    BPMNTester.appendToFile(getFileName(), BPMNAssertion.ERROR_RUNTIME);
+                    log.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
+                    BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
                 }
             } else {
-                log.info(BPMNAssertion.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
-                BPMNTester.appendToFile(getFileName(), BPMNAssertion.ERROR_RUNTIME);
+                log.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
             }
         }
 
@@ -77,13 +76,13 @@ public class JbpmTester {
             String result = JsonHelper.getStringWithAuth(processHistoryUrl, 200, user, password);
             if (result.contains("ERR-1")) {
                 log.info("Process has been aborted. Error with id ERR-1 detected.");
-                BPMNTester.appendToFile(getFileName(), BPMNAssertion.ERROR_THROWN_ERROR_EVENT);
+                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             } else if (result.contains("ESC_1")) {
                 log.info("Process has been aborted. Escalation with id ESC_1 detected.");
-                BPMNTester.appendToFile(getFileName(), BPMNAssertion.ERROR_THROWN_ESCALATION_EVENT);
+                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
             } else if (result.contains("<status>3</status>")) {
                 log.info("Process has been aborted with unknown error.");
-                BPMNTester.appendToFile(getFileName(), BPMNAssertion.ERROR_PROCESS_ABORTED);
+                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
             } else if (result.contains("<status>1</status>")) {
                 log.info("Process completed normally.");
             }
@@ -95,10 +94,10 @@ public class JbpmTester {
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("failed to deploy", BPMNAssertion.ERROR_DEPLOYMENT);
-        for (BPMNAssertion deploymentError : analyzer.getErrors()) {
+        analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
+        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNTester.appendToFile(getFileName(), deploymentError);
-            log.info(BPMNAssertion.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
+            log.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
         }
     }
 

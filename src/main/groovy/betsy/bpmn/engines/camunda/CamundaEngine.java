@@ -48,7 +48,7 @@ public class CamundaEngine extends BPMNEngine {
     @Override
     public void buildArchives(final BPMNProcess process) {
         XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
-                process.getResourcePath().resolve(process.getName() + ".bpmn"),
+                process.getProcess(),
                 process.getTargetPath().resolve("war/WEB-INF/classes/" + process.getName() + ".bpmn-temp"));
 
         XSLTTasks.transform(getXsltPath().resolve("camunda.xsl"),
@@ -60,7 +60,7 @@ public class CamundaEngine extends BPMNEngine {
         CamundaResourcesGenerator generator = new CamundaResourcesGenerator();
         generator.setGroupId(process.getGroupId());
         generator.setProcessName(process.getName());
-        generator.setSrcDir(process.getResourcePath());
+        generator.setSrcDir(process.getTargetProcessPath());
         generator.setDestDir(process.getTargetPath().resolve("war"));
         generator.setVersion(process.getVersion());
         generator.generateWar();

@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import betsy.bpmn.model.BPMNAssertion;
+import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNNamespaceContext;
 import betsy.bpmn.model.BPMNProcess;
 import configuration.bpmn.BPMNProcessRepository;
@@ -39,7 +39,7 @@ public class ProcessValidator {
     private void assertNamingConventionsCorrect() {
         for (BPMNProcess process : processes) {
             try {
-                Document doc = builder.parse(process.getResourceFile().toString());
+                Document doc = builder.parse(process.getProcess().toString());
 
                 XPathExpression definitionExpression = xpath.compile("//*[local-name() = 'definitions' and @id='" + process.getName() + "Test']");
                 NodeList nodeList = (NodeList) definitionExpression.evaluate(doc, XPathConstants.NODESET);
@@ -60,7 +60,7 @@ public class ProcessValidator {
                 }
 
             } catch (SAXException | XPathExpressionException | IOException e) {
-                throw new IllegalStateException("Validation failed for file " + process.getResourceFile().toString(), e);
+                throw new IllegalStateException("Validation failed for file " + process.getProcess().toString(), e);
             }
         }
     }
@@ -70,7 +70,7 @@ public class ProcessValidator {
 
         for (BPMNProcess process : processes) {
             try {
-                Document doc = builder.parse(process.getResourceFile().toString());
+                Document doc = builder.parse(process.getProcess().toString());
 
                 XPathExpression definitionExpression = xpath.compile("//*[local-name() = 'script']");
                 NodeList nodeList = (NodeList) definitionExpression.evaluate(doc, XPathConstants.NODESET);
@@ -87,7 +87,7 @@ public class ProcessValidator {
                 }
 
             } catch (SAXException | XPathExpressionException | IOException e) {
-                throw new IllegalStateException("Validation failed for file " + process.getResourceFile().toString(), e);
+                throw new IllegalStateException("Validation failed for file " + process.getProcess().toString(), e);
             }
         }
 
@@ -109,7 +109,7 @@ public class ProcessValidator {
 
     private void addMessage(Set<String> assertions, BPMNProcess process, String x) {
         if (!Arrays.asList(ALLOWED_LOG_MESSAGES).contains(x)) {
-            System.out.println(x + " in " + process.getResourceFile());
+            System.out.println(x + " in " + process.getProcess());
         }
 
         assertions.add(x);
@@ -129,7 +129,7 @@ public class ProcessValidator {
     }
 
     public static String[] getAllowedLogMessages() {
-        List<String> allowedScriptTasks = Stream.of(BPMNAssertion.values()).map(Object::toString).filter((x) -> x.startsWith("SCRIPT")).collect(Collectors.toList());
+        List<String> allowedScriptTasks = Stream.of(BPMNAssertions.values()).map(Object::toString).filter((x) -> x.startsWith("SCRIPT")).collect(Collectors.toList());
         List<String> allowedLogMessages = new LinkedList<>();
         allowedLogMessages.addAll(allowedScriptTasks);
         allowedLogMessages.add("CREATE_LOG_FILE");

@@ -1,45 +1,26 @@
 package betsy.bpel.model;
 
 import betsy.bpel.engines.Engine;
-import betsy.common.engines.Nameable;
-import betsy.common.model.TestCase;
+import betsy.common.model.BetsyProcess;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPELProcess implements Cloneable, Comparable, Nameable {
-    public void setTestCases(List<TestCase> testCases) {
-        uniqueifyTestCaseNames(testCases);
-        this.testCases = testCases;
-    }
-
-    public List<TestCase> getTestCases() {
-        return testCases;
-    }
-
-    private static void uniqueifyTestCaseNames(List<TestCase> testCases) {
-        // group by name of test case
-        for (int counter = 1; counter < testCases.size(); counter++) {
-            TestCase testCase = testCases.get(counter - 1);
-            testCase.setName(testCase.getName() + "-" + counter);
-        }
-    }
+public class BPELProcess extends BetsyProcess<BPELTestCase, Engine> {
 
     @Override
-    public Object clone() {
+    public BPELProcess createCopyWithoutEngine() {
         BPELProcess process = new BPELProcess();
-        process.setBpel(bpel);
+        process.setProcess(getProcess());
+        process.setTestCases(getTestCases());
+        process.setDescription(getDescription());
+
         process.setWsdls(wsdls);
         process.setAdditionalFiles(additionalFiles);
-        process.setTestCases(testCases);
-        return process;
-    }
 
-    @Override
-    public String toString() {
-        return getNormalizedId();
+        return process;
     }
 
     public String getEndpoint() {
@@ -48,72 +29,6 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
 
     public String getWsdlEndpoint() {
         return getEndpoint() + "?wsdl";
-    }
-
-    public String getGroup() {
-        return bpel.getParent().getFileName().toString();
-    }
-
-    /**
-     * An id as "language_features/structured_activities/Sequence" is transformed to
-     * "language_features__structured_activities__Sequence"
-     *
-     * @return
-     */
-    public String getNormalizedId() {
-        return getGroup() + "__" + getName();
-    }
-
-    /**
-     * A bpel path as "language_features/structured_activities/Sequence.bpel" is used to extract "Sequence.bpel"
-     *
-     * @return
-     */
-    public String getBpelFileName() {
-        return bpel.getFileName().toString();
-    }
-
-    public String getName() {
-        return getBpelFileNameWithoutExtension();
-    }
-
-    public String getBpelFileNameWithoutExtension() {
-        return getBpelFileName().substring(0, getBpelFileName().length() - 5);
-    }
-
-    public Path getBpelFilePath() {
-        return bpel;
-    }
-
-    /**
-     * The path <code>test/$engine/$process</code>
-     *
-     * @return the path <code>test/$engine/$process</code>
-     */
-    public Path getTargetPath() {
-        return engine.getPath().resolve(getNormalizedId());
-    }
-
-    public Path getTargetLogsPath() {
-        return getTargetPath().resolve("logs");
-    }
-
-    /**
-     * The path <code>test/$engine/$process/pkg</code>
-     *
-     * @return the path <code>test/$engine/$process/pkg</code>
-     */
-    public Path getTargetPackagePath() {
-        return getTargetPath().resolve("pkg");
-    }
-
-    /**
-     * The path <code>test/$engine/$process/tmp</code>
-     *
-     * @return the path <code>test/$engine/$process/tmp</code>
-     */
-    public Path getTargetTmpPath() {
-        return getTargetPath().resolve("tmp");
     }
 
     /**
@@ -165,17 +80,8 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
         return getTargetPath().resolve("soapui");
     }
 
-    /**
-     * The path <code>test/$engine/$process/reports</code>
-     *
-     * @return the path <code>test/$engine/$process/reports</code>
-     */
-    public Path getTargetReportsPath() {
-        return getTargetPath().resolve("reports");
-    }
-
     public String getTargetSoapUIProjectName() {
-        String result = engine + "." + getGroup() + "." + getName();
+        String result = getEngine() + "." + getGroup() + "." + getName();
         return result.replaceAll("__", ".");
     }
 
@@ -185,24 +91,11 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
      * @return the file name <code>test_$engine_$process_soapui.xml</code>
      */
     public String getTargetSoapUIFileName() {
-        return "test_" + engine + "_" + getGroup() + "_" + getName() + "_soapui.xml";
+        return "test_" + getEngine() + "_" + getGroup() + "_" + getName() + "_soapui.xml";
     }
 
     public Path getTargetSoapUIFilePath() {
         return getTargetSoapUIPath().resolve(getTargetSoapUIFileName());
-    }
-
-    /**
-     * The path <code>test/$engine/$process/bpel</code>
-     *
-     * @return the path <code>test/$engine/$process/bpel</code>
-     */
-    public Path getTargetBpelPath() {
-        return getTargetPath().resolve("bpel");
-    }
-
-    public Path getTargetBpelFilePath() {
-        return getTargetBpelPath().resolve(getBpelFileName());
     }
 
     public List<Path> getWsdlPaths() {
@@ -210,7 +103,7 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
     }
 
     public List<Path> getTargetWsdlPaths() {
-        return getWsdlFileNames().stream().map((p) -> getTargetBpelPath().resolve(p)).collect(Collectors.toList());
+        return getWsdlFileNames().stream().map((p) -> getTargetProcessPath().resolve(p)).collect(Collectors.toList());
     }
 
     public List<String> getWsdlFileNames() {
@@ -219,29 +112,6 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
 
     public List<Path> getAdditionalFilePaths() {
         return additionalFiles;
-    }
-
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!getClass().equals(o.getClass())) {
-            return false;
-        }
-
-        BPELProcess that = (BPELProcess) o;
-
-        return bpel.toString().equals(that.bpel.toString());
-
-    }
-
-    public int hashCode() {
-        return bpel.hashCode();
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return bpel.compareTo(((BPELProcess) o).bpel);
     }
 
     public String getShortId() {
@@ -268,30 +138,6 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
         return name.replaceAll("[a-z]", "");
     }
 
-    public Path getBpel() {
-        return bpel;
-    }
-
-    public void setBpel(Path bpel) {
-        this.bpel = bpel;
-    }
-
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public List<Path> getWsdls() {
         return wsdls;
     }
@@ -308,13 +154,12 @@ public class BPELProcess implements Cloneable, Comparable, Nameable {
         this.additionalFiles = additionalFiles;
     }
 
-    private Path bpel;
-    private Engine engine;
-    private String description = "";
-    private List<TestCase> testCases = new ArrayList<>();
     private List<Path> wsdls = new ArrayList<>();
     /**
      * Additional files like xslt scripts or other resources.
      */
     private List<Path> additionalFiles = new ArrayList<>();
+
+
 }
+

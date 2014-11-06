@@ -129,12 +129,13 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
     test/reports/html/ # html junit reports
 	test/$engine/
 	test/$engine/$process/
+	test/$engine/$process/process/
+	test/$engine/$process/reports/
+    test/$engine/$process/logs/
 
 	BPEL structure
-	test/$engine/$process/bpel/ # bpel file(s), wsdl file(s), xsd file(s)
 	test/$engine/$process/pgk/ # deployable zip files
 	test/$engine/$process/soapui/ # soapUI test suite
-	test/$engine/$process/reports/ # soapUI test reports
 	[test/$engine/$process/binding/ # binding package]
 	[test/$engine/$process/composite/ # composite package]
 

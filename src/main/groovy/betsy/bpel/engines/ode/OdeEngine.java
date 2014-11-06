@@ -70,10 +70,10 @@ public class OdeEngine extends LocalEngine {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
-        XSLTTasks.transform(getXsltPath().resolve("bpel_to_ode_deploy_xml.xsl"), process.getBpelFilePath(), process.getTargetBpelPath().resolve("deploy.xml"));
+        XSLTTasks.transform(getXsltPath().resolve("bpel_to_ode_deploy_xml.xsl"), process.getProcess(), process.getTargetProcessPath().resolve("deploy.xml"));
 
-        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("TestInterface.wsdl"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
-        FileTasks.replaceTokenInFile(process.getTargetBpelPath().resolve("deploy.xml"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
+        FileTasks.replaceTokenInFile(process.getTargetProcessPath().resolve("TestInterface.wsdl"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
+        FileTasks.replaceTokenInFile(process.getTargetProcessPath().resolve("deploy.xml"), TEST_INTERFACE_SERVICE, process.getName() + TEST_INTERFACE_SERVICE);
 
         getPackageBuilder().replaceEndpointTokenWithValue(process);
         getPackageBuilder().replacePartnerTokenWithValue(process);

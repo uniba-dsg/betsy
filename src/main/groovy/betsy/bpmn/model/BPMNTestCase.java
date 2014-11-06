@@ -1,13 +1,14 @@
 package betsy.bpmn.model;
 
-import betsy.bpmn.engines.Errors;
+import betsy.common.model.TestCase;
 import betsy.common.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BPMNTestCase {
+public class BPMNTestCase extends TestCase {
+
     public BPMNTestCase() {
         this(1);
     }
@@ -43,41 +44,41 @@ public class BPMNTestCase {
         return addInputTestString("c");
     }
 
-    private BPMNTestCase addAssertions(BPMNAssertion assertion) {
+    private BPMNTestCase addAssertions(BPMNAssertions assertion) {
         assertions.add(assertion.toString());
         return this;
     }
 
     public BPMNTestCase assertTask1() {
-        return addAssertions(BPMNAssertion.SCRIPT_task1);
+        return addAssertions(BPMNAssertions.SCRIPT_task1);
     }
 
     public BPMNTestCase assertTask2() {
-        return addAssertions(BPMNAssertion.SCRIPT_task2);
+        return addAssertions(BPMNAssertions.SCRIPT_task2);
     }
 
     public BPMNTestCase assertTask3() {
-        return addAssertions(BPMNAssertion.SCRIPT_task3);
+        return addAssertions(BPMNAssertions.SCRIPT_task3);
     }
 
     public BPMNTestCase assertTask4() {
-        return addAssertions(BPMNAssertion.SCRIPT_task4);
+        return addAssertions(BPMNAssertions.SCRIPT_task4);
     }
 
     public BPMNTestCase assertTask5() {
-        return addAssertions(BPMNAssertion.SCRIPT_task5);
+        return addAssertions(BPMNAssertions.SCRIPT_task5);
     }
 
     public BPMNTestCase assertRuntimeException() {
-        return addAssertions(BPMNAssertion.ERROR_RUNTIME);
+        return addAssertions(BPMNAssertions.ERROR_RUNTIME);
     }
 
     public BPMNTestCase assertErrorThrownErrorEvent() {
-        return addAssertions(BPMNAssertion.ERROR_THROWN_ERROR_EVENT);
+        return addAssertions(BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
     }
 
     public BPMNTestCase assertErrorThrownEscalationEvent() {
-        return addAssertions(BPMNAssertion.ERROR_THROWN_ESCALATION_EVENT);
+        return addAssertions(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
     }
 
     public BPMNTestCase optionDelay(int delay) {

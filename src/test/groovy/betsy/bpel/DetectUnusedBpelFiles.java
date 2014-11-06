@@ -31,7 +31,7 @@ public class DetectUnusedBpelFiles {
     private List<Path> getBetsyProcessesPaths(List<BPELProcess> processed) {
         List<Path> bpelFiles = new LinkedList<>();
         for(BPELProcess process : processed) {
-            bpelFiles.add(process.getBpelFilePath());
+            bpelFiles.add(process.getProcess());
         }
         return bpelFiles;
     }

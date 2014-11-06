@@ -43,7 +43,7 @@ public class ActivitiEngine extends BPMNEngine {
 
     @Override
     public void deploy(BPMNProcess process) {
-        deployBpmnProcess(getTargetProcessBpmnFile(process));
+        deployBpmnProcess(process.getTargetProcessFilePath());
     }
 
     public static void deployBpmnProcess(Path bpmnFile) {
@@ -63,22 +63,14 @@ public class ActivitiEngine extends BPMNEngine {
     @Override
     public void buildArchives(BPMNProcess process) {
         XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
-                process.getResourcePath().resolve(process.getName() + ".bpmn"),
-                getTargetProcessFolder(process).resolve(process.getName() + ".bpmn-temp"));
+                process.getProcess(),
+                process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"));
 
         XSLTTasks.transform(getXsltPath().resolve("camunda.xsl"),
-                getTargetProcessFolder(process).resolve(process.getName() + ".bpmn-temp"),
-                getTargetProcessBpmnFile(process));
+                process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"),
+                process.getTargetProcessFilePath());
 
-        FileTasks.deleteFile(getTargetProcessFolder(process).resolve(process.getName() + ".bpmn-temp"));
-    }
-
-    private Path getTargetProcessBpmnFile(BPMNProcess process) {
-        return getTargetProcessFolder(process).resolve(process.getName() + ".bpmn");
-    }
-
-    private Path getTargetProcessFolder(BPMNProcess process) {
-        return process.getTargetPath().resolve("process");
+        FileTasks.deleteFile(process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"));
     }
 
     @Override

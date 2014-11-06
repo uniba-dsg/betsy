@@ -57,8 +57,8 @@ public class CoreBPELEnumerator {
                 Files.createDirectories(bpelDirectory);
 
                 // copy BPEL file
-                Path targetBpelFilePath = bpelDirectory.resolve(process.getBpelFileName());
-                Files.copy(process.getBpelFilePath(), targetBpelFilePath);
+                Path targetBpelFilePath = bpelDirectory.resolve(process.getProcessFileName());
+                Files.copy(process.getProcess(), targetBpelFilePath);
 
                 // copy WSDL files and XSD files
                 for (Path wsdl : process.getWsdlPaths()) {

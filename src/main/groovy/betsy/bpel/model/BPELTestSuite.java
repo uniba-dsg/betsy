@@ -22,7 +22,7 @@ public class BPELTestSuite extends TestSuite<Engine, BPELProcess> {
 
         for (Engine engine : engines) {
 
-            List<BPELProcess> clonedProcesses = processes.stream().map(p -> (BPELProcess) p.clone()).collect(Collectors.toList());
+            List<BPELProcess> clonedProcesses = processes.stream().map(BPELProcess::createCopyWithoutEngine).collect(Collectors.toList());
 
             // link them
             for (BPELProcess process : clonedProcesses) {

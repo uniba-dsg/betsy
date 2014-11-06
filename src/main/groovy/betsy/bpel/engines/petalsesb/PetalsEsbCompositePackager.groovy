@@ -22,7 +22,7 @@ class PetalsEsbCompositePackager {
         Path compositeDir = process.targetTmpPath.resolve("composite")
         Path compositeMetaDir = compositeDir.resolve("META-INF")
         FileTasks.mkdirs(compositeMetaDir)
-        ant.xslt(in: process.targetBpelFilePath, out: compositeMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_composite_jbi_from_bpel.xsl"))
+        ant.xslt(in: process.targetProcessFilePath, out: compositeMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_composite_jbi_from_bpel.xsl"))
         ant.move file: process.targetPackageFilePath, todir: compositeDir
         ant.copy file: bindingArchive, todir: compositeDir
 
@@ -38,10 +38,10 @@ class PetalsEsbCompositePackager {
         Path bindingMetaDir = bindingDir.resolve("META-INF")
         FileTasks.mkdirs(bindingDir)
         FileTasks.mkdirs(bindingMetaDir)
-        ant.xslt(in: process.targetBpelFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
+        ant.xslt(in: process.targetProcessFilePath, out: bindingMetaDir.resolve("jbi.xml"), style: process.engine.xsltPath.resolve("create_binding_jbi_from_bpel.xsl"))
         ant.copy(todir: bindingDir) {
-            fileset(dir: process.targetBpelPath, includes: "*.xsd")
-            fileset(dir: process.targetBpelPath, includes: "*.wsdl")
+            fileset(dir: process.targetProcessPath, includes: "*.xsd")
+            fileset(dir: process.targetProcessPath, includes: "*.wsdl")
         }
 
         ant.replace(dir: bindingDir, token: "PARTNER_IP_AND_PORT", value: Configuration.get("partner.ipAndPort"))

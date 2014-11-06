@@ -71,16 +71,16 @@ class BpelgEngine extends LocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // deployment descriptor
-        ant.xslt(in: process.bpelFilePath,
-                out: process.targetBpelPath.resolve("deploy.xml"),
+        ant.xslt(in: process.process,
+                out: process.targetProcessPath.resolve("deploy.xml"),
                 style: xsltPath.resolve("bpelg_bpel_to_deploy_xml.xsl"))
 
         // remove unimplemented methods
         computeMatchingPattern(process).each { pattern ->
-            ant.copy(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
+            ant.copy(file: process.targetProcessPath.resolve("TestInterface.wsdl"),
                     tofile: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"))
             ant.xslt(in: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"),
-                    out: process.targetBpelPath.resolve("TestInterface.wsdl"),
+                    out: process.targetProcessPath.resolve("TestInterface.wsdl"),
                     style: xsltPath.resolve("bpelg_prepare_wsdl.xsl"), force: "yes") {
                 param(name: "deletePattern", expression: pattern)
             }

@@ -1,6 +1,6 @@
 package betsy.bpmn.model;
 
-public enum BPMNAssertion {
+public enum BPMNAssertions {
 
     SCRIPT_task1("SCRIPT_task1"),
     SCRIPT_task2("SCRIPT_task2"),
@@ -16,7 +16,7 @@ public enum BPMNAssertion {
 
     private final String name;
 
-    private BPMNAssertion(String name) {
+    private BPMNAssertions(String name) {
         this.name = name;
     }
 

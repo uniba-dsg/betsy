@@ -70,15 +70,15 @@ class ErrorProcesses {
         // copy file
         String filename = "${baseProcess.getShortId()}_ERR${number}_${name}"
         Path newPath = errorsDir.resolve("${filename}.bpel")
-        Files.copy(process.bpel, newPath)
+        Files.copy(process.process, newPath)
 
         // update fileName
-        GPathResult root = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile())
+        GPathResult root = new XmlSlurper(false, false).parse(process.process.toFile())
         root.@name = filename
         root.@targetNamespace = filename
         writeXmlFile(newPath, root)
 
-        process.bpel = newPath
+        process.process = newPath
         process
     }
 

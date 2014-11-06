@@ -1,12 +1,9 @@
 package betsy.bpmn.model;
 
-import betsy.bpel.engines.Engine;
 import betsy.bpmn.engines.BPMNEngine;
 import betsy.common.model.TestSuite;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +21,7 @@ public class BPMNTestSuite extends TestSuite<BPMNEngine, BPMNProcess> {
         test.setPath(Paths.get("test"));
 
         for (BPMNEngine engine : engines) {
-            List<BPMNProcess> clonedProcesses = processes.stream().map(p -> (BPMNProcess) p.clone()).collect(Collectors.toList());
+            List<BPMNProcess> clonedProcesses = processes.stream().map(BPMNProcess::createCopyWithoutEngine).collect(Collectors.toList());
 
             // link them
             for (BPMNProcess process : clonedProcesses) {

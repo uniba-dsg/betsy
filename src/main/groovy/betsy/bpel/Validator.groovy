@@ -32,7 +32,7 @@ class Validator {
 
     private void assertBpelTargetNamespacesAreUnique() {
         List<String> namespaces = processes.collect { process ->
-            def bpel = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile())
+            def bpel = new XmlSlurper(false, false).parse(process.process.toFile())
             [bpel.@name.text(), bpel.@targetNamespace.text()]
         }
         namespaces.each { n1 ->
@@ -46,7 +46,7 @@ class Validator {
 
     private void assertBpelProcessNameEqualToFileName() {
         processes.each { process ->
-            String attributeName = new XmlSlurper(false, false).parse(process.bpelFilePath.toFile()).@name.text()
+            String attributeName = new XmlSlurper(false, false).parse(process.process.toFile()).@name.text()
             if (attributeName != process.name) {
                 throw new IllegalStateException("The configuration does not correspond with the BPEL process. Names differ. BPEL uses " + attributeName + " while " + process.name + " is the given fileName")
             }
@@ -56,7 +56,7 @@ class Validator {
     private void assertAllFilesPerProcessExists() {
         processes.each { process ->
             List<Path> paths = new LinkedList<>()
-            paths.add(process.bpelFilePath)
+            paths.add(process.process)
             paths.addAll(process.wsdlPaths)
             paths.addAll(process.additionalFilePaths)
 
@@ -71,7 +71,7 @@ class Validator {
     private void assertEachProcessReferenceBpelFile() {
         processes.each { p1 ->
             processes.each { p2 ->
-                if (!p1.is(p2) && p1.bpel == p2.bpel) {
+                if (!p1.is(p2) && p1.process == p2.process) {
                     throw new IllegalStateException("Two processes reference same bpel file: " + p1 + " and " + p2)
                 }
             }

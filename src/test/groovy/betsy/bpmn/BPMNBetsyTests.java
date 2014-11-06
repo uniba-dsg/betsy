@@ -9,14 +9,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BPMNBetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
         BPMNEngine engine = new MockEngine();
-        List<BPMNProcess> processes = new BPMNProcessRepository().getByName("ALL");
-        BPMNBetsy betsy = new BPMNBetsy();
 
+        List<BPMNProcess> processes = new BPMNProcessRepository().getByName("ALL");
+
+        BPMNBetsy betsy = new BPMNBetsy();
 
         betsy.setEngines(Arrays.asList(engine));
         betsy.setProcesses(processes);

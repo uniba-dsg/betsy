@@ -30,7 +30,7 @@ class ActiveBpelInstaller {
 
         ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: serverDir
 
-        LinkedHashMap<String, String> environment = ["CATALINA_HOME": tomcatInstaller.tomcatDestinationDir.toString()]
+        LinkedHashMap<String, String> environment = ["CATALINA_HOME": tomcatInstaller.getDestinationDir().toString()]
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.bat"), environment)
     }
 

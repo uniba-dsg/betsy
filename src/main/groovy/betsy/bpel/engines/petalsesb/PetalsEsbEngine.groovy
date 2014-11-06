@@ -108,17 +108,17 @@ class PetalsEsbEngine extends LocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
-        Path metaDir = process.targetBpelPath.resolve("META-INF")
+        Path metaDir = process.targetProcessPath.resolve("META-INF")
         FileTasks.mkdirs(metaDir)
-        ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"),
+        ant.xslt(in: process.targetProcessFilePath, out: metaDir.resolve("jbi.xml"),
                 style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
 
-        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
+        ant.replace(file: process.targetProcessPath.resolve("TestInterface.wsdl"),
                 token: "TestInterfaceService",
                 value: "${process.name}TestInterfaceService")
 
 
-        Path testPartnerWsdl = process.targetBpelPath.resolve("TestPartner.wsdl")
+        Path testPartnerWsdl = process.targetProcessPath.resolve("TestPartner.wsdl")
         if (Files.exists(testPartnerWsdl)) {
             ant.replace(file: testPartnerWsdl, token: "TestService", value: "${process.name}TestService")
         }

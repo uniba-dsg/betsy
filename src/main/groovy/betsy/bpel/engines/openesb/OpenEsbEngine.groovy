@@ -68,7 +68,7 @@ class OpenEsbEngine extends LocalEngine {
 
         // engine specific steps
         buildDeploymentDescriptor(process)
-        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
+        ant.replace(file: process.targetProcessPath.resolve("TestInterface.wsdl"),
                 token: "TestInterfaceService", value: "${process.name}TestInterfaceService")
 
         packageBuilder.replaceEndpointTokenWithValue(process)
@@ -79,14 +79,14 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     void buildDeploymentDescriptor(BPELProcess process) {
-        Path metaDir = process.targetBpelPath.resolve("META-INF")
+        Path metaDir = process.targetProcessPath.resolve("META-INF")
         Path catalogFile = metaDir.resolve("catalog.xml")
         FileTasks.mkdirs(metaDir)
         FileTasks.createFile(catalogFile, """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
 </catalog>""");
         FileTasks.createFile(metaDir.resolve("MANIFEST.MF"), "Manifest-Version: 1.0");
-        ant.xslt(in: process.targetBpelFilePath, out: metaDir.resolve("jbi.xml"),
+        ant.xslt(in: process.targetProcessFilePath, out: metaDir.resolve("jbi.xml"),
                 style: xsltPath.resolve("create_jbi_from_bpel.xsl"))
     }
 

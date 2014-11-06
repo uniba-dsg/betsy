@@ -80,7 +80,7 @@ public class JbpmEngine extends BPMNEngine {
     @Override
     public void buildArchives(final BPMNProcess process) {
 
-        XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"), process.getResourcePath().resolve(process.getName() + ".bpmn"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"));
+        XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"), process.getProcess(), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"));
         XSLTTasks.transform(getXsltPath().resolve("jbpm.xsl"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2"));
         FileTasks.deleteFile(process.getTargetPath().resolve("war/WEB-INF/classes/" + process.getName() + ".bpmn2-temp"));
 

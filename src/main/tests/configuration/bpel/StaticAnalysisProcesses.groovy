@@ -23,7 +23,7 @@ class StaticAnalysisProcesses {
                 String testDir = dir.path.replace("\\", "/")
 
                 result.add(new BPELProcess(
-                        bpel: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
+                        process: Paths.get("${testDir}/${dir.list().find { String elem -> elem.endsWith(".bpel") }}"),
                         wsdls: createWSDLPaths(dir, testDir),
                         additionalFiles: createXSDPaths(dir, testDir),
                         testCases: [new BPELTestCase().checkFailedDeployment()]

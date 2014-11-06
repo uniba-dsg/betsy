@@ -22,7 +22,7 @@ public class CoreBPELEngineExtension {
             @Override
             public void createFolderAndCopyProcessFilesToTarget(BPELProcess process) {
                 super.createFolderAndCopyProcessFilesToTarget(process);
-                CoreBPEL coreBPEL = new CoreBPEL(process.getTargetTmpPath(), process.getTargetBpelFilePath());
+                CoreBPEL coreBPEL = new CoreBPEL(process.getTargetTmpPath(), process.getTargetProcessFilePath());
 
                 try {
                     coreBPEL.toCoreBPEL(transformations);
