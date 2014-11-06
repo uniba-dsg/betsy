@@ -3,6 +3,7 @@ package betsy.bpmn;
 import betsy.bpmn.engines.BPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
+import betsy.bpmn.validation.ProcessValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;

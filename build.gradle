@@ -293,7 +293,7 @@ task runBPMN(type: JavaExec, dependsOn: classes) {
 task runBPEL(type: JavaExec, dependsOn: classes) {
     description = 'Starts BPMNMain'
     classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpel.Main"
+    main = "betsy.bpel.BPELMain"
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }

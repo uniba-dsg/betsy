@@ -1,5 +1,7 @@
 package betsy;
 
+import betsy.bpel.BPELMain;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,7 +11,7 @@ public class Main {
         }
 
         if("bpel".equalsIgnoreCase(args[0])){
-            betsy.bpel.Main.main(createArgsWithoutFirstValue(args));
+            BPELMain.main(createArgsWithoutFirstValue(args));
         } else if("bpmn".equalsIgnoreCase(args[0])){
             betsy.bpmn.BPMNMain.main(createArgsWithoutFirstValue(args));
         } else {

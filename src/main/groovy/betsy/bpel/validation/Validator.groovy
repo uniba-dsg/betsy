@@ -1,4 +1,4 @@
-package betsy.bpel
+package betsy.bpel.validation
 
 import betsy.bpel.model.BPELProcess
 

@@ -55,7 +55,7 @@
         <level value="TRACE"/>
     </logger>
 
-    <logger name="betsy.bpel.Composite">
+    <logger name="betsy.bpel.BPELComposite">
         <appender-ref ref="FILE_TIME"/>
     </logger>
 

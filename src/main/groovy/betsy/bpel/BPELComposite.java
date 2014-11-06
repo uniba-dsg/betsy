@@ -20,8 +20,8 @@ import soapui.SoapUiRunner;
 
 import java.nio.file.Path;
 
-public class Composite {
-    private static Logger logger = Logger.getLogger(Composite.class);
+public class BPELComposite {
+    private static Logger logger = Logger.getLogger(BPELComposite.class);
     private TestPartnerService testPartner = new TestPartnerServicePublisherInternal();
     private BPELTestSuite testSuite;
     private int requestTimeout = 15000;

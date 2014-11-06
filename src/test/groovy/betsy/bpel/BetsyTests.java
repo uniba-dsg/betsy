@@ -16,7 +16,7 @@ public class BetsyTests {
     public void simulateATestRun() throws Exception {
         Engine engine = new MockEngine();
         List<BPELProcess> processes = new BPELProcessRepository().getByName("ALL");
-        Betsy betsy = new Betsy();
+        BPELBetsy betsy = new BPELBetsy();
 
 
         betsy.setEngines(Arrays.asList(engine));
@@ -73,7 +73,7 @@ public class BetsyTests {
 
     }
 
-    public class MockComposite extends Composite {
+    public class MockComposite extends BPELComposite {
         @Override
         protected void buildTest(BPELProcess process) {
 

@@ -1,5 +1,6 @@
 package betsy.bpel;
 
+import betsy.bpel.validation.Validator;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 

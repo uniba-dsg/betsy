@@ -1,4 +1,4 @@
-package betsy.bpmn.model;
+package betsy.bpmn.validation;
 
 import javax.xml.namespace.NamespaceContext;
 import java.util.Iterator;

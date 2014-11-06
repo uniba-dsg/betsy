@@ -2,6 +2,7 @@ package betsy.bpel
 
 import ant.tasks.AntUtil
 import betsy.bpel.model.BPELProcess
+import betsy.common.model.BetsyProcess
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
 import betsy.bpel.virtual.host.exceptions.TemporaryFailedTestException
@@ -15,7 +16,7 @@ class Retry {
 
     final AntBuilder ant = AntUtil.builder()
 
-    BPELProcess process
+    BetsyProcess process
 
     public void atMostThreeTimes(Runnable closure) {
         boolean testProcess = true

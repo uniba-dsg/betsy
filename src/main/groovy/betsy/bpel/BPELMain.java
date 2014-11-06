@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Main {
-    private static final Logger log = Logger.getLogger(Main.class);
+public class BPELMain {
+    private static final Logger log = Logger.getLogger(BPELMain.class);
 
     public static void main(String[] args) {
         activateLogging();
@@ -47,7 +47,7 @@ public class Main {
             printSelectedEnginesAndProcesses(params.getEngines(), params.getProcesses());
             localhostPartnerAddressNotAllowedForTestingVirtualEngines(params.getEngines());
 
-            Betsy betsy = new Betsy();
+            BPELBetsy betsy = new BPELBetsy();
             useExternalPartnerService(params, betsy);
             testBindabilityOfInternalPartnerService(params, betsy);
 
@@ -96,9 +96,9 @@ public class Main {
         System.exit(0);
     }
 
-    public static void onlyBuildSteps(BPELCliParameter params, Betsy betsy) {
+    public static void onlyBuildSteps(BPELCliParameter params, BPELBetsy betsy) {
         if (params.buildArtifactsOnly()) {
-            betsy.setComposite(new Composite() {
+            betsy.setComposite(new BPELComposite() {
                 @Override
                 protected void testSoapUi(BPELProcess process) {
                 }
@@ -152,7 +152,7 @@ public class Main {
         return engines.stream().filter(e -> e instanceof VirtualEngine).map(e -> (VirtualEngine) e).collect(Collectors.toList());
     }
 
-    private static void testBindabilityOfInternalPartnerService(BPELCliParameter params, Betsy betsy) {
+    private static void testBindabilityOfInternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
 
         if (!params.useExternalPartnerService()) {
             // test the correctness
@@ -166,7 +166,7 @@ public class Main {
         }
     }
 
-    private static void useExternalPartnerService(BPELCliParameter params, Betsy betsy) {
+    private static void useExternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
         // do not use internal partner service
         if (params.useExternalPartnerService()) {
             betsy.getComposite().setTestPartner(new TestPartnerServicePublisherExternal());
@@ -176,7 +176,7 @@ public class Main {
 
     protected static void activateLogging() {
         // activate log4j logging
-        DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
+        DOMConfigurator.configure(BPELMain.class.getResource("/log4j.xml"));
 
         // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");

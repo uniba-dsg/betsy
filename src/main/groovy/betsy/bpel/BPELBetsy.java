@@ -3,15 +3,16 @@ package betsy.bpel;
 import betsy.bpel.engines.Engine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
+import betsy.bpel.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Betsy {
+public class BPELBetsy {
     private List<Engine> engines = new ArrayList<>();
     private List<BPELProcess> processes = new ArrayList<>();
-    private Composite composite = new Composite();
+    private BPELComposite composite = new BPELComposite();
 
     public void execute() {
         validate();
@@ -44,11 +45,11 @@ public class Betsy {
         this.processes = processes;
     }
 
-    public Composite getComposite() {
+    public BPELComposite getComposite() {
         return composite;
     }
 
-    public void setComposite(Composite composite) {
+    public void setComposite(BPELComposite composite) {
         this.composite = composite;
     }
 }

@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import betsy.bpel.Main;
+import betsy.bpel.BPELMain;
 import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.BPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
@@ -66,7 +66,7 @@ public class BPMNMain {
 
     protected static String activateLogging() {
         // activate log4j logging
-        DOMConfigurator.configure(Main.class.getResource("/log4j.xml"));
+        DOMConfigurator.configure(BPELMain.class.getResource("/log4j.xml"));
 
         // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
         return System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");

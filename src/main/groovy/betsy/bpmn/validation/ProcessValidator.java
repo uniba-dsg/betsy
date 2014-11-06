@@ -1,7 +1,6 @@
-package betsy.bpmn;
+package betsy.bpmn.validation;
 
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNNamespaceContext;
 import betsy.bpmn.model.BPMNProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Assert;
