@@ -39,7 +39,8 @@ public class CamundaResourcesGenerator {
         generatePom(pomDir);
         generateProcessesXml(classesDir);
 
-        BPMNTester.setupPathToToolsJarForJavacAntTask(this);
+        // dirty hack - as this has to be done once for the whole system
+        new BPMNTester().setupPathToToolsJarForJavacAntTask();
 
         NetworkTasks.downloadFileFromBetsyRepo("javaee-api-7.0.jar");
         NetworkTasks.downloadFileFromBetsyRepo("camunda-engine-7.0.0-Final.jar");

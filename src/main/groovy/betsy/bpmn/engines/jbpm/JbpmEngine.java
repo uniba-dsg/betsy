@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -162,15 +163,18 @@ public class JbpmEngine extends BPMNEngine {
 
     public void testProcess(final BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
+            BPMNTester bpmnTester = new BPMNTester();
+            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
+            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCase.getNumber()));
+            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+
             JbpmTester tester = new JbpmTester();
             tester.setTestCase(testCase);
             tester.setName(process.getName());
             tester.setDeploymentId(process.getGroupId() + ":" + process.getName() + ":" + process.getVersion());
             tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
             tester.setProcessHistoryUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/history/instance/1");
-            tester.setTestSrc(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
-            tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
-            tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
+            tester.setBpmnTester(bpmnTester);
             tester.setLogDir(getServerPath());
             tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
             tester.runTest();

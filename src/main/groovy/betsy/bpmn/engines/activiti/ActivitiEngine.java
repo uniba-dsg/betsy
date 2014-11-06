@@ -3,6 +3,7 @@ package betsy.bpmn.engines.activiti;
 import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.engines.tomcat.TomcatInstaller;
 import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
@@ -22,12 +23,15 @@ public class ActivitiEngine extends BPMNEngine {
     @Override
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
+            BPMNTester bpmnTester = new BPMNTester();
+            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
+            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCase.getNumber()));
+            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+
             ActivitiTester tester = new ActivitiTester();
             tester.setTestCase(testCase);
-            tester.setTestSrc(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
-            tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
             tester.setRestURL(URL);
-            tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+            tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
             tester.setLogDir(getTomcat().getTomcatLogsDir());
 

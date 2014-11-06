@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.camunda;
 
 import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -139,12 +140,15 @@ public class CamundaEngine extends BPMNEngine {
     @Override
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
+            BPMNTester bpmnTester = new BPMNTester();
+            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
+            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCase.getNumber()));
+            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+
             CamundaTester tester = new CamundaTester();
             tester.setTestCase(testCase);
-            tester.setTestSrc(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
             tester.setRestURL(getEndpointUrl(process));
-            tester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
-            tester.setTestBin(process.getTargetTestBinPathWithCase(testCase.getNumber()));
+            tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
             tester.setLogDir(getTomcatLogsDir());
             tester.runTest();

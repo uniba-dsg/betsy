@@ -21,10 +21,6 @@ public class JbpmTester {
      * Runs a single test
      */
     public void runTest() {
-        //make bin dir
-        FileTasks.mkdirs(testBin);
-        FileTasks.mkdirs(reportPath);
-
         addDeploymentErrorsToLogFile(serverLogFile);
 
         //setup variables and start process
@@ -51,11 +47,11 @@ public class JbpmTester {
                     JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {
                     log.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
-                    BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+                    BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
                 }
             } else {
                 log.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
-                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
             }
         }
 
@@ -64,10 +60,7 @@ public class JbpmTester {
 
         checkProcessOutcome();
 
-
-        BPMNTester.setupPathToToolsJarForJavacAntTask(this);
-        BPMNTester.compileTest(testSrc, testBin);
-        BPMNTester.executeTest(testSrc, testBin, reportPath);
+        bpmnTester.test();
     }
 
     private void checkProcessOutcome() {
@@ -76,13 +69,13 @@ public class JbpmTester {
             String result = JsonHelper.getStringWithAuth(processHistoryUrl, 200, user, password);
             if (result.contains("ERR-1")) {
                 log.info("Process has been aborted. Error with id ERR-1 detected.");
-                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             } else if (result.contains("ESC_1")) {
                 log.info("Process has been aborted. Escalation with id ESC_1 detected.");
-                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
             } else if (result.contains("<status>3</status>")) {
                 log.info("Process has been aborted with unknown error.");
-                BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
             } else if (result.contains("<status>1</status>")) {
                 log.info("Process completed normally.");
             }
@@ -96,7 +89,7 @@ public class JbpmTester {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNTester.appendToFile(getFileName(), deploymentError);
+            BPMNAssertions.appendToFile(getFileName(), deploymentError);
             log.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
         }
     }
@@ -145,30 +138,6 @@ public class JbpmTester {
         this.deploymentId = deploymentId;
     }
 
-    public Path getReportPath() {
-        return reportPath;
-    }
-
-    public void setReportPath(Path reportPath) {
-        this.reportPath = reportPath;
-    }
-
-    public Path getTestBin() {
-        return testBin;
-    }
-
-    public void setTestBin(Path testBin) {
-        this.testBin = testBin;
-    }
-
-    public Path getTestSrc() {
-        return testSrc;
-    }
-
-    public void setTestSrc(Path testSrc) {
-        this.testSrc = testSrc;
-    }
-
     public Path getLogDir() {
         return logDir;
     }
@@ -206,9 +175,12 @@ public class JbpmTester {
     private String processHistoryUrl;
     private String name;
     private String deploymentId;
-    private Path reportPath;
-    private Path testBin;
-    private Path testSrc;
+
+    public void setBpmnTester(BPMNTester bpmnTester) {
+        this.bpmnTester = bpmnTester;
+    }
+
+    private BPMNTester bpmnTester;
     private Path logDir;
     private Path serverLogFile;
     private String user = "admin";

@@ -19,11 +19,9 @@ public class ActivitiTester {
     private static final Logger log = Logger.getLogger(ActivitiTester.class);
     private BPMNTestCase testCase;
     private String restURL;
-    private Path reportPath;
-    private Path testBin;
-    private Path testSrc;
     private String key;
     private Path logDir;
+    private BPMNTester bpmnTester;
 
     public static void startProcess(String id, Object[] variables) {
         log.info("Start process instance for " + id);
@@ -45,8 +43,7 @@ public class ActivitiTester {
      */
     public void runTest() {
         //make bin dir
-        FileTasks.mkdirs(testBin);
-        FileTasks.mkdirs(reportPath);
+
 
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
@@ -61,9 +58,7 @@ public class ActivitiTester {
         WaitTasks.sleep(testCase.getDelay());
         addRuntimeErrorsToLogFile(logFile);
 
-        BPMNTester.setupPathToToolsJarForJavacAntTask(this);
-        BPMNTester.compileTest(testSrc, testBin);
-        BPMNTester.executeTest(testSrc, testBin, reportPath);
+        bpmnTester.test();
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
@@ -71,7 +66,7 @@ public class ActivitiTester {
         analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
         analyzer.addSubstring("org.activiti.engine.ActivitiException", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNTester.appendToFile(getFileName(), deploymentError);
+            BPMNAssertions.appendToFile(getFileName(), deploymentError);
         }
     }
 
@@ -81,7 +76,7 @@ public class ActivitiTester {
         analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
         analyzer.addSubstring("No catching boundary event found for error with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNTester.appendToFile(getFileName(), deploymentError);
+            BPMNAssertions.appendToFile(getFileName(), deploymentError);
         }
     }
 
@@ -105,30 +100,6 @@ public class ActivitiTester {
         this.restURL = restURL;
     }
 
-    public Path getReportPath() {
-        return reportPath;
-    }
-
-    public void setReportPath(Path reportPath) {
-        this.reportPath = reportPath;
-    }
-
-    public Path getTestBin() {
-        return testBin;
-    }
-
-    public void setTestBin(Path testBin) {
-        this.testBin = testBin;
-    }
-
-    public Path getTestSrc() {
-        return testSrc;
-    }
-
-    public void setTestSrc(Path testSrc) {
-        this.testSrc = testSrc;
-    }
-
     public String getKey() {
         return key;
     }
@@ -143,5 +114,9 @@ public class ActivitiTester {
 
     public void setLogDir(Path logDir) {
         this.logDir = logDir;
+    }
+
+    public void setBpmnTester(BPMNTester bpmnTester) {
+        this.bpmnTester = bpmnTester;
     }
 }

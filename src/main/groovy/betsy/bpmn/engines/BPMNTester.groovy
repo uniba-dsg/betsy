@@ -2,19 +2,24 @@ package betsy.bpmn.engines
 
 import ant.tasks.AntUtil
 import betsy.bpmn.model.BPMNAssertions
+import betsy.common.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 
 import java.nio.file.Path
 
 public class BPMNTester {
 
-    public static void setupPathToToolsJarForJavacAntTask(Object object) {
+    Path source
+    Path target
+    Path reportPath
+
+    public void setupPathToToolsJarForJavacAntTask() {
         // required for javac task in Apache Ant
         String javaHome = System.getProperty("java.home");
         if (javaHome.endsWith("jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
-        RootLoader rl = (RootLoader) object.class.classLoader.getRootLoader();
+        RootLoader rl = (RootLoader) this.class.classLoader.getRootLoader();
 
         URL url = new URL("file:///${javaHome}/lib/tools.jar");
         if (rl == null) {
@@ -25,22 +30,7 @@ public class BPMNTester {
         }
     }
 
-    public static void appendToFile(Path fileName, BPMNAssertions s) {
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new FileWriter(fileName.toFile(), true));
-            bw.append(s.toString());
-            bw.newLine();
-        } catch (IOException ignored) {
-            // empty by intent
-        } finally {
-            if(bw != null) {
-                bw.close();
-            }
-        }
-    }
-
-    public static void executeTest(Path source, Path target, Path reportPath) {
+    private void executeTest() {
         String systemClasspath = System.getProperty('java.class.path');
 
         AntBuilder ant = AntUtil.builder();
@@ -60,7 +50,7 @@ public class BPMNTester {
 
     }
 
-    public static void compileTest(Path source, Path target) {
+    private void compileTest() {
         String systemClasspath = System.getProperty('java.class.path');
 
         AntBuilder ant = AntUtil.builder();
@@ -73,4 +63,12 @@ public class BPMNTester {
         }
     }
 
+    public void test() {
+        FileTasks.mkdirs(target);
+        FileTasks.mkdirs(reportPath);
+
+        setupPathToToolsJarForJavacAntTask()
+        compileTest()
+        executeTest()
+    }
 }

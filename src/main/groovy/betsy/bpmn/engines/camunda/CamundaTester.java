@@ -20,10 +20,6 @@ public class CamundaTester {
      * runs a single test
      */
     public void runTest() {
-        //make bin dir
-        FileTasks.mkdirs(testBin);
-        FileTasks.mkdirs(reportPath);
-
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
         addDeploymentErrorsToLogFile(logFile);
@@ -49,9 +45,11 @@ public class CamundaTester {
         WaitTasks.sleep(testCase.getDelay());
         addRuntimeErrorsToLogFile(logFile);
 
-        BPMNTester.setupPathToToolsJarForJavacAntTask(this);
-        BPMNTester.compileTest(testSrc, testBin);
-        BPMNTester.executeTest(testSrc, testBin, reportPath);
+        bpmnTester.test();
+    }
+
+    public void setBpmnTester(BPMNTester bpmnTester) {
+        this.bpmnTester = bpmnTester;
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
@@ -59,7 +57,7 @@ public class CamundaTester {
         analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
         analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNTester.appendToFile(getFileName(), deploymentError);
+            BPMNAssertions.appendToFile(getFileName(), deploymentError);
         }
     }
 
@@ -68,7 +66,7 @@ public class CamundaTester {
         analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_RUNTIME);
         analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNTester.appendToFile(getFileName(), deploymentError);
+            BPMNAssertions.appendToFile(getFileName(), deploymentError);
         }
     }
 
@@ -106,30 +104,6 @@ public class CamundaTester {
         this.restURL = restURL;
     }
 
-    public Path getReportPath() {
-        return reportPath;
-    }
-
-    public void setReportPath(Path reportPath) {
-        this.reportPath = reportPath;
-    }
-
-    public Path getTestBin() {
-        return testBin;
-    }
-
-    public void setTestBin(Path testBin) {
-        this.testBin = testBin;
-    }
-
-    public Path getTestSrc() {
-        return testSrc;
-    }
-
-    public void setTestSrc(Path testSrc) {
-        this.testSrc = testSrc;
-    }
-
     public String getKey() {
         return key;
     }
@@ -148,11 +122,9 @@ public class CamundaTester {
 
     private BPMNTestCase testCase;
     private String restURL;
-    private Path reportPath;
-    private Path testBin;
-    private Path testSrc;
     private String key;
     private Path logDir;
+    private BPMNTester bpmnTester;
 
     private static final Logger log = Logger.getLogger(CamundaTester.class);
 }
