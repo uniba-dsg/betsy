@@ -41,7 +41,7 @@ public class CamundaTester {
 
         } catch (Exception e) {
             log.info("Could not start process", e);
-            BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
         WaitTasks.sleep(testCase.getDelay());
