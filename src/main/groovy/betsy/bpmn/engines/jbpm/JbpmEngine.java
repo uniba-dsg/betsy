@@ -76,6 +76,9 @@ public class JbpmEngine extends BPMNEngine {
 
         //waiting for the result of the deployment
         WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), "de.uniba.dsg");
+
+        // And a few more seconds to ensure availability
+        WaitTasks.sleep(5000);
     }
 
     @Override

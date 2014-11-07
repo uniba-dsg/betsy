@@ -20,6 +20,7 @@ public class CamundaTester {
      * runs a single test
      */
     public void runTest() {
+
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
         addDeploymentErrorsToLogFile(logFile);
@@ -40,6 +41,7 @@ public class CamundaTester {
 
         } catch (Exception e) {
             log.info("Could not start process", e);
+            BPMNTester.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
         WaitTasks.sleep(testCase.getDelay());
@@ -65,8 +67,8 @@ public class CamundaTester {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_RUNTIME);
         analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
+        for (BPMNAssertions runtimeError : analyzer.getErrors()) {
+            BPMNAssertions.appendToFile(getFileName(), runtimeError);
         }
     }
 

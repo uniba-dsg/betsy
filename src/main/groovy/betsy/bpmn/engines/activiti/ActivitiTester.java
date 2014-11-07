@@ -53,6 +53,7 @@ public class ActivitiTester {
             startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
         } catch (Exception e) {
             log.info("Could not start test case", e);
+            BPMNTester.appendToFile(getFileName(), BPMNAssertion.ERROR_RUNTIME);
         }
 
         WaitTasks.sleep(testCase.getDelay());
