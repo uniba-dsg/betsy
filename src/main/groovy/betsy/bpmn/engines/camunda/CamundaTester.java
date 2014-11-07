@@ -39,13 +39,14 @@ public class CamundaTester {
             //second request to start process using id and Json to get the process instance id
             JsonHelper.post(restURL + "/process-definition/" + id + "/start?key=" + key, requestBody, 200);
 
+            // Wait and check for Errors only if instantiation was successful
+            WaitTasks.sleep(testCase.getDelay());
+            addRuntimeErrorsToLogFile(logFile);
         } catch (Exception e) {
             log.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-        WaitTasks.sleep(testCase.getDelay());
-        addRuntimeErrorsToLogFile(logFile);
 
         bpmnTester.test();
     }
