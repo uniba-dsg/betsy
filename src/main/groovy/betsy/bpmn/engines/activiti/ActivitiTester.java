@@ -51,13 +51,20 @@ public class ActivitiTester {
 
         try {
             startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
+
+            // Wait and check for errors only if process instantiation was successful
+            WaitTasks.sleep(testCase.getDelay());
+            addRuntimeErrorsToLogFile(logFile);
         } catch (Exception e) {
-            log.info("Could not start test case", e);
-            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            log.info("Could not start process", e);
+            if(e.getMessage().contains("ERR-1")) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+            } else {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            }
         }
 
-        WaitTasks.sleep(testCase.getDelay());
-        addRuntimeErrorsToLogFile(logFile);
+
 
         bpmnTester.test();
     }
@@ -76,8 +83,8 @@ public class ActivitiTester {
         analyzer.addSubstring("org.activiti.engine.ActivitiException", BPMNAssertions.ERROR_RUNTIME);
         analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
         analyzer.addSubstring("No catching boundary event found for error with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
+        for (BPMNAssertions runtimeError : analyzer.getErrors()) {
+            BPMNAssertions.appendToFile(getFileName(), runtimeError);
         }
     }
 
