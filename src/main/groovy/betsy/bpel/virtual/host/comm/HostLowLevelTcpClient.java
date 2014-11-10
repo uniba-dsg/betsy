@@ -13,7 +13,7 @@ import java.net.SocketTimeoutException;
 
 public class HostLowLevelTcpClient implements AutoCloseable {
 
-    private static final Logger log = Logger.getLogger(HostLowLevelTcpClient.class);
+    private static final Logger LOGGER = Logger.getLogger(HostLowLevelTcpClient.class);
 
     private Socket socket;
     private ObjectOutputStream oos;
@@ -38,7 +38,7 @@ public class HostLowLevelTcpClient implements AutoCloseable {
     }
 
     public void sendMessage(Object message) throws ConnectionException {
-        log.debug("Sending Message: " + message.toString());
+        LOGGER.debug("Sending Message: " + message.toString());
         if (isConnected() && this.oos != null) {
             // send message
             try {
@@ -59,7 +59,7 @@ public class HostLowLevelTcpClient implements AutoCloseable {
 
     public void reconnect(int timeout) throws IOException {
         if (!isConnected()) {
-            log.info("Connecting to server");
+            LOGGER.info("Connecting to server");
             // connect
             this.socket = new Socket();
             this.socket.connect(new InetSocketAddress(host, port),
@@ -74,9 +74,9 @@ public class HostLowLevelTcpClient implements AutoCloseable {
             InputStream in = socket.getInputStream();
             this.ois = new ObjectInputStream(in);
 
-            log.info("Connection to server established!");
+            LOGGER.info("Connection to server established!");
         } else {
-            log.info("Already connected - reconnecting");
+            LOGGER.info("Already connected - reconnecting");
             this.disconnect();
             this.reconnect(timeout);
         }
@@ -91,10 +91,10 @@ public class HostLowLevelTcpClient implements AutoCloseable {
                     object = ois.readObject();
                     waitForMessage = false;
                 } catch (SocketTimeoutException e) {
-                    log.debug("Timeout occurred - waiting again");
+                    LOGGER.debug("Timeout occurred - waiting again");
                 }
             }
-            log.info("Received Message: " + object);
+            LOGGER.info("Received Message: " + object);
             return object;
         } catch (ClassNotFoundException e) {
             throw new CommunicationException("Invalid response received", e);

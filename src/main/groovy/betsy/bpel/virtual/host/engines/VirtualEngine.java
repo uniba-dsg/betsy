@@ -40,7 +40,7 @@ import java.util.Set;
  */
 public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
-    private static final Logger log = Logger.getLogger(VirtualEngine.class);
+    private static final Logger LOGGER = Logger.getLogger(VirtualEngine.class);
 
     private VirtualBox virtualBox;
     private final HostTcpClient comm = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT);
@@ -64,7 +64,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.info("Startup virtual engine " + getName());
+        LOGGER.info("Startup virtual engine " + getName());
         // required for compatibility with EngineControl
         try {
             // verify port usage
@@ -76,14 +76,14 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             this.vm.applyPortForwarding(ports);
             setHeadlessMode();
             this.vm.start();
-            log.info("VM started");
+            LOGGER.info("VM started");
         } catch (PortRedirectException exception) {
             throw new TemporaryFailedTestException("The VM could not be "
                     + "started properly:", exception);
         } catch (VirtualBoxException e) {
             throw new PermanentFailedTestException(e);
         }
-        log.trace("startup done!");
+        LOGGER.trace("startup done!");
     }
 
     private void setHeadlessMode() {
@@ -98,7 +98,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.debug("Shutdown virtual engine " + getName());
+        LOGGER.debug("Shutdown virtual engine " + getName());
         // stop communication
         // if there is no virtualMachine then there is nothing to stop
         if (this.vm != null) {
@@ -108,7 +108,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
                 this.vm.stop();
             }
         }
-        log.trace("shutdown done!");
+        LOGGER.trace("shutdown done!");
     }
 
     public abstract boolean saveStateInsteadOfShutdown();
@@ -119,7 +119,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
             return;
         }
 
-        log.debug("Install virtualized engine " + getName());
+        LOGGER.debug("Install virtualized engine " + getName());
 
         try {
             this.vm = getOrImportVirtualMachine();
@@ -134,7 +134,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
         } catch (VirtualBoxException e) {
             throw new PermanentFailedTestException(e);
         }
-        log.trace("installation done!");
+        LOGGER.trace("installation done!");
     }
 
     @Override
@@ -164,13 +164,13 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
     @Override
     public void deploy(BPELProcess process) {
         try {
-            log.info("Deploying virtualized engine " + getName() + ", process: " + process.toString());
+            LOGGER.info("Deploying virtualized engine " + getName() + ", process: " + process.toString());
 
             DeployRequest container = buildDeployRequest(process);
             comm.deployOperation(container);
-            log.info("deploy done!");
+            LOGGER.info("deploy done!");
         } catch (Exception exception) {
-            log.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
+            LOGGER.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
             try {
                 storeLogs(process);
                 throw new RuntimeException(exception);
@@ -182,7 +182,7 @@ public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
 
     @Override
     public void storeLogs(BPELProcess process) {
-        log.debug("Storing logs for engine " + getName());
+        LOGGER.debug("Storing logs for engine " + getName());
 
         LogFilesRequest request = buildLogFilesRequest();
 

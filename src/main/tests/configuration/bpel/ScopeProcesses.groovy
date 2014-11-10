@@ -5,7 +5,7 @@ import betsy.bpel.model.BPELTestCase
 import betsy.bpel.model.assertions.ExitAssertion
 import betsy.bpel.model.assertions.SoapFaultTestAssertion
 
-import static BPELProcessBuilder.DECLARED_FAULT_CODE
+import static BPELProcessBuilder.DECLARED_FAULT
 
 class ScopeProcesses {
 
@@ -269,7 +269,7 @@ class ScopeProcesses {
     public static final BPELProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE = builder.buildProcessWithPartner(
             "scopes/Scope-FaultHandlers-CatchAll-Invoke", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new BPELTestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase().checkDeployment().sendSync(DECLARED_FAULT, -1)
             ]
     )
 
@@ -277,7 +277,7 @@ class ScopeProcesses {
             // only used for error processes. but may also be used as a test
             "scopes/Scope-FaultHandlers-CatchAll-Invoke-Validate", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new BPELTestCase().checkDeployment().sendSync(DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase().checkDeployment().sendSync(DECLARED_FAULT, -1)
             ]
     )
 

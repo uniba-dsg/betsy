@@ -29,9 +29,9 @@ public class IOCapture {
         }
 
 
-        log.trace("System.out Output:\n\n" + bufOut);
-        log.trace("System.err Output:\n\n" + bufErr);
+        LOGGER.trace("System.out Output:\n\n" + bufOut);
+        LOGGER.trace("System.err Output:\n\n" + bufErr);
     }
 
-    private static final Logger log = Logger.getLogger(IOCapture.class);
+    private static final Logger LOGGER = Logger.getLogger(IOCapture.class);
 }

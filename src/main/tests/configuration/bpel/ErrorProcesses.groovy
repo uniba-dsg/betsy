@@ -85,7 +85,7 @@ class ErrorProcesses {
     public static final BPELProcess BACKDOOR_ROBUSTNESS = new BPELProcessBuilder().buildProcessWithPartner(
             "errorsbase/BackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
             ]
     )
 
@@ -93,7 +93,7 @@ class ErrorProcesses {
             // only used for error processes. but may also be used as a test
             "errorsbase/ImprovedBackdoorRobustness", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             [
-                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
             ]
     )
 

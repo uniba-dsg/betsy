@@ -20,13 +20,14 @@ import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.awt.*;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPELMain {
-    private static final Logger log = Logger.getLogger(BPELMain.class);
+    private static final Logger LOGGER = Logger.getLogger(BPELMain.class);
 
     public static void main(String[] args) {
         activateLogging();
@@ -49,7 +50,7 @@ public class BPELMain {
 
             BPELBetsy betsy = new BPELBetsy();
             useExternalPartnerService(params, betsy);
-            testBindabilityOfInternalPartnerService(params, betsy);
+            assertBindabilityOfInternalPartnerService(params, betsy);
 
             checkDeployment(params, params.getProcesses());
             coreBpel(params, params.getEngines());
@@ -65,16 +66,17 @@ public class BPELMain {
                 betsy.execute();
             } catch (Exception e) {
                 Throwable cleanedException = StackTraceUtils.deepSanitize(e);
-                log.error("something went wrong during execution", cleanedException);
+                LOGGER.error("something went wrong during execution", cleanedException);
             }
 
 
             // open results in browser
             if (params.openResultsInBrowser()) {
                 try {
-                    Desktop.getDesktop().browse(Paths.get("test/reports/results.html").toUri());
+                    Path htmlDashboard = Paths.get("test/reports/results.html");
+                    Desktop.getDesktop().browse(htmlDashboard.toUri());
                 } catch (Exception ignore) {
-                    // ignore any exceptions
+                    LOGGER.error("Could not start browser", ignore);
                 }
 
             }
@@ -82,7 +84,7 @@ public class BPELMain {
 
         } catch (Exception e) {
             Throwable cleanedException = StackTraceUtils.deepSanitize(e);
-            log.error(cleanedException.getMessage(), cleanedException);
+            LOGGER.error(cleanedException.getMessage(), cleanedException);
         }
 
         try {
@@ -152,7 +154,7 @@ public class BPELMain {
         return engines.stream().filter(e -> e instanceof VirtualEngine).map(e -> (VirtualEngine) e).collect(Collectors.toList());
     }
 
-    private static void testBindabilityOfInternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
+    private static void assertBindabilityOfInternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
 
         if (!params.useExternalPartnerService()) {
             // test the correctness
@@ -184,8 +186,8 @@ public class BPELMain {
 
     protected static void printSelectedEnginesAndProcesses(List<Engine> engines, List<BPELProcess> processes) {
         // print selection of engines and processes
-        log.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
-        log.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
+        LOGGER.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
     protected static void customPartnerAddress(BPELCliParameter params) {
@@ -197,7 +199,7 @@ public class BPELMain {
                 throw new IllegalArgumentException("Port is missing in partner address [" + newPartnerAddress + "]");
             }
 
-            log.info("Setting Partner IP and Port to " + newPartnerAddress + " from previous setting " + Configuration.get("partner.ipAndPort"));
+            LOGGER.info("Setting Partner IP and Port to " + newPartnerAddress + " from previous setting " + Configuration.get("partner.ipAndPort"));
             Configuration.setPartnerIpAndPort(newPartnerAddress);
         }
 

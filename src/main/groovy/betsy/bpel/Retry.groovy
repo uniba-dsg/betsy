@@ -1,7 +1,6 @@
 package betsy.bpel
 
 import ant.tasks.AntUtil
-import betsy.bpel.model.BPELProcess
 import betsy.common.model.BetsyProcess
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
@@ -12,7 +11,7 @@ import java.nio.file.Path
 
 class Retry {
 
-    private static Logger log = Logger.getLogger(Retry)
+    private static final Logger LOGGER = Logger.getLogger(Retry)
 
     final AntBuilder ant = AntUtil.builder()
 
@@ -28,7 +27,7 @@ class Retry {
             try {
                 closure.run()
             } catch (TemporaryFailedTestException exception) {
-                log.info "Process ${process} failed on engine ${process.engine}"
+                LOGGER.info "Process ${process} failed on engine ${process.engine}"
                 if (testCount <= 1) {
                     testProcess = true
                     // delete old log output by moving to failed tests

@@ -16,11 +16,11 @@ public class WaitTasks {
      */
     public static void sleep(final int milliseconds) {
         if (milliseconds <= 0) {
-            log.info("Did not sleep because value is " + milliseconds + "ms");
+            LOGGER.info("Did not sleep because value is " + milliseconds + "ms");
             return;
         }
 
-        log.info("Sleep for " + milliseconds + " ms NOW");
+        LOGGER.info("Sleep for " + milliseconds + " ms NOW");
         sleepInternal(milliseconds);
     }
 
@@ -35,19 +35,19 @@ public class WaitTasks {
     }
 
     public static void waitFor(int untilMilliSeconds, int checkEveryMilliseconds, Callable<Boolean> c) {
-        log.info("wait for at most " + untilMilliSeconds + "ms or until condition is met.");
+        LOGGER.info("wait for at most " + untilMilliSeconds + "ms or until condition is met.");
         long max = System.currentTimeMillis() + untilMilliSeconds;
 
         try {
             while (max > System.currentTimeMillis()) {
                 if (c.call()) {
-                    log.info("Condition of wait task was met -> proceeding");
+                    LOGGER.info("Condition of wait task was met -> proceeding");
                     return;
                 }
                 sleepInternal(checkEveryMilliseconds);
             }
             if (!c.call()) {
-                log.info("Condition of wait task NOT met within the specified time");
+                LOGGER.info("Condition of wait task NOT met within the specified time");
                 throw new IllegalStateException("waited for " + untilMilliSeconds + "ms, but condition was not met");
             }
 
@@ -83,5 +83,5 @@ public class WaitTasks {
         waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> URLTasks.hasUrlSubstring(url, substring));
     }
 
-    private static final Logger log = Logger.getLogger(WaitTasks.class);
+    private static final Logger LOGGER = Logger.getLogger(WaitTasks.class);
 }

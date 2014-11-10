@@ -43,7 +43,7 @@ public class BPMNMain {
                 betsy.execute();
             } catch (Exception e) {
                 Throwable cleanedException = StackTraceUtils.deepSanitize(e);
-                log.error("something went wrong during execution", cleanedException);
+                LOGGER.error("something went wrong during execution", cleanedException);
             }
 
 
@@ -59,23 +59,23 @@ public class BPMNMain {
 
         } catch (Exception e) {
             Throwable cleanedException = StackTraceUtils.deepSanitize(e);
-            log.error(cleanedException.getMessage(), cleanedException);
+            LOGGER.error(cleanedException.getMessage(), cleanedException);
         }
 
     }
 
-    protected static String activateLogging() {
+    protected static void activateLogging() {
         // activate log4j logging
         DOMConfigurator.configure(BPELMain.class.getResource("/log4j.xml"));
 
         // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
-        return System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
+        System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
     protected static void printSelectedEnginesAndProcesses(List<BPMNEngine> engines, List<BPMNProcess> processes) {
         // print selection of engines and processes
-        log.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
-        log.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
+        LOGGER.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
     public static void onlyBuildSteps(BPMNCliParameter params, BPMNBetsy betsy) {
@@ -110,5 +110,5 @@ public class BPMNMain {
 
     }
 
-    private static final Logger log = Logger.getLogger(BPMNMain.class);
+    private static final Logger LOGGER = Logger.getLogger(BPMNMain.class);
 }

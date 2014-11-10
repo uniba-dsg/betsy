@@ -5,7 +5,7 @@ import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
 public class TestBuilder {
-    private static final Logger log = Logger.getLogger(TestBuilder.class);
+    private static final Logger LOGGER = Logger.getLogger(TestBuilder.class);
 
     private final BPELProcess process;
 
@@ -20,7 +20,7 @@ public class TestBuilder {
     }
 
     public void buildTest() {
-        log.info("Creating SoapUI TestSuite");
+        LOGGER.info("Creating SoapUI TestSuite");
         FileTasks.mkdirs(process.getTargetSoapUIPath());
         FileTasks.mkdirs(process.getTargetReportsPath());
 

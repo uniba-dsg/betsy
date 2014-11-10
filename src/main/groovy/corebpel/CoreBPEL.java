@@ -27,7 +27,7 @@ public class CoreBPEL {
             "default-attribute-values-simple.xsl", "default-attribute-values-global.xsl", "default-attribute-values-inherited.xsl",
             "standard-attributes-elements.xsl", "remove-redundant-attributes.xsl");
 
-    private static Map<String, Templates> nameToTransformation = new HashMap<>();
+    private static final Map<String, Templates> NAME_2_TEMPLATE = new HashMap<>();
 
     private final Path temporaryDirectory;
     private final Path bpelFilePath;
@@ -44,12 +44,12 @@ public class CoreBPEL {
     }
 
     protected static Templates getTemplatesByName(String name) throws TransformerConfigurationException {
-        Templates tmpl = nameToTransformation.get(name);
+        Templates tmpl = NAME_2_TEMPLATE.get(name);
         if (tmpl == null) {
             Source xsltSource = new StreamSource(new File("src/main/xslt/corebpel/" + name));
             TransformerFactory transFact = TransformerFactory.newInstance();
             tmpl = transFact.newTemplates(xsltSource);
-            nameToTransformation.put(name, tmpl);
+            NAME_2_TEMPLATE.put(name, tmpl);
         }
 
         return tmpl;

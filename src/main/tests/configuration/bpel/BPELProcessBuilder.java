@@ -10,9 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BPELProcessBuilder {
+
+    public static final String BPEL_EXTENSION = ".bpel";
+
     public static BPELProcess buildPatternProcess(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + ".bpel"));
+        process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + BPEL_EXTENSION));
         process.setWsdls(new ArrayList<>(Arrays.asList(testInterface)));
         process.setTestCases(testCases);
         return process;
@@ -20,7 +23,7 @@ public class BPELProcessBuilder {
 
     public static BPELProcess buildPatternProcessWithPartner(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + ".bpel"));
+        process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + BPEL_EXTENSION));
         process.setWsdls(new ArrayList<>(Arrays.asList(testInterface, partnerInterface)));
         process.setTestCases(testCases);
         return process;
@@ -28,7 +31,7 @@ public class BPELProcessBuilder {
 
     public static BPELProcess buildProcess(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve(name + ".bpel"));
+        process.setProcess(PATH_PREFIX.resolve(name + BPEL_EXTENSION));
         process.setWsdls(new ArrayList<>(Arrays.asList(testInterface)));
         process.setTestCases(testCases);
         return process;
@@ -36,17 +39,17 @@ public class BPELProcessBuilder {
 
     public static BPELProcess buildProcessWithXsd(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve(name + ".bpel"));
+        process.setProcess(PATH_PREFIX.resolve(name + BPEL_EXTENSION));
         process.setWsdls(new ArrayList<>(Arrays.asList(testInterface)));
         process.setTestCases(testCases);
-        process.setAdditionalFiles(new ArrayList<Path>(Arrays.asList(PATH_PREFIX.resolve("basic/months.xsd"))));
+        process.setAdditionalFiles(new ArrayList<>(Arrays.asList(PATH_PREFIX.resolve("basic/months.xsd"))));
         return process;
 
     }
 
     public static BPELProcess buildProcessWithPartner(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve(name + ".bpel"));
+        process.setProcess(PATH_PREFIX.resolve(name + BPEL_EXTENSION));
         process.setWsdls(new ArrayList<>(Arrays.asList(testInterface, partnerInterface)));
         process.setTestCases(testCases);
         return process;
@@ -54,7 +57,7 @@ public class BPELProcessBuilder {
 
     public static BPELProcess buildProcessWithXslt(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve(name + ".bpel"));
+        process.setProcess(PATH_PREFIX.resolve(name + BPEL_EXTENSION));
         process.setWsdls(new ArrayList<>(Arrays.asList(testInterface, partnerInterface)));
         process.setTestCases(testCases);
         process.setAdditionalFiles(new ArrayList<>(Arrays.asList(PATH_PREFIX.resolve("basic/echo.xslt"), PATH_PREFIX.resolve("basic/notCompileable.xslt"))));
@@ -110,9 +113,9 @@ public class BPELProcessBuilder {
         return process;
     }
 
-    public static Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel");
+    public static final Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel");
     public static final Path testInterface = PATH_PREFIX.resolve("TestInterface.wsdl");
     public static final Path partnerInterface = PATH_PREFIX.resolve("TestPartner.wsdl");
-    public static final int UNDECLARED_FAULT_CODE = -5;
-    public static final int DECLARED_FAULT_CODE = -6;
+    public static final int UNDECLARED_FAULT = -5;
+    public static final int DECLARED_FAULT = -6;
 }

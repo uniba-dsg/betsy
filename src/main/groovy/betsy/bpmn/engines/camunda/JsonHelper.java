@@ -21,6 +21,8 @@ public class JsonHelper {
         syncIdleConnectionMonitorThread.shutdown();
     }
 
+    public static final String REST_CALL_FAILED_WITH_URL = "rest call failed with url ";
+
     public static JSONObject get(String url, int expectedCode) {
         log.info("HTTP GET " + url);
 
@@ -35,7 +37,7 @@ public class JsonHelper {
                 return response.getBody().getObject();
             }
         } catch (UnirestException e) {
-            throw new RuntimeException("rest call to " + url + " failed", e);
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }
     }
 
@@ -49,7 +51,7 @@ public class JsonHelper {
 
             return response.getBody();
         } catch (UnirestException e) {
-            throw new RuntimeException("rest call to " + url + " failed", e);
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }
     }
 
@@ -63,7 +65,7 @@ public class JsonHelper {
             logResponse(response.getBody());
             return response.getBody().getObject();
         } catch (UnirestException e) {
-            throw new RuntimeException("rest call to " + url + " failed", e);
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }
     }
 
@@ -77,7 +79,7 @@ public class JsonHelper {
             logResponse(response.getBody());
             return response.getBody();
         } catch (UnirestException e) {
-            throw new RuntimeException("rest call to " + url + " failed", e);
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }
     }
 
@@ -91,7 +93,7 @@ public class JsonHelper {
             logResponse(response.getBody());
             return response.getBody().getObject();
         } catch (UnirestException e) {
-            throw new RuntimeException("rest call to " + url + " failed", e);
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url , e);
         }
     }
 

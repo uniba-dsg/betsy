@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 public class VirtualBoxImpl implements VirtualBox {
 
-    private VBoxController controller = new VBoxController();
+    private final VBoxController controller = new VBoxController();
 
     @Override
     public VirtualBoxMachine getVirtualMachineByName(String name) throws VirtualMachineNotFoundException {

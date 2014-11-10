@@ -21,17 +21,17 @@ import soapui.SoapUiRunner;
 import java.nio.file.Path;
 
 public class BPELComposite {
-    private static Logger logger = Logger.getLogger(BPELComposite.class);
+    private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
     private TestPartnerService testPartner = new TestPartnerServicePublisherInternal();
     private BPELTestSuite testSuite;
     private int requestTimeout = 15000;
 
     protected static void log(String name, Runnable closure) {
-        LogUtil.log(name, logger, closure);
+        LogUtil.log(name, LOGGER, closure);
     }
 
     protected static void log(Path path, Runnable closure) {
-        LogUtil.log(path, logger, closure);
+        LogUtil.log(path, LOGGER, closure);
     }
 
     public void execute() {
@@ -119,7 +119,7 @@ public class BPELComposite {
                     testPartner.publish();
                 } catch (Exception ignore) {
                     testPartner.unpublish();
-                    logger.debug("Address already in use - waiting 2 seconds to get available");
+                    LOGGER.debug("Address already in use - waiting 2 seconds to get available");
                     WaitTasks.sleep(2000);
                     testPartner.publish();
                 }

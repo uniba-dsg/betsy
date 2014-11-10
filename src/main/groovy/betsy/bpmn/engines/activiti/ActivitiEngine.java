@@ -51,11 +51,11 @@ public class ActivitiEngine extends BPMNEngine {
     }
 
     public static void deployBpmnProcess(Path bpmnFile) {
-        log.info("Deploying file " + bpmnFile.toAbsolutePath());
+        LOGGER.info("Deploying file " + bpmnFile.toAbsolutePath());
         try {
             JsonHelper.post(URL + "/service/repository/deployments", bpmnFile, 201);
         } catch (Exception e) {
-            log.info("deployment failed", e);
+            LOGGER.info("deployment failed", e);
         }
     }
 
@@ -162,6 +162,6 @@ public class ActivitiEngine extends BPMNEngine {
         return getTomcat().checkIfIsRunning();
     }
 
-    private static final Logger log = Logger.getLogger(ActivitiEngine.class);
+    private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
     public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
 }

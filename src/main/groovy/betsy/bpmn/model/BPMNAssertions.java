@@ -33,21 +33,11 @@ public enum BPMNAssertions {
     }
 
     public static void appendToFile(Path fileName, BPMNAssertions s) {
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new FileWriter(fileName.toFile(), true));
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName.toFile(), true))) {
             bw.append(s.toString());
             bw.newLine();
-        } catch (IOException ignored) {
-            // empty by intent
-        } finally {
-            if(bw != null) {
-                try {
-                    bw.close();
-                } catch (IOException ignored) {
-
-                }
-            }
+        } catch (IOException e) {
+            throw new RuntimeException("Could not append assertion " + s + " to " + fileName, e);
         }
     }
 }

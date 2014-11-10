@@ -13,7 +13,7 @@ public class Repository<T> {
 
     private static final Logger log = Logger.getLogger(Repository.class);
     
-    private Map<String, List<T>> repository = new LinkedHashMap<>();
+    private final Map<String, List<T>> repository = new LinkedHashMap<>();
 
     public void put(String key, List<T> values) {
         if (key == null) {

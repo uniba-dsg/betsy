@@ -6,7 +6,6 @@ import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestCaseVariable;
-import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -36,21 +35,21 @@ public class JbpmTester {
 
         String requestUrl = processStartUrl + joiner.toString();
         try {
-            log.info("Trying to start process \"" + name + "\".");
+            LOGGER.info("Trying to start process \"" + name + "\".");
             JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
         } catch (RuntimeException ex) {
             if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
-                log.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
+                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
                 //retry after delay
                 WaitTasks.sleep(10000);
                 try {
                     JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {
-                    log.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
+                    LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
                     BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
                 }
             } else {
-                log.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+                LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
             }
         }
@@ -65,23 +64,23 @@ public class JbpmTester {
 
     private void checkProcessOutcome() {
         try {
-            log.info("Trying to check process result status for " + name);
+            LOGGER.info("Trying to check process result status for " + name);
             String result = JsonHelper.getStringWithAuth(processHistoryUrl, 200, user, password);
             if (result.contains("ERR-1")) {
-                log.info("Process has been aborted. Error with id ERR-1 detected.");
+                LOGGER.info("Process has been aborted. Error with id ERR-1 detected.");
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             } else if (result.contains("ESC_1")) {
-                log.info("Process has been aborted. Escalation with id ESC_1 detected.");
+                LOGGER.info("Process has been aborted. Escalation with id ESC_1 detected.");
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
             } else if (result.contains("<status>3</status>")) {
-                log.info("Process has been aborted with unknown error.");
+                LOGGER.info("Process has been aborted with unknown error.");
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
             } else if (result.contains("<status>1</status>")) {
-                log.info("Process completed normally.");
+                LOGGER.info("Process completed normally.");
             }
 
         } catch (RuntimeException innerEx) {
-            log.info("Checking process result status failed.", innerEx);
+            LOGGER.info("Checking process result status failed.", innerEx);
         }
     }
 
@@ -90,7 +89,7 @@ public class JbpmTester {
         analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), deploymentError);
-            log.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
+            LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
         }
     }
 
@@ -186,6 +185,6 @@ public class JbpmTester {
     private String user = "admin";
     private String password = "admin";
 
-    private static final Logger log = Logger.getLogger(JbpmTester.class);
+    private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
 
 }

@@ -395,28 +395,28 @@ class BasicActivityProcesses {
     public static final BPELProcess INVOKE_CATCH = builder.buildProcessWithPartner(
             "basic/Invoke-Catch", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             [
-                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, 0)
+                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, 0)
             ]
     )
 
     public static final BPELProcess INVOKE_CATCH_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic/Invoke-Catch-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             [
-                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT_CODE, 0)
+                    new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, 0)
             ]
     )
 
     public static final BPELProcess INVOKE_CATCHALL = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new BPELTestCase(name: "Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT_CODE, -1)
+                    new BPELTestCase(name: "Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
             ]
     )
 
     public static final BPELProcess INVOKE_CATCHALL_UNDECLARED_FAULT = builder.buildProcessWithPartner(
             "basic/Invoke-CatchAll-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             [
-                    new BPELTestCase(name: "Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT_CODE, 0)
+                    new BPELTestCase(name: "Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, 0)
             ]
     )
 

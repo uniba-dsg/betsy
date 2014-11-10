@@ -5,7 +5,6 @@ import betsy.bpmn.engines.activiti.ActivitiEngine;
 import betsy.bpmn.engines.camunda.Camunda710Engine;
 import betsy.bpmn.engines.camunda.CamundaEngine;
 import betsy.bpmn.engines.jbpm.JbpmEngine;
-import betsy.bpmn.engines.jbpm.JbpmEngine610;
 import betsy.common.repositories.Repository;
 
 import java.util.ArrayList;

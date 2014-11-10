@@ -35,7 +35,7 @@ public class OpenEsbCLI {
     }
 
     public void forceRedeploy(String processName, Path packageFilePath, Path tmpFolder) {
-        log.info("Deploying " + processName + " from " + packageFilePath);
+        LOGGER.info("Deploying " + processName + " from " + packageFilePath);
 
         Path deployCommands = tmpFolder.resolve("deploy_commands.txt");
 
@@ -53,6 +53,6 @@ public class OpenEsbCLI {
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
     }
 
-    private static final Logger log = Logger.getLogger(OpenEsbCLI.class);
+    private static final Logger LOGGER = Logger.getLogger(OpenEsbCLI.class);
     private final Path glassfishHome;
 }

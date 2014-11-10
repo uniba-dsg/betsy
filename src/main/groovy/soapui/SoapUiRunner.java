@@ -11,7 +11,7 @@ import java.nio.file.Path;
  */
 public class SoapUiRunner {
 
-    private static final Logger log = Logger.getLogger(SoapUiRunner.class);
+    private static final Logger LOGGER = Logger.getLogger(SoapUiRunner.class);
 
     private final Path soapUiProjectFile;
     private final Path reportingDirectory;
@@ -36,7 +36,7 @@ public class SoapUiRunner {
         try {
             runner.run();
         } catch (Exception ignore) {
-            log.error("Exception occured during Test " + reportingDirectory + ". See test results for more information.");
+            LOGGER.error("Exception occured during Test " + reportingDirectory + ". See test results for more information.");
         }
 
     }

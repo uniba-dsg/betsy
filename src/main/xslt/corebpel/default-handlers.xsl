@@ -13,7 +13,7 @@
     </xsl:copy>
   </xsl:template>
   
-  <xsl:template match="bpel:faultHandler[not(bpel:catchAll)]">
+  <xsl:template match="bpel:faultHandlers[not(bpel:catchAll)]">
     <xsl:copy>
       <xsl:apply-templates select="bpel:catch" />
       <bpel:catchAll>

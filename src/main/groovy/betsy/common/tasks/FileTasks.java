@@ -15,7 +15,7 @@ import java.util.*;
 
 public class FileTasks {
 
-    private static final Logger log = Logger.getLogger(FileTasks.class);
+    private static final Logger LOGGER = Logger.getLogger(FileTasks.class);
 
     public static void createFile(Path file, String content) {
         mkdirs(file.getParent());
@@ -28,7 +28,7 @@ public class FileTasks {
         }
 
         String message = "Creating file " + file.toAbsolutePath() + " with " + showOutput;
-        log.info(message);
+        LOGGER.info(message);
         try {
             Files.write(file, Arrays.asList(lines), StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -37,26 +37,26 @@ public class FileTasks {
     }
 
     public static void deleteDirectory(Path directory) {
-        log.info("Deleting directory " + directory.toAbsolutePath());
+        LOGGER.info("Deleting directory " + directory.toAbsolutePath());
         if (Files.isDirectory(directory)) {
             if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
-                log.info("Deletion failed -> retrying after short wait");
+                LOGGER.info("Deletion failed -> retrying after short wait");
                 WaitTasks.sleep(5000);
                 if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
-                    log.info("Retry of deletion also failed.");
+                    LOGGER.info("Retry of deletion also failed.");
                     throw new IllegalStateException("could not delete directory " + directory);
                 }
             }
         } else {
-            log.info("Directory is already deleted!");
+            LOGGER.info("Directory is already deleted!");
         }
     }
 
     public static void mkdirs(Path dir) {
         try {
-            log.info("Creating directory " + dir.toAbsolutePath());
+            LOGGER.info("Creating directory " + dir.toAbsolutePath());
             if (Files.isDirectory(dir)) {
-                log.info("Directory already there - skipping creation");
+                LOGGER.info("Directory already there - skipping creation");
             } else {
                 Files.createDirectories(dir);
             }
@@ -94,12 +94,12 @@ public class FileTasks {
     }
 
     public static void deleteLine(Path path, int lineNumber) {
-        log.info("Deleting line #" + lineNumber + " from file " + path.toAbsolutePath());
+        LOGGER.info("Deleting line #" + lineNumber + " from file " + path.toAbsolutePath());
 
         try {
             // line numbers start with 1, not with 0!
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            log.info("File has " + lines.size() + " lines -> removing #" + lineNumber + " with content " + lines.get(lineNumber - 1));
+            LOGGER.info("File has " + lines.size() + " lines -> removing #" + lineNumber + " with content " + lines.get(lineNumber - 1));
 
             lines.remove(lineNumber - 1);
 
@@ -110,10 +110,10 @@ public class FileTasks {
     }
 
     public static void deleteFile(Path file) {
-        log.info("Deleting file " + file.toAbsolutePath());
+        LOGGER.info("Deleting file " + file.toAbsolutePath());
 
         if (!Files.isRegularFile(file)) {
-            log.info("File does not exist - must not be deleted");
+            LOGGER.info("File does not exist - must not be deleted");
             return;
         }
 
@@ -129,7 +129,7 @@ public class FileTasks {
         assertDirectory(targetFolder);
 
         try {
-            log.info("Copying file " + file.toAbsolutePath() + " into folder " + targetFolder.toAbsolutePath());
+            LOGGER.info("Copying file " + file.toAbsolutePath() + " into folder " + targetFolder.toAbsolutePath());
             Files.copy(file, targetFolder.resolve(file.getFileName()));
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder, e);
@@ -140,7 +140,7 @@ public class FileTasks {
         assertFile(source);
 
         try {
-            log.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath());
+            LOGGER.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath());
             List<String> lines = Files.readAllLines(source);
             mkdirs(target.getParent());
             Files.write(target, lines, StandardCharsets.UTF_8);
@@ -150,22 +150,22 @@ public class FileTasks {
     }
 
     public static boolean hasFile(Path file) {
-        log.info("Checking for the existence of file " + file.toAbsolutePath());
+        LOGGER.info("Checking for the existence of file " + file.toAbsolutePath());
         return Files.isRegularFile(file);
     }
 
     public static boolean hasFolder(Path folder) {
-        log.info("Checking for the existence of folder " + folder.toAbsolutePath());
+        LOGGER.info("Checking for the existence of folder " + folder.toAbsolutePath());
         return Files.isDirectory(folder);
     }
 
     public static boolean hasNoFile(Path file) {
-        log.info("Checking for the absence of file " + file.toAbsolutePath());
+        LOGGER.info("Checking for the absence of file " + file.toAbsolutePath());
         return !Files.isRegularFile(file);
     }
 
     public static boolean hasFileSpecificSubstring(Path path, String substring, Charset charset) {
-        log.info("Searching for substring " + substring + " in file " + path.toAbsolutePath());
+        LOGGER.info("Searching for substring " + substring + " in file " + path.toAbsolutePath());
         try {
             assertFile(path);
             List<String> lines = Files.readAllLines(path, charset);
@@ -177,7 +177,7 @@ public class FileTasks {
             }
 
         } catch (Exception e) {
-            log.info("Could not read file " + path, e);
+            LOGGER.info("Could not read file " + path, e);
         }
         return false;
     }
@@ -187,7 +187,7 @@ public class FileTasks {
     }
 
     public static void move(Path from, Path to) {
-        log.info("Moving file " + from + " to " + to);
+        LOGGER.info("Moving file " + from + " to " + to);
         try {
             Files.move(from, to);
         } catch (IOException e) {
@@ -196,7 +196,7 @@ public class FileTasks {
     }
 
     public static Path findFirstMatchInFolder(Path folder, String glob) {
-        log.info("Finding first file in dir [" + folder + "] with pattern [" + glob + "]");
+        LOGGER.info("Finding first file in dir [" + folder + "] with pattern [" + glob + "]");
 
         try {
             FileTasks.assertDirectory(folder);
@@ -214,7 +214,7 @@ public class FileTasks {
     }
 
     public static void copyFilesInFolderIntoOtherFolder(Path from, Path to) {
-        log.info("Copying files from " + from + " to folder " + to);
+        LOGGER.info("Copying files from " + from + " to folder " + to);
 
         assertDirectory(from);
         assertDirectory(to);
@@ -231,7 +231,7 @@ public class FileTasks {
     }
 
     public static void replaceTokensInFile(Path targetFile, Map<String, ?> replacements) {
-        log.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
+        LOGGER.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
 
         assertFile(targetFile);
 
@@ -259,7 +259,7 @@ public class FileTasks {
     }
 
     public static void replaceTokensInFolder(Path targetFile, Map<String, ?> replacements) {
-        log.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
+        LOGGER.info("Replacing tokens in " + targetFile.toAbsolutePath() + " {" + new PrettyPrintingMap<>(replacements).toString() + "}");
 
         assertDirectory(targetFile);
 

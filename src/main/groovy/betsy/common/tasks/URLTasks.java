@@ -16,7 +16,7 @@ import java.nio.file.Path;
 public class URLTasks {
 
     public static boolean isUrlAvailable(URL url) {
-        log.info("Checking whether the url " + url + " returns HTTP 200");
+        LOGGER.info("Checking whether the url " + url + " returns HTTP 200");
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -24,10 +24,10 @@ public class URLTasks {
 
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
-            log.info("Got response code " + responseCode);
+            LOGGER.info("Got response code " + responseCode);
             return responseCode == 200;
         } catch (Exception e) {
-            log.info(e);
+            LOGGER.info(e);
             return false;
         }
     }
@@ -41,7 +41,7 @@ public class URLTasks {
     }
 
     public static boolean hasUrlSubstring(URL url, String substring) {
-        log.info("Checking whether the url " + url + " has substring " + substring);
+        LOGGER.info("Checking whether the url " + url + " has substring " + substring);
         try {
             String result = getContentAtUrl(url);
 
@@ -71,7 +71,7 @@ public class URLTasks {
         return result;
     }
 
-    private static final Logger log = Logger.getLogger(URLTasks.class);
+    private static final Logger LOGGER = Logger.getLogger(URLTasks.class);
 
     public static void downloadInto(URL url, Path downloadFolder) {
         FileTasks.mkdirs(downloadFolder);

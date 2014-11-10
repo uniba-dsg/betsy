@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActivitiTester {
-    private static final Logger log = Logger.getLogger(ActivitiTester.class);
+    private static final Logger LOGGER = Logger.getLogger(ActivitiTester.class);
     private BPMNTestCase testCase;
     private String restURL;
     private String key;
@@ -24,7 +24,7 @@ public class ActivitiTester {
     private BPMNTester bpmnTester;
 
     public static void startProcess(String id, Object[] variables) {
-        log.info("Start process instance for " + id);
+        LOGGER.info("Start process instance for " + id);
         String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
 
         Map<String, Object> request = new HashMap<>();
@@ -33,7 +33,7 @@ public class ActivitiTester {
         request.put("businessKey", "key-" + id);
 
         JSONObject jsonRequest = new JSONObject(request);
-        log.info("With json message: " + jsonRequest.toString());
+        LOGGER.info("With json message: " + jsonRequest.toString());
 
         JsonHelper.post(deploymentUrl, jsonRequest, 201);
     }
@@ -43,8 +43,6 @@ public class ActivitiTester {
      */
     public void runTest() {
         //make bin dir
-
-
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
         addDeploymentErrorsToLogFile(logFile);
@@ -56,7 +54,7 @@ public class ActivitiTester {
             WaitTasks.sleep(testCase.getDelay());
             addRuntimeErrorsToLogFile(logFile);
         } catch (Exception e) {
-            log.info("Could not start process", e);
+            LOGGER.info("Could not start process", e);
             if(e.getMessage().contains("ERR-1")) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             } else {

@@ -42,7 +42,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", name = "testElementSyncResponse")
     public JAXBElement<Integer> createTestElementSyncResponse(Integer value) {
-        return new JAXBElement<Integer>(_TestElementSyncResponse_QNAME, Integer.class, null, value);
+        return new JAXBElement<>(_TestElementSyncResponse_QNAME, Integer.class, null, value);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", name = "testElementAsyncRequest")
     public JAXBElement<Integer> createTestElementAsyncRequest(Integer value) {
-        return new JAXBElement<Integer>(_TestElementAsyncRequest_QNAME, Integer.class, null, value);
+        return new JAXBElement<>(_TestElementAsyncRequest_QNAME, Integer.class, null, value);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", name = "testElementFault")
     public JAXBElement<Integer> createTestElementFault(Integer value) {
-        return new JAXBElement<Integer>(_TestElementFault_QNAME, Integer.class, null, value);
+        return new JAXBElement<>(_TestElementFault_QNAME, Integer.class, null, value);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", name = "testElementSyncRequest")
     public JAXBElement<Integer> createTestElementSyncRequest(Integer value) {
-        return new JAXBElement<Integer>(_TestElementSyncRequest_QNAME, Integer.class, null, value);
+        return new JAXBElement<>(_TestElementSyncRequest_QNAME, Integer.class, null, value);
     }
 
 }

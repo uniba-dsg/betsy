@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 public class ZipTasks {
     public static void zipFolder(Path tempZipFile, Path folder) {
-        log.info("Creating zip archive " + tempZipFile + " using the contents of " + folder);
+        LOGGER.info("Creating zip archive " + tempZipFile + " using the contents of " + folder);
 
         Zip zip = new Zip();
         zip.setDestFile(tempZipFile.toFile());
@@ -25,7 +25,7 @@ public class ZipTasks {
     }
 
     public static void unzip(Path tempZipFile, Path tempExtractedFolder) {
-        log.info("Unzipping " + tempZipFile + " to " + tempExtractedFolder);
+        LOGGER.info("Unzipping " + tempZipFile + " to " + tempExtractedFolder);
 
         Expand expand = new Expand();
         expand.setDest(tempExtractedFolder.toFile());
@@ -37,5 +37,5 @@ public class ZipTasks {
         expand.execute();
     }
 
-    private static final Logger log = Logger.getLogger(ZipTasks.class);
+    private static final Logger LOGGER = Logger.getLogger(ZipTasks.class);
 }

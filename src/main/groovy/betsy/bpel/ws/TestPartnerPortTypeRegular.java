@@ -60,14 +60,14 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
             logInfo("Partner: startProcessSync with " + inputPart + " - Throwing Fault");
             throw new FaultMessage("expected Error", inputPart);
         } else if (replyInput) {
-            return testWithConcurrency(inputPart);
+            return detectConcurrency(inputPart);
         } else {
             return 0;
         }
 
     }
 
-    private int testWithConcurrency(final int inputPart) {
+    private int detectConcurrency(final int inputPart) {
         if (inputPart == 100) {
             //magic number for tracking concurrent accesses
             concurrentAccesses.incrementAndGet();

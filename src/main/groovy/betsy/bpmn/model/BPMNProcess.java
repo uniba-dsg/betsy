@@ -1,15 +1,9 @@
 package betsy.bpmn.model;
 
 import betsy.bpmn.engines.BPMNEngine;
-import betsy.bpmn.engines.activiti.ActivitiEngine;
-import betsy.common.engines.Nameable;
 import betsy.common.model.BetsyProcess;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BPMNProcess extends BetsyProcess<BPMNTestCase, BPMNEngine> {
 

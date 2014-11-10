@@ -20,7 +20,7 @@ public class Configuration {
      * @return Value assigned to the key, or null if key is not set
      */
     public static String getString(final String key) {
-        String result = properties.getProperty(key);
+        String result = PROPERTIES.getProperty(key);
 
         if (result == null) {
             throw new ConfigurationException("No value found for key [" + key + "]");
@@ -34,19 +34,19 @@ public class Configuration {
     }
 
     public static Path getDownloadsDir() {
-        return Paths.get(properties.getProperty("downloads.dir"));
+        return Paths.get(PROPERTIES.getProperty("downloads.dir"));
     }
 
     public static Path getAntHome() {
-        return Paths.get(properties.getProperty("ant.home"));
+        return Paths.get(PROPERTIES.getProperty("ant.home"));
     }
 
     public static Path getMavenHome() {
-        return Paths.get(properties.getProperty("maven.home"));
+        return Paths.get(PROPERTIES.getProperty("maven.home"));
     }
 
     public static Path getJbpmDeployerHome() {
-        return Paths.get(properties.getProperty("jbpmdeployer.home"));
+        return Paths.get(PROPERTIES.getProperty("jbpmdeployer.home"));
     }
 
     static {
@@ -56,14 +56,14 @@ public class Configuration {
             Properties props = new Properties();
             props.load(reader);
 
-            properties = props;
+            PROPERTIES = props;
 
         } catch (IOException e) {
             throw new RuntimeException("something went wrong", e);
         }
     }
 
-    public static Properties properties;
+    public static final Properties PROPERTIES;
 
     /**
      * Get the File where VirtualBox is installed in.
@@ -71,7 +71,7 @@ public class Configuration {
      * @return directory file
      */
     public static Path getVboxHome() {
-        Path vboxHomePath = Paths.get(properties.getProperty("virtual.vbox.home"));
+        Path vboxHomePath = Paths.get(PROPERTIES.getProperty("virtual.vbox.home"));
 
         if (!Files.isDirectory(vboxHomePath)) {
             throw new ConfigurationException("Found [" + vboxHomePath + "] for key [virtual.vbox.home] " + "Path to VirtualBox directory");
@@ -111,7 +111,7 @@ public class Configuration {
     }
 
     public static boolean useRunningVM() {
-        return Boolean.valueOf(properties.getProperty("virtual.useRunningVM"));
+        return Boolean.valueOf(PROPERTIES.getProperty("virtual.useRunningVM"));
     }
 
     public static Path getVirtualDownloadDir() {
@@ -119,11 +119,11 @@ public class Configuration {
     }
 
     public static Integer getTimeToStartVboxWebService() {
-        return Integer.parseInt(properties.getProperty("virtual.vbox.websrv.wait"));
+        return Integer.parseInt(PROPERTIES.getProperty("virtual.vbox.websrv.wait"));
     }
 
     public static void setPartnerIpAndPort(String newPartnerAddress) {
-        properties.setProperty("partner.ipAndPort", newPartnerAddress);
+        PROPERTIES.setProperty("partner.ipAndPort", newPartnerAddress);
     }
 
     public static Path getJava7Home() {
@@ -133,7 +133,7 @@ public class Configuration {
 
         if (java7env == null) {
             // Fallback to properties file
-            java7home = Paths.get(properties.getProperty("java7.home"));
+            java7home = Paths.get(PROPERTIES.getProperty("java7.home"));
         } else {
             java7home = Paths.get(java7env);
         }
@@ -152,7 +152,7 @@ public class Configuration {
 
         if (jre7env == null) {
             // Fallback to properties file
-            result = Paths.get(properties.getProperty("jre7.home"));
+            result = Paths.get(PROPERTIES.getProperty("jre7.home"));
         } else {
             result = Paths.get(jre7env);
         }

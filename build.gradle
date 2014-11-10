@@ -311,8 +311,10 @@ pmd {
             'java-empty',
             'java-unnecessary',
             'java-junit',
-            'java-unusedcode'
-
+            'java-unusedcode',
+            'java-clone',
+            'java-migrating',
+            'java-naming',
             /*
             'java-codesize',
             'java-comments',
@@ -322,11 +324,11 @@ pmd {
             'java-strings',
             'java-sunsecure',
             'java-optimizations',
-            'java-naming',
+
             'java-strictexception',
-            'java-migrating',
+
             'java-coupling',
-            'java-clone',
+
             */
     ]
 }

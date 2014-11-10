@@ -78,20 +78,12 @@ public class SoapTestStep extends AssertableTestStep {
         this.operation = operation;
     }
 
-    public boolean getTestPartner() {
-        return testPartner;
-    }
-
     public boolean isTestPartner() {
         return testPartner;
     }
 
     public void setTestPartner(boolean testPartner) {
         this.testPartner = testPartner;
-    }
-
-    public boolean getConcurrencyTest() {
-        return concurrencyTest;
     }
 
     public boolean isConcurrencyTest() {
