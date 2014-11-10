@@ -2,13 +2,6 @@
     <xsl:output omit-xml-declaration="yes" indent="yes" method="xml" />
     <xsl:strip-space elements="*" />
 
-    <xsl:template match="bpmn2:definitions">
-        <bpmn2:definitions targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODELBPMN20.xsd">
-            <xsl:namespace name="camunda" select="'http://activiti.org/bpmn'" />
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:definitions>
-    </xsl:template>
-
     <xsl:template match="bpmn2:scriptTask">
         <bpmn2:scriptTask scriptFormat="groovy">
             <xsl:apply-templates select="@*|node()"/>

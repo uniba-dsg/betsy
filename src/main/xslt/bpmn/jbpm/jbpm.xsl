@@ -2,26 +2,6 @@
     <xsl:output indent="yes" method="xml" />
     <xsl:strip-space elements="*" />
 
-    <!-- in the case of a second process rename the properties -->
-    <xsl:template match="bpmn2:process[@id='Process_2']">
-        <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process 2" processType="Private">
-            <xsl:apply-templates select="@*"/>
-            <bpmn2:property id="test2" itemSubjectRef="testItem" />
-            <bpmn2:property id="testCaseNumber2" itemSubjectRef="testCaseNumberItem" />
-            <xsl:apply-templates select="node()"/>
-        </bpmn2:process>
-    </xsl:template>
-
-    <!-- in the case of a third process rename the properties -->
-    <xsl:template match="bpmn2:process[@id='Process_1']">
-        <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process 3" processType="Private">
-            <xsl:apply-templates select="@*"/>
-            <bpmn2:property id="test3" itemSubjectRef="testItem" />
-            <bpmn2:property id="testCaseNumber3" itemSubjectRef="testCaseNumberItem" />
-            <xsl:apply-templates select="node()"/>
-        </bpmn2:process>
-    </xsl:template>
-
     <!-- general settings -->
     <xsl:template match="bpmn2:definitions">
         <bpmn2:definitions xmlns="http://www.jboss.org/drools" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd">
@@ -40,12 +20,6 @@
             <bpmn2:property id="testCaseNumber" itemSubjectRef="testCaseNumberItem" />
             <xsl:apply-templates select="node()"/>
         </bpmn2:process>
-    </xsl:template>
-
-    <xsl:template match="bpmn2:sequenceFlow">
-        <bpmn2:sequenceFlow tns:priority="1">
-            <xsl:apply-templates select="@*|node()"/>
-        </bpmn2:sequenceFlow>
     </xsl:template>
 
     <xsl:template match="bpmn2:scriptTask">
