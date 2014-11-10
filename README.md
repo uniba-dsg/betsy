@@ -95,7 +95,7 @@ Options:
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
 <ENGINES>: [ALL, camunda, camunda710, activiti, jbpm]
-<PROCESSES>: [ALL, GATEWAYS, TASKS, EVENTS, SUBPROCESSES, MISCS, ...]
+<PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, ...]
 ```
 
 ## Administrative Tasks
@@ -116,11 +116,21 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
     downloads/ # downloads of the engines
     server/ # engine installation directory
     test/ # execution results and reports
-    src/main/tests/ # the bpel, wsdl, xsd files and test configuration
-    src/main/xslt/[engine/] # common and engine specific xslt scripts
-    src/main/resources/[engine/] # common and engine specific xsds and other resources
+    src/main/tests/configuration/[standard]/ # the test configuration
+    src/main/tests/files/[standard]/ # the test files
+    src/main/xslt/[standard]/[engine/] # common and engine specific xslt scripts
+    src/main/resources/[standard]/[engine/] # common and engine specific xsds and other resources
     src/main/groovy # the main source code
     src/main/java # mock web service implementation
+
+    # for BPMN
+    maven/ # Maven
+    jbpmdependencies/ # Dependencies for jBPM
+    jbpmdeployer/ # jars to deploy a process to jBPM
+
+    # for BPEL
+    ant/ # Apache Ant
+    soapui/ # soapUI
 
 ## Test Structure
 
@@ -140,7 +150,9 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 	[test/$engine/$process/composite/ # composite package]
 
 	BPMN structure
-	TBA
+	test/$engine/$process/testSrc/ # source java files for the test
+    test/$engine/$process/testBin/ # class files for the test
+    [test/$engine/$process/war/ # the files for the war file]
 
 # Authors (in alphabetical order)
 
@@ -154,6 +166,7 @@ The following scientific publications are either about betsy, have used betsy to
  - Lenhard, J., Wirtz, G.: [Measuring the Portability of Executable Service-Oriented Processes](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-05-lenhard-wirtz/), Proceedings of the 17th IEEE International EDOC Conference, Vancouver, Canada, September 9 - 13, 2013, Awarded Best Student Conference Paper in Service Science
  - Harrer, S., Lenhard, J., Wirtz, G.: [Open Source versus Proprietary Software in Service-Orientation: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-07-harrer-lenhard-wirtz/), Proceedings of the 11th International Conference on Service Oriented Computing (ICSOC '13), Berlin, Germany, December 2 - 5, 2013
  - Lenhard, J. Harrer, S., Wirtz, G.: [Measuring the Installability of Service Orchestrations Using the SQuaRE Method](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-08-harrer-lenhard-wirtz/), Proceedings of the 6th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'13), Kauai, Hawaii, USA, December 16 - 18, 2013, Awarded Best Conference Paper
+ - Harrer, S. Röck, C., Wirtz, G.: [Automated and Isolated Tests for Complex Middleware Products: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/14-04-harrer-wirtz/), Proceedings of the 7th IEEE  International Conference on Software Testing, Verification and Validation Workshops (ICSTW 2014), Testing Tools Track, Cleveland, OH, USA, March 30 – April 4, 2014
 
 # Contribution Guide
 - Fork
