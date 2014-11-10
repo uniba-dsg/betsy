@@ -1,6 +1,6 @@
 package betsy.bpel.engines.ode;
 
-import betsy.bpel.engines.LocalEngine;
+import betsy.bpel.engines.AbstractLocalEngine;
 import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.tasks.FileTasks;
@@ -8,7 +8,7 @@ import betsy.common.tasks.XSLTTasks;
 
 import java.nio.file.Path;
 
-public class OdeEngine extends LocalEngine {
+public class OdeEngine extends AbstractLocalEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
 

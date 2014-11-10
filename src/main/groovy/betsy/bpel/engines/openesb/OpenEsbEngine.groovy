@@ -1,13 +1,13 @@
 package betsy.bpel.engines.openesb
 
 import betsy.bpel.model.BPELProcess
-import betsy.bpel.engines.LocalEngine
+import betsy.bpel.engines.AbstractLocalEngine
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.WaitTasks
 
 import java.nio.file.Path
 
-class OpenEsbEngine extends LocalEngine {
+class OpenEsbEngine extends AbstractLocalEngine {
 
     static final String CHECK_URL = "http://localhost:18181"
 

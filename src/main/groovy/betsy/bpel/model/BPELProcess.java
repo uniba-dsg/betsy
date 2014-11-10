@@ -1,14 +1,14 @@
 package betsy.bpel.model;
 
-import betsy.bpel.engines.Engine;
-import betsy.common.model.BetsyProcess;
+import betsy.bpel.engines.AbstractEngine;
+import betsy.common.model.AbstractProcess;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPELProcess extends BetsyProcess<BPELTestCase, Engine> {
+public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractEngine> {
 
     @Override
     public BPELProcess createCopyWithoutEngine() {

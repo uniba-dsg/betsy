@@ -1,6 +1,6 @@
 package betsy.bpel.repositories;
 
-import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.AbstractEngine;
 import betsy.bpel.engines.activebpel.ActiveBpelEngine;
 import betsy.bpel.engines.bpelg.BpelgEngine;
 import betsy.bpel.engines.bpelg.BpelgInMemoryEngine;
@@ -42,15 +42,15 @@ public class EngineRepository {
     private static final PetalsEsbEngine PETALS = new PetalsEsbEngine();
     private static final Wso2Engine_v3_1_0 WSO2_310 = new Wso2Engine_v3_1_0();
     private static final OpenEsb231Engine OPENESB231 = new OpenEsb231Engine();
-    private final Repository<Engine> repo = new Repository<>();
+    private final Repository<AbstractEngine> repo = new Repository<>();
 
     public EngineRepository() {
-        List<Engine> locals = Arrays.asList(ODE, BPELG, OPENESB, PETALS, ORCHESTRA, ACTIVE_BPEL, OPENESB_23, OPENESB231,
+        List<AbstractEngine> locals = Arrays.asList(ODE, BPELG, OPENESB, PETALS, ORCHESTRA, ACTIVE_BPEL, OPENESB_23, OPENESB231,
                 PETALS_41, ODE_136, ODE_IN_MEMORY, ODE_136_IN_MEMORY, BPELG_IN_MEMORY, WSO2_310, new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
-        List<Engine> recent = Arrays.asList(BPELG, ORCHESTRA, ACTIVE_BPEL, OPENESB231, PETALS_41, ODE_136, WSO2_310);
-        List<Engine> vms = Arrays.asList(new VirtualOdeEngine(), new VirtualBpelgEngine(), new VirtualOpenEsbEngine(),
+        List<AbstractEngine> recent = Arrays.asList(BPELG, ORCHESTRA, ACTIVE_BPEL, OPENESB231, PETALS_41, ODE_136, WSO2_310);
+        List<AbstractEngine> vms = Arrays.asList(new VirtualOdeEngine(), new VirtualBpelgEngine(), new VirtualOpenEsbEngine(),
                 new VirtualPetalsEsbEngine(), new VirtualOrchestraEngine(), new VirtualActiveBpelEngine());
-        List<Engine> all = new ArrayList<>();
+        List<AbstractEngine> all = new ArrayList<>();
         all.addAll(locals);
         all.addAll(vms);
 
@@ -60,17 +60,17 @@ public class EngineRepository {
         repo.put("RECENT", recent);
 
         // insert every engine into the map
-        for (Engine engine : repo.getByName("ALL")) {
+        for (AbstractEngine engine : repo.getByName("ALL")) {
             repo.put(engine.getName(), Arrays.asList(engine));
         }
 
     }
 
-    public List<Engine> getByName(String name) {
+    public List<AbstractEngine> getByName(String name) {
         return repo.getByName(name);
     }
 
-    public List<Engine> getByNames(String[] names) {
+    public List<AbstractEngine> getByNames(String[] names) {
         return repo.getByNames(names);
     }
 

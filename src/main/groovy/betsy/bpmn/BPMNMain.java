@@ -2,7 +2,7 @@ package betsy.bpmn;
 
 import betsy.bpel.BPELMain;
 import betsy.bpmn.cli.*;
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.engines.Nameable;
 import org.apache.log4j.Logger;
@@ -72,7 +72,7 @@ public class BPMNMain {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<BPMNEngine> engines, List<BPMNProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<AbstractBPMNEngine> engines, List<BPMNProcess> processes) {
         // print selection of engines and processes
         LOGGER.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
         LOGGER.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));

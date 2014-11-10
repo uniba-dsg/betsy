@@ -1,10 +1,8 @@
 package betsy.bpel.virtual.host.exceptions;
 
-import betsy.bpel.engines.Engine;
-
 /**
  * The {@link PermanentFailedTestException} is thrown if the test of an
- * {@link Engine}'s {@link Process} failed and the cause of the failure is
+ * {@link betsy.bpel.engines.AbstractEngine}'s {@link Process} failed and the cause of the failure is
  * permanent. Each execution of the test will results in the same failure until
  * the cause of the error is eliminated.
  * 

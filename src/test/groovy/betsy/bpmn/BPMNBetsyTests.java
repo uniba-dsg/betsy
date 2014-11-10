@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
@@ -9,12 +9,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BPMNBetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
-        BPMNEngine engine = new MockEngine();
+        AbstractBPMNEngine engine = new MockEngine();
 
         List<BPMNProcess> processes = new BPMNProcessRepository().getByName("ALL");
 
@@ -25,7 +24,7 @@ public class BPMNBetsyTests {
         betsy.execute();
     }
 
-    public class MockEngine extends BPMNEngine {
+    public class MockEngine extends AbstractBPMNEngine {
         public void install() {
         }
 

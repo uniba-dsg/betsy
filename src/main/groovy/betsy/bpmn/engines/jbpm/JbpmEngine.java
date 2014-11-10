@@ -1,6 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class JbpmEngine extends BPMNEngine {
+public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public String getName() {
         return "jbpm";

@@ -1,11 +1,11 @@
 package betsy.bpmn.model;
 
-import betsy.bpmn.engines.BPMNEngine;
-import betsy.common.model.BetsyProcess;
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.common.model.AbstractProcess;
 
 import java.nio.file.Path;
 
-public class BPMNProcess extends BetsyProcess<BPMNTestCase, BPMNEngine> {
+public class BPMNProcess extends AbstractProcess<BPMNTestCase, AbstractBPMNEngine> {
 
     public BPMNProcess createCopyWithoutEngine() {
         BPMNProcess process = new BPMNProcess();

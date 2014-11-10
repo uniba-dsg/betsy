@@ -1,6 +1,6 @@
 package betsy.bpmn.engines.camunda;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CamundaEngine extends BPMNEngine {
+public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public String getName() {
         return "camunda";

@@ -1,6 +1,6 @@
 package betsy.bpel.cli;
 
-import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.AbstractEngine;
 import betsy.bpel.repositories.EngineRepository;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class EngineParser {
         this.args = args;
     }
 
-    public List<Engine> parse() {
+    public List<AbstractEngine> parse() {
         EngineRepository engineRepository = new EngineRepository();
 
         if (args.length == 0) {

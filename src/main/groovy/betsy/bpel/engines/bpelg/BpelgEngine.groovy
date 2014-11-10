@@ -1,7 +1,7 @@
 package betsy.bpel.engines.bpelg
 
 import betsy.bpel.model.BPELProcess
-import betsy.bpel.engines.LocalEngine
+import betsy.bpel.engines.AbstractLocalEngine
 import betsy.common.engines.Util
 import betsy.bpel.engines.tomcat.Tomcat
 import betsy.bpel.model.steps.WsdlOperation
@@ -9,7 +9,7 @@ import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
 
-class BpelgEngine extends LocalEngine {
+class BpelgEngine extends AbstractLocalEngine {
 
     @Override
     String getName() {

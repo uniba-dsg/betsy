@@ -1,7 +1,7 @@
 package betsy.bpel.engines.activebpel
 
 import betsy.bpel.model.BPELProcess
-import betsy.bpel.engines.LocalEngine
+import betsy.bpel.engines.AbstractLocalEngine
 import betsy.bpel.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
@@ -13,7 +13,7 @@ import java.nio.file.Paths
 * Currently using in-memory mode for the engine
  */
 
-class ActiveBpelEngine extends LocalEngine {
+class ActiveBpelEngine extends AbstractLocalEngine {
 
     private static final Logger log = Logger.getLogger(ActiveBpelEngine.class)
 

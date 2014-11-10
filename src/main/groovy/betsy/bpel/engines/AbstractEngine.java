@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Engine implements EngineAPI<BPELProcess>, HasFileSystemLocation {
+public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasFileSystemLocation {
 
     private final List<BPELProcess> processes = new ArrayList<>();
     private AntBuilder ant = AntUtil.builder();
@@ -50,7 +50,7 @@ public abstract class Engine implements EngineAPI<BPELProcess>, HasFileSystemLoc
             return false;
         }
 
-        Engine engine = (Engine) o;
+        AbstractEngine engine = (AbstractEngine) o;
 
         return getName().equals(engine.getName());
     }

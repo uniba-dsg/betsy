@@ -1,6 +1,6 @@
 package betsy.bpel.engines.petalsesb
 
-import betsy.bpel.engines.LocalEngine
+import betsy.bpel.engines.AbstractLocalEngine
 import betsy.bpel.model.BPELProcess
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
@@ -10,7 +10,7 @@ import org.apache.log4j.Logger
 import java.nio.file.Files
 import java.nio.file.Path
 
-class PetalsEsbEngine extends LocalEngine {
+class PetalsEsbEngine extends AbstractLocalEngine {
 
     private static final Logger log = Logger.getLogger(PetalsEsbEngine)
 

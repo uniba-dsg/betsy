@@ -2,7 +2,7 @@ package betsy.bpmn.engines.activiti;
 
 import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.engines.tomcat.TomcatInstaller;
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 
-public class ActivitiEngine extends BPMNEngine {
+public class ActivitiEngine extends AbstractBPMNEngine {
     @Override
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {

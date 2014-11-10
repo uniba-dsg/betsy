@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.reporting.BPMNCsvReport;
@@ -38,13 +38,13 @@ public class BPMNComposite {
 
         log(testSuite.getPath(), () -> {
             // fail fast
-            for (BPMNEngine engine : testSuite.getEngines()) {
+            for (AbstractBPMNEngine engine : testSuite.getEngines()) {
                 if (engine.isRunning()) {
                     throw new IllegalStateException("Engine " + engine.getName() + " is running");
                 }
             }
 
-            for (BPMNEngine engine : testSuite.getEngines()) {
+            for (AbstractBPMNEngine engine : testSuite.getEngines()) {
 
                 FileTasks.mkdirs(engine.getPath());
 

@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.validation.ProcessValidator;
@@ -20,11 +20,11 @@ public class BPMNBetsy {
         composite.execute();
     }
 
-    public List<BPMNEngine> getEngines() {
+    public List<AbstractBPMNEngine> getEngines() {
         return engines;
     }
 
-    public void setEngines(List<BPMNEngine> engines) {
+    public void setEngines(List<AbstractBPMNEngine> engines) {
         this.engines = engines;
     }
 
@@ -44,7 +44,7 @@ public class BPMNBetsy {
         this.composite = composite;
     }
 
-    private List<BPMNEngine> engines = new ArrayList<>();
+    private List<AbstractBPMNEngine> engines = new ArrayList<>();
     private List<BPMNProcess> processes = new ArrayList<>();
     private BPMNComposite composite = new BPMNComposite();
 }

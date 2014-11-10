@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasFileSystemLocation {
+public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasFileSystemLocation {
     /**
      * The path <code>src/main/xslt/$engine</code>
      *
@@ -44,7 +44,7 @@ public abstract class BPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineA
             return false;
         }
 
-        BPMNEngine engine = (BPMNEngine) o;
+        AbstractBPMNEngine engine = (AbstractBPMNEngine) o;
 
         return getName().equals(engine.getName());
     }

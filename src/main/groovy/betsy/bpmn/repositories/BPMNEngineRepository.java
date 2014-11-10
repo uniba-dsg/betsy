@@ -1,6 +1,6 @@
 package betsy.bpmn.repositories;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.activiti.ActivitiEngine;
 import betsy.bpmn.engines.camunda.Camunda710Engine;
 import betsy.bpmn.engines.camunda.CamundaEngine;
@@ -13,21 +13,21 @@ import java.util.List;
 
 public class BPMNEngineRepository {
     public BPMNEngineRepository() {
-        List<BPMNEngine> all = new ArrayList<>(Arrays.asList(new CamundaEngine(), new Camunda710Engine(), new ActivitiEngine(), new JbpmEngine()));
+        List<AbstractBPMNEngine> all = new ArrayList<>(Arrays.asList(new CamundaEngine(), new Camunda710Engine(), new ActivitiEngine(), new JbpmEngine()));
         repo.put("ALL", all);
 
         // insert every engine into the map
-        for (BPMNEngine engine : repo.getByName("ALL")) {
+        for (AbstractBPMNEngine engine : repo.getByName("ALL")) {
             repo.put(engine.getName(), new ArrayList<>(Arrays.asList(engine)));
         }
 
     }
 
-    public List<BPMNEngine> getByName(String name) {
+    public List<AbstractBPMNEngine> getByName(String name) {
         return repo.getByName(name);
     }
 
-    public List<BPMNEngine> getByNames(String[] names) {
+    public List<AbstractBPMNEngine> getByNames(String[] names) {
         return repo.getByNames(names);
     }
 
@@ -35,5 +35,5 @@ public class BPMNEngineRepository {
         return repo.getNames();
     }
 
-    private Repository<BPMNEngine> repo = new Repository<>();
+    private Repository<AbstractBPMNEngine> repo = new Repository<>();
 }

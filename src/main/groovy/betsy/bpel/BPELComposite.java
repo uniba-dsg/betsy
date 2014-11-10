@@ -1,6 +1,6 @@
 package betsy.bpel;
 
-import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.AbstractEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
@@ -46,13 +46,13 @@ public class BPELComposite {
         log(testSuite.getPath(), () -> {
 
             // fail fast
-            for (Engine engine : testSuite.getEngines()) {
+            for (AbstractEngine engine : testSuite.getEngines()) {
                 if (engine.isRunning()) {
                     throw new IllegalStateException("Engine " + engine + " is running");
                 }
             }
 
-            for (Engine engine : testSuite.getEngines()) {
+            for (AbstractEngine engine : testSuite.getEngines()) {
                 FileTasks.mkdirs(engine.getPath());
 
                 log(engine.getPath(), () -> {

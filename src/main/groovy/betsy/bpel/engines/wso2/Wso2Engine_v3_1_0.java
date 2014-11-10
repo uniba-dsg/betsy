@@ -1,6 +1,6 @@
 package betsy.bpel.engines.wso2;
 
-import betsy.bpel.engines.LocalEngine;
+import betsy.bpel.engines.AbstractLocalEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
@@ -8,7 +8,7 @@ import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
 
-public class Wso2Engine_v3_1_0 extends LocalEngine {
+public class Wso2Engine_v3_1_0 extends AbstractLocalEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
 

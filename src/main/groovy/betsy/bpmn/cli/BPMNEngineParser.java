@@ -1,6 +1,6 @@
 package betsy.bpmn.cli;
 
-import betsy.bpmn.engines.BPMNEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class BPMNEngineParser {
         this.args = args;
     }
 
-    public List<BPMNEngine> parse() {
+    public List<AbstractBPMNEngine> parse() {
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
 
         if (args.length == 0) {

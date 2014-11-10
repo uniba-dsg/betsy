@@ -1,7 +1,7 @@
 package betsy.bpel.corebpel;
 
 import betsy.bpel.model.BPELProcess;
-import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.AbstractEngine;
 import betsy.bpel.engines.EnginePackageBuilder;
 import corebpel.CoreBPEL;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoreBPELEngineExtension {
-    public static void extendEngine(Engine engine, final List<String> transformations) {
+    public static void extendEngine(AbstractEngine engine, final List<String> transformations) {
 
         List<String> element = transformations.stream().filter((t) -> !CoreBPEL.XSL_SHEETS.contains(t)).collect(Collectors.toList());
         if (!element.isEmpty()) {

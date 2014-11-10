@@ -2,7 +2,7 @@ package betsy.bpel.virtual.host.engines;
 
 import betsy.common.config.Configuration;
 import betsy.bpel.model.BPELProcess;
-import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.AbstractEngine;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFile;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFiles;
@@ -30,22 +30,22 @@ import java.nio.file.Path;
 import java.util.Set;
 
 /**
- * A {@link VirtualEngine} does not install and use an engine server on the
+ * A {@link AbstractVirtualEngine} does not install and use an engine server on the
  * current host, but does use an engine installed in a virtualized environment.
- * It therefore offers the same functionality as the default {@link Engine} but
+ * It therefore offers the same functionality as the default {@link betsy.bpel.engines.AbstractEngine} but
  * also has some more functions to handle the virtualized surrounding.
  *
  * @author Cedric Roeck
  * @version 1.0
  */
-public abstract class VirtualEngine extends Engine implements VirtualEngineAPI {
+public abstract class AbstractVirtualEngine extends AbstractEngine implements VirtualEngineAPI {
 
-    private static final Logger LOGGER = Logger.getLogger(VirtualEngine.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractVirtualEngine.class);
 
     private VirtualBox virtualBox;
     private final HostTcpClient comm = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT);
 
-    public Engine defaultEngine;
+    public AbstractEngine defaultEngine;
 
     private VirtualBoxMachine vm = null;
 

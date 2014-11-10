@@ -1,13 +1,13 @@
 package betsy.bpel.cli;
 
-import betsy.bpel.engines.Engine;
+import betsy.bpel.engines.AbstractEngine;
 import betsy.bpel.model.BPELProcess;
 
 import java.util.List;
 
 public interface BPELCliParameter {
 
-    List<Engine> getEngines();
+    List<AbstractEngine> getEngines();
     List<BPELProcess> getProcesses();
 
     boolean openResultsInBrowser();

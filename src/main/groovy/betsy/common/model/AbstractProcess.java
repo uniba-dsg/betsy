@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BetsyProcess<TC extends TestCase, E extends HasFileSystemLocation> implements Comparable, Nameable {
+public abstract class AbstractProcess<TC extends TestCase, E extends HasFileSystemLocation> implements Comparable, Nameable {
 
     public void setTestCases(List<TC> testCases) {
         uniqueifyTestCaseNames(testCases);
@@ -23,7 +23,7 @@ public abstract class BetsyProcess<TC extends TestCase, E extends HasFileSystemL
         }
     }
 
-    public abstract BetsyProcess<TC,E> createCopyWithoutEngine();
+    public abstract AbstractProcess<TC,E> createCopyWithoutEngine();
 
     @Override
     public String toString() {
@@ -123,7 +123,7 @@ public abstract class BetsyProcess<TC extends TestCase, E extends HasFileSystemL
             return false;
         }
 
-        BetsyProcess that = (BetsyProcess) o;
+        AbstractProcess that = (AbstractProcess) o;
 
         return process.toString().equals(that.process.toString());
 
@@ -135,7 +135,7 @@ public abstract class BetsyProcess<TC extends TestCase, E extends HasFileSystemL
 
     @Override
     public int compareTo(Object o) {
-        return process.compareTo(((BetsyProcess) o).process);
+        return process.compareTo(((AbstractProcess) o).process);
     }
 
     private Path process;
