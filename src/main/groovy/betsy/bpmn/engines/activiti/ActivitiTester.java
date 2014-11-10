@@ -5,7 +5,7 @@ import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestCaseVariable;
+import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -48,10 +48,10 @@ public class ActivitiTester {
         addDeploymentErrorsToLogFile(logFile);
 
         try {
-            startProcess(key, BPMNTestCaseVariable.mapToArrayWithMaps(testCase.getVariables()));
+            startProcess(key, BPMNTestVariable.mapToArrayWithMaps(testCase.getVariables()));
 
             // Wait and check for errors only if process instantiation was successful
-            WaitTasks.sleep(testCase.getDelay());
+            WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);

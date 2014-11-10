@@ -1,123 +1,118 @@
 package betsy.bpmn.model;
 
+import betsy.common.model.TestAssertion;
 import betsy.common.model.TestCase;
 import betsy.common.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BPMNTestCase extends TestCase {
 
     public BPMNTestCase() {
-        this(1);
+        this.getTestSteps().add(new BPMNTestStep());
     }
 
-    public BPMNTestCase(int number) {
-        this.number = number;
-        initializeTestCaseNumber();
-    }
-
-    private void initializeTestCaseNumber() {
-        variables.add(new BPMNTestCaseVariable("testCaseNumber", "Integer", number));
-    }
-
-    private BPMNTestCase addInputTestString(String value) {
-        variables.add(new BPMNTestCaseVariable("test", "String", value));
+    private BPMNTestCase addInputTestString(BPMNTestInput value) {
+        getTestStep().setInput(value);
 
         return this;
     }
 
     public BPMNTestCase inputA() {
-        return addInputTestString("a");
+        return addInputTestString(BPMNTestInput.INPUT_A);
     }
 
     public BPMNTestCase inputB() {
-        return addInputTestString("b");
+        return addInputTestString(BPMNTestInput.INPUT_B);
     }
 
     public BPMNTestCase inputAB() {
-        return addInputTestString("ab");
+        return addInputTestString(BPMNTestInput.INPUT_AB);
     }
 
     public BPMNTestCase inputC() {
-        return addInputTestString("c");
-    }
-
-    private BPMNTestCase addAssertions(BPMNAssertions assertion) {
-        assertions.add(assertion.toString());
-        return this;
+        return addInputTestString(BPMNTestInput.INPUT_C);
     }
 
     public BPMNTestCase assertTask1() {
-        return addAssertions(BPMNAssertions.SCRIPT_task1);
+        return addAssertion(BPMNAssertions.SCRIPT_task1);
     }
 
-    public BPMNTestCase assertTask2() {
-        return addAssertions(BPMNAssertions.SCRIPT_task2);
-    }
+    private BPMNTestCase addAssertion(BPMNAssertions script_task1) {
+        getTestStep().addAssertions(script_task1);
 
-    public BPMNTestCase assertTask3() {
-        return addAssertions(BPMNAssertions.SCRIPT_task3);
-    }
-
-    public BPMNTestCase assertTask4() {
-        return addAssertions(BPMNAssertions.SCRIPT_task4);
-    }
-
-    public BPMNTestCase assertTask5() {
-        return addAssertions(BPMNAssertions.SCRIPT_task5);
-    }
-
-    public BPMNTestCase assertRuntimeException() {
-        return addAssertions(BPMNAssertions.ERROR_RUNTIME);
-    }
-
-    public BPMNTestCase assertErrorThrownErrorEvent() {
-        return addAssertions(BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-    }
-
-    public BPMNTestCase assertErrorThrownEscalationEvent() {
-        return addAssertions(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
-    }
-
-    public BPMNTestCase optionDelay(int delay) {
-        this.delay = delay;
         return this;
     }
 
-    public int getNumber() {
-        return number;
+    public BPMNTestCase assertTask2() {
+        return addAssertion(BPMNAssertions.SCRIPT_task2);
     }
 
-    public int getDelay() {
-        return delay;
+    public BPMNTestCase assertTask3() {
+        return addAssertion(BPMNAssertions.SCRIPT_task3);
+    }
+
+    public BPMNTestCase assertTask4() {
+        return addAssertion(BPMNAssertions.SCRIPT_task4);
+    }
+
+    public BPMNTestCase assertTask5() {
+        return addAssertion(BPMNAssertions.SCRIPT_task5);
+    }
+
+    public BPMNTestCase optionDelay(int delay) {
+        getTestStep().setDelay(delay);
+
+        return this;
+    }
+
+    public BPMNTestCase assertRuntimeException() {
+        return addAssertion(BPMNAssertions.ERROR_RUNTIME);
+    }
+
+    public BPMNTestCase assertErrorThrownErrorEvent() {
+        return addAssertion(BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+    }
+
+    public BPMNTestCase assertErrorThrownEscalationEvent() {
+        return addAssertion(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
+    }
+
+    public Optional<Integer> getDelay() {
+        return getTestStep().getDelay();
+    }
+
+    private BPMNTestStep getTestStep() {
+        return (BPMNTestStep) Objects.requireNonNull( getTestSteps().get(0), "call input methods before!");
     }
 
     public List<String> getAssertions() {
-        return assertions;
+        List<TestAssertion> assertions = getTestStep().getAssertions();
+
+        List<String> result = new ArrayList<>();
+        for(TestAssertion assertion : assertions) {
+            BPMNTestAssertion bpmnTestAssertion = (BPMNTestAssertion) assertion;
+            result.add(bpmnTestAssertion.getAssertion().toString());
+        }
+        return result;
     }
 
-    @Override
-    public String toString() {
+    public String getNormalizedTestCaseName() {
         StringBuilder sb = new StringBuilder();
-        sb.append("test").append(number).append("Assert");
-        for (String assertion : assertions) {
+        sb.append("test").append(getNumber()).append("Assert");
+        for (String assertion : getAssertions()) {
             sb.append(StringUtils.capitalize(assertion));
         }
         return sb.toString();
     }
 
-    public List<BPMNTestCaseVariable> getVariables() {
-        return variables;
+    public List<BPMNTestVariable> getVariables() {
+        List<BPMNTestVariable> result = new ArrayList<>();
+
+        getTestStep().getVariable().ifPresent(result::add);
+        result.add(new BPMNTestVariable("testCaseNumber", "Integer", getNumber()));
+
+        return result;
     }
 
-    public void setVariables(List<BPMNTestCaseVariable> variables) {
-        this.variables = variables;
-    }
-
-    private int number;
-    private List<String> assertions = new ArrayList<>();
-    private int delay = 0;
-    private List<BPMNTestCaseVariable> variables = new LinkedList<>();
 }

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BPMNTestCaseVariable {
-    public BPMNTestCaseVariable(String name, String type, Object value) {
+public class BPMNTestVariable {
+    public BPMNTestVariable(String name, String type, Object value) {
         this.name = name;
         this.type = type;
         this.value = value;
@@ -27,11 +27,11 @@ public class BPMNTestCaseVariable {
     private final String type;
     private final Object value;
 
-    public static Object[] mapToArrayWithMaps(List<BPMNTestCaseVariable> variables) {
+    public static Object[] mapToArrayWithMaps(List<BPMNTestVariable> variables) {
         Object[] result = new Object[variables.size()];
 
         int i = 0;
-        for (BPMNTestCaseVariable entry : variables) {
+        for (BPMNTestVariable entry : variables) {
             Map<String, Object> map = new HashMap<>();
             map.put("name", entry.getName());
             map.put("value", entry.getValue());

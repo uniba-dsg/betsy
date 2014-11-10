@@ -15,10 +15,10 @@ class ErrorProcesses {
             "Two of the scriptTasks are surrounded by the parallelGateways and the sequenceFlows pointing to the mergine gateway have conditions. " +
             "These conditions should be ignored by an engine.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2().assertTask3(),
-                    new BPMNTestCase(2).inputB().assertTask1().assertTask2().assertTask3(),
-                    new BPMNTestCase(3).inputAB().assertTask1().assertTask2().assertTask3(),
-                    new BPMNTestCase(4).inputC().assertTask1().assertTask2().assertTask3()
+                    new BPMNTestCase().inputA().assertTask1().assertTask2().assertTask3(),
+                    new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3(),
+                    new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3(),
+                    new BPMNTestCase().inputC().assertTask1().assertTask2().assertTask3()
             ]
     )
 
@@ -27,9 +27,9 @@ class ErrorProcesses {
             "Two scriptTasks are enclosed by the gateways and the execution should deadlock, because only one incoming branch of the parallelGateway " +
             "should ever be executed. Hence, the scriptTask following the parallelGateway should never be executed.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1(),
-                    new BPMNTestCase(2).inputB().assertTask2(),
-                    new BPMNTestCase(3).inputAB().assertTask1(),
+                    new BPMNTestCase().inputA().assertTask1(),
+                    new BPMNTestCase().inputB().assertTask2(),
+                    new BPMNTestCase().inputAB().assertTask1(),
             ]
     )
 
@@ -38,9 +38,9 @@ class ErrorProcesses {
             "Two scriptTasks are enclosed by the gateways and the execution should deadlock if only one incoming branch of the parallelGateway " +
             "is enabled. Hence, the scriptTask following the parallelGateway should only be executed in a single case.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1(),
-                    new BPMNTestCase(2).inputB().assertTask2(),
-                    new BPMNTestCase(3).inputAB().assertTask1().assertTask2().assertTask3(),
+                    new BPMNTestCase().inputA().assertTask1(),
+                    new BPMNTestCase().inputB().assertTask2(),
+                    new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3(),
             ]
     )
 

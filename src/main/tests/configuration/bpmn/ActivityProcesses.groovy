@@ -9,14 +9,14 @@ class ActivityProcesses {
     public static final BPMNProcess CALL_ACTIVITY_PROCESS = builder.buildActivityProcess(
             "CallActivity_Process", "A collaboration with two participants. One process calls the other one through a callActivity.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess CALL_ACTIVITY_GLOBAL_TASK = builder.buildActivityProcess(
             "CallActivity_GlobalTask", "Definitions contains a GlobalScriptTask which is called by a CallActivity.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
@@ -82,14 +82,14 @@ class ActivityProcesses {
     public static final BPMNProcess SUB_PROCESS = builder.buildActivityProcess(
             "SubProcess", "A process that contains a subProcess",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess TRANSACTION = builder.buildActivityProcess(
             "Transaction", "A process that contains a transaction",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 

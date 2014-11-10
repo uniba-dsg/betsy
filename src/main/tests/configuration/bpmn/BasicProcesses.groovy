@@ -10,14 +10,14 @@ class BasicProcesses {
             "Lanes", "A collaboration with a single participant with two lanes. Lanes have no effect on the " +
             "execution and should be ignored.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3()
             ]
     )
 
     public static final BPMNProcess PARTICIPANT = builder.buildBasicProcess(
             "Participant", "A collaboration with a single participant",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -33,8 +33,8 @@ class BasicProcesses {
             "The first scriptTask points to the other tasks with sequenceFlows. " +
             "One of these sequenceFlows is associated with a conditionExpression",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2(),
-                    new BPMNTestCase(2).inputB().assertTask2()
+                    new BPMNTestCase().inputA().assertTask1().assertTask2(),
+                    new BPMNTestCase().inputB().assertTask2()
             ]
     )
 
@@ -43,8 +43,8 @@ class BasicProcesses {
             "The first scriptTask points to the other tasks with sequenceFlows. " +
             "One of these sequenceFlows is associated with a conditionExpression, the other one is marked as default",
             [
-                    new BPMNTestCase(1).inputA().assertTask1(),
-                    new BPMNTestCase(2).inputB().assertTask2()
+                    new BPMNTestCase().inputA().assertTask1(),
+                    new BPMNTestCase().inputB().assertTask2()
             ]
     )
 
@@ -55,7 +55,7 @@ class BasicProcesses {
             "This is a special case document in Sec. 13.2.1, p. 427.",
             [
 //                    new BPMNTestCase(1).inputA().assertTask1().assertTask3(),
-                    new BPMNTestCase(2).inputB().assertTask2().assertTask3()
+                    new BPMNTestCase().inputB().assertTask2().assertTask3()
             ]
     )
 

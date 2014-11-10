@@ -16,7 +16,7 @@ public class BPMNTestBuilder {
             String logFilePath = logDir.resolve("log" + testCase.getNumber() + ".txt").toUri().toString().substring(8);
 
             //assemble array of assertion for unitTestString
-            String assertionListString = getAssertionString(testCase.getAssertions());
+            String expectedProcessTrace = getAssertionString(testCase.getAssertions());
 
             Path testClass = process.getTargetTestSrcPathWithCase(testCase.getNumber()).resolve(packageString.replace(".", "/")).resolve(process.getName() + ".java");
 
@@ -25,8 +25,8 @@ public class BPMNTestBuilder {
             HashMap<String, String> replacements = new HashMap<>();
             replacements.put("PROCESS_NAME", process.getName());
             replacements.put("PACKAGE_STRING", packageString);
-            replacements.put("TEST_CASE", testCase.toString());
-            replacements.put("ASSERTION_LIST_STRING", assertionListString);
+            replacements.put("TEST_CASE", testCase.getNormalizedTestCaseName());
+            replacements.put("ASSERTION_LIST_STRING", expectedProcessTrace);
             replacements.put("LOGFILE_PATH", logFilePath);
 
             FileTasks.replaceTokensInFile(testClass, replacements);

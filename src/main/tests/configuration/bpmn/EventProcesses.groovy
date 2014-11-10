@@ -11,7 +11,7 @@ class EventProcesses {
             "Cancel_Event", "A simple test for canceling a transaction. This test uses the two allowed cancel event types:" +
             "CancelEndEvent (within the transaction) and CancelBoundaryEvent (interrupting, attached to the transaction).",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
@@ -19,7 +19,7 @@ class EventProcesses {
             "Compensation_BoundaryEvent_SubProcess", "Tests whether the compensation boundary event can be attached to a" +
             "sub process.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -27,7 +27,7 @@ class EventProcesses {
             "Compensation_EndEvent_SubProcess", "A test with a compensation end event placed in a sub process which " +
             "should trigger the compensation of the task performed before.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -35,7 +35,7 @@ class EventProcesses {
             "Compensation_EndEvent_TopLevel", "A test with a top level compensation end event which should trigger the " +
             "compensation of the task performed before.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -43,7 +43,7 @@ class EventProcesses {
             "Compensation_IntermediateEvent", "A test with a top level compensation intermediate event which should " +
             "trigger the compensation of the task performed before.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -51,7 +51,7 @@ class EventProcesses {
             "Compensation_StartEvent_EventSubProcess", "A test with an event SubProcess, triggered by an Compensation StartEvent." +
             "The compensation is triggered by an Intermediate Throw Event placed outside the subprocess.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -60,7 +60,7 @@ class EventProcesses {
             "course of canceling the transaction all successful executed tasks have to be compensated. Therefore, the " +
             "compensational task Task1 has to be executed.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -68,8 +68,8 @@ class EventProcesses {
             "Conditional_BoundaryEvent_SubProcess_Interrupting", "A test for an conditional boundary event attached to a" +
             "sub process which is marked as interrupting.",
             [
-                    new BPMNTestCase(1).inputA().assertTask3(),
-                    new BPMNTestCase(2).inputB().assertTask1().assertTask2()
+                    new BPMNTestCase().inputA().assertTask3(),
+                    new BPMNTestCase().inputB().assertTask1().assertTask2()
             ]
     )
 
@@ -77,8 +77,8 @@ class EventProcesses {
             "Conditional_BoundaryEvent_SubProcess_NonInterrupting", "A test for an conditional boundary event attached to a" +
             "sub process which is marked as non interrupting.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2().assertTask3(),
-                    new BPMNTestCase(2).inputB().assertTask1().assertTask2()
+                    new BPMNTestCase().inputA().assertTask1().assertTask2().assertTask3(),
+                    new BPMNTestCase().inputB().assertTask1().assertTask2()
             ]
     )
 
@@ -87,8 +87,8 @@ class EventProcesses {
             "a condition set at process instantiation. If the condition is fulfilled the process completes, if not the " +
             "process is locked at the event and should not complete.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2(),
-                    new BPMNTestCase(2).inputB().assertTask1()
+                    new BPMNTestCase().inputA().assertTask1().assertTask2(),
+                    new BPMNTestCase().inputB().assertTask1()
             ]
     )
 
@@ -110,7 +110,7 @@ class EventProcesses {
             "Conditional_StartEvent_EventSubProcess_Interrupting", "A test for an interrupting conditional start event " +
             "in an event sub process",
             [
-                    new BPMNTestCase(1).inputA().assertTask1()
+                    new BPMNTestCase().inputA().assertTask1()
 
             ]
     )
@@ -120,7 +120,7 @@ class EventProcesses {
             "Conditional_StartEvent_EventSubProcess_NonInterrupting", "A test for an conditional start event in an event " +
             "sub process which is marked as non interrupting.",
             [
-                    new BPMNTestCase(1).inputA().assertTask1().assertTask2()
+                    new BPMNTestCase().inputA().assertTask1().assertTask2()
             ]
     )
 
@@ -129,7 +129,7 @@ class EventProcesses {
             "The task (task2) following the SequenceFlow originating from the boundary event should be executed. The Task (task3) " +
             "following the normal outgoing sequence flow after the SubProcess must not be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
@@ -138,14 +138,14 @@ class EventProcesses {
             "The task (task2) following the SequenceFlow originating from the boundary event should be executed. The Task (task3) " +
             "following the normal outgoing sequence flow after the Transaction must not be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2()
+                    new BPMNTestCase().assertTask1().assertTask2()
             ]
     )
 
     public static final BPMNProcess ERROR_END_EVENT_TOPLEVEL = builder.buildEventProcess(
             "Error_EndEvent_TopLevel", "A simple test for the ErrorEndEvent in a top level process.",
             [
-                    new BPMNTestCase(1).assertTask1().assertErrorThrownErrorEvent()
+                    new BPMNTestCase().assertTask1().assertErrorThrownErrorEvent()
             ]
     )
 
@@ -153,7 +153,7 @@ class EventProcesses {
             "Error_StartEvent_EventSubProcess_Interrupting", "A test for the error start event in an event sub process. " +
             "After the execution of the EventSubProcess the flow should continue normally.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3()
             ]
     )
 
@@ -163,7 +163,7 @@ class EventProcesses {
             "outgoing sequence flow after the SubProcess must not be executed. " +
             "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask3()
+                    new BPMNTestCase().assertTask1().assertTask3()
             ]
     )
 
@@ -171,7 +171,7 @@ class EventProcesses {
             "Escalation_BoundaryEvent_SubProcess_NonInterrupting", "A test for an escalation event NOT interrupting a subprocess." +
             "All tasks (Task1-4) should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().assertTask4()
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
             ]
     )
 
@@ -179,14 +179,14 @@ class EventProcesses {
             "Escalation_EndEvent_SubProcess", "A test for an escalation end event defined in a SubProcess." +
             "Only the task attached to the BoundaryEvent should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
     public static final BPMNProcess ESCALATION_END_EVENT_TOPLEVEL = builder.buildEventProcess(
             "Escalation_EndEvent_TopLevel", "A test for an escalation end event in a top level process.",
             [
-                    new BPMNTestCase(1).assertTask1().assertErrorThrownEscalationEvent()
+                    new BPMNTestCase().assertTask1().assertErrorThrownEscalationEvent()
             ]
     )
 
@@ -194,7 +194,7 @@ class EventProcesses {
             "Escalation_IntermediateThrowEvent", "A test for an escalation intermediate throw event: " +
             "Task1 can only be executed if the event has been thrown (and caught).",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -202,7 +202,7 @@ class EventProcesses {
             "Escalation_StartEvent_EventSubProcess_Interrupting", "A test for the interrupting escalation start event in " +
             "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. Task 2 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask2()
+                    new BPMNTestCase().assertTask2()
             ]
     )
 
@@ -212,14 +212,14 @@ class EventProcesses {
             "sub process which is marked as \"non interrupting\". Task2 within in the (normal) SubProcess and Task3 " +
             "which is defined after the SubProcess should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3()
             ]
     )
 
     public static final BPMNProcess LINK = builder.buildEventProcess(
             "Link_Event", "A simple test for link events",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -237,7 +237,7 @@ class EventProcesses {
             "Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
             "All tasks (Task1-4) should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().assertTask4()
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
             ]
     )
 
@@ -247,7 +247,7 @@ class EventProcesses {
             "outgoing sequence flow after the SubProcess must not be executed. " +
             "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask3()
+                    new BPMNTestCase().assertTask1().assertTask3()
             ]
     )
 
@@ -255,7 +255,7 @@ class EventProcesses {
             "Signal_EndEvent_SubProcess", "A test to test a signal end event placed in a SubProcess. " +
             "The thrown signal is caught by an attached boundary event.",
             [
-                    new BPMNTestCase(1).assertTask1()
+                    new BPMNTestCase().assertTask1()
             ]
     )
 
@@ -263,7 +263,7 @@ class EventProcesses {
             "Signal_IntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one" +
             "branch of the process awaits a signal which is thrown by the other branch.",
             [
-                    new BPMNTestCase(1).assertTask1().optionDelay(10000)
+                    new BPMNTestCase().assertTask1().optionDelay(10000)
             ]
     )
 
@@ -282,7 +282,7 @@ class EventProcesses {
             "Signal_StartEvent_EventSubProcess_Interrupting", "A test for the interrupting signal start event in " +
             "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. Task 2 should be executed.",
             [
-                    new BPMNTestCase(1).assertTask2()
+                    new BPMNTestCase().assertTask2()
             ]
     )
 
@@ -291,21 +291,21 @@ class EventProcesses {
             "sub process which is marked as \"non interrupting\". Task2 within in the (normal) SubProcess and Task3 " +
             "which is defined after the SubProcess should be executed.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3()
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3()
             ]
     )
 
     public static final BPMNProcess TERMINATE_EVENT = builder.buildEventProcess(
             "Terminate_Event", "A test for a terminate end event",
             [
-                    new BPMNTestCase(1)
+                    new BPMNTestCase()
             ]
     )
 
     public static final BPMNProcess TIMER_INTERMEDIATE_EVENT = builder.buildEventProcess(
             "Timer_IntermediateEvent", "A process with two scriptTasks. There is a intermediateCatchEvent in between the tasks that delay the execution for a short period of time.",
             [
-                    new BPMNTestCase(1).assertTask1().optionDelay(5000),
+                    new BPMNTestCase().assertTask1().optionDelay(5000),
             ]
     )
 
@@ -314,7 +314,7 @@ class EventProcesses {
             "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
             "In the meantime, a boundary timer event should fire without interrupting the subProcess.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().optionDelay(5000),
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5000),
             ]
     )
 
@@ -323,7 +323,7 @@ class EventProcesses {
             "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
             "In the meantime, a boundary timer event should fire and interrupt the subProcess.",
             [
-                    new BPMNTestCase(1).assertTask3().optionDelay(5000),
+                    new BPMNTestCase().assertTask3().optionDelay(5000),
             ]
     )
 
@@ -332,7 +332,7 @@ class EventProcesses {
             "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
             "All activities should be executed without interruption.",
             [
-                    new BPMNTestCase(1).assertTask1().assertTask2().assertTask3().optionDelay(5000)
+                    new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5000)
             ]
     )
 
@@ -341,7 +341,7 @@ class EventProcesses {
             "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
             "The event subProcess interrupts the activities of its parent subProcess.",
             [
-                    new BPMNTestCase(1).assertTask2().optionDelay(5000)
+                    new BPMNTestCase().assertTask2().optionDelay(5000)
             ]
     )
 

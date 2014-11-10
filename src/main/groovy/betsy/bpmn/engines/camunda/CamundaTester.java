@@ -4,7 +4,7 @@ import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestCaseVariable;
+import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -40,7 +40,7 @@ public class CamundaTester {
             JsonHelper.post(restURL + "/process-definition/" + id + "/start?key=" + key, requestBody, 200);
 
             // Wait and check for Errors only if instantiation was successful
-            WaitTasks.sleep(testCase.getDelay());
+            WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
         } catch (Exception e) {
             log.info("Could not start process", e);
@@ -73,10 +73,10 @@ public class CamundaTester {
         }
     }
 
-    public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestCaseVariable> variables) {
+    public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {
         Map<String, Object> map = new HashMap<>();
 
-        for (BPMNTestCaseVariable entry : variables) {
+        for (BPMNTestVariable entry : variables) {
             Map<String, Object> submap = new HashMap<>();
             submap.put("value", entry.getValue());
             submap.put("type", entry.getType());

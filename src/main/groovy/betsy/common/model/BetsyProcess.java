@@ -19,6 +19,7 @@ public abstract class BetsyProcess<TC extends TestCase, E extends HasFileSystemL
         for (int counter = 1; counter < testCases.size(); counter++) {
             TestCase testCase = testCases.get(counter - 1);
             testCase.setName(testCase.getName() + "-" + counter);
+            testCase.setNumber(counter);
         }
     }
 

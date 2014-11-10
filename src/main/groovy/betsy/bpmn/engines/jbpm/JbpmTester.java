@@ -5,7 +5,7 @@ import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestCaseVariable;
+import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ public class JbpmTester {
 
         //setup variables and start process
         Map<String, Object> variables = new HashMap<>();
-        for (BPMNTestCaseVariable variable : testCase.getVariables()) {
+        for (BPMNTestVariable variable : testCase.getVariables()) {
             variables.put(variable.getName(), variable.getValue());
         }
 
@@ -55,7 +55,7 @@ public class JbpmTester {
         }
 
         //delay for timer intermediate event
-        WaitTasks.sleep(testCase.getDelay());
+        WaitTasks.sleep(testCase.getDelay().orElse(0));
 
         checkProcessOutcome();
 
