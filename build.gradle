@@ -299,8 +299,6 @@ task runBPEL(type: JavaExec, dependsOn: classes) {
     }
 }
 
-apply plugin: 'findbugs'
-
 apply plugin: 'pmd'
 pmd {
     ignoreFailures = true
