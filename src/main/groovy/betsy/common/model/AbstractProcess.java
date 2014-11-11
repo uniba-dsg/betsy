@@ -16,7 +16,7 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasFileSyst
 
     private void uniqueifyTestCaseNames(List<TC> testCases) {
         // group by name of test case
-        for (int counter = 1; counter < testCases.size(); counter++) {
+        for (int counter = 1; counter <= testCases.size(); counter++) {
             TestCase testCase = testCases.get(counter - 1);
             testCase.setName(testCase.getName() + "-" + counter);
             testCase.setNumber(counter);
