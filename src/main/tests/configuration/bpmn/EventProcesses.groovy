@@ -87,8 +87,8 @@ class EventProcesses {
             "a condition set at process instantiation. If the condition is fulfilled the process completes, if not the " +
             "process is locked at the event and should not complete.",
             [
-                    new BPMNTestCase().inputA().assertTask1().assertTask2(),
-                    new BPMNTestCase().inputB().assertTask1()
+                    new BPMNTestCase().inputA().assertTask1(),
+                    new BPMNTestCase().inputB()
             ]
     )
 
