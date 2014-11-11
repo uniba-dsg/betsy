@@ -6,9 +6,9 @@ import java.util.stream.Stream;
 /**
  * Represents one row in the resulting csv file
  * <p>
- * TEST NAME; ENGINE NAME; GROUP NAME; SUCCESS FLAG; NUMBER OF FAILURES; NUMBER OF TESTS
+ * TEST NAME; ENGINE NAME; GROUP NAME; SUCCESS FLAG; NUMBER OF FAILURES; NUMBER OF TESTS; DEPLOYABLE FLAT
  * <p>
- * SUCCESS FLAG: 1 for successful, 0 for not successful
+ * FLAG: 1 for successful, 0 for not successful
  */
 public class CsvRow {
 
