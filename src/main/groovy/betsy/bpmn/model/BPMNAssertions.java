@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum BPMNAssertions {
 
@@ -25,6 +28,10 @@ public enum BPMNAssertions {
 
     private BPMNAssertions(String name) {
         this.name = name;
+    }
+
+    public static List<String> getScriptAssertions() {
+        return Stream.of(values()).map(Object::toString).filter((x) -> x.startsWith("SCRIPT")).collect(Collectors.toList());
     }
 
     @Override

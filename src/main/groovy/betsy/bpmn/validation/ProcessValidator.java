@@ -14,8 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ProcessValidator {
 
@@ -76,13 +74,7 @@ public class ProcessValidator {
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     String textContent = nodeList.item(i).getTextContent();
 
-                    if (textContent.contains(",")) {
-                        for (String x : textContent.split(",")) {
-                            addMessage(messages, process, x);
-                        }
-                    } else {
-                        addMessage(messages, process, textContent);
-                    }
+                    addMessage(messages, process, textContent);
                 }
 
             } catch (SAXException | XPathExpressionException | IOException e) {
@@ -94,14 +86,14 @@ public class ProcessValidator {
 
         Arrays.sort(actualMessages);
         Arrays.sort(ALLOWED_LOG_MESSAGES);
-        if(actualMessages.length<ALLOWED_LOG_MESSAGES.length) {
+        if (actualMessages.length < ALLOWED_LOG_MESSAGES.length) {
             List<String> allowedMsgList = new LinkedList<>(Arrays.asList(ALLOWED_LOG_MESSAGES));
             allowedMsgList.removeAll(Arrays.asList(actualMessages));
-            System.out.println("Allowed Log Messages "+allowedMsgList+" are not used anymore.");
-        } else if(actualMessages.length>ALLOWED_LOG_MESSAGES.length) {
+            System.out.println("Allowed Log Messages " + allowedMsgList + " are not used anymore.");
+        } else if (actualMessages.length > ALLOWED_LOG_MESSAGES.length) {
             List<String> actualMsgList = new LinkedList<>(Arrays.asList(actualMessages));
             actualMsgList.removeAll(Arrays.asList(ALLOWED_LOG_MESSAGES));
-            System.out.println("Log Messages "+actualMsgList+" are used but not allowed anymore.");
+            System.out.println("Log Messages " + actualMsgList + " are used but not allowed anymore.");
         }
         Assert.assertArrayEquals(ALLOWED_LOG_MESSAGES, actualMessages);
     }
@@ -128,10 +120,11 @@ public class ProcessValidator {
     }
 
     public static String[] getAllowedLogMessages() {
-        List<String> allowedScriptTasks = Stream.of(BPMNAssertions.values()).map(Object::toString).filter((x) -> x.startsWith("SCRIPT")).collect(Collectors.toList());
+        List<String> allowedScriptTasks = BPMNAssertions.getScriptAssertions();
         List<String> allowedLogMessages = new LinkedList<>();
         allowedLogMessages.addAll(allowedScriptTasks);
         allowedLogMessages.add("CREATE_LOG_FILE");
         return allowedLogMessages.toArray(new String[allowedLogMessages.size()]);
     }
+
 }
