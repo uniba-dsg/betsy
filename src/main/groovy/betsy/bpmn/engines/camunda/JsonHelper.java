@@ -18,7 +18,7 @@ public class JsonHelper {
     static {
         // do not use this annoying thread
         SyncIdleConnectionMonitorThread syncIdleConnectionMonitorThread = (SyncIdleConnectionMonitorThread) Options.getOption(Option.SYNC_MONITOR);
-        syncIdleConnectionMonitorThread.shutdown();
+        syncIdleConnectionMonitorThread.interrupt();
     }
 
     public static final String REST_CALL_FAILED_WITH_URL = "rest call failed with url ";
