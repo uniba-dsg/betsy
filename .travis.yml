@@ -2,9 +2,6 @@ language: java
 jdk:
   - oraclejdk8
 
-before_install:
-  - chmod +x gradlew
-
 install:
   - TERM=dumb travis_retry ./gradlew assemble --info
 
