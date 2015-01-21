@@ -8,13 +8,13 @@ Betsy is a tool to check the degree of conformance of a BPEL/BPMN engine against
 This software is licensed under the LGPL Version 3 Open Source License!
 
 ## Releases
-
-- [Release v1.1.0 October 2014](https://github.com/uniba-dsg/betsy/archive/soca2014.zip)
-- [Release v1.0.0 February 2014](https://github.com/uniba-dsg/betsy/archive/v1.0.0.zip)
-- [Release v0.4.0 February 2014](https://github.com/uniba-dsg/betsy/archive/icst2014.zip)
-- [Release v0.3.0 December 2013](https://github.com/uniba-dsg/betsy/archive/icsoc-2013.zip)
-- [Release v0.2.0 December 2012](https://github.com/uniba-dsg/betsy/archive/soca-2012.zip)
-- [Release v0.1.0 July 2012](https://github.com/uniba-dsg/betsy/archive/techrep-july-2012.zip)
+- [Release v2.0.0 January 2015](https://github.com/uniba-dsg/betsy/releases/tag/2.0.0)
+- [Release v1.1.0 October 2014](https://github.com/uniba-dsg/betsy/releases/tag/v1.1.0)
+- [Release v1.0.0 February 2014](https://github.com/uniba-dsg/betsy/releases/tag/v1.0.0)
+- [Release v0.4.0 February 2014](https://github.com/uniba-dsg/betsy/releases/tag/v0.4.0-icst2014)
+- [Release v0.3.0 December 2013](https://github.com/uniba-dsg/betsy/releases/tag/v0.3.0-icsoc2013)
+- [Release v0.2.0 December 2012](https://github.com/uniba-dsg/betsy/releases/tag/v0.2.0-soca2012)
+- [Release v0.1.0 July 2012](https://github.com/uniba-dsg/betsy/releases/tag/v0.1.0)
 
 ## Software Requirements
 - Windows 7
