@@ -52,7 +52,7 @@ dependencies {
 
     compile 'commons-cli:commons-cli:1.2' // for the CLI tools
 
-    compile 'org.apache.santuario:xmlsec:2.0.2' // for canonical XML form
+    compile 'org.apache.santuario:xmlsec:2.0.+' // for canonical XML form
 
     testCompile 'junit:junit:4.+'
 
