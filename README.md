@@ -27,6 +27,8 @@ This software is licensed under the LGPL Version 3 Open Source License!
 - JDK 1.8.0_05 (64 Bit) or higher
   - `JAVA_HOME` should point to the jdk directory
   - `PATH` should include `JAVA_HOME/bin`
+- JDK 1.7.X 
+  - `JAVA7_HOME` should point to the jdk directory (needed to exectue older engines not supporting Java 8)
 
 ## Licensing
 LGPL Version 3: http://www.gnu.org/licenses/lgpl-3.0.html
