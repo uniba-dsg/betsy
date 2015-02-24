@@ -142,7 +142,7 @@ class ErrorProcesses {
     }
 
     private static void writeXmlFile(Path path, GPathResult root) {
-        path.toFile().withPrintWriter { out ->
+        path.withPrintWriter { out ->
             out.print(XmlUtil.serialize(root))
         }
     }

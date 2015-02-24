@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.3.+'
+    internal 'org.codehaus.groovy:groovy-all:2.4.+'
 
     internal 'org.apache.ant:ant:1.9.4'
     internal 'log4j:log4j:1.2.17'
