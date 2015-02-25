@@ -8,10 +8,9 @@ import org.apache.tools.ant.taskdefs.Replace;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class FileTasks {
 
@@ -131,6 +130,18 @@ public class FileTasks {
         try {
             LOGGER.info("Copying file " + file.toAbsolutePath() + " into folder " + targetFolder.toAbsolutePath());
             Files.copy(file, targetFolder.resolve(file.getFileName()));
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder, e);
+        }
+    }
+
+    public static void copyFileIntoFolderAndOverwrite(Path file, Path targetFolder) {
+        assertFile(file);
+        assertDirectory(targetFolder);
+
+        try {
+            LOGGER.info("Copying file " + file.toAbsolutePath() + " into folder " + targetFolder.toAbsolutePath());
+            Files.copy(file, targetFolder.resolve(file.getFileName()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder, e);
         }
@@ -290,7 +301,12 @@ public class FileTasks {
     public static String getFilenameWithoutExtension(Path file) {
         assertFile(file);
 
-        String[] elements = file.getFileName().toString().split("\\.");
+        String filename = file.getFileName().toString();
+        return getFilenameWithoutExtension(filename);
+    }
+
+    public static String getFilenameWithoutExtension(String filename) {
+        String[] elements = filename.split("\\.");
 
         if(elements.length == 1) {
             return elements[0]; // no . in filename
@@ -302,5 +318,19 @@ public class FileTasks {
         }
 
         return joiner.toString();
+    }
+
+    public static void copyMatchingFilesIntoFolder(Path from, Path to, String globPattern) {
+        assertDirectory(from);
+        mkdirs(to);
+
+        try(DirectoryStream<Path> paths = Files.newDirectoryStream(from, globPattern)) {
+            for(Path path : paths) {
+                copyFileIntoFolder(path, to);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Could not copy files [" + globPattern + "] from " + from + " to " + to);
+        }
+
     }
 }
