@@ -23,7 +23,7 @@ public class ProcessValidator {
 
     private XPath xpath;
 
-    public static final String[] ALLOWED_LOG_MESSAGES = getAllowedLogMessages();
+    private static final String[] ALLOWED_LOG_MESSAGES = getAllowedLogMessages();
 
     public void validate() {
         processes = new BPMNProcessRepository().getByName("ALL");

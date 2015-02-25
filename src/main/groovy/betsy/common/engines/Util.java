@@ -10,7 +10,10 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-public class Util {
+public final class Util {
+
+    private Util() {}
+
     public static String canonicalizeXML(String text) {
         Init.init();
         try {

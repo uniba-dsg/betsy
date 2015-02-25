@@ -26,7 +26,7 @@ import java.util.List;
 
 public class BPMNTestcaseMerger {
 
-    class MergeResult {
+    static class MergeResult {
         String name = "";
         int errors = 0;
         int failures = 0;
@@ -84,7 +84,7 @@ public class BPMNTestcaseMerger {
         Element testSuite = doc.createElement("testsuite");
         doc.appendChild(testSuite);
         testSuite.setAttribute("name", result.name);
-        testSuite.setAttribute("errors", ((Integer) result.errors).toString());
+        testSuite.setAttribute("errors", String.valueOf(result.errors));
         testSuite.setAttribute("failures", ((Integer) result.failures).toString());
         testSuite.setAttribute("tests", ((Integer) result.tests).toString());
         testSuite.setAttribute("skipped", ((Integer) result.skipped).toString());
