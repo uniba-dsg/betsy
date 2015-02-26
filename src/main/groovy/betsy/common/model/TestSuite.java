@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSuite<E extends EngineAPI<P>,P> {
+public class TestSuite<E extends EngineAPI<P>,P extends ProcessFolderStructure> {
     /**
      * Base directory for the whole test suite.
      */
