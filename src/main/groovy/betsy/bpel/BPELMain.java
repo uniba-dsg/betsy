@@ -159,11 +159,11 @@ public class BPELMain {
         if (!params.useExternalPartnerService()) {
             // test the correctness
             try {
-                betsy.getComposite().getTestPartner().publish();
+                betsy.getComposite().getTestPartner().startup();
             } catch (Exception e) {
                 throw new IllegalStateException("the given partner address is not bindable for this system", e);
             } finally {
-                betsy.getComposite().getTestPartner().unpublish();
+                betsy.getComposite().getTestPartner().shutdown();
             }
         }
     }

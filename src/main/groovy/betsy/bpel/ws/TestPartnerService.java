@@ -2,8 +2,10 @@ package betsy.bpel.ws;
 
 public interface TestPartnerService {
 
-    void publish();
+    void startup();
 
-    void unpublish();
+    void shutdown();
+
+    boolean isRunning();
 
 }

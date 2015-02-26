@@ -13,7 +13,7 @@ import javax.jws.WebService;
         targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner",
         endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType",
         wsdlLocation = "TestPartner.wsdl")
-public class TestPartnerPortTypeDummy implements TestPartnerPortType {
+public final class TestPartnerPortTypeDummy implements TestPartnerPortType {
 
     @Override
     public void startProcessAsync(@WebParam(name = "testElementAsyncRequest", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", partName = "inputPart") int inputPart) {

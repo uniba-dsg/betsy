@@ -5,8 +5,8 @@ import betsy.bpel.model.BPELProcess;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.bpel.soapui.TestBuilder;
+import betsy.bpel.ws.DummyAndRegularTestPartnerService;
 import betsy.bpel.ws.TestPartnerService;
-import betsy.bpel.ws.TestPartnerServicePublisherInternal;
 import betsy.common.analytics.Analyzer;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.common.tasks.FileTasks;
@@ -22,7 +22,8 @@ import java.nio.file.Path;
 
 public class BPELComposite {
     private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
-    private TestPartnerService testPartner = new TestPartnerServicePublisherInternal();
+    private TestPartnerService testPartner = new DummyAndRegularTestPartnerService();
+
     private BPELTestSuite testSuite;
     private int requestTimeout = 15000;
 
@@ -116,16 +117,16 @@ public class BPELComposite {
         log(process.getTargetPath() + "/test", () -> {
             try {
                 try {
-                    testPartner.publish();
+                    testPartner.startup();
                 } catch (Exception ignore) {
-                    testPartner.unpublish();
+                    testPartner.shutdown();
                     LOGGER.debug("Address already in use - waiting 2 seconds to get available");
                     WaitTasks.sleep(2000);
-                    testPartner.publish();
+                    testPartner.startup();
                 }
                 testSoapUi(process);
             } finally {
-                testPartner.unpublish();
+                testPartner.shutdown();
             }
         });
     }

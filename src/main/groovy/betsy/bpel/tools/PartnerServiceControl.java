@@ -1,12 +1,14 @@
 package betsy.bpel.tools;
 
-import betsy.bpel.ws.TestPartnerServicePublisherInternal;
+import betsy.bpel.ws.DummyAndRegularTestPartnerService;
+import betsy.bpel.ws.TestPartnerService;
+import betsy.bpel.ws.TestPartnerServicePublisherInternalDummy;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * GUI to start and stop / publish and unpublish the partner service.
+ * GUI to start and stop / start and shutdown the partner service.
  */
 public class PartnerServiceControl extends JFrame {
 
@@ -14,11 +16,10 @@ public class PartnerServiceControl extends JFrame {
         new PartnerServiceControl().setVisible(true);
     }
 
-    private final TestPartnerServicePublisherInternal publisher;
+    private final TestPartnerService publisher = new DummyAndRegularTestPartnerService();
 
     public PartnerServiceControl() {
         layoutFrame();
-        publisher = new TestPartnerServicePublisherInternal();
 
         createStartButton();
 
@@ -34,13 +35,13 @@ public class PartnerServiceControl extends JFrame {
 
     private void createStartButton() {
         JButton start = new JButton("startup");
-        start.addActionListener(e -> publisher.publish());
+        start.addActionListener(e -> publisher.startup());
         this.add(start);
     }
 
     private void createStopButton() {
         JButton stop = new JButton("stop");
-        stop.addActionListener(e -> publisher.unpublish());
+        stop.addActionListener(e -> publisher.shutdown());
         this.add(stop);
     }
 

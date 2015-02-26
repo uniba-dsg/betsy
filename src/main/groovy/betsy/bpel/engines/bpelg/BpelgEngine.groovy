@@ -87,10 +87,10 @@ class BpelgEngine extends AbstractLocalEngine {
         }
 
         // uniquify service name
-        ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
+        ant.replace(file: process.targetProcessPath.resolve("TestInterface.wsdl"),
                 token: "TestInterfaceService",
                 value: "${process.name}TestInterfaceService")
-        ant.replace(file: process.targetBpelPath.resolve("deploy.xml"),
+        ant.replace(file: process.targetProcessPath.resolve("deploy.xml"),
                 token: "TestInterfaceService",
                 value: "${process.name}TestInterfaceService")
 
@@ -101,7 +101,7 @@ class BpelgEngine extends AbstractLocalEngine {
 
     public static String[] computeMatchingPattern(BPELProcess process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
-        String text = process.bpelFilePath.toFile().getText()
+        String text = process.process.toFile().getText()
         String canonicalText = Util.canonicalizeXML(text)
 
         def operations = [WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC]

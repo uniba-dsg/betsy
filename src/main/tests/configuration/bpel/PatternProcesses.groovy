@@ -98,9 +98,9 @@ class PatternProcesses {
             "WCP12-MultipleInstancesWithoutSynchronization",
             [
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(2),
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(2),
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(3)
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(3)
             ]
     )
 
@@ -108,7 +108,7 @@ class PatternProcesses {
             "WCP12-MultipleInstancesWithoutSynchronization-Partial",
             [
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().
-                            sendSync(100).buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
+                            sendSync(100).assertConcurrencyAtPartner().assertNumberOfPartnerCalls(4)
             ]
     )
 
@@ -124,7 +124,7 @@ class PatternProcesses {
             "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge-Partial",
             [
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(100).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(4)
             ]
     )
 
@@ -132,9 +132,9 @@ class PatternProcesses {
             "WCP13-MultipleInstancesWithAPrioriDesignTimeKnowledge",
             [
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(4),
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(4),
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(4)
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(4)
             ]
     )
 
@@ -143,9 +143,9 @@ class PatternProcesses {
             "WCP14-MultipleInstancesWithAPrioriRuntimeKnowledge",
             [
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(2),
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(2),
                     new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(3)
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(3)
             ]
     )
 

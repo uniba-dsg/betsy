@@ -314,7 +314,7 @@ class StructuredActivityProcesses {
             [
                     new BPELTestCase(name: "0plus1plus2-equals-3").checkDeployment().buildPartnerConcurrencySetup().
                             sendSync(2, 3).
-                            buildPartnerConcurrencyCheck().buildPartnerValueCheck(3)
+                            assertConcurrencyAtPartner().assertNumberOfPartnerCalls(3)
             ]
     )
 
