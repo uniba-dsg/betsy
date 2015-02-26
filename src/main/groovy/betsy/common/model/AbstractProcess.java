@@ -1,13 +1,14 @@
 package betsy.common.model;
 
-import betsy.common.engines.Nameable;
+import betsy.common.HasName;
+import betsy.common.HasPath;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractProcess<TC extends TestCase, E extends HasFileSystemLocation> implements Comparable, Nameable {
+public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> implements Comparable, HasName {
 
     public void setTestCases(List<TC> testCases) {
         uniqueifyTestCaseNames(testCases);

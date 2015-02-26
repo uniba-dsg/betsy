@@ -1,9 +1,9 @@
 package betsy.bpmn.engines;
 
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
-import betsy.common.model.HasFileSystemLocation;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
 
@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasFileSystemLocation {
+public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasPath {
     /**
      * The path <code>src/main/xslt/$engine</code>
      *

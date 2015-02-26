@@ -2,8 +2,9 @@ package betsy.bpel.engines;
 
 import ant.tasks.AntUtil;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.HasName;
+import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
-import betsy.common.model.HasFileSystemLocation;
 import betsy.common.util.ClasspathHelper;
 import groovy.util.AntBuilder;
 
@@ -11,7 +12,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasFileSystemLocation {
+public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasPath {
 
     private final List<BPELProcess> processes = new ArrayList<>();
     private AntBuilder ant = AntUtil.builder();

@@ -12,7 +12,7 @@ import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
 import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.config.Configuration;
-import betsy.common.engines.Nameable;
+import betsy.common.HasName;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -186,8 +186,8 @@ public class BPELMain {
 
     protected static void printSelectedEnginesAndProcesses(List<AbstractEngine> engines, List<BPELProcess> processes) {
         // print selection of engines and processes
-        LOGGER.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
-        LOGGER.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("Engines (" + engines.size() + "): " + HasName.getNames(engines));
+        LOGGER.info("Processes (" + processes.size() + "): " + HasName.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
     protected static void customPartnerAddress(BPELCliParameter params) {

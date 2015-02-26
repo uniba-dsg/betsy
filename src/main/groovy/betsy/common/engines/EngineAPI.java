@@ -1,6 +1,8 @@
 package betsy.common.engines;
 
-public interface EngineAPI<P> extends EngineLifecycle, Nameable {
+import betsy.common.HasName;
+
+public interface EngineAPI<P> extends EngineLifecycle, HasName {
 
     /**
      * Deploy the given <code>process</code> to the current engine.

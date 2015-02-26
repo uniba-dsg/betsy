@@ -4,7 +4,7 @@ import betsy.bpel.BPELMain;
 import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
-import betsy.common.engines.Nameable;
+import betsy.common.HasName;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
@@ -74,8 +74,8 @@ public class BPMNMain {
 
     protected static void printSelectedEnginesAndProcesses(List<AbstractBPMNEngine> engines, List<BPMNProcess> processes) {
         // print selection of engines and processes
-        LOGGER.info("Engines (" + engines.size() + "): " + Nameable.getNames(engines));
-        LOGGER.info("Processes (" + processes.size() + "): " + Nameable.getNames(processes).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("Engines (" + engines.size() + "): " + HasName.getNames(engines));
+        LOGGER.info("Processes (" + processes.size() + "): " + HasName.getNames(processes).stream().limit(10).collect(Collectors.toList()));
     }
 
     public static void onlyBuildSteps(BPMNCliParameter params, BPMNBetsy betsy) {
