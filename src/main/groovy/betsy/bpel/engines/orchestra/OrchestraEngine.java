@@ -1,9 +1,9 @@
 package betsy.bpel.engines.orchestra;
 
 import betsy.bpel.engines.AbstractLocalEngine;
-import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 
 public class OrchestraEngine extends AbstractLocalEngine {
@@ -13,9 +13,7 @@ public class OrchestraEngine extends AbstractLocalEngine {
     }
 
     public Tomcat getTomcat() {
-        Tomcat tomcat = new Tomcat();
-        tomcat.setEngineDir(getServerPath());
-        return tomcat;
+        return Tomcat.v7(getServerPath());
     }
 
     @Override

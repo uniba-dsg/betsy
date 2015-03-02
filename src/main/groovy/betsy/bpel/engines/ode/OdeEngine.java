@@ -1,8 +1,8 @@
 package betsy.bpel.engines.ode;
 
 import betsy.bpel.engines.AbstractLocalEngine;
-import betsy.bpel.engines.tomcat.Tomcat;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 
@@ -27,9 +27,7 @@ public class OdeEngine extends AbstractLocalEngine {
     }
 
     public Tomcat getTomcat() {
-        Tomcat tomcat = new Tomcat();
-        tomcat.setEngineDir(getServerPath());
-        return tomcat;
+        return Tomcat.v7(getServerPath());
     }
 
     @Override

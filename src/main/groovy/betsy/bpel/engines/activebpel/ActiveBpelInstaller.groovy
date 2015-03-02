@@ -1,8 +1,8 @@
 package betsy.bpel.engines.activebpel
 
 import ant.tasks.AntUtil
-import betsy.common.config.Configuration;
-import betsy.bpel.engines.tomcat.TomcatInstaller
+import betsy.common.config.Configuration
+import betsy.common.engines.tomcat.TomcatInstaller
 import betsy.common.tasks.ConsoleTasks
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
@@ -21,9 +21,8 @@ class ActiveBpelInstaller {
         // setup engine folder
         FileTasks.mkdirs(serverDir)
 
-        TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir,
-                additionalVmParam: "-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl",
-                fileName: "apache-tomcat-5.5.36.zip", tomcatName: "apache-tomcat-5.5.36")
+        TomcatInstaller tomcatInstaller = TomcatInstaller.v5(serverDir);
+        tomcatInstaller.setAdditionalVmParam("-Djavax.xml.soap.MessageFactory=org.apache.axis.soap.MessageFactoryImpl");
         tomcatInstaller.install()
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);

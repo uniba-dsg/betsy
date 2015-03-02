@@ -1,15 +1,46 @@
-package betsy.bpel.engines.tomcat;
+package betsy.common.engines.tomcat;
 
 import betsy.common.tasks.*;
 
 import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * Responsible for starting and stopping tomcat as well as all tomcat related paths and properties.
  */
 public class Tomcat {
+
+    /*
+     * the port of the tomcat
+     */
+    private final int port;
+
+    /**
+     * The directory in which the tomcat has its directory.
+     * Should contain a directory called <code>apache-tomcat-XX.XX.XX</code>
+     */
+    private final Path parentFolder;
+
+    private final String tomcatName;
+
+    public Tomcat(Path parentFolder, String tomcatName, int port) {
+        FileTasks.assertDirectory(parentFolder);
+
+        this.parentFolder = parentFolder;
+        this.tomcatName = Objects.requireNonNull(tomcatName);
+        this.port = port;
+    }
+
+    public static Tomcat v7(Path parentFolder) {
+        return new Tomcat(parentFolder, "apache-tomcat-7.0.53", 8080);
+    }
+
+    public static Tomcat v5(Path parentFolder) {
+        return new Tomcat(parentFolder, "apache-tomcat-5.5.36", 8080);
+    }
+
     public Path getTomcatDir() {
-        return engineDir.resolve(tomcatName);
+        return parentFolder.resolve(tomcatName);
     }
 
     public Path getTomcatLogsDir() {
@@ -38,8 +69,8 @@ public class Tomcat {
      * Start tomcat and wait until it responds to the <code>tomcatUrl</code>
      */
     public void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir, "tomcat_startup.bat"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir.resolve("tomcat_startup.sh")));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder, "tomcat_startup.bat"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_startup.sh")));
 
         WaitTasks.waitForAvailabilityOfUrl(30000, 500, getTomcatUrl());
 
@@ -50,7 +81,7 @@ public class Tomcat {
      */
     public void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(engineDir.resolve("tomcat_shutdown.sh")));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_shutdown.sh")));
     }
 
     /**
@@ -68,34 +99,12 @@ public class Tomcat {
         return port;
     }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public Path getEngineDir() {
-        return engineDir;
-    }
-
-    public void setEngineDir(Path engineDir) {
-        this.engineDir = engineDir;
+    public Path getParentFolder() {
+        return parentFolder;
     }
 
     public String getTomcatName() {
         return tomcatName;
     }
 
-    public void setTomcatName(String tomcatName) {
-        this.tomcatName = tomcatName;
-    }
-
-    /**
-     * the port of the tomcat
-     */
-    private int port = 8080;
-    /**
-     * The directory in which the tomcat has its directory.
-     * Should contain a directory called <code>apache-tomcat-7.0.53</code>
-     */
-    private Path engineDir;
-    private String tomcatName = "apache-tomcat-7.0.53";
 }

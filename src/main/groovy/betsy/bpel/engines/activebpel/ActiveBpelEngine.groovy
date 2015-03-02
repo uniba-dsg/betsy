@@ -1,8 +1,8 @@
 package betsy.bpel.engines.activebpel
 
-import betsy.bpel.model.BPELProcess
 import betsy.bpel.engines.AbstractLocalEngine
-import betsy.bpel.engines.tomcat.Tomcat
+import betsy.bpel.model.BPELProcess
+import betsy.common.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
 
@@ -27,8 +27,8 @@ class ActiveBpelEngine extends AbstractLocalEngine {
         "${tomcat.tomcatUrl}/active-bpel/services/${process.name}TestInterfaceService"
     }
 
-    Tomcat getTomcat() {
-        new Tomcat(engineDir: serverPath, tomcatName: "apache-tomcat-5.5.36")
+    public Tomcat getTomcat() {
+        return Tomcat.v5(getServerPath());
     }
 
     Path getDeploymentDir() {

@@ -1,10 +1,10 @@
 package betsy.bpel.engines.bpelg
 
-import betsy.bpel.model.BPELProcess
 import betsy.bpel.engines.AbstractLocalEngine
-import betsy.common.engines.Util
-import betsy.bpel.engines.tomcat.Tomcat
+import betsy.bpel.model.BPELProcess
 import betsy.bpel.model.steps.WsdlOperation
+import betsy.common.engines.Util
+import betsy.common.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
 
 import java.nio.file.Path
@@ -38,8 +38,8 @@ class BpelgEngine extends AbstractLocalEngine {
         "${tomcat.tomcatUrl}/bpel-g/services/${process.name}TestInterfaceService"
     }
 
-    Tomcat getTomcat() {
-        new Tomcat(engineDir: serverPath)
+    public Tomcat getTomcat() {
+        return Tomcat.v7(getServerPath());
     }
 
     @Override

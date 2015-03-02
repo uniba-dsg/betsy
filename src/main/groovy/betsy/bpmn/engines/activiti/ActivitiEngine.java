@@ -1,7 +1,5 @@
 package betsy.bpmn.engines.activiti;
 
-import betsy.bpel.engines.tomcat.Tomcat;
-import betsy.bpel.engines.tomcat.TomcatInstaller;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.camunda.JsonHelper;
@@ -10,6 +8,8 @@ import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
+import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.engines.tomcat.TomcatInstaller;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.XSLTTasks;
@@ -108,9 +108,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     @Override
     public void install() {
         // install tomcat
-        TomcatInstaller tomcatInstaller = new TomcatInstaller();
-        tomcatInstaller.setDestinationDir(getServerPath());
-        tomcatInstaller.install();
+        TomcatInstaller.v7(getServerPath()).install();
 
         // unzip activiti
         String filename = "activiti-5.16.3.zip";
@@ -142,9 +140,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     public Tomcat getTomcat() {
-        Tomcat tomcat = new Tomcat();
-        tomcat.setEngineDir(getServerPath());
-        return tomcat;
+        return Tomcat.v7(getServerPath());
     }
 
     @Override

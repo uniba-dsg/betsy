@@ -1,4 +1,4 @@
-package betsy.bpel.engines.tomcat;
+package betsy.common.engines.tomcat;
 
 import betsy.common.config.Configuration;
 import betsy.common.tasks.ConsoleTasks;
@@ -9,6 +9,27 @@ import betsy.common.tasks.ZipTasks;
 import java.nio.file.Path;
 
 public class TomcatInstaller {
+
+    private final Path destinationDir;
+    private final String fileName;
+    private final String tomcatName;
+
+    public TomcatInstaller(Path destinationDir, String fileName, String tomcatName) {
+        this.destinationDir = destinationDir;
+        this.fileName = fileName;
+        this.tomcatName = tomcatName;
+    }
+
+    public static TomcatInstaller v7(Path parentFolder) {
+        return new TomcatInstaller(parentFolder, "apache-tomcat-7.0.53-windows-x64.zip", "apache-tomcat-7.0.53");
+    }
+
+    public static TomcatInstaller v5(Path parentFolder) {
+        return new TomcatInstaller(parentFolder, "apache-tomcat-5.5.36.zip", "apache-tomcat-5.5.36");
+    }
+
+    private String additionalVmParam = "";
+
     public void install() {
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
@@ -32,19 +53,11 @@ public class TomcatInstaller {
     }
 
     public Tomcat getTomcat() {
-        Tomcat tomcat = new Tomcat();
-        tomcat.setEngineDir(destinationDir);
-        tomcat.setTomcatName(tomcatName);
-
-        return tomcat;
+        return new Tomcat(destinationDir, tomcatName, 8080);
     }
 
     public Path getDestinationDir() {
         return destinationDir;
-    }
-
-    public void setDestinationDir(Path destinationDir) {
-        this.destinationDir = destinationDir;
     }
 
     public String getAdditionalVmParam() {
@@ -59,20 +72,8 @@ public class TomcatInstaller {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public String getTomcatName() {
         return tomcatName;
     }
 
-    public void setTomcatName(String tomcatName) {
-        this.tomcatName = tomcatName;
-    }
-
-    private Path destinationDir;
-    private String additionalVmParam = "";
-    private String fileName = "apache-tomcat-7.0.53-windows-x64.zip";
-    private String tomcatName = "apache-tomcat-7.0.53";
 }

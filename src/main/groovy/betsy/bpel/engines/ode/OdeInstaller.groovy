@@ -1,8 +1,8 @@
 package betsy.bpel.engines.ode
 
 import ant.tasks.AntUtil
-import betsy.common.config.Configuration;
-import betsy.bpel.engines.tomcat.TomcatInstaller
+import betsy.common.config.Configuration
+import betsy.common.engines.tomcat.TomcatInstaller
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.NetworkTasks
 import betsy.common.util.ClasspathHelper
@@ -22,7 +22,7 @@ class OdeInstaller {
         // setup engine folder
         FileTasks.mkdirs(serverDir)
 
-        TomcatInstaller tomcatInstaller = new TomcatInstaller(destinationDir: serverDir)
+        TomcatInstaller tomcatInstaller = TomcatInstaller.v7(serverDir)
         tomcatInstaller.install()
 
         Path downloadDir = Configuration.downloadsDir
