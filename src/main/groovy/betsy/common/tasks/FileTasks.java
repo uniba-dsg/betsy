@@ -1,12 +1,12 @@
 package betsy.common.tasks;
 
 import ant.tasks.AntUtil;
+import com.google.common.base.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Replace;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -94,6 +94,18 @@ public class FileTasks {
         }
     }
 
+    public static List<String> readAllLines(Path path) {
+        try {
+            return Files.readAllLines(path, Charsets.UTF_8);
+        } catch (IOException e) {
+            try {
+                return Files.readAllLines(path, Charsets.ISO_8859_1);
+            } catch (IOException e1) {
+                throw new RuntimeException("could not read file with either ISO 8859 1 or UTF 8" + path, e1);
+            }
+        }
+    }
+
     public static void deleteLine(Path path, int lineNumber) {
         LOGGER.info("Deleting line #" + lineNumber + " from file " + path.toAbsolutePath());
 
@@ -177,11 +189,11 @@ public class FileTasks {
         return !Files.isRegularFile(file);
     }
 
-    public static boolean hasFileSpecificSubstring(Path path, String substring, Charset charset) {
+    public static boolean hasFileSpecificSubstring(Path path, String substring) {
         LOGGER.info("Searching for substring " + substring + " in file " + path.toAbsolutePath());
         try {
             assertFile(path);
-            List<String> lines = Files.readAllLines(path, charset);
+            List<String> lines = readAllLines(path);
 
             for (String line : lines) {
                 if (line.contains(substring)) {
@@ -193,10 +205,6 @@ public class FileTasks {
             LOGGER.info("Could not read file " + path, e);
         }
         return false;
-    }
-
-    public static boolean hasFileSpecificSubstring(Path path, String substring) {
-        return hasFileSpecificSubstring(path, substring, Charset.defaultCharset());
     }
 
     public static void move(Path from, Path to) {
@@ -310,12 +318,12 @@ public class FileTasks {
     public static String getFilenameWithoutExtension(String filename) {
         String[] elements = filename.split("\\.");
 
-        if(elements.length == 1) {
+        if (elements.length == 1) {
             return elements[0]; // no . in filename
         }
 
         StringJoiner joiner = new StringJoiner(".");
-        for(int i = 0; i < elements.length - 1; i++){
+        for (int i = 0; i < elements.length - 1; i++) {
             joiner.add(elements[i]);
         }
 
@@ -326,8 +334,8 @@ public class FileTasks {
         assertDirectory(from);
         mkdirs(to);
 
-        try(DirectoryStream<Path> paths = Files.newDirectoryStream(from, globPattern)) {
-            for(Path path : paths) {
+        try (DirectoryStream<Path> paths = Files.newDirectoryStream(from, globPattern)) {
+            for (Path path : paths) {
                 copyFileIntoFolder(path, to);
             }
         } catch (IOException e) {

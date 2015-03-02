@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
@@ -60,10 +59,6 @@ public class WaitTasks {
 
     public static void waitForSubstringInFile(int untilMilliSeconds, int checkEveryMilliseconds, Path path, String substring) {
         waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> FileTasks.hasFileSpecificSubstring(path, substring));
-    }
-
-    public static void waitForSubstringInFile(int untilMilliSeconds, int checkEveryMilliseconds, Path path, Charset charset, String substring) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> FileTasks.hasFileSpecificSubstring(path, substring, charset));
     }
 
 

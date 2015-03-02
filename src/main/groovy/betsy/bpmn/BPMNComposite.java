@@ -37,6 +37,7 @@ public class BPMNComposite {
         FileTasks.mkdirs(testSuite.getPath());
 
         log(testSuite.getPath(), () -> {
+
             // fail fast
             for (AbstractBPMNEngine engine : testSuite.getEngines()) {
                 if (engine.isRunning()) {
@@ -45,9 +46,7 @@ public class BPMNComposite {
             }
 
             for (AbstractBPMNEngine engine : testSuite.getEngines()) {
-
                 FileTasks.mkdirs(engine.getPath());
-
                 log(engine.getPath(), () -> {
                     for (BPMNProcess process : engine.getProcesses()) {
 

@@ -10,7 +10,6 @@ import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
@@ -149,7 +148,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         try {
             //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("boot.log"), Charset.forName("ISO-8859-1"), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("boot.log"), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
