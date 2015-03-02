@@ -36,13 +36,8 @@ public class DeployOperation {
         Path deploymentDirPath = Paths.get(request.getDeploymentDir());
         Path engineLogfileDirPath = Paths.get(request.getEngineLogfileDir());
         if ("petalsesb_v".equals(request.getEngineName())) {
-            PetalsEsbDeployer deployer = new PetalsEsbDeployer();
-            deployer.setDeploymentDirPath(deploymentDirPath);
-            deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(engineLogfileDirPath);
-            deployer.setPackageFilePath(pathToPackageFile);
-            deployer.setTimeoutInSeconds(request.getDeployTimeout());
-            deployer.deploy();
+            PetalsEsbDeployer deployer = new PetalsEsbDeployer(deploymentDirPath, engineLogfileDirPath, request.getDeployTimeout());
+            deployer.deploy(pathToPackageFile, request.getProcessName());
         } else if ("ode_v".equals(request.getEngineName())) {
             OdeDeployer deployer = new OdeDeployer();
             deployer.setDeploymentDirPath(deploymentDirPath);

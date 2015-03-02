@@ -92,11 +92,7 @@ class PetalsEsbEngine extends AbstractLocalEngine {
 
     @Override
     void deploy(BPELProcess process) {
-        new PetalsEsbDeployer(processName: process.name,
-                packageFilePath: process.targetPackageCompositeFilePath,
-                logFilePath: petalsLogFile,
-                deploymentDirPath: getInstallationDir()
-        ).deploy()
+        new PetalsEsbDeployer(getInstallationDir(), petalsLogFile).deploy(process.targetPackageCompositeFilePath, process.name);
     }
 
     Path getInstallationDir() {
@@ -127,7 +123,7 @@ class PetalsEsbEngine extends AbstractLocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
-        new PetalsEsbCompositePackager(process: process).build()
+        new PetalsEsbCompositePackager(process).build()
     }
 
     @Override
