@@ -28,8 +28,8 @@ public class OdeDeployer {
 
         WaitTasks.waitFor(timeoutInSeconds * 1000, 500, () -> FileTasks.hasFile(getDeploymentIndicator(processName)) &&
                 (
-                        FileTasks.hasFileSpecificSubstring(logFile, "Deployment of artifact $processName successful") ||
-                                FileTasks.hasFileSpecificSubstring(logFile, "Deployment of $processName failed")
+                        FileTasks.hasFileSpecificSubstring(logFile, "Deployment of artifact " + processName + " successful") ||
+                                FileTasks.hasFileSpecificSubstring(logFile, "Deployment of " + processName + " failed")
                 ));
     }
 
