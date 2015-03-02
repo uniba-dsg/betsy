@@ -24,9 +24,9 @@ public class Tomcat {
     private final String tomcatName;
 
     public Tomcat(Path parentFolder, String tomcatName, int port) {
-        FileTasks.assertDirectory(parentFolder);
+        //FileTasks.assertDirectory(parentFolder);
 
-        this.parentFolder = parentFolder;
+        this.parentFolder = Objects.requireNonNull(parentFolder);
         this.tomcatName = Objects.requireNonNull(tomcatName);
         this.port = port;
     }
