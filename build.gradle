@@ -209,7 +209,7 @@ run {
 task enginecontrol(type: JavaExec, dependsOn: build) {
     description = 'Starts Engine Control GUI'
     classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpel.tools.EngineControl"
+    main = "betsy.tools.EngineControl"
 }
 
 task partnerservice(type: JavaExec, dependsOn: build) {

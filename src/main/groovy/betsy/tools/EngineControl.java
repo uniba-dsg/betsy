@@ -1,4 +1,4 @@
-package betsy.bpel.tools;
+package betsy.tools;
 
 import betsy.bpel.repositories.EngineRepository;
 import betsy.bpmn.repositories.BPMNEngineRepository;
@@ -20,8 +20,6 @@ public class EngineControl extends JFrame {
     private final DefaultListModel<String> actions = new DefaultListModel<>();
 
     private EngineControl() {
-
-
         this.setLayout(new BorderLayout());
         this.add(createCenterPanel(), BorderLayout.CENTER);
         JList<String> comp = new JList<>(actions);
