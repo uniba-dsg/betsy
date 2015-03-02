@@ -1,9 +1,8 @@
 package betsy.bpel.engines.bpelg
 
+import ant.tasks.AntUtil
 import betsy.bpel.engines.AbstractLocalEngine
 import betsy.bpel.model.BPELProcess
-import betsy.bpel.model.steps.WsdlOperation
-import betsy.common.engines.Util
 import betsy.common.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
 import betsy.common.tasks.XSLTTasks
@@ -69,7 +68,7 @@ class BpelgEngine extends AbstractLocalEngine {
         XSLTTasks.transform(xsltPath.resolve("bpelg_bpel_to_deploy_xml.xsl"), process.process, process.targetProcessPath.resolve("deploy.xml"))
 
         // remove unimplemented methods
-        computeMatchingPattern(process).each { pattern ->
+        Util.computeMatchingPattern(process).each { pattern ->
             FileTasks.copyFileContentsToNewFile(process.targetProcessPath.resolve("TestInterface.wsdl"), process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"))
             AntUtil.builder().xslt(in: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"),
                     out: process.targetProcessPath.resolve("TestInterface.wsdl"),
@@ -89,26 +88,6 @@ class BpelgEngine extends AbstractLocalEngine {
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
-    }
-
-    public static String[] computeMatchingPattern(BPELProcess process) {
-        // This method works based on the knowledge that we have no more than two operations available anyway
-        String text = process.process.toFile().getText()
-        String canonicalText = Util.canonicalizeXML(text)
-
-        def operations = [WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC]
-        def implementedOperations = []
-
-        canonicalText.eachLine { line ->
-            operations.each { operation ->
-                if (line.contains("operation=\"${operation.name}\"") && !line.contains("invoke")) {
-                    implementedOperations << operation;
-                }
-            }
-        }
-
-        def unimplementedOperations = operations - implementedOperations
-        unimplementedOperations.collect{it.name}
     }
 
 }
