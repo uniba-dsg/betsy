@@ -6,12 +6,10 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFile;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFiles;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesResponse;
+import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,9 +72,9 @@ public class CollectLogFilesOperation {
             if (file.isFile()) {
                 String filename = file.getName();
                 try {
-                    List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+                    List<String> lines = FileTasks.readAllLines(file.toPath());
                     list.add(new LogFile(filename, lines));
-                } catch (IOException e) {
+                } catch (RuntimeException e) {
                     throw new CommunicationException("Log file " + filename + " could not be read", e);
                 }
             }
