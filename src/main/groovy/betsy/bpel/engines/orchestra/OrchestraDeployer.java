@@ -1,44 +1,55 @@
 package betsy.bpel.engines.orchestra;
 
-import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
 
+import javax.xml.namespace.QName;
+import java.io.File;
 import java.nio.file.Path;
+import java.util.Date;
+import java.util.Objects;
 
 public class OrchestraDeployer {
-    public void deploy() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(
-                ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant.bat")).
-                        values("deploy", "-Dbar=" + packageFilePath.toAbsolutePath()));
-        ConsoleTasks.executeOnUnixAndIgnoreError(
-                ConsoleTasks.CliCommand.build(orchestraHome, antBinFolder.resolve("ant")).
-                        values("deploy", "-Dbar=" + packageFilePath.toAbsolutePath()));
+
+    public OrchestraDeployer(Path orchestraHome) {
+        this.orchestraHome = Objects.requireNonNull(orchestraHome);
     }
 
-    public Path getOrchestraHome() {
-        return orchestraHome;
+    public void deploy(Path packageFilePath, String processName) {
+        Project p = loadAntBuildFile();
+        p.setProperty("bar", packageFilePath.toAbsolutePath().toString());
+        p.executeTarget("deploy");
+
+        FileTasks.createFile(getDeploymentMarkerFile(processName), "deployment done at " + new Date());
     }
 
-    public void setOrchestraHome(Path orchestraHome) {
-        this.orchestraHome = orchestraHome;
+    private Project loadAntBuildFile() {
+        File buildFile = orchestraHome.resolve("build.xml").toFile();
+        Project p = new Project();
+        p.setUserProperty("ant.file", buildFile.getAbsolutePath());
+        p.init();
+        ProjectHelper helper = ProjectHelper.getProjectHelper();
+        p.addReference("ant.projectHelper", helper);
+        helper.parse(p, buildFile);
+        return p;
     }
 
-    public Path getPackageFilePath() {
-        return packageFilePath;
+    public void undeploy(QName processQName) {
+        Project p = loadAntBuildFile();
+        p.setProperty("process", processQName.toString());
+        p.executeTarget("undeploy");
+
+        FileTasks.deleteFile(getDeploymentMarkerFile(processQName.getLocalPart()));
     }
 
-    public void setPackageFilePath(Path packageFilePath) {
-        this.packageFilePath = packageFilePath;
+    private Path getDeploymentMarkerFile(String processName) {
+        return orchestraHome.resolve(processName + ".deployed");
     }
 
-    public Path getAntBinFolder() {
-        return antBinFolder;
+    public boolean isDeployed(QName processQName) {
+        return FileTasks.hasFile(getDeploymentMarkerFile(processQName.getLocalPart()));
     }
 
-    public void setAntBinFolder(Path antBinFolder) {
-        this.antBinFolder = antBinFolder;
-    }
-
-    private Path orchestraHome;
-    private Path packageFilePath;
-    private Path antBinFolder;
+    private final Path orchestraHome;
 }

@@ -17,11 +17,8 @@ public class OpenEsb231Engine extends OpenEsbEngine {
 
     @Override
     public void install() {
-        OpenEsbInstaller installer = new OpenEsbInstaller();
-        installer.setFileName("openesb-v231-installer-windows.exe");
-        installer.setServerDir(Paths.get("server/openesb231"));
-        installer.setStateXmlTemplate(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb231/state.xml.template"));
-        installer.install();
+        new OpenEsbInstaller(Paths.get("server/openesb231"), "openesb-v231-installer-windows.exe",
+                ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb231/state.xml.template")).install();
     }
 
 }

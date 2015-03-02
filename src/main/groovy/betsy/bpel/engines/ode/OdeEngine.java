@@ -43,24 +43,18 @@ public class OdeEngine extends AbstractLocalEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(process.getTargetLogsPath(), getTomcat().getTomcatLogsDir());
+        FileTasks.copyFilesInFolderIntoOtherFolder( getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
     }
 
     @Override
     public void install() {
-        OdeInstaller installer = new OdeInstaller();
-        installer.setServerDir(getServerPath());
-        installer.install();
+        new OdeInstaller(getServerPath(), "apache-ode-war-1.3.5.zip").install();
     }
 
     @Override
     public void deploy(BPELProcess process) {
-        OdeDeployer deployer = new OdeDeployer();
-        deployer.setProcessName(process.getName());
-        deployer.setLogFilePath(getTomcat().getTomcatLogsDir().resolve("ode.log"));
-        deployer.setDeploymentDirPath(getDeploymentDir());
-        deployer.setPackageFilePath(process.getTargetPackageFilePath());
-        deployer.deploy();
+        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"), 30);
+        deployer.deploy(process.getTargetPackageFilePath(), process.getName());
     }
 
     @Override

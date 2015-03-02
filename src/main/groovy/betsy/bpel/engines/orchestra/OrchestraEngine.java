@@ -2,7 +2,6 @@ package betsy.bpel.engines.orchestra;
 
 import betsy.bpel.engines.AbstractLocalEngine;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.config.Configuration;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 
@@ -49,11 +48,8 @@ public class OrchestraEngine extends AbstractLocalEngine {
 
     @Override
     public void deploy(BPELProcess process) {
-        OrchestraDeployer deployer = new OrchestraDeployer();
-        deployer.setOrchestraHome(getServerPath().resolve("orchestra-cxf-tomcat-4.9.0"));
-        deployer.setPackageFilePath(process.getTargetPackageFilePath());
-        deployer.setAntBinFolder(Configuration.getAntHome().resolve("bin").toAbsolutePath());
-        deployer.deploy();
+        OrchestraDeployer deployer = new OrchestraDeployer(getServerPath().resolve("orchestra-cxf-tomcat-4.9.0"));
+        deployer.deploy(process.getTargetPackageFilePath(), process.getName());
     }
 
     public void buildArchives(BPELProcess process) {

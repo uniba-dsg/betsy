@@ -4,9 +4,7 @@ import betsy.common.logging.LogContext;
 import betsy.common.model.TestSuite;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
-import org.apache.tools.ant.taskdefs.ExecTask;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

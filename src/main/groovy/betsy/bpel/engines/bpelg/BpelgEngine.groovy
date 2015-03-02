@@ -6,6 +6,7 @@ import betsy.bpel.model.steps.WsdlOperation
 import betsy.common.engines.Util
 import betsy.common.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
+import betsy.common.tasks.XSLTTasks
 
 import java.nio.file.Path
 
@@ -22,10 +23,8 @@ class BpelgEngine extends AbstractLocalEngine {
 
     @Override
     void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(todir: process.targetLogsPath) {
-            ant.fileset(dir: tomcat.tomcatLogsDir)
-        }
+        FileTasks.mkdirs(process.getTargetLogsPath());
+        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().tomcatLogsDir, process.getTargetLogsPath());
     }
 
     @Override
@@ -54,16 +53,12 @@ class BpelgEngine extends AbstractLocalEngine {
 
     @Override
     void install() {
-        new BpelgInstaller(serverDir: serverPath).install()
+        new BpelgInstaller(serverPath, "bpel-g-5.3.war").install()
     }
 
     @Override
     void deploy(BPELProcess process) {
-        new BpelgDeployer(processName: process.name,
-                packageFilePath: process.targetPackageFilePath,
-                deploymentDirPath: getDeploymentDir(),
-                logFilePath: tomcat.tomcatLogsDir.resolve("bpelg.log")
-        ).deploy()
+        new BpelgDeployer(getDeploymentDir(), tomcat.tomcatLogsDir.resolve("bpelg.log")).deploy(process.targetPackageFilePath, process.name);
     }
 
     @Override
@@ -71,15 +66,12 @@ class BpelgEngine extends AbstractLocalEngine {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // deployment descriptor
-        ant.xslt(in: process.process,
-                out: process.targetProcessPath.resolve("deploy.xml"),
-                style: xsltPath.resolve("bpelg_bpel_to_deploy_xml.xsl"))
+        XSLTTasks.transform(xsltPath.resolve("bpelg_bpel_to_deploy_xml.xsl"), process.process, process.targetProcessPath.resolve("deploy.xml"))
 
         // remove unimplemented methods
         computeMatchingPattern(process).each { pattern ->
-            ant.copy(file: process.targetProcessPath.resolve("TestInterface.wsdl"),
-                    tofile: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"))
-            ant.xslt(in: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"),
+            FileTasks.copyFileContentsToNewFile(process.targetProcessPath.resolve("TestInterface.wsdl"), process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"))
+            AntUtil.builder().xslt(in: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"),
                     out: process.targetProcessPath.resolve("TestInterface.wsdl"),
                     style: xsltPath.resolve("bpelg_prepare_wsdl.xsl"), force: "yes") {
                 param(name: "deletePattern", expression: pattern)
@@ -87,12 +79,12 @@ class BpelgEngine extends AbstractLocalEngine {
         }
 
         // uniquify service name
-        ant.replace(file: process.targetProcessPath.resolve("TestInterface.wsdl"),
-                token: "TestInterfaceService",
-                value: "${process.name}TestInterfaceService")
-        ant.replace(file: process.targetProcessPath.resolve("deploy.xml"),
-                token: "TestInterfaceService",
-                value: "${process.name}TestInterfaceService")
+        FileTasks.replaceTokenInFile(process.targetProcessPath.resolve("TestInterface.wsdl"),
+                "TestInterfaceService",
+                "${process.name}TestInterfaceService");
+        FileTasks.replaceTokenInFile(process.targetProcessPath.resolve("deploy.xml"),
+                "TestInterfaceService",
+                "${process.name}TestInterfaceService");
 
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)

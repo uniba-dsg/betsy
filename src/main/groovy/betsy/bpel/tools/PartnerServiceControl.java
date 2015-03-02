@@ -2,7 +2,6 @@ package betsy.bpel.tools;
 
 import betsy.bpel.ws.DummyAndRegularTestPartnerService;
 import betsy.bpel.ws.TestPartnerService;
-import betsy.bpel.ws.TestPartnerServicePublisherInternalDummy;
 
 import javax.swing.*;
 import java.awt.*;

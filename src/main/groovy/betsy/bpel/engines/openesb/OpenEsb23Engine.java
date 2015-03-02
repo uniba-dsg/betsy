@@ -17,12 +17,8 @@ public class OpenEsb23Engine extends OpenEsbEngine {
 
     @Override
     public void install() {
-        OpenEsbInstaller installer = new OpenEsbInstaller();
-        installer.setFileName("openesb-v23-installer-windows.exe");
-        installer.setServerDir(Paths.get("server/openesb23"));
-        installer.setStateXmlTemplate(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb23/state.xml.template"));
-
-        installer.install();
+        new OpenEsbInstaller(Paths.get("server/openesb23"), "openesb-v23-installer-windows.exe",
+                ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb23/state.xml.template")).install();
     }
 
 }

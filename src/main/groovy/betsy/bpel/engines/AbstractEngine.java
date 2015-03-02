@@ -1,12 +1,9 @@
 package betsy.bpel.engines;
 
-import ant.tasks.AntUtil;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.HasName;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.util.ClasspathHelper;
-import groovy.util.AntBuilder;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,7 +12,6 @@ import java.util.List;
 public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasPath {
 
     private final List<BPELProcess> processes = new ArrayList<>();
-    private AntBuilder ant = AntUtil.builder();
     private EnginePackageBuilder packageBuilder = new EnginePackageBuilder();
     private Path parentFolder;
 
@@ -59,14 +55,6 @@ public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasPath 
     @Override
     public int hashCode() {
         return getName().hashCode();
-    }
-
-    public AntBuilder getAnt() {
-        return ant;
-    }
-
-    public void setAnt(AntBuilder ant) {
-        this.ant = ant;
     }
 
     public EnginePackageBuilder getPackageBuilder() {

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class PetalsEsbInstaller {
+
     public void install() {
         FileTasks.deleteDirectory(serverDir);
         FileTasks.mkdirs(serverDir);

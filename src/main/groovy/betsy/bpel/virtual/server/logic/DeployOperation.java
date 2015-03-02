@@ -39,44 +39,22 @@ public class DeployOperation {
             PetalsEsbDeployer deployer = new PetalsEsbDeployer(deploymentDirPath, engineLogfileDirPath, request.getDeployTimeout());
             deployer.deploy(pathToPackageFile, request.getProcessName());
         } else if ("ode_v".equals(request.getEngineName())) {
-            OdeDeployer deployer = new OdeDeployer();
-            deployer.setDeploymentDirPath(deploymentDirPath);
-            deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(engineLogfileDirPath);
-            deployer.setPackageFilePath(pathToPackageFile);
-            deployer.setTimeoutInSeconds(request.getDeployTimeout());
-            deployer.deploy();
+            OdeDeployer deployer = new OdeDeployer(deploymentDirPath, engineLogfileDirPath, request.getDeployTimeout());
+            deployer.deploy(pathToPackageFile, request.getProcessName());
         } else if ("bpelg_v".equals(request.getEngineName())) {
-            BpelgDeployer deployer = new BpelgDeployer();
-            deployer.setDeploymentDirPath(deploymentDirPath);
-            deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(engineLogfileDirPath);
-            deployer.setPackageFilePath(pathToPackageFile);
-            deployer.setTimeoutInSeconds(request.getDeployTimeout());
-            deployer.deploy();
+            BpelgDeployer deployer = new BpelgDeployer(deploymentDirPath, engineLogfileDirPath, request.getDeployTimeout());
+            deployer.deploy(pathToPackageFile, request.getProcessName() );
         } else if ("active_bpel_v".equals(request.getEngineName())) {
-            ActiveBpelDeployer deployer = new ActiveBpelDeployer();
-            deployer.setDeploymentDirPath(deploymentDirPath);
-            deployer.setProcessName(request.getProcessName());
-            deployer.setLogFilePath(engineLogfileDirPath);
-            deployer.setPackageFilePath(pathToPackageFile);
-            deployer.setTimeoutInSeconds(request.getDeployTimeout());
-            deployer.deploy();
+            ActiveBpelDeployer deployer = new ActiveBpelDeployer(deploymentDirPath, engineLogfileDirPath, request.getDeployTimeout());
+            deployer.deploy(pathToPackageFile, request.getProcessName());
         } else if ("orchestra_v".equals(request.getEngineName())) {
-            OrchestraDeployer deployer = new OrchestraDeployer();
-            deployer.setOrchestraHome(deploymentDirPath);
-            deployer.setPackageFilePath(pathToPackageFile);
-            deployer.setAntBinFolder(Paths.get("/usr/share/ant/bin"));
-            deployer.deploy();
+            OrchestraDeployer deployer = new OrchestraDeployer(deploymentDirPath);
+            deployer.deploy(pathToPackageFile, request.getProcessName());
         } else if ("openesb_v".equals(request.getEngineName())) {
             OpenEsbCLI cli = new OpenEsbCLI(Paths.get("/opt/openesb/glassfish"));
 
-            OpenEsbDeployer deployer = new OpenEsbDeployer();
-            deployer.setTmpFolder(Paths.get("/opt/betsy"));
-            deployer.setProcessName(request.getProcessName());
-            deployer.setPackageFilePath(pathToPackageFile);
-            deployer.setCli(cli);
-            deployer.deploy();
+            OpenEsbDeployer deployer = new OpenEsbDeployer(cli);
+            deployer.deploy(request.getProcessName(), pathToPackageFile, Paths.get("/opt/betsy"));
         } else {
             throw new CommunicationException("invalid engine given");
         }

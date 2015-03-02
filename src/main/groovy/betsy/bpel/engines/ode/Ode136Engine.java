@@ -16,11 +16,7 @@ public class Ode136Engine extends OdeEngine {
 
     @Override
     public void install() {
-        OdeInstaller installer = new OdeInstaller();
-        installer.setFileName("apache-ode-war-1.3.6.zip");
-        installer.setOdeName("apache-ode-war-1.3.6");
-        installer.setServerDir(getServerPath());
-        installer.install();
+        new OdeInstaller(getServerPath(), "apache-ode-war-1.3.6.zip").install();
     }
 
 }
