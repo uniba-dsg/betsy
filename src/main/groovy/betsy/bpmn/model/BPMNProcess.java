@@ -4,16 +4,19 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.AbstractProcess;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BPMNProcess extends AbstractProcess<BPMNTestCase, AbstractBPMNEngine> {
 
-    public BPMNProcess createCopyWithoutEngine() {
-        BPMNProcess process = new BPMNProcess();
-        process.setProcess(getProcess());
-        process.setTestCases(getTestCases());
-        process.setDescription(getDescription());
+    public BPMNProcess(Path process, String description, List<BPMNTestCase> testCases) {
+        this.setProcess(process);
+        this.setDescription(description);
+        this.setTestCases(new LinkedList<>(testCases));
+    }
 
-        return process;
+    public BPMNProcess createCopyWithoutEngine() {
+        return new BPMNProcess(getProcess(), getDescription(), getTestCases());
     }
 
     public String getGroupId() {
