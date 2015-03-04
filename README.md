@@ -164,7 +164,7 @@ From public subversion directory https://lspi.wiai.uni-bamberg.de/svn/betsy/
 
 # Authors (in alphabetical order)
 
-Annalena Bentele, Mathias Casar, [Matthias Geiger](http://www.uni-bamberg.de/pi/team/geiger/), [Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Frederik Müller, Christian Preißinger, Cedric Röck and Andreas Vorndran
+Annalena Bentele, Mathias Casar, [Matthias Geiger](http://www.uni-bamberg.de/pi/team/geiger/), [Simon Harrer](http://www.uni-bamberg.de/pi/team/harrer/), Christian Kremitzl, [Joerg Lenhard](http://www.uni-bamberg.de/pi/team/lenhard-joerg/), Frederik Müller, Christian Preißinger, Cedric Röck and Andreas Vorndran
 
 # Publications
 The following scientific publications are either about betsy, have used betsy to present benchmarks or use and build upon data obtained through betsy:
