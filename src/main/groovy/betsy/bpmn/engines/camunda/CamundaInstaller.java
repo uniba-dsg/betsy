@@ -7,6 +7,7 @@ import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class CamundaInstaller {
     public void install() {
@@ -16,8 +17,10 @@ public class CamundaInstaller {
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir);
 
-        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
-        FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile), getTomcatDestinationDir().resolve("lib"));
+        if(groovyFile.isPresent()) {
+            NetworkTasks.downloadFileFromBetsyRepo(groovyFile.get());
+            FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile.get()), getTomcatDestinationDir().resolve("lib"));
+        }
 
         //TODO use templates for creating these files
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), cdToTomcatBinFolder() + " && call startup.bat");
@@ -63,11 +66,11 @@ public class CamundaInstaller {
         this.fileName = fileName;
     }
 
-    public String getGroovyFile() {
+    public Optional<String> getGroovyFile() {
         return groovyFile;
     }
 
-    public void setGroovyFile(String groovyFile) {
+    public void setGroovyFile(Optional<String> groovyFile) {
         this.groovyFile = groovyFile;
     }
 
@@ -81,6 +84,6 @@ public class CamundaInstaller {
 
     private Path destinationDir;
     private String fileName = "camunda-bpm-tomcat-7.0.0-Final.zip";
-    private String groovyFile = "groovy-all-2.2.0.jar";
+    private Optional<String> groovyFile = Optional.empty();
     private String tomcatName;
 }

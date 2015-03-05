@@ -12,6 +12,7 @@ import betsy.common.tasks.*;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class CamundaEngine extends AbstractBPMNEngine {
     @Override
@@ -103,6 +104,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
         CamundaInstaller installer = new CamundaInstaller();
         installer.setDestinationDir(getServerPath());
         installer.setTomcatName(getTomcatName());
+        installer.setGroovyFile(Optional.of("groovy-all-2.2.0.jar"));
         installer.install();
     }
 

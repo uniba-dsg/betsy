@@ -5,6 +5,7 @@ import betsy.common.tasks.WaitTasks;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class Camunda710Engine extends CamundaEngine {
 
@@ -29,6 +30,7 @@ public class Camunda710Engine extends CamundaEngine {
         camundaInstaller.setDestinationDir(getServerPath());
         camundaInstaller.setFileName("camunda-bpm-tomcat-7.1.0-Final.zip");
         camundaInstaller.setTomcatName(getTomcatName());
+        camundaInstaller.setGroovyFile(Optional.of("groovy-all-2.2.0.jar"));
         camundaInstaller.install();
     }
 
