@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.+'
+    internal 'org.codehaus.groovy:groovy-all:2.4.0'
 
     internal 'org.apache.ant:ant:1.9.4'
     internal 'log4j:log4j:1.2.17'
@@ -43,18 +43,18 @@ dependencies {
     internal 'commons-lang:commons-lang:2.6'
     internal 'org.apache.ant:ant-apache-log4j:1.9.4'
     internal 'org.json:json:5.0.5'
-    internal 'org.apache.ant:ant-junit:1.9.+'
+    internal 'org.apache.ant:ant-junit:1.9.4'
 
-    internal 'com.mashape.unirest:unirest-java:1.4.+' // for http requests and responses
+    internal 'com.mashape.unirest:unirest-java:1.4.5' // for http requests and responses
 
-    internal 'org.slf4j:slf4j-api:1.7.+'
-    internal 'org.slf4j:slf4j-simple:1.7.+'
+    internal 'org.slf4j:slf4j-api:1.7.10'
+    internal 'org.slf4j:slf4j-simple:1.7.10'
 
     compile 'commons-cli:commons-cli:1.2' // for the CLI tools
 
-    compile 'org.apache.santuario:xmlsec:2.0.+' // for canonical XML form
+    compile 'org.apache.santuario:xmlsec:2.0.3' // for canonical XML form
 
-    testCompile 'junit:junit:4.+'
+    testCompile 'junit:junit:4.12'
 
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*', 'http*', 'commons-http*', 'commons-codec*']))
