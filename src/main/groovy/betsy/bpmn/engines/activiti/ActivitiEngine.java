@@ -112,7 +112,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
         // unzip activiti
         String filename = "activiti-5.16.3.zip";
-        NetworkTasks.downloadFile("https://github.com/Activiti/Activiti/releases/download/activiti-5.16.3/" + filename, Configuration.getDownloadsDir());
+        NetworkTasks.downloadFileFromBetsyRepo(filename);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
 
         // deploy
