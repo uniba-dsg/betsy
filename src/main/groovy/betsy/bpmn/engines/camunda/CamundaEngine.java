@@ -63,7 +63,6 @@ public class CamundaEngine extends AbstractBPMNEngine {
         CamundaResourcesGenerator generator = new CamundaResourcesGenerator();
         generator.setGroupId(process.getGroupId());
         generator.setProcessName(process.getName());
-        generator.setSrcDir(process.getTargetProcessPath());
         generator.setDestDir(process.getTargetPath().resolve("war"));
         generator.setVersion(process.getVersion());
         generator.generateWar();
