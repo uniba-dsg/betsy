@@ -4,10 +4,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BPMNProcessRepository {
     public BPMNProcessRepository() {
@@ -40,7 +37,7 @@ public class BPMNProcessRepository {
 
         // insert every process into the map
         for (BPMNProcess process : repo.getByName("ALL")) {
-            repo.put(process.getName(), new ArrayList<>(Arrays.asList(process)));
+            repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
 
     }
