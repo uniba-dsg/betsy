@@ -30,7 +30,7 @@ public class BPMNProcessRepository {
                     Object value = f.get(null);
                     repo.put(f.getName(), (List<BPMNProcess>) value);
                 } catch (IllegalAccessException e) {
-                    throw new IllegalStateException("Could not retrieve field value");
+                    throw new IllegalStateException("Could not retrieve field value", e);
                 }
             }
         }
