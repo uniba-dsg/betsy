@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BPELProcessBuilder {
@@ -15,7 +16,7 @@ public class BPELProcessBuilder {
     public static BPELProcess buildPatternProcess(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
         process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL));
-        process.setWsdls(new ArrayList<>(Arrays.asList(testInterface)));
+        process.setWsdls(new ArrayList<>(Collections.singletonList(testInterface)));
         process.setTestCases(testCases);
         return process;
     }
@@ -31,7 +32,7 @@ public class BPELProcessBuilder {
     public static BPELProcess buildProcess(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
         process.setProcess(PATH_PREFIX.resolve(name + FileTypes.BPEL));
-        process.setWsdls(new ArrayList<>(Arrays.asList(testInterface)));
+        process.setWsdls(new ArrayList<>(Collections.singletonList(testInterface)));
         process.setTestCases(testCases);
         return process;
     }
@@ -39,9 +40,9 @@ public class BPELProcessBuilder {
     public static BPELProcess buildProcessWithXsd(final String name, List<BPELTestCase> testCases) {
         BPELProcess process = new BPELProcess();
         process.setProcess(PATH_PREFIX.resolve(name + FileTypes.BPEL));
-        process.setWsdls(new ArrayList<>(Arrays.asList(testInterface)));
+        process.setWsdls(new ArrayList<>(Collections.singletonList(testInterface)));
         process.setTestCases(testCases);
-        process.setAdditionalFiles(new ArrayList<>(Arrays.asList(PATH_PREFIX.resolve("basic/months.xsd"))));
+        process.setAdditionalFiles(new ArrayList<>(Collections.singletonList(PATH_PREFIX.resolve("basic/months.xsd"))));
         return process;
 
     }
