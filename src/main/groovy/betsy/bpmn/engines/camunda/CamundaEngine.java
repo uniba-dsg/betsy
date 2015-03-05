@@ -8,6 +8,7 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
+import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
@@ -55,7 +56,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
         XSLTTasks.transform(getXsltPath().resolve("camunda.xsl"),
                 targetWarWebinfClassesPath.resolve(process.getName() + ".bpmn-temp"),
-                targetWarWebinfClassesPath.resolve(process.getName() + ".bpmn"));
+                targetWarWebinfClassesPath.resolve(process.getName() + FileTypes.BPMN));
 
         FileTasks.deleteFile(targetWarWebinfClassesPath.resolve(process.getName() + ".bpmn-temp"));
 

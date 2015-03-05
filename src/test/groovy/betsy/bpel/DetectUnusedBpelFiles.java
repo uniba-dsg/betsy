@@ -1,6 +1,7 @@
 package betsy.bpel;
 
 import betsy.bpel.model.BPELProcess;
+import betsy.common.util.FileTypes;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class DetectUnusedBpelFiles {
                 if (Files.isDirectory(path)) {
                     // recursion
                     result.addAll(getBpelFiles(path));
-                } else if (Files.isRegularFile(path) && path.toString().endsWith(".bpel")) {
+                } else if (FileTypes.isBpelFile(path)) {
                     result.add(path);
                 }
             }

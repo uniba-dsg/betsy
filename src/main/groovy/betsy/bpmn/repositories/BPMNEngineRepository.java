@@ -9,6 +9,7 @@ import betsy.common.repositories.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BPMNEngineRepository {
@@ -18,7 +19,7 @@ public class BPMNEngineRepository {
 
         // insert every engine into the map
         for (AbstractBPMNEngine engine : repo.getByName("ALL")) {
-            repo.put(engine.getName(), new ArrayList<>(Arrays.asList(engine)));
+            repo.put(engine.getName(), Collections.singletonList(engine));
         }
 
     }
