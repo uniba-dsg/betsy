@@ -53,5 +53,8 @@ public class Activiti5170Engine extends ActivitiEngine {
                 "log4j.appender.FILE.layout=org.apache.log4j.PatternLayout\n" +
                 "log4j.appender.FILE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n\n");
         FileTasks.replaceTokenInFile(classes.resolve("activiti-custom-context.xml"),"\t\t<property name=\"jobExecutorActivate\" value=\"false\" />","\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
+        FileTasks.replaceTokenInFile(classes.resolve("activiti-custom-context.xml"),"<!--","");
+        FileTasks.replaceTokenInFile(classes.resolve("activiti-custom-context.xml"),"-->","");
     }
 }
+
