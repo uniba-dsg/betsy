@@ -1,14 +1,16 @@
-package configuration.bpel
+package configuration.bpel;
 
-import betsy.bpel.model.BPELProcess
-import betsy.bpel.model.assertions.ExitAssertion
-import betsy.bpel.model.assertions.SoapFaultTestAssertion
-import betsy.bpel.model.steps.SoapTestStep
-import betsy.common.repositories.Repository
+import betsy.bpel.model.BPELProcess;
+import betsy.bpel.model.assertions.ExitAssertion;
+import betsy.bpel.model.assertions.SoapFaultTestAssertion;
+import betsy.bpel.model.steps.SoapTestStep;
+import betsy.common.repositories.Repository;
 
-import java.lang.reflect.Field
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.stream.Collectors;
 
-class BPELProcessRepository {
+public class BPELProcessRepository {
 
     private final Repository<BPELProcess> repo = new Repository<>();
 
@@ -33,43 +35,35 @@ class BPELProcessRepository {
                     Object value = f.get(null);
                     repo.put(f.getName(), (List<BPELProcess>) value);
                 } catch (IllegalAccessException e) {
-                    throw new IllegalStateException("Could not retrieve field value", e);
+                    throw new IllegalStateException("Could not retrieve field value " + f.getName(), e);
                 }
             }
         }
 
-        repo.put("STATIC_ANALYSIS", StaticAnalysisProcesses.STATIC_ANALYSIS)
+        repo.put("STATIC_ANALYSIS", StaticAnalysisProcesses.STATIC_ANALYSIS);
 
-        Map<String, List<BPELProcess>> ruleGroups = StaticAnalysisProcesses.getGroupsPerRuleForSAProcesses(StaticAnalysisProcesses.STATIC_ANALYSIS)
-        for (Map.Entry<String, List<BPELProcess>> entry : ruleGroups) {
-            repo.put(entry.getKey(), entry.getValue())
+        Map<String, List<BPELProcess>> ruleGroups = StaticAnalysisProcesses.getGroupsPerRuleForSAProcesses(StaticAnalysisProcesses.STATIC_ANALYSIS);
+        for (Map.Entry<String, List<BPELProcess>> entry : ruleGroups.entrySet()) {
+            repo.put(entry.getKey(), entry.getValue());
         }
 
-        repo.put("ERRORS", ErrorProcesses.processes)
+        repo.put("ERRORS", ErrorProcesses.getProcesses());
 
         // automatic group
         repo.put(
                 "FAULTS",
-                repo.getByName("ALL").findAll { BPELProcess process ->
-                    process.testCases.any {
-                        it.testSteps.any {
-                            it instanceof SoapTestStep && it.assertions.any { it instanceof SoapFaultTestAssertion }
-                        }
-                    }
-                }
-        )
+                repo.getByName("ALL").stream().filter((p) ->
+                        p.getTestCases().stream().anyMatch((tc) ->
+                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SoapTestStep && ((SoapTestStep) ts).getAssertions().stream().anyMatch((a) ->
+                                        a instanceof SoapFaultTestAssertion)))).collect(Collectors.toList()));
 
         // automatic group
         repo.put(
                 "WITH_EXIT_ASSERTION",
-                repo.getByName("ALL").findAll { process ->
-                    process.testCases.any {
-                        it.testSteps.any {
-                            it instanceof SoapTestStep && it.assertions.any { it instanceof ExitAssertion }
-                        }
-                    }
-                }
-        )
+                repo.getByName("ALL").stream().filter((p) ->
+                        p.getTestCases().stream().anyMatch((tc) ->
+                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SoapTestStep && ((SoapTestStep) ts).getAssertions().stream().anyMatch((a) ->
+                                        a instanceof ExitAssertion)))).collect(Collectors.toList()));
 
         // insert every process into the map
         for (BPELProcess process : repo.getByName("ALL")) {
