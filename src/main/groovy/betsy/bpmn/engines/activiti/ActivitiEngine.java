@@ -112,14 +112,14 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
         // unzip activiti
         String filename = "activiti-5.16.3.zip";
-        NetworkTasks.downloadFile("https://github.com/Activiti/Activiti/releases/download/activiti-5.16.3/" + filename, Configuration.getDownloadsDir());
+        NetworkTasks.downloadFileFromBetsyRepo(filename);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
 
         // deploy
         getTomcat().deployWar(getServerPath().resolve("activiti-5.16.3").resolve("wars").resolve("activiti-rest.war"));
 
         String groovyFile = "groovy-all-2.1.3.jar";
-        NetworkTasks.downloadFile("http://central.maven.org/maven2/org/codehaus/groovy/groovy-all/2.1.3/" + groovyFile, Configuration.getDownloadsDir());
+        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
         getTomcat().addLib(Configuration.getDownloadsDir().resolve(groovyFile));
 
         Path classes = getTomcat().getTomcatWebappsDir().resolve("activiti-rest").resolve("WEB-INF").resolve("classes");
