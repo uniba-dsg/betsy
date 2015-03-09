@@ -31,7 +31,7 @@ public final class TestPartnerServicePublisherInternalDummy implements TestPartn
     public void startup() {
         TestPartnerPortType portType = new TestPartnerPortTypeDummy();
         endpoint = Endpoint.publish(url, portType);
-        log.info("Published TestPartnerService to " + url);
+        log.info("Started TestPartnerService at " + url);
     }
 
     @Override
@@ -41,9 +41,9 @@ public final class TestPartnerServicePublisherInternalDummy implements TestPartn
             return;
         }
 
-        log.info("Unpublishing TestPartnerService from " + url);
+        log.info("Stopping TestPartnerService at " + url);
         endpoint.stop();
-        log.info("Unpublished TestPartnerService from " + url);
+        log.info("Stopped TestPartnerService at " + url);
     }
 
     @Override
