@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.0'
+    internal 'org.codehaus.groovy:groovy-all:2.4.1'
 
     internal 'org.apache.ant:ant:1.9.4'
     internal 'log4j:log4j:1.2.17'
@@ -50,14 +50,17 @@ dependencies {
     internal 'org.slf4j:slf4j-api:1.7.10'
     internal 'org.slf4j:slf4j-simple:1.7.10'
 
-    compile 'commons-cli:commons-cli:1.2' // for the CLI tools
+    internal 'commons-cli:commons-cli:1.2' // for the CLI tools
 
-    compile 'org.apache.santuario:xmlsec:2.0.3' // for canonical XML form
+    internal 'org.apache.santuario:xmlsec:2.0.3' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
 
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
-    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*', 'http*', 'commons-http*', 'commons-codec*']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: [
+            'groovy*', 'junit*', 'log4j*', 'commons-io*', 'commons-cli*', 'commons-lang*',
+            'http*', 'commons-http*', 'commons-codec*'
+    ]))
 
     compile configurations.internal
     compile configurations.external
