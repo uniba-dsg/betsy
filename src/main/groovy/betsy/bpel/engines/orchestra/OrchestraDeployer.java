@@ -47,8 +47,8 @@ public class OrchestraDeployer {
         return orchestraHome.resolve(processName + ".deployed");
     }
 
-    public boolean isDeployed(QName processQName) {
-        return FileTasks.hasFile(getDeploymentMarkerFile(processQName.getLocalPart()));
+    public boolean isDeployed(String processName) {
+        return FileTasks.hasFile(getDeploymentMarkerFile(processName));
     }
 
     private final Path orchestraHome;
