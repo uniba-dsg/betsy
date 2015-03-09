@@ -1,8 +1,8 @@
 package configuration.bpel;
 
-import betsy.common.util.FileTypes;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
+import betsy.common.util.FileTypes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -77,13 +77,8 @@ public class StaticAnalysisProcesses {
         return result;
     }
 
-    private static String convertIntegerToSARuleNumber(int i) {
-        String ruleNumber = "" + i;
-        if (ruleNumber.length() == 1) {
-            ruleNumber = "0" + ruleNumber;
-        }
-
-        return "SA000" + ruleNumber;
+    public static String convertIntegerToSARuleNumber(int number) {
+        return String.format("SA%05d", number);
     }
 
     private static List<Path> createXSDPaths(Path dir) {
@@ -101,7 +96,6 @@ public class StaticAnalysisProcesses {
             throw new IllegalStateException("Could not open folder " + dir, e);
         }
     }
-
 
     public static List<BPELProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses();
 }
