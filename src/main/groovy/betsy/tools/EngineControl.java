@@ -3,6 +3,7 @@ package betsy.tools;
 import betsy.bpel.repositories.EngineRepository;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
+import betsy.common.util.LogFileUtil;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,6 +20,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -127,6 +131,14 @@ public class EngineControl extends Application {
         nodes.add(createButton("isRunning?", engine,(e) -> {
             boolean isRunning = engine.isRunning();
             Platform.runLater(() -> toast(engine.toString() + " is " + (isRunning ? "started" : "shutdown")));
+        }));
+        nodes.add(createButton("open folder with logs", engine,(e) -> {
+            final Path tmpFolder = LogFileUtil.copyLogsToTempFolder(e);
+            try {
+                Desktop.getDesktop().open(tmpFolder.toFile());
+            } catch (IOException e1) {
+                throw new IllegalStateException("Could not open folder " + tmpFolder, e1);
+            }
         }));
         return nodes;
     }

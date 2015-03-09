@@ -9,6 +9,10 @@ import java.util.List;
 
 public class BPMNProcess extends AbstractProcess<BPMNTestCase, AbstractBPMNEngine> {
 
+    public BPMNProcess() {
+
+    }
+
     public BPMNProcess(Path process, String description, List<BPMNTestCase> testCases) {
         this.setProcess(process);
         this.setDescription(description);
