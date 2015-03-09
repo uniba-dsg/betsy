@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="SequenceFlowTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/sequenceFlow">
-    <bpmn2:process id="SequenceFlow" isExecutable="true">
+                   id="Token_Cardinality_DefaultTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/token_Cardinality_Default">
+    <bpmn2:process id="Token_Cardinality_Default" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
