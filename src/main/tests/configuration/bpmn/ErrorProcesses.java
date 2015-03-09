@@ -39,11 +39,26 @@ class ErrorProcesses {
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3()
     );
 
+    public static final BPMNProcess TOKEN_START_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
+            "Token_StartQuantity_Zero", "A process with a scriptTask with startQuantity=0. " +
+                    "Since startQuantity must not be zero, the process must not be executed.",
+            new BPMNTestCase().assertRuntimeException()
+    );
+
+    public static final BPMNProcess TOKEN_COMPLETION_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
+            "Token_CompletionQuantity_Zero", "A procesess with a scriptTask with completionQuantity=0. " +
+            "Since completionQuantity must not be zero, the process must not be executed.",
+            new BPMNTestCase().assertRuntimeException()
+    );
+
 
     public static final List<BPMNProcess> ERRORS = Arrays.asList(
             PARALLEL_GATEWAY_WITH_CONDITIONS,
 
             EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
-            INCLUSIVE_DIVERGING_PARALLEL_CONVERGING
+            INCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
+
+            TOKEN_START_QUANTITY_ZERO,
+            TOKEN_COMPLETION_QUANTITY_ZERO
     );
 }

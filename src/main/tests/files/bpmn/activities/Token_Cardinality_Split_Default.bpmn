@@ -52,17 +52,10 @@
             <bpmn2:script>SCRIPT_task4</bpmn2:script>
         </bpmn2:scriptTask>
     
-    <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="receive" targetRef="end"/>
-    
-        <bpmn2:scriptTask id="end" name="End">
-            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
-            <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-        </bpmn2:scriptTask>
-
-        <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="end" targetRef="EndEvent"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="receive" targetRef="EndEvent"/>
 
         <bpmn2:endEvent id="EndEvent">
-            <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
         </bpmn2:endEvent>
 
     </bpmn2:process>
