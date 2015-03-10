@@ -39,6 +39,12 @@ class ErrorProcesses {
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3()
     );
 
+    public static final BPMNProcess TOKEN_START_QUANTITY_TWO = BPMNProcessBuilder.buildErrorProcess(
+            "Token_StartQuantity_Two", "A process with a scriptTask with completionQuantity=1 and, immediately afterwards," +
+                    "a scriptTask with startQuantity=2. Since there will never two tokens arrive, the scriptTask must not be executed.",
+            new BPMNTestCase().assertTask1()
+    );
+
     public static final BPMNProcess TOKEN_START_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
             "Token_StartQuantity_Zero", "A process with a scriptTask with startQuantity=0. " +
                     "Since startQuantity must not be zero, the process must not be executed.",
@@ -58,6 +64,7 @@ class ErrorProcesses {
             EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
             INCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
 
+            TOKEN_START_QUANTITY_TWO,
             TOKEN_START_QUANTITY_ZERO,
             TOKEN_COMPLETION_QUANTITY_ZERO
     );
