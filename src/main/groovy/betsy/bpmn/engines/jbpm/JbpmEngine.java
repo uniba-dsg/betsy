@@ -62,26 +62,13 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
 
-
-        System.exit(-1);
-
         //wait for maven to deploy
         WaitTasks.sleep(1500);
 
-        //preparing ssh
-        //delete known_hosts file for do not getting trouble with changing remote finger print
-        //FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
-        FileTasks.createFile(Paths.get(getHomeDir() + "/.ssh/config"), "Host localhost\n    StrictHostKeyChecking no");
-
-        //deploy by creating a deployment unit, which can be started
-        final Path jbpmDeployerPath = Configuration.getJbpmDeployerHome();
-        final String deployCommand = "java -jar " + Configuration.get("jbpmdeployer.jar") + " "
-                + process.getGroupId() + " " + process.getName() + " " + process.getVersion() + " " + getSystemURL();
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
+        new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process)).deploy();
 
         //waiting for the result of the deployment
-        WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), "de.uniba.dsg");
+        WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), getDeploymentId(process));
 
         // And a few more seconds to ensure availability
         WaitTasks.sleep(5000);

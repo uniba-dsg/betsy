@@ -70,30 +70,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
 
-task downloadJbpmDependencies {
-    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdependencies.download.filename")}")
-
-    doLast {
-        ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
-            ant.url url: props.getProperty("jbpmdependencies.download.url")
-        }
-    }
-}
-
-task installJbpmDependencies {
-    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdependencies.download.filename")}")
-    ext.destDir = new File(props.getProperty("jbpmdependencies.home"))
-
-    inputs.file srcFile
-    outputs.dir destDir
-
-    doLast {
-        ant.mkdir dir: new File(props.getProperty("jbpmdependencies.home"))
-        ant.unzip src: srcFile, dest: destDir
-    }
-}
-
 task downloadMaven {
     outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("maven.download.filename")}")
 
@@ -114,30 +90,6 @@ task installMaven {
 
     doLast {
         ant.mkdir dir: new File(props.getProperty("maven.home"))
-        ant.unzip src: srcFile, dest: destDir
-    }
-}
-
-task downloadJPBMDeployer {
-    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdeployer.download.filename")}")
-
-    doLast {
-        ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
-            ant.url url: props.getProperty("jbpmdeployer.download.url")
-        }
-    }
-}
-
-task installJBPMDeployer {
-    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdeployer.download.filename")}")
-    ext.destDir = new File(props.getProperty("jbpmdeployer.home"))
-
-    inputs.file srcFile
-    outputs.dir destDir
-
-    doLast {
-        ant.mkdir dir: new File(props.getProperty("jbpmdeployer.home"))
         ant.unzip src: srcFile, dest: destDir
     }
 }
@@ -192,16 +144,12 @@ task installAnt {
 
 }
 
-installJbpmDependencies.dependsOn downloadJbpmDependencies
 installMaven.dependsOn downloadMaven
-installJBPMDeployer.dependsOn downloadJPBMDeployer
 installSoapUI.dependsOn downloadSoapUI
 compileGroovy.dependsOn installSoapUI
 installAnt.dependsOn downloadAnt
 installSoapUI.dependsOn installAnt
-installSoapUI.dependsOn installJBPMDeployer
 installSoapUI.dependsOn installMaven
-installSoapUI.dependsOn installJbpmDependencies
 
 run {
     if (project.hasProperty('args')) {
