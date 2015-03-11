@@ -1,7 +1,7 @@
 package betsy.bpel;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.engines.EnginePackageBuilder;
+import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class BetsyTests {
         }
 
         public void buildArchives(BPELProcess process) {
-            new EnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
+            new BPELEnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
         }
 
         public String getEndpointUrl(BPELProcess process) {

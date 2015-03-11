@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class CoreBPELEngineExtension {
     public static void extendEngine(AbstractBPELEngine engine, final List<String> transformations) {
         assertValidTransformations(transformations);
-        engine.setPackageBuilder(new CoreBPELEnginePackageBuilder(transformations));
+        engine.setPackageBuilder(new CoreBPELBPELEnginePackageBuilder(transformations));
     }
 
     private static void assertValidTransformations(List<String> transformations) {

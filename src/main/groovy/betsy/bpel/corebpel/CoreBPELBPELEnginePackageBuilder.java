@@ -1,6 +1,6 @@
 package betsy.bpel.corebpel;
 
-import betsy.bpel.engines.EnginePackageBuilder;
+import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
 import corebpel.CoreBPEL;
 
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-class CoreBPELEnginePackageBuilder extends EnginePackageBuilder {
+class CoreBPELBPELEnginePackageBuilder extends BPELEnginePackageBuilder {
     private final List<String> transformations;
 
-    public CoreBPELEnginePackageBuilder(List<String> transformations) {
+    public CoreBPELBPELEnginePackageBuilder(List<String> transformations) {
         this.transformations = new ArrayList<>(Objects.requireNonNull(transformations));
     }
 
