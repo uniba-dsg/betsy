@@ -9,6 +9,7 @@ import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
+import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +17,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class JbpmEngine extends AbstractBPMNEngine {
+
+    private static final Logger LOGGER = Logger.getLogger(JbpmEngine.class);
+
     @Override
     public String getName() {
         return "jbpm";
@@ -57,6 +61,9 @@ public class JbpmEngine extends AbstractBPMNEngine {
         final String mvnCommand = mavenPath.toAbsolutePath() + "/mvn -q clean install";
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
+
+
+        System.exit(-1);
 
         //wait for maven to deploy
         WaitTasks.sleep(1500);
@@ -178,7 +185,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
             JbpmTester tester = new JbpmTester();
             tester.setTestCase(testCase);
             tester.setName(process.getName());
-            tester.setDeploymentId(process.getGroupId() + ":" + process.getName() + ":" + process.getVersion());
+            tester.setDeploymentId(getDeploymentId(process));
             tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
             tester.setProcessHistoryUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/history/instance/1");
             tester.setBpmnTester(bpmnTester);
@@ -188,6 +195,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
+    }
+
+    private static String getDeploymentId(BPMNProcess process) {
+        return process.getGroupId() + ":" + process.getName() + ":" + process.getVersion();
     }
 
     public void buildTest(final BPMNProcess process) {
