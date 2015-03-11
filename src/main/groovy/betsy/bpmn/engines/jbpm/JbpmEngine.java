@@ -9,6 +9,7 @@ import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
+import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +17,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class JbpmEngine extends AbstractBPMNEngine {
+
+    private static final Logger LOGGER = Logger.getLogger(JbpmEngine.class);
+
     @Override
     public String getName() {
         return "jbpm";
@@ -61,20 +65,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         //wait for maven to deploy
         WaitTasks.sleep(1500);
 
-        //preparing ssh
-        //delete known_hosts file for do not getting trouble with changing remote finger print
-        //FileTasks.deleteFile(Paths.get(homeDir + "/.ssh/known_hosts"))
-        FileTasks.createFile(Paths.get(getHomeDir() + "/.ssh/config"), "Host localhost\n    StrictHostKeyChecking no");
-
-        //deploy by creating a deployment unit, which can be started
-        final Path jbpmDeployerPath = Configuration.getJbpmDeployerHome();
-        final String deployCommand = "java -jar " + Configuration.get("jbpmdeployer.jar") + " "
-                + process.getGroupId() + " " + process.getName() + " " + process.getVersion() + " " + getSystemURL();
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmDeployerPath, deployCommand));
+        new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process)).deploy();
 
         //waiting for the result of the deployment
-        WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), "de.uniba.dsg");
+        WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), getDeploymentId(process));
 
         // And a few more seconds to ensure availability
         WaitTasks.sleep(5000);
@@ -146,6 +140,11 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
 
+        if(FileTasks.hasNoFile(getJbossLogDir().resolve("boot.log"))) {
+            LOGGER.info("Could not shutdown, because boot.log does not exist. this indicates that the engine was never started");
+            return;
+        }
+
         try {
             //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
             WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("boot.log"), "JBAS015950");
@@ -173,7 +172,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
             JbpmTester tester = new JbpmTester();
             tester.setTestCase(testCase);
             tester.setName(process.getName());
-            tester.setDeploymentId(process.getGroupId() + ":" + process.getName() + ":" + process.getVersion());
+            tester.setDeploymentId(getDeploymentId(process));
             tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
             tester.setProcessHistoryUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/history/instance/1");
             tester.setBpmnTester(bpmnTester);
@@ -183,6 +182,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
+    }
+
+    private static String getDeploymentId(BPMNProcess process) {
+        return process.getGroupId() + ":" + process.getName() + ":" + process.getVersion();
     }
 
     public void buildTest(final BPMNProcess process) {

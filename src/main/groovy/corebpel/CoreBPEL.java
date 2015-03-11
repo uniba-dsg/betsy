@@ -1,6 +1,7 @@
 package corebpel;
 
 import betsy.common.tasks.FileTasks;
+import betsy.common.util.FileTypes;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
@@ -77,8 +78,8 @@ public class CoreBPEL {
     }
 
     public void toCoreBPEL(final String xslSheet) throws IOException, TransformerException {
-        Path temporaryBeforeBpelFilePath = getTemporaryBpelFilePath("before_" + xslSheet + ".bpel");
-        Path temporaryAfterBpelFilePath = getTemporaryBpelFilePath("after_" + xslSheet + ".bpel");
+        Path temporaryBeforeBpelFilePath = getTemporaryBpelFilePath("before_" + xslSheet + FileTypes.BPEL);
+        Path temporaryAfterBpelFilePath = getTemporaryBpelFilePath("after_" + xslSheet + FileTypes.BPEL);
 
         Files.createDirectories(temporaryDirectory);
         Files.copy(bpelFilePath, temporaryBeforeBpelFilePath);

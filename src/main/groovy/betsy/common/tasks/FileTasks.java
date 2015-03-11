@@ -4,6 +4,7 @@ import ant.tasks.AntUtil;
 import com.google.common.base.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Replace;
 
 import java.io.IOException;
@@ -214,6 +215,21 @@ public class FileTasks {
         } catch (IOException e) {
             throw new IllegalStateException("Could not move file " + from + " to " + to, e);
         }
+    }
+
+    public static void moveFolderWithForcedCleanup(Path from, Path to) {
+        LOGGER.info("Moving file " + from + " to " + to);
+
+        Move move = new Move();
+        move.setFile(from.toFile());
+        move.setTofile(to.toFile());
+        move.setForce(true);
+        move.setPerformGcOnFailedDelete(true);
+
+        move.setTaskName("move");
+        move.setProject(AntUtil.builder().getProject());
+
+        move.execute();
     }
 
     public static Path findFirstMatchInFolder(Path folder, String glob) {

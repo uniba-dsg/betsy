@@ -82,9 +82,7 @@ public class BPELComposite {
     }
 
     protected void executeProcess(final BPELProcess process) {
-        Retry retry = new Retry();
-        retry.setProcess(process);
-        retry.atMostThreeTimes(() -> log(process.getTargetPath(), () -> {
+        new Retry(process).atMostThreeTimes(() -> log(process.getTargetPath(), () -> {
             buildPackageAndTest(process);
             try {
                 installAndStart(process);

@@ -7,7 +7,7 @@ apply plugin: "application"
 mainClassName = "betsy.Main"
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven { url 'http://repository.jboss.org/nexus/content/groups/public' }
 }
 
@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.+'
+    internal 'org.codehaus.groovy:groovy-all:2.4.1'
 
     internal 'org.apache.ant:ant:1.9.4'
     internal 'log4j:log4j:1.2.17'
@@ -43,52 +43,31 @@ dependencies {
     internal 'commons-lang:commons-lang:2.6'
     internal 'org.apache.ant:ant-apache-log4j:1.9.4'
     internal 'org.json:json:5.0.5'
-    internal 'org.apache.ant:ant-junit:1.9.+'
+    internal 'org.apache.ant:ant-junit:1.9.4'
 
-    internal 'com.mashape.unirest:unirest-java:1.4.+' // for http requests and responses
+    internal 'com.mashape.unirest:unirest-java:1.4.5' // for http requests and responses
 
-    internal 'org.slf4j:slf4j-api:1.7.+'
-    internal 'org.slf4j:slf4j-simple:1.7.+'
+    internal 'org.slf4j:slf4j-api:1.7.10'
+    internal 'org.slf4j:slf4j-simple:1.7.10'
 
-    compile 'commons-cli:commons-cli:1.2' // for the CLI tools
+    internal 'commons-cli:commons-cli:1.2' // for the CLI tools
 
-    compile 'org.apache.santuario:xmlsec:2.0.+' // for canonical XML form
+    internal 'org.apache.santuario:xmlsec:2.0.3' // for canonical XML form
 
-    testCompile 'junit:junit:4.+'
+    testCompile 'junit:junit:4.12'
 
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
-    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: ['groovy*', 'log4j*', 'commons-io*', 'commons-lang*', 'http*', 'commons-http*', 'commons-codec*']))
+    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: [
+            'groovy*', 'junit*', 'log4j*', 'commons-io*', 'commons-cli*', 'commons-lang*',
+            'http*', 'commons-http*', 'commons-codec*'
+    ]))
 
     compile configurations.internal
     compile configurations.external
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.2'
-}
-
-task downloadJbpmDependencies {
-    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdependencies.download.filename")}")
-
-    doLast {
-        ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
-            ant.url url: props.getProperty("jbpmdependencies.download.url")
-        }
-    }
-}
-
-task installJbpmDependencies {
-    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdependencies.download.filename")}")
-    ext.destDir = new File(props.getProperty("jbpmdependencies.home"))
-
-    inputs.file srcFile
-    outputs.dir destDir
-
-    doLast {
-        ant.mkdir dir: new File(props.getProperty("jbpmdependencies.home"))
-        ant.unzip src: srcFile, dest: destDir
-    }
+    gradleVersion = '2.3'
 }
 
 task downloadMaven {
@@ -111,30 +90,6 @@ task installMaven {
 
     doLast {
         ant.mkdir dir: new File(props.getProperty("maven.home"))
-        ant.unzip src: srcFile, dest: destDir
-    }
-}
-
-task downloadJPBMDeployer {
-    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdeployer.download.filename")}")
-
-    doLast {
-        ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
-            ant.url url: props.getProperty("jbpmdeployer.download.url")
-        }
-    }
-}
-
-task installJBPMDeployer {
-    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("jbpmdeployer.download.filename")}")
-    ext.destDir = new File(props.getProperty("jbpmdeployer.home"))
-
-    inputs.file srcFile
-    outputs.dir destDir
-
-    doLast {
-        ant.mkdir dir: new File(props.getProperty("jbpmdeployer.home"))
         ant.unzip src: srcFile, dest: destDir
     }
 }
@@ -189,16 +144,12 @@ task installAnt {
 
 }
 
-installJbpmDependencies.dependsOn downloadJbpmDependencies
 installMaven.dependsOn downloadMaven
-installJBPMDeployer.dependsOn downloadJPBMDeployer
 installSoapUI.dependsOn downloadSoapUI
 compileGroovy.dependsOn installSoapUI
 installAnt.dependsOn downloadAnt
 installSoapUI.dependsOn installAnt
-installSoapUI.dependsOn installJBPMDeployer
 installSoapUI.dependsOn installMaven
-installSoapUI.dependsOn installJbpmDependencies
 
 run {
     if (project.hasProperty('args')) {

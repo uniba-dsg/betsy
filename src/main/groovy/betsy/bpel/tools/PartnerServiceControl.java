@@ -2,17 +2,19 @@ package betsy.bpel.tools;
 
 import betsy.bpel.ws.DummyAndRegularTestPartnerService;
 import betsy.bpel.ws.TestPartnerService;
-
-import javax.swing.*;
-import java.awt.*;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
 
 /**
  * GUI to start and stop / start and shutdown the partner service.
  */
-public class PartnerServiceControl extends JFrame {
+public class PartnerServiceControl extends Application {
 
     public static void main(String[] args) {
-        new PartnerServiceControl().setVisible(true);
+        PartnerServiceControl.launch(args);
     }
 
     private final TestPartnerService publisher = new DummyAndRegularTestPartnerService();
@@ -25,23 +27,31 @@ public class PartnerServiceControl extends JFrame {
         createStopButton();
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setWidth(300);
+        stage.setHeight(75);
+        stage.setTitle("Partner Service Control Center");
+
+        Scene scene = new Scene(new FlowPane(createStartButton(), createStopButton()));
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private void layoutFrame() {
-        this.setLayout(new FlowLayout());
-        this.setSize(300, 75);
-        this.setTitle("Partner Service Control Center");
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
     }
 
-    private void createStartButton() {
-        JButton start = new JButton("startup");
-        start.addActionListener(e -> publisher.startup());
-        this.add(start);
+    private Button createStartButton() {
+        Button start = new Button("startup");
+        start.setOnAction(e -> publisher.startup());
+        return start;
     }
 
-    private void createStopButton() {
-        JButton stop = new JButton("stop");
-        stop.addActionListener(e -> publisher.shutdown());
-        this.add(stop);
+    private Button createStopButton() {
+        Button stop = new Button("stop");
+        stop.setOnAction(e -> publisher.shutdown());
+        return stop;
     }
 
 
