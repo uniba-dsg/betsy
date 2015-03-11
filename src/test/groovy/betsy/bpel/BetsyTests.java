@@ -1,8 +1,8 @@
 package betsy.bpel;
 
-import betsy.bpel.model.BPELProcess;
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.EnginePackageBuilder;
+import betsy.bpel.model.BPELProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class BetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
-        AbstractEngine engine = new MockEngine();
+        AbstractBPELEngine engine = new MockEngine();
         List<BPELProcess> processes = new BPELProcessRepository().getByName("ALL");
         BPELBetsy betsy = new BPELBetsy();
 
@@ -25,7 +25,7 @@ public class BetsyTests {
         betsy.execute();
     }
 
-    public class MockEngine extends AbstractEngine {
+    public class MockEngine extends AbstractBPELEngine {
         public void install() {
         }
 

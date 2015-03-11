@@ -1,13 +1,13 @@
 package betsy.bpel.corebpel;
 
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import corebpel.CoreBPEL;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoreBPELEngineExtension {
-    public static void extendEngine(AbstractEngine engine, final List<String> transformations) {
+    public static void extendEngine(AbstractBPELEngine engine, final List<String> transformations) {
         assertValidTransformations(transformations);
         engine.setPackageBuilder(new CoreBPELEnginePackageBuilder(transformations));
     }

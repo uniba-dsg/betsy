@@ -1,12 +1,12 @@
 package betsy.bpel.tools
 
+import betsy.bpel.cli.EngineParser
+import betsy.bpel.engines.AbstractBPELEngine
+import betsy.bpel.virtual.host.engines.AbstractVirtualBPELEngine
+
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
-
-import betsy.bpel.cli.EngineParser
-import betsy.bpel.engines.AbstractEngine
-import betsy.bpel.virtual.host.engines.AbstractVirtualEngine
 
 /**
  * The {@link VirtualMachineInstaller} simplifies the task to create new virtual box machines for the virtual engines that are supported by betsy.<br>
@@ -64,7 +64,7 @@ class VirtualMachineInstaller {
 		}
 
 		// parsing processes and engines
-		List<AbstractEngine> engines = null
+		List<AbstractBPELEngine> engines = null
 		try {
 			engines = new EngineParser(options.arguments() as String[]).parse()
 		} catch (IllegalArgumentException e) {
@@ -74,7 +74,7 @@ class VirtualMachineInstaller {
 		}
 		println "Engines: ${engines.collect{it.name}}"
 
-		if (!engines.any {it instanceof AbstractVirtualEngine}) {
+		if (!engines.any {it instanceof AbstractVirtualBPELEngine}) {
 			error "No virtual engine, abort installation"
 			return
 		}

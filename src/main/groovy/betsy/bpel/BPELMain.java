@@ -1,18 +1,19 @@
 package betsy.bpel;
 
-import betsy.bpel.cli.*;
+import betsy.bpel.cli.BPELCliParameter;
+import betsy.bpel.cli.BPELCliParser;
 import betsy.bpel.corebpel.CoreBPELEngineExtension;
-import betsy.bpel.engines.AbstractEngine;
-import betsy.bpel.engines.AbstractLocalEngine;
-import betsy.bpel.model.BPELTestCase;
+import betsy.bpel.engines.AbstractBPELEngine;
+import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.virtual.host.VirtualBox;
-import betsy.bpel.virtual.host.engines.AbstractVirtualEngine;
+import betsy.bpel.virtual.host.engines.AbstractVirtualBPELEngine;
 import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
 import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
-import betsy.common.config.Configuration;
 import betsy.common.HasName;
+import betsy.common.config.Configuration;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -134,7 +135,7 @@ public class BPELMain {
 
     }
 
-    private static void localhostPartnerAddressNotAllowedForTestingVirtualEngines(List<AbstractEngine> engines) {
+    private static void localhostPartnerAddressNotAllowedForTestingVirtualEngines(List<AbstractBPELEngine> engines) {
         if (usesVirtualEngines(engines)) {
             // verify IP set
             String partner = Configuration.get("partner.ipAndPort");
@@ -146,12 +147,12 @@ public class BPELMain {
 
     }
 
-    private static boolean usesVirtualEngines(List<AbstractEngine> engines) {
+    private static boolean usesVirtualEngines(List<AbstractBPELEngine> engines) {
         return !getVirtualEngines(engines).isEmpty();
     }
 
-    private static List<AbstractVirtualEngine> getVirtualEngines(List<AbstractEngine> engines) {
-        return engines.stream().filter(e -> e instanceof AbstractVirtualEngine).map(e -> (AbstractVirtualEngine) e).collect(Collectors.toList());
+    private static List<AbstractVirtualBPELEngine> getVirtualEngines(List<AbstractBPELEngine> engines) {
+        return engines.stream().filter(e -> e instanceof AbstractVirtualBPELEngine).map(e -> (AbstractVirtualBPELEngine) e).collect(Collectors.toList());
     }
 
     private static void assertBindabilityOfInternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
@@ -184,7 +185,7 @@ public class BPELMain {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<AbstractEngine> engines, List<BPELProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<AbstractBPELEngine> engines, List<BPELProcess> processes) {
         // print selection of engines and processes
         LOGGER.info("Engines (" + engines.size() + "): " + HasName.getNames(engines));
         LOGGER.info("Processes (" + processes.size() + "): " + HasName.getNames(processes).stream().limit(10).collect(Collectors.toList()));
@@ -216,7 +217,7 @@ public class BPELMain {
 
     }
 
-    protected static void virtualEngines(List<AbstractEngine> engines) {
+    protected static void virtualEngines(List<AbstractBPELEngine> engines) {
         if (usesVirtualEngines(engines)) {
             // verify all mandatory config options
             try {
@@ -226,24 +227,24 @@ public class BPELMain {
             }
 
             VirtualBox vb = new VirtualBoxImpl();
-            for (AbstractVirtualEngine engine : getVirtualEngines(engines)) {
+            for (AbstractVirtualBPELEngine engine : getVirtualEngines(engines)) {
                 engine.setVirtualBox(vb);
             }
         }
 
     }
 
-    protected static void coreBpel(BPELCliParameter params, List<AbstractEngine> engines) {
+    protected static void coreBpel(BPELCliParameter params, List<AbstractBPELEngine> engines) {
         if (params.transformToCoreBpel()) {
 
             String transformations = params.getCoreBPELTransformations();
 
             switch (transformations) {
                 case "ALL":
-                    for (AbstractEngine engine : engines) {
-                        if (engine instanceof AbstractVirtualEngine) {
-                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
-                        } else if (engine instanceof AbstractLocalEngine) {
+                    for (AbstractBPELEngine engine : engines) {
+                        if (engine instanceof AbstractVirtualBPELEngine) {
+                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
+                        } else if (engine instanceof AbstractLocalBPELEngine) {
                             CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION);
                         }
                     }
@@ -255,10 +256,10 @@ public class BPELMain {
                 default:
                     List<String> xsls = Arrays.asList(transformations.split(","));
 
-                    for (AbstractEngine engine : engines) {
-                        if (engine instanceof AbstractVirtualEngine) {
-                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualEngine) engine).defaultEngine, xsls);
-                        } else if (engine instanceof AbstractLocalEngine) {
+                    for (AbstractBPELEngine engine : engines) {
+                        if (engine instanceof AbstractVirtualBPELEngine) {
+                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, xsls);
+                        } else if (engine instanceof AbstractLocalBPELEngine) {
                             CoreBPELEngineExtension.extendEngine(engine, xsls);
                         }
                     }

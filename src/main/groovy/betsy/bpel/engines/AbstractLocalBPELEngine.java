@@ -6,7 +6,7 @@ import betsy.common.tasks.FileTasks;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public abstract class AbstractLocalEngine extends AbstractEngine implements LocalEngineAPI {
+public abstract class AbstractLocalBPELEngine extends AbstractBPELEngine implements LocalEngineAPI {
     /**
      * The path <code>server/$engine</code>
      *
