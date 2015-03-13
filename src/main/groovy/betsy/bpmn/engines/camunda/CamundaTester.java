@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class CamundaTester {
 
-    private static final Logger log = Logger.getLogger(CamundaTester.class);
+    private static final Logger LOGGER = Logger.getLogger(CamundaTester.class);
 
     private BPMNTestCase testCase;
     private String restURL;
@@ -54,7 +54,7 @@ public class CamundaTester {
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
         } catch (Exception e) {
-            log.info("Could not start process", e);
+            LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
@@ -91,8 +91,12 @@ public class CamundaTester {
         Path logParallelOne = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelOne.txt");
         Path logParallelTwo = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelTwo.txt");
 
-        OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-        otc.checkParallelism();
+        try {
+            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
+            otc.checkParallelism();
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("Could not validate parallel execution", e);
+        }
     }
 
     public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {

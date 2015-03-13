@@ -99,8 +99,12 @@ public class ActivitiTester {
         Path logParallelOne = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelOne.txt");
         Path logParallelTwo = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelTwo.txt");
 
-        OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-        otc.checkParallelism();
+        try {
+            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
+            otc.checkParallelism();
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("Could not validate parallel execution", e);
+        }
     }
 
     private Path getFileName() {
