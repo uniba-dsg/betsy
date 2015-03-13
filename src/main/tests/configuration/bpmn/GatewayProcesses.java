@@ -81,8 +81,8 @@ class GatewayProcesses {
 
     public static final BPMNProcess PARALLEL_GATEWAY_TRUE_PARALLELISM = BPMNProcessBuilder.buildGatewayProcess(
             "ParallelGateway_TrueParallelism", "A process with two scriptTasks between a diverging and a converging parallelGateway. " +
-            "The scriptTasks wait for some time, so their execution time intervals are expected to overlap.",
-            new BPMNTestCase().assertTask1()
+                    "The scriptTasks wait for some time, so their execution time intervals are expected to overlap.",
+            new BPMNTestCase().assertExecutionParallel().optionDelay(22000)
     );
 
     public static final BPMNProcess EXCLUSIVE_GATEWAY_MIXED = BPMNProcessBuilder.buildGatewayProcess(

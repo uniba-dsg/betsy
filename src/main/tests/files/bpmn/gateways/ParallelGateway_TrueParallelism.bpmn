@@ -51,19 +51,11 @@
 			<bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
 			<bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
 		</bpmn2:parallelGateway>
-		
-		<bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ParallelGateway_2" targetRef="ScriptTask_3"/>
 
-		<bpmn2:scriptTask scriptFormat="groovy" id="ScriptTask_3" name="Task 3">
-			<bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
-			<bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-			<bpmn2:script>EVALUATE_TIMESTAMP_LOGS</bpmn2:script>
-		</bpmn2:scriptTask>
-		
-		<bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="ScriptTask_3" targetRef="EndEvent"/>
+		<bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="ParallelGateway_2" targetRef="EndEvent"/>
 
 		<bpmn2:endEvent id="EndEvent">
-			<bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+			<bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
 		</bpmn2:endEvent>
 
 	</bpmn2:process>

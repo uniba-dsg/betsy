@@ -3,6 +3,7 @@ package betsy.bpmn.engines.activiti;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -102,6 +103,14 @@ public class ActivitiEngine extends AbstractBPMNEngine {
         for (BPMNTestCase tc : process.getTestCases()) {
             Path tomcatLog = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + ".txt");
             FileTasks.copyFileIntoFolder(tomcatLog, process.getTargetLogsPath());
+            if(tc.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
+                // Copy parallel logs from Tomcat bin to TargetLogsPath
+                Path parallelLogOne = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + "_parallelOne.txt");
+                FileTasks.copyFileIntoFolder(parallelLogOne, process.getTargetLogsPath());
+
+                Path parallelLogTwo = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + "_parallelTwo.txt");
+                FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
+            }
         }
     }
 
