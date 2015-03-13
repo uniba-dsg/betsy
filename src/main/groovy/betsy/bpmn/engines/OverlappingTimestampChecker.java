@@ -1,5 +1,6 @@
 package betsy.bpmn.engines;
 
+import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
@@ -20,20 +21,19 @@ import java.util.function.Predicate;
 public class OverlappingTimestampChecker {
 
     private final Path logFile;
-    private final String testCaseNumber;
+    private final Path logParallelOne;
+    private final Path logParallelTwo;
 
-    public OverlappingTimestampChecker(Path logFile, String testCaseNumber) {
+    public OverlappingTimestampChecker(Path logFile, Path logParallelOne, Path logParallelTwo) {
         FileTasks.assertFile(logFile);
 
         this.logFile = logFile;
-        this.testCaseNumber = testCaseNumber;
+        this.logParallelOne = logParallelOne;
+        this.logParallelTwo = logParallelTwo;
     }
 
     public void checkParallelism() {
         // Get paths from needed files
-        Path logFolder = logFile.getParent(); // TODO: Correct path?
-        Path logParallelOne = FileTasks.findFirstMatchInFolder(logFolder , "log" + testCaseNumber + "_parallelOne.txt");
-        Path logParallelTwo = FileTasks.findFirstMatchInFolder(logFolder , "log" + testCaseNumber + "_parallelTwo.txt");
 
         // Read all Lines from files
         List<String> listOne = new ArrayList();
@@ -61,22 +61,12 @@ public class OverlappingTimestampChecker {
         }
 
         // Write result of comparison to file
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new FileWriter(logFile.toString(), true));
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
             if (wasParallel) {
-                bw.append("EXECUTION_parallel");
+                bw.append(BPMNAssertions.EXECUTION_PARALLEL.toString());
             }
             bw.newLine();
         } catch (IOException e) {
-        } finally {
-            if (bw != null) {
-                try {
-                    bw.close();
-                } catch (IOException e) {
-                    // ignored
-                }
-            }
         }
 
     }

@@ -95,7 +95,11 @@ public class ActivitiTester {
     private void checkParallelExecution() {
         Integer testCaseNum = new Integer(testCase.getNumber());
         String testCaseNumber = testCaseNum.toString();
-        OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), testCaseNumber);
+
+        Path logParallelOne = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelOne.txt");
+        Path logParallelTwo = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelTwo.txt");
+
+        OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
         otc.checkParallelism();
     }
 

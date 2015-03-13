@@ -13,7 +13,10 @@ f.createNewFile();
             </xsl:when>
 
             <xsl:when test="text() = 'CREATE_TIMESTAMP_LOG_1'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[// create log file for task 1
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[//
+                    int taskWaitingDuration = 10000; // milliseconds to wait between begin and end
+
+                    // create log file for task 1
                     java.io.File file = new java.io.File("log" + testCaseNumber + "_parallelOne.txt");
 
                     java.io.BufferedWriter bw = null;
@@ -25,7 +28,7 @@ f.createNewFile();
                         // log start time
                         long current = System.currentTimeMillis();
                         bw.append("" + current);
-                        long future = current + 10000;
+                        long future = current + taskWaitingDuration;
                         bw.newLine();
                         try {
                             while (System.currentTimeMillis() &lt; future) {
@@ -48,7 +51,10 @@ f.createNewFile();
             </xsl:when>
 
             <xsl:when test="text() = 'CREATE_TIMESTAMP_LOG_2'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[// create log file for task 2
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[//
+                    int taskWaitingDuration = 10000; // milliseconds to wait between begin and end
+
+                    // create log file for task 2
                     java.io.File file = new java.io.File("log" + testCaseNumber + "_parallelTwo.txt");
 
                     java.io.BufferedWriter bw = null;
@@ -60,7 +66,7 @@ f.createNewFile();
                         // log start time
                         long current = System.currentTimeMillis();
                         bw.append("" + current);
-                        long future = current + 10000;
+                        long future = current + taskWaitingDuration;
                         bw.newLine();
                         try {
                             while (System.currentTimeMillis() &lt; future) {
