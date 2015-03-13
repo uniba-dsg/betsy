@@ -2,6 +2,7 @@ package betsy.bpmn.engines.camunda;
 
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
+import betsy.bpmn.engines.OverlappingTimestampChecker;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
@@ -16,6 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 public class CamundaTester {
+
+    private static final Logger log = Logger.getLogger(CamundaTester.class);
+
+    private BPMNTestCase testCase;
+    private String restURL;
+    private String key;
+    private Path logDir;
+    private BPMNTester bpmnTester;
+
     /**
      * runs a single test
      */
@@ -42,6 +52,7 @@ public class CamundaTester {
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
+            checkParallelExecution();
         } catch (Exception e) {
             log.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
@@ -73,6 +84,17 @@ public class CamundaTester {
         }
     }
 
+    private void checkParallelExecution() {
+        Integer testCaseNum = new Integer(testCase.getNumber());
+        String testCaseNumber = testCaseNum.toString();
+
+        Path logParallelOne = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelOne.txt");
+        Path logParallelTwo = FileTasks.findFirstMatchInFolder(getFileName().getParent(), "log" + testCaseNumber + "_parallelTwo.txt");
+
+        OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
+        otc.checkParallelism();
+    }
+
     public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {
         Map<String, Object> map = new HashMap<>();
 
@@ -82,7 +104,6 @@ public class CamundaTester {
             submap.put("type", entry.getType());
             map.put(entry.getName(), submap);
         }
-
 
         return map;
     }
@@ -123,11 +144,4 @@ public class CamundaTester {
         this.logDir = logDir;
     }
 
-    private BPMNTestCase testCase;
-    private String restURL;
-    private String key;
-    private Path logDir;
-    private BPMNTester bpmnTester;
-
-    private static final Logger log = Logger.getLogger(CamundaTester.class);
 }
