@@ -1,13 +1,13 @@
 package betsy.bpel.model;
 
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.common.model.TestSuite;
 
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPELTestSuite extends TestSuite<AbstractEngine, BPELProcess> {
+public class BPELTestSuite extends TestSuite<AbstractBPELEngine, BPELProcess> {
 
     /**
      * Factory method for a list of engines and processes.
@@ -16,11 +16,11 @@ public class BPELTestSuite extends TestSuite<AbstractEngine, BPELProcess> {
      * @param processes a list of processes to be included in the test suite
      * @return a test suite where each engine tests all passed processes
      */
-    public static BPELTestSuite createTests(List<AbstractEngine> engines, List<BPELProcess> processes) {
+    public static BPELTestSuite createTests(List<AbstractBPELEngine> engines, List<BPELProcess> processes) {
         BPELTestSuite test = new BPELTestSuite();
         test.setPath(Paths.get("test"));
 
-        for (AbstractEngine engine : engines) {
+        for (AbstractBPELEngine engine : engines) {
 
             List<BPELProcess> clonedProcesses = processes.stream().map(BPELProcess::createCopyWithoutEngine).collect(Collectors.toList());
 
@@ -40,10 +40,10 @@ public class BPELTestSuite extends TestSuite<AbstractEngine, BPELProcess> {
         return test;
     }
 
-    public static int getProcessesCount(List<AbstractEngine> engines) {
+    public static int getProcessesCount(List<AbstractBPELEngine> engines) {
         int result = 0;
 
-        for (AbstractEngine engine : engines) {
+        for (AbstractBPELEngine engine : engines) {
             result += engine.getProcesses().size();
         }
 

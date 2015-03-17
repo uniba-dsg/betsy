@@ -1,6 +1,6 @@
 package betsy.bpel.engines.activebpel;
 
-import betsy.bpel.engines.AbstractLocalEngine;
+import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ActiveBpelEngine extends AbstractLocalEngine {
+public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public String getName() {

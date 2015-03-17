@@ -22,6 +22,9 @@ public class FileTasks {
     public static void createFile(Path file, String content) {
         mkdirs(file.getParent());
 
+        // normalize string to unix line breaks
+        content = content.replaceAll("\\r\\n", "\n");
+
         String[] lines = content.split("\n");
 
         String showOutput = "" + lines.length + " lines";

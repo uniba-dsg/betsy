@@ -1,7 +1,7 @@
 package betsy.bpel.reporting
 
+import betsy.bpel.engines.AbstractBPELEngine
 import betsy.bpel.model.BPELProcess
-import betsy.bpel.engines.AbstractEngine
 import betsy.bpel.model.BPELTestSuite
 import betsy.common.tasks.FileTasks
 import org.apache.log4j.Logger
@@ -15,7 +15,7 @@ class MessageExchangesIntoSoapUIReportsMerger {
     BPELTestSuite tests
 
     public void merge() {
-        for(AbstractEngine engine : tests.engines) {
+        for(AbstractBPELEngine engine : tests.engines) {
             for(BPELProcess process : engine.processes) {
                 mergeMessageExchangeProtocolsIntoJUnitReportForProcess(process)
             }

@@ -1,7 +1,7 @@
 package betsy.bpel.engines.bpelg
 
 import ant.tasks.AntUtil
-import betsy.bpel.engines.AbstractLocalEngine
+import betsy.bpel.engines.AbstractLocalBPELEngine
 import betsy.bpel.model.BPELProcess
 import betsy.common.engines.tomcat.Tomcat
 import betsy.common.tasks.FileTasks
@@ -9,7 +9,7 @@ import betsy.common.tasks.XSLTTasks
 
 import java.nio.file.Path
 
-class BpelgEngine extends AbstractLocalEngine {
+class BpelgEngine extends AbstractLocalBPELEngine {
 
     @Override
     String getName() {
