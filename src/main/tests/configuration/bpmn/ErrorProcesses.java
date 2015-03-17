@@ -44,11 +44,35 @@ class ErrorProcesses {
             new BPMNTestCase().assertRuntimeException()
     );
 
+    public static final BPMNProcess TOKEN_START_QUANTITY_TWO = BPMNProcessBuilder.buildErrorProcess(
+            "Token_StartQuantity_Two", "A process with a scriptTask with completionQuantity=1 and, immediately afterwards," +
+                    "a scriptTask with startQuantity=2. Since there will never two tokens arrive, the scriptTask must not be executed.",
+            new BPMNTestCase().assertTask1()
+    );
+
+    public static final BPMNProcess TOKEN_START_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
+            "Token_StartQuantity_Zero", "A process with a scriptTask with startQuantity=0. " +
+                    "Since startQuantity must not be zero, the process must not be executed.",
+            new BPMNTestCase().assertRuntimeException()
+    );
+
+    public static final BPMNProcess TOKEN_COMPLETION_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
+            "Token_CompletionQuantity_Zero", "A procesess with a scriptTask with completionQuantity=0. " +
+            "Since completionQuantity must not be zero, the process must not be executed.",
+            new BPMNTestCase().assertRuntimeException()
+    );
+
 
     public static final List<BPMNProcess> ERRORS = Arrays.asList(
             PARALLEL_GATEWAY_WITH_CONDITIONS,
             EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
             INCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
-            LOOP_TASK_NEGATIVE_LOOP_MAXIMUM
+
+            LOOP_TASK_NEGATIVE_LOOP_MAXIMUM,
+
+            TOKEN_START_QUANTITY_TWO,
+            TOKEN_START_QUANTITY_ZERO,
+            TOKEN_COMPLETION_QUANTITY_ZERO
+
     );
 }

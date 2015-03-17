@@ -2,6 +2,7 @@ package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
+import betsy.bpmn.engines.OverlappingTimestampChecker;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
@@ -57,6 +58,7 @@ public class JbpmTester {
         //delay for timer intermediate event
         WaitTasks.sleep(testCase.getDelay().orElse(0));
 
+        checkParallelExecution();
         checkProcessOutcome();
 
         bpmnTester.test();
@@ -90,6 +92,21 @@ public class JbpmTester {
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), deploymentError);
             LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
+        }
+    }
+
+    private void checkParallelExecution() {
+        Integer testCaseNum = new Integer(testCase.getNumber());
+        String testCaseNumber = testCaseNum.toString();
+
+        Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
+        Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
+
+        try {
+            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
+            otc.checkParallelism();
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("Could not validate parallel execution", e);
         }
     }
 

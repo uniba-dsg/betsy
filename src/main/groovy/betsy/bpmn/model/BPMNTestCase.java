@@ -78,6 +78,10 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
     }
 
+    public BPMNTestCase assertExecutionParallel() {
+        return addAssertion(BPMNAssertions.EXECUTION_PARALLEL);
+    }
+
     public Optional<Integer> getDelay() {
         return getTestStep().getDelay();
     }

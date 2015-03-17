@@ -9,10 +9,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasPath {
+public abstract class AbstractBPELEngine implements EngineAPI<BPELProcess>, HasPath {
 
     private final List<BPELProcess> processes = new ArrayList<>();
-    private EnginePackageBuilder packageBuilder = new EnginePackageBuilder();
+    private BPELEnginePackageBuilder packageBuilder = new BPELEnginePackageBuilder();
     private Path parentFolder;
 
     /**
@@ -47,7 +47,7 @@ public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasPath 
             return false;
         }
 
-        AbstractEngine engine = (AbstractEngine) o;
+        AbstractBPELEngine engine = (AbstractBPELEngine) o;
 
         return getName().equals(engine.getName());
     }
@@ -57,11 +57,11 @@ public abstract class AbstractEngine implements EngineAPI<BPELProcess>, HasPath 
         return getName().hashCode();
     }
 
-    public EnginePackageBuilder getPackageBuilder() {
+    public BPELEnginePackageBuilder getPackageBuilder() {
         return packageBuilder;
     }
 
-    public void setPackageBuilder(EnginePackageBuilder packageBuilder) {
+    public void setPackageBuilder(BPELEnginePackageBuilder packageBuilder) {
         this.packageBuilder = packageBuilder;
     }
 

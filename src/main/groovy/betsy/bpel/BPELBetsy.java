@@ -1,6 +1,6 @@
 package betsy.bpel;
 
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.validation.Validator;
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class BPELBetsy {
-    private List<AbstractEngine> engines = new ArrayList<>();
+    private List<AbstractBPELEngine> engines = new ArrayList<>();
     private List<BPELProcess> processes = new ArrayList<>();
     private BPELComposite composite = new BPELComposite();
 
@@ -29,11 +29,11 @@ public class BPELBetsy {
         new Validator(processes).validate();
     }
 
-    public List<AbstractEngine> getEngines() {
+    public List<AbstractBPELEngine> getEngines() {
         return engines;
     }
 
-    public void setEngines(List<AbstractEngine> engines) {
+    public void setEngines(List<AbstractBPELEngine> engines) {
         this.engines = engines;
     }
 

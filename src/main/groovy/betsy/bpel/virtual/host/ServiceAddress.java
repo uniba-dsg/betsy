@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link ServiceAddress} is an address to a service that is mandatory for the
- * proper execution of an {@link betsy.bpel.engines.AbstractEngine}. It is also possible to specify special
+ * proper execution of an {@link betsy.bpel.engines.AbstractBPELEngine}. It is also possible to specify special
  * content that must be available on this address to show that the service is
  * available and ready for usage.
  *

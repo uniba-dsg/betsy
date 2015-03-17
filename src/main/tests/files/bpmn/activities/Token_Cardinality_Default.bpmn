@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+	id="Token_Cardinality_DefaultTest"
+	targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/token_Cardinality_Default">
+	<bpmn2:process id="Token_Cardinality_Default" isExecutable="true">
+
+		<bpmn2:startEvent id="StartEvent" name="Start">
+			<bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+		</bpmn2:startEvent>
+
+		<bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent" targetRef="start"/>
+
+		<bpmn2:scriptTask id="start" name="Start">
+			<bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+			<bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+		</bpmn2:scriptTask>
+
+		<bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="start" targetRef="send"/>
+
+		<bpmn2:scriptTask id="send" name="Send Tokens" completionQuantity="2">
+			<bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+			<bpmn2:script>SCRIPT_task1</bpmn2:script>
+		</bpmn2:scriptTask>
+		
+		<bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="send" targetRef="forward"/>
+		
+		<bpmn2:scriptTask id="forward" name="Forward Token">
+			<bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+			<bpmn2:script>SCRIPT_task2</bpmn2:script>
+		</bpmn2:scriptTask>
+		
+		<bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="forward" targetRef="receive"/>
+		
+		<bpmn2:scriptTask id="receive" name="Receive Tokens" startQuantity="2">
+			<bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+			<bpmn2:script>SCRIPT_task3</bpmn2:script>
+		</bpmn2:scriptTask>
+		
+		<bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="receive" targetRef="EndEvent"/>
+
+		<bpmn2:endEvent id="EndEvent">
+			<bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+		</bpmn2:endEvent>
+
+	</bpmn2:process>
+</bpmn2:definitions>
