@@ -58,7 +58,11 @@ public class JbpmTester {
         //delay for timer intermediate event
         WaitTasks.sleep(testCase.getDelay().orElse(0));
 
-        checkParallelExecution();
+        // Only check on parallelism when asked for a parallel assertion
+        if(testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
+            checkParallelExecution();
+        }
+
         checkProcessOutcome();
 
         bpmnTester.test();

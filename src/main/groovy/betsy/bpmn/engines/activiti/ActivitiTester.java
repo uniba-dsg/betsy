@@ -59,7 +59,11 @@ public class ActivitiTester {
             // Wait and check for errors only if process instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
-            checkParallelExecution();
+
+            // Only check on parallelism when asked for a parallel assertion
+            if(testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
+                checkParallelExecution();
+            }
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             if (e.getMessage() != null && e.getMessage().contains("ERR-1")) {

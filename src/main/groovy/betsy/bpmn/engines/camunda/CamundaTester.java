@@ -52,7 +52,11 @@ public class CamundaTester {
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
-            checkParallelExecution();
+
+            // Only check on parallelism when asked for a parallel assertion
+            if(testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
+                checkParallelExecution();
+            }
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
