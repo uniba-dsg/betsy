@@ -6,7 +6,17 @@ import betsy.common.model.TestCase;
 import betsy.common.model.TestStep;
 import betsy.bpel.model.steps.*;
 
+import java.util.Objects;
+
 public class BPELTestCase extends TestCase {
+
+    public BPELTestCase() {
+
+    }
+
+    public BPELTestCase(String name) {
+        this.setName(Objects.requireNonNull(name));
+    }
 
     public BPELTestCase buildPartnerConcurrencySetup() {
         SoapTestStep step = new SoapTestStep();

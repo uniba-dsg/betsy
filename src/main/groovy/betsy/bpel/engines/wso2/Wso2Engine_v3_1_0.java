@@ -77,10 +77,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalEngine {
 
     @Override
     public void deploy(BPELProcess process) {
-        FileTasks.copyFileIntoFolder(process.getTargetPackageFilePath(), getDeploymentDir());
-
-        WaitTasks.waitForSubstringInFile(60_000, 500, getLogsFolder().resolve("wso2carbon.log"), "{org.apache.ode.bpel.engine.BpelServerImpl} -  Registered process");
-        WaitTasks.sleep(20000);
+        new Wso2Deployer(getDeploymentDir(), getLogsFolder()).deploy(process.getTargetPackageFilePath());
     }
 
     public Path getDeploymentDir() {

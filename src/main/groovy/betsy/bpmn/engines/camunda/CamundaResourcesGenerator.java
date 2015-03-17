@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CamundaResourcesGenerator {
-    private Path srcDir;
     private Path destDir;
     private String processName;
     private String groupId;
@@ -121,14 +120,6 @@ public class CamundaResourcesGenerator {
 
     private String getGroupIdAsPathValues() {
         return groupId.replaceAll("\\.", "/");
-    }
-
-    public Path getSrcDir() {
-        return srcDir;
-    }
-
-    public void setSrcDir(Path srcDir) {
-        this.srcDir = srcDir;
     }
 
     public Path getDestDir() {

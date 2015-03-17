@@ -2,6 +2,7 @@ package betsy.bpel.engines.bpelg;
 
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
+import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
 
@@ -40,7 +41,7 @@ public class BpelgDeployer {
         FileTasks.deleteFile(deploymentFolder.resolve(processName + ".zip"));
 
         // ensure correct undeployment
-        WaitTasks.waitForSubstringInFile(timeoutInSeconds * 1000, 500, logFile, "Undeploying bpel: " + processName + ".bpel");
+        WaitTasks.waitForSubstringInFile(timeoutInSeconds * 1000, 500, logFile, "Undeploying bpel: " + processName + FileTypes.BPEL);
     }
 
     public boolean isDeployed(String processName) {

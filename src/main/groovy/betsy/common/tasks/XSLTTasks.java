@@ -1,6 +1,7 @@
 package betsy.common.tasks;
 
 import ant.tasks.AntUtil;
+import betsy.common.util.FileTypes;
 import org.apache.tools.ant.taskdefs.XSLTProcess;
 
 import java.nio.file.Path;
@@ -11,7 +12,7 @@ public class XSLTTasks {
         FileTasks.assertFile(xslt);
         FileTasks.assertFile(input);
 
-        FileTasks.assertFileExtension(xslt, ".xsl");
+        FileTasks.assertFileExtension(xslt, FileTypes.XSL);
 
         XSLTProcess transform = new XSLTProcess();
         transform.setStyle(xslt.toString());

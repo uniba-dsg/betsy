@@ -3,15 +3,16 @@ package betsy.bpel.model.assertions;
 import betsy.common.model.TestAssertion;
 
 public class SoapFaultTestAssertion extends TestAssertion {
-    public String getFaultString() {
-        return faultString;
-    }
 
-    public void setFaultString(String faultString) {
+    private final String faultString;
+
+    public SoapFaultTestAssertion(String faultString) {
         this.faultString = faultString;
     }
 
-    private String faultString;
+    public String getFaultString() {
+        return faultString;
+    }
 
     @Override
     public String toString() {
