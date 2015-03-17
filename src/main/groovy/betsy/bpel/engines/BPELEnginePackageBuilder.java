@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 
-public class EnginePackageBuilder {
+public class BPELEnginePackageBuilder {
 
     public void createFolderAndCopyProcessFilesToTarget(BPELProcess process) {
         // engine independent package steps
@@ -43,5 +43,5 @@ public class EnginePackageBuilder {
         FileTasks.replaceTokensInFolder(process.getTargetProcessPath(), "PARTNER_IP_AND_PORT", Configuration.get("partner.ipAndPort"));
     }
 
-    private static final Logger log = Logger.getLogger(EnginePackageBuilder.class);
+    private static final Logger log = Logger.getLogger(BPELEnginePackageBuilder.class);
 }

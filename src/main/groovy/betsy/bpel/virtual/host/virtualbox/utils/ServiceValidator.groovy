@@ -1,7 +1,7 @@
 package betsy.bpel.virtual.host.virtualbox.utils
 
 import ant.tasks.AntUtil
-import betsy.bpel.engines.AbstractEngine
+import betsy.bpel.engines.AbstractBPELEngine
 import betsy.bpel.virtual.common.Constants
 import betsy.bpel.virtual.common.exceptions.CommunicationException
 import betsy.bpel.virtual.host.ServiceAddress
@@ -9,7 +9,7 @@ import betsy.bpel.virtual.host.comm.HostTcpClient
 import org.apache.log4j.Logger
 /**
  * The {@link ServiceValidator} validates a {@link ServiceAddress} and can
- * therefore determine if an {@link AbstractEngine} is ready for usage.
+ * therefore determine if an {@link AbstractBPELEngine} is ready for usage.
  *
  * @author Cedric Roeck
  * @version 1.0
@@ -19,7 +19,7 @@ public class ServiceValidator {
     private static final Logger log = Logger.getLogger(ServiceValidator.class);
 
     /**
-     * Check whether the {@link AbstractEngine} is ready for usage.
+     * Check whether the {@link AbstractBPELEngine} is ready for usage.
      *
      * @param engineServices
      *            services to verify

@@ -1,11 +1,11 @@
 package betsy.bpel.engines.orchestra;
 
-import betsy.bpel.engines.AbstractLocalEngine;
+import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 
-public class OrchestraEngine extends AbstractLocalEngine {
+public class OrchestraEngine extends AbstractLocalBPELEngine {
     @Override
     public String getName() {
         return "orchestra";

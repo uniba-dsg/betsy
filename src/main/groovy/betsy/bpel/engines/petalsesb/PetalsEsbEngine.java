@@ -1,6 +1,6 @@
 package betsy.bpel.engines.petalsesb;
 
-import betsy.bpel.engines.AbstractLocalEngine;
+import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PetalsEsbEngine extends AbstractLocalEngine {
+public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public String getName() {
         return "petalsesb";
