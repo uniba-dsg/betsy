@@ -28,8 +28,8 @@ public class OverlappingTimestampCheckerTests {
     private static final String[] TIMESTAMPS = {"1420110000000", "1420111800000", "1420113600000", "1420115400000"};
 
     public void createOverlappingLogFilesWithTimestamps(int first, int second, int third, int fourth) throws IOException {
-        String contentLogOne = String.format("%s%s%s", TIMESTAMPS[first], "\n", TIMESTAMPS[second]);
-        String contentLogTwo = String.format("%s%s%s", TIMESTAMPS[third], "\n", TIMESTAMPS[fourth]);
+        String contentLogOne = String.format("%s%n%s", TIMESTAMPS[first], TIMESTAMPS[second]);
+        String contentLogTwo = String.format("%s%n%s", TIMESTAMPS[third], TIMESTAMPS[fourth]);
 
         System.out.println("Create log files...");
         Files.createFile(PATH_LOG_FILE);
