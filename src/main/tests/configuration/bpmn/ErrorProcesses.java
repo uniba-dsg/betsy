@@ -39,11 +39,16 @@ class ErrorProcesses {
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3()
     );
 
+    public static final BPMNProcess LOOP_TASK_NEGATIVE_LOOP_MAXIMUM = BPMNProcessBuilder.buildErrorProcess(
+            "LoopTask_NegativeLoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to minus one.",
+            new BPMNTestCase().assertRuntimeException()
+    );
+
 
     public static final List<BPMNProcess> ERRORS = Arrays.asList(
             PARALLEL_GATEWAY_WITH_CONDITIONS,
-
             EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
-            INCLUSIVE_DIVERGING_PARALLEL_CONVERGING
+            INCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
+            LOOP_TASK_NEGATIVE_LOOP_MAXIMUM
     );
 }
