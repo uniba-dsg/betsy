@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class OverlappingTimestampCheckerTests {
     private static final Path ROOT = Paths.get(System.getProperty("user.dir"));
-    private static final Path TEST_FOLDER = Paths.get("src", "test", "groovy", "betsy", "bpmn", "engines");
+    private static final Path TEST_FOLDER = Paths.get("src", "test", "temp");
 
     private static final Path PATH_LOG_FILE = ROOT.resolve(TEST_FOLDER).resolve("log1.txt");
     private static final Path PATH_LOG_ONE = ROOT.resolve(TEST_FOLDER).resolve("log1_parallelOne.txt");
@@ -29,9 +29,9 @@ public class OverlappingTimestampCheckerTests {
         String contentLogTwo = String.format("%s%n%s", TIMESTAMPS[third], TIMESTAMPS[fourth]);
 
         System.out.println("Create log files...");
-        Files.createFile(PATH_LOG_FILE);
         FileTasks.createFile(PATH_LOG_ONE, contentLogOne);
         FileTasks.createFile(PATH_LOG_TWO, contentLogTwo);
+        Files.createFile(PATH_LOG_FILE); // needs to be executed after the two lines before
         System.out.println("Creation successful!");
     }
 
@@ -81,6 +81,7 @@ public class OverlappingTimestampCheckerTests {
         Files.deleteIfExists(PATH_LOG_FILE);
         Files.deleteIfExists(PATH_LOG_ONE);
         Files.deleteIfExists(PATH_LOG_TWO);
+        Files.deleteIfExists(PATH_LOG_FILE.getParent());
         System.out.println("Deletion successful!");
     }
 
