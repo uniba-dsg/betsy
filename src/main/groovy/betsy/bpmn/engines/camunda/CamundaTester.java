@@ -53,10 +53,9 @@ public class CamundaTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
 
-            // Only check on parallelism when asked for a parallel assertion
-            if(testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
-                checkParallelExecution();
-            }
+            // Check on parallel execution
+            checkParallelExecution();
+
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
@@ -89,17 +88,21 @@ public class CamundaTester {
     }
 
     private void checkParallelExecution() {
-        Integer testCaseNum = new Integer(testCase.getNumber());
-        String testCaseNumber = testCaseNum.toString();
+        // Only check on parallelism when asked for a parallel assertion
+        boolean isCheckRequired = testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString());
+        if (isCheckRequired) {
+            Integer testCaseNum = testCase.getNumber();
+            String testCaseNumber = testCaseNum.toString();
 
-        Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
-        Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
+            Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
+            Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
 
-        try {
-            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-            otc.checkParallelism();
-        } catch (IllegalArgumentException e) {
-            LOGGER.info("Could not validate parallel execution", e);
+            try {
+                OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
+                otc.checkParallelism();
+            } catch (IllegalArgumentException e) {
+                LOGGER.info("Could not validate parallel execution", e);
+            }
         }
     }
 
