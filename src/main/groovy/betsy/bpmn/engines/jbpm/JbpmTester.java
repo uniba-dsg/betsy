@@ -7,14 +7,14 @@ import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
+import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class JbpmTester {
     /**
@@ -59,6 +59,7 @@ public class JbpmTester {
         WaitTasks.sleep(testCase.getDelay().orElse(0));
 
         checkParallelExecution();
+        checkIfErrorGenericIsAsserted();
         checkProcessOutcome();
 
         bpmnTester.test();
@@ -107,6 +108,15 @@ public class JbpmTester {
             otc.checkParallelism();
         } catch (IllegalArgumentException e) {
             LOGGER.info("Could not validate parallel execution", e);
+        }
+    }
+
+    private void checkIfErrorGenericIsAsserted() {
+        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
+            List<String> toReplace = new ArrayList<>();
+            toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
+            toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());
+            FileTasks.replaceLogFileContent(toReplace, BPMNAssertions.ERROR_GENERIC.toString(), Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
         }
     }
 

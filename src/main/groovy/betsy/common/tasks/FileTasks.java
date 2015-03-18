@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Replace;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -361,5 +361,20 @@ public class FileTasks {
             throw new RuntimeException("Could not copy files [" + globPattern + "] from " + from + " to " + to);
         }
 
+    }
+
+    public static void replaceLogFileContent(List<String> listToReplace, String replacement, Path logPath){
+        LOGGER.info("Check if content of " + logPath.getFileName().toString() + " needs to be replaced.");
+        List<String> allLinesOfLogFile = readAllLines(logPath);
+
+        if(allLinesOfLogFile.removeAll(listToReplace)){
+            try(PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(logPath))) {
+                allLinesOfLogFile.forEach(printWriter::println);
+                printWriter.println(replacement);
+                LOGGER.info("Replaced " + listToReplace.toString() + " with " + replacement + " in " + logPath.getFileName().toString() + ".");
+            }catch (IOException e) {
+                LOGGER.warn("Error while writing to " + logPath.getFileName() + ".");
+            }
+        }
     }
 }

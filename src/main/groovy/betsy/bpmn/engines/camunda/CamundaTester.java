@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,7 @@ public class CamundaTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
+            checkIfErrorGenericIsAsserted();
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
@@ -97,6 +100,16 @@ public class CamundaTester {
         } catch (IllegalArgumentException e) {
             LOGGER.info("Could not validate parallel execution", e);
         }
+    }
+
+    private void checkIfErrorGenericIsAsserted() {
+        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
+            List<String> toReplace = new ArrayList<>();
+            toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
+            toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());
+            FileTasks.replaceLogFileContent(toReplace, BPMNAssertions.ERROR_GENERIC.toString(), Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
+        }
+
     }
 
     public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {

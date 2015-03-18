@@ -7,6 +7,7 @@ import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
+import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -18,7 +19,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActivitiTester {
@@ -60,6 +63,8 @@ public class ActivitiTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
+            checkIfErrorGenericIsAsserted();
+
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             if (e.getMessage() != null && e.getMessage().contains("ERR-1")) {
@@ -68,9 +73,7 @@ public class ActivitiTester {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
             }
         }
-
         bpmnTester.test();
-
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
@@ -104,6 +107,15 @@ public class ActivitiTester {
             otc.checkParallelism();
         } catch (IllegalArgumentException e) {
             LOGGER.info("Could not validate parallel execution", e);
+        }
+    }
+
+    private void checkIfErrorGenericIsAsserted() {
+        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
+            List<String> toReplace = new ArrayList<>();
+            toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
+            toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());
+            FileTasks.replaceLogFileContent(toReplace, BPMNAssertions.ERROR_GENERIC.toString(), Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
         }
     }
 

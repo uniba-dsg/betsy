@@ -41,7 +41,7 @@ class ErrorProcesses {
 
     public static final BPMNProcess LOOP_TASK_NEGATIVE_LOOP_MAXIMUM = BPMNProcessBuilder.buildErrorProcess(
             "LoopTask_NegativeLoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to minus one.",
-            new BPMNTestCase().assertRuntimeException()
+            new BPMNTestCase().assertGenericError()
     );
 
     public static final BPMNProcess TOKEN_START_QUANTITY_TWO = BPMNProcessBuilder.buildErrorProcess(
