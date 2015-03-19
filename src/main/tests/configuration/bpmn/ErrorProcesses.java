@@ -44,6 +44,11 @@ class ErrorProcesses {
             new BPMNTestCase().assertGenericError()
     );
 
+    public static final BPMNProcess MULTI_INSTANCE_TASK_NEGATIVE_LOOP_CARDINALITY = BPMNProcessBuilder.buildErrorProcess(
+            "MultiInstanceTask_NegativeLoopCardinality", "A scriptTask that is marked as a sequential multiInstance task and is enabled minus one times.",
+            new BPMNTestCase().assertGenericError()
+    );
+
     public static final BPMNProcess TOKEN_START_QUANTITY_TWO = BPMNProcessBuilder.buildErrorProcess(
             "Token_StartQuantity_Two", "A process with a scriptTask with completionQuantity=1 and, immediately afterwards," +
                     "a scriptTask with startQuantity=2. Since there will never two tokens arrive, the scriptTask must not be executed.",
@@ -69,6 +74,8 @@ class ErrorProcesses {
             INCLUSIVE_DIVERGING_PARALLEL_CONVERGING,
 
             LOOP_TASK_NEGATIVE_LOOP_MAXIMUM,
+
+            MULTI_INSTANCE_TASK_NEGATIVE_LOOP_CARDINALITY,
 
             TOKEN_START_QUANTITY_TWO,
             TOKEN_START_QUANTITY_ZERO,

@@ -58,7 +58,6 @@ public class ActivitiTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
-            substituteSpecificErrorsForGenericError();
 
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
@@ -68,6 +67,8 @@ public class ActivitiTester {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
             }
         }
+
+        substituteSpecificErrorsForGenericError();
         bpmnTester.test();
     }
 

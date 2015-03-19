@@ -55,13 +55,12 @@ public class CamundaTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
-            substituteSpecificErrorsForGenericError();
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-
+        substituteSpecificErrorsForGenericError();
         bpmnTester.test();
     }
 
