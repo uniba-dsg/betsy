@@ -55,7 +55,7 @@ public class CamundaTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
-            checkIfErrorGenericIsAsserted();
+            substituteSpecificErrorsForGenericError();
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
@@ -102,7 +102,7 @@ public class CamundaTester {
         }
     }
 
-    private void checkIfErrorGenericIsAsserted() {
+    private void substituteSpecificErrorsForGenericError() {
         if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
             List<String> toReplace = new ArrayList<>();
             toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());

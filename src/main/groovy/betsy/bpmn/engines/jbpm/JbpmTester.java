@@ -59,7 +59,7 @@ public class JbpmTester {
         WaitTasks.sleep(testCase.getDelay().orElse(0));
 
         checkParallelExecution();
-        checkIfErrorGenericIsAsserted();
+        substituteSpecificErrorsForGenericError();
         checkProcessOutcome();
 
         bpmnTester.test();
@@ -111,7 +111,7 @@ public class JbpmTester {
         }
     }
 
-    private void checkIfErrorGenericIsAsserted() {
+    private void substituteSpecificErrorsForGenericError() {
         if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
             List<String> toReplace = new ArrayList<>();
             toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());

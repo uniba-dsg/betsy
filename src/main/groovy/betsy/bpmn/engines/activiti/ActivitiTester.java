@@ -7,16 +7,11 @@ import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
-import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -63,7 +58,7 @@ public class ActivitiTester {
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
             checkParallelExecution();
-            checkIfErrorGenericIsAsserted();
+            substituteSpecificErrorsForGenericError();
 
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
@@ -110,7 +105,7 @@ public class ActivitiTester {
         }
     }
 
-    private void checkIfErrorGenericIsAsserted() {
+    private void substituteSpecificErrorsForGenericError() {
         if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
             List<String> toReplace = new ArrayList<>();
             toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
