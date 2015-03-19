@@ -90,20 +90,23 @@ public class CamundaTester {
     private void checkParallelExecution() {
         // Only check on parallelism when asked for a parallel assertion
         boolean isCheckRequired = testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString());
-        if (isCheckRequired) {
-            Integer testCaseNum = testCase.getNumber();
-            String testCaseNumber = testCaseNum.toString();
-
-            Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
-            Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
-
-            try {
-                OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-                otc.checkParallelism();
-            } catch (IllegalArgumentException e) {
-                LOGGER.info("Could not validate parallel execution", e);
-            }
+        if (!isCheckRequired) {
+            return;
         }
+
+        Integer testCaseNum = testCase.getNumber();
+        String testCaseNumber = testCaseNum.toString();
+
+        Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
+        Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
+
+        try {
+            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
+            otc.checkParallelism();
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("Could not validate parallel execution", e);
+        }
+
     }
 
     public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {
