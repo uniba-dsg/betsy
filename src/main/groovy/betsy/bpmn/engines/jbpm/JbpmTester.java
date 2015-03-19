@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.OverlappingTimestampChecker;
@@ -20,6 +21,7 @@ public class JbpmTester {
     /**
      * Runs a single test
      */
+
     public void runTest() {
         addDeploymentErrorsToLogFile(serverLogFile);
 
@@ -59,7 +61,7 @@ public class JbpmTester {
         WaitTasks.sleep(testCase.getDelay().orElse(0));
 
         checkParallelExecution();
-        substituteSpecificErrorsForGenericError();
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
         checkProcessOutcome();
 
         bpmnTester.test();
@@ -111,14 +113,6 @@ public class JbpmTester {
         }
     }
 
-    private void substituteSpecificErrorsForGenericError() {
-        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
-            List<String> toReplace = new ArrayList<>();
-            toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
-            toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());
-            FileTasks.replaceLogFileContent(toReplace, BPMNAssertions.ERROR_GENERIC.toString(), Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
-        }
-    }
 
     private Path getFileName() {
         return logDir.resolve("log" + testCase.getNumber() + ".txt");

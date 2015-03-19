@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.camunda;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.OverlappingTimestampChecker;
@@ -60,7 +61,7 @@ public class CamundaTester {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-        substituteSpecificErrorsForGenericError();
+       BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
         bpmnTester.test();
     }
 
@@ -99,16 +100,6 @@ public class CamundaTester {
         } catch (IllegalArgumentException e) {
             LOGGER.info("Could not validate parallel execution", e);
         }
-    }
-
-    private void substituteSpecificErrorsForGenericError() {
-        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
-            List<String> toReplace = new ArrayList<>();
-            toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
-            toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());
-            FileTasks.replaceLogFileContent(toReplace, BPMNAssertions.ERROR_GENERIC.toString(), Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
-        }
-
     }
 
     public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {
