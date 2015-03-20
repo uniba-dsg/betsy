@@ -60,7 +60,7 @@ public class ActivitiTester {
             addRuntimeErrorsToLogFile(logFile);
 
             // Check on parallel execution
-            checkParallelExecution();
+            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
 
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
@@ -91,27 +91,6 @@ public class ActivitiTester {
         analyzer.addSubstring("No catching boundary event found for error with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
         for (BPMNAssertions runtimeError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), runtimeError);
-        }
-    }
-
-    private void checkParallelExecution() {
-        // Only check on parallelism when asked for a parallel assertion
-        boolean isCheckRequired = testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString());
-        if (!isCheckRequired) {
-            return;
-        }
-
-        Integer testCaseNum = testCase.getNumber();
-        String testCaseNumber = testCaseNum.toString();
-
-        Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
-        Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
-
-        try {
-            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-            otc.checkParallelism();
-        } catch (IllegalArgumentException e) {
-            LOGGER.info("Could not validate parallel execution", e);
         }
     }
 

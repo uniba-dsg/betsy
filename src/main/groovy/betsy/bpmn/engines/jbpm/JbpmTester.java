@@ -61,7 +61,7 @@ public class JbpmTester {
         WaitTasks.sleep(testCase.getDelay().orElse(0));
 
         // Check on parallel execution
-        checkParallelExecution();
+        BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
         checkProcessOutcome();
 
@@ -98,28 +98,6 @@ public class JbpmTester {
             LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
         }
     }
-
-    private void checkParallelExecution() {
-        // Only check on parallelism when asked for a parallel assertion
-        boolean isCheckRequired = testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString());
-        if (!isCheckRequired) {
-            return;
-        }
-
-        Integer testCaseNum = testCase.getNumber();
-        String testCaseNumber = testCaseNum.toString();
-
-        Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
-        Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
-
-        try {
-            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-            otc.checkParallelism();
-        } catch (IllegalArgumentException e) {
-            LOGGER.info("Could not validate parallel execution", e);
-        }
-    }
-
 
     private Path getFileName() {
         return logDir.resolve("log" + testCase.getNumber() + ".txt");
