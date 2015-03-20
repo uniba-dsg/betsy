@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.activiti;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.OverlappingTimestampChecker;
@@ -12,13 +13,11 @@ import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActivitiTester {
@@ -72,8 +71,8 @@ public class ActivitiTester {
             }
         }
 
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
         bpmnTester.test();
-
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {

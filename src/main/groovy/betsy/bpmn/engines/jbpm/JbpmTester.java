@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.OverlappingTimestampChecker;
@@ -7,19 +8,20 @@ import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
+import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class JbpmTester {
     /**
      * Runs a single test
      */
+
     public void runTest() {
         addDeploymentErrorsToLogFile(serverLogFile);
 
@@ -60,6 +62,7 @@ public class JbpmTester {
 
         // Check on parallel execution
         checkParallelExecution();
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
         checkProcessOutcome();
 
         bpmnTester.test();
@@ -116,6 +119,7 @@ public class JbpmTester {
             LOGGER.info("Could not validate parallel execution", e);
         }
     }
+
 
     private Path getFileName() {
         return logDir.resolve("log" + testCase.getNumber() + ".txt");

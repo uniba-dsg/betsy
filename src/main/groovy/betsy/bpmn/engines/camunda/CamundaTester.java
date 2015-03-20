@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.camunda;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.OverlappingTimestampChecker;
@@ -12,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +64,7 @@ public class CamundaTester {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-
+       BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
         bpmnTester.test();
     }
 
