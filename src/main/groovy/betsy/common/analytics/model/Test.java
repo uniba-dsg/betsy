@@ -10,9 +10,9 @@ public class Test implements Comparable<Test> {
 
     public Support getSupport() {
 
-        if (engineToResult.values().stream().allMatch((it) -> Support.NONE.equals(it.getPartial()))) {
+        if (engineToResult.values().stream().allMatch((it) -> Support.NONE.equals(it.getSupport()))) {
             return Support.NONE;
-        } else if (engineToResult.values().stream().allMatch((it) -> Support.TOTAL.equals(it.getPartial()))) {
+        } else if (engineToResult.values().stream().allMatch((it) -> Support.TOTAL.equals(it.getSupport()))) {
             return Support.TOTAL;
         } else {
             return Support.PARTIAL;
