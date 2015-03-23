@@ -17,8 +17,15 @@ class DataProcesses {
             new BPMNTestCase().assertDataCorrect()
     );
 
+    public static final BPMNProcess DATA_READ_ONLY_LONG = BPMNProcessBuilder.buildDataProcess(
+            "Data_ReadOnly_Long", "A process containing a scriptTask which writes " +
+                    "a predefined long variable into a log file.",
+            new BPMNTestCase().assertDataCorrect()
+    );
+
     public static final List<BPMNProcess> DATA = Arrays.asList(
-            DATA_READ_ONLY_STRING
+            DATA_READ_ONLY_STRING,
+            DATA_READ_ONLY_LONG
 
     );
 
