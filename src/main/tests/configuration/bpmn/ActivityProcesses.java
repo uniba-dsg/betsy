@@ -71,6 +71,31 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
+    public static final BPMNProcess TOKEN_CARDINALITY_EXPLICIT = BPMNProcessBuilder.buildActivityProcess(
+            "Token_Cardinality_Explicit", "A process that contains one scriptTask with completionQuantity=2, one scriptTask with startQuantity=2, " +
+                    "and one scriptTask in between with both set to 1. The scriptTask in between must therefore be executed twice.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask3()
+    );
+
+    public static final BPMNProcess TOKEN_CARDINALITY_DEFAULT = BPMNProcessBuilder.buildActivityProcess(
+            "Token_Cardinality_Default", "A process that builds upon TOKEN_CARDINALITY_EXPLICIT, only deferring in leaving the startQuantity and completionQuantity attributes" +
+                    "of the middle scriptTasks at their default values, i.e. 1 for both of them. Thus, this process must behave exactly like TOKEN_CARDINALITY_EXPLICIT.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask3()
+    );
+
+    public static final BPMNProcess TOKEN_CARDINALITY_SPLIT_DEFAULT = BPMNProcessBuilder.buildActivityProcess(
+            "Token_Cardinality_Split_Default", "A process that contains one scriptTask which has two outgoing sequence flows, each leading to one of two forwarding scriptTasks." +
+                    "It is expected that each forward task is executed once and therefore the last and receiving scriptTask is executed twice.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4()
+    );
+
+    public static final BPMNProcess TOKEN_CARDINALITY_SPLIT_EXPLICIT = BPMNProcessBuilder.buildActivityProcess(
+            "Token_Cardinality_Split_Explicit", "A process that contains one scriptTask which has two outgoing sequence flows, each leading to one of two forwarding scriptTasks." +
+                    "It is expected that each forward task is executed once and therefore the last and receiving scriptTask is executed once because of startingQuantity.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
+    );
+
+
     public static final List<BPMNProcess> ACTIVITIES = Arrays.asList(
 
             CALL_ACTIVITY_PROCESS,
@@ -88,6 +113,11 @@ class ActivityProcesses {
 
             SUB_PROCESS,
 
-            TRANSACTION
+            TRANSACTION,
+
+            TOKEN_CARDINALITY_EXPLICIT,
+            TOKEN_CARDINALITY_DEFAULT,
+            TOKEN_CARDINALITY_SPLIT_DEFAULT,
+            TOKEN_CARDINALITY_SPLIT_EXPLICIT
     );
 }

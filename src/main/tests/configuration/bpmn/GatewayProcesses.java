@@ -79,6 +79,12 @@ class GatewayProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3()
     );
 
+    public static final BPMNProcess PARALLEL_GATEWAY_TRUE_PARALLELISM = BPMNProcessBuilder.buildGatewayProcess(
+            "ParallelGateway_TrueParallelism", "A process with two scriptTasks between a diverging and a converging parallelGateway. " +
+                    "The scriptTasks wait for some time, so their execution time intervals are expected to overlap.",
+            new BPMNTestCase().assertExecutionParallel().optionDelay(22000)
+    );
+
     public static final BPMNProcess EXCLUSIVE_GATEWAY_MIXED = BPMNProcessBuilder.buildGatewayProcess(
             "ExclusiveGatewayMixed", "A process with six scriptTasks and three exclusiveGateways." +
             "One of the gateways acts as a mixed gateway. Each pair of exclusiveGateways encapsulates two script tasks." +
@@ -125,6 +131,7 @@ class GatewayProcesses {
             PARALLEL_GATEWAY,
             PARALLEL_DIVERGING_EXCLUSIVE_CONVERGING,
             PARALLEL_DIVERGING_INCLUSIVE_CONVERGING,
+            PARALLEL_GATEWAY_TRUE_PARALLELISM,
 
             COMPLEX_GATEWAY,
 

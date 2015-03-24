@@ -35,7 +35,7 @@ public class Activiti5170Engine extends ActivitiEngine {
         getTomcat().deployWar(getServerPath().resolve("activiti-5.17.0").resolve("wars").resolve("activiti-rest.war"));
 
         String groovyFile = "groovy-all-2.4.1.jar";
-        NetworkTasks.downloadFile("http://central.maven.org/maven2/org/codehaus/groovy/groovy-all/2.4.1/" + groovyFile, Configuration.getDownloadsDir());
+        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
         getTomcat().addLib(Configuration.getDownloadsDir().resolve(groovyFile));
 
         Path classes = getTomcat().getTomcatWebappsDir().resolve("activiti-rest").resolve("WEB-INF").resolve("classes");

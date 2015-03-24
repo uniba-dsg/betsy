@@ -5,7 +5,7 @@ import betsy.bpel.virtual.host.VirtualBoxException;
 /**
  * The {@link VirtualEngineServiceException} is thrown if a necessary
  * service is not available on the {@link betsy.bpel.virtual.host.virtualbox.VirtualBoxMachineImpl} and the
- * {@link betsy.bpel.virtual.host.engines.AbstractVirtualEngine} can't be tested.
+ * {@link betsy.bpel.virtual.host.engines.AbstractVirtualBPELEngine} can't be tested.
  * 
  * @author Cedric Roeck
  * @version 1.0

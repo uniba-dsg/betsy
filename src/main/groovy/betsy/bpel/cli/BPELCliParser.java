@@ -1,6 +1,6 @@
 package betsy.bpel.cli;
 
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.repositories.EngineRepository;
 import betsy.common.config.Configuration;
@@ -14,7 +14,7 @@ public class BPELCliParser {
 
     public static final BPELCliParameter HELP_ONLY = new BPELCliParameter() {
         @Override
-        public List<AbstractEngine> getEngines() {
+        public List<AbstractBPELEngine> getEngines() {
             return Collections.emptyList();
         }
 
@@ -100,7 +100,7 @@ public class BPELCliParser {
 
             return new BPELCliParameter() {
                 @Override
-                public List<AbstractEngine> getEngines() {
+                public List<AbstractBPELEngine> getEngines() {
                     return new EngineParser(cmd.getArgs()).parse();
                 }
 

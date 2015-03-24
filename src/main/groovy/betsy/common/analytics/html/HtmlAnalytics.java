@@ -29,10 +29,12 @@ public class HtmlAnalytics {
         SimpleTemplateEngine engine = new SimpleTemplateEngine();
 
         Path templatePath = ClasspathHelper.getFilesystemPathFromClasspathPath("/betsy/common/analytics/html/HtmlAnalytics.template");
+        Path cssPath = ClasspathHelper.getFilesystemPathFromClasspathPath("/betsy/common/analytics/html/bootstrap.min.css");
 
         try {
             Writable template = engine.createTemplate(templatePath.toFile()).make(getTemplateBinding());
             FileTasks.createFile(filename, template.toString());
+            FileTasks.copyFileIntoFolderAndOverwrite(cssPath, filename.getParent());
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException("could not load template", e);
         }

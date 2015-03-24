@@ -1,7 +1,9 @@
 package betsy.bpmn.engines.camunda;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
+import betsy.bpmn.engines.OverlappingTimestampChecker;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
@@ -11,11 +13,22 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CamundaTester {
+
+    private static final Logger LOGGER = Logger.getLogger(CamundaTester.class);
+
+    private BPMNTestCase testCase;
+    private String restURL;
+    private String key;
+    private Path logDir;
+    private BPMNTester bpmnTester;
+
     /**
      * runs a single test
      */
@@ -42,12 +55,16 @@ public class CamundaTester {
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
+
+            // Check on parallel execution
+            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+
         } catch (Exception e) {
-            log.info("Could not start process", e);
+            LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-
+       BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
         bpmnTester.test();
     }
 
@@ -82,7 +99,6 @@ public class CamundaTester {
             submap.put("type", entry.getType());
             map.put(entry.getName(), submap);
         }
-
 
         return map;
     }
@@ -123,11 +139,4 @@ public class CamundaTester {
         this.logDir = logDir;
     }
 
-    private BPMNTestCase testCase;
-    private String restURL;
-    private String key;
-    private Path logDir;
-    private BPMNTester bpmnTester;
-
-    private static final Logger log = Logger.getLogger(CamundaTester.class);
 }

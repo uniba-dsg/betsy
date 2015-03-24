@@ -2,6 +2,7 @@ package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -100,13 +101,19 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-
         FileTasks.copyFilesInFolderIntoOtherFolder(getJbossLogDir(), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
             FileTasks.copyFileIntoFolder(getServerPath().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
-        }
+            if (tc.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
+                // Copy parallel logs from Tomcat bin to TargetLogsPath
+                Path parallelLogOne = getServerPath().resolve("log" + tc.getNumber() + "_parallelOne.txt");
+                FileTasks.copyFileIntoFolder(parallelLogOne, process.getTargetLogsPath());
 
+                Path parallelLogTwo = getServerPath().resolve("log" + tc.getNumber() + "_parallelTwo.txt");
+                FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
+            }
+        }
     }
 
     @Override

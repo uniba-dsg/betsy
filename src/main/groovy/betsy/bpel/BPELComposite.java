@@ -1,14 +1,14 @@
 package betsy.bpel;
 
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.bpel.soapui.TestBuilder;
 import betsy.bpel.ws.DummyAndRegularTestPartnerService;
 import betsy.bpel.ws.TestPartnerService;
 import betsy.common.analytics.Analyzer;
-import betsy.bpel.model.BPELTestSuite;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.util.IOCapture;
@@ -47,13 +47,13 @@ public class BPELComposite {
         log(testSuite.getPath(), () -> {
 
             // fail fast
-            for (AbstractEngine engine : testSuite.getEngines()) {
+            for (AbstractBPELEngine engine : testSuite.getEngines()) {
                 if (engine.isRunning()) {
                     throw new IllegalStateException("Engine " + engine + " is running");
                 }
             }
 
-            for (AbstractEngine engine : testSuite.getEngines()) {
+            for (AbstractBPELEngine engine : testSuite.getEngines()) {
                 FileTasks.mkdirs(engine.getPath());
 
                 log(engine.getPath(), () -> {

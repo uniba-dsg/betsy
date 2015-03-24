@@ -254,9 +254,16 @@ class EventProcesses {
 
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_Interrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
-            "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
-            "In the meantime, a boundary timer event should fire and interrupt the subProcess.",
+                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
+                    "In the meantime, a boundary timer event should fire and interrupt the subProcess.",
             new BPMNTestCase().assertTask3().optionDelay(5000)
+    );
+
+    public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY = BPMNProcessBuilder.buildEventProcess(
+            "Timer_BoundaryEvent_SubProcess_Interrupting_Activity", "A process with multiple scriptTasks and a subProcess with an activity which needs more time for executing than the boundary timer. " +
+                    "The execution of the subProcess is therefore longer than the boundary timer event." +
+                    "It is expected that the boundary timer event fires before the task is completed and interrupts the subProcess.",
+            new BPMNTestCase().assertTask2().optionDelay(12000)
     );
 
     public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
@@ -320,6 +327,7 @@ class EventProcesses {
             TIMER_INTERMEDIATE_EVENT,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
+            TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY,
             TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING
     );

@@ -1,6 +1,6 @@
 package betsy.common.util;
 
-import betsy.bpel.engines.AbstractEngine;
+import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
@@ -16,8 +16,8 @@ public class LogFileUtil {
      */
     public static Path copyLogsToTempFolder(Object e) {
         final Path tmpFolder = createTempFolder(e.toString());
-        if(e instanceof AbstractEngine) {
-            AbstractEngine eNew = (AbstractEngine) e;
+        if(e instanceof AbstractBPELEngine) {
+            AbstractBPELEngine eNew = (AbstractBPELEngine) e;
             eNew.storeLogs(new BPELProcess() {
                 @Override
                 public Path getTargetLogsPath() {

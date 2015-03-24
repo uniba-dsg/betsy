@@ -1,7 +1,9 @@
 package betsy.bpmn.engines.activiti;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
+import betsy.bpmn.engines.OverlappingTimestampChecker;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
@@ -12,7 +14,10 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActivitiTester {
@@ -53,17 +58,20 @@ public class ActivitiTester {
             // Wait and check for errors only if process instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
+
+            // Check on parallel execution
+            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
-            if(e.getMessage().contains("ERR-1")) {
+            if (e.getMessage() != null && e.getMessage().contains("ERR-1")) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             } else {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
             }
         }
 
-
-
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
         bpmnTester.test();
     }
 

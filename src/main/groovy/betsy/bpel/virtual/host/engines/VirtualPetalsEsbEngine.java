@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static betsy.common.config.Configuration.get;
 
-public class VirtualPetalsEsbEngine extends AbstractVirtualEngine {
+public class VirtualPetalsEsbEngine extends AbstractVirtualBPELEngine {
 
     public static final int HTTP_PORT = 8084;
 
