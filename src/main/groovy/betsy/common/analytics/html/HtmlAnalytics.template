@@ -27,8 +27,8 @@
                                 <tr>
                                     <td class='${test.support.isTotal() ? "success" : test.support.isNone() ? "danger" : "warning"}'>${test.fullName}</td>
                                 <% test.engineToResult.each {engine, result -> %>
-                                    <td class='${result.support.isTotal() ? "success" : result.support.isNone() ? "danger" : "warning"} text-center'>
-                                        <a href='${report.getRelativePath(group,engine,test)}'>${result.support.toNormalizedSymbol()}</a>
+                                    <td class='${result.support.isTotal() ? "success" : result.support.isNone() ? "danger" : "warning"} text-center' style="vertical-align: middle">
+                                        <a href='${report.getRelativePath(group,engine,test)}'>${result.deployable ? result.support.toNormalizedSymbol() : "<span class='label label-danger'>undeployable</span>"}</a>
                                     </td>
                                 <% } %>
                                 </tr>
