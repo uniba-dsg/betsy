@@ -15,7 +15,7 @@ public class BetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
         AbstractBPELEngine engine = new MockEngine();
-        List<BPELProcess> processes = new BPELProcessRepository().getByName("ALL");
+        List<BPELProcess> processes = BPELProcessRepository.INSTANCE.getByName("ALL");
         BPELBetsy betsy = new BPELBetsy();
 
 

@@ -18,7 +18,7 @@ public class DetectUnusedBpelFiles {
 
     @Test
     public void detectUnusedBpelFiles() throws IOException {
-        BPELProcessRepository processRepository = new BPELProcessRepository();
+        BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
         List<BPELProcess> processed = processRepository.getByName("ALL");
 
         List<Path> bpelFiles = getBetsyProcessesPaths(processed);

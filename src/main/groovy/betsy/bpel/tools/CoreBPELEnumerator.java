@@ -41,7 +41,7 @@ public class CoreBPELEnumerator {
         Files.createDirectories(outputFolder);
 
         String[] groups = new String[]{"BASIC_ACTIVITIES", "SCOPES", "STRUCTURED_ACTIVITIES"};
-        List<BPELProcess> processes = new BPELProcessRepository().getByNames(groups);
+        List<BPELProcess> processes = BPELProcessRepository.INSTANCE.getByNames(groups);
 
         for (String transformation : CoreBPEL.XSL_SHEETS) {
 

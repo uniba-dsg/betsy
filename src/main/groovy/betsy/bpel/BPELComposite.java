@@ -91,7 +91,7 @@ public class BPELComposite {
                 collect(process);
             } finally {
                 // ensure shutdown
-                shutdown(process);
+                //shutdown(process);
             }
 
         }));
