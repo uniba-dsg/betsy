@@ -19,11 +19,11 @@ class CsvReportToTestsPerEngineAndGroup {
             int totalFailed = 0
             report.getGroups().each { group ->
                 Collection<Result> results = group.getResultsPerEngine(engine)
-                int successful = results.count { it.partial == Support.TOTAL}
+                int successful = results.count { it.support == Support.TOTAL}
                 totalSuccessful += successful
-                int partial = results.count { it.partial == Support.PARTIAL}
+                int partial = results.count { it.support == Support.PARTIAL}
                 totalPartial += partial
-                int failed = results.count { it.partial == Support.NONE}
+                int failed = results.count { it.support == Support.NONE}
                 totalFailed += failed
 
                 writer.println "$successful\t${partial == 0 ? '' : partial}\t$failed"
@@ -38,7 +38,7 @@ class CsvReportToTestsPerEngineAndGroup {
             int totalSuccessful = 0
             report.getGroups().each { group ->
                 Collection<Result> results = group.getResultsPerEngine(engine)
-                totalSuccessful += results.count { it.partial == Support.TOTAL}
+                totalSuccessful += results.count { it.support == Support.TOTAL}
             }
 
             def successfulInPercent = (int) Math.round(((double) totalSuccessful / total * 100))

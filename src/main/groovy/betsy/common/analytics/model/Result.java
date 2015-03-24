@@ -1,7 +1,7 @@
 package betsy.common.analytics.model;
 
 public class Result {
-    public Support getPartial() {
+    public Support getSupport() {
         if (failed == 0) {
             return Support.TOTAL;
         } else if (failed < total) {

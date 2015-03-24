@@ -50,7 +50,7 @@ class CsvReportToPortabilityData {
 
         def arrays = report.engines.collect { engine ->
             new EngineResults(name: engine.name, results: report.getTests().sort {it.name}.collect { test ->
-                test.engineToResult.get(engine).partial == Support.TOTAL ? 1 : 0
+                test.engineToResult.get(engine).support == Support.TOTAL ? 1 : 0
             }
             )
         }

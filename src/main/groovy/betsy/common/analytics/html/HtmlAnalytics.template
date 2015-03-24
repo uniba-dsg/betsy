@@ -1,63 +1,44 @@
 <html>
 	<head>
 	      <title>Results</title>
-	      <style type='text/css'>
-	             .NONE {
-                    background-color: red;
-                 }
-                 .PARTIAL {
-                    background-color: yellow;
-                 }
-                 .TOTAL {
-                    background-color: green;
-                 }
-                 .UNDEPLOYABLE {
-                    background-color: orange;
-                 }
-                 .result {
-                     text-align: center;
-                     width: 60px;
-                 }
-                 body {
-                     font-size: large;
-                 }
-                 table {
-                     width: 900px;
-                 }
-                 .group {
-                     width: 150px;
-                     font-weight: bold
-                 }
-	      </style>
+	      <link href="bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
+	    <div class="container">
 		<% report.nameToGroup.each { groupName, group -> %>
-			<table>
-				<tr class="engines">
-					<td></td>
-					<td></td>
-					<% report.nameToEngine.each { name, engine -> %>
-					   <td class='result'><%= name %> (<%= report.getNumberOfSuccessfulTestsPer(engine) %>)</td>
-					<% } %>
-				</tr>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Tests for Group <em>${group.name}</em></h3>
+                    </div>
+                    <div class="panel-body">
 
-	            <% group.tests.each { test -> %>
-	                <tr class="test-<%= test.fullName %> group-<%= group.name %>">
-	                <% if (group.tests.first() == test) { %>
-	                    <td class='group'>${group.name}</td>
-	                <% } else { %>
-	                    <td></td>
-	                <% } %>
-	                    <td class='${test.support}'>${test.fullName}</td>
-	                <% test.engineToResult.each {engine, result -> %>
-                        <td class='${result.partial} result ${result.deployable ? "" : "UNDEPLOYABLE"}'>
-                            <a href='${report.getRelativePath(group,engine,test)}'>${result.partial.toNormalizedSymbol()}</a>
-                        </td>
-                    <% } %>
-	                </tr>
-	            <% } %>
-
-	        </table>
+                        <table class="table table-condensed table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                <% report.nameToEngine.each { name, engine -> %>
+                                   <th><%= name %> (<%= report.getNumberOfSuccessfulTestsPer(engine) %>)</td>
+                                <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% group.tests.each { test -> %>
+                                <tr>
+                                    <td class='${test.support.isTotal() ? "success" : test.support.isNone() ? "danger" : "warning"}'>${test.fullName}</td>
+                                <% test.engineToResult.each {engine, result -> %>
+                                    <td class='${result.support.isTotal() ? "success" : result.support.isNone() ? "danger" : "warning"} text-center' style="vertical-align: middle">
+                                        <a href='${report.getRelativePath(group,engine,test)}'>${result.deployable ? result.support.toNormalizedSymbol() : "<span class='label label-danger'>undeployable</span>"}</a>
+                                    </td>
+                                <% } %>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 	    <% } %>
+	    </div>
 	</body>
 </html>
