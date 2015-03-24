@@ -1,7 +1,6 @@
 package betsy.bpmn.engines;
 
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,10 +18,10 @@ public class DataLogChecker {
 
     private static final Logger LOGGER = Logger.getLogger(DataLogChecker.class);
 
-    private Path logFile;
-    private Path dataLogFile;
+    private final Path logFile;
+    private final Path dataLogFile;
 
-    private List<String> values = Arrays.asList("String", String.valueOf(Long.MAX_VALUE));
+    private final List<String> values = Arrays.asList("String", String.valueOf(Long.MAX_VALUE));
 
     public DataLogChecker(Path logFile, Path dataLogFile) {
         FileTasks.assertFile(logFile);
@@ -33,16 +31,15 @@ public class DataLogChecker {
         this.dataLogFile = dataLogFile;
     }
 
-    public void checkDataTypes(BPMNTestCase tc) {
+    public void checkDataTypes() {
         try {
             List<String> lines = readLogFile();
             values.forEach((value) -> {
                 if (contains(lines, value)) {
-                    writeLogFile(true);
+                    writeToLogFile(BPMNAssertions.DATA_CORRECT);
                 }
             });
         } catch (IllegalArgumentException e) {
-            writeLogFile(false);
             LOGGER.info("Could not validate parallel execution", e);
         }
     }
@@ -64,13 +61,9 @@ public class DataLogChecker {
         return false;
     }
 
-    private void writeLogFile(boolean wasSuccessful) {
+    private void writeToLogFile(Object message) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
-            if (wasSuccessful) {
-                bw.append(BPMNAssertions.DATA_CORRECT.toString());
-            } else {
-                bw.append("");
-            }
+            bw.append(message.toString());
             bw.newLine();
         } catch (IOException e) {
             LOGGER.info("Writing result to file failed", e);

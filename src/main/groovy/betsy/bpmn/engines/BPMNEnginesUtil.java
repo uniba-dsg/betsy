@@ -58,7 +58,7 @@ public class BPMNEnginesUtil {
 
         try {
             DataLogChecker dlc = new DataLogChecker(logFile, dataLog);
-            dlc.checkDataTypes(testCase);
+            dlc.checkDataTypes();
         } catch (IllegalArgumentException e) {
             LOGGER.info("Cloud not evaluate data log");
         }

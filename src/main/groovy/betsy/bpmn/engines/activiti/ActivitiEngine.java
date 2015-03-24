@@ -18,6 +18,7 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
@@ -114,7 +115,9 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
             if (tc.getAssertions().contains(BPMNAssertions.DATA_CORRECT.toString())) {
                 Path dataLog = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + "_data.txt");
-                FileTasks.copyFileIntoFolder(dataLog, process.getTargetLogsPath());
+                if (Files.exists(dataLog)) {
+                    FileTasks.copyFileIntoFolder(dataLog, process.getTargetLogsPath());
+                }
             }
         }
     }
