@@ -15,12 +15,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class OverlappingTimestampCheckerTests {
-    private static final Path ROOT = Paths.get(System.getProperty("user.dir"));
-    private static final Path TEST_FOLDER = Paths.get("src", "test", "temp");
+    private static final Path ROOT = Paths.get(System.getProperty("user.dir"), "src", "test", "temp");
 
-    private static final Path PATH_LOG_FILE = ROOT.resolve(TEST_FOLDER).resolve("log1.txt");
-    private static final Path PATH_LOG_ONE = ROOT.resolve(TEST_FOLDER).resolve("log1_parallelOne.txt");
-    private static final Path PATH_LOG_TWO = ROOT.resolve(TEST_FOLDER).resolve("log1_parallelTwo.txt");
+    private static final Path PATH_LOG_FILE = ROOT.resolve("log1.txt");
+    private static final Path PATH_LOG_ONE = ROOT.resolve("log1_parallelOne.txt");
+    private static final Path PATH_LOG_TWO = ROOT.resolve("log1_parallelTwo.txt");
 
     private static final String[] TIMESTAMPS = {"1420110000000", "1420111800000", "1420113600000", "1420115400000"};
 
