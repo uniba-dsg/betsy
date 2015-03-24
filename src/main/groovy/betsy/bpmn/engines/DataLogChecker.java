@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,30 +20,35 @@ public class DataLogChecker {
 
     private static final Logger LOGGER = Logger.getLogger(DataLogChecker.class);
 
-    public static void checkDataTypes(BPMNTestCase tc, final Path logFile) {
-        // Only check when asked for a data type assertion
-        if (!tc.getAssertions().contains(BPMNAssertions.DATA_CORRECT.toString())) {
-            return;
-        }
+    private Path logFile;
+    private Path dataLogFile;
 
+    private List<String> values = Arrays.asList("String", String.valueOf(Long.MAX_VALUE));
+
+    public DataLogChecker(Path logFile, Path dataLogFile) {
+        FileTasks.assertFile(logFile);
+        FileTasks.assertFile(dataLogFile);
+
+        this.logFile = logFile;
+        this.dataLogFile = dataLogFile;
+    }
+
+    public void checkDataTypes(BPMNTestCase tc) {
         try {
-            List<String> lines = readLogFile(logFile);
-            if (contains(lines, "String")) {
-                writeLogFile(logFile, true);
-            }
-            if (contains(lines, String.valueOf(Long.MAX_VALUE))) {
-                writeLogFile(logFile, true);
-            }
+            List<String> lines = readLogFile();
+            values.forEach((value) -> {
+                if (contains(lines, value)) {
+                    writeLogFile(true);
+                }
+            });
         } catch (IllegalArgumentException e) {
-            writeLogFile(logFile, false);
+            writeLogFile(false);
             LOGGER.info("Could not validate parallel execution", e);
         }
     }
 
-    private static List<String> readLogFile(final Path logFile) {
-        FileTasks.assertFile(logFile);
+    private List<String> readLogFile() {
         List<String> lines = new LinkedList<>();
-        Path dataLogFile = Paths.get(logFile.toString().replaceAll("\\.txt", "_data.txt"));
         try {
             lines = Files.readAllLines(dataLogFile, StandardCharsets.ISO_8859_1);
         } catch (IOException e) {
@@ -51,14 +57,14 @@ public class DataLogChecker {
         return lines;
     }
 
-    private static boolean contains(List<String> list, String string) {
+    private boolean contains(List<String> list, String string) {
         for (String entry : list) {
             if (entry.equals(string)) return true;
         }
         return false;
     }
 
-    private static void writeLogFile(final Path logFile, boolean wasSuccessful) {
+    private void writeLogFile(boolean wasSuccessful) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
             if (wasSuccessful) {
                 bw.append(BPMNAssertions.DATA_CORRECT.toString());
@@ -70,6 +76,5 @@ public class DataLogChecker {
             LOGGER.info("Writing result to file failed", e);
         }
     }
-
 
 }
