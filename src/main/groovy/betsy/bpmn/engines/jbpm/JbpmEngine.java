@@ -59,9 +59,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
         final Path mavenPath = Configuration.getMavenHome().resolve("bin");
         final String mvnCommand = mavenPath.toAbsolutePath() + "/mvn -q clean install";
+
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
-
+        System.exit(0);
         //wait for maven to deploy
         WaitTasks.sleep(1500);
 
@@ -122,10 +123,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         Map<String, String> map = new LinkedHashMap<>(1);
         map.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map);
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo"), map);
         Map<String, String> map1 = new LinkedHashMap<>(1);
         map1.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
         WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
