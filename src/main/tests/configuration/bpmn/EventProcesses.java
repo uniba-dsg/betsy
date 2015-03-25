@@ -280,6 +280,50 @@ class EventProcesses {
             new BPMNTestCase().assertTask2().optionDelay(5000)
     );
 
+    public static final BPMNProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_NEGATIVE= BPMNProcessBuilder.buildEventProcess(
+            "Multiple_Parallel_IntermediateEventNegative", "A process with a multiple parallel event." +
+                    "After a parallel split one branch of the process awaits two signals of which only one is thrown by the other branch. " +
+                    "The multiple parallel event is never thrown and thus the process is never finished.",
+            new BPMNTestCase()
+    );
+
+    public static final BPMNProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_POSITIVE= BPMNProcessBuilder.buildEventProcess(
+            "Multiple_Parallel_IntermediateEventPositive", "A process with a multiple parallel event." +
+                    "After a parallel split one branch of the process awaits two signals which are thrown by the other branch. " +
+                    "The multiple parallel event is thrown.",
+            new BPMNTestCase().assertTask1()
+    );
+
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_FIRST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateEventPositive_ThrowFirstEventdefinition", "A process with a multiple event." +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+                    "The event thrown by the other branch, is the fist event definition of the multiple event. The multiple event is thrown.",
+            new BPMNTestCase().assertTask1()
+    );
+
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_LAST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateEventPositive_ThrowLastEventdefinition", "A process with a multiple event." +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+                    "The event thrown by the other branch, is the last event definition of the multiple event. The multiple event is thrown.",
+            new BPMNTestCase().assertTask1()
+    );
+
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_NEGATIVE= BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateEventNegative", "A process with a multiple event." +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+                    "This event is never thrown. The multiple event is never thrown and thus the process is never finished.",
+            new BPMNTestCase()
+    );
+
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_THROW_EVENT= BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateThrowEvent", "A process with a multiple throw event." +
+                    "After a parallel split into three branches two of the branches await each one event." +
+                    "Both events are thrown in a multiple event on the third branch.",
+            new BPMNTestCase().assertTask1().assertTask2()
+    );
+
+
+
     public static final List<BPMNProcess> EVENTS = Arrays.asList(
             CANCEL,
 
@@ -329,7 +373,14 @@ class EventProcesses {
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY,
             TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
-            TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING
+            TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+
+            MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_NEGATIVE,
+            MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_POSITIVE,
+            MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_FIRST_EVENTDEFINITION,
+            MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_LAST_EVENTDEFINITION,
+            MULTIPLE_INTERMEDIATE_EVENT_NEGATIVE,
+            MULTIPLE_INTERMEDIATE_THROW_EVENT
     );
 
 }
