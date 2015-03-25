@@ -273,6 +273,13 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5000)
     );
 
+    public static final BPMNProcess TIMER_INTERMEDIATE_TIMECYCLE_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "Timer_IntermediateTimeCycleEvent", "A process with an ordinary subProcess and an event subProcess." +
+                    "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
+                    "The event subProcess interrupts the activities of its parent subProcess.",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().optionDelay(30000)
+    );
+
     public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_StartEvent_EventSubProcess_Interrupting", "A process with an ordinary subProcess and an event subProcess." +
                     "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
@@ -374,6 +381,7 @@ class EventProcesses {
             TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY,
             TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
             TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+            TIMER_INTERMEDIATE_TIMECYCLE_EVENT,
 
             MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_NEGATIVE,
             MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_POSITIVE,
