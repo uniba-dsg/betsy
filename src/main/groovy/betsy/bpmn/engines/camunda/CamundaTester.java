@@ -55,7 +55,10 @@ public class CamundaTester {
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
             addRuntimeErrorsToLogFile(logFile);
-            checkParallelExecution();
+
+            // Check on parallel execution
+            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
@@ -84,21 +87,6 @@ public class CamundaTester {
         analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
         for (BPMNAssertions runtimeError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), runtimeError);
-        }
-    }
-
-    private void checkParallelExecution() {
-        Integer testCaseNum = new Integer(testCase.getNumber());
-        String testCaseNumber = testCaseNum.toString();
-
-        Path logParallelOne = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
-        Path logParallelTwo = getFileName().getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
-
-        try {
-            OverlappingTimestampChecker otc = new OverlappingTimestampChecker(getFileName(), logParallelOne, logParallelTwo);
-            otc.checkParallelism();
-        } catch (IllegalArgumentException e) {
-            LOGGER.info("Could not validate parallel execution", e);
         }
     }
 

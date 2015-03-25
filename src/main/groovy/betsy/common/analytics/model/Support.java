@@ -12,4 +12,16 @@ public enum Support {
             return "+";
         }
     }
+
+    public boolean isTotal() {
+        return this == TOTAL;
+    }
+
+    public boolean isPartial() {
+        return this == PARTIAL;
+    }
+
+    public boolean isNone() {
+        return this == NONE;
+    }
 }

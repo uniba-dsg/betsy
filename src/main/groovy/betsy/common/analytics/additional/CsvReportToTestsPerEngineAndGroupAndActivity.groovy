@@ -36,7 +36,7 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
                 report.engines.each { engine ->
                     int successes = 0
                     values.each { test ->
-                        if (test.engineToResult.get(engine).partial == Support.TOTAL) {
+                        if (test.engineToResult.get(engine).support == Support.TOTAL) {
                             successes++;
                         }
                     }

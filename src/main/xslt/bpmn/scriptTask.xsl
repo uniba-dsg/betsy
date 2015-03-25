@@ -13,7 +13,7 @@ f.createNewFile();
             </xsl:when>
 
             <xsl:when test="text() = 'CREATE_TIMESTAMP_LOG_1'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[//
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
                     int taskWaitingDuration = 10000; // milliseconds to wait between begin and end
 
                     // create log file for task 1
@@ -51,7 +51,7 @@ f.createNewFile();
             </xsl:when>
 
             <xsl:when test="text() = 'CREATE_TIMESTAMP_LOG_2'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[//
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
                     int taskWaitingDuration = 10000; // milliseconds to wait between begin and end
 
                     // create log file for task 2
@@ -86,6 +86,21 @@ f.createNewFile();
                             }
                         }
                     }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
+            </xsl:when>
+
+            <xsl:when test="text() = 'WAIT_TEN_SECONDS'">
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
+                    int taskWaitingDuration = 10000; // milliseconds to wait between begin and end
+
+                        long current = System.currentTimeMillis();
+                        long future = current + taskWaitingDuration;
+
+                        try {
+                            while (System.currentTimeMillis() &lt; future) {
+                                Thread.sleep(1000);
+                            }
+                        } catch (InterruptedException e) {}
+                    ]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
             </xsl:when>
 
             <xsl:otherwise>

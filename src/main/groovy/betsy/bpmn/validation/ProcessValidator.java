@@ -126,6 +126,7 @@ public class ProcessValidator {
         allowedLogMessages.add("CREATE_LOG_FILE");
         allowedLogMessages.add("CREATE_TIMESTAMP_LOG_1");
         allowedLogMessages.add("CREATE_TIMESTAMP_LOG_2");
+        allowedLogMessages.add("WAIT_TEN_SECONDS");
         return allowedLogMessages.toArray(new String[allowedLogMessages.size()]);
     }
 
