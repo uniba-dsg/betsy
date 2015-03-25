@@ -20,9 +20,7 @@ public class JbpmDeployer {
 
     public void deploy() {
         LOGGER.info("Trying to deploy process \"" + deploymentId + "\".");
-        //JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/deploy", 202, user, password);
         JsonHelper.postWithAuthWithAcceptJson(baseUrl+"/rest/deployment/"+deploymentId+"/deploy",202,user,password);
-
 
         // issue: https://developer.jboss.org/thread/236369?start=0&tstart=0
     }

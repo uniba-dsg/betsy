@@ -17,11 +17,11 @@ public class JbpmInstaller {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir);
 
         Path antPath = Configuration.getAntHome().resolve("bin");
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
 
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir, antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
     }
 
     @Override
@@ -46,5 +46,5 @@ public class JbpmInstaller {
     }
 
     private Path destinationDir;
-    private String fileName = "jbpm-installer.zip";
+    private String fileName = "jbpm-6.0.1.Final-installer-full.zip";
 }
