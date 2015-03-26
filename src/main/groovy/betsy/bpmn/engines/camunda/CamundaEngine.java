@@ -11,6 +11,7 @@ import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.FileTypes;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -100,6 +101,13 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
                 Path parallelLogTwo = getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + "_parallelTwo.txt");
                 FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
+            }
+
+            if (tc.getAssertions().contains(BPMNAssertions.DATA_CORRECT.toString())) {
+                Path dataLog = getTomcatDir().resolve("log" + tc.getNumber() + "_data.txt");
+                if (Files.exists(dataLog)) {
+                    FileTasks.copyFileIntoFolder(dataLog, process.getTargetLogsPath());
+                }
             }
         }
 

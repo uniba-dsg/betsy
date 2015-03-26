@@ -33,7 +33,6 @@ public class BPMNEnginesUtil {
         }
 
         String testCaseNumber = String.valueOf(testCase.getNumber());
-
         Path logParallelOne = logFile.getParent().resolve("log" + testCaseNumber + "_parallelOne.txt");
         Path logParallelTwo = logFile.getParent().resolve("log" + testCaseNumber + "_parallelTwo.txt");
 
@@ -51,8 +50,6 @@ public class BPMNEnginesUtil {
         if (!testCase.getAssertions().contains(BPMNAssertions.DATA_CORRECT.toString())) {
             return;
         }
-
-        String testCaseNumber = String.valueOf(testCase.getNumber());
 
         Path dataLog = Paths.get(logFile.toString().replaceAll("\\.txt", "_data.txt"));
 
