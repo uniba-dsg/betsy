@@ -43,6 +43,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return "jboss-as-7.1.1.Final";
     }
 
+    public String getLogFileNameForShutdownAnalysis() {
+        return "boot.log";
+    }
+
     public Path getJbossStandaloneDir() {
         return getServerPath().resolve(getJbossName()).resolve("standalone");
     }
@@ -152,14 +156,14 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
 
-        if(FileTasks.hasNoFile(getJbossLogDir().resolve("boot.log"))) {
-            LOGGER.info("Could not shutdown, because boot.log does not exist. this indicates that the engine was never started");
+        if(FileTasks.hasNoFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()))) {
+            LOGGER.info("Could not shutdown, because "+getLogFileNameForShutdownAnalysis()+" does not exist. this indicates that the engine was never started");
             return;
         }
 
         try {
-            //waiting for shutdown completion using the boot.log file; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve("boot.log"), "JBAS015950");
+            //waiting for shutdown completion using log files; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
+            WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));

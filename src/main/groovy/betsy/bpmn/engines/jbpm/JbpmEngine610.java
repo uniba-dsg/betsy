@@ -29,6 +29,11 @@ public class JbpmEngine610 extends JbpmEngine {
     }
 
     @Override
+    public String getLogFileNameForShutdownAnalysis() {
+        return "server.log";
+    }
+
+    @Override
     public void install() {
         JbpmInstaller jbpmInstaller = new JbpmInstaller();
         jbpmInstaller.setDestinationDir(getServerPath().getParent());
