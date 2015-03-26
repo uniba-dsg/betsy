@@ -1,16 +1,9 @@
 package betsy.bpmn.engines.jbpm;
 
-import betsy.common.config.Configuration;
-import betsy.common.tasks.ConsoleTasks;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.WaitTasks;
 import betsy.common.util.ClasspathHelper;
 
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class JbpmEngine620 extends JbpmEngine {
 
@@ -37,7 +30,7 @@ public class JbpmEngine620 extends JbpmEngine {
     @Override
     public void install() {
         JbpmInstaller jbpmInstaller = new JbpmInstaller();
-        jbpmInstaller.setDestinationDir(getServerPath().getParent());
+        jbpmInstaller.setDestinationDir(getJbpmInstallerPath().getParent());
         jbpmInstaller.setFileName("jbpm-6.2.0.Final-installer-full.zip");
         jbpmInstaller.install();
     }

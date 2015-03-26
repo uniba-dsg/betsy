@@ -13,7 +13,6 @@ import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,17 +25,12 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return "jbpm";
     }
 
-    @Override
-    public Path getServerPath() {
-        return Paths.get("server").resolve(getName()).resolve("jbpm-installer");
+    public Path getJbpmInstallerPath() {
+        return getServerPath().resolve("jbpm-installer");
     }
 
     public String getJbpmnUrl() {
         return "http://localhost:8080/jbpm-console";
-    }
-
-    public String getSystemURL() {
-        return "ssh://admin@localhost:8001/system";
     }
 
     public String getJbossName() {
@@ -48,16 +42,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     }
 
     public Path getJbossStandaloneDir() {
-        return getServerPath().resolve(getJbossName()).resolve("standalone");
-    }
-
-    public String getHomeDir() {
-        String homeDir = System.getenv("HOME");
-        if (homeDir == null) {
-            homeDir = System.getProperty("user.home");
-        }
-
-        return homeDir;
+        return getJbpmInstallerPath().resolve(getJbossName()).resolve("standalone");
     }
 
     public Path getAntPath() {
@@ -112,13 +97,13 @@ public class JbpmEngine extends AbstractBPMNEngine {
         FileTasks.copyFilesInFolderIntoOtherFolder(getJbossLogDir(), process.getTargetLogsPath());
 
         for (BPMNTestCase tc : process.getTestCases()) {
-            FileTasks.copyFileIntoFolder(getServerPath().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
+            FileTasks.copyFileIntoFolder(getJbpmInstallerPath().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
             if (tc.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
                 // Copy parallel logs from Tomcat bin to TargetLogsPath
-                Path parallelLogOne = getServerPath().resolve("log" + tc.getNumber() + "_parallelOne.txt");
+                Path parallelLogOne = getJbpmInstallerPath().resolve("log" + tc.getNumber() + "_parallelOne.txt");
                 FileTasks.copyFileIntoFolder(parallelLogOne, process.getTargetLogsPath());
 
-                Path parallelLogTwo = getServerPath().resolve("log" + tc.getNumber() + "_parallelTwo.txt");
+                Path parallelLogTwo = getJbpmInstallerPath().resolve("log" + tc.getNumber() + "_parallelTwo.txt");
                 FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
             }
         }
@@ -127,7 +112,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void install() {
         JbpmInstaller installer = new JbpmInstaller();
-        installer.setDestinationDir(getServerPath().getParent());
+        installer.setDestinationDir(getJbpmInstallerPath().getParent());
         installer.install();
     }
 
@@ -138,10 +123,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         Map<String, String> map = new LinkedHashMap<>(1);
         map.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map);
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map);
         Map<String, String> map1 = new LinkedHashMap<>(1);
         map1.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
         WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
@@ -153,8 +138,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
 
         if(FileTasks.hasNoFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()))) {
             LOGGER.info("Could not shutdown, because "+getLogFileNameForShutdownAnalysis()+" does not exist. this indicates that the engine was never started");
@@ -163,11 +148,11 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         try {
             //waiting for shutdown completion using log files; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(120000, 5000, getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
-            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
         } catch (IllegalStateException ex) {
             //swallow
         }
@@ -178,6 +163,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return URLTasks.isUrlAvailable(getJbpmnUrl());
     }
 
+    @Override
     public void testProcess(final BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
             BPMNTester bpmnTester = new BPMNTester();
@@ -189,12 +175,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
             tester.setTestCase(testCase);
             tester.setName(process.getName());
             tester.setDeploymentId(getDeploymentId(process));
-          //  tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
-           // tester.setProcessHistoryUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/history/instance/1");
             tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/"+ tester.getDeploymentId() + "/process/" + process.getName()+ "/start");
             tester.setProcessHistoryUrl(createProcessHistoryURL(tester.getDeploymentId()));
             tester.setBpmnTester(bpmnTester);
-            tester.setLogDir(getServerPath());
+            tester.setLogDir(getJbpmInstallerPath());
             tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
             tester.runTest();
         }
@@ -206,10 +190,11 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return process.getGroupId() + ":" + process.getName() + ":" + process.getVersion();
     }
 
+    @Override
     public void buildTest(final BPMNProcess process) {
         BPMNTestBuilder builder = new BPMNTestBuilder();
         builder.setPackageString(getName() + "." + process.getGroup());
-        builder.setLogDir(getServerPath());
+        builder.setLogDir(getJbpmInstallerPath());
         builder.setProcess(process);
         builder.buildTests();
     }
