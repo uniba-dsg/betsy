@@ -47,8 +47,7 @@ public class ActivitiTester {
      * runs a single test
      */
     public void runTest() {
-        //make bin dir
-        Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
+        Path logFile = logDir.resolve("activiti.log");
 
         addDeploymentErrorsToLogFile(logFile);
 
@@ -78,7 +77,7 @@ public class ActivitiTester {
     private void addDeploymentErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.activiti.engine.ActivitiException", BPMNAssertions.ERROR_DEPLOYMENT);
+        analyzer.addSubstring("org.activiti.engine.ActivitiException: Errors while parsing:", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), deploymentError);
         }
