@@ -36,34 +36,9 @@ public class JbpmEngine610 extends JbpmEngine {
         jbpmInstaller.install();
 
     }
-//
-//    @Override
-//    public void startup() {
-//        Path pathToJava7 = Configuration.getJava7Home();
-//        FileTasks.assertDirectory(pathToJava7);
-//
-//        Map<String, String> map = new LinkedHashMap<>(1);
-//        map.put("JAVA_HOME", pathToJava7.toString());
-//        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("jbpm-installer"), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map);
-//        Map<String, String> map1 = new LinkedHashMap<>(1);
-//        map1.put("JAVA_HOME", pathToJava7.toString());
-//        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("jbpm-installer"), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
-//        //waiting for jbpm-console for deployment and instantiating
-//        WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
-//    }
-//
-//    private Path getJbossLogDir() {
-//        return getJbossStandaloneDir().resolve("log");
-//    }
-//
-//    public Path getJbossStandaloneDir() {
-//        return getServerPath().resolve("jbpm-installer").resolve(getJbossName()).resolve("standalone");
-//
 
-//    @Override
-//    public Path getServerPath() {
-//        return Paths.get("server").resolve(getName().concat("\\jbpm-installer"));
-//    }
-
-
+    @Override
+    protected String createProcessHistoryURL(String deploymentId) {
+        return getJbpmnUrl()+ "/rest/history/instance/1";
     }
+}

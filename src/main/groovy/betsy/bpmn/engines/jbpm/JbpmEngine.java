@@ -183,7 +183,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
           //  tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
            // tester.setProcessHistoryUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/history/instance/1");
             tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/"+ tester.getDeploymentId() + "/process/" + process.getName()+ "/start");
-            tester.setProcessHistoryUrl(getJbpmnUrl()+ "/rest/history/instance/1");
+            tester.setProcessHistoryUrl(createProcessHistoryURL(tester.getDeploymentId()));
             tester.setBpmnTester(bpmnTester);
             tester.setLogDir(getServerPath());
             tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
@@ -203,6 +203,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         builder.setLogDir(getServerPath());
         builder.setProcess(process);
         builder.buildTests();
+    }
+
+    protected String createProcessHistoryURL(String deploymentId) {
+        return getJbpmnUrl() + "/rest/runtime/" + deploymentId + "/history/instance/1";
     }
 
 }
