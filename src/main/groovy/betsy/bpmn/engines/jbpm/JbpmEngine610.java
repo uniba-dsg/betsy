@@ -31,7 +31,7 @@ public class JbpmEngine610 extends JbpmEngine {
     @Override
     public void install() {
         JbpmInstaller jbpmInstaller = new JbpmInstaller();
-        jbpmInstaller.setDestinationDir(getServerPath());
+        jbpmInstaller.setDestinationDir(getServerPath().getParent());
         jbpmInstaller.setFileName("jbpm-6.1.0.Final-installer-full.zip");
         jbpmInstaller.install();
 
