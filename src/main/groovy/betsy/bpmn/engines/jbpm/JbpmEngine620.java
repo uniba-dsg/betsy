@@ -41,6 +41,11 @@ public class JbpmEngine620 extends JbpmEngine {
         jbpmInstaller.setFileName("jbpm-6.2.0.Final-installer-full.zip");
         jbpmInstaller.install();
     }
+
+    @Override
+    protected String createProcessHistoryURL(String deploymentId) {
+        return getJbpmnUrl()+ "/rest/history/instance/1";
+    }
 //    @Override
 //    public void startup() {
 ////        Path pathToJava7 = Configuration.getJava7Home();
