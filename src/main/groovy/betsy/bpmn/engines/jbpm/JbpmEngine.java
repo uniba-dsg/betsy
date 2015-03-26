@@ -112,7 +112,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void install() {
         JbpmInstaller installer = new JbpmInstaller();
-        installer.setDestinationDir(getJbpmInstallerPath().getParent());
+        installer.setDestinationDir(getServerPath());
         installer.install();
     }
 
