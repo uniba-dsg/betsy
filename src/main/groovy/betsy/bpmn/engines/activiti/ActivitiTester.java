@@ -71,7 +71,7 @@ public class ActivitiTester {
             }
         }
 
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         bpmnTester.test();
     }
 

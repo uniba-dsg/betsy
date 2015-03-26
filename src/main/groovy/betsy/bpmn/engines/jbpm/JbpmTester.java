@@ -62,7 +62,7 @@ public class JbpmTester {
 
         // Check on parallel execution
         BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         checkProcessOutcome();
 
         bpmnTester.test();
