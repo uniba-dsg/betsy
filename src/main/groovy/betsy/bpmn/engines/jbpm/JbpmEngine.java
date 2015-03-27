@@ -129,7 +129,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
-        WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
+        WaitTasks.waitForSubstringInFile(240000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
     }
 
     private Path getJbossLogDir() {
