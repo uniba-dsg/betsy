@@ -64,7 +64,7 @@ public class CamundaTester {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-       BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
+       BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         bpmnTester.test();
     }
 

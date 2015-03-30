@@ -62,7 +62,7 @@ public class JbpmTester {
 
         // Check on parallel execution
         BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "jbpm", ("log" + testCase.getNumber() + ".txt")));
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         checkProcessOutcome();
 
         bpmnTester.test();
@@ -93,6 +93,7 @@ public class JbpmTester {
     private void addDeploymentErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
+        analyzer.addSubstring("Unable to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), deploymentError);
             LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");

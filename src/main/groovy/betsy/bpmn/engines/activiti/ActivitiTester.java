@@ -47,8 +47,7 @@ public class ActivitiTester {
      * runs a single test
      */
     public void runTest() {
-        //make bin dir
-        Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
+        Path logFile = logDir.resolve("activiti.log");
 
         addDeploymentErrorsToLogFile(logFile);
 
@@ -64,21 +63,17 @@ public class ActivitiTester {
 
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
-            if (e.getMessage() != null && e.getMessage().contains("ERR-1")) {
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-            } else {
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-            }
+            addRuntimeErrorsToLogFile(logFile);
         }
 
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, Paths.get(logDir.getParent().toString(), "bin", ("log" + testCase.getNumber() + ".txt")));
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         bpmnTester.test();
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.activiti.engine.ActivitiException", BPMNAssertions.ERROR_DEPLOYMENT);
+        analyzer.addSubstring("org.activiti.engine.ActivitiException: Errors while parsing:", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), deploymentError);
         }

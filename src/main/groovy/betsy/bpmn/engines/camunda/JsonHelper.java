@@ -103,7 +103,7 @@ public class JsonHelper {
 
         try {
             HttpResponse<String> response = Unirest.post(url).
-                    //header("Content-Type", "application/json").
+                    header("Content-Type", "application/json").
                     header("Accept", "application/json").
                     basicAuth(username, password).body(new JsonNode(""))
             .asString();

@@ -36,7 +36,7 @@
                 <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
                 <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
                 <bpmn2:timerEventDefinition id="_TimerEventDefinition_4">
-                    <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT2S</bpmn2:timeDuration>
+                    <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT3S</bpmn2:timeDuration>
                 </bpmn2:timerEventDefinition>
             </bpmn2:intermediateCatchEvent>
 

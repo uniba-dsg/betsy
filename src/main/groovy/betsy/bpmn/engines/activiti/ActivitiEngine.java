@@ -95,22 +95,16 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public void storeLogs(BPMNProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
+        Path targetLogsPath = process.getTargetLogsPath();
+        FileTasks.mkdirs(targetLogsPath);
 
         // TODO only copy log files from tomcat, the other files are files for the test
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
+        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), targetLogsPath);
 
         for (BPMNTestCase tc : process.getTestCases()) {
-            Path tomcatLog = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + ".txt");
-            FileTasks.copyFileIntoFolder(tomcatLog, process.getTargetLogsPath());
-            if(tc.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
-                // Copy parallel logs from Tomcat bin to TargetLogsPath
-                Path parallelLogOne = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + "_parallelOne.txt");
-                FileTasks.copyFileIntoFolder(parallelLogOne, process.getTargetLogsPath());
-
-                Path parallelLogTwo = getTomcat().getTomcatBinDir().resolve("log" + tc.getNumber() + "_parallelTwo.txt");
-                FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
-            }
+            Path tomcatBinPath = getTomcat().getTomcatBinDir();
+            FileTasks.copyFileIntoFolder(tomcatBinPath.resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
+            FileTasks.copyMatchingFilesIntoFolder(tomcatBinPath, targetLogsPath, "log" + tc.getNumber() + "_*.txt");
         }
     }
 
