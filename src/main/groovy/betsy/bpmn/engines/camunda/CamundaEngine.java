@@ -86,23 +86,15 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
     public void storeLogs(BPMNProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), process.getTargetLogsPath());
+        Path targetLogsPath = process.getTargetLogsPath();
+        FileTasks.mkdirs(targetLogsPath);
+        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), targetLogsPath);
 
         for (BPMNTestCase tc : process.getTestCases()) {
-            FileTasks.copyFileIntoFolder(getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
-
-            if(tc.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
-                // Copy parallel logs from Tomcat bin to TargetLogsPath
-                Path parallelLogOne = getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + "_parallelOne.txt");
-                FileTasks.copyFileIntoFolder(parallelLogOne, process.getTargetLogsPath());
-
-                Path parallelLogTwo = getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + "_parallelTwo.txt");
-                FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
-            }
+            Path tomcatBin = getTomcatDir().resolve("bin");
+            FileTasks.copyFileIntoFolder(tomcatBin.resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
+            FileTasks.copyMatchingFilesIntoFolder(tomcatBin, targetLogsPath, "log" + tc.getNumber() + "_*.txt");
         }
-
     }
 
     private Path getTomcatLogsDir() {

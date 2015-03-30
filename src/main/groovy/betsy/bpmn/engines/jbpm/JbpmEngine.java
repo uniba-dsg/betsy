@@ -93,19 +93,13 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public void storeLogs(BPMNProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getJbossLogDir(), process.getTargetLogsPath());
+        Path targetLogsPath = process.getTargetLogsPath();
+        FileTasks.mkdirs(targetLogsPath);
+        FileTasks.copyFilesInFolderIntoOtherFolder(getJbossLogDir(), targetLogsPath);
 
         for (BPMNTestCase tc : process.getTestCases()) {
-            FileTasks.copyFileIntoFolder(getJbpmInstallerPath().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
-            if (tc.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
-                // Copy parallel logs from Tomcat bin to TargetLogsPath
-                Path parallelLogOne = getJbpmInstallerPath().resolve("log" + tc.getNumber() + "_parallelOne.txt");
-                FileTasks.copyFileIntoFolder(parallelLogOne, process.getTargetLogsPath());
-
-                Path parallelLogTwo = getJbpmInstallerPath().resolve("log" + tc.getNumber() + "_parallelTwo.txt");
-                FileTasks.copyFileIntoFolder(parallelLogTwo, process.getTargetLogsPath());
-            }
+            FileTasks.copyFileIntoFolder(getJbpmInstallerPath().resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
+            FileTasks.copyMatchingFilesIntoFolder(getJbpmInstallerPath(), targetLogsPath, "log" + tc.getNumber() + "_*.txt");
         }
     }
 
