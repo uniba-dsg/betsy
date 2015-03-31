@@ -30,5 +30,9 @@ public class BPMNProcessBuilder {
         return new BPMNProcess(ROOT_FOLDER.resolve("basics").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases));
     }
 
+    public static BPMNProcess buildDataProcess(String name, String description, BPMNTestCase... testCases) {
+        return new BPMNProcess(ROOT_FOLDER.resolve("data").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases));
+    }
+
     public static final Path ROOT_FOLDER = Paths.get("src/main/tests/files/bpmn");
 }

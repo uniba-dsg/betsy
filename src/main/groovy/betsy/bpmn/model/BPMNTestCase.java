@@ -84,6 +84,10 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.EXECUTION_PARALLEL);
     }
 
+    public BPMNTestCase assertDataCorrect() {
+        return addAssertion(BPMNAssertions.DATA_CORRECT);
+    }
+
     public Optional<Integer> getDelay() {
         return getTestStep().getDelay();
     }

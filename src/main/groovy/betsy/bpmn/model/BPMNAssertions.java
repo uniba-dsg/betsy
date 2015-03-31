@@ -26,7 +26,9 @@ public enum BPMNAssertions {
 
     ERROR_GENERIC("ERROR_generic"),
 
-    EXECUTION_PARALLEL("EXECUTION_parallel");
+    EXECUTION_PARALLEL("EXECUTION_parallel"),
+
+    DATA_CORRECT("DATA_correct");
 
     private final String name;
 

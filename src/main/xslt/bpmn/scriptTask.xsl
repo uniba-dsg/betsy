@@ -103,6 +103,33 @@ f.createNewFile();
                     ]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'LOG_DATA'">
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
+
+                    // create log file
+                    java.io.File file = new java.io.File("log" + testCaseNumber + "_data.txt");
+
+                    java.io.BufferedWriter bw = null;
+                    try {
+                        file.createNewFile();
+                        bw = new java.io.BufferedWriter(
+                                new java.io.FileWriter(file, true)
+                        );
+
+                        // log data
+                        bw.append(data);
+                        bw.newLine();
+                    } catch(java.io.IOException e) {
+                    } finally {
+                        if (bw != null) {
+                            try {
+                                bw.close();
+                            } catch(java.io.IOException e) {
+                            }
+                        }
+                    }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
+            </xsl:when>
+
             <xsl:otherwise>
         <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 try{

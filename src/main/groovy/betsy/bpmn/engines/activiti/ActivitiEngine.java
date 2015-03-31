@@ -62,7 +62,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda");
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/activiti");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
                 process.getProcess(),
                 process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"));
 
-        XSLTTasks.transform(getXsltPath().resolve("camunda.xsl"),
+        XSLTTasks.transform(getXsltPath().resolve("activiti.xsl"),
                 process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"),
                 process.getTargetProcessFilePath());
 
@@ -139,7 +139,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
                 "log4j.appender.FILE.Encoding=UTF-8\n" +
                 "log4j.appender.FILE.layout=org.apache.log4j.PatternLayout\n" +
                 "log4j.appender.FILE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n\n");
-        FileTasks.replaceTokenInFile(classes.resolve("activiti-context.xml"),"\t\t<property name=\"jobExecutorActivate\" value=\"false\" />","\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
+        FileTasks.replaceTokenInFile(classes.resolve("activiti-context.xml"), "\t\t<property name=\"jobExecutorActivate\" value=\"false\" />", "\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
     }
 
     public Tomcat getTomcat() {
