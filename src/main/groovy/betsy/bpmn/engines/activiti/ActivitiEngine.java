@@ -18,6 +18,7 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
