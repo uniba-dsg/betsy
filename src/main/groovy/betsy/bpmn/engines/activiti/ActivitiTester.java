@@ -60,8 +60,7 @@ public class ActivitiTester {
             BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
 
             // Check data type
-            DataLogChecker.checkDataTypes(testCase, getFileName());
-
+            BPMNEnginesUtil.checkDataLog(testCase, getFileName());
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             if (e.getMessage() != null && e.getMessage().contains("ERR-1")) {
