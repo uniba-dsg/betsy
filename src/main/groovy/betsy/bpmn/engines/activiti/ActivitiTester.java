@@ -63,11 +63,7 @@ public class ActivitiTester {
             BPMNEnginesUtil.checkDataLog(testCase, getFileName());
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
-            if (e.getMessage() != null && e.getMessage().contains("ERR-1")) {
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-            } else {
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-            }
+            addRuntimeErrorsToLogFile(logFile);
         }
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());

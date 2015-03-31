@@ -142,7 +142,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         try {
             //waiting for shutdown completion using log files; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(180000, 5000, getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(240000, 5000, getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
