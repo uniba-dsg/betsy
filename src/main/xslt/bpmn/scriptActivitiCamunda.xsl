@@ -17,7 +17,7 @@
     </xsl:template>
 
     <!-- for conditional event definitions -->
-    <xsl:template match="bpmn2:script">
+    <xsl:template match="bpmn2:condition">
         <bpmn2:condition>
             <xsl:apply-templates select="@*"/>
             ${<xsl:value-of select="." />}
