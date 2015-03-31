@@ -11,22 +11,15 @@ import java.util.List;
  */
 class DataProcesses {
 
-    public static final BPMNProcess DATA_READ_ONLY_STRING = BPMNProcessBuilder.buildDataProcess(
-            "Data_ReadOnly_String", "A process containing a scriptTask which writes " +
-                    "a predefined string variable into a log file.",
-            new BPMNTestCase().assertDataCorrect()
-    );
-
-    public static final BPMNProcess DATA_READ_ONLY_LONG = BPMNProcessBuilder.buildDataProcess(
-            "Data_ReadOnly_Long", "A process containing a scriptTask which writes " +
-                    "a predefined long variable into a log file.",
-            new BPMNTestCase().assertDataCorrect()
+    public static final BPMNProcess DATA_READ_WRITE_STRING = BPMNProcessBuilder.buildDataProcess(
+        "Data_ReadWrite_String", "A process consisting of three scriptTasks, " +
+                    "the second of which writes a string data object, and the third of which reads the string " +
+                    "data object and writes an assertion token into the final log if successful.",
+        new BPMNTestCase().assertDataCorrect()
     );
 
     public static final List<BPMNProcess> DATA = Arrays.asList(
-            DATA_READ_ONLY_STRING,
-            DATA_READ_ONLY_LONG
-
+        DATA_READ_WRITE_STRING
     );
 
 }

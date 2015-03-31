@@ -59,6 +59,8 @@ public class CamundaTester {
             // Check on parallel execution
             BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
 
+            // Check data type
+            BPMNEnginesUtil.checkDataLog(testCase, getFileName());
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
