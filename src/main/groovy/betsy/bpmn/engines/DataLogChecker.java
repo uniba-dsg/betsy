@@ -25,12 +25,17 @@ public class DataLogChecker {
             return;
         }
 
-        List<String> lines = readLogFile(logFile);
-        if (contains(lines, "String")) {
-            writeLogFile(logFile);
-        }
-        if (contains(lines, String.valueOf(Long.MAX_VALUE))) {
-            writeLogFile(logFile);
+        try {
+            List<String> lines = readLogFile(logFile);
+            if (contains(lines, "String")) {
+                writeLogFile(logFile, true);
+            }
+            if (contains(lines, String.valueOf(Long.MAX_VALUE))) {
+                writeLogFile(logFile, true);
+            }
+        } catch (IllegalArgumentException e) {
+            writeLogFile(logFile, false);
+            LOGGER.info("Could not validate parallel execution", e);
         }
     }
 
@@ -53,15 +58,18 @@ public class DataLogChecker {
         return false;
     }
 
-    private static void writeLogFile(final Path logFile) {
+    private static void writeLogFile(final Path logFile, boolean wasSuccessful) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
-            bw.append(BPMNAssertions.DATA_CORRECT.toString());
+            if (wasSuccessful) {
+                bw.append(BPMNAssertions.DATA_CORRECT.toString());
+            } else {
+                bw.append("");
+            }
             bw.newLine();
         } catch (IOException e) {
             LOGGER.info("Writing result to file failed", e);
         }
     }
-
 
 
 }

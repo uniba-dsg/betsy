@@ -117,7 +117,7 @@ f.createNewFile();
                         );
 
                         // log data
-                        bw.append(data);
+                        bw.append(String.valueOf(data));
                         bw.newLine();
                     } catch(java.io.IOException e) {
                     } finally {

@@ -14,6 +14,12 @@
         </bpmn2:extensionElements>
     </xsl:template>
 
+    <xsl:template match="bpmn2:dataObject/xsi:long">
+        <bpmn2:extensionElements>
+            <activiti:value><xsl:copy-of select="text()"/></activiti:value>
+        </bpmn2:extensionElements>
+    </xsl:template>
+
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
