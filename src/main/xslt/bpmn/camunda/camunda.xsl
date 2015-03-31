@@ -25,8 +25,8 @@
 
                         // set variable
                         String executionId = execution.getId();
-                        runtimeService.setVariable(executionId, 'data', "String")
-                        Object data = runtimeService.getVariable(executionId, 'data')
+                        runtimeService.setVariable(executionId, 'data', "String"); // Since 7.1
+                        Object data = runtimeService.getVariable(executionId, 'data'); // Since 7.1
 
                         // log variable
                         bw.append(data);
@@ -63,7 +63,7 @@
 
                         // get variable
                         String executionId = execution.getId();
-                        Object obj = runtimeService.getVariable(executionId, 'data');
+                        Object obj = runtimeService.getVariable(executionId, 'data'); // Since 7.1
 
                         // log data
                         bw.append(String.valueOf(obj));
@@ -80,11 +80,12 @@
             </xsl:when>
 
             <xsl:otherwise>
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[</xsl:text>
                 <xsl:value-of select="text()"/>
-                <xsl:text disable-output-escaping="yes">&lt;/bpmn2:script&gt;</xsl:text>
+                <xsl:text disable-output-escaping="yes">]]&gt;&lt;/bpmn2:script&gt;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
 
 </xsl:stylesheet>
