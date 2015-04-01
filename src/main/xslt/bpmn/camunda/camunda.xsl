@@ -9,7 +9,7 @@
             <xsl:when test="text() = 'SET_STRING_DATA'">
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
                     // create log file
-                    java.io.File file = new java.io.File("log" + testCaseNumber + "data_input.txt");
+                    java.io.File file = new java.io.File("log" + testCaseNumber + "_dataInput.txt");
 
                     // create writer
                     java.io.BufferedWriter bw = null;
@@ -24,14 +24,14 @@
                         org.camunda.bpm.engine.RuntimeService runtimeService = processEngine.getRuntimeService();
 
                         // set variable
-                        String executionId = execution.getId();
-                        runtimeService.setVariable(executionId, 'data', "String"); // Since 7.1
-                        Object data = runtimeService.getVariable(executionId, 'data'); // Since 7.1
+                        execution.setVariable("data", "String");
+
+                        // get variable for logging purpose
+                        Object data = execution.getVariable("data");
 
                         // log variable
                         bw.append(data);
                         bw.newLine();
-
                     } catch(java.io.IOException e) {
                     } finally {
                         if (bw != null) {
@@ -62,10 +62,9 @@
                         org.camunda.bpm.engine.RuntimeService runtimeService = processEngine.getRuntimeService();
 
                         // get variable
-                        String executionId = execution.getId();
-                        Object obj = runtimeService.getVariable(executionId, 'data'); // Since 7.1
+                        Object obj = execution.getVariable("data");
 
-                        // log data
+                        // log value of variable
                         bw.append(String.valueOf(obj));
                         bw.newLine();
                     } catch(java.io.IOException e) {
