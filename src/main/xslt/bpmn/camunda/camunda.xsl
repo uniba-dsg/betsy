@@ -19,10 +19,6 @@
                                 new java.io.FileWriter(file, true)
                         );
 
-                        // get service
-                        org.camunda.bpm.engine.ProcessEngine processEngine = org.camunda.bpm.engine.ProcessEngines.getDefaultProcessEngine();
-                        org.camunda.bpm.engine.RuntimeService runtimeService = processEngine.getRuntimeService();
-
                         // set variable
                         execution.setVariable("data", "String");
 
@@ -50,16 +46,11 @@
 
                     // create writer
                     java.io.BufferedWriter bw = null;
-
                     try {
                         file.createNewFile();
                         bw = new java.io.BufferedWriter(
                                 new java.io.FileWriter(file, true)
                         );
-
-                        // get service
-                        org.camunda.bpm.engine.ProcessEngine processEngine = org.camunda.bpm.engine.ProcessEngines.getDefaultProcessEngine();
-                        org.camunda.bpm.engine.RuntimeService runtimeService = processEngine.getRuntimeService();
 
                         // get variable
                         Object obj = execution.getVariable("data");
@@ -85,6 +76,5 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
 
 </xsl:stylesheet>
