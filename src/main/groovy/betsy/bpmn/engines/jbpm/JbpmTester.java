@@ -62,6 +62,10 @@ public class JbpmTester {
 
         // Check on parallel execution
         BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+
+        // Check data type
+        BPMNEnginesUtil.checkDataLog(testCase, getFileName());
+
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         checkProcessOutcome();
 

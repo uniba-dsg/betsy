@@ -21,7 +21,7 @@ public class DataLogChecker {
     private final Path logFile;
     private final Path dataLogFile;
 
-    private final List<String> values = Arrays.asList("String", String.valueOf(Long.MAX_VALUE));
+    private final List<String> values = Arrays.asList("String");
 
     public DataLogChecker(Path logFile, Path dataLogFile) {
         FileTasks.assertFile(logFile);

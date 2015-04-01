@@ -12,7 +12,7 @@
             <xsl:when test="text() = 'SET_STRING_DATA'">
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
                     // create log file
-                    java.io.File file = new java.io.File("log" + testCaseNumber + "data_input.txt");
+                    java.io.File file = new java.io.File("log" + testCaseNumber + "_dataInput.txt");
 
                     // create writer
                     java.io.BufferedWriter bw = null;
@@ -27,7 +27,10 @@
 
                         // set variable
                         String executionId = execution.getId();
-                        runtimeService.setVariable(executionId, 'data', "String")
+
+                        if(runtimeService.hasVariable(executionId, 'data')){
+                            runtimeService.setVariable(executionId, 'data', "String");
+                        }
 
                         // log variable
                         bw.append(data);
@@ -68,6 +71,7 @@
                         // log data
                         bw.append(String.valueOf(obj));
                         bw.newLine();
+
                     } catch(java.io.IOException e) {
                     } finally {
                         if (bw != null) {

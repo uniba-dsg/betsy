@@ -20,14 +20,17 @@
                         );
 
                         // set variable
-                        execution.setVariable("data", "String");
+                        if(execution.hasVariable('data')){
+                            execution.setVariable('data', "String");
+                        }
 
                         // get variable for logging purpose
-                        Object data = execution.getVariable("data");
+                        Object data = execution.getVariable('data');
 
                         // log variable
                         bw.append(data);
                         bw.newLine();
+
                     } catch(java.io.IOException e) {
                     } finally {
                         if (bw != null) {
@@ -53,11 +56,12 @@
                         );
 
                         // get variable
-                        Object obj = execution.getVariable("data");
+                        Object obj = execution.getVariable('data');
 
                         // log value of variable
                         bw.append(String.valueOf(obj));
                         bw.newLine();
+
                     } catch(java.io.IOException e) {
                     } finally {
                         if (bw != null) {
