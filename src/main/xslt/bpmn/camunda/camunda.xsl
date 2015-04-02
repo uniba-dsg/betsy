@@ -20,7 +20,8 @@
                         );
 
                         // set variable
-                        if(execution.hasVariable('data')){
+                        java.util.Map&lt;String,Object> vars = execution.getVariables();
+                        if (vars.containsKey('data')) {
                             execution.setVariable('data', "String");
                         }
 
