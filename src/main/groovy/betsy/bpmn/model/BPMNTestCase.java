@@ -82,7 +82,7 @@ public class BPMNTestCase extends TestCase {
         return getTestStep().getDelay();
     }
 
-    private BPMNTestStep getTestStep() {
+    public BPMNTestStep getTestStep() {
         return (BPMNTestStep) Objects.requireNonNull( getTestSteps().get(0), "call input methods before!");
     }
 
