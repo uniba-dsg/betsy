@@ -13,7 +13,7 @@ public class TestsPerGroup {
 
     public static void main(String[] args) {
 
-        BPELProcessRepository processRepository = new BPELProcessRepository();
+        BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
         List<String> names = processRepository.getNames();
 
         List<String> output = new LinkedList<>();

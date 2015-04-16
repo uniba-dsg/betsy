@@ -10,6 +10,7 @@ import betsy.bpel.engines.ode.OdeEngine;
 import betsy.bpel.engines.ode.OdeInMemoryEngine;
 import betsy.bpel.engines.openesb.OpenEsb231Engine;
 import betsy.bpel.engines.openesb.OpenEsb23Engine;
+import betsy.bpel.engines.openesb.OpenEsb301StandaloneEngine;
 import betsy.bpel.engines.openesb.OpenEsbEngine;
 import betsy.bpel.engines.orchestra.OrchestraEngine;
 import betsy.bpel.engines.petalsesb.PetalsEsb41Engine;
@@ -28,28 +29,33 @@ import java.util.List;
  * CAPITAL LETTERS for GROUPS of engines, lower case letters for engines
  */
 public class EngineRepository {
-    private static final BpelgEngine BPELG = new BpelgEngine();
-    private static final OrchestraEngine ORCHESTRA = new OrchestraEngine();
-    private static final ActiveBpelEngine ACTIVE_BPEL = new ActiveBpelEngine();
-    private static final OpenEsb23Engine OPENESB_23 = new OpenEsb23Engine();
-    private static final PetalsEsb41Engine PETALS_41 = new PetalsEsb41Engine();
-    private static final Ode136Engine ODE_136 = new Ode136Engine();
-    private static final OdeEngine ODE = new OdeEngine();
-    private static final OdeInMemoryEngine ODE_IN_MEMORY = new OdeInMemoryEngine();
-    private static final BpelgInMemoryEngine BPELG_IN_MEMORY = new BpelgInMemoryEngine();
-    private static final Ode136InMemoryEngine ODE_136_IN_MEMORY = new Ode136InMemoryEngine();
-    private static final OpenEsbEngine OPENESB = new OpenEsbEngine();
-    private static final PetalsEsbEngine PETALS = new PetalsEsbEngine();
-    private static final Wso2Engine_v3_1_0 WSO2_310 = new Wso2Engine_v3_1_0();
-    private static final OpenEsb231Engine OPENESB231 = new OpenEsb231Engine();
+
     private final Repository<AbstractBPELEngine> repo = new Repository<>();
 
     public EngineRepository() {
-        List<AbstractBPELEngine> locals = Arrays.asList(ODE, BPELG, OPENESB, PETALS, ORCHESTRA, ACTIVE_BPEL, OPENESB_23, OPENESB231,
-                PETALS_41, ODE_136, ODE_IN_MEMORY, ODE_136_IN_MEMORY, BPELG_IN_MEMORY, WSO2_310, new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
-        List<AbstractBPELEngine> recent = Arrays.asList(BPELG, ORCHESTRA, ACTIVE_BPEL, OPENESB231, PETALS_41, ODE_136, WSO2_310);
-        List<AbstractBPELEngine> vms = Arrays.asList(new VirtualOdeEngine(), new VirtualBpelgEngine(), new VirtualOpenEsbEngine(),
-                new VirtualPetalsEsbEngine(), new VirtualOrchestraEngine(), new VirtualActiveBpelEngine());
+        List<AbstractBPELEngine> locals = Arrays.asList(
+                new OdeEngine(), new Ode136Engine(), new OdeInMemoryEngine(), new Ode136InMemoryEngine(),
+                new OpenEsbEngine(), new OpenEsb23Engine(), new OpenEsb231Engine(), new OpenEsb301StandaloneEngine(),
+                new OrchestraEngine(),
+                new ActiveBpelEngine(),
+                new PetalsEsbEngine(), new PetalsEsb41Engine(),
+                new BpelgEngine(), new BpelgInMemoryEngine(),
+                new Wso2Engine_v3_1_0(), new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
+        List<AbstractBPELEngine> recent = Arrays.asList(
+                new BpelgEngine(),
+                new OrchestraEngine(),
+                new ActiveBpelEngine(),
+                new OpenEsb301StandaloneEngine(),
+                new PetalsEsb41Engine(),
+                new Ode136Engine(),
+                new Wso2Engine_v3_1_0());
+        List<AbstractBPELEngine> vms = Arrays.asList(
+                new VirtualOdeEngine(),
+                new VirtualBpelgEngine(),
+                new VirtualOpenEsbEngine(),
+                new VirtualPetalsEsbEngine(),
+                new VirtualOrchestraEngine(),
+                new VirtualActiveBpelEngine());
         List<AbstractBPELEngine> all = new ArrayList<>();
         all.addAll(locals);
         all.addAll(vms);

@@ -14,7 +14,7 @@ public class ShortIdsTests {
     public void testUniquenessOfShortIds() {
         List<String> shortIds = new LinkedList<>();
 
-        BPELProcessRepository processRepository = new BPELProcessRepository();
+        BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
         List<BPELProcess> processed = processRepository.getByName("ALL");
         for(BPELProcess process : processed){
             shortIds.add(process.getShortId());

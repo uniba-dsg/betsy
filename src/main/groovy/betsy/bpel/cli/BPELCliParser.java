@@ -177,7 +177,7 @@ public class BPELCliParser {
         String header = "\nOptions:\n";
         String footer = "\nGROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.\n" +
                 "<ENGINES>: " + new EngineRepository().getNames() + "\n\n\n" +
-                "<PROCESSES>: " + new BPELProcessRepository().getNames() + "\n\n\n" +
+                "<PROCESSES>: " + BPELProcessRepository.INSTANCE.getNames() + "\n\n\n" +
                 "Please report issues at https://github.com/uniba-dsg/betsy/issues";
         new HelpFormatter().printHelp(firstLine,
                 header,

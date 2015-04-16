@@ -14,7 +14,7 @@ public class ProcessParser {
     }
 
     public List<BPELProcess> parse() {
-        BPELProcessRepository repository = new BPELProcessRepository();
+        BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
         if (args.length <= 1) {
             return repository.getByName("ALL");
         } else {

@@ -14,7 +14,9 @@ public class BPELProcessRepository {
 
     private final Repository<BPELProcess> repo = new Repository<>();
 
-    public BPELProcessRepository() {
+    public static final BPELProcessRepository INSTANCE = new BPELProcessRepository();
+
+    private BPELProcessRepository() {
         List<BPELProcess> all = new LinkedList<>();
         all.addAll(BasicActivityProcesses.BASIC_ACTIVITIES);
         all.addAll(ScopeProcesses.SCOPES);

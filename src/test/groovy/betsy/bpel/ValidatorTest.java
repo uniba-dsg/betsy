@@ -7,7 +7,7 @@ import org.junit.Test;
 public class ValidatorTest {
     @Test
     public void testValidityOfAllProcesses() {
-        new Validator(new BPELProcessRepository().getByName("ALL")).validate();
+        new Validator(BPELProcessRepository.INSTANCE.getByName("ALL")).validate();
     }
 
 }
