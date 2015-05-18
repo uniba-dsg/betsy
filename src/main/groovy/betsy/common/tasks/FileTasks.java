@@ -1,6 +1,5 @@
 package betsy.common.tasks;
 
-import ant.tasks.AntUtil;
 import com.google.common.base.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;

@@ -1,6 +1,6 @@
 package betsy.bpel.virtual.host.virtualbox;
 
-import ant.tasks.AntUtil;
+import betsy.common.tasks.AntUtil;
 import betsy.common.config.Configuration;
 import betsy.bpel.virtual.host.virtualbox.utils.InputStreamLogger;
 import groovy.util.AntBuilder;
