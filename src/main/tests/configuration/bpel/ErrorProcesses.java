@@ -3,7 +3,7 @@ package configuration.bpel;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
 import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.XMLTasks;
+import configuration.bpel.XMLTasks;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
