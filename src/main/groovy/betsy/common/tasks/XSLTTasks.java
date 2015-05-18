@@ -8,6 +8,21 @@ import java.nio.file.Path;
 public class XSLTTasks {
 
     public static void transform(Path xslt, Path input, Path output) {
+        createXSLTProcess(xslt, input, output).execute();
+    }
+
+    public static void transform(Path xslt, Path input, Path output, String key, String value) {
+        XSLTProcess transform = createXSLTProcess(xslt, input, output);
+
+        // key/value are passed to XSL script
+        XSLTProcess.Param param = transform.createParam();
+        param.setName(key);
+        param.setExpression(value);
+
+        transform.execute();
+    }
+
+    private static XSLTProcess createXSLTProcess(Path xslt, Path input, Path output) {
         FileTasks.assertFile(xslt);
         FileTasks.assertFile(input);
 
@@ -20,8 +35,7 @@ public class XSLTTasks {
 
         transform.setTaskName("xslt");
         transform.setProject(AntUtil.builder().getProject());
-
-        transform.execute();
+        return transform;
     }
 
 }

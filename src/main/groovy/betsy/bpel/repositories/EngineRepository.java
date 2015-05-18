@@ -23,6 +23,7 @@ import betsy.common.repositories.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,7 +68,7 @@ public class EngineRepository {
 
         // insert every engine into the map
         for (AbstractBPELEngine engine : repo.getByName("ALL")) {
-            repo.put(engine.getName(), Arrays.asList(engine));
+            repo.put(engine.getName(), Collections.singletonList(engine));
         }
 
     }
