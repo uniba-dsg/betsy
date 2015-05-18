@@ -12,6 +12,8 @@ import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class CamundaEngine extends AbstractBPMNEngine {
@@ -82,16 +84,24 @@ public class CamundaEngine extends AbstractBPMNEngine {
         return "http://localhost:8080/engine-rest/engine/default";
     }
 
+
     @Override
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), process.getTargetLogsPath());
-
-        for (BPMNTestCase tc : process.getTestCases()) {
-            FileTasks.copyFileIntoFolder(getTomcatDir().resolve("bin").resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
+        for(Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
+    }
 
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcatLogsDir()));
+        result.addAll(FileTasks.findAllInFolder(getTomcatDir().resolve("bin"), "log*.txt"));
+
+        return result;
     }
 
     private Path getTomcatLogsDir() {

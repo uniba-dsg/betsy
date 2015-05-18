@@ -7,6 +7,8 @@ import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class OdeEngine extends AbstractLocalBPELEngine {
 
@@ -43,7 +45,19 @@ public class OdeEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder( getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatLogsDir()));
+
+        return result;
     }
 
     @Override

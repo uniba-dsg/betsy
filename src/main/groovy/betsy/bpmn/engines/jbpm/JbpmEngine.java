@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class JbpmEngine extends AbstractBPMNEngine {
@@ -100,13 +102,21 @@ public class JbpmEngine extends AbstractBPMNEngine {
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
-        FileTasks.copyFilesInFolderIntoOtherFolder(getJbossLogDir(), process.getTargetLogsPath());
-
-        for (BPMNTestCase tc : process.getTestCases()) {
-            FileTasks.copyFileIntoFolder(getServerPath().resolve("log" + tc.getNumber() + ".txt"), process.getTargetLogsPath());
+        for(Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
-
     }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getJbossLogDir()));
+        result.addAll(FileTasks.findAllInFolder(getServerPath().resolve("bin"), "log*.txt"));
+
+        return result;
+    }
+
 
     @Override
     public void install() {

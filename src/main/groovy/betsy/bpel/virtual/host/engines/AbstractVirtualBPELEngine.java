@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -225,7 +226,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
         if (vm == null) {
             try {
                 vm = getVirtualMachine();
-            } catch (VirtualBoxException ignore) {
+            } catch (VirtualBoxException | NullPointerException ignore) {
                 // ignore, can't be running if not found
                 return false;
             }
@@ -238,4 +239,9 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
         return virtualBox.getVirtualMachineByName(getVirtualMachineName());
     }
 
+    @Override
+    public List<Path> getLogs() {
+        // TODO implement this
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
@@ -45,7 +47,19 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFileIntoFolder(getPetalsLogFile(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.add(getPetalsLogFile());
+
+        return result;
     }
 
     @Override

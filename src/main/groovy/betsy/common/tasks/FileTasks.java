@@ -252,6 +252,52 @@ public class FileTasks {
         }
     }
 
+    public static List<Path> findAllInFolder(Path folder) {
+        LOGGER.info("Finding all files in dir [" + folder + "]");
+
+        List<Path> result = new LinkedList<>();
+
+        try {
+            FileTasks.assertDirectory(folder);
+        } catch (Exception ignore) {
+            return result;
+        }
+
+        try {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
+                for(Path p : stream) {
+                    result.add(p);
+                }
+            }
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("could not iterate in folder " + folder, e);
+        }
+    }
+
+    public static List<Path> findAllInFolder(Path folder, String glob) {
+        LOGGER.info("Finding all files in dir [" + folder + "] with pattern [" + glob + "]");
+
+        List<Path> result = new LinkedList<>();
+
+        try {
+            FileTasks.assertDirectory(folder);
+        } catch (Exception ignore) {
+            return result;
+        }
+
+        try {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, glob)) {
+                for(Path p : stream) {
+                    result.add(p);
+                }
+            }
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("could not iterate in folder " + folder, e);
+        }
+    }
+
     public static void copyFilesInFolderIntoOtherFolder(Path from, Path to) {
         LOGGER.info("Copying files from " + from + " to folder " + to);
 
