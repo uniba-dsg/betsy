@@ -32,11 +32,10 @@ public class JbpmEngine610 extends JbpmEngine {
         jbpmInstaller.setDestinationDir(getServerPath());
         jbpmInstaller.setFileName("jbpm-6.1.0.Final-installer-full.zip");
         jbpmInstaller.install();
-
     }
 
     @Override
     protected String createProcessHistoryURL(String deploymentId) {
-        return getJbpmnUrl()+ "/rest/history/instance/1";
+        return getJbpmnUrl() + "/rest/history/instance/1";
     }
 }

@@ -9,6 +9,11 @@ import betsy.common.tasks.ZipTasks;
 import java.nio.file.Path;
 
 public class JbpmInstaller {
+
+    private Path destinationDir;
+
+    private String fileName = "jbpm-6.0.1.Final-installer-full.zip";
+
     public void install() {
         FileTasks.deleteDirectory(destinationDir);
         FileTasks.mkdirs(destinationDir);
@@ -29,10 +34,6 @@ public class JbpmInstaller {
         return "JBPMInstaller{" + "destinationDir='" + destinationDir + "\'" + ", fileName='" + fileName + "\'" + "}";
     }
 
-    public Path getDestinationDir() {
-        return destinationDir;
-    }
-
     public void setDestinationDir(Path destinationDir) {
         this.destinationDir = destinationDir;
     }
@@ -45,6 +46,4 @@ public class JbpmInstaller {
         this.fileName = fileName;
     }
 
-    private Path destinationDir;
-    private String fileName = "jbpm-6.0.1.Final-installer-full.zip";
 }

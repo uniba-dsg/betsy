@@ -9,6 +9,16 @@ import java.util.Map;
 
 public class JbpmResourcesGenerator {
 
+    private Path jbpmSrcDir;
+
+    private Path destDir;
+
+    private String processName;
+
+    private String groupId;
+
+    private String version;
+
     public void generateProject() {
         Path resDir = destDir.resolve("src").resolve("main").resolve("resources");
 
@@ -32,10 +42,6 @@ public class JbpmResourcesGenerator {
         replacements.put("PROCESS_NAME", processName);
         replacements.put("_VERSION_", version);
         FileTasks.replaceTokensInFile(destDir.resolve("pom.xml"), replacements);
-    }
-
-    public Path getJbpmSrcDir() {
-        return jbpmSrcDir;
     }
 
     public void setJbpmSrcDir(Path jbpmSrcDir) {
@@ -74,9 +80,4 @@ public class JbpmResourcesGenerator {
         this.version = version;
     }
 
-    private Path jbpmSrcDir;
-    private Path destDir;
-    private String processName;
-    private String groupId;
-    private String version;
 }

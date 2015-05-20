@@ -135,8 +135,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
 
-        if(FileTasks.hasNoFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()))) {
-            LOGGER.info("Could not shutdown, because "+getLogFileNameForShutdownAnalysis()+" does not exist. this indicates that the engine was never started");
+        if (FileTasks.hasNoFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()))) {
+            LOGGER.info("Could not shutdown, because " + getLogFileNameForShutdownAnalysis() + " does not exist. this indicates that the engine was never started");
             return;
         }
 
@@ -169,7 +169,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
             tester.setTestCase(testCase);
             tester.setName(process.getName());
             tester.setDeploymentId(getDeploymentId(process));
-            tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/"+ tester.getDeploymentId() + "/process/" + process.getName()+ "/start");
+            tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
             tester.setProcessHistoryUrl(createProcessHistoryURL(tester.getDeploymentId()));
             tester.setBpmnTester(bpmnTester);
             tester.setLogDir(getJbpmInstallerPath());

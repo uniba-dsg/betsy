@@ -18,10 +18,32 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class JbpmTester {
+
+    private BPMNTestCase testCase;
+
+    private String processStartUrl;
+
+    private String processHistoryUrl;
+
+    private String name;
+
+    private String deploymentId;
+
+    private BPMNTester bpmnTester;
+
+    private Path logDir;
+
+    private Path serverLogFile;
+
+    private String user = "admin";
+
+    private String password = "admin";
+
+    private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
+
     /**
      * Runs a single test
      */
-
     public void runTest() {
         addDeploymentErrorsToLogFile(serverLogFile);
 
@@ -116,16 +138,8 @@ public class JbpmTester {
         this.testCase = testCase;
     }
 
-    public String getProcessStartUrl() {
-        return processStartUrl;
-    }
-
     public void setProcessStartUrl(String processStartUrl) {
         this.processStartUrl = processStartUrl;
-    }
-
-    public String getProcessHistoryUrl() {
-        return processHistoryUrl;
     }
 
     public void setProcessHistoryUrl(String processHistoryUrl) {
@@ -148,16 +162,8 @@ public class JbpmTester {
         this.deploymentId = deploymentId;
     }
 
-    public Path getLogDir() {
-        return logDir;
-    }
-
     public void setLogDir(Path logDir) {
         this.logDir = logDir;
-    }
-
-    public Path getServerLogFile() {
-        return serverLogFile;
     }
 
     public void setServerLogFile(Path serverLogFile) {
@@ -180,22 +186,8 @@ public class JbpmTester {
         this.password = password;
     }
 
-    private BPMNTestCase testCase;
-    private String processStartUrl;
-    private String processHistoryUrl;
-    private String name;
-    private String deploymentId;
-
     public void setBpmnTester(BPMNTester bpmnTester) {
         this.bpmnTester = bpmnTester;
     }
-
-    private BPMNTester bpmnTester;
-    private Path logDir;
-    private Path serverLogFile;
-    private String user = "admin";
-    private String password = "admin";
-
-    private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
 
 }
