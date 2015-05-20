@@ -6,9 +6,6 @@ import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
 
-/**
- * Created by stlmaass on 05.03.2015.
- */
 public class Camunda720Engine extends CamundaEngine {
 
     @Override

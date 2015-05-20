@@ -10,6 +10,15 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public class CamundaInstaller {
+
+    private Path destinationDir;
+
+    private String fileName = "camunda-bpm-tomcat-7.0.0-Final.zip";
+
+    private Optional<String> groovyFile = Optional.empty();
+
+    private String tomcatName;
+
     public void install() {
         FileTasks.deleteDirectory(destinationDir);
         FileTasks.mkdirs(destinationDir);
@@ -17,7 +26,7 @@ public class CamundaInstaller {
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir);
 
-        if(groovyFile.isPresent()) {
+        if (groovyFile.isPresent()) {
             NetworkTasks.downloadFileFromBetsyRepo(groovyFile.get());
             FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile.get()), getTomcatDestinationDir().resolve("lib"));
         }
@@ -50,10 +59,6 @@ public class CamundaInstaller {
         return "CamundaInstaller{" + "destinationDir=" + destinationDir + ", fileName='" + fileName + "\'" + ", groovyFile='" + groovyFile + "\'" + ", tomcatName='" + tomcatName + "\'" + "} " + super.toString();
     }
 
-    public Path getDestinationDir() {
-        return destinationDir;
-    }
-
     public void setDestinationDir(Path destinationDir) {
         this.destinationDir = destinationDir;
     }
@@ -66,24 +71,12 @@ public class CamundaInstaller {
         this.fileName = fileName;
     }
 
-    public Optional<String> getGroovyFile() {
-        return groovyFile;
-    }
-
     public void setGroovyFile(Optional<String> groovyFile) {
         this.groovyFile = groovyFile;
-    }
-
-    public String getTomcatName() {
-        return tomcatName;
     }
 
     public void setTomcatName(String tomcatName) {
         this.tomcatName = tomcatName;
     }
 
-    private Path destinationDir;
-    private String fileName = "camunda-bpm-tomcat-7.0.0-Final.zip";
-    private Optional<String> groovyFile = Optional.empty();
-    private String tomcatName;
 }

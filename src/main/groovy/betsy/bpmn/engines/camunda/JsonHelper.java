@@ -106,7 +106,7 @@ public class JsonHelper {
                     header("Content-Type", "application/json").
                     header("Accept", "application/json").
                     basicAuth(username, password).body(new JsonNode(""))
-            .asString();
+                    .asString();
             assertHttpCode(expectedCode, response);
             logResponse(response.getBody());
             return response.getBody();
@@ -125,7 +125,7 @@ public class JsonHelper {
             logResponse(response.getBody());
             return response.getBody().getObject();
         } catch (UnirestException e) {
-            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url , e);
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }
     }
 

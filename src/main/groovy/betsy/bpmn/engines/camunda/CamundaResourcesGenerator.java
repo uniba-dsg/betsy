@@ -15,9 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CamundaResourcesGenerator {
+
     private Path destDir;
+
     private String processName;
+
     private String groupId;
+
     private String version;
 
     public void generateWar() {

@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CamundaEngine extends AbstractBPMNEngine {
+
     @Override
     public String getName() {
         return "camunda";
@@ -159,7 +160,6 @@ public class CamundaEngine extends AbstractBPMNEngine {
             tester.setLogDir(getTomcatLogsDir());
             tester.runTest();
         }
-
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }

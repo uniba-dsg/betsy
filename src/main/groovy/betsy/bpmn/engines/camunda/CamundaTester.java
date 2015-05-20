@@ -24,9 +24,13 @@ public class CamundaTester {
     private static final Logger LOGGER = Logger.getLogger(CamundaTester.class);
 
     private BPMNTestCase testCase;
+
     private String restURL;
+
     private String key;
+
     private Path logDir;
+
     private BPMNTester bpmnTester;
 
     /**
@@ -66,7 +70,7 @@ public class CamundaTester {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
         }
 
-       BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         bpmnTester.test();
     }
 
@@ -117,10 +121,6 @@ public class CamundaTester {
         this.testCase = testCase;
     }
 
-    public String getRestURL() {
-        return restURL;
-    }
-
     public void setRestURL(String restURL) {
         this.restURL = restURL;
     }
@@ -131,10 +131,6 @@ public class CamundaTester {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public Path getLogDir() {
-        return logDir;
     }
 
     public void setLogDir(Path logDir) {
