@@ -62,7 +62,7 @@ class ErrorProcesses {
     );
 
     public static final BPMNProcess TOKEN_COMPLETION_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
-            "Token_CompletionQuantity_Zero", "A procesess with a scriptTask with completionQuantity=0. " +
+            "Token_CompletionQuantity_Zero", "A processes with a scriptTask with completionQuantity=0. " +
             "Since completionQuantity must not be zero, the process must not be executed.",
             new BPMNTestCase().assertRuntimeException()
     );
