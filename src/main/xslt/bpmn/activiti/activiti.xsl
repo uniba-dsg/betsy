@@ -85,7 +85,7 @@
 
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
-                <xsl:value-of select="text()"/>
+                <xsl:value-of disable-output-escaping="yes" select="text()"/>
                 <xsl:text disable-output-escaping="yes">&lt;/bpmn2:script&gt;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
