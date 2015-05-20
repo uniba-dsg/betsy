@@ -20,25 +20,20 @@ public class JbpmDeployer {
 
     public void deploy() {
         LOGGER.info("Trying to deploy process \"" + deploymentId + "\".");
-        JsonHelper.postWithAuthWithAcceptJson(baseUrl+"/rest/deployment/"+deploymentId+"/deploy",202,user,password);
-
-        // issue: https://developer.jboss.org/thread/236369?start=0&tstart=0
+        JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/deploy", 202, user, password);
     }
 
     public void undeploy() {
         LOGGER.info("Trying to undeploy process \"" + deploymentId + "\".");
-        //JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/undeploy", 202, user, password);
-        JsonHelper.postWithAuthWithAcceptJson(baseUrl+"/rest/deployment/"+deploymentId+"/undeploy",202,user,password);
-
-
+        JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/undeploy", 202, user, password);
     }
 
     public boolean isDeployed() {
         LOGGER.info("Trying to check the deployment status of process \"" + deploymentId + "\".");
 
         try {
-         //   JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, user, password);
-            JSONObject object = JsonHelper.getJSONWithAuth(baseUrl+ "/rest/deployment/"+deploymentId,200,user,password);
+
+            JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, user, password);
             String status = object.getString("status");
             return status != null && "DEPLOYED".equals(status);
 
@@ -51,25 +46,23 @@ public class JbpmDeployer {
     public static void main(String[] args) {
         String baseUrl = "http://localhost:8080/jbpm-console";
         String deploymentId = "de.uniba.dsg:SequenceFlow:1.0";
-      //  System.out.println(new JbpmDeployer(deploymentId, baseUrl).isDeployed());
-      //  new JbpmDeployer(deploymentId, baseUrl).deploy();
-        new JbpmDeployer(baseUrl,deploymentId).deploy();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-      //  System.out.println(new JbpmDeployer(deploymentId, baseUrl).isDeployed());
-        System.out.println(new JbpmDeployer(baseUrl,deploymentId).isDeployed());
 
-        new JbpmDeployer(baseUrl,deploymentId).undeploy();
-      //  new JbpmDeployer(deploymentId, baseUrl).undeploy();
+        new JbpmDeployer(baseUrl, deploymentId).deploy();
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-      //  System.out.println(new JbpmDeployer(deploymentId, baseUrl).isDeployed());
+
+        System.out.println(new JbpmDeployer(baseUrl, deploymentId).isDeployed());
+
+        new JbpmDeployer(baseUrl, deploymentId).undeploy();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
