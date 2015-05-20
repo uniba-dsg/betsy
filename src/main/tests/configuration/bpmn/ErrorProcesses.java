@@ -67,6 +67,20 @@ class ErrorProcesses {
             new BPMNTestCase().assertRuntimeException()
     );
 
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_NEGATIVE= BPMNProcessBuilder.buildErrorProcess(
+            "Multiple_IntermediateEventNegative", "A process with a multiple event." +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+                    "This event is never thrown. The multiple event is never thrown and thus the process is never finished.",
+            new BPMNTestCase()
+    );
+
+    public static final BPMNProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_NEGATIVE= BPMNProcessBuilder.buildErrorProcess(
+            "Multiple_Parallel_IntermediateEventNegative", "A process with a multiple parallel event." +
+                    "After a parallel split one branch of the process awaits two signals of which only one is thrown by the other branch. " +
+                    "The multiple parallel event is never thrown and thus the process is never finished.",
+            new BPMNTestCase()
+    );
+
 
     public static final List<BPMNProcess> ERRORS = Arrays.asList(
             PARALLEL_GATEWAY_WITH_CONDITIONS,
@@ -79,7 +93,9 @@ class ErrorProcesses {
 
             TOKEN_START_QUANTITY_TWO,
             TOKEN_START_QUANTITY_ZERO,
-            TOKEN_COMPLETION_QUANTITY_ZERO
+            TOKEN_COMPLETION_QUANTITY_ZERO,
 
+            MULTIPLE_INTERMEDIATE_EVENT_NEGATIVE,
+            MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_NEGATIVE
     );
 }
