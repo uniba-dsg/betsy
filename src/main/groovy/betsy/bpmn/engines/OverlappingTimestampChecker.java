@@ -22,8 +22,11 @@ import java.util.function.Predicate;
 public class OverlappingTimestampChecker {
 
     private static final Logger LOGGER = Logger.getLogger(OverlappingTimestampChecker.class);
+
     private final Path logFile;
+
     private final Path logParallelOne;
+
     private final Path logParallelTwo;
 
     public OverlappingTimestampChecker(Path logFile, Path logParallelOne, Path logParallelTwo) {

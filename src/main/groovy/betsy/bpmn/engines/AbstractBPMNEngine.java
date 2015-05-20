@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasPath {
+
+    private Path parentFolder;
+
+    private final List<BPMNProcess> processes = new ArrayList<>();
+
     /**
      * The path <code>src/main/xslt/$engine</code>
      *
@@ -82,10 +87,6 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
      */
     public abstract void testProcess(BPMNProcess process);
 
-    public Path getParentFolder() {
-        return parentFolder;
-    }
-
     public void setParentFolder(Path parentFolder) {
         this.parentFolder = parentFolder;
     }
@@ -94,6 +95,4 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
         return processes;
     }
 
-    private Path parentFolder;
-    private final List<BPMNProcess> processes = new ArrayList<>();
 }

@@ -10,15 +10,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by stlmaass on 19.03.2015.
- */
 public class BPMNEnginesUtil {
 
     private static final Logger LOGGER = Logger.getLogger(BPMNEnginesUtil.class);
 
     public static void substituteSpecificErrorsForGenericError(BPMNTestCase testCase, Path logDir) {
-        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
+        if (testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
             List<String> toReplace = new ArrayList<>();
             toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
             toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());

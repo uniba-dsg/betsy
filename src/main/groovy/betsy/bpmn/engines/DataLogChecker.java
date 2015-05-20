@@ -19,6 +19,7 @@ public class DataLogChecker {
     private static final Logger LOGGER = Logger.getLogger(DataLogChecker.class);
 
     private final Path logFile;
+
     private final Path dataLogFile;
 
     private final List<String> values = Arrays.asList("String");
