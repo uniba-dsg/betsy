@@ -101,10 +101,6 @@ public class ActivitiTester {
         this.testCase = testCase;
     }
 
-    public String getRestURL() {
-        return restURL;
-    }
-
     public void setRestURL(String restURL) {
         this.restURL = restURL;
     }
@@ -115,10 +111,6 @@ public class ActivitiTester {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public Path getLogDir() {
-        return logDir;
     }
 
     public void setLogDir(Path logDir) {
