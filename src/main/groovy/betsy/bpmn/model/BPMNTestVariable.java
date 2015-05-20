@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BPMNTestVariable {
+
     public BPMNTestVariable(String name, String type, Object value) {
         this.name = name;
         this.type = type;

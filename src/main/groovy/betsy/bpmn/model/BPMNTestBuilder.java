@@ -9,6 +9,13 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class BPMNTestBuilder {
+
+    private String packageString;
+
+    private Path logDir;
+
+    private BPMNProcess process;
+
     public void buildTests() {
         //Build test for each Test Case
         for (BPMNTestCase testCase : process.getTestCases()) {
@@ -47,16 +54,8 @@ public class BPMNTestBuilder {
 
     public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\"";
 
-    public String getPackageString() {
-        return packageString;
-    }
-
     public void setPackageString(String packageString) {
         this.packageString = packageString;
-    }
-
-    public Path getLogDir() {
-        return logDir;
     }
 
     public void setLogDir(Path logDir) {
@@ -71,8 +70,4 @@ public class BPMNTestBuilder {
         this.process = process;
     }
 
-
-    private String packageString;
-    private Path logDir;
-    private BPMNProcess process;
 }

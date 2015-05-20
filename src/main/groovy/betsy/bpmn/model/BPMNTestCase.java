@@ -78,7 +78,9 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
     }
 
-    public  BPMNTestCase assertGenericError() { return  addAssertion(BPMNAssertions.ERROR_GENERIC); }
+    public BPMNTestCase assertGenericError() {
+        return addAssertion(BPMNAssertions.ERROR_GENERIC);
+    }
 
     public BPMNTestCase assertExecutionParallel() {
         return addAssertion(BPMNAssertions.EXECUTION_PARALLEL);
@@ -93,14 +95,14 @@ public class BPMNTestCase extends TestCase {
     }
 
     public BPMNTestStep getTestStep() {
-        return (BPMNTestStep) Objects.requireNonNull( getTestSteps().get(0), "call input methods before!");
+        return (BPMNTestStep) Objects.requireNonNull(getTestSteps().get(0), "call input methods before!");
     }
 
     public List<String> getAssertions() {
         List<TestAssertion> assertions = getTestStep().getAssertions();
 
         List<String> result = new ArrayList<>();
-        for(TestAssertion assertion : assertions) {
+        for (TestAssertion assertion : assertions) {
             BPMNTestAssertion bpmnTestAssertion = (BPMNTestAssertion) assertion;
             result.add(bpmnTestAssertion.getAssertion().toString());
         }

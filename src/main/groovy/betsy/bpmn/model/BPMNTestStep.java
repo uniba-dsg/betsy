@@ -7,6 +7,7 @@ import java.util.Optional;
 public class BPMNTestStep extends AssertableTestStep {
 
     private Optional<BPMNTestInput> input = Optional.empty();
+
     private Optional<Integer> delay = Optional.empty();
 
     public void setInput(BPMNTestInput input) {
@@ -29,7 +30,7 @@ public class BPMNTestStep extends AssertableTestStep {
     }
 
     public Optional<BPMNTestVariable> getVariable() {
-        if(input.isPresent()) {
+        if (input.isPresent()) {
             return Optional.of(input.get().getVariable());
         } else {
             return Optional.empty();
