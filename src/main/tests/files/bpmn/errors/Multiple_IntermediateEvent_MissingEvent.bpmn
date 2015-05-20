@@ -2,15 +2,15 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="Multiple_IntermediateEventNegativeTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiple_IntermediateEventNegative">
+                   id="Multiple_IntermediateEvent_MissingEventTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiple_IntermediateEvent_MissingEvent">
 
     <bpmn2:signal id="signal_1" name="Signal_1"/>
     <bpmn2:signal id="signal_2" name="Signal_2"/>
     <bpmn2:signal id="signal_3" name="Signal_3"/>
 
 
-    <bpmn2:process id="Multiple_IntermediateEventNegative" isExecutable="true">
+    <bpmn2:process id="Multiple_IntermediateEvent_MissingEvent" isExecutable="true">
          <bpmn2:startEvent id="StartEvent">
                     <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
                 </bpmn2:startEvent>
