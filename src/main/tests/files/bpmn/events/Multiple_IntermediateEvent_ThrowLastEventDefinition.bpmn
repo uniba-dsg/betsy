@@ -2,13 +2,13 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="Multiple_IntermediateEventPositive_ThrowFirstEventdefinitionTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiple_IntermediateEventPositive_ThrowFirstEventdefinition">
+                   id="Multiple_IntermediateEvent_ThrowLastEventDefinitionTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiple_IntermediateEvent_ThrowLastEventDefinition">
 
     <bpmn2:signal id="signal_1" name="Signal_1"/>
     <bpmn2:signal id="signal_2" name="Signal_2"/>
 
-    <bpmn2:process id="Multiple_IntermediateEventPositive_ThrowFirstEventdefinition" isExecutable="true">
+    <bpmn2:process id="Multiple_IntermediateEvent_ThrowLastEventDefinition" isExecutable="true">
          <bpmn2:startEvent id="StartEvent">
                     <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
                 </bpmn2:startEvent>
@@ -35,7 +35,7 @@
                 <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_1">
                     <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
                     <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-                    <bpmn2:signalEventDefinition id="SignalEventDefinition_2" signalRef="signal_1"/>
+                    <bpmn2:signalEventDefinition id="SignalEventDefinition_2" signalRef="signal_2"/>
                 </bpmn2:intermediateThrowEvent>
 
                 <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="IntermediateThrowEvent_1" targetRef="EndEvent_1"/>

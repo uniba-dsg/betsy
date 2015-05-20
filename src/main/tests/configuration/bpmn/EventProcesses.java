@@ -301,22 +301,22 @@ class EventProcesses {
             new BPMNTestCase().assertTask2().optionDelay(5000)
     );
 
-    public static final BPMNProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_POSITIVE= BPMNProcessBuilder.buildEventProcess(
-            "Multiple_Parallel_IntermediateEventPositive", "A process with a multiple parallel event." +
+    public static final BPMNProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_Parallel_IntermediateEvent", "A process with a multiple parallel event." +
                     "After a parallel split one branch of the process awaits two signals which are thrown by the other branch. " +
                     "The multiple parallel event is thrown.",
             new BPMNTestCase().assertTask1()
     );
 
-    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_FIRST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_IntermediateEventPositive_ThrowFirstEventdefinition", "A process with a multiple event." +
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_THROW_FIRST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateEvent_ThrowFirstEventDefinition", "A process with a multiple event." +
                     "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
                     "The event thrown by the other branch, is the fist event definition of the multiple event. The multiple event is thrown.",
             new BPMNTestCase().assertTask1()
     );
 
-    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_LAST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_IntermediateEventPositive_ThrowLastEventdefinition", "A process with a multiple event." +
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_THROW_LAST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateEvent_ThrowLastEventDefinition", "A process with a multiple event." +
                     "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
                     "The event thrown by the other branch, is the last event definition of the multiple event. The multiple event is thrown.",
             new BPMNTestCase().assertTask1()
@@ -385,9 +385,9 @@ class EventProcesses {
             TIMER_BOUNDARY_EVENT_SUBPROCESS_TIMECYCLE,
             TIMER_START_EVENT_TIMECYCLE_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
-            MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_POSITIVE,
-            MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_FIRST_EVENTDEFINITION,
-            MULTIPLE_INTERMEDIATE_EVENT_POSITIVE_THROW_LAST_EVENTDEFINITION,
+            MULTIPLE_PARALLEL_INTERMEDIATE_EVENT,
+            MULTIPLE_INTERMEDIATE_EVENT_THROW_FIRST_EVENTDEFINITION,
+            MULTIPLE_INTERMEDIATE_EVENT_THROW_LAST_EVENTDEFINITION,
             MULTIPLE_INTERMEDIATE_THROW_EVENT
     );
 
