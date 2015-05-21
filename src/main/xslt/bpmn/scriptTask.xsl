@@ -27,7 +27,7 @@ f.createNewFile();
                         );
                         // log start time
                         long current = System.currentTimeMillis();
-                        bw.append("" + current);
+                        bw.append(String.valueOf(current));
                         long future = current + taskWaitingDuration;
                         bw.newLine();
                         try {
@@ -37,7 +37,7 @@ f.createNewFile();
                         } catch (InterruptedException e) {
                         }
                         // log end time
-                        bw.append("" + future);
+                        bw.append(String.valueOf(System.currentTimeMillis()));
                         bw.newLine();
                     } catch(java.io.IOException e) {
                     } finally {
@@ -65,7 +65,7 @@ f.createNewFile();
                         );
                         // log start time
                         long current = System.currentTimeMillis();
-                        bw.append("" + current);
+                        bw.append(String.valueOf(current));
                         long future = current + taskWaitingDuration;
                         bw.newLine();
                         try {
@@ -75,7 +75,7 @@ f.createNewFile();
                         } catch (InterruptedException e) {
                         }
                         // log end time
-                        bw.append("" + future);
+                        bw.append(String.valueOf(System.currentTimeMillis()));
                         bw.newLine();
                     } catch(java.io.IOException e) {
                     } finally {
