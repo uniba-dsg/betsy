@@ -58,13 +58,13 @@ class ErrorProcesses {
     public static final BPMNProcess TOKEN_START_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
             "Token_StartQuantity_Zero", "A process with a scriptTask with startQuantity=0. " +
                     "Since startQuantity must not be zero, the process must not be executed.",
-            new BPMNTestCase().assertRuntimeException()
+            new BPMNTestCase().assertGenericError()
     );
 
     public static final BPMNProcess TOKEN_COMPLETION_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
             "Token_CompletionQuantity_Zero", "A processes with a scriptTask with completionQuantity=0. " +
             "Since completionQuantity must not be zero, the process must not be executed.",
-            new BPMNTestCase().assertRuntimeException()
+            new BPMNTestCase().assertGenericError()
     );
 
     public static final BPMNProcess MULTIPLE_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildErrorProcess(
