@@ -30,7 +30,7 @@ class JUnitXmlResultToCsvRow {
                         group: pkg.tokenize(".").last(),
                         tests: testSuite.@tests.text(),
                         totalFailures: testSuite.@failures.text(),
-                        deployable: (testSuite.testcase.error.@message.text().contains("but got [ERROR_deployment") || testSuite.testcase.failure.text().contains("Test Availabilty of WSDL Failed")) ? 0 : 1
+                        deployable: (testSuite.testcase.error.@message.text().contains("but got [ERROR_deployment") || testSuite.testcase.failure.text().contains("Test Availability of WSDL Failed")) ? 0 : 1
                 )
 
                 w.println(csvRow.toRow())

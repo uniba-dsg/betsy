@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
@@ -34,8 +36,20 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
-        FileTasks.copyFileIntoFolder(getAeDeploymentLog(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatLogsDir()));
+        result.add(getAeDeploymentLog());
+
+        return result;
     }
 
     private static Path getAeDeploymentLog() {

@@ -1,7 +1,6 @@
 package betsy.bpmn.engines
 
-import ant.tasks.AntUtil
-import betsy.bpmn.model.BPMNAssertions
+import betsy.common.tasks.AntUtil
 import betsy.common.tasks.FileTasks
 import org.codehaus.groovy.tools.RootLoader
 

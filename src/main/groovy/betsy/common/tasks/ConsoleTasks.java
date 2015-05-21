@@ -1,6 +1,5 @@
 package betsy.common.tasks;
 
-import ant.tasks.AntUtil;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.types.Environment;

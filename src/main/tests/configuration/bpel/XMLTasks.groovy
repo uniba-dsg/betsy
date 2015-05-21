@@ -1,5 +1,6 @@
-package betsy.common.tasks
+package configuration.bpel
 
+import betsy.common.tasks.WaitTasks
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
 import org.apache.log4j.Logger

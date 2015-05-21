@@ -1,19 +1,22 @@
 package betsy;
 
 import betsy.bpel.BPELMain;
+import betsy.bpmn.BPMNMain;
 
 public class Main {
 
     public static void main(String[] args) {
-        if(args.length == 0) {
+        if (args.length == 0) {
             printUsage();
             return;
         }
 
-        if("bpel".equalsIgnoreCase(args[0])){
+        if ("bpel".equalsIgnoreCase(args[0])) {
             BPELMain.main(createArgsWithoutFirstValue(args));
-        } else if("bpmn".equalsIgnoreCase(args[0])){
-            betsy.bpmn.BPMNMain.main(createArgsWithoutFirstValue(args));
+        } else if ("bpmn".equalsIgnoreCase(args[0])) {
+            BPMNMain.main(createArgsWithoutFirstValue(args));
+        } else if ("engine".equalsIgnoreCase(args[0])) {
+            EngineMain.main(createArgsWithoutFirstValue(args));
         } else {
             printUsage();
         }

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -210,7 +211,7 @@ public class BPELMain {
         if (params.checkDeployment()) {
             // check only whether the processes can be deployed
             for (BPELProcess process : processes) {
-                process.setTestCases(Arrays.asList(new BPELTestCase().checkDeployment()));
+                process.setTestCases(Collections.singletonList(new BPELTestCase().checkDeployment()));
             }
 
         }

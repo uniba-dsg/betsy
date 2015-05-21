@@ -1,8 +1,9 @@
 package betsy.common.engines;
 
+import betsy.common.HasLogs;
 import betsy.common.HasName;
 
-public interface EngineAPI<P> extends EngineLifecycle, HasName {
+public interface EngineAPI<P> extends EngineLifecycle, HasName, HasLogs {
 
     /**
      * Deploy the given <code>process</code> to the current engine.

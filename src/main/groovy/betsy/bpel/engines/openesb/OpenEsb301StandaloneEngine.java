@@ -8,6 +8,8 @@ import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
@@ -76,7 +78,19 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getInstanceFolder().resolve("logs"), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getInstanceFolder().resolve("logs")));
+
+        return result;
     }
 
     @Override

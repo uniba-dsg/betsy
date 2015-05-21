@@ -1,9 +1,12 @@
 package betsy.tools;
 
+import betsy.bpel.engines.AbstractBPELEngine;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.repositories.EngineRepository;
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.util.LogFileUtil;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +39,43 @@ import java.util.stream.Collectors;
  * The GUI to install, start and stop a local engine or all local engines.
  */
 public class EngineControl extends Application {
+
+    private static class LogFileUtil {
+
+        /**
+         * Requires BPEL or BPMN Engine to be passed!
+         */
+        public static Path copyLogsToTempFolder(Object e) {
+            final Path tmpFolder = createTempFolder(e.toString());
+            if (e instanceof AbstractBPELEngine) {
+                AbstractBPELEngine eNew = (AbstractBPELEngine) e;
+                eNew.storeLogs(new BPELProcess() {
+                    @Override
+                    public Path getTargetLogsPath() {
+                        return tmpFolder;
+                    }
+                });
+            } else if (e instanceof AbstractBPMNEngine) {
+                AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
+                eNew.storeLogs(new BPMNProcess() {
+                    @Override
+                    public Path getTargetLogsPath() {
+                        return tmpFolder;
+                    }
+                });
+            }
+            return tmpFolder;
+        }
+
+        public static Path createTempFolder(String context) {
+            try {
+                return Files.createTempDirectory("betsy-" + context + "-logs");
+            } catch (IOException e1) {
+                throw new IllegalStateException("Could not create temp folder", e1);
+            }
+        }
+
+    }
 
     private final ObservableList<String> actions = FXCollections.observableList(new LinkedList<>());
 
@@ -128,11 +169,11 @@ public class EngineControl extends Application {
 
         nodes.add(createButton("start", engine, EngineLifecycle::startup));
         nodes.add(createButton("stop", engine, EngineLifecycle::shutdown));
-        nodes.add(createButton("isRunning?", engine,(e) -> {
+        nodes.add(createButton("isRunning?", engine, (e) -> {
             boolean isRunning = engine.isRunning();
             Platform.runLater(() -> toast(engine.toString() + " is " + (isRunning ? "started" : "shutdown")));
         }));
-        nodes.add(createButton("open folder with logs", engine,(e) -> {
+        nodes.add(createButton("open folder with logs", engine, (e) -> {
             final Path tmpFolder = LogFileUtil.copyLogsToTempFolder(e);
             try {
                 Desktop.getDesktop().open(tmpFolder.toFile());

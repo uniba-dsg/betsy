@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BPMNBetsyTests {
@@ -19,7 +20,7 @@ public class BPMNBetsyTests {
 
         BPMNBetsy betsy = new BPMNBetsy();
 
-        betsy.setEngines(Arrays.asList(engine));
+        betsy.setEngines(Collections.singletonList(engine));
         betsy.setProcesses(processes);
         betsy.execute();
     }
@@ -70,5 +71,9 @@ public class BPMNBetsyTests {
 
         }
 
+        @Override
+        public List<Path> getLogs() {
+            return null;
+        }
     }
 }

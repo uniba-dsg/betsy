@@ -8,6 +8,8 @@ import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
@@ -24,7 +26,19 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getGlassfishHome().resolve("domains/domain1/logs/"), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getGlassfishHome().resolve("domains/domain1/logs/")));
+
+        return result;
     }
 
     public OpenEsbCLI getCli() {

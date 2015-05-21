@@ -24,8 +24,6 @@ public class Repository<T> {
     }
 
     public List<T> getByName(final String name) {
-        log.info("Getting element by name [" + name + "]");
-
         String trimmedName = name.trim();
         final String key = repository.keySet().stream().filter(t -> t.toUpperCase().equals(trimmedName.toUpperCase())).findFirst().orElse(trimmedName);
 

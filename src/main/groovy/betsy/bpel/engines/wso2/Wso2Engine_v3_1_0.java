@@ -7,6 +7,8 @@ import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
@@ -109,7 +111,19 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getLogsFolder(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getLogsFolder()));
+
+        return result;
     }
 
     public static final String CHECK_URL = "http://localhost:9763";

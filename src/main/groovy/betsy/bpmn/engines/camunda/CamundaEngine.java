@@ -14,6 +14,8 @@ import betsy.common.util.FileTypes;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -86,17 +88,24 @@ public class CamundaEngine extends AbstractBPMNEngine {
         return "http://localhost:8080/engine-rest/engine/default";
     }
 
+
     @Override
     public void storeLogs(BPMNProcess process) {
-        Path targetLogsPath = process.getTargetLogsPath();
-        FileTasks.mkdirs(targetLogsPath);
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), targetLogsPath);
+        FileTasks.mkdirs(process.getTargetLogsPath());
 
-        for (BPMNTestCase tc : process.getTestCases()) {
-            Path tomcatBin = getTomcatDir().resolve("bin");
-            FileTasks.copyFileIntoFolder(tomcatBin.resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
-            FileTasks.copyMatchingFilesIntoFolder(tomcatBin, targetLogsPath, "log" + tc.getNumber() + "_*.txt");
+        for(Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcatLogsDir()));
+        result.addAll(FileTasks.findAllInFolder(getTomcatDir().resolve("bin"), "log*.txt"));
+
+        return result;
     }
 
     private Path getTomcatLogsDir() {

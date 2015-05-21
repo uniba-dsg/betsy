@@ -20,6 +20,8 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
     @Override
@@ -99,13 +101,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
         Path targetLogsPath = process.getTargetLogsPath();
         FileTasks.mkdirs(targetLogsPath);
 
-        // TODO only copy log files from tomcat, the other files are files for the test
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), targetLogsPath);
-
-        for (BPMNTestCase tc : process.getTestCases()) {
-            Path tomcatBinPath = getTomcat().getTomcatBinDir();
-            FileTasks.copyFileIntoFolder(tomcatBinPath.resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
-            FileTasks.copyMatchingFilesIntoFolder(tomcatBinPath, targetLogsPath, "log" + tc.getNumber() + "_*.txt");
+        for(Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
     }
 
@@ -164,4 +161,14 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
     public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatLogsDir()));
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatBinDir(), "log*.txt"));
+
+        return result;
+    }
 }
