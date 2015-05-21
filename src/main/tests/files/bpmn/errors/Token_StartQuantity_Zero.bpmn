@@ -20,7 +20,7 @@
 
 		<bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="start" targetRef="send"/>
 
-		<bpmn2:scriptTask id="send" name="Send Tokens" completionQuantity="0">
+		<bpmn2:scriptTask id="send" name="Send Tokens" completionQuantity="2">
 			<bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
 			<bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
 			<bpmn2:script>SCRIPT_task1</bpmn2:script>
@@ -36,7 +36,7 @@
 		
 		<bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="forward" targetRef="receive"/>
 		
-		<bpmn2:scriptTask id="receive" name="Receive Tokens" startQuantity="2">
+		<bpmn2:scriptTask id="receive" name="Receive Tokens" startQuantity="0">
 			<bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
 			<bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
 			<bpmn2:script>SCRIPT_task3</bpmn2:script>
