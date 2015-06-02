@@ -15,7 +15,7 @@ import javax.xml.xpath.*;
 import java.io.IOException;
 import java.util.*;
 
-public class ProcessValidator {
+public class BPMNValidator {
 
     private List<BPMNProcess> processes;
 

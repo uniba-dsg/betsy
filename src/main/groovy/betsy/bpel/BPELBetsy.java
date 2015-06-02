@@ -3,7 +3,7 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
-import betsy.bpel.validation.Validator;
+import betsy.bpel.validation.BPELValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +26,7 @@ public class BPELBetsy {
     }
 
     private void validate() {
-        new Validator(processes).validate();
+        new BPELValidator(processes).validate();
     }
 
     public List<AbstractBPELEngine> getEngines() {

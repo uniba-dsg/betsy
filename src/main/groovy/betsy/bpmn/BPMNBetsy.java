@@ -3,7 +3,7 @@ package betsy.bpmn;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
-import betsy.bpmn.validation.ProcessValidator;
+import betsy.bpmn.validation.BPMNValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BPMNBetsy {
     public void execute() {
-        new ProcessValidator().validate();
+        new BPMNValidator().validate();
 
         Collections.sort(processes);
         BPMNTestSuite testSuite = BPMNTestSuite.createTests(engines, processes);

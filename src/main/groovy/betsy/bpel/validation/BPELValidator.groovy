@@ -8,11 +8,11 @@ import java.nio.file.Path
 /**
  * Validates a list of processes
  */
-class Validator {
+class BPELValidator {
 
     private final List<BPELProcess> processes
 
-    Validator(List<BPELProcess> processes) {
+    BPELValidator(List<BPELProcess> processes) {
         this.processes = processes
     }
 
