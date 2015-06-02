@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.1'
+    internal 'org.codehaus.groovy:groovy-all:2.4.3'
 
     internal 'org.apache.ant:ant:1.9.4'
     internal 'log4j:log4j:1.2.17'
@@ -47,12 +47,12 @@ dependencies {
 
     internal 'com.mashape.unirest:unirest-java:1.4.5' // for http requests and responses
 
-    internal 'org.slf4j:slf4j-api:1.7.10'
-    internal 'org.slf4j:slf4j-simple:1.7.10'
+    internal 'org.slf4j:slf4j-api:1.7.12'
+    internal 'org.slf4j:slf4j-simple:1.7.12'
 
     internal 'commons-cli:commons-cli:1.2' // for the CLI tools
 
-    internal 'org.apache.santuario:xmlsec:2.0.3' // for canonical XML form
+    internal 'org.apache.santuario:xmlsec:2.0.4' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
 
