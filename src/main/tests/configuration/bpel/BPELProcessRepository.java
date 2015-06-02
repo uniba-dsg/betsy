@@ -51,6 +51,8 @@ public class BPELProcessRepository {
 
         repo.put("ERRORS", ErrorProcesses.getProcesses());
 
+        repo.put("MINIMAL", Collections.singletonList(StructuredActivityProcesses.SEQUENCE));
+
         // automatic group
         repo.put(
                 "FAULTS",
