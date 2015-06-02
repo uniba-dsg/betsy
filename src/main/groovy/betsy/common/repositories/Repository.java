@@ -53,6 +53,10 @@ public class Repository<T> {
         return result;
     }
 
+    public List<String> getGroups() {
+        return repository.entrySet().stream().filter(e -> e.getValue().size() > 1).map(Map.Entry::getKey).collect(Collectors.toList());
+    }
+
     public List<String> getNames() {
         return new ArrayList<>(repository.keySet());
     }

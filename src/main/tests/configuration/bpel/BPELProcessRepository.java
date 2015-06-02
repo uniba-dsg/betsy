@@ -93,4 +93,8 @@ public class BPELProcessRepository {
         return repo.getNames();
     }
 
+    public List<String> getGroups() {
+        return repo.getGroups();
+    }
+
 }
