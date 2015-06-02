@@ -30,11 +30,11 @@ import java.util.List;
 /**
  * CAPITAL LETTERS for GROUPS of engines, lower case letters for engines
  */
-public class EngineRepository {
+public class BPELEngineRepository {
 
     private final Repository<AbstractBPELEngine> repo = new Repository<>();
 
-    public EngineRepository() {
+    public BPELEngineRepository() {
         List<AbstractBPELEngine> locals = Arrays.asList(
                 new OdeEngine(), new Ode136Engine(), new OdeInMemoryEngine(), new Ode136InMemoryEngine(),
                 new OpenEsbEngine(), new OpenEsb23Engine(), new OpenEsb231Engine(), new OpenEsb301StandaloneEngine(),

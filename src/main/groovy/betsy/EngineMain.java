@@ -1,6 +1,6 @@
 package betsy;
 
-import betsy.bpel.repositories.EngineRepository;
+import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
 
@@ -47,7 +47,7 @@ public class EngineMain {
     }
 
     private static List<EngineLifecycle> getEngines() {
-        final List<EngineLifecycle> bpelEngines = new EngineRepository().getByName("ALL").stream().collect(Collectors.toList());
+        final List<EngineLifecycle> bpelEngines = new BPELEngineRepository().getByName("ALL").stream().collect(Collectors.toList());
         final List<EngineLifecycle> bpmnEngines = new BPMNEngineRepository().getByName("ALL").stream().collect(Collectors.toList());
         final List<EngineLifecycle> engines = new LinkedList<>();
         engines.addAll(bpelEngines);

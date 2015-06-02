@@ -2,7 +2,7 @@ package betsy.tools;
 
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
-import betsy.bpel.repositories.EngineRepository;
+import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.repositories.BPMNEngineRepository;
@@ -106,7 +106,7 @@ public class EngineControl extends Application {
         pane.setHgap(1);
         pane.setVgap(3);
 
-        final List<EngineLifecycle> bpelEngines = new EngineRepository().getByName("ALL").stream().collect(Collectors.toList());
+        final List<EngineLifecycle> bpelEngines = new BPELEngineRepository().getByName("ALL").stream().collect(Collectors.toList());
         final List<EngineLifecycle> bpmnEngines = new BPMNEngineRepository().getByName("ALL").stream().collect(Collectors.toList());
         final List<EngineLifecycle> engines = new LinkedList<>();
         engines.addAll(bpelEngines);
