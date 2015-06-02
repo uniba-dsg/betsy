@@ -18,6 +18,7 @@ import betsy.bpel.engines.petalsesb.PetalsEsbEngine;
 import betsy.bpel.engines.wso2.Wso2Engine_v2_1_2;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_0_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_1_0;
+import betsy.bpel.engines.wso2.Wso2Engine_v3_2_0;
 import betsy.bpel.virtual.host.engines.*;
 import betsy.common.repositories.Repository;
 
@@ -41,7 +42,7 @@ public class EngineRepository {
                 new ActiveBpelEngine(),
                 new PetalsEsbEngine(), new PetalsEsb41Engine(),
                 new BpelgEngine(), new BpelgInMemoryEngine(),
-                new Wso2Engine_v3_1_0(), new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
+                new Wso2Engine_v3_2_0(), new Wso2Engine_v3_1_0(), new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
         List<AbstractBPELEngine> recent = Arrays.asList(
                 new BpelgEngine(),
                 new OrchestraEngine(),
@@ -49,7 +50,7 @@ public class EngineRepository {
                 new OpenEsb301StandaloneEngine(),
                 new PetalsEsb41Engine(),
                 new Ode136Engine(),
-                new Wso2Engine_v3_1_0());
+                new Wso2Engine_v3_2_0());
         List<AbstractBPELEngine> vms = Arrays.asList(
                 new VirtualOdeEngine(),
                 new VirtualBpelgEngine(),
