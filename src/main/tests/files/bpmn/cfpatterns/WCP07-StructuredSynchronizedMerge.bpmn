@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WC06"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WC06">
-    <bpmn2:process id="MultiChoice" isExecutable="true">
+                   id="WC07"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WC07">
+    <bpmn2:process id="StructuredSynchronizingMerge" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -37,7 +37,7 @@
             <bpmn2:script>SCRIPT_task1</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="InclusiveGateway_2"/>
 
 
         <bpmn2:sequenceFlow id="FalseFlow" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_2">
@@ -49,7 +49,7 @@
             <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="InclusiveGateway_2"/>
 
 
         <bpmn2:sequenceFlow id="DefaultFlow" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_3"/>
@@ -60,7 +60,17 @@
             <bpmn2:script>SCRIPT_task3</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="ScriptTask_3" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="ScriptTask_3" targetRef="InclusiveGateway_2"/>
+
+
+        <bpmn2:inclusiveGateway id="InclusiveGateway_2" gatewayDirection="Converging">
+            <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+        </bpmn2:inclusiveGateway>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="InclusiveGateway_2" targetRef="end"/>
 
         <bpmn2:scriptTask id="end" name="End">
             <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
