@@ -50,7 +50,7 @@ dependencies {
     internal 'org.slf4j:slf4j-api:1.7.12'
     internal 'org.slf4j:slf4j-simple:1.7.12'
 
-    internal 'commons-cli:commons-cli:1.2' // for the CLI tools
+    internal 'commons-cli:commons-cli:1.3' // for the CLI tools
 
     internal 'org.apache.santuario:xmlsec:2.0.4' // for canonical XML form
 

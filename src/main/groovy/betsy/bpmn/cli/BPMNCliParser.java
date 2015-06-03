@@ -48,7 +48,7 @@ public class BPMNCliParser {
     }
 
     public BPMNCliParameter parse() {
-        CommandLineParser parser = new BasicParser();
+        CommandLineParser parser = new DefaultParser();
         try {
             CommandLine cmd = parser.parse(getOptions(), args);
 

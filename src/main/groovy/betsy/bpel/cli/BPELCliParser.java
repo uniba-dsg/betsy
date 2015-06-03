@@ -84,7 +84,7 @@ public class BPELCliParser {
     }
 
     public BPELCliParameter parse() {
-        CommandLineParser parser = new BasicParser();
+        CommandLineParser parser = new DefaultParser();
         try {
             CommandLine cmd = parser.parse(getOptions(), args);
 
