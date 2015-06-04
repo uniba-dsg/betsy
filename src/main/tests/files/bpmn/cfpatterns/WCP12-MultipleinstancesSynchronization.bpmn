@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1433434196077" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_2" name="StartEvent"/>
+    <scriptTask activiti:exclusive="true" id="_3" name="Task1"/>
+    <scriptTask activiti:exclusive="true" id="_4" name="Task2"/>
+    <parallelGateway gatewayDirection="Unspecified" id="_5" name="ParallelGateway1"/>
+    <sequenceFlow id="_6" sourceRef="_2" targetRef="_3"/>
+    <sequenceFlow id="_7" sourceRef="_3" targetRef="_4"/>
+    <sequenceFlow id="_8" sourceRef="_4" targetRef="_5"/>
+    <parallelGateway gatewayDirection="Unspecified" id="_9" name="ParallelGateway2"/>
+    <scriptTask activiti:exclusive="true" id="_11" name="Task4"/>
+    <sequenceFlow id="_12" sourceRef="_5" targetRef="_11"/>
+    <endEvent id="_13" name="End1"/>
+    <sequenceFlow id="_14" sourceRef="_11" targetRef="_13"/>
+    <scriptTask activiti:exclusive="true" id="_15" name="Task4"/>
+    <scriptTask activiti:exclusive="true" id="_16" name="Task5"/>
+    <sequenceFlow id="_17" sourceRef="_9" targetRef="_15"/>
+    <sequenceFlow id="_18" sourceRef="_9" targetRef="_16"/>
+    <scriptTask activiti:exclusive="true" id="_19" name="Task3"/>
+    <sequenceFlow id="_20" sourceRef="_5" targetRef="_19"/>
+    <sequenceFlow id="_21" sourceRef="_19" targetRef="_9"/>
+    <endEvent id="_22" name="EndEvent"/>
+    <sequenceFlow id="_23" sourceRef="_15" targetRef="_22"/>
+    <scriptTask activiti:exclusive="true" id="_24" name="Do we even..."/>
+    <scriptTask activiti:exclusive="true" id="_25" name="need these 2 tasks?"/>
+    <sequenceFlow id="_26" sourceRef="_16" targetRef="_24"/>
+    <sequenceFlow id="_27" sourceRef="_24" targetRef="_25"/>
+    <endEvent id="_28" name="SupermegaEnd"/>
+    <sequenceFlow id="_29" sourceRef="_25" targetRef="_28"/>
+  </process>
+ </definitions>

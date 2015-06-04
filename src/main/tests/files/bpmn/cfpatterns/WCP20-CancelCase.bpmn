@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP20-CancelCase"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/CancelCase">
+  <bpmn2:process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
+    <bpmn2:startEvent id="_2" name="StartEvent"/>
+    <bpmn2:scriptTask id="_3" name="Task1"/>
+    <bpmn2:sequenceFlow id="_4" sourceRef="_2" targetRef="_3"/>
+    <bpmn2:parallelGateway gatewayDirection="Unspecified" id="_5" name="ParallelGateway"/>
+    <bpmn2:sequenceFlow id="_6" sourceRef="_3" targetRef="_5"/>
+    <bpmn2:scriptTask id="_7" name="Task2"/>
+    <bpmn2:sequenceFlow id="_8" sourceRef="_5" targetRef="_7"/>
+    <bpmn2:intermediateThrowEvent id="_9" name="IntermediateThrowingEvent"/>
+    <bpmn2:sequenceFlow id="_10" sourceRef="_5" targetRef="_9"/>
+    <bpmn2:endEvent id="_11" name="EndEvent"/>
+    <bpmn2:sequenceFlow id="_12" sourceRef="_9" targetRef="_11"/>
+    <bpmn2:sequenceFlow id="_13" sourceRef="_7" targetRef="_11"/>
+  </bpmn2:process>
+  
+</bpmn2:definitions>

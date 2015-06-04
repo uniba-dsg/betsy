@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1433434586383" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_2" name="StartEvent"/>
+    <scriptTask activiti:exclusive="true" id="_3" name="Task1"/>
+    <sequenceFlow id="_4" sourceRef="_2" targetRef="_3"/>
+    <subProcess activiti:exclusive="true" id="_5" name="This runs 100 times" triggeredByEvent="false"/>
+    <sequenceFlow id="_6" sourceRef="_3" targetRef="_5"/>
+    <scriptTask activiti:exclusive="true" id="_7" name="Task2"/>
+    <sequenceFlow id="_8" sourceRef="_5" targetRef="_7"/>
+    <endEvent id="_9" name="EndEvent"/>
+    <sequenceFlow id="_10" sourceRef="_7" targetRef="_9"/>
+  </process>
+  
+</definitions>

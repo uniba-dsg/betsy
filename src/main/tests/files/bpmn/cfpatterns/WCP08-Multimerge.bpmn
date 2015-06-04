@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1433432075327" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_2" name="StartEvent"/>
+    <scriptTask activiti:exclusive="true" id="_3" name="Task1"/>
+    <parallelGateway gatewayDirection="Unspecified" id="_4" name="ParallelGateway"/>
+    <scriptTask activiti:exclusive="true" id="_5" name="Task2"/>
+    <scriptTask activiti:exclusive="true" id="_6" name="Task3"/>
+    <scriptTask activiti:exclusive="true" id="_7" name="Task4"/>
+    <endEvent id="_8" name="EndEvent"/>
+    <sequenceFlow id="_9" sourceRef="_2" targetRef="_3"/>
+    <sequenceFlow id="_10" sourceRef="_3" targetRef="_4"/>
+    <sequenceFlow id="_11" sourceRef="_4" targetRef="_5"/>
+    <sequenceFlow id="_12" sourceRef="_4" targetRef="_6"/>
+    <sequenceFlow id="_13" sourceRef="_6" targetRef="_7"/>
+    <sequenceFlow id="_14" sourceRef="_5" targetRef="_7"/>
+    <sequenceFlow id="_15" sourceRef="_7" targetRef="_8"/>
+  </process>
+ 
+</definitions>
