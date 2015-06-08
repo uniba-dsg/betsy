@@ -43,8 +43,8 @@ public class TomcatInstaller {
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.bat"), "cd " +
                 getTomcat().getTomcatBinDir().toAbsolutePath() + " && call shutdown.bat");
 
-        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), "CATALINA_OPTS=\"-Xmx3048M -XX:MaxPermSize=2048m " +
-                additionalVmParam + "\ncd" + getTomcat().getTomcatBinDir().toAbsolutePath() + " &&. / startup.sh");
+        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), "CATALINA_OPTS=\"-Xmx3048M -XX:MaxPermSize=2048m\"" +
+                additionalVmParam + "\ncd " + getTomcat().getTomcatBinDir().toAbsolutePath() + " && ./startup.sh");
 
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd " +
                 getTomcat().getTomcatBinDir().toAbsolutePath() + " && ./shutdown.sh");
