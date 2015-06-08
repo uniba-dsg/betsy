@@ -1,5 +1,6 @@
 package betsy.common.tasks;
 
+import betsy.common.config.Configuration;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.types.Environment;
@@ -106,6 +107,11 @@ public class ConsoleTasks {
 
     public static void executeOnUnixAndIgnoreError(CliCommand cliCommand, Map<String, String> environment) {
         execute(UNIX, cliCommand, false, environment);
+    }
+
+    public static void setupAnt(Path antPath) {
+        Path antBinFolder = antPath.toAbsolutePath();
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(antBinFolder, "chmod").values("+x", antBinFolder.resolve("ant").toString()));
     }
 
     /**

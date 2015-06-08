@@ -21,12 +21,17 @@ public class JbpmInstaller {
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir);
 
-        Path antPath = Configuration.getAntHome().resolve("bin");
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jboss"));
+        ConsoleTasks.setupAnt(getAntPath());
 
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), antPath.toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jboss"));
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+    }
+
+    private Path getAntPath() {
+        return Configuration.getAntHome().resolve("bin");
     }
 
     @Override

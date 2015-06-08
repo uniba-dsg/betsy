@@ -123,12 +123,14 @@ public class JbpmEngine extends AbstractBPMNEngine {
         Path pathToJava7 = Configuration.getJava7Home();
         FileTasks.assertDirectory(pathToJava7);
 
+        ConsoleTasks.setupAnt(getAntPath());
+
         Map<String, String> map = new LinkedHashMap<>(1);
         map.put("JAVA_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map);
         Map<String, String> map1 = new LinkedHashMap<>(1);
         map1.put("JAVA_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q start.demo.noeclipse"), map1);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant").values("-q", "start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
         WaitTasks.waitForSubstringInFile(240000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
@@ -140,6 +142,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public void shutdown() {
+        ConsoleTasks.setupAnt(getAntPath());
+
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
 

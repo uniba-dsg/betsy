@@ -38,6 +38,8 @@ public class OrchestraInstaller {
 
         setPropertyInPropertiesFile(installDir.resolve("conf").resolve("install.properties"), "catalina.home", "../apache-tomcat-7.0.26");
 
+        ConsoleTasks.setupAnt(getAntPath());
+
         // clean up data (with db and config files in the users home directory)
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(installDir, getAntPath().toAbsolutePath().toString() + "/ant install"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(installDir, getAntPath().toAbsolutePath().toString() + "/ant").values("install"));
