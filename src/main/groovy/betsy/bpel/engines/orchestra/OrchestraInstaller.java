@@ -6,7 +6,6 @@ import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,10 +37,6 @@ public class OrchestraInstaller {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
 
         setPropertyInPropertiesFile(installDir.resolve("conf").resolve("install.properties"), "catalina.home", "../apache-tomcat-7.0.26");
-
-
-        DefaultGroovyMethods.println(this, "after properties have been set");
-        //ant.ant target: "install", dir: installDir
 
         // clean up data (with db and config files in the users home directory)
         String cmd = getAntPath().toAbsolutePath().toString() + "/ant install";
