@@ -5,6 +5,7 @@ import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.util.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
@@ -26,23 +27,29 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
         String processName = process.getName();
         Path packageFilePath = process.getTargetPackageCompositeFilePath();
-        Path tmpFolder = process.getTargetPath();
 
         LOGGER.info("Deploying " + processName + " from " + packageFilePath);
 
         // QUIRK path must always be in unix style, otherwise it is not correctly deployed
-        String packageFilePathUnixStyle = packageFilePath.toAbsolutePath().toString().replace("\\", "/");
 
         Path passwordFilePath = getServerPath().resolve("password.txt");
         FileTasks.createFile(passwordFilePath, "OE_ADMIN_PASSWORD=admin");
 
-        String command = "java -jar openesb-oeadmin-1.0.1.jar deploy-jbi-service-assembly --user admin --passwordfile " + passwordFilePath.toAbsolutePath().toString().replace("\\", "/") + " " + packageFilePathUnixStyle;
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
+        String[] deployParams = {"-jar", "openesb-oeadmin-1.0.1.jar", "deploy-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                StringUtils.toUnixStyle(packageFilePath)};
 
-        command = "java -jar openesb-oeadmin-1.0.1.jar start-jbi-service-assembly --user admin --passwordfile " + passwordFilePath.toAbsolutePath().toString().replace("\\", "/") + " " + processName + "Application";
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
+
+        String[] startParams = {"-jar", "openesb-oeadmin-1.0.1.jar", "start-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                processName + "Application"};
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
     }
 
     public void buildDeploymentDescriptor(BPELProcess process) {
@@ -130,13 +137,13 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     public void startup() {
         // start openesb.bat
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.bat"));
-        WaitTasks.waitForAvailabilityOfUrl(10*1000,500, WEB_UI);
+        WaitTasks.waitForAvailabilityOfUrl(10 * 1000, 500, WEB_UI);
 
         // install bpelse
         Path components = getServerPath().resolve("OpenESB-SE-3.0.1").resolve("OE-Components");
         Path installFolder = getInstanceFolder().resolve("server").resolve("jbi").resolve("autoinstall");
 
-        WaitTasks.waitFor(10*1000, 500, () -> FileTasks.hasFolder(installFolder));
+        WaitTasks.waitFor(10 * 1000, 500, () -> FileTasks.hasFolder(installFolder));
 
         installComponent(components, installFolder, "encoderlib.jar");
         installComponent(components, installFolder, "wsdlextlib.jar");

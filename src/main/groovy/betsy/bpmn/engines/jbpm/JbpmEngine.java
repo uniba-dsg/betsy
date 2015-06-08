@@ -2,7 +2,6 @@ package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -55,10 +54,9 @@ public class JbpmEngine extends AbstractBPMNEngine {
     public void deploy(final BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
         final Path mavenPath = Configuration.getMavenHome().resolve("bin");
-        final String mvnCommand = mavenPath.toAbsolutePath() + "/mvn -q clean install";
 
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnCommand));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mavenPath.toAbsolutePath() + "/mvn -q clean install"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mavenPath.toAbsolutePath() + "/mvn").values("-q", "clean", "install"));
 
         //wait for maven to deploy
         WaitTasks.sleep(1500);
@@ -97,7 +95,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     public void storeLogs(BPMNProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
 
-        for(Path p : getLogs()) {
+        for (Path p : getLogs()) {
             FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
     }
@@ -156,7 +154,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
-            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant").values("-q").values("clean.demo"));
         } catch (IllegalStateException ex) {
             //swallow
         }
