@@ -68,6 +68,11 @@ public class BPELCliParser {
         public boolean showHelp() {
             return true;
         }
+
+        @Override
+        public boolean useInstalledEngine() {
+            return false;
+        }
     };
     public static final String HELP = "help";
     public static final String OPEN_RESULTS_IN_BROWSER = "open-results-in-browser";
@@ -76,6 +81,7 @@ public class BPELCliParser {
     public static final String BUILD_ONLY = "build-only";
     public static final String PARTNER_ADDRESS = "partner-address";
     public static final String TO_CORE_BPEL = "to-core-bpel";
+    private static final String USE_INSTALLED_ENGINE = "use-installed-engine";
 
     private final String[] args;
 
@@ -153,6 +159,11 @@ public class BPELCliParser {
                 public boolean showHelp() {
                     return cmd.hasOption(HELP);
                 }
+
+                @Override
+                public boolean useInstalledEngine() {
+                    return cmd.hasOption(USE_INSTALLED_ENGINE);
+                }
             };
         } catch (ParseException e) {
             return HELP_ONLY;
@@ -166,6 +177,7 @@ public class BPELCliParser {
         options.addOption("c", CHECK_DEPLOYMENT, false, "Verifies deployment instead of test success");
         options.addOption("e", USE_EXTERNAL_PARTNER_SERVICE, false, "Use external partner service instead of internal one");
         options.addOption("b", BUILD_ONLY, false, "Builds only the artifacts. Does nothing else.");
+        options.addOption("i", USE_INSTALLED_ENGINE, false, "Use already installed engine.");
 
         options.addOption("p", PARTNER_ADDRESS, true, "Partner IP and Port (defaults to " + Configuration.get("partner.ipAndPort") + ")");
         options.addOption("t", TO_CORE_BPEL, true, "Transform to Core BPEL");

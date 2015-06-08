@@ -58,7 +58,7 @@ public class BPELMain {
             coreBpel(params, params.getEngines());
             virtualEngines(params.getEngines());
 
-            onlyBuildSteps(params, betsy);
+            onlyBuildStepsOrUseInstalledEngine(params, betsy);
 
             betsy.setProcesses(params.getProcesses());
             betsy.setEngines(params.getEngines());
@@ -100,7 +100,7 @@ public class BPELMain {
         System.exit(0);
     }
 
-    public static void onlyBuildSteps(BPELCliParameter params, BPELBetsy betsy) {
+    public static void onlyBuildStepsOrUseInstalledEngine(BPELCliParameter params, BPELBetsy betsy) {
         if (params.buildArtifactsOnly()) {
             betsy.setComposite(new BPELComposite() {
                 @Override
@@ -116,7 +116,11 @@ public class BPELMain {
                 }
 
                 @Override
-                protected void installAndStart(BPELProcess process) {
+                protected void install(BPELProcess process) {
+                }
+
+                @Override
+                protected void startup(BPELProcess process) {
                 }
 
                 @Override
@@ -132,8 +136,16 @@ public class BPELMain {
                 }
 
             });
-        }
+        } else if (params.useInstalledEngine()) {
+            betsy.setComposite(new BPELComposite() {
 
+                @Override
+                protected void install(BPELProcess process) {
+                    // is already installed - use existing installation
+                }
+
+            });
+        }
     }
 
     private static void localhostPartnerAddressNotAllowedForTestingVirtualEngines(List<AbstractBPELEngine> engines) {

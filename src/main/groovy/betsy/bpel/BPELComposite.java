@@ -85,7 +85,8 @@ public class BPELComposite {
         new Retry(process).atMostThreeTimes(() -> log(process.getTargetPath(), () -> {
             buildPackageAndTest(process);
             try {
-                installAndStart(process);
+                install(process);
+                startup(process);
                 deploy(process);
                 test(process);
                 collect(process);
@@ -105,9 +106,11 @@ public class BPELComposite {
         log(process.getTargetPath() + "/deploy", () -> process.getEngine().deploy(process));
     }
 
-    protected void installAndStart(final BPELProcess process) {
-        // setup infrastructure
+    protected void install(final BPELProcess process) {
         log(process.getTargetPath() + "/engine_install", () -> process.getEngine().install());
+    }
+
+    protected void startup(BPELProcess process) {
         log(process.getTargetPath() + "/engine_startup", () -> process.getEngine().startup());
     }
 

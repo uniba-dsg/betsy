@@ -21,4 +21,5 @@ public interface BPELCliParameter {
 
     boolean showHelp();
 
+    boolean useInstalledEngine();
 }
