@@ -14,7 +14,9 @@
     <bpmn2:sequenceFlow id="_8" sourceRef="_5" targetRef="_7"/>
     <bpmn2:intermediateThrowEvent id="_9" name="IntermediateThrowingEvent"/>
     <bpmn2:sequenceFlow id="_10" sourceRef="_5" targetRef="_9"/>
-    <bpmn2:endEvent id="_11" name="EndEvent"/>
+    <bpmn2:endEvent id="_11" name="EndEvent">
+		<bpmn2:terminateEventDefinition/>
+	</bpmn2:endEvent>
     <bpmn2:sequenceFlow id="_12" sourceRef="_9" targetRef="_11"/>
     <bpmn2:sequenceFlow id="_13" sourceRef="_7" targetRef="_11"/>
   </bpmn2:process>
