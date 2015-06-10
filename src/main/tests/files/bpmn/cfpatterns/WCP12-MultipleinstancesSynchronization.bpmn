@@ -26,7 +26,9 @@
     <scriptTask activiti:exclusive="true" id="_25" name="need these 2 tasks?"/>
     <sequenceFlow id="_26" sourceRef="_16" targetRef="_24"/>
     <sequenceFlow id="_27" sourceRef="_24" targetRef="_25"/>
-    <endEvent id="_28" name="SupermegaEnd"/>
+    <endEvent id="_28" name="SupermegaEnd">
+      <terminateEventDefinition id="_28_ED_1"/>
+    </endEvent>
     <sequenceFlow id="_29" sourceRef="_25" targetRef="_28"/>
   </process>
- </definitions>
+</definitions>
