@@ -34,7 +34,7 @@
     <sequenceFlow id="_23" sourceRef="_12" targetRef="_22"/>
     <startEvent id="_25" name="Start"/>
     <sequenceFlow id="_26" sourceRef="_25" targetRef="_7"/>
-    <inclusiveGateway gatewayDirection="Unspecified" id="_28" name="TODO: Complex gateway that waits for one of the incoming branches"/>
+    <complexGateway gatewayDirection="Converging" id="_28"/>
     <sequenceFlow id="_29" sourceRef="_28" targetRef="_12"/>
     <sequenceFlow id="_30" sourceRef="_10" targetRef="_28"/>
     <sequenceFlow id="_31" sourceRef="_8" targetRef="_28"/>
