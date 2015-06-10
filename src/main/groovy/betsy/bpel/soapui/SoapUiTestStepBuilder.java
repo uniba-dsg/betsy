@@ -87,9 +87,9 @@ public class SoapUiTestStepBuilder {
 
     private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, SoapTestStep testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.getTestRequest();
-        if (testStep.getOperation().equals(betsy.bpel.model.steps.WsdlOperation.SYNC)) {
+        if (betsy.bpel.model.steps.WsdlOperation.SYNC.equals(testStep.getOperation())) {
             soapUiRequest.setRequestContent(TestMessages.createSyncInputMessage(testStep.getInput()));
-        } else if (testStep.getOperation().equals(betsy.bpel.model.steps.WsdlOperation.ASYNC)) {
+        } else if (betsy.bpel.model.steps.WsdlOperation.ASYNC.equals(testStep.getOperation())) {
             soapUiRequest.setRequestContent(TestMessages.createAsyncInputMessage(testStep.getInput()));
         } else if (testStep.isTestPartner()) {
             soapUiRequest.setRequestContent(TestMessages.createSyncTestPartnerInputMessage(testStep.getInput()));
