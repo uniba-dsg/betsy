@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WC07"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WC07">
-    <bpmn2:process id="StructuredSynchronizingMerge" isExecutable="true">
+                   id="WCP07StructuredSynchronizedMergeTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP07StructuredSynchronizedMerge">
+    <bpmn2:process id="WCP07StructuredSynchronizingMerge" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>

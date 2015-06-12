@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WCP03-SynchronizationTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wcp03-Synchronization">
- <bpmn2:process id="WCP03-Synchronization" isExecutable="true">
+                   id="WCP03SynchronizationTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP03Synchronization">
+ <bpmn2:process id="WCP03Synchronization" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
