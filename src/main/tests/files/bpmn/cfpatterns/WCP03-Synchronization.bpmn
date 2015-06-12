@@ -43,6 +43,7 @@
         <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
             <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+			<bpmn2:outgoing>SequenceFlow_98</bpmn2:outgoing>
             <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
@@ -61,6 +62,7 @@
         <bpmn2:parallelGateway id="ParallelGateway_2" gatewayDirection="Converging">
             <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+			<bpmn2:incoming>SequenceFlow_99</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
         </bpmn2:parallelGateway>
 
