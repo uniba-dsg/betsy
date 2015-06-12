@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="ExclusiveGateway_DefaultTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WC04">
-    <bpmn2:process id="ExclusiveChoice" isExecutable="true">
+                   id="WCP04ExclusiveChoiceTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP04ExclusiveChoice">
+    <bpmn2:process id="WCP04ExclusiveChoice" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -66,7 +66,9 @@
 
 
         <bpmn2:scriptTask id="end" name="End">
-            <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+			<bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+			<bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
             <bpmn2:script>SCRIPT_task4</bpmn2:script>
         </bpmn2:scriptTask>

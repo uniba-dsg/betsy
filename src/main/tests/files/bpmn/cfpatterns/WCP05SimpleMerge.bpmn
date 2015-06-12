@@ -2,9 +2,9 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WCP05-SimpleMerge"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP05-SimpleMerge">
-    <bpmn2:process id="SimpleMerge" isExecutable="true">
+                   id="WCP05SimpleMergeTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP05SimpleMerge">
+    <bpmn2:process id="WCP05SimpleMerge" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
