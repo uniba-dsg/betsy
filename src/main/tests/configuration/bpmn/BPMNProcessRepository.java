@@ -15,6 +15,7 @@ public class BPMNProcessRepository {
         all.addAll(BasicProcesses.BASICS);
         all.addAll(ErrorProcesses.ERRORS);
         all.addAll(DataProcesses.DATA);
+        all.addAll(PatternProcesses.PATTERNS);
         repo.put("ALL", all);
 
         List<Field> fields = new LinkedList<>();
@@ -24,6 +25,7 @@ public class BPMNProcessRepository {
         fields.addAll(Arrays.asList(EventProcesses.class.getDeclaredFields()));
         fields.addAll(Arrays.asList(BasicProcesses.class.getDeclaredFields()));
         fields.addAll(Arrays.asList(DataProcesses.class.getDeclaredFields()));
+        fields.addAll(Arrays.asList(PatternProcesses.class.getDeclaredFields()));
         for (Field f : fields) {
             // adds only the static fields that are lists (groups)
             if (f.getType().equals(List.class)) {
