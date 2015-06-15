@@ -17,6 +17,8 @@ public class Main {
             BPMNMain.main(createArgsWithoutFirstValue(args));
         } else if ("engine".equalsIgnoreCase(args[0])) {
             EngineMain.main(createArgsWithoutFirstValue(args));
+        } else if ("process".equalsIgnoreCase(args[0])) {
+            ProcessMain.main(createArgsWithoutFirstValue(args));
         } else {
             printUsage();
         }
