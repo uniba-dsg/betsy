@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<bpmn2:definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1433432075327" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <bpmn2:process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
-    <bpmn2:startEvent id="_2" name="StartEvent"/>
-    <bpmn2:scriptTask:exclusive="true" id="_3" name="Task1"/>
-    <bpmn2:parallelGateway gatewayDirection="Unspecified" id="_4" name="ParallelGateway"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="_5" name="Task2"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="_6" name="Task3"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="_7" name="Task4"/>
-    <bpmn2:endEvent id="_8" name="EndEvent"/>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP08MultimergeTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP08Multimerge">
+ <bpmn2:process id="WCP08Multimerge" isExecutable="true">
+ 
+    <bpmn2:startEvent id="_2" name="StartEvent">
+	<bpmn2:outgoing>_9</bpmn2:outgoing>
+	</bpmn2:startEvent>
+	
+    <bpmn2:scriptTask id="_3" name="Task1">
+	<bpmn2:incoming>_9</bpmn2:incoming>
+	<bpmn2:outgoing>_10</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:parallelGateway gatewayDirection="Unspecified" id="_4" name="ParallelGateway">
+	<bpmn2:incoming>_10</bpmn2:incoming>
+	<bpmn2:outgoing>_11</bpmn2:outgoing>
+	<bpmn2:outgoing>_12</bpmn2:outgoing>
+	</bpmn2:parallelGateway>
+	
+	
+    <bpmn2:scriptTask id="_5" name="Task2">
+	<bpmn2:incoming>_11</bpmn2:incoming>
+	<bpmn2:outgoing>_14</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:scriptTask id="_6" name="Task3">
+	<bpmn2:incoming>_12</bpmn2:incoming>
+	<bpmn2:outgoing>_13</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:scriptTask id="_7" name="Task4">
+	<bpmn2:incoming>_13</bpmn2:incoming>
+	<bpmn2:incoming>_14</bpmn2:incoming>
+	<bpmn2:outgoing>_15</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:endEvent id="_8" name="EndEvent">
+	<bpmn2:incoming>_15</bpmn2:incoming>
+	</bpmn2:endEvent>
+	
     <bpmn2:sequenceFlow id="_9" sourceRef="_2" targetRef="_3"/>
     <bpmn2:sequenceFlow id="_10" sourceRef="_3" targetRef="_4"/>
     <bpmn2:sequenceFlow id="_11" sourceRef="_4" targetRef="_5"/>
