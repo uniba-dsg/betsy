@@ -10,14 +10,14 @@ import java.util.List;
  */
 public class PatternProcesses {
 
-    public static final BPMNProcess SEQUENCE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP01SequenceFlow", "A Process for a sequence flow with ",
+    public static final BPMNProcess SEQUENCE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP01SequenceFlow", "A Process for a sequence flow with a single start and end task which assert if the Process has been executed once",
             new BPMNTestCase().assertTask1());
 
 
-    public static final BPMNProcess PARALLEL_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP02ParallelSplit", "This tests if all 3 ScriptTasks are written concurrently",
+    public static final BPMNProcess PARALLEL_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP02ParallelSplit", "A Process for a parallel Split with 3 tasks , each task has to be executed exactly once",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
    
-    public static final BPMNProcess SYNCHRONIZATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP03Synchronization", "Test for WCP03 the Synchronization Flow Pattern",
+    public static final BPMNProcess SYNCHRONIZATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP03Synchronization", "A Process for Synchronising 3 branches into a single branch, Task4 should be only executed once if the synchronization is working correctly",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
