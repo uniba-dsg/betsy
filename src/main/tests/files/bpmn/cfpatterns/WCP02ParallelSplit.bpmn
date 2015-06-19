@@ -27,26 +27,26 @@
 			<bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
         </bpmn2:parallelGateway>
 		
-		<bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="ParallelGateway_1" targetRef="ScriptTask_4"/>
+		<bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="ParallelGateway_1" targetRef="ScriptTask_3"/>
 
-        <bpmn2:scriptTask id="ScriptTask_4" name="Parallel3">
+        <bpmn2:scriptTask id="ScriptTask_3" name="Parallel3">
             <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
-            <bpmn2:script>SCRIPT_task4</bpmn2:script>
+            <bpmn2:script>SCRIPT_task3</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_12" name="" sourceRef="ScriptTask_4" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_12" name="" sourceRef="ScriptTask_3" targetRef="EndEvent"/>
 		
 
         <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ParallelGateway_1" targetRef="ScriptTask_1"/>
 
-        <bpmn2:scriptTask id="ScriptTask_1" name="Parallel1">
+        <bpmn2:scriptTask id="ScriptTask_1" name="Parallel2">
             <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
             <bpmn2:script>SCRIPT_task1</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="EndEvent"/>
 
 
         <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ParallelGateway_1" targetRef="ScriptTask_2"/>
@@ -57,24 +57,26 @@
             <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="end"/>
+        <bpmn2:sequenceFlow id="SequenceFlow_9" name="" sourceRef="ScriptTask_2" targetRef="EndEvent"/>
 
 
        
 
-        <bpmn2:scriptTask id="end" name="End">
+      <!--  <bpmn2:scriptTask id="end" name="End">
 		<bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
 		<bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-            <bpmn2:script>SCRIPT_task3</bpmn2:script>
-        </bpmn2:scriptTask>
+            <bpmn2:script>KAKA_SCRIPT</bpmn2:script>
+        </bpmn2:scriptTask> 
 
         <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="end" targetRef="EndEvent_2"/>
-
-        <bpmn2:endEvent id="EndEvent_2">
+-->
+        <bpmn2:endEvent id="EndEvent">
             <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
-        </bpmn2:endEvent>
+			<bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+			<bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+        </bpmn2:endEvent> 
 
     </bpmn2:process>
 </bpmn2:definitions>

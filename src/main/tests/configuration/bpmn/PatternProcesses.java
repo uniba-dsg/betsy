@@ -10,12 +10,17 @@ import java.util.List;
  */
 public class PatternProcesses {
 
-    public static final BPMNProcess SEQUENCE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP01SequenceFlow", "Test for WCP01 the Sequence Flow Pattern",
+    public static final BPMNProcess SEQUENCE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP01SequenceFlow", "A Process for a sequence flow with ",
             new BPMNTestCase().assertTask1());
 
-    public static final List<BPMNProcess> PATTERNS = Arrays.asList(
-            SEQUENCE_PATTERN
+    public static final BPMNProcess PARALLEL_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP02ParallelSplit", "This tests if all 3 ScriptTasks are written concurrently",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
+
+
+    public static final List<BPMNProcess> PATTERNS = Arrays.asList(
+            SEQUENCE_PATTERN,
+            PARALLEL_PATTERN
     );
 
 }
