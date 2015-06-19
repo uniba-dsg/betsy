@@ -28,8 +28,9 @@ public class PatternProcesses {
             new BPMNTestCase().inputC().assertTask3()
     );
 
-    public static final BPMNProcess MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP05Multimerge",
-            "A Process for Merging 3 branches into a single branch without using a converging gateway, task 4 should be executed 3 times (a new instance is created with each incoming flow",
+    //TODO This should be thought over again, maybe think of a new way to test for non-parallel execution?
+    public static final BPMNProcess MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMerge",
+            "A Process for Merging 3 branches into a single branch without using a converging gateway,all of parallel Tasks will write the same assertion job but only one (namely the fastest to execute) of the referred task will enable the end Task, the other 2 are not need for activation and will therefore not show up in the assertion List",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4());
 
 
