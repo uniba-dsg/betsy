@@ -54,7 +54,7 @@
 		<bpmn2:scriptTask id="ScriptTask_3" name="Task 3">
             <bpmn2:incoming>SequenceFlow_98</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_99</bpmn2:outgoing>
-            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+            <bpmn2:script>SCRIPT_task3</bpmn2:script>
         </bpmn2:scriptTask>
 		
 		<bpmn2:sequenceFlow id="SequenceFlow_99" name="" sourceRef="ScriptTask_3" targetRef="ParallelGateway_2"/>
