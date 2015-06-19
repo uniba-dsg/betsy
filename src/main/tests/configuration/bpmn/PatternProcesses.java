@@ -13,9 +13,12 @@ public class PatternProcesses {
     public static final BPMNProcess SEQUENCE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP01SequenceFlow", "Test for WCP01 the Sequence Flow Pattern",
             new BPMNTestCase().assertTask1());
 
-    public static final List<BPMNProcess> PATTERNS = Arrays.asList(
-            SEQUENCE_PATTERN
+    public static final BPMNProcess SYNCHRONIZATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP03Synchronization", "Test for WCP03 the Synchronization Flow Pattern",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4());
 
+    public static final List<BPMNProcess> PATTERNS = Arrays.asList(
+            SEQUENCE_PATTERN,
+            SYNCHRONIZATION_PATTERN
     );
 
 }
