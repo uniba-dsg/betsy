@@ -49,7 +49,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
         WaitTasks.sleep(2000);
-        WaitTasks.waitForSubstringInFile(60_000, 500, getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
+        WaitTasks.waitForSubstringInFile(120_000, 500, getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
 
     public Path getLogsFolder() {
