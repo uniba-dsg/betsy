@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="WCP07StructuredSynchronizedMergeTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP07StructuredSynchronizedMerge">
-    <bpmn2:process id="WCP07StructuredSynchronizingMerge" isExecutable="true">
+    <bpmn2:process id="WCP07StructuredSynchronizedMerge" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
