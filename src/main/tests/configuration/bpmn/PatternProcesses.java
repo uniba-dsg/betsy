@@ -49,6 +49,12 @@ public class PatternProcesses {
             );
 
 
+    public static final BPMNProcess MULTI_MERGE = BPMNProcessBuilder.buildPatternProcess("WCP08MultiMerge", "A Process with the convergence of two or more branches " +
+                    "into  a  single  path without synchronization",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4()
+    );
+
+
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
             PARALLEL_PATTERN,
@@ -56,6 +62,7 @@ public class PatternProcesses {
             EXCLUSIVE_PATTERN,
             MERGE_PATTERN,
             MULTI_CHOICE,
-            SYNC_MERGE
+            SYNC_MERGE,
+            MULTI_MERGE
     );
 }
