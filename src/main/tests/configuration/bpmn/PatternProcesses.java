@@ -33,15 +33,21 @@ public class PatternProcesses {
             "A Process for Merging 3 branches into a single branch without using a converging gateway,all of parallel Tasks will write the same assertion job but only one (namely the fastest to execute) of the referred task will enable the end Task, the other 2 are not need for activation and will therefore not show up in the assertion List",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4());
 
+    //TODO add description and test logic
+    public static final BPMNProcess MULTI_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP06MultiChoice", "A Process with the divergence of the thread of control " +
+                    "into several parallel branches on a selective basis",
+            new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputAB().assertTask1().assertTask2(),
+            new BPMNTestCase().assertTask3()
+            );
+
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
             PARALLEL_PATTERN,
             SYNCHRONIZATION_PATTERN,
             EXCLUSIVE_PATTERN,
-            MERGE_PATTERN
-
-
+            MERGE_PATTERN,
+            MULTI_CHOICE
     );
-
 }

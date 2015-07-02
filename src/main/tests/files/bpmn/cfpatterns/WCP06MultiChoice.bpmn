@@ -22,17 +22,18 @@
 
         <bpmn2:inclusiveGateway id="InclusiveGateway_1" gatewayDirection="Diverging">
             <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-            <bpmn2:outgoing>TrueFlow</bpmn2:outgoing>
-            <bpmn2:outgoing>FalseFlow</bpmn2:outgoing>
+            <bpmn2:outgoing>AFlow</bpmn2:outgoing>
+            <bpmn2:outgoing>BFlow</bpmn2:outgoing>
             <bpmn2:outgoing>DefaultFlow</bpmn2:outgoing>
         </bpmn2:inclusiveGateway>
 
 
-        <bpmn2:sequenceFlow id="TrueFlow" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_1">
+        <bpmn2:sequenceFlow id="AFlow" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_1">
+		<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
 
         <bpmn2:scriptTask id="ScriptTask_1" name="Task 1">
-            <bpmn2:incoming>TrueFlow</bpmn2:incoming>
+            <bpmn2:incoming>AFlow</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
             <bpmn2:script>SCRIPT_task1</bpmn2:script>
         </bpmn2:scriptTask>
@@ -40,11 +41,12 @@
         <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="ScriptTask_1" targetRef="end"/>
 
 
-        <bpmn2:sequenceFlow id="FalseFlow" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_2">
+        <bpmn2:sequenceFlow id="BFlow" name="" sourceRef="InclusiveGateway_1" targetRef="ScriptTask_2">
+		<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("b")</bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
 
         <bpmn2:scriptTask id="ScriptTask_2" name="Task 2">
-            <bpmn2:incoming>FalseFlow</bpmn2:incoming>
+            <bpmn2:incoming>BFlow</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
             <bpmn2:script>SCRIPT_task2</bpmn2:script>
         </bpmn2:scriptTask>
