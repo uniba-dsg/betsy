@@ -9,27 +9,31 @@
 	<bpmn2:scriptTask id="_7" name="Task1">
 	<bpmn2:incoming>_26</bpmn2:incoming>
 	<bpmn2:outgoing>_13</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task1</bpmn2:script>
 	</bpmn2:scriptTask>
 	
-    <bpmn2:scriptTask id="_8" name="Task3">
+    <bpmn2:scriptTask id="_8" name="Task2">
 	<bpmn2:incoming>_14</bpmn2:incoming>
 	<bpmn2:outgoing>_31</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task2</bpmn2:script>
 	</bpmn2:scriptTask>
 	
-    <bpmn2:inclusiveGateway gatewayDirection="Unspecified" id="_9">
+    <bpmn2:inclusiveGateway gatewayDirection="Diverging" id="_9">
 	<bpmn2:incoming>_13</bpmn2:incoming>
 	<bpmn2:outgoing>_14</bpmn2:outgoing>
 	<bpmn2:outgoing>_15</bpmn2:outgoing>
 	</bpmn2:inclusiveGateway>
 	
-    <bpmn2:scriptTask id="_10" name="Task2">
+    <bpmn2:scriptTask id="_10" name="Task3">
 	<bpmn2:incoming>_15</bpmn2:incoming>
 	<bpmn2:outgoing>_30</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task3</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:scriptTask id="_12" name="Task4">
 	<bpmn2:incoming>_29</bpmn2:incoming>
 	<bpmn2:outgoing>_23</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task4</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:sequenceFlow id="_13" sourceRef="_7" targetRef="_9"/>
