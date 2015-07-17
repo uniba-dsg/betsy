@@ -55,6 +55,12 @@ public class PatternProcesses {
     );
 
 
+    //TODO: Adapt complex gateway to continue when one task has completed
+    public static final BPMNProcess DISCRIMINATOR = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
+            " incoming branches to complete before activating the subsequent activity",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask4());
+
+
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
             PARALLEL_PATTERN,
@@ -63,6 +69,7 @@ public class PatternProcesses {
             MERGE_PATTERN,
             MULTI_CHOICE,
             SYNC_MERGE,
-            MULTI_MERGE
-               );
+			MULTI_MERGE,
+            DISCRIMINATOR
+    ); 
 }
