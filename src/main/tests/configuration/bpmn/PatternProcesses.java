@@ -64,5 +64,5 @@ public class PatternProcesses {
             MULTI_CHOICE,
             SYNC_MERGE,
             MULTI_MERGE
-    );
+               );
 }
