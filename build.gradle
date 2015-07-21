@@ -36,7 +36,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.3'
+    internal 'org.codehaus.groovy:groovy-all:2.4.4'
 
     internal 'org.apache.ant:ant:1.9.6'
     internal 'log4j:log4j:1.2.17'
@@ -48,7 +48,7 @@ dependencies {
     internal 'org.json:json:5.0.5'
     internal 'org.apache.ant:ant-junit:1.9.6'
 
-    internal 'com.mashape.unirest:unirest-java:1.4.5' // for http requests and responses
+    internal 'com.mashape.unirest:unirest-java:1.4.6' // for http requests and responses
 
     internal 'org.slf4j:slf4j-api:1.7.12'
     internal 'org.slf4j:slf4j-simple:1.7.12'
