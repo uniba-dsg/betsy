@@ -34,7 +34,7 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4());
 
 
-    public static final BPMNProcess MULTI_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP06MultiChoice", "A Process with the divergence of the thread of control " +
+    public static final BPMNProcess MULTI_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP06MultiChoice", "A Process with the divergence of the thread of control " +
                     "into several parallel branches on a selective basis",
             new BPMNTestCase().inputA().assertTask1().assertTask3(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3(),
@@ -43,22 +43,29 @@ public class PatternProcesses {
 
 
     //TODO check for validity of test logic
-    public static final BPMNProcess SYNC_MERGE = BPMNProcessBuilder.buildPatternProcess("WCP07StructuredSynchronizedMerge", "A Process with the synchronised convergence of " +
+    public static final BPMNProcess SYNC_MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP07StructuredSynchronizedMerge", "A Process with the synchronised convergence of " +
                     "two or more alternative branches",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
             );
 
 
-    public static final BPMNProcess MULTI_MERGE = BPMNProcessBuilder.buildPatternProcess("WCP08MultiMerge", "A Process with the convergence of two or more branches " +
+    public static final BPMNProcess MULTI_MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP08MultiMerge", "A Process with the convergence of two or more branches " +
                     "into  a  single  path without synchronization",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4()
     );
 
 
     //TODO: Adapt complex gateway to continue when one task has completed
-    public static final BPMNProcess DISCRIMINATOR = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
+    public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
             " incoming branches to complete before activating the subsequent activity",
             new BPMNTestCase().assertTask1().assertTask2().assertTask4());
+
+    //TODO: Add test case for WCP10 here
+
+    // simply tests whether all activities are executed (even though one end event might be reached)
+    public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination","A process with the ability to depict the notion that a given sub-process\n" +
+            "should be terminated when there are no remaining activities to be completed.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask2());
 
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
@@ -67,9 +74,12 @@ public class PatternProcesses {
             SYNCHRONIZATION_PATTERN,
             EXCLUSIVE_PATTERN,
             MERGE_PATTERN,
-            MULTI_CHOICE,
-            SYNC_MERGE,
-			MULTI_MERGE,
-            DISCRIMINATOR
+            MULTI_CHOICE_PATTERN,
+            SYNC_MERGE_PATTERN,
+            MULTI_MERGE_PATTERN,
+            DISCRIMINATOR_PATTERN,
+            // WCP10 here,
+            TERMINATION_PATTERN
+
     ); 
 }
