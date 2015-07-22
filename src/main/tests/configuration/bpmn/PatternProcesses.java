@@ -28,10 +28,21 @@ public class PatternProcesses {
             new BPMNTestCase().inputC().assertTask3()
     );
 
-    //TODO This should be thought over again, maybe think of a new way to test for non-parallel execution?
-    public static final BPMNProcess MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMerge",
-            "A Process for Merging 3 branches into a single branch without using a converging gateway,all of parallel Tasks will write the same assertion job but only one (namely the fastest to execute) of the referred task will enable the end Task, the other 2 are not need for activation and will therefore not show up in the assertion List",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4());
+
+    //This pattern will most likely not run on jBPM due to it's constraints of having only one incoming flow to a single task according to log
+     public static final BPMNProcess MERGE_PATTERN_IMPLICIT = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeImplicit",
+             "A Process for Merging multiple branches into a single branch without using a converging XOR gateway, the test check for single activation of a Task whenever a Token arrives",
+             new BPMNTestCase().inputA().assertTask1().assertTask4(),
+             new BPMNTestCase().inputB().assertTask2().assertTask4(),
+             new BPMNTestCase().inputC().assertTask3().assertTask4(),
+             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
+            //TODO See why the AA case only activates once, this seems to be more a Test routine problem than an engine specific behaviour
+           //  new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
+             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
+     );
+
+    //TODO Add the Merge Pattern with XOR Gateway and test accordingly
+
 
 
     public static final BPMNProcess MULTI_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP06MultiChoice", "A Process with the divergence of the thread of control " +
@@ -66,7 +77,7 @@ public class PatternProcesses {
             PARALLEL_PATTERN,
             SYNCHRONIZATION_PATTERN,
             EXCLUSIVE_PATTERN,
-            MERGE_PATTERN,
+            MERGE_PATTERN_IMPLICIT,
             MULTI_CHOICE,
             SYNC_MERGE,
 			MULTI_MERGE,

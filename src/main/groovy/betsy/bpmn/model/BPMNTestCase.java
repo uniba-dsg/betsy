@@ -34,6 +34,14 @@ public class BPMNTestCase extends TestCase {
         return addInputTestString(BPMNTestInput.INPUT_C);
     }
 
+    public BPMNTestCase inputAA() {
+        return addInputTestString(BPMNTestInput.INPUT_AA);
+    }
+
+    public BPMNTestCase inputABC() {
+        return addInputTestString(BPMNTestInput.INPUT_ABC);
+    }
+
     public BPMNTestCase assertTask1() {
         return addAssertion(BPMNAssertions.SCRIPT_task1);
     }
