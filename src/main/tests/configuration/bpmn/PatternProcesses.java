@@ -31,7 +31,7 @@ public class PatternProcesses {
 
     //This pattern will most likely not run on jBPM due to it's constraints of having only one incoming flow to a single task according to log
      public static final BPMNProcess MERGE_PATTERN_IMPLICIT = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeImplicit",
-             "A Process for Merging multiple branches into a single branch without using a converging XOR gateway, the test check for single activation of a Task whenever a Token arrives",
+             "A Process for Merging multiple branches into a single branch without using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
              new BPMNTestCase().inputA().assertTask1().assertTask4(),
              new BPMNTestCase().inputB().assertTask2().assertTask4(),
              new BPMNTestCase().inputC().assertTask3().assertTask4(),
@@ -42,6 +42,16 @@ public class PatternProcesses {
      );
 
     //TODO Add the Merge Pattern with XOR Gateway and test accordingly
+    public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
+            "A Process for Merging multiple branches into a single branch with using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
+            new BPMNTestCase().inputA().assertTask1().assertTask4(),
+            new BPMNTestCase().inputB().assertTask2().assertTask4(),
+            new BPMNTestCase().inputC().assertTask3().assertTask4(),
+            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
+            //TODO See why the AA case only activates once, this seems to be more a Test routine problem than an engine specific behaviour
+            new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
+            new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
+    );
 
 
 
@@ -85,6 +95,7 @@ public class PatternProcesses {
             SYNCHRONIZATION_PATTERN,
             EXCLUSIVE_PATTERN,
             MERGE_PATTERN_IMPLICIT,
+            MERGE_PATTERN_WITH_GATEWAY,
             MULTI_CHOICE_PATTERN,
             SYNC_MERGE_PATTERN,
             MULTI_MERGE_PATTERN,
