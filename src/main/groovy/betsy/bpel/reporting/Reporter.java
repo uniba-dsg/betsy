@@ -13,17 +13,12 @@ public class Reporter {
     }
 
     public void createReports() {
-        MessageExchangesIntoSoapUIReportsMerger merger = new MessageExchangesIntoSoapUIReportsMerger();
+        new MessageExchangesIntoSoapUIReportsMerger(tests).merge();
 
-        merger.setTests(tests);
-        merger.merge();
+
+
         new JUnitHtmlReports(tests.getPath()).create();
-        JUnitXmlResultToCsvRow row = new JUnitXmlResultToCsvRow();
-
-
-        row.setXml(tests.getJUnitXMLFilePath());
-        row.setCsv(tests.getCsvFilePath());
-        row.create();
+        new JUnitXmlResultToCsvRow(tests.getJUnitXMLFilePath(), tests.getCsvFilePath()).create();
     }
 
 }

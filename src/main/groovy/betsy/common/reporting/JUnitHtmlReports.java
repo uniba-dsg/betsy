@@ -10,6 +10,13 @@ import java.nio.file.Path;
 
 public class JUnitHtmlReports {
 
+    private static final Logger log = Logger.getLogger(JUnitHtmlReports.class);
+
+    /**
+     * tests folder
+     */
+    private final Path path;
+
     public JUnitHtmlReports(Path path) {
         this.path = path;
     }
@@ -29,11 +36,4 @@ public class JUnitHtmlReports {
     private Path getAntPath() {
         return Configuration.getAntHome().resolve("bin");
     }
-
-    private static final Logger log = Logger.getLogger(JUnitHtmlReports.class);
-
-    /**
-     * tests folder
-     */
-    private final Path path;
 }

@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 
 public enum BPMNAssertions {
 
-
-
     SCRIPT_task1("SCRIPT_task1"),
     SCRIPT_task2("SCRIPT_task2"),
     SCRIPT_task3("SCRIPT_task3"),
@@ -32,7 +30,7 @@ public enum BPMNAssertions {
 
     private final String name;
 
-    private BPMNAssertions(String name) {
+    BPMNAssertions(String name) {
         this.name = name;
     }
 

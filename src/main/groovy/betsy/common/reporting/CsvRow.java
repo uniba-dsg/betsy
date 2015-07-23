@@ -24,7 +24,7 @@ public class CsvRow implements Comparable<CsvRow> {
     }
 
     public String toRow() {
-        return Stream.of(name, engine, group, getBinaryResult(), totalFailures, tests, deployable).collect(Collectors.joining(";"));
+        return String.join(";", name, engine, group, getBinaryResult(), totalFailures, tests, deployable);
     }
 
     public String getName() {

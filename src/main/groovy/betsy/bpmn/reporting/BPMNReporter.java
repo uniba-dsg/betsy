@@ -14,11 +14,7 @@ public class BPMNReporter {
 
     public void createReports() {
         new JUnitHtmlReports(tests.getPath()).create();
-
-        JUnitXmlResultToCsvRow row = new JUnitXmlResultToCsvRow();
-        row.setXml(tests.getJUnitXMLFilePath());
-        row.setCsv(tests.getCsvFilePath());
-        row.create();
+        new JUnitXmlResultToCsvRow(tests.getJUnitXMLFilePath(), tests.getCsvFilePath()).create();
     }
 
 }
