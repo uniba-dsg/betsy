@@ -1,6 +1,6 @@
 package betsy;
 
-import betsy.Main;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,13 +18,13 @@ public class SystemTest {
         assertEquals("[SequenceFlow;activiti;basics;1;0;1;1]", Files.readAllLines(Paths.get("test/reports/results.csv")).toString());
     }
 
-    /*
-    @Test
-    public void testBpmnHelp() throws IOException {
-        Main.main("bpmn", "--help");
+    @Test @Ignore(value = "soapUI does not clean up its file resources, causing 'test/' folder to be undeletable on windows")
+    public void testBpelOdeSequence() throws IOException, InterruptedException {
+        Main.main("bpel", "ode", "sequence");
 
-        // no exception is good enough for this
+        assertEquals("[Sequence;ode;structured;1;0;1;1]", Files.readAllLines(Paths.get("test/reports/results.csv")).toString());
+
+        Thread.sleep(15_000); // to release any file locks that may be hold, but this does not help!
     }
-    */
 
 }

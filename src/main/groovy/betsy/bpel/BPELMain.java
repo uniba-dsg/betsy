@@ -7,6 +7,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
+import betsy.bpel.soapui.SoapUIShutdownHelper;
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.engines.AbstractVirtualBPELEngine;
 import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPELMain {
+
     private static final Logger LOGGER = Logger.getLogger(BPELMain.class);
 
     public static void main(String[] args) {
@@ -71,7 +73,6 @@ public class BPELMain {
                 LOGGER.error("something went wrong during execution", cleanedException);
             }
 
-
             // open results in browser
             if (params.openResultsInBrowser()) {
                 try {
@@ -83,26 +84,18 @@ public class BPELMain {
 
             }
 
-
         } catch (Exception e) {
             Throwable cleanedException = StackTraceUtils.deepSanitize(e);
             LOGGER.error(cleanedException.getMessage(), cleanedException);
         }
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // shutdown as SoapUI creates threads which cannot be shutdown so easily
-        // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
-        // SOLUTION remove exit line for testing purposes
-        System.exit(0);
+        SoapUIShutdownHelper.shutdownSoapUIForReal();
     }
 
     public static void onlyBuildStepsOrUseInstalledEngine(BPELCliParameter params, BPELBetsy betsy) {
         if (params.buildArtifactsOnly()) {
             betsy.setComposite(new BPELComposite() {
+
                 @Override
                 protected void testSoapUi(BPELProcess process) {
                 }
@@ -253,33 +246,32 @@ public class BPELMain {
             String transformations = params.getCoreBPELTransformations();
 
             switch (transformations) {
-                case "ALL":
-                    for (AbstractBPELEngine engine : engines) {
-                        if (engine instanceof AbstractVirtualBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
-                        } else if (engine instanceof AbstractLocalBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION);
-                        }
+            case "ALL":
+                for (AbstractBPELEngine engine : engines) {
+                    if (engine instanceof AbstractVirtualBPELEngine) {
+                        CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
+                    } else if (engine instanceof AbstractLocalBPELEngine) {
+                        CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION);
                     }
+                }
 
-                    break;
-                case "NONE":
-                    // do nothing - default value
-                    break;
-                default:
-                    List<String> xsls = Arrays.asList(transformations.split(","));
+                break;
+            case "NONE":
+                // do nothing - default value
+                break;
+            default:
+                List<String> xsls = Arrays.asList(transformations.split(","));
 
-                    for (AbstractBPELEngine engine : engines) {
-                        if (engine instanceof AbstractVirtualBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, xsls);
-                        } else if (engine instanceof AbstractLocalBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(engine, xsls);
-                        }
+                for (AbstractBPELEngine engine : engines) {
+                    if (engine instanceof AbstractVirtualBPELEngine) {
+                        CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, xsls);
+                    } else if (engine instanceof AbstractLocalBPELEngine) {
+                        CoreBPELEngineExtension.extendEngine(engine, xsls);
                     }
+                }
 
-                    break;
+                break;
             }
-
 
         }
 

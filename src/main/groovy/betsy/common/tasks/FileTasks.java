@@ -46,9 +46,12 @@ public class FileTasks {
             if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
                 LOGGER.info("Deletion failed -> retrying after short wait");
                 WaitTasks.sleep(5000);
-                if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
+
+                try {
+                    FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
+                }catch (IOException e){
                     LOGGER.info("Retry of deletion also failed.");
-                    throw new IllegalStateException("could not delete directory " + directory);
+                    throw new IllegalStateException("could not delete directory " + directory, e);
                 }
             }
         } else {
