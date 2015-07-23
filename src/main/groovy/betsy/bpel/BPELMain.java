@@ -90,12 +90,6 @@ public class BPELMain {
         }
 
         SoapUIShutdownHelper.shutdownSoapUIForReal();
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void onlyBuildStepsOrUseInstalledEngine(BPELCliParameter params, BPELBetsy betsy) {
