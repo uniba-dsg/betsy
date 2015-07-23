@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * <p>
  * FLAG: 1 for successful, 0 for not successful
  */
-public class CsvRow {
+public class CsvRow implements Comparable<CsvRow> {
 
     private String name;
     private String engine;
@@ -73,5 +73,20 @@ public class CsvRow {
 
     public void setDeployable(String deployable) {
         this.deployable = deployable;
+    }
+
+    @Override
+    public int compareTo(CsvRow o) {
+        int engineComparison = engine.compareTo(o.engine);
+        if (engineComparison != 0) {
+            return engineComparison;
+        }
+
+        int groupComparison = group.compareTo(o.group);
+        if (groupComparison != 0) {
+            return groupComparison;
+        }
+
+        return name.compareTo(o.name);
     }
 }
