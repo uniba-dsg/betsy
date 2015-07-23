@@ -4,6 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.common.model.TestSuite;
 
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,11 @@ public class BPELTestSuite extends TestSuite<AbstractBPELEngine, BPELProcess> {
 
         test.setEngines(engines);
         test.setProcessesCount(getProcessesCount(engines));
+
+        Collections.shuffle(engines);
+        for (AbstractBPELEngine engine : engines) {
+            Collections.shuffle(engine.getProcesses());
+        }
 
         return test;
     }

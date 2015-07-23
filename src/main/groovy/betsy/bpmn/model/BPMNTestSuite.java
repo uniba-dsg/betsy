@@ -4,10 +4,12 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.TestSuite;
 
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPMNTestSuite extends TestSuite<AbstractBPMNEngine, BPMNProcess> {
+
     /**
      * Factory method for a list of engines and processes.
      *
@@ -35,6 +37,11 @@ public class BPMNTestSuite extends TestSuite<AbstractBPMNEngine, BPMNProcess> {
 
         test.setEngines(engines);
         test.setProcessesCount(getProcessesCount(engines));
+
+        Collections.shuffle(engines);
+        for (AbstractBPMNEngine engine : engines) {
+            Collections.shuffle(engine.getProcesses());
+        }
 
         return test;
     }
