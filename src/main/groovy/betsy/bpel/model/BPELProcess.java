@@ -115,27 +115,7 @@ public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractBPELEngin
     }
 
     public String getShortId() {
-        String name = getName();
-
-        // short names are OK as they are
-        if (name.length() < 8) {
-            return name;
-        }
-
-        // abbreviate common names
-        name = name.replaceAll("Receive", "REC");
-        name = name.replaceAll("Rec", "REC");
-        name = name.replaceAll("Request", "REQ");
-        name = name.replaceAll("Req", "REQ");
-        name = name.replaceAll("Reply", "REP");
-        name = name.replaceAll("Invoke", "INV");
-
-        name = name.replaceAll("Stop", "STP");
-
-        name = name.replaceAll("ForEach", "FE");
-        name = name.replaceAll("For", "FOR");
-
-        return name.replaceAll("[a-z]", "");
+        return new BPELIdShortener(getName()).getShortenedId();
     }
 
     public List<Path> getWsdls() {
