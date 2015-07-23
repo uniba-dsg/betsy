@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
 [![Dependency Status](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f)
-[![Coverage Status](https://coveralls.io/repos/uniba-dsg/betsy/badge.svg?branch=master)](https://coveralls.io/r/uniba-dsg/betsy?branch=master)
+[![Coverage Status](https://coveralls.io/repos/uniba-dsg/betsy/badge.svg?branch=master&service=github)](https://coveralls.io/github/uniba-dsg/betsy?branch=master)
 
 Betsy is a tool to check the degree of conformance of a BPEL/BPMN engine against the BPEL/BPMN standard.
 
