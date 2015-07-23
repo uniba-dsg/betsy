@@ -150,7 +150,6 @@ public class BPELMain {
             }
 
         }
-
     }
 
     private static boolean usesVirtualEngines(List<AbstractBPELEngine> engines) {
@@ -166,11 +165,11 @@ public class BPELMain {
         if (!params.useExternalPartnerService()) {
             // test the correctness
             try {
-                betsy.getComposite().getTestPartner().startup();
+                betsy.getComposite().getTestingAPI().startup();
             } catch (Exception e) {
                 throw new IllegalStateException("the given partner address is not bindable for this system", e);
             } finally {
-                betsy.getComposite().getTestPartner().shutdown();
+                betsy.getComposite().getTestingAPI().shutdown();
             }
         }
     }
@@ -178,8 +177,8 @@ public class BPELMain {
     private static void useExternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
         // do not use internal partner service
         if (params.useExternalPartnerService()) {
-            betsy.getComposite().setTestPartner(new TestPartnerServicePublisherExternal());
-            betsy.getComposite().setRequestTimeout(15 * 1000);// increase request timeout as invoking external service
+            betsy.getComposite().getTestingAPI().setTestPartner(new TestPartnerServicePublisherExternal());
+            betsy.getComposite().getTestingAPI().setRequestTimeout(15_000);// increase request timeout as invoking external service
         }
     }
 

@@ -5,9 +5,6 @@ import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
-import betsy.bpel.soapui.TestBuilder;
-import betsy.bpel.ws.DummyAndRegularTestPartnerService;
-import betsy.bpel.ws.TestPartnerService;
 import betsy.common.analytics.Analyzer;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
@@ -16,16 +13,19 @@ import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import soapui.SoapUiRunner;
 
 import java.nio.file.Path;
 
 public class BPELComposite {
     private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
-    private TestPartnerService testPartner = new DummyAndRegularTestPartnerService();
+
+    public TestingAPI getTestingAPI() {
+        return testingAPI;
+    }
+
+    private final TestingAPI testingAPI = new TestingAPI();
 
     private BPELTestSuite testSuite;
-    private int requestTimeout = 15000;
 
     protected static void log(String name, Runnable closure) {
         LogUtil.log(name, LOGGER, closure);
@@ -91,54 +91,53 @@ public class BPELComposite {
                 test(process);
                 collect(process);
             } finally {
-                // ensure shutdown
+                // ensure shutdownServices
                 shutdown(process);
             }
-
         }));
     }
 
     protected void shutdown(final BPELProcess process) {
-        log(process.getTargetPath() + "/engine_shutdown", () -> process.getEngine().shutdown());
+        log(process.getTargetPath() + "/engine_shutdown", () -> new UniformProcessEngineManagementAPI(process.getEngine()).shutdown());
     }
 
     protected void deploy(final BPELProcess process) {
-        log(process.getTargetPath() + "/deploy", () -> process.getEngine().deploy(process));
+        log(process.getTargetPath() + "/deploy", () -> new UniformProcessEngineManagementAPI(process.getEngine()).deploy(process));
     }
 
     protected void install(final BPELProcess process) {
-        log(process.getTargetPath() + "/engine_install", () -> process.getEngine().install());
+        log(process.getTargetPath() + "/engine_install", () -> new UniformProcessEngineManagementAPI(process.getEngine()).install());
     }
 
     protected void startup(BPELProcess process) {
-        log(process.getTargetPath() + "/engine_startup", () -> process.getEngine().startup());
+        log(process.getTargetPath() + "/engine_startup", () -> new UniformProcessEngineManagementAPI(process.getEngine()).startup());
     }
 
     protected void test(final BPELProcess process) {
         log(process.getTargetPath() + "/test", () -> {
             try {
                 try {
-                    testPartner.startup();
+                    testingAPI.startup();
                 } catch (Exception ignore) {
-                    testPartner.shutdown();
+                    testingAPI.shutdown();
                     LOGGER.debug("Address already in use - waiting 2 seconds to get available");
                     WaitTasks.sleep(2000);
-                    testPartner.startup();
+                    testingAPI.startup();
                 }
                 testSoapUi(process);
             } finally {
-                testPartner.shutdown();
+                testingAPI.shutdown();
             }
         });
     }
 
     protected void collect(final BPELProcess process) {
-        log(process.getTargetPath() + "/collect", () -> process.getEngine().storeLogs(process));
+        log(process.getTargetPath() + "/collect", () -> new UniformProcessEngineManagementAPI(process.getEngine()).storeLogs(process));
     }
 
     protected void testSoapUi(final BPELProcess process) {
         log(process.getTargetPath() + "/test_soapui", () -> IOCapture.captureIO(() ->
-                new SoapUiRunner(process.getTargetSoapUIFilePath(), process.getTargetReportsPath()).run()));
+                testingAPI.executeEngineDependentTest(process.getTargetSoapUIFilePath(), process.getTargetReportsPath())));
         WaitTasks.sleep(500);
     }
 
@@ -151,36 +150,17 @@ public class BPELComposite {
 
     protected void buildTest(final BPELProcess process) {
         log(process.getTargetPath() + "/build_test", () ->
-                IOCapture.captureIO(() -> new TestBuilder(process, requestTimeout).buildTest()));
+                IOCapture.captureIO(() -> testingAPI.generateEngineDependentTest(process)));
     }
 
     protected void buildPackage(final BPELProcess process) {
         log(process.getTargetPath() + "/build_package",
                 () -> IOCapture.captureIO(
-                        () -> process.getEngine().buildArchives(process)));
-    }
-
-    public TestPartnerService getTestPartner() {
-        return testPartner;
-    }
-
-    public void setTestPartner(TestPartnerService testPartner) {
-        this.testPartner = testPartner;
-    }
-
-    public BPELTestSuite getTestSuite() {
-        return testSuite;
+                        () -> new UniformProcessEngineManagementAPI(process.getEngine()).buildArchives(process)));
     }
 
     public void setTestSuite(BPELTestSuite testSuite) {
         this.testSuite = testSuite;
     }
 
-    public int getRequestTimeout() {
-        return requestTimeout;
-    }
-
-    public void setRequestTimeout(int requestTimeout) {
-        this.requestTimeout = requestTimeout;
-    }
 }
