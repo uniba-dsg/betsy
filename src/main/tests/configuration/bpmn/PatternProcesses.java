@@ -89,6 +89,12 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());
 
 
+    //TODO: rework event definitions
+    public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
+            "one of several possible branches should be activated.",
+            new BPMNTestCase().inputA().assertTask1());
+
+
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
             PARALLEL_PATTERN,
@@ -101,6 +107,8 @@ public class PatternProcesses {
             MULTI_MERGE_PATTERN,
             DISCRIMINATOR_PATTERN,
             // WCP10 here,
-            TERMINATION_PATTERN
+            TERMINATION_PATTERN,
+            //WCP12-15 here
+            DEFERRED_CHOICE_PATTERN
     ); 
 }

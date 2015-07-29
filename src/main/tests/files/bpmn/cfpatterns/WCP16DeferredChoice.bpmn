@@ -12,6 +12,7 @@
     <bpmn2:scriptTask id="_3" name="ScriptTask">
 	<bpmn2:incoming>_1</bpmn2:incoming>
 	<bpmn2:outgoing>_98</bpmn2:outgoing>
+	<bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Diverging" id="_5" instantiate="false" name="EventGateway">
@@ -36,14 +37,16 @@
     </bpmn2:conditionalEventDefinition>
 	</bpmn2:intermediateCatchEvent>
 
-    <bpmn2:scriptTask id="_13" name="ScriptTask">
+    <bpmn2:scriptTask id="_13" name="ScriptTask_1">
 	<bpmn2:incoming>_14</bpmn2:incoming>
 	<bpmn2:outgoing>_24</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task1</bpmn2:script>
 	</bpmn2:scriptTask>
     
-	<bpmn2:scriptTask id="_18" name="ScriptTask">
+	<bpmn2:scriptTask id="_18" name="ScriptTask_2">
 	<bpmn2:incoming>_19</bpmn2:incoming>
 	<bpmn2:outgoing>_23</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task2</bpmn2:script>
 	</bpmn2:scriptTask>
    
    
