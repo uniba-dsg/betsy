@@ -83,7 +83,7 @@ public class PatternProcesses {
 
     //TODO: Add test case for WCP10 here
 
-    // simply tests whether all activities are executed (even though one end event might be reached)
+    // simply tests whether all activities are executed (even though an end event might be reached on another path before)
     public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination","A process with the ability to depict the notion that a given sub-process\n" +
             "should be terminated when there are no remaining activities to be completed.",
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());

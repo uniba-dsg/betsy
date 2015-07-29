@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+					id="WCP16DeferredChoiceTest"
+					targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP16DeferredChoice">
+ <bpmn2:process id="WCP16DeferredChoice" isExecutable="true">  
+    <bpmn2:startEvent id="_2" name="StartEvent">
+	<bpmn2:outgoing>_1</bpmn2:outgoing>
+	</bpmn2:startEvent>
+	
+    <bpmn2:scriptTask id="_3" name="ScriptTask">
+	<bpmn2:incoming>_1</bpmn2:incoming>
+	<bpmn2:outgoing>_98</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Diverging" id="_5" instantiate="false" name="EventGateway">
+	<bpmn2:incoming>_98</bpmn2:incoming>
+	<bpmn2:outgoing>_11</bpmn2:outgoing>
+	<bpmn2:outgoing>_12</bpmn2:outgoing>
+	</bpmn2:eventBasedGateway>
+	
+    <bpmn2:intermediateCatchEvent id="_9" name="IntermediateCatchingEvent">
+	<bpmn2:incoming>_12</bpmn2:incoming>
+	<bpmn2:outgoing>_19</bpmn2:outgoing>
+	<bpmn2:conditionalEventDefinition id="_ConditionalEventDefinition_1">
+                <bpmn2:condition xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:condition>
+    </bpmn2:conditionalEventDefinition>
+	</bpmn2:intermediateCatchEvent>
+	
+    <bpmn2:intermediateCatchEvent id="_10" name="IntermediateCatchingEvent">
+	<bpmn2:incoming>_11</bpmn2:incoming>
+	<bpmn2:outgoing>_14</bpmn2:outgoing>
+	<bpmn2:conditionalEventDefinition id="_ConditionalEventDefinition_2">
+				<bpmn2:condition xsi:type="bpmn2:tFormalExpression">test.contains("b")</bpmn2:condition>
+    </bpmn2:conditionalEventDefinition>
+	</bpmn2:intermediateCatchEvent>
+
+    <bpmn2:scriptTask id="_13" name="ScriptTask">
+	<bpmn2:incoming>_14</bpmn2:incoming>
+	<bpmn2:outgoing>_24</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+    
+	<bpmn2:scriptTask id="_18" name="ScriptTask">
+	<bpmn2:incoming>_19</bpmn2:incoming>
+	<bpmn2:outgoing>_23</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+   
+   
+    <bpmn2:endEvent id="_20" name="EndEvent">
+	<bpmn2:incoming>_23</bpmn2:incoming>
+	</bpmn2:endEvent>
+	
+    <bpmn2:endEvent id="_21" name="EndEvent">
+	<bpmn2:incoming>_24</bpmn2:incoming>
+	</bpmn2:endEvent>
+    
+	<bpmn2:sequenceFlow id="_1" sourceRef="_2" targetRef="_3"/>
+	<bpmn2:sequenceFlow id="_98" sourceRef="_3" targetRef="_5"/>
+    <bpmn2:sequenceFlow id="_11" sourceRef="_5" targetRef="_10"/>
+    <bpmn2:sequenceFlow id="_12" sourceRef="_5" targetRef="_9"/>
+    <bpmn2:sequenceFlow id="_14" sourceRef="_10" targetRef="_13"/>
+    <bpmn2:sequenceFlow id="_19" sourceRef="_9" targetRef="_18"/>
+    <bpmn2:sequenceFlow id="_23" sourceRef="_18" targetRef="_20"/>
+    <bpmn2:sequenceFlow id="_24" sourceRef="_13" targetRef="_21"/>
+  </bpmn2:process>
+</bpmn2:definitions>
