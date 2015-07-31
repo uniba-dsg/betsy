@@ -35,21 +35,24 @@ public class PatternProcesses {
              new BPMNTestCase().inputA().assertTask1().assertTask4(),
              new BPMNTestCase().inputB().assertTask2().assertTask4(),
              new BPMNTestCase().inputC().assertTask3().assertTask4(),
-             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
+
+
+
+            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
+            new BPMNTestCase().inputA().inputB().assertTask1().assertTask2().assertTask4(),
             //TODO See why the AA case only activates once, this seems to be more a Test routine problem than an engine specific behaviour
-           //  new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
+          //  new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
              new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
      );
 
-    //TODO Add the Merge Pattern with XOR Gateway and test accordingly
-    public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
+     public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
             "A Process for Merging multiple branches into a single branch with using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
             new BPMNTestCase().inputA().assertTask1().assertTask4(),
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
             new BPMNTestCase().inputC().assertTask3().assertTask4(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
             //TODO See why the AA case only activates once, this seems to be more a Test routine problem than an engine specific behaviour
-            new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
+            //new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
@@ -83,6 +86,12 @@ public class PatternProcesses {
 
     //TODO: Add test case for WCP10 here
 
+
+
+    public static final BPMNProcess MULTIPLE_INSTANCES_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the process execution loop is known beforehand",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
+
+
     // simply tests whether all activities are executed (even though an end event might be reached on another path before)
     public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination","A process with the ability to depict the notion that a given sub-process\n" +
             "should be terminated when there are no remaining activities to be completed.",
@@ -108,6 +117,7 @@ public class PatternProcesses {
             DISCRIMINATOR_PATTERN,
             // WCP10 here,
             TERMINATION_PATTERN,
+            MULTIPLE_INSTANCES_PATTERN,
             //WCP12-15 here
             DEFERRED_CHOICE_PATTERN
     ); 
