@@ -21,22 +21,22 @@
 	<bpmn2:outgoing>_12</bpmn2:outgoing>
 	</bpmn2:eventBasedGateway>
 	
-    <bpmn2:intermediateCatchEvent id="_9" name="IntermediateCatchingEvent">
-	<bpmn2:incoming>_12</bpmn2:incoming>
-	<bpmn2:outgoing>_19</bpmn2:outgoing>
-	<bpmn2:conditionalEventDefinition id="_ConditionalEventDefinition_1">
-                <bpmn2:condition xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:condition>
-    </bpmn2:conditionalEventDefinition>
-	</bpmn2:intermediateCatchEvent>
-	
     <bpmn2:intermediateCatchEvent id="_10" name="IntermediateCatchingEvent">
 	<bpmn2:incoming>_11</bpmn2:incoming>
 	<bpmn2:outgoing>_14</bpmn2:outgoing>
-	<bpmn2:conditionalEventDefinition id="_ConditionalEventDefinition_2">
-				<bpmn2:condition xsi:type="bpmn2:tFormalExpression">test.contains("b")</bpmn2:condition>
-    </bpmn2:conditionalEventDefinition>
+	<bpmn2:timerEventDefinition id="_TimerEventDefinition_1">
+                <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT1S</bpmn2:timeDuration>
+            </bpmn2:timerEventDefinition>
 	</bpmn2:intermediateCatchEvent>
-
+    
+	<bpmn2:intermediateCatchEvent id="_9" name="IntermediateCatchingEvent">
+	<bpmn2:incoming>_12</bpmn2:incoming>
+	<bpmn2:outgoing>_19</bpmn2:outgoing>
+	<bpmn2:timerEventDefinition id="_TimerEventDefinition_2">
+                <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT3S</bpmn2:timeDuration>
+            </bpmn2:timerEventDefinition>
+	</bpmn2:intermediateCatchEvent>
+	
     <bpmn2:scriptTask id="_13" name="ScriptTask_1">
 	<bpmn2:incoming>_14</bpmn2:incoming>
 	<bpmn2:outgoing>_24</bpmn2:outgoing>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP19CancelTaskTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP19CancelTask">
+    <bpmn2:process id="WCP19CancelTask" isExecutable="true">
+    
+	<bpmn2:startEvent id="_2" name="StartEvent">
+	<bpmn2:outgoing>_10</bpmn2:outgoing>
+	</bpmn2:startEvent>
+    
+	<bpmn2:scriptTask id="_3" name="ScriptTask">
+	<bpmn2:incoming>_10</bpmn2:incoming>
+	<bpmn2:outgoing>_18</bpmn2:outgoing>
+      <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+    </bpmn2:scriptTask>
+    
+	<bpmn2:scriptTask id="_6" name="ScriptTask">
+	<bpmn2:incoming>_18</bpmn2:incoming>
+	<bpmn2:outgoing>_13</bpmn2:outgoing>
+      <bpmn2:script>SCRIPT_task1</bpmn2:script>
+    </bpmn2:scriptTask>
+	
+    <bpmn2:boundaryEvent attachedToRef="_6" cancelActivity="true" id="_7" name="BoundaryEvent">
+	  <bpmn2:conditionalEventDefinition>
+                <bpmn2:condition xsi:type="bpmn2:tFormalExpression">
+                    test.contains("a")
+                </bpmn2:condition>
+      </bpmn2:conditionalEventDefinition>
+      <bpmn2:outgoing>_23</bpmn2:outgoing>
+    </bpmn2:boundaryEvent>
+	    
+	<bpmn2:scriptTask id="_12" name="ScriptTask">
+	<bpmn2:incoming>_13</bpmn2:incoming>
+	<bpmn2:outgoing>_16</bpmn2:outgoing>
+      <bpmn2:script>SCRIPT_task2</bpmn2:script>
+    </bpmn2:scriptTask>
+    
+    <bpmn2:endEvent id="_14" name="EndEvent">
+	<bpmn2:incoming>_16</bpmn2:incoming>
+	<bpmn2:incoming>_23</bpmn2:incoming>
+	</bpmn2:endEvent>
+   
+    <bpmn2:sequenceFlow id="_10" sourceRef="_2" targetRef="_3"/>
+    <bpmn2:sequenceFlow id="_18" sourceRef="_3" targetRef="_6"/>
+	<bpmn2:sequenceFlow id="_13" sourceRef="_6" targetRef="_12"/>
+    <bpmn2:sequenceFlow id="_16" sourceRef="_12" targetRef="_14"/>
+    <bpmn2:sequenceFlow id="_23" sourceRef="_7" targetRef="_14"/>
+	
+  </bpmn2:process>
+</bpmn2:definitions>

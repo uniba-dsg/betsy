@@ -18,6 +18,7 @@ public class PatternProcesses {
     public static final BPMNProcess PARALLEL_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP02ParallelSplit", "A Process for a parallel Split with 3 tasks , each task has to be executed exactly once",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
+
     public static final BPMNProcess SYNCHRONIZATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP03Synchronization", "A Process for Synchronising 3 branches into a single branch, Task4 should be only executed once if the synchronization is working correctly",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4());
 
@@ -45,7 +46,10 @@ public class PatternProcesses {
              new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
      );
 
-     public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
+
+
+    //TODO Add the Merge Pattern with XOR Gateway and test accordingly
+    public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
             "A Process for Merging multiple branches into a single branch with using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
             new BPMNTestCase().inputA().assertTask1().assertTask4(),
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
@@ -98,11 +102,14 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());
 
 
-    //TODO: rework event definitions
     public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
             "one of several possible branches should be activated.",
-            new BPMNTestCase().inputA().assertTask1());
+            new BPMNTestCase().assertTask1().optionDelay(5000));
 
+    //TODO: make conditional boundary event work
+    public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
+            "disabled in some nominated circumstance",
+            new BPMNTestCase().inputA().assertTask1());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
@@ -119,6 +126,7 @@ public class PatternProcesses {
             TERMINATION_PATTERN,
             MULTIPLE_INSTANCES_PATTERN,
             //WCP12-15 here
-            DEFERRED_CHOICE_PATTERN
+            DEFERRED_CHOICE_PATTERN,
+            CANCEL_TASK_PATTERN
     ); 
 }
