@@ -95,7 +95,10 @@ public class PatternProcesses {
             "one of several possible branches should be activated.",
             new BPMNTestCase().assertTask1().optionDelay(5000));
 
-
+    //TODO: make conditional boundary event work
+    public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
+            "disabled in some nominated circumstance",
+            new BPMNTestCase().inputA().assertTask1());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
@@ -111,6 +114,7 @@ public class PatternProcesses {
             // WCP10 here,
             TERMINATION_PATTERN,
             //WCP12-15 here
-            DEFERRED_CHOICE_PATTERN
+            DEFERRED_CHOICE_PATTERN,
+            CANCEL_TASK_PATTERN
     ); 
 }
