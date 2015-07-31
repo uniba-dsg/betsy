@@ -18,6 +18,7 @@ public class PatternProcesses {
     public static final BPMNProcess PARALLEL_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP02ParallelSplit", "A Process for a parallel Split with 3 tasks , each task has to be executed exactly once",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
+
     public static final BPMNProcess SYNCHRONIZATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP03Synchronization", "A Process for Synchronising 3 branches into a single branch, Task4 should be only executed once if the synchronization is working correctly",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4());
 
@@ -40,6 +41,7 @@ public class PatternProcesses {
            //  new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
              new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
      );
+
 
     //TODO Add the Merge Pattern with XOR Gateway and test accordingly
     public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
@@ -89,10 +91,10 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());
 
 
-    //TODO: rework event definitions
     public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
             "one of several possible branches should be activated.",
-            new BPMNTestCase().inputA().assertTask1());
+            new BPMNTestCase().assertTask1().optionDelay(5000));
+
 
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
