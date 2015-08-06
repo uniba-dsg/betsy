@@ -57,8 +57,7 @@ public class BPMNCliParser {
             }
 
             if (cmd.hasOption(HELP)) {
-                printUsage();
-                System.exit(-1);
+                return HELP_ONLY;
             }
 
             return new BPMNCliParameter() {

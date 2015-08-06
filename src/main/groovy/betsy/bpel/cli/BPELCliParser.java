@@ -99,8 +99,7 @@ public class BPELCliParser {
             }
 
             if (cmd.hasOption(HELP)) {
-                printUsage();
-                System.exit(-1);
+                return HELP_ONLY;
             }
 
 
