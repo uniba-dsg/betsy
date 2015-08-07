@@ -103,7 +103,7 @@ Options:
  -o,--open-results-in-browser   Opens results in default browser
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
-<ENGINES>: [ALL, camunda, camunda710, activiti, jbpm]
+<ENGINES>: [ALL, camunda, camunda710, camunda720, activiti, activiti5170, jbpm, jbpm610, jbpm620]
 <PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, ...]
 ```
 
@@ -174,8 +174,9 @@ The following scientific publications are either about betsy, have used betsy to
  - Lenhard, J., Wirtz, G.: [Detecting Portability Issues in Model-Driven BPEL Mappings](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-03-lenhard-wirtz/), Proceedings of the 25th International Conference on Software Engineering and Knowledge Engineering (SEKE'2013), Boston, Massachusetts, USA, Knowledge Systems Institute, June 27 - 29, 2013
  - Lenhard, J., Wirtz, G.: [Measuring the Portability of Executable Service-Oriented Processes](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-05-lenhard-wirtz/), Proceedings of the 17th IEEE International EDOC Conference, Vancouver, Canada, September 9 - 13, 2013, Awarded Best Student Conference Paper in Service Science
  - Harrer, S., Lenhard, J., Wirtz, G.: [Open Source versus Proprietary Software in Service-Orientation: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-07-harrer-lenhard-wirtz/), Proceedings of the 11th International Conference on Service Oriented Computing (ICSOC '13), Berlin, Germany, December 2 - 5, 2013
- - Lenhard, J. Harrer, S., Wirtz, G.: [Measuring the Installability of Service Orchestrations Using the SQuaRE Method](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-08-harrer-lenhard-wirtz/), Proceedings of the 6th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'13), Kauai, Hawaii, USA, December 16 - 18, 2013, Awarded Best Conference Paper
- - Harrer, S. Röck, C., Wirtz, G.: [Automated and Isolated Tests for Complex Middleware Products: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/14-04-harrer-wirtz/), Proceedings of the 7th IEEE  International Conference on Software Testing, Verification and Validation Workshops (ICSTW 2014), Testing Tools Track, Cleveland, OH, USA, March 30 – April 4, 2014
+ - Lenhard, J., Harrer, S., Wirtz, G.: [Measuring the Installability of Service Orchestrations Using the SQuaRE Method](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-08-harrer-lenhard-wirtz/), Proceedings of the 6th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'13), Kauai, Hawaii, USA, December 16 - 18, 2013, Awarded Best Conference Paper
+ - Harrer, S., Röck, C., Wirtz, G.: [Automated and Isolated Tests for Complex Middleware Products: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/14-04-harrer-wirtz/), Proceedings of the 7th IEEE  International Conference on Software Testing, Verification and Validation Workshops (ICSTW 2014), Testing Tools Track, Cleveland, OH, USA, March 30 – April 4, 2014
+ - Geiger, M., Harrer, S. Lenhard, J. Casar, M., Vorndran, A., Wirtz, G.: [BPMN Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/15-01-geiger-harrer-lenhard-wirtz/), Proceedings of the 9 th IEEE International Symposium on Service-Oriented System Engineering (SOSE), San Francisco Bay, CA, USA, March 30 – April 3 2015
 
 # Contribution Guide
 - Fork
