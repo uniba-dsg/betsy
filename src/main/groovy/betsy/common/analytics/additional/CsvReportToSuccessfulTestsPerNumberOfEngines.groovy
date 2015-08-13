@@ -1,8 +1,8 @@
 package betsy.common.analytics.additional
 
+import betsy.common.aggregation.TrivalentResult
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
-import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
 
@@ -22,7 +22,7 @@ class CsvReportToSuccessfulTestsPerNumberOfEngines {
         List<ResultPair> results = []
         writer.println "Raw"
         report.tests.each { test ->
-            int successful = test.engineToResult.values().count { it.support == Support.TOTAL}
+            int successful = test.engineToResult.values().count { it.support == TrivalentResult.PLUS}
             results << new ResultPair(name: test.name, successful: successful)
         }
 

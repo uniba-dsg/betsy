@@ -1,9 +1,9 @@
 package betsy.common.analytics.additional
 
+import betsy.common.aggregation.TrivalentResult
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
 import betsy.common.analytics.model.Engine
-import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
 
@@ -36,7 +36,7 @@ class CsvReportToTestsPerEngineAndGroupAndActivity {
                 report.engines.each { engine ->
                     int successes = 0
                     values.each { test ->
-                        if (test.engineToResult.get(engine).support == Support.TOTAL) {
+                        if (test.engineToResult.get(engine).support == TrivalentResult.PLUS) {
                             successes++;
                         }
                     }
