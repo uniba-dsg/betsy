@@ -1,10 +1,14 @@
-
-
+plugins {
+    id "com.github.kt3k.coveralls" version "2.4.0"
+}
 
 apply plugin: "groovy"
 apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "application"
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'pmd'
 
 // Main class of betsy
 mainClassName = "betsy.Main"
@@ -102,7 +106,7 @@ task downloadSoapUI {
 
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
-	// maxtime is set to this value to ensure that travis-ci can download this file
+    // maxtime is set to this value to ensure that travis-ci can download this file
         ant.get dest: props.getProperty("downloads.dir"), maxtime: 1524, verbose: true, {
             ant.url url: props.getProperty("soapui.download.url")
         }
@@ -253,7 +257,7 @@ task runBPEL(type: JavaExec, dependsOn: classes) {
     }
 }
 
-apply plugin: 'pmd'
+
 pmd {
     ignoreFailures = true
     ruleSets = [
@@ -287,18 +291,8 @@ pmd {
 }
 
 
-apply plugin: 'jacoco'
-apply plugin: 'com.github.kt3k.coveralls'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
 
-    dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
-    }
-}
 
 jacocoTestReport {
     reports {
