@@ -4,6 +4,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
 
@@ -52,6 +53,11 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
         AbstractBPMNEngine engine = (AbstractBPMNEngine) o;
 
         return getName().equals(engine.getName());
+    }
+
+    @Override
+    public ProcessLanguage getSupportedLanguage() {
+        return ProcessLanguage.BPMN;
     }
 
     public int hashCode() {

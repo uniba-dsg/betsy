@@ -3,6 +3,7 @@ package betsy.bpel.engines;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
@@ -50,6 +51,11 @@ public abstract class AbstractBPELEngine implements EngineAPI<BPELProcess>, HasP
         AbstractBPELEngine engine = (AbstractBPELEngine) o;
 
         return getName().equals(engine.getName());
+    }
+
+    @Override
+    public ProcessLanguage getSupportedLanguage() {
+        return ProcessLanguage.BPEL;
     }
 
     @Override

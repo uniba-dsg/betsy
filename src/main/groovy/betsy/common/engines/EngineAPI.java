@@ -35,4 +35,9 @@ public interface EngineAPI<P> extends EngineLifecycle, HasName, HasLogs {
      */
     void storeLogs(P process);
 
+    /**
+     * @return returns which process language is supported by this engine.
+     */
+    ProcessLanguage getSupportedLanguage();
+
 }

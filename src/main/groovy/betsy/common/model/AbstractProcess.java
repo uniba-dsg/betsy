@@ -2,6 +2,7 @@ package betsy.common.model;
 
 import betsy.common.HasName;
 import betsy.common.HasPath;
+import betsy.common.engines.ProcessLanguage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -24,6 +25,15 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> im
     }
 
     public abstract AbstractProcess<TC,E> createCopyWithoutEngine();
+
+    /**
+     * Returns the process language used by the given process.
+     *
+     * @return the process language used by the given process.
+     */
+    public ProcessLanguage getProcessLanguage() {
+        return ProcessLanguage.getByPath(getProcess());
+    }
 
     @Override
     public String toString() {

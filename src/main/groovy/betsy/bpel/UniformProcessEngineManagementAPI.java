@@ -3,6 +3,7 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.EngineAPI;
+import betsy.common.engines.ProcessLanguage;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -33,6 +34,11 @@ public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess>
     @Override
     public void storeLogs(BPELProcess process) {
         engine.storeLogs(process);
+    }
+
+    @Override
+    public ProcessLanguage getSupportedLanguage() {
+        return engine.getSupportedLanguage();
     }
 
     @Override
