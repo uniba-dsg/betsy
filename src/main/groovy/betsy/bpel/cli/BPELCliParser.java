@@ -122,7 +122,12 @@ public class BPELCliParser {
 
                 @Override
                 public String getTestFolderName() {
-                    return cmd.getOptionValue(USE_CUSTOM_TEST_FOLDER);
+                    String optionValue = cmd.getOptionValue(USE_CUSTOM_TEST_FOLDER);
+                    if(optionValue != null){
+                        return optionValue;
+                    } else {
+                        return "test";
+                    }
                 }
 
                 @Override
