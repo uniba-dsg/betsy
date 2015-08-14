@@ -15,6 +15,7 @@ import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.HasName;
 import betsy.common.config.Configuration;
+import betsy.common.util.LogUtil;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -64,6 +65,8 @@ public class BPELMain {
 
             betsy.setProcesses(params.getProcesses());
             betsy.setEngines(params.getEngines());
+            betsy.setTestFolder(params.getTestFolderName());
+
 
             // execute
             try {

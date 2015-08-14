@@ -8,6 +8,7 @@ deploy.xml
 .idea
 tmp/
 /test/
+/test*
 out/
 build/
 build-bvms/

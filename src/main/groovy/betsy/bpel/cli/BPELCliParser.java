@@ -24,6 +24,11 @@ public class BPELCliParser {
         }
 
         @Override
+        public String getTestFolderName() {
+            return "test";
+        }
+
+        @Override
         public boolean openResultsInBrowser() {
             return false;
         }
@@ -112,6 +117,11 @@ public class BPELCliParser {
                 @Override
                 public List<BPELProcess> getProcesses() {
                     return new ProcessParser(cmd.getArgs()).parse();
+                }
+
+                @Override
+                public String getTestFolderName() {
+                    return new TestFolderParser(cmd.getArgs()).parse();
                 }
 
                 @Override

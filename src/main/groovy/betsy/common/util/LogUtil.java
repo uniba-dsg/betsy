@@ -9,6 +9,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class LogUtil {
+
+    private static TestSuite suite;
+
+    public static void setTestSuite(TestSuite testSuite){
+        suite = testSuite;
+    }
+
     public static void log(final String name, Logger logger, Runnable closure) {
         String previous = LogContext.getContext();
         try {
@@ -26,8 +33,8 @@ public class LogUtil {
                 stopwatch.stop();
                 logger.info("... finished in " + stopwatch.getFormattedDiff() + " | (" + stopwatch.getDiff() + "ms)");
                 try{
-                    // TODO should use the TestSuite#getDurationsCsvFilePath method instead of hardcoding it to test here
-                    new DurationCsv(Paths.get("test").resolve(TestSuite.getCsvDurationFile())).saveTaskDuration(name, stopwatch.getDiff());
+                    // uses a non-default path if available
+                    new DurationCsv(getCsvDurationFilePath()).saveTaskDuration(name, stopwatch.getDiff());
                 } catch (Exception e) {
                     logger.error("could not save task duration", e);
                 }
@@ -37,6 +44,14 @@ public class LogUtil {
             LogContext.setContext(previous);
         }
 
+    }
+
+    private static Path getCsvDurationFilePath() {
+        if(suite == null){
+            return Paths.get("test").resolve(TestSuite.getCsvDurationFile());
+        } else {
+            return suite.getCsvDurationFilePath();
+        }
     }
 
     public static void log(Path path, Logger logger, Runnable closure) {

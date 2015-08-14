@@ -4,6 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.validation.BPELValidator;
+import betsy.common.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,13 +14,16 @@ public class BPELBetsy {
     private List<AbstractBPELEngine> engines = new ArrayList<>();
     private List<BPELProcess> processes = new ArrayList<>();
     private BPELComposite composite = new BPELComposite();
+    private String testFolderName;
 
     public void execute() {
         validate();
 
         Collections.sort(processes);
 
-        BPELTestSuite testSuite = BPELTestSuite.createTests(engines, processes);
+        BPELTestSuite testSuite = BPELTestSuite.createTests(engines, processes, testFolderName);
+
+        LogUtil.setTestSuite(testSuite);
 
         composite.setTestSuite(testSuite);
         composite.execute();
@@ -43,6 +47,10 @@ public class BPELBetsy {
 
     public void setProcesses(List<BPELProcess> processes) {
         this.processes = processes;
+    }
+
+    public void setTestFolder(String folderName){
+        testFolderName = folderName;
     }
 
     public BPELComposite getComposite() {
