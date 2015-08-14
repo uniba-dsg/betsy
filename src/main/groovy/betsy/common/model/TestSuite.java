@@ -43,7 +43,7 @@ public class TestSuite<E extends EngineAPI<P>,P extends ProcessFolderStructure> 
     }
 
     public Path getCsvDurationFilePath() {
-        return getReportsPath().resolve(getCsvDurationFile());
+        return path.resolve(getCsvDurationFile());
     }
 
     public Path getJUnitXMLFilePath() {
