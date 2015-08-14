@@ -55,6 +55,7 @@ Options:
  -p,--partner-address <arg>          Partner IP and Port (defaults to
                                      localhost:2000)
  -t,--to-core-bpel <arg>             Transform to Core BPEL
+ -f,--use-custom-test-folder <arg>   Use a custom test folder (folder name defaults to "test")
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
 <ENGINES>: [ALL, LOCALS, VMS, RECENT, ode, bpelg, openesb, petalsesb,
