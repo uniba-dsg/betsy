@@ -20,6 +20,8 @@ import betsy.bpel.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import betsy.bpel.virtual.host.virtualbox.SnapshotCreator;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +50,15 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     private final HostTcpClient comm = new HostTcpClient(Constants.SERVER_HOSTNAME, Constants.SERVER_PORT);
 
     public AbstractBPELEngine defaultEngine;
+
+    @Override
+    public Engine getEngineId() {
+        Engine engineId = defaultEngine.getEngineId();
+        List<String> configuration = new LinkedList<>();
+        configuration.addAll(engineId.getConfiguration());
+        configuration.add("virtual");
+        return new Engine(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), configuration);
+    }
 
     private VirtualBoxMachine vm = null;
 

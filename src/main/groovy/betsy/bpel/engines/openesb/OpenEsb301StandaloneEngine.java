@@ -3,6 +3,8 @@ package betsy.bpel.engines.openesb;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.StringUtils;
@@ -188,7 +190,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getName() {
-        return "openesb301standalone";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1");
     }
 }

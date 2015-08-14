@@ -6,7 +6,6 @@ import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
 import betsy.common.engines.ProcessLanguage;
 import betsy.common.tasks.FileTasks;
-import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,14 +18,7 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
 
     private final List<BPMNProcess> processes = new ArrayList<>();
 
-    /**
-     * The path <code>src/main/xslt/$engine</code>
-     *
-     * @return the path <code>src/main/xslt/$engine</code>
-     */
-    public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/" + getName());
-    }
+    public abstract Path getXsltPath();
 
     /**
      * The path <code>test/$engine</code>

@@ -3,7 +3,10 @@ package betsy.bpel.engines.petalsesb;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
+import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Files;
@@ -14,9 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
+
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/petalsesb");
+    }
+
     @Override
-    public String getName() {
-        return "petalsesb";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0");
     }
 
     @Override

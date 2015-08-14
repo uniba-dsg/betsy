@@ -2,28 +2,25 @@ package betsy.bpmn.engines.camunda;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
+import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
-    public String getName() {
-        return "camunda";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0");
     }
 
     public String getCamundaUrl() {
@@ -36,6 +33,11 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     public Path getTomcatDir() {
         return getServerPath().resolve("server").resolve(getTomcatName());
+    }
+
+    @Override
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda");
     }
 
     @Override

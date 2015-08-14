@@ -4,6 +4,8 @@ import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,16 +15,12 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
     private static final Logger LOGGER = Logger.getLogger(PetalsEsb41Engine.class);
 
     @Override
-    public String getName() {
-        return "petalsesb41";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1");
     }
 
     public String getPetalsFolderName() {
         return "petals-esb-4.1";
-    }
-
-    public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/petalsesb");
     }
 
     @Override

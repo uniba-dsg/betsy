@@ -1,19 +1,17 @@
 package betsy.bpel.engines.openesb;
 
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class OpenEsb23Engine extends OpenEsbEngine {
-    @Override
-    public String getName() {
-        return "openesb23";
-    }
 
-    public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
+    @Override
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.3");
     }
 
     @Override

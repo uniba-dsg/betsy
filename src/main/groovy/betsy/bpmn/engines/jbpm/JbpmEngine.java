@@ -7,6 +7,8 @@ import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
@@ -22,8 +24,13 @@ public class JbpmEngine extends AbstractBPMNEngine {
     private static final Logger LOGGER = Logger.getLogger(JbpmEngine.class);
 
     @Override
-    public String getName() {
-        return "jbpm";
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/jbpm");
+    }
+
+    @Override
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1");
     }
 
     public Path getJbpmInstallerPath() {
