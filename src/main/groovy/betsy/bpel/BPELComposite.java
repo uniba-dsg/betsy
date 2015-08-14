@@ -27,16 +27,19 @@ public class BPELComposite {
 
     private BPELTestSuite testSuite;
 
-    protected static void log(String name, Runnable closure) {
-        LogUtil.log(name, LOGGER, closure);
+    private LogUtil logUtil;
+
+    private void log(String name, Runnable closure) {
+        logUtil.log(name, LOGGER, closure);
     }
 
-    protected static void log(Path path, Runnable closure) {
-        LogUtil.log(path, LOGGER, closure);
+    private void log(Path path, Runnable closure) {
+        logUtil.log(path, LOGGER, closure);
     }
 
     public void execute() {
         final Progress progress = new Progress(testSuite.getProcessesCount());
+        logUtil = new LogUtil(testSuite);
         MDC.put("progress", progress.toString());
 
         // prepare test suite

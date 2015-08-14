@@ -10,13 +10,17 @@ import java.nio.file.Paths;
 
 public class LogUtil {
 
-    private static TestSuite suite;
+    private TestSuite suite;
 
-    public static void setTestSuite(TestSuite testSuite){
+    public LogUtil(TestSuite testSuite) {
         suite = testSuite;
     }
 
-    public static void log(final String name, Logger logger, Runnable closure) {
+    public void setTestSuite(TestSuite testSuite){
+        suite = testSuite;
+    }
+
+    public void log(final String name, Logger logger, Runnable closure) {
         String previous = LogContext.getContext();
         try {
             LogContext.setContext(name);
@@ -46,7 +50,7 @@ public class LogUtil {
 
     }
 
-    private static Path getCsvDurationFilePath() {
+    private Path getCsvDurationFilePath() {
         if(suite == null){
             return Paths.get("test").resolve(TestSuite.getCsvDurationFile());
         } else {
@@ -54,7 +58,7 @@ public class LogUtil {
         }
     }
 
-    public static void log(Path path, Logger logger, Runnable closure) {
+    public void log(Path path, Logger logger, Runnable closure) {
         log(path.toString(), logger, closure);
     }
 

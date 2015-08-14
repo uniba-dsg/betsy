@@ -23,8 +23,6 @@ public class BPELBetsy {
 
         BPELTestSuite testSuite = BPELTestSuite.createTests(engines, processes, testFolderName);
 
-        LogUtil.setTestSuite(testSuite);
-
         composite.setTestSuite(testSuite);
         composite.execute();
     }
