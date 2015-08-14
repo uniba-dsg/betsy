@@ -22,6 +22,7 @@ public class BetsyTests {
 
         betsy.setEngines(Collections.singletonList(engine));
         betsy.setProcesses(processes);
+        betsy.setTestFolder("test");
         betsy.setComposite(new MockComposite());
         betsy.execute();
     }
