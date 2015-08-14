@@ -87,6 +87,7 @@ public class BPELCliParser {
     public static final String PARTNER_ADDRESS = "partner-address";
     public static final String TO_CORE_BPEL = "to-core-bpel";
     private static final String USE_INSTALLED_ENGINE = "use-installed-engine";
+    private static final String USE_CUSTOM_TEST_FOLDER= "use-custom-test-folder";
 
     private final String[] args;
 
@@ -121,7 +122,7 @@ public class BPELCliParser {
 
                 @Override
                 public String getTestFolderName() {
-                    return new TestFolderParser(cmd.getArgs()).parse();
+                    return cmd.getOptionValue(USE_CUSTOM_TEST_FOLDER);
                 }
 
                 @Override
@@ -190,6 +191,7 @@ public class BPELCliParser {
 
         options.addOption("p", PARTNER_ADDRESS, true, "Partner IP and Port (defaults to " + Configuration.get("partner.ipAndPort") + ")");
         options.addOption("t", TO_CORE_BPEL, true, "Transform to Core BPEL");
+        options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
         return options;
     }
 
