@@ -58,11 +58,13 @@ Options:
  -f,--use-custom-test-folder <arg>   Use a custom test folder (folder name defaults to "test")
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
-<ENGINES>: [ALL, LOCALS, VMS, RECENT, ode, bpelg, openesb, petalsesb,
-orchestra, active-bpel, openesb23, openesb231, petalsesb41, ode136,
-ode-in-memory, ode136-in-memory, bpelg-in-memory, wso2_v3_1_0,
-wso2_v3_0_0, wso2_v2_1_2, ode_v, bpelg_v, openesb_v, petalsesb_v,
-orchestra_v, active_bpel_v]
+<ENGINES>: [ALL, LOCALS, VMS, RECENT, ode__1_3_5, ode__1_3_6,
+ode__1_3_5__in-memory, ode__1_3_6__in-memory, openesb__2_2, openesb__2_3,
+openesb__2_3_1, openesb__3_0_1, orchestra__4_9, active-bpel__5_0_2,
+petalsesb__4_0, petalsesb__4_1, bpelg__5_3, bpelg__5_3__in-memory,
+wso2__3_2_0, wso2__3_1_0, wso2__3_0_0, wso2__2_1_2, ode__1_3_5__virtual,
+bpelg__5_3__virtual, openesb__2_2__virtual, petalsesb__4_0__virtual,
+orchestra__4_9__virtual, active-bpel__5_0_2__virtual]
 <PROCESSES>: [ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
 BASIC_ACTIVITIES_RECEIVE, BASIC_ACTIVITIES_INVOKE,
 BASIC_ACTIVITIES_ASSIGN, BASIC_ACTIVITIES, SCOPES_EVENT_HANDLERS,
@@ -104,8 +106,9 @@ Options:
  -o,--open-results-in-browser   Opens results in default browser
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
-<ENGINES>: [ALL, camunda, camunda710, camunda720, camunda730, activiti,
-activiti5170, jbpm, jbpm610, jbpm620]
+<ENGINES>: [ALL, camunda__7_0_0, camunda__7_1_0, camunda__7_2_0,
+camunda__7_3_0, activiti__5_16_3, activiti__5_17_0, jbpm__6_0_1,
+jbpm__6_1_0, jbpm__6_2_0]
 
 
 <PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, DATA,
