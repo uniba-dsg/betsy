@@ -46,10 +46,18 @@ public class SystemTest {
 
     @Test
     public void test_B3_BpelBpelgSequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(true);
+        BPELMain.shutdownSoapUiAfterCompletion(false);
         BPELMain.main("bpelg", "sequence", "-f", "test-bpelg");
 
         assertEquals("[Sequence;bpelg;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-bpelg/reports/results.csv")).toString());
+    }
+
+    @Test
+    public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
+        BPELMain.shutdownSoapUiAfterCompletion(true);
+        BPELMain.main("wso2_v3_2_0", "sequence", "-f", "test-wso320");
+
+        assertEquals("[Sequence;wso2_v3_2_0;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-wso320/reports/results.csv")).toString());
     }
 
 }
