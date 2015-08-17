@@ -26,6 +26,10 @@ public class XSLTTasks {
         FileTasks.assertFile(xslt);
         FileTasks.assertFile(input);
 
+        if(output.toAbsolutePath().toString().equals(input.toAbsolutePath().toString())) {
+            throw new IllegalStateException("Cannot have the same input as output");
+        }
+
         FileTasks.assertFileExtension(xslt, FileTypes.XSL);
 
         XSLTProcess transform = new XSLTProcess();

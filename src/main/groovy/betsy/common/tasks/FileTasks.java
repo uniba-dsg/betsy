@@ -6,7 +6,8 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Replace;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -175,6 +176,7 @@ public class FileTasks {
             List<String> lines = Files.readAllLines(source);
             mkdirs(target.getParent());
             Files.write(target, lines, StandardCharsets.UTF_8);
+            LOGGER.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath() + " successful");
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy contents of file " + source + " to file " + target, e);
         }

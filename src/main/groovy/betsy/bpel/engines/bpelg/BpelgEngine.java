@@ -86,8 +86,11 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
 
             XSLTTasks.transform(getXsltPath().resolve("bpelg_prepare_wsdl.xsl"),
                     process.getTargetTmpPath().resolve("TestInterface.wsdl.before_removing_" + pattern),
-                    process.getTargetTmpPath().resolve("TestInterface.wsdl.before_removing_" + pattern),
+                    process.getTargetTmpPath().resolve("TestInterface.wsdl.after_removing_" + pattern),
                     "deletePattern", pattern);
+
+            FileTasks.copyFileIntoFolderAndOverwrite(process.getTargetTmpPath().resolve("TestInterface.wsdl.after_removing_" + pattern),
+                    process.getTargetProcessPath());
         }
 
         // uniquify service name
