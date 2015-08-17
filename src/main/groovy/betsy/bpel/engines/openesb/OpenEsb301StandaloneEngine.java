@@ -110,6 +110,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
 
         FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start openesb.bat");
+        FileTasks.createFile(getServerPath().resolve("start-openesb.sh"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && ./openesb.sh");
     }
 
     private Path getInstanceBinFolder() {
@@ -137,6 +138,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     public void startup() {
         // start openesb.bat
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.bat"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.sh"));
         WaitTasks.waitForAvailabilityOfUrl(10 * 1000, 500, WEB_UI);
 
         // install bpelse
