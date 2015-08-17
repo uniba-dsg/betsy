@@ -28,8 +28,9 @@ public class ActiveBpelInstaller {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
 
         Map<String, String> map = new HashMap<>();
-        map.put("CATALINA_HOME", installer.getDestinationDir().toString());
+        map.put("CATALINA_HOME", "../" + installer.getTomcat().getTomcatName());
 
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.bat"), map);
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.sh"), map);
     }
 }

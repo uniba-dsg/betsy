@@ -1,6 +1,5 @@
 package betsy.common.tasks;
 
-import betsy.common.config.Configuration;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.types.Environment;
@@ -22,6 +21,10 @@ public class ConsoleTasks {
 
     public static void executeOnWindows(CliCommand cliCommand, Map<String, String> environment) {
         execute(WINDOWS, cliCommand, true, environment);
+    }
+
+    public static void executeOnUnix(CliCommand cliCommand, Map<String, String> environment) {
+        execute(UNIX, cliCommand, true, environment);
     }
 
     private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, Map<String, String> environment) {

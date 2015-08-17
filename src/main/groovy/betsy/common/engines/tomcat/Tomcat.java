@@ -1,14 +1,22 @@
 package betsy.common.engines.tomcat;
 
+import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
 
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Responsible for starting and stopping tomcat as well as all tomcat related paths and properties.
  */
 public class Tomcat {
+
+    public enum JavaVersion {
+        V7, V8;
+    }
 
     /*
      * the port of the tomcat
@@ -22,6 +30,16 @@ public class Tomcat {
     private final Path parentFolder;
 
     private final String tomcatName;
+
+    public JavaVersion getJavaVersion() {
+        return javaVersion;
+    }
+
+    public void setJavaVersion(JavaVersion javaVersion) {
+        this.javaVersion = javaVersion;
+    }
+
+    private JavaVersion javaVersion = JavaVersion.V8;
 
     public Tomcat(Path parentFolder, String tomcatName, int port) {
         //FileTasks.assertDirectory(parentFolder);
@@ -69,11 +87,25 @@ public class Tomcat {
      * Start tomcat and wait until it responds to the <code>tomcatUrl</code>
      */
     public void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder, "tomcat_startup.bat"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_startup.sh")));
+        Map<String, String> environment = getEnvironment();
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder, "tomcat_startup.bat"), environment);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_startup.sh")), environment);
 
         WaitTasks.waitForAvailabilityOfUrl(30000, 500, getTomcatUrl());
 
+    }
+
+    private Map<String, String> getEnvironment() {
+        if(javaVersion == JavaVersion.V8) {
+            return Collections.emptyMap();
+        } else {
+            Path pathToJava7 = Configuration.getJava7Home();
+            FileTasks.assertDirectory(pathToJava7);
+            Map<String, String> environment = new HashMap<>();
+            environment.put("JAVA_HOME", pathToJava7.toString());
+            return environment;
+        }
     }
 
     /**

@@ -64,7 +64,9 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void startup() {
-        getTomcat().startup();
+        Tomcat tomcat = getTomcat();
+        tomcat.setJavaVersion(Tomcat.JavaVersion.V7);
+        tomcat.startup();
     }
 
     @Override
@@ -84,7 +86,8 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void deploy(BPELProcess process) {
-        new ActiveBpelDeployer(getDeploymentDir(), getAeDeploymentLog()).deploy(process.getTargetPackageFilePath("bpr"), process.getName());
+        new ActiveBpelDeployer(getDeploymentDir(), getAeDeploymentLog()).
+                deploy(process.getTargetPackageFilePath("bpr"), process.getName());
     }
 
     public void buildArchives(BPELProcess process) {
