@@ -2,7 +2,6 @@ package betsy;
 
 import betsy.bpel.BPELMain;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -39,10 +38,18 @@ public class SystemTest {
 
     @Test
     public void test_B2_BpelOrchestraSequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(true);
+        BPELMain.shutdownSoapUiAfterCompletion(false);
         BPELMain.main("orchestra", "sequence", "-f", "test-orchestra");
 
         assertEquals("[Sequence;orchestra;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-orchestra/reports/results.csv")).toString());
+    }
+
+    @Test
+    public void test_B3_BpelBpelgSequence() throws IOException, InterruptedException {
+        BPELMain.shutdownSoapUiAfterCompletion(true);
+        BPELMain.main("bpelg", "sequence", "-f", "test-bpelg");
+
+        assertEquals("[Sequence;bpelg;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-bpelg/reports/results.csv")).toString());
     }
 
 }
