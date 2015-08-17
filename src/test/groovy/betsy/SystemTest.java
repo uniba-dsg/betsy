@@ -2,6 +2,7 @@ package betsy;
 
 import betsy.bpel.BPELMain;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -52,12 +53,22 @@ public class SystemTest {
         assertEquals("[Sequence;bpelg;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-bpelg/reports/results.csv")).toString());
     }
 
+    @Ignore
     @Test
     public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
         BPELMain.shutdownSoapUiAfterCompletion(true);
         BPELMain.main("wso2_v3_2_0", "sequence", "-f", "test-wso320");
 
         assertEquals("[Sequence;wso2_v3_2_0;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-wso320/reports/results.csv")).toString());
+    }
+
+    @Ignore
+    @Test
+    public void test_B5_BpelActiveBpelSequence() throws IOException, InterruptedException {
+        BPELMain.shutdownSoapUiAfterCompletion(true);
+        BPELMain.main("active-bpel", "sequence", "-f", "test-active-bpel");
+
+        assertEquals("[Sequence;active-bpel;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-active-bpel/reports/results.csv")).toString());
     }
 
 }
