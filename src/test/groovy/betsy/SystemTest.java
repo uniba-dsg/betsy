@@ -30,9 +30,9 @@ public class SystemTest {
 
     @Test
     public void test_B_BpelOdeSequence() throws IOException, InterruptedException {
-        Main.main("bpel", "ode", "sequence");
+        Main.main("bpel", "ode", "sequence", "-f", "test-ode");
 
-        assertEquals("[Sequence;ode;structured;1;0;1;1]", Files.readAllLines(Paths.get("test/reports/results.csv")).toString());
+        assertEquals("[Sequence;ode;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-ode/reports/results.csv")).toString());
     }
 
 }
