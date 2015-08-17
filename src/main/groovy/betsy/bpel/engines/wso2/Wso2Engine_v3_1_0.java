@@ -39,6 +39,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat");
         FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd " +
                 getBinDir().toAbsolutePath() + " && call wso2server.bat");
+        FileTasks.createFile(getServerPath().resolve("startup.sh"), "cd " + getBinDir().toAbsolutePath() + " && ./wso2server.bat");
     }
 
     public String getZipFileName() {
@@ -48,6 +49,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), "startup.sh"));
         WaitTasks.sleep(2000);
         WaitTasks.waitForSubstringInFile(120_000, 500, getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
