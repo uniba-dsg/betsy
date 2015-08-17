@@ -88,7 +88,7 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new ActiveBpelInstaller().install();
+        new ActiveBpelInstaller(getServerPath()).install();
     }
 
     @Override

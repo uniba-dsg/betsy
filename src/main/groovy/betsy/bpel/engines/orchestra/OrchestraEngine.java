@@ -28,7 +28,7 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new OrchestraInstaller().install();
+        new OrchestraInstaller(getServerPath()).install();
     }
 
     @Override

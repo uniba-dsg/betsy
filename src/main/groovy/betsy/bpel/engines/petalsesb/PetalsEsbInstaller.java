@@ -11,6 +11,15 @@ import java.nio.file.Paths;
 
 public class PetalsEsbInstaller {
 
+    private Path serverDir;
+    private String fileName;
+    private Path targetEsbInstallDir;
+    private Path bpelComponentPath;
+    private Path soapComponentPath;
+    private Path sourceFile;
+    private PetalsEsbEngine engine;
+    private Path cliFile;
+
     public PetalsEsbInstaller(PetalsEsbEngine engine){
         this.engine = engine;
     }
@@ -67,12 +76,4 @@ public class PetalsEsbInstaller {
 
     public void setCliFile(Path cliFile) { this.cliFile = cliFile;}
 
-    private Path serverDir = Paths.get("server/petalsesb");
-    private String fileName = "petals-esb-distrib-4.0.zip";
-    private Path targetEsbInstallDir = serverDir.resolve("petals-esb-4.0/install");
-    private Path bpelComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip");
-    private Path soapComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip");
-    private Path sourceFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip");
-    private Path cliFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-cli-1.0.0.zip");
-    private PetalsEsbEngine engine;
 }
