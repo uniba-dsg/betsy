@@ -36,7 +36,7 @@ public class OrchestraInstaller {
 
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
 
-        setPropertyInPropertiesFile(installDir.resolve("conf").resolve("install.properties"), "catalina.home", "../apache-tomcat-7.0.26");
+        setPropertyInPropertiesFile(installDir.resolve("conf").resolve("install.properties"), "catalina.home", "../" + tomcatInstaller.getTomcatName());
 
         ConsoleTasks.setupAnt(getAntPath());
 
@@ -65,6 +65,5 @@ public class OrchestraInstaller {
             throw new IllegalStateException("Could not store property file " + propertiesFile, e);
         }
     }
-
 
 }
