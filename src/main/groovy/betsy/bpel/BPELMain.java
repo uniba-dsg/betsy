@@ -34,6 +34,8 @@ public class BPELMain {
 
     private static final Logger LOGGER = Logger.getLogger(BPELMain.class);
 
+    private static boolean shouldShutdownSoapUi = true;
+
     public static void main(String[] args) {
         activateLogging();
 
@@ -92,7 +94,13 @@ public class BPELMain {
             LOGGER.error(cleanedException.getMessage(), cleanedException);
         }
 
-        SoapUIShutdownHelper.shutdownSoapUIForReal();
+        if (shouldShutdownSoapUi) {
+            SoapUIShutdownHelper.shutdownSoapUIForReal();
+        }
+    }
+
+    public static void shutdownSoapUiAfterCompletion(boolean shouldShutdown) {
+        shouldShutdownSoapUi = shouldShutdown;
     }
 
     public static void onlyBuildStepsOrUseInstalledEngine(BPELCliParameter params, BPELBetsy betsy) {
@@ -248,31 +256,31 @@ public class BPELMain {
             String transformations = params.getCoreBPELTransformations();
 
             switch (transformations) {
-            case "ALL":
-                for (AbstractBPELEngine engine : engines) {
-                    if (engine instanceof AbstractVirtualBPELEngine) {
-                        CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
-                    } else if (engine instanceof AbstractLocalBPELEngine) {
-                        CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION);
+                case "ALL":
+                    for (AbstractBPELEngine engine : engines) {
+                        if (engine instanceof AbstractVirtualBPELEngine) {
+                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
+                        } else if (engine instanceof AbstractLocalBPELEngine) {
+                            CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION);
+                        }
                     }
-                }
 
-                break;
-            case "NONE":
-                // do nothing - default value
-                break;
-            default:
-                List<String> xsls = Arrays.asList(transformations.split(","));
+                    break;
+                case "NONE":
+                    // do nothing - default value
+                    break;
+                default:
+                    List<String> xsls = Arrays.asList(transformations.split(","));
 
-                for (AbstractBPELEngine engine : engines) {
-                    if (engine instanceof AbstractVirtualBPELEngine) {
-                        CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, xsls);
-                    } else if (engine instanceof AbstractLocalBPELEngine) {
-                        CoreBPELEngineExtension.extendEngine(engine, xsls);
+                    for (AbstractBPELEngine engine : engines) {
+                        if (engine instanceof AbstractVirtualBPELEngine) {
+                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, xsls);
+                        } else if (engine instanceof AbstractLocalBPELEngine) {
+                            CoreBPELEngineExtension.extendEngine(engine, xsls);
+                        }
                     }
-                }
 
-                break;
+                    break;
             }
 
         }
