@@ -3,7 +3,6 @@ package betsy.bpel.virtual;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.Protocol;
 import betsy.bpel.virtual.common.exceptions.CommunicationException;
-import betsy.bpel.virtual.common.messages.collect_log_files.LogFiles;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesResponse;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
@@ -31,7 +30,7 @@ public class CommunicationTest {
             }
         };
 
-        int server_port = 50000;
+        int server_port = 55000;
         VirtualMachineTcpServer virtualMachineTcpServer = new VirtualMachineTcpServer(server_port, protocol);
         virtualMachineTcpServer.start();
 
@@ -57,7 +56,7 @@ public class CommunicationTest {
             }
         };
 
-        int server_port = 50001;
+        int server_port = 55001;
         VirtualMachineTcpServer virtualMachineTcpServer = new VirtualMachineTcpServer(server_port, protocol);
         virtualMachineTcpServer.start();
 
@@ -87,7 +86,7 @@ public class CommunicationTest {
             }
         };
 
-        int server_port = 50002;
+        int server_port = 55002;
         VirtualMachineTcpServer virtualMachineTcpServer = new VirtualMachineTcpServer(server_port, protocol);
         virtualMachineTcpServer.start();
 
@@ -111,7 +110,7 @@ public class CommunicationTest {
             }
         };
 
-        int server_port = 50003;
+        int server_port = 55003;
         VirtualMachineTcpServer virtualMachineTcpServer = new VirtualMachineTcpServer(server_port, protocol);
         virtualMachineTcpServer.start();
 
