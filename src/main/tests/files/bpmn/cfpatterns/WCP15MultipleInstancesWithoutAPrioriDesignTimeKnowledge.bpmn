@@ -2,10 +2,10 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WCP14MIAPrioriRuntimeKnowledgeTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP14MIAPrioriRuntimeKnowledge">
+                   id="WCP15MIWOAPrioriRuntimeKnowledgeTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP15MIWOAPrioriRuntimeKnowledge">
  
- <bpmn2:process id="WCP14MIAPrioriRuntimeKnowledge" isExecutable="true">
+ <bpmn2:process id="WCP15MIWOAPrioriRuntimeKnowledge" isExecutable="true">
     <bpmn2:startEvent id="StartEvent_1" name="Start">
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
     </bpmn2:startEvent>
@@ -26,8 +26,7 @@
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
       <bpmn2:multiInstanceLoopCharacteristics isSequential="true">
-	  <bpmn2:loopCardinality>7</bpmn2:loopCardinality>
-	  <bpmn2:completionCondition>${nrOfCompletedInstances/nrOfInstances >= 0.6 }</bpmn2:completionCondition>
+	  <bpmn2:loopCardinality>5</bpmn2:loopCardinality>
       </bpmn2:multiInstanceLoopCharacteristics>
       <bpmn2:script>SCRIPT_task1</bpmn2:script>
     </bpmn2:scriptTask>
