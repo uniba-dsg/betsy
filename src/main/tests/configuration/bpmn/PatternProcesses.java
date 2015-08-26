@@ -125,8 +125,10 @@ public class PatternProcesses {
             // WCP10 here,
             TERMINATION_PATTERN,
             MULTIPLE_INSTANCES_PATTERN,
-            //WCP12-15 here
+            //WCP12-14
+            //WCP15 is not implementable?
             DEFERRED_CHOICE_PATTERN,
+            //WCP17, 18 here
             CANCEL_TASK_PATTERN
     ); 
 }
