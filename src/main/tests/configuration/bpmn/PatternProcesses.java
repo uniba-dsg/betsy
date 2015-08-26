@@ -130,6 +130,7 @@ public class PatternProcesses {
             TERMINATION_PATTERN,
             MULTIPLE_INSTANCES_PATTERN,
             //WCP12-14
+            MI_APRIORI_RUNTIME_PATTERN,
             //WCP15 is not implementable?
             DEFERRED_CHOICE_PATTERN,
             //WCP17, 18 here
