@@ -2,7 +2,7 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-					id="WCP10ArbitraryCycles"
+					id="WCP10ArbitraryCyclesTest"
 					targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP10ArbitraryCycles">
  <bpmn2:process id="WCP10ArbitraryCycles" isExecutable="true">
   
