@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://dsg.wiai.uniba.de/betsy/bpmn/wCP18Milestone" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="WCP18MilestoneTest" name="" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP18Milestone" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <bpmn2:process id="WCP18Milestone" isClosed="false" isExecutable="true" processType="None">
+   
+   <bpmn2:startEvent id="_2" name="StartEvent"/>
+    <bpmn2:scriptTask activiti:exclusive="true" id="_3" name="ScriptTask"/>
+    <bpmn2:exclusiveGateway gatewayDirection="Unspecified" id="_4" name="ExclusiveGateway"/>
+    <bpmn2:eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Unspecified" id="_8" instantiate="false" name="EventGateway"/>
+    <bpmn2:scriptTask activiti:exclusive="true" id="_10" name="ScriptTask"/>
+    <bpmn2:boundaryEvent attachedToRef="_10" cancelActivity="true" id="_11" name="BoundaryEvent"/>
+    <bpmn2:scriptTask activiti:exclusive="true" id="_15" name="ScriptTask"/>
+    <bpmn2:boundaryEvent attachedToRef="_15" cancelActivity="true" id="_16" name="BoundaryEvent"/>
+    <bpmn2:endEvent id="_18" name="EndEvent"/>
+    
+	<bpmn2:sequenceFlow id="_7" sourceRef="_2" targetRef="_3"/>
+    <bpmn2:sequenceFlow id="_5" sourceRef="_3" targetRef="_4"/>
+    <bpmn2:sequenceFlow id="_12" sourceRef="_8" targetRef="_11"/>
+    <bpmn2:sequenceFlow id="_14" sourceRef="_10" targetRef="_4"/>
+    <bpmn2:sequenceFlow id="_17" sourceRef="_8" targetRef="_16"/>
+    <bpmn2:sequenceFlow id="_19" sourceRef="_15" targetRef="_18"/>
+    <bpmn2:sequenceFlow id="_99" sourceRef="_4" targetRef="_8"/>
+  
+  </bpmn2:process>
+</bpmn2:definitions>
