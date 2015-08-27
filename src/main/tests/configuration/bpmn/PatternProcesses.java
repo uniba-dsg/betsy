@@ -85,8 +85,8 @@ public class PatternProcesses {
 
     //TODO: Adapt complex gateway to continue when one task has completed
     public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
-            " incoming branches to complete before activating the subsequent activity",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask4());
+            " incoming branches to complete before activating the subsequent activity"+"this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
+            new BPMNTestCase().assertTask1());
 
     //TODO: Add test case for WCP10 here
 
@@ -104,6 +104,8 @@ public class PatternProcesses {
     public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination","A process with the ability to depict the notion that a given sub-process\n" +
             "should be terminated when there are no remaining activities to be completed.",
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());
+
+
 
 
     public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
