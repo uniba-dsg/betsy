@@ -128,10 +128,10 @@ public class PatternProcesses {
             SYNC_MERGE_PATTERN,
             MULTI_MERGE_PATTERN,
             DISCRIMINATOR_PATTERN,
-            // WCP10 here,
+            // WCP10 here
             TERMINATION_PATTERN,
+            // WCP12 here
             MULTIPLE_INSTANCES_PATTERN,
-            //WCP12-14
             MI_APRIORI_RUNTIME_PATTERN,
             //WCP15 is not implementable?
             DEFERRED_CHOICE_PATTERN,
