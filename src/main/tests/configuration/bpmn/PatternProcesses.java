@@ -112,10 +112,17 @@ public class PatternProcesses {
             "one of several possible branches should be activated.",
             new BPMNTestCase().assertTask1().optionDelay(5000));
 
+
+    //Note: doesn't work with jbpm
+    public static final BPMNProcess INTER_PAR_ROUTING_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP17InterleavedParallelRouting", " A set of activity instances is executed sequentially in an\n" +
+            "order that is decided at run time. No two activity instances of this set are\n" +
+            "active at the same point in time",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2());
+
     //TODO: make conditional boundary event work
     public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
             "disabled in some nominated circumstance",
-            new BPMNTestCase().inputA().assertTask1());
+            new BPMNTestCase().inputA().assertTask1().assertTask2());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             SEQUENCE_PATTERN,
@@ -135,7 +142,8 @@ public class PatternProcesses {
             MI_APRIORI_RUNTIME_PATTERN,
             //WCP15 is not implementable?
             DEFERRED_CHOICE_PATTERN,
-            //WCP17, 18 here
+            INTER_PAR_ROUTING_PATTERN,
+            //WCP18 here
             CANCEL_TASK_PATTERN
     ); 
 }
