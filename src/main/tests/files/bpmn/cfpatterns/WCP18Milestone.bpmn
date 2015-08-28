@@ -1,14 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://dsg.wiai.uniba.de/betsy/bpmn/wCP18Milestone" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="WCP18MilestoneTest" name="" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP18Milestone" typeLanguage="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+				   id="WCP18MilestoneTest" name="" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP18Milestone">
   <bpmn2:process id="WCP18Milestone" isClosed="false" isExecutable="true" processType="None">
    
    <bpmn2:startEvent id="_2" name="StartEvent"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="_3" name="ScriptTask"/>
+    <bpmn2:scriptTask id="_3" name="ScriptTask"/>
     <bpmn2:exclusiveGateway gatewayDirection="Unspecified" id="_4" name="ExclusiveGateway"/>
     <bpmn2:eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Unspecified" id="_8" instantiate="false" name="EventGateway"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="_10" name="ScriptTask"/>
+    <bpmn2:scriptTask id="_10" name="ScriptTask"/>
     <bpmn2:boundaryEvent attachedToRef="_10" cancelActivity="true" id="_11" name="BoundaryEvent"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="_15" name="ScriptTask"/>
+    <bpmn2:scriptTask id="_15" name="ScriptTask"/>
     <bpmn2:boundaryEvent attachedToRef="_15" cancelActivity="true" id="_16" name="BoundaryEvent"/>
     <bpmn2:endEvent id="_18" name="EndEvent"/>
     
