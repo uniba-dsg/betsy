@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://dsg.wiai.uniba.de/betsy/bpmn/wCP17InterleavedParallelRouting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="WCP17InterleavedParallelRoutingTest" name="" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP17InterleavedParallelRouting" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <bpmn2:process id="WCP17InterleavedParallelRouting" isClosed="false" isExecutable="true" processType="None">
+    <bpmn2:startEvent id="_2" name="StartEvent"/>
+    <bpmn2:scriptTask activiti:exclusive="true" id="_3" name="ScriptTask"/>
+    <bpmn2:subProcess activiti:exclusive="true" completionQuantity="1" id="_4" name="SubProcess" startQuantity="3" triggeredByEvent="false">
+      <bpmn2:multiInstanceLoopCharacteristics isSequential="true"/>
+      <bpmn2:startEvent id="_5" name="StartEvent"/>
+      <bpmn2:scriptTask activiti:exclusive="true" id="_6" name="ScriptTask"/>
+      <bpmn2:endEvent id="_7" name="EndEvent"/>
+      <bpmn2:sequenceFlow id="_8" sourceRef="_5" targetRef="_6"/>
+      <bpmn2:sequenceFlow id="_9" sourceRef="_6" targetRef="_7"/>
+    </bpmn2:subProcess>
+    <bpmn2:endEvent id="_10" name="EndEvent"/>
+    <bpmn2:sequenceFlow id="_11" sourceRef="_3" targetRef="_4"/>
+    <bpmn2:sequenceFlow id="_12" sourceRef="_2" targetRef="_3"/>
+    <bpmn2:sequenceFlow id="_13" sourceRef="_4" targetRef="_10"/>
+  </bpmn2:process>
+</bpmn2:definitions>
