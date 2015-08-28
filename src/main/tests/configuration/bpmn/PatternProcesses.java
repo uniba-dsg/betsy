@@ -113,7 +113,8 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().optionDelay(5000));
 
 
-    //Note: doesn't work with jbpm
+    //Note: doesn't work with jbpm due to MI usage
+    //TODO: write case for jbpm
     public static final BPMNProcess INTER_PAR_ROUTING_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP17InterleavedParallelRouting", " A set of activity instances is executed sequentially in an\n" +
             "order that is decided at run time. No two activity instances of this set are\n" +
             "active at the same point in time",
