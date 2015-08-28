@@ -1,49 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-					id="WCP10ArbitraryCyclesTest"
-					targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP10ArbitraryCycles">
- <bpmn2:process id="WCP10ArbitraryCycles" isExecutable="true">
-  
-    <bpmn2:startEvent id="_2" name="Start">
-	<bpmn2:outgoing>_12</bpmn2:outgoing>
+                   id="WCP10ArbitraryCyclesTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP10ArbitraryCycles">
+    <bpmn2:process id="WCP10ArbitraryCycles" isExecutable="true"> 
+	
+	
+	
+	<bpmn2:startEvent id="Start" name="Start">
+	<bpmn2:outgoing>Flow1</bpmn2:outgoing>
 	</bpmn2:startEvent>
 	
-    <bpmn2:scriptTask id="_3" name="Task1">
-	<bpmn2:incoming>_11</bpmn2:incoming>
-	<bpmn2:incoming>_12</bpmn2:incoming>
-	<bpmn2:outgoing>_7</bpmn2:outgoing>
+    <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+	<bpmn2:incoming>Flow1</bpmn2:incoming>
+	<bpmn2:outgoing>Flow2</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task1</bpmn2:script>
 	</bpmn2:scriptTask>
 	
-    <bpmn2:scriptTask id="_5" name="Task2">
-	<bpmn2:incoming>_8</bpmn2:incoming>
-	<bpmn2:outgoing>_11</bpmn2:outgoing>
-	</bpmn2:scriptTask>
-    
-	<bpmn2:exclusiveGateway gatewayDirection="Unspecified" id="_6" name="ExclusiveGateway">
-	<bpmn2:incoming>_7</bpmn2:incoming>
-	<bpmn2:outgoing>_8</bpmn2:outgoing>
-	<bpmn2:outgoing>_10</bpmn2:outgoing>
+    <bpmn2:parallelGateway gatewayDirection="Diverging" id="Parallel1" name="ParallelGateway">
+	<bpmn2:incoming>Flow2</bpmn2:incoming>
+	<bpmn2:outgoing>Flow3</bpmn2:outgoing>
+	<bpmn2:outgoing>Flow4</bpmn2:outgoing>
+	</bpmn2:parallelGateway>
+	
+    <bpmn2:exclusiveGateway gatewayDirection="Converging" id="Ex1" name="ExclusiveGateway">
+	<bpmn2:incoming>Flow4</bpmn2:incoming>
+    <bpmn2:incoming>Flow9</bpmn2:incoming>
+	<bpmn2:outgoing>Flow5</bpmn2:outgoing>
 	</bpmn2:exclusiveGateway>
 	
-    
-	<bpmn2:sequenceFlow id="_7" sourceRef="_3" targetRef="_6"/>
-    <bpmn2:sequenceFlow id="_8" name="false" sourceRef="_6" targetRef="_5"/>
-    
-	<bpmn2:scriptTask id="_9" name="Task3">
-	<bpmn2:incoming>_10</bpmn2:incoming>
-	<bpmn2:outgoing>_14</bpmn2:outgoing>
+	<bpmn2:scriptTask id="Task2" name="ScriptTask2">
+	<bpmn2:incoming>Flow5</bpmn2:incoming>
+	<bpmn2:outgoing>Flow6</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task2</bpmn2:script>
 	</bpmn2:scriptTask>
-    
-	<bpmn2:sequenceFlow id="_10" name="true" sourceRef="_6" targetRef="_9"/>
-    <bpmn2:sequenceFlow id="_11" sourceRef="_5" targetRef="_3"/>
-    <bpmn2:sequenceFlow id="_12" sourceRef="_2" targetRef="_3"/>
-    
-	<bpmn2:endEvent id="_13" name="End">
-	<bpmn2:incoming>_14</bpmn2:incoming>
-   	</bpmn2:endEvent>
 	
-	<bpmn2:sequenceFlow id="_14" sourceRef="_9" targetRef="_13"/>
+	
+    <bpmn2:scriptTask id="Task5" name="ScriptTask5">
+	<bpmn2:incoming>Flow3</bpmn2:incoming>
+	<bpmn2:outgoing>Flow7</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task5</bpmn2:script>
+	</bpmn2:scriptTask>
+	
+	
+    <bpmn2:scriptTask id="Task3" name="ScriptTask3">
+	<bpmn2:incoming>Flow6</bpmn2:incoming>
+	<bpmn2:incoming>Flow7</bpmn2:incoming>
+	<bpmn2:outgoing>Flow8</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task3</bpmn2:script>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="EX2" name="ExclusiveGateway">
+	<bpmn2:incoming>Flow8</bpmn2:incoming>
+	<bpmn2:outgoing>Flow9</bpmn2:outgoing>
+	<bpmn2:outgoing>Flow10</bpmn2:outgoing>
+	</bpmn2:exclusiveGateway>
+	
+    <bpmn2:scriptTask id="Task4" name="ScriptTask4">
+	<bpmn2:incoming>Flow10</bpmn2:incoming>
+	<bpmn2:outgoing>Flow11</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task4</bpmn2:script>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:endEvent id="End" name="EndEvent">
+	<bpmn2:incoming>Flow11</bpmn2:incoming>
+	</bpmn2:endEvent>
+	
+	
+    <bpmn2:sequenceFlow id="Flow1" sourceRef="Start" targetRef="ScriptTask1"/>
+    <bpmn2:sequenceFlow id="Flow2" sourceRef="ScriptTask1" targetRef="Parallel1"/>
+    <bpmn2:sequenceFlow id="Flow8" sourceRef="Task3" targetRef="EX2"/>
+    <bpmn2:sequenceFlow id="Flow3" sourceRef="Parallel1" targetRef="Task2"/>
+    <bpmn2:sequenceFlow id="Flow4" sourceRef="Parallel1" targetRef="Ex1"/>
+    <bpmn2:sequenceFlow id="Flow5" sourceRef="Ex1" targetRef="Task5"/>
+    <bpmn2:sequenceFlow id="Flow6" sourceRef="Task2" targetRef="Task3"/>
+    <bpmn2:sequenceFlow id="Flow7" sourceRef="Task5" targetRef="Task3"/>
+	
+    <bpmn2:sequenceFlow id="Flow9" sourceRef="EX2" targetRef="Ex1">
+	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
+	</bpmn2:sequenceFlow>
+	
+    <bpmn2:sequenceFlow id="Flow10" sourceRef="EX2" targetRef="Task4"/>
+    <bpmn2:sequenceFlow id="Flow11" sourceRef="Task4" targetRef="End"/>
   </bpmn2:process>
+  
 </bpmn2:definitions>

@@ -30,37 +30,26 @@ public class PatternProcesses {
     );
 
 
-    //This pattern will most likely not run on jBPM due to it's constraints of having only one incoming flow to a single task according to log
      public static final BPMNProcess MERGE_PATTERN_IMPLICIT = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeImplicit",
              "A Process for Merging multiple branches into a single branch without using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
-             new BPMNTestCase().inputA().assertTask1().assertTask4(),
-             new BPMNTestCase().inputB().assertTask2().assertTask4(),
-             new BPMNTestCase().inputC().assertTask3().assertTask4(),
-
-
-
+            new BPMNTestCase().inputA().assertTask1().assertTask4(),
+            new BPMNTestCase().inputB().assertTask2().assertTask4(),
+            new BPMNTestCase().inputC().assertTask3().assertTask4(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
             new BPMNTestCase().inputA().inputB().assertTask1().assertTask2().assertTask4(),
-            //TODO See why the AA case only activates once, this seems to be more a Test routine problem than an engine specific behaviour
-          //  new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
              new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
      );
 
 
 
-    //TODO Add the Merge Pattern with XOR Gateway and test accordingly
     public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
             "A Process for Merging multiple branches into a single branch with using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
             new BPMNTestCase().inputA().assertTask1().assertTask4(),
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
             new BPMNTestCase().inputC().assertTask3().assertTask4(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
-            //TODO See why the AA case only activates once, this seems to be more a Test routine problem than an engine specific behaviour
-            //new BPMNTestCase().inputAA().assertTask1().assertTask1().assertTask4().assertTask4(),
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
-
-
 
     public static final BPMNProcess MULTI_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP06MultiChoice", "A Process with the divergence of the thread of control " +
                     "into several parallel branches on a selective basis",
@@ -83,20 +72,34 @@ public class PatternProcesses {
     );
 
 
-    //TODO: Adapt complex gateway to continue when one task has completed
     public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
-            " incoming branches to complete before activating the subsequent activity"+"this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
+            " incoming branches to complete before activating the subsequent activity\n"+"this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
             new BPMNTestCase().assertTask1());
 
-    //TODO: Add test case for WCP10 here
+    public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycles", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
+                  "This solution might not work in JBPM because of the implementation used for the Multimerge" ,
+
+            //TODO Find a solution to test for multiple loop occurences , idea for this is to just assert an array length difference, but since this is the standard testing behaviour I have no real clue how to explicitly test for this.
+        //    new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3().assertTask3().assertTask4().assertTask4().assertTask5());
+
+    public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n"+
+                    "This solution should work with JBPM since it uses an alternative for Multimerge" ,
+
+            //TODO Find a solution to test for multiple loop occurences , idea for this is to just assert an array length difference, but since this is the standard testing behaviour I have no real clue how to explicitly test for this.
+            //    new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3().assertTask4());
 
 
+    public static final BPMNProcess MULTIPLE_INSTANCES_SYNCH_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP12MultipleInstancesWOSynchronization", "A Process which creates multiple activity instances of one activity model (Weske2012)",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2());
 
-    public static final BPMNProcess MULTIPLE_INSTANCES_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP13MultipleInstancesWithAPrioriDesignTimeKnowledge", "A Process where the process execution loop cardinality is known beforehand during DesignTime",
+
+    public static final BPMNProcess MULTIPLE_INSTANCES_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP13MultipleInstancesWithAPrioriDesignTimeKnowledge", "A Multiple Instances Process where the process execution loop cardinality is known beforehand during DesignTime",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
-    public static final BPMNProcess MI_APRIORI_RUNTIME_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the execution cardinality is known only during Runtime, this is achieved by the expression\n"+
-                    "(nrOfCompletedInstances/nrOfInstances >= 0.6)",
+    public static final BPMNProcess MI_APRIORI_RUNTIME_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the loop cardinality is known only during Runtime, this is achieved by \n"+
+                    "checking the NrOfCompletedInstances against the total Number of possible instances",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
 
@@ -118,24 +121,53 @@ public class PatternProcesses {
             new BPMNTestCase().inputA().assertTask1());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
+            //WCP01
             SEQUENCE_PATTERN,
+            //WCP02
             PARALLEL_PATTERN,
+            //WCP03
             SYNCHRONIZATION_PATTERN,
+            //WCP04
             EXCLUSIVE_PATTERN,
+            //WCP05
             MERGE_PATTERN_IMPLICIT,
             MERGE_PATTERN_WITH_GATEWAY,
+            //WCP06
             MULTI_CHOICE_PATTERN,
+            //WCP07
             SYNC_MERGE_PATTERN,
+            //WCP08
             MULTI_MERGE_PATTERN,
+            //WCP09
             DISCRIMINATOR_PATTERN,
-            // WCP10 here
+
+            //WCP10
+            ARBITRARY_PATTERN,
+            ARBITRARY_PATTERN_2,
+
+            //WCP11
             TERMINATION_PATTERN,
-            // WCP12 here
+
+            //WCP12 here
+            MULTIPLE_INSTANCES_SYNCH_PATTERN,
+
+            //WCP13
             MULTIPLE_INSTANCES_PATTERN,
+            //WCP14
             MI_APRIORI_RUNTIME_PATTERN,
+
             //WCP15 is not implementable?
+
+            //WCP16
             DEFERRED_CHOICE_PATTERN,
-            //WCP17, 18 here
+
+            //WCP 17 missing
+
+            //WCP 18 missing
+
+            //WCP19
             CANCEL_TASK_PATTERN
+
+            //WCP20 missing
     ); 
 }
