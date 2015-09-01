@@ -88,6 +88,7 @@
             &lt;![CDATA[
             counter++
             execution.setVariable("counter",counter)
+                System.out.println(counter)
             ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>

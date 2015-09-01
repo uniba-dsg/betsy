@@ -2,9 +2,9 @@
    <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WCP10ArbitraryCyclesTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP10ArbitraryCycles">
-    <bpmn2:process id="WCP10ArbitraryCycles" isExecutable="true"> 
+                   id="WCP10ArbitraryCycleMMTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP10ArbitraryCycleMM">
+    <bpmn2:process id="WCP10ArbitraryCycleMM" isExecutable="true"> 
 	
 	
 	
@@ -12,10 +12,10 @@
 	<bpmn2:outgoing>Flow1</bpmn2:outgoing>
 	</bpmn2:startEvent>
 	
-    <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+    <bpmn2:scriptTask id="SET_COUNTER" name="SET_COUNTER">
 	<bpmn2:incoming>Flow1</bpmn2:incoming>
 	<bpmn2:outgoing>Flow2</bpmn2:outgoing>
-	<bpmn2:script>SCRIPT_task1</bpmn2:script>
+	<bpmn2:script>SET_COUNTER</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:parallelGateway gatewayDirection="Diverging" id="Parallel1" name="ParallelGateway">
@@ -48,7 +48,7 @@
 	<bpmn2:incoming>Flow6</bpmn2:incoming>
 	<bpmn2:incoming>Flow7</bpmn2:incoming>
 	<bpmn2:outgoing>Flow8</bpmn2:outgoing>
-	<bpmn2:script>SCRIPT_task3</bpmn2:script>
+	<bpmn2:script>INC_COUNTER</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="EX2" name="ExclusiveGateway">
@@ -68,8 +68,8 @@
 	</bpmn2:endEvent>
 	
 	
-    <bpmn2:sequenceFlow id="Flow1" sourceRef="Start" targetRef="ScriptTask1"/>
-    <bpmn2:sequenceFlow id="Flow2" sourceRef="ScriptTask1" targetRef="Parallel1"/>
+    <bpmn2:sequenceFlow id="Flow1" sourceRef="Start" targetRef="SET_COUNTER"/>
+    <bpmn2:sequenceFlow id="Flow2" sourceRef="SET_COUNTER" targetRef="Parallel1"/>
     <bpmn2:sequenceFlow id="Flow8" sourceRef="Task3" targetRef="EX2"/>
     <bpmn2:sequenceFlow id="Flow3" sourceRef="Parallel1" targetRef="Task2"/>
     <bpmn2:sequenceFlow id="Flow4" sourceRef="Parallel1" targetRef="Ex1"/>
@@ -78,10 +78,13 @@
     <bpmn2:sequenceFlow id="Flow7" sourceRef="Task5" targetRef="Task3"/>
 	
     <bpmn2:sequenceFlow id="Flow9" sourceRef="EX2" targetRef="Ex1">
-	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
+	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter != 5</bpmn2:conditionExpression>
 	</bpmn2:sequenceFlow>
 	
-    <bpmn2:sequenceFlow id="Flow10" sourceRef="EX2" targetRef="Task4"/>
+    <bpmn2:sequenceFlow id="Flow10" sourceRef="EX2" targetRef="Task4">
+	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter == 5</bpmn2:conditionExpression>
+	</bpmn2:sequenceFlow>
+	
     <bpmn2:sequenceFlow id="Flow11" sourceRef="Task4" targetRef="End"/>
   </bpmn2:process>
   

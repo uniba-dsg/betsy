@@ -76,7 +76,7 @@ public class PatternProcesses {
             " incoming branches to complete before activating the subsequent activity\n"+"this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
             new BPMNTestCase().assertTask1());
 
-    public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycles", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
+    public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
                   "This solution might not work in JBPM because of the implementation used for the Multimerge" ,
 
             new BPMNTestCase().inputA().assertTask1(),
@@ -85,7 +85,6 @@ public class PatternProcesses {
     public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n"+
                     "This solution should work with JBPM since it uses an alternative for Multimerge" ,
 
-            //TODO Find a solution to test for multiple loop occurences , idea for this is to just assert an array length difference, but since this is the standard testing behaviour I have no real clue how to explicitly test for this.
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
 
