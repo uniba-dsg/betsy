@@ -123,6 +123,11 @@ public class PatternProcesses {
             "active at the same point in time",
             new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2());
 
+    public static final BPMNProcess INTER_PAR_ROUTING_PATTERN_AD_HOC = BPMNProcessBuilder.buildPatternProcess("WCP17InterParRoutingAdHoc", " A set of activity instances is executed sequentially in an\n" +
+                    "order that is decided at run time. No two activity instances of this set are\n" +
+                    "active at the same point in time",
+            new BPMNTestCase().assertTask1().assertTask2());
+
     //TODO: make conditional boundary event work
     public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
             "disabled in some nominated circumstance",
@@ -179,6 +184,7 @@ public class PatternProcesses {
 
             //WCP 17 (needs further work)
             INTER_PAR_ROUTING_PATTERN,
+            INTER_PAR_ROUTING_PATTERN_AD_HOC,
 
             //WCP18 here
 
