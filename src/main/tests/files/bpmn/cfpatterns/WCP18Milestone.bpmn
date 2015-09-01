@@ -5,15 +5,40 @@
 				   id="WCP18MilestoneTest" name="" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP18Milestone">
   <bpmn2:process id="WCP18Milestone" isClosed="false" isExecutable="true" processType="None">
    
-   <bpmn2:startEvent id="_2" name="StartEvent"/>
-    <bpmn2:scriptTask id="_3" name="ScriptTask"/>
-    <bpmn2:exclusiveGateway gatewayDirection="Unspecified" id="_4" name="ExclusiveGateway"/>
-    <bpmn2:eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Unspecified" id="_8" instantiate="false" name="EventGateway"/>
-    <bpmn2:scriptTask id="_10" name="ScriptTask"/>
+    <bpmn2:startEvent id="_2" name="StartEvent">
+		<bpmn2:outgoing>_7</bpmn2:outgoing>
+	</bpmn2:startEvent>
+    
+	<bpmn2:scriptTask id="_3" name="ScriptTask">
+		<bpmn2:incoming>_7</bpmn2:incoming>
+		<bpmn2:outgoing>_5</bpmn2:outgoing>
+	</bpmn2:scriptTask>
+	
+	<bpmn2:exclusiveGateway gatewayDirection="Unspecified" id="_4" name="ExclusiveGateway">
+		<bpmn2:incoming>_5</bpmn2:incoming>
+		<bpmn2:outgoing>_99</bpmn2:outgoing>
+	</bpmn2:exclusiveGateway>
+	
+	<bpmn2:eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Unspecified" id="_8" instantiate="false" name="EventGateway">
+		<bpmn2:incoming>_99</bpmn2:incoming>
+		<bpmn2:outgoing>_12</bpmn2:outgoing>
+	</bpmn2:eventBasedGateway>
+	
+	<bpmn2:scriptTask id="_10" name="ScriptTask">
+	
+	</bpmn2:scriptTask>
+	
     <bpmn2:boundaryEvent attachedToRef="_10" cancelActivity="true" id="_11" name="BoundaryEvent"/>
-    <bpmn2:scriptTask id="_15" name="ScriptTask"/>
-    <bpmn2:boundaryEvent attachedToRef="_15" cancelActivity="true" id="_16" name="BoundaryEvent"/>
-    <bpmn2:endEvent id="_18" name="EndEvent"/>
+    
+	<bpmn2:scriptTask id="_15" name="ScriptTask">
+    
+	</bpmn2:scriptTask>
+	
+	<bpmn2:boundaryEvent attachedToRef="_15" cancelActivity="true" id="_16" name="BoundaryEvent"/>
+    
+	<bpmn2:endEvent id="_18" name="EndEvent">
+	
+	</bpmn2:endEvent>
     
 	<bpmn2:sequenceFlow id="_7" sourceRef="_2" targetRef="_3"/>
     <bpmn2:sequenceFlow id="_5" sourceRef="_3" targetRef="_4"/>

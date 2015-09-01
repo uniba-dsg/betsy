@@ -182,7 +182,7 @@ public class PatternProcesses {
             //WCP16
             DEFERRED_CHOICE_PATTERN,
 
-            //WCP 17 (needs further work)
+            //WCP 17
             INTER_PAR_ROUTING_PATTERN,
             INTER_PAR_ROUTING_PATTERN_AD_HOC,
 
