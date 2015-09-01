@@ -14,7 +14,6 @@ public class BPMNTestCase extends TestCase {
 
     private BPMNTestCase addInputTestString(BPMNTestInput value) {
         getTestStep().setInput(value);
-
         return this;
     }
 
@@ -37,6 +36,7 @@ public class BPMNTestCase extends TestCase {
     public BPMNTestCase inputAA() {
         return addInputTestString(BPMNTestInput.INPUT_AA);
     }
+
 
     public BPMNTestCase inputABC() {
         return addInputTestString(BPMNTestInput.INPUT_ABC);

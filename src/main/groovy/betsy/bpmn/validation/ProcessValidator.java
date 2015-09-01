@@ -124,6 +124,8 @@ public class ProcessValidator {
         List<String> allowedLogMessages = new LinkedList<>();
         allowedLogMessages.addAll(allowedScriptTasks);
         allowedLogMessages.add("CREATE_LOG_FILE");
+        allowedLogMessages.add("INC_COUNTER");
+        allowedLogMessages.add("SET_COUNTER");
         allowedLogMessages.add("CREATE_TIMESTAMP_LOG_1");
         allowedLogMessages.add("CREATE_TIMESTAMP_LOG_2");
         allowedLogMessages.add("WAIT_TEN_SECONDS");

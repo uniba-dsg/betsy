@@ -79,16 +79,14 @@ public class PatternProcesses {
     public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycles", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
                   "This solution might not work in JBPM because of the implementation used for the Multimerge" ,
 
-            //TODO Find a solution to test for multiple loop occurences , idea for this is to just assert an array length difference, but since this is the standard testing behaviour I have no real clue how to explicitly test for this.
-        //    new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputA().assertTask1(),
             new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3().assertTask3().assertTask4().assertTask4().assertTask5());
 
     public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n"+
                     "This solution should work with JBPM since it uses an alternative for Multimerge" ,
 
             //TODO Find a solution to test for multiple loop occurences , idea for this is to just assert an array length difference, but since this is the standard testing behaviour I have no real clue how to explicitly test for this.
-            //    new BPMNTestCase().inputA().assertTask1(),
-            new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3().assertTask4());
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
 
     public static final BPMNProcess MULTIPLE_INSTANCES_SYNCH_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP12MultipleInstancesWOSynchronization", "A Process which creates multiple activity instances of one activity model (Weske2012)",
@@ -172,10 +170,10 @@ public class PatternProcesses {
             //WCP 17 missing
 
             //WCP18 here
-            CANCEL_TASK_PATTERN
+            CANCEL_TASK_PATTERN,
 			
             //WCP19
-            INTER_PAR_ROUTING_PATTERN,
+            INTER_PAR_ROUTING_PATTERN
             
 
             //WCP20 missing

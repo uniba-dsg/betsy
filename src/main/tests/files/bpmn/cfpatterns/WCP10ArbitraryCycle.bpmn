@@ -11,10 +11,10 @@
 	<bpmn2:outgoing>_4</bpmn2:outgoing>
 	</bpmn2:startEvent>
 	
-    <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+    <bpmn2:scriptTask id="ScriptTask1" name="SetCounter">
 	<bpmn2:incoming>_4</bpmn2:incoming>
 	<bpmn2:outgoing>_6</bpmn2:outgoing>
-	<bpmn2:script>SCRIPT_task1</bpmn2:script>
+	<bpmn2:script>SET_COUNTER</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:exclusiveGateway gatewayDirection="Converging" id="ExclusiveGateway1" name="ExclusiveGateway1">
@@ -23,16 +23,16 @@
 	<bpmn2:outgoing>_8</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
 	
-	<bpmn2:scriptTask id="ScriptTask2" name="ScriptTask2">
+	<bpmn2:scriptTask id="ScriptTask2" name="IncCounter">
 	<bpmn2:incoming>_8</bpmn2:incoming>
 	<bpmn2:outgoing>_10</bpmn2:outgoing>
-	<bpmn2:script>SCRIPT_task2</bpmn2:script>
+	<bpmn2:script>INC_COUNTER</bpmn2:script>
 	</bpmn2:scriptTask>
 	
-    <bpmn2:scriptTask id="ScriptTask3" name="ScriptTask3">
+    <bpmn2:scriptTask id="ScriptTask3" name="ScriptTask1">
 	<bpmn2:incoming>_10</bpmn2:incoming>
 	<bpmn2:outgoing>_12</bpmn2:outgoing>
-	<bpmn2:script>SCRIPT_task3</bpmn2:script>
+	<bpmn2:script>SCRIPT_task1</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="ExclusiveGateway2" name="ExclusiveGateway2">
@@ -41,10 +41,10 @@
 	<bpmn2:outgoing>_15</bpmn2:outgoing>
 	</bpmn2:exclusiveGateway>
 	
-    <bpmn2:scriptTask id="ScriptTask4" name="ScriptTask4">
+    <bpmn2:scriptTask id="ScriptTask4" name="ScriptTask2">
 	<bpmn2:incoming>_17</bpmn2:incoming>
 	<bpmn2:outgoing>_19</bpmn2:outgoing>
-	<bpmn2:script>SCRIPT_task4</bpmn2:script>
+	<bpmn2:script>SCRIPT_task2</bpmn2:script>
 	</bpmn2:scriptTask>
 	
     <bpmn2:endEvent id="End" name="EndEvent">
@@ -53,7 +53,7 @@
 	
 	
     <bpmn2:sequenceFlow id="_15" name="Flow9" sourceRef="ExclusiveGateway2" targetRef="ExclusiveGateway1">
-			<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
+			<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter != 5 </bpmn2:conditionExpression>
 	</bpmn2:sequenceFlow>
 	
     <bpmn2:sequenceFlow id="_4" name="Flow1" sourceRef="Start" targetRef="ScriptTask1"/>
