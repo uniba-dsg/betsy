@@ -128,6 +128,12 @@ public class PatternProcesses {
                     "active at the same point in time",
             new BPMNTestCase().assertTask1().assertTask2());
 
+
+    //TODO: find working event type
+    public static final BPMNProcess MILESTONE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP18Milestone", "An activity is only enabled\n" +
+            "if a certain milestone has been reached that has not expired yet (Weske 2012)",
+            new BPMNTestCase().assertTask1().assertTask2());
+
     //TODO: make conditional boundary event work
     public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
             "disabled in some nominated circumstance",
@@ -174,19 +180,21 @@ public class PatternProcesses {
 
             //WCP13
             MULTIPLE_INSTANCES_PATTERN,
+
             //WCP14
             MI_APRIORI_RUNTIME_PATTERN,
 
-            //WCP15 is not implementable?
+            //WCP15
 
             //WCP16
             DEFERRED_CHOICE_PATTERN,
 
-            //WCP 17
+            //WCP17
             INTER_PAR_ROUTING_PATTERN,
             INTER_PAR_ROUTING_PATTERN_AD_HOC,
 
-            //WCP18 here
+            //WCP18
+            MILESTONE_PATTERN,
 
             //WCP19
             CANCEL_TASK_PATTERN
