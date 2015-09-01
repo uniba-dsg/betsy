@@ -118,6 +118,31 @@
                     }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
             </xsl:when>
 
+
+            <!-- WARNING: Will lead to Runtime Errors when used in JBPM. The support for this employment has been put on hold due to time constraints. For documentation on how to implement this please refer to http://docs.jboss.org/jbpm/v6.2/userguide/jBPMBPMN2.html#d0e3086 -->
+            <xsl:when test="text() = 'SET_COUNTER'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            &lt;![CDATA[
+                int counter = 0;
+                    //According to JBPM documentation http://docs.jboss.org/jbpm/v6.2/userguide/jBPMBPMN2.html#d0e3086 setting a global variable in a Script is done with the command
+                    //kcontext.getKieRuntime().setGlobal("counter",counter) but the server log reports that "unexpected global variables have been found"
+                kcontext.getKieRuntime().setGlobal("counter",counter);
+            ]]&gt;&lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
+
+            <!-- WARNING: will lead to Runtime Errors when used in JBPM -->
+            <xsl:when test="text() = 'INC_COUNTER'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            &lt;![CDATA[
+                //explicit Integer cast is needed because -> setGlobal(String,Object)
+                int counter = (Integer) kcontext.getKieRuntime().getGlobal("counter");
+           counter = counter + 1;
+                 ]]&gt;&lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
                 <xsl:value-of select="text()"/>

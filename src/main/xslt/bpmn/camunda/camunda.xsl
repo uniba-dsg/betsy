@@ -74,6 +74,24 @@
                     }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'SET_COUNTER'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            &lt;![CDATA[
+            counter = 0
+            execution.setVariable("counter",counter)
+            ]]&gt;&lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
+            <xsl:when test="text() = 'INC_COUNTER'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            &lt;![CDATA[
+            counter++
+            execution.setVariable("counter",counter)
+            ]]&gt;&lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[</xsl:text>
                 <xsl:value-of disable-output-escaping="yes" select="text()"/>

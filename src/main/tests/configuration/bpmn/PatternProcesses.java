@@ -129,21 +129,29 @@ public class PatternProcesses {
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             //WCP01
             SEQUENCE_PATTERN,
+
             //WCP02
             PARALLEL_PATTERN,
+
             //WCP03
             SYNCHRONIZATION_PATTERN,
+
             //WCP04
             EXCLUSIVE_PATTERN,
+
             //WCP05
             MERGE_PATTERN_IMPLICIT,
             MERGE_PATTERN_WITH_GATEWAY,
+
             //WCP06
             MULTI_CHOICE_PATTERN,
+
             //WCP07
             SYNC_MERGE_PATTERN,
+
             //WCP08
             MULTI_MERGE_PATTERN,
+
             //WCP09
             DISCRIMINATOR_PATTERN,
 
@@ -154,7 +162,7 @@ public class PatternProcesses {
             //WCP11
             TERMINATION_PATTERN,
 
-            //WCP12 here
+            //WCP12
             MULTIPLE_INSTANCES_SYNCH_PATTERN,
 
             //WCP13
@@ -167,15 +175,14 @@ public class PatternProcesses {
             //WCP16
             DEFERRED_CHOICE_PATTERN,
 
-            //WCP 17 missing
+            //WCP 17 (needs further work)
+            INTER_PAR_ROUTING_PATTERN,
 
             //WCP18 here
-            CANCEL_TASK_PATTERN,
+            CANCEL_TASK_PATTERN
 			
-            //WCP19
-            INTER_PAR_ROUTING_PATTERN
-            
-
-            //WCP20 missing
+			//WCP19 here
+			
+            //WCP20 here
     ); 
 }
