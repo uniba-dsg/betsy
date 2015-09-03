@@ -78,12 +78,11 @@
     <bpmn2:sequenceFlow id="Flow7" sourceRef="Task5" targetRef="Task3"/>
 	
     <bpmn2:sequenceFlow id="Flow9" sourceRef="EX2" targetRef="Ex1">
-	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter != 5</bpmn2:conditionExpression>
+	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter &lt; 5</bpmn2:conditionExpression>
 	</bpmn2:sequenceFlow>
 	
-    <bpmn2:sequenceFlow id="Flow10" sourceRef="EX2" targetRef="Task4">
-	<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter == 5</bpmn2:conditionExpression>
-	</bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="Flow10" sourceRef="EX2" targetRef="Task4"/>
+	
 	
     <bpmn2:sequenceFlow id="Flow11" sourceRef="Task4" targetRef="End"/>
   </bpmn2:process>
