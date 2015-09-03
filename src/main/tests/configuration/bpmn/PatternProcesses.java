@@ -129,7 +129,6 @@ public class PatternProcesses {
             "if a certain milestone has been reached that has not expired yet (Weske 2012)",
             new BPMNTestCase().assertTask1().assertTask2());
 
-    //TODO: make conditional boundary event work
     public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
             "disabled in some nominated circumstance",
             new BPMNTestCase().inputA().assertTask1().assertTask2());
@@ -199,8 +198,8 @@ public class PatternProcesses {
             CANCEL_TASK_PATTERN,
 			
 		    //WCP20 here
-            CANCEL_CASE_PATTERN_A,
-            CANCEL_CASE_PATTERN_B,
-            CANCEL_CASE_PATTERN_C
+            CANCEL_CASE_PATTERN_A
+       //     CANCEL_CASE_PATTERN_B,
+       //     CANCEL_CASE_PATTERN_C
     ); 
 }

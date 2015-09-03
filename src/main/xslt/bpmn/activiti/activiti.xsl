@@ -103,6 +103,24 @@
              </xsl:text>
             </xsl:when>
 
+
+            <!-- Increases the counter variable by 1 Note that unlike in Camunda the counter variable has to be explicitly defined in order to be accessible-->
+            <xsl:when test="text() = 'INC_COUNTER'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            def counter = counter
+                counter += 1
+            execution.setVariable("counter",counter)
+            &lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
+            <xsl:when test="text() = 'THROW_GENERIC_ERROR'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            throw new RuntimeException("GENERIC_ERROR")
+                &lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
                 <xsl:value-of select="text()"/>

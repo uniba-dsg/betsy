@@ -121,8 +121,7 @@ f.createNewFile();
                 <xsl:text disable-output-escaping="yes">&lt;/bpmn2:script&gt;</xsl:text>
             </xsl:when>
 
-
-            <xsl:otherwise>
+           <xsl:otherwise>
         <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 try{
 bw.append("</xsl:text>
