@@ -136,6 +136,10 @@ public class PatternProcesses {
             "disabled in some nominated circumstance",
             new BPMNTestCase().inputA().assertTask1().assertTask2());
 
+    public static final BPMNProcess CANCEL_CASE_PATTERN_A = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCase",
+            "The Cancel Case pattern describes the removal of a complete process instance.",
+            new BPMNTestCase().assertTask1().assertTask2());
+
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             //WCP01
             SEQUENCE_PATTERN,
@@ -194,8 +198,11 @@ public class PatternProcesses {
             MILESTONE_PATTERN,
 
             //WCP19
-            CANCEL_TASK_PATTERN
+            CANCEL_TASK_PATTERN,
 			
 		    //WCP20 here
+            CANCEL_CASE_PATTERN_A,
+            CANCEL_CASE_PATTERN_B,
+            CANCEL_CASE_PATTERN_C
     ); 
 }
