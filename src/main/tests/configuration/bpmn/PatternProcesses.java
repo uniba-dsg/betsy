@@ -79,8 +79,8 @@ public class PatternProcesses {
     public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
                   "This solution might not work in JBPM because of the implementation used for the Multimerge" ,
 
-            new BPMNTestCase().inputA().assertTask1(),
-            new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3().assertTask3().assertTask4().assertTask4().assertTask5());
+            new BPMNTestCase().assertTask2().assertTask4().assertTask4().assertTask5().assertTask5().assertTask5().assertTask5().assertTask5());
+
 
     public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n"+
                     "This solution should work with JBPM since it uses an alternative for Multimerge" ,
@@ -104,8 +104,6 @@ public class PatternProcesses {
     public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination","A process with the ability to depict the notion that a given sub-process\n" +
             "should be terminated when there are no remaining activities to be completed.",
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());
-
-
 
 
     public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
