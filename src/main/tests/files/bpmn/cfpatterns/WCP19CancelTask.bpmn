@@ -4,8 +4,8 @@
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
                    id="WCP19CancelTaskTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP19CancelTask">
-  <bpmn2:process id="WCP19CancelTask" isExecutable="true">
-  
+	<bpmn2:error id="ERR_CODE" name="ERR_CODE"/>
+	<bpmn2:process id="WCP19CancelTask" isExecutable="true">
     <bpmn2:startEvent id="Start" name="StartEvent">
 	<bpmn2:outgoing>_12</bpmn2:outgoing>
 	</bpmn2:startEvent>

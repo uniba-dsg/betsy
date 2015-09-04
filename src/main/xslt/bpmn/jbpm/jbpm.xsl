@@ -123,10 +123,10 @@
             <xsl:when test="text() = 'SET_COUNTER'">
             <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
             &lt;![CDATA[
-                int counter = 0;
+                kcontext.getKnowledgeRuntime().setVariable(count);
                     //According to JBPM documentation http://docs.jboss.org/jbpm/v6.2/userguide/jBPMBPMN2.html#d0e3086 setting a global variable in a Script is done with the command
                     //kcontext.getKieRuntime().setGlobal("counter",counter) but the server log reports that "unexpected global variables have been found"
-                kcontext.getKieRuntime().setGlobal("counter",counter);
+               // kcontext.getKieRuntime().setGlobal("counter",counter);
             ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>
@@ -137,18 +137,19 @@
             <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
             &lt;![CDATA[
                 //explicit Integer cast is needed because -> setGlobal(String,Object)
-                int counter = (Integer) kcontext.getKieRuntime().getGlobal("counter");
-           counter = counter + 1;
+                //int counter = (Integer) kcontext.getKieRuntime().getGlobal("counter");
+           //counter = counter + 1;
+                kcontext.getKnowledgeRuntime().setVariable("count", count + 1);
+                System.out.println(count);
                  ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>
 
+            <!--This variation requires the { <bpmn2:error id="ERR_CODE" name="ERR_CODE"> to be defined in the bpmn file before the bpmn2:process definition-->
             <xsl:when test="text() = 'THROW_ERROR'">
             <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
             &lt;![CDATA[
-                //explicit Integer cast is needed because -> setGlobal(String,Object)
-                int counter = (Integer) kcontext.getKieRuntime().getGlobal("counter");
-           counter = counter + 1;
+                kcontext.getProcessInstance().signalEvent(&quot;ERR_CODE&quot;, null);
                  ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>

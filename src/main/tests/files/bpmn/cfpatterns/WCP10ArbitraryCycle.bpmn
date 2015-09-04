@@ -53,7 +53,11 @@
 	
 	
     <bpmn2:sequenceFlow id="_15" name="Flow9" sourceRef="ExclusiveGateway2" targetRef="ExclusiveGateway1">
-			<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter != 5 </bpmn2:conditionExpression>
+			<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter &lt; 5 </bpmn2:conditionExpression>
+	</bpmn2:sequenceFlow>
+    
+	<bpmn2:sequenceFlow id="_17" name="Flow7" sourceRef="ExclusiveGateway2" targetRef="ScriptTask4">
+			<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter &gt; 5</bpmn2:conditionExpression>
 	</bpmn2:sequenceFlow>
 	
     <bpmn2:sequenceFlow id="_4" name="Flow1" sourceRef="Start" targetRef="ScriptTask1"/>
@@ -61,7 +65,6 @@
     <bpmn2:sequenceFlow id="_8" name="Flow3" sourceRef="ExclusiveGateway1" targetRef="ScriptTask2"/>
     <bpmn2:sequenceFlow id="_10" name="Flow4" sourceRef="ScriptTask2" targetRef="ScriptTask3"/>
     <bpmn2:sequenceFlow id="_12" name="Flow5" sourceRef="ScriptTask3" targetRef="ExclusiveGateway2"/>
-    <bpmn2:sequenceFlow id="_17" name="Flow7" sourceRef="ExclusiveGateway2" targetRef="ScriptTask4"/>
     <bpmn2:sequenceFlow id="_19" name="Flow8" sourceRef="ScriptTask4" targetRef="End"/>
   </bpmn2:process>
   
