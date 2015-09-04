@@ -1,190 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://dsg.wiai.uniba.de/betsy/bpmn/wCP19CancelTask" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="WCP19CancelTaskTest" name="" targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP19CancelTask" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <bpmn2:process id="WCP19CancelTask" isClosed="false" isExecutable="true" processType="None">
-    <bpmn2:startEvent id="StartEvent" name="StartEvent"/>
-    <bpmn2:scriptTask activiti:exclusive="true" id="ScriptTask1" name="ScriptTask1">
-      <bpmn2:script><![CDATA[SCRIPT_task1]]></bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="exclusiveGateway" name="ExclusiveGateway"/>
-    <bpmn2:subProcess activiti:exclusive="true" id="SubProcess" name="SubProcess" triggeredByEvent="false">
-      <bpmn2:startEvent id="_10" name="StartEvent"/>
-      <bpmn2:endEvent id="_11" name="EndEvent">
-        <bpmn2:errorEventDefinition errorRef="Error_1" id="_ErrorEventDefinition_1"/>
-      </bpmn2:endEvent>
-      <bpmn2:sequenceFlow id="_12" sourceRef="_10" targetRef="_11"/>
-    </bpmn2:subProcess>
-    <bpmn2:boundaryEvent attachedToRef="SubProcess" cancelActivity="true" id="BoundaryEventSub" name="BoundaryEventSub">
-      <bpmn2:errorEventDefinition id="Error_1"/>
-    </bpmn2:boundaryEvent>
-    <bpmn2:boundaryEvent attachedToRef="Error_ScriptTask" cancelActivity="true" id="BoundaryEvent" name="BoundaryEvent">
-      <bpmn2:errorEventDefinition errorRef="Error_1" id="_ErrorEventDefinitionBoundaryEventSub"/>
-    </bpmn2:boundaryEvent>
-    <bpmn2:scriptTask activiti:exclusive="true" id="Error_Caught" name="Error_Caught">
-      <bpmn2:script><![CDATA[SCRIPT_task2]]></bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:scriptTask activiti:exclusive="true" id="ErrorNotCaught" name="ErrorNotCaught">
-      <bpmn2:script><![CDATA[SCRIPT_task3]]></bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:scriptTask activiti:exclusive="true" id="Error_ScriptTask" name="Error_ScriptTask">
-      <bpmn2:script><![CDATA[SCRIPT_task4]]></bpmn2:script>
-    </bpmn2:scriptTask>
-    <bpmn2:endEvent id="ErrorNotCaughtEnd" name="EndEvent1"/>
-    <bpmn2:endEvent id="ErrorCaughtEnd" name="EndEvent"/>
-    <bpmn2:sequenceFlow id="_13" sourceRef="exclusiveGateway" targetRef="SubProcess">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression"><![CDATA[test.contains("a")]]></bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
-    <bpmn2:sequenceFlow id="_6" sourceRef="ScriptTask1" targetRef="exclusiveGateway"/>
-    <bpmn2:sequenceFlow id="_4" name="flow1" sourceRef="StartEvent" targetRef="ScriptTask1"/>
-    <bpmn2:sequenceFlow id="_3" name="default" sourceRef="exclusiveGateway" targetRef="Error_ScriptTask"/>
-    <bpmn2:sequenceFlow id="_9" name="ErrorNotCaughtFlow" sourceRef="Error_ScriptTask" targetRef="ErrorNotCaughtEnd"/>
-    <bpmn2:sequenceFlow id="_16" sourceRef="BoundaryEvent" targetRef="Error_Caught"/>
-    <bpmn2:sequenceFlow id="_17" sourceRef="Error_Caught" targetRef="ErrorCaughtEnd"/>
-    <bpmn2:sequenceFlow id="_20" sourceRef="BoundaryEventSub" targetRef="Error_ScriptTask"/>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP19CancelTaskTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP19CancelTask">
+  <bpmn2:process id="WCP19CancelTask" isExecutable="true">
+  
+    <bpmn2:startEvent id="Start" name="StartEvent">
+	<bpmn2:outgoing>_12</bpmn2:outgoing>
+	</bpmn2:startEvent>
+	
+	
+    <bpmn2:scriptTask id="ScriptTask1" name="ErrorTask">
+	<bpmn2:incoming>_12
+	</bpmn2:incoming>
+	<bpmn2:outgoing>_17</bpmn2:outgoing>
+	<bpmn2:script>THROW_ERROR</bpmn2:script>
+	</bpmn2:scriptTask>
+	
+	<bpmn2:boundaryEvent attachedToRef="ScriptTask1" cancelActivity="true" id="_13" name="BoundaryEvent">
+	<bpmn2:outgoing>_20</bpmn2:outgoing>
+	<bpmn2:errorEventDefinition id="_ErrorEventDefinition_2" errorRef="ERR_CODE"/>
+	</bpmn2:boundaryEvent>
+	
+    <bpmn2:endEvent id="BadEnd" name="EndEvent">
+	<bpmn2:incoming>_18</bpmn2:incoming>
+	</bpmn2:endEvent>
+	
+    <bpmn2:endEvent id="GoodEnd" name="EndEvent2">
+	<bpmn2:incoming>_13</bpmn2:incoming>
+	</bpmn2:endEvent>
+	
+    <bpmn2:scriptTask id="ScriptTask2" name="ScriptTask1">
+	<bpmn2:incoming>_17</bpmn2:incoming>
+	<bpmn2:outgoing>_18</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task1</bpmn2:script>
+	</bpmn2:scriptTask>
+	
+	<bpmn2:scriptTask id="ScriptTask3" name="ScriptTask2">
+	<bpmn2:incoming>_20</bpmn2:incoming>
+	<bpmn2:outgoing>_21</bpmn2:outgoing>
+	<bpmn2:script>SCRIPT_task2</bpmn2:script>
+	</bpmn2:scriptTask>
+	
+    <bpmn2:sequenceFlow id="_12" name="flow1" sourceRef="Start" targetRef="ScriptTask1"/>
+    <bpmn2:sequenceFlow id="_17" name="flow2" sourceRef="ScriptTask1" targetRef="ScriptTask2"/>
+    <bpmn2:sequenceFlow id="_18" name="flow3" sourceRef="ScriptTask2" targetRef="BadEnd"/>
+    <bpmn2:sequenceFlow id="_20" name="ErrorCaughtFlow" sourceRef="_13" targetRef="ScriptTask3"/>
+	<bpmn2:sequenceFlow id="_21" name="ErrorCaughtFlow2" sourceRef="ScriptTask3" targetRef="GoodEnd"/>
   </bpmn2:process>
-  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
-    <bpmndi:BPMNPlane bpmnElement="WCP19CancelTask">
-      <bpmndi:BPMNShape bpmnElement="ErrorCaughtEnd" id="Shape-ErrorCaughtEnd">
-        <dc:Bounds height="32.0" width="32.0" x="639.0" y="415.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="ErrorNotCaughtEnd" id="Shape-ErrorNotCaughtEnd">
-        <dc:Bounds height="32.0" width="32.0" x="704.0" y="247.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="Error_ScriptTask" id="Shape-Error_ScriptTask">
-        <dc:Bounds height="55.0" width="85.0" x="559.0" y="236.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="ErrorNotCaught" id="Shape-ErrorNotCaught">
-        <dc:Bounds height="55.0" width="85.0" x="20.0" y="200.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="Error_Caught" id="Shape-Error_Caught">
-        <dc:Bounds height="55.0" width="85.0" x="494.0" y="403.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="SubProcess" id="Shape-SubProcess" isExpanded="true">
-        <dc:Bounds height="200.0" width="150.0" x="349.0" y="68.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="200.0" width="150.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusiveGateway" id="Shape-exclusiveGateway" isMarkerVisible="false">
-        <dc:Bounds height="32.0" width="32.0" x="257.0" y="200.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="ScriptTask1" id="Shape-ScriptTask1">
-        <dc:Bounds height="55.0" width="85.0" x="112.0" y="188.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="StartEvent" id="Shape-StartEvent">
-        <dc:Bounds height="32.0" width="32.0" x="20.0" y="200.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="BoundaryEvent" id="Shape-BoundaryEvent">
-        <dc:Bounds height="32.0" width="32.0" x="603.75" y="275.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="1.0" x="44.75" y="-16.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_11" id="Shape-_11">
-        <dc:Bounds height="32.0" width="32.0" x="454.0" y="172.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_10" id="Shape-_10">
-        <dc:Bounds height="32.0" width="32.0" x="362.0" y="172.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="BoundaryEventSub" id="Shape-BoundaryEventSub">
-        <dc:Bounds height="32.0" width="32.0" x="403.5" y="252.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="1.0" x="54.5" y="-16.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13" sourceElement="exclusiveGateway" targetElement="SubProcess">
-        <di:waypoint x="289.0" y="216.0"/>
-        <di:waypoint x="349.0" y="168.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="_10" targetElement="_11">
-        <di:waypoint x="393.9921855917195" y="188.5"/>
-        <di:waypoint x="454.0078144082805" y="188.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_17" id="BPMNEdge__17" sourceElement="Error_Caught" targetElement="ErrorCaughtEnd">
-        <di:waypoint x="579.0" y="431.0"/>
-        <di:waypoint x="639.0" y="431.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="BoundaryEvent" targetElement="Error_Caught">
-        <di:waypoint x="604.0" y="291.0"/>
-        <di:waypoint x="579.0" y="431.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_3" id="BPMNEdge__3" sourceElement="exclusiveGateway" targetElement="Error_ScriptTask">
-        <di:waypoint x="289.0" y="216.0"/>
-        <di:waypoint x="559.0" y="263.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="StartEvent" targetElement="ScriptTask1">
-        <di:waypoint x="52.0" y="216.0"/>
-        <di:waypoint x="112.0" y="216.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="ScriptTask1" targetElement="exclusiveGateway">
-        <di:waypoint x="197.0" y="216.0"/>
-        <di:waypoint x="257.0" y="216.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="Error_ScriptTask" targetElement="ErrorNotCaughtEnd">
-        <di:waypoint x="601.5" y="236.0"/>
-        <di:waypoint x="695.0" y="170.0"/>
-        <di:waypoint x="720.0" y="248.0"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_20" id="BPMNEdge__20" sourceElement="BoundaryEventSub" targetElement="Error_ScriptTask">
-        <di:waypoint x="435.9921855917195" y="268.5"/>
-        <di:waypoint x="559.0" y="263.5"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="-1.0" width="-1.0" x="-1.0" y="-1.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

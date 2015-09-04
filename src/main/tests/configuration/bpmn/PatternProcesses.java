@@ -130,8 +130,8 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
-            "disabled in some nominated circumstance",
-            new BPMNTestCase().inputA().assertTask1().assertTask2());
+            "disabled in some nominated circumstance.",
+            new BPMNTestCase().assertTask2());
 
     public static final BPMNProcess CANCEL_CASE_PATTERN_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseError",
             "The Cancel Case pattern describes the removal of a complete process instance. (Bizagi)",

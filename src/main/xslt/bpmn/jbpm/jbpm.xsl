@@ -143,6 +143,17 @@
              </xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'THROW_ERROR'">
+            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+            &lt;![CDATA[
+                //explicit Integer cast is needed because -> setGlobal(String,Object)
+                int counter = (Integer) kcontext.getKieRuntime().getGlobal("counter");
+           counter = counter + 1;
+                 ]]&gt;&lt;/bpmn2:script&gt;
+             </xsl:text>
+            </xsl:when>
+
+
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
                 <xsl:value-of select="text()"/>
