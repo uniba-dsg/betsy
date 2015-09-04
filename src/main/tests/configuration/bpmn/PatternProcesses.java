@@ -36,7 +36,6 @@ public class PatternProcesses {
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
             new BPMNTestCase().inputC().assertTask3().assertTask4(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
-            new BPMNTestCase().inputA().inputB().assertTask1().assertTask2().assertTask4(),
              new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
      );
 
