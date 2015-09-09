@@ -52,8 +52,9 @@ public class PatternProcesses {
 
     public static final BPMNProcess MULTI_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP06MultiChoice", "A Process with the divergence of the thread of control " +
                     "into several parallel branches on a selective basis",
-            new BPMNTestCase().inputA().assertTask1().assertTask3(),
-            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3(),
+            new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputAB().assertTask1().assertTask2(),
+            new BPMNTestCase().inputABC().assertTask1().assertTask2(),
             new BPMNTestCase().inputC().assertTask3()
     );
 
