@@ -2,7 +2,6 @@ package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.DataLogChecker;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.camunda.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
@@ -14,14 +13,12 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActivitiTester {
     private static final Logger LOGGER = Logger.getLogger(ActivitiTester.class);
     private BPMNTestCase testCase;
-    private String restURL;
     private String key;
     private Path logDir;
     private BPMNTester bpmnTester;
@@ -102,10 +99,6 @@ public class ActivitiTester {
 
     public void setTestCase(BPMNTestCase testCase) {
         this.testCase = testCase;
-    }
-
-    public void setRestURL(String restURL) {
-        this.restURL = restURL;
     }
 
     public String getKey() {
