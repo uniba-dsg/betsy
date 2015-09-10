@@ -9,6 +9,7 @@ import betsy.common.util.LogUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class BPELBetsy {
     private List<AbstractBPELEngine> engines = new ArrayList<>();
@@ -17,6 +18,8 @@ public class BPELBetsy {
     private String testFolderName;
 
     public void execute() {
+        Objects.requireNonNull(testFolderName, "test folder must be set");
+
         validate();
 
         Collections.sort(processes);

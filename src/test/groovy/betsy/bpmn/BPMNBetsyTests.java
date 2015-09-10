@@ -22,6 +22,7 @@ public class BPMNBetsyTests {
 
         betsy.setEngines(Collections.singletonList(engine));
         betsy.setProcesses(processes);
+        betsy.setTestFolder("test");
         betsy.execute();
     }
 

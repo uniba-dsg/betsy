@@ -8,6 +8,7 @@ import betsy.bpmn.validation.BPMNValidator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class BPMNBetsy {
 
@@ -17,6 +18,8 @@ public class BPMNBetsy {
     private BPMNComposite composite = new BPMNComposite();
 
     public void execute() {
+        Objects.requireNonNull(testFolderName, "test folder must be set");
+
         new BPMNValidator().validate();
 
         Collections.sort(processes);
