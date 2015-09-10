@@ -26,7 +26,7 @@ public class XSLTTasks {
         FileTasks.assertFile(xslt);
         FileTasks.assertFile(input);
 
-        if(output.toAbsolutePath().toString().equals(input.toAbsolutePath().toString())) {
+        if (output.toAbsolutePath().toString().equals(input.toAbsolutePath().toString())) {
             throw new IllegalStateException("Cannot have the same input as output");
         }
 
@@ -39,6 +39,10 @@ public class XSLTTasks {
 
         transform.setTaskName("xslt");
         transform.setProject(AntUtil.builder().getProject());
+
+        transform.setProcessor("trax");
+        transform.createFactory().setName("net.sf.saxon.TransformerFactoryImpl");
+
         return transform;
     }
 
