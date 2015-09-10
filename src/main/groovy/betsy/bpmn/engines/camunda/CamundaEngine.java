@@ -124,7 +124,6 @@ public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-        FileTasks.assertDirectory(pathToJava7);
 
         Map<String, String> map = new LinkedHashMap<>(2);
         map.put("JAVA_HOME", pathToJava7.toString());

@@ -101,7 +101,6 @@ public class Tomcat {
             return Collections.emptyMap();
         } else {
             Path pathToJava7 = Configuration.getJava7Home();
-            FileTasks.assertDirectory(pathToJava7);
             Map<String, String> environment = new HashMap<>();
             environment.put("JAVA_HOME", pathToJava7.toString());
             return environment;
