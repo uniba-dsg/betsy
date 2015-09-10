@@ -31,6 +31,6 @@ public class ActiveBpelInstaller {
         map.put("CATALINA_HOME", "../" + installer.getTomcat().getTomcatName());
 
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.bat"), map);
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.sh"), map);
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), serverDir.resolve("activebpel-5.0.2").resolve("install.sh")), map);
     }
 }
