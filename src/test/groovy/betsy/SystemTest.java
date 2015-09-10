@@ -59,6 +59,11 @@ public class SystemTest {
         testBPELEngine("bpelg");
     }
 
+    @Test
+    public void test_B3_BpelBpelgInMemSequence() throws IOException, InterruptedException {
+        testBPELEngine("bpelg-in-memory");
+    }
+
     @Ignore
     @Test
     public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
