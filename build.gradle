@@ -84,7 +84,7 @@ task downloadMaven {
 
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
+        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true,  maxtime: 240, {
             ant.url url: props.getProperty("maven.download.url")
         }
     }
@@ -109,7 +109,7 @@ task downloadSoapUI {
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
     // maxtime is set to this value to ensure that travis-ci can download this file
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 1524, verbose: true, {
+        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true, maxtime: 1524, verbose: true, {
             ant.url url: props.getProperty("soapui.download.url")
         }
     }
