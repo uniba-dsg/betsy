@@ -2,7 +2,7 @@ package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;

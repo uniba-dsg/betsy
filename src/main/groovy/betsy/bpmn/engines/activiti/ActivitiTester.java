@@ -3,7 +3,7 @@ package betsy.bpmn.engines.activiti;
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
-import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
