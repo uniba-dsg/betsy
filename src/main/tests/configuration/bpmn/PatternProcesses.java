@@ -73,7 +73,7 @@ public class PatternProcesses {
 
     public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
             " incoming branches to complete before activating the subsequent activity\n"+"this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
-            new BPMNTestCase().assertTask1());
+            new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
                   "This solution might not work in JBPM because of the implementation used for the Multimerge" ,

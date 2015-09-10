@@ -27,7 +27,7 @@
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
       <bpmn2:multiInstanceLoopCharacteristics isSequential="false">
 	  <bpmn2:loopCardinality>100</bpmn2:loopCardinality>
-	  <bpmn2:completionCondition>1</bpmn2:completionCondition>
+	  <bpmn2:completionCondition>${nrOfCompletedInstances == 1}</bpmn2:completionCondition>
 	  </bpmn2:multiInstanceLoopCharacteristics>
       <bpmn2:script>SCRIPT_task1</bpmn2:script>
     </bpmn2:scriptTask>
