@@ -1,10 +1,21 @@
+# enables container build on travis
+sudo: false
+
 language: java
 jdk:
   - oraclejdk8
 
 # some engines need java 7
-before_install:
-  - sudo apt-get install openjdk-7-jre
+addons:
+  apt:
+    packages:
+    - openjdk-7-jre
+
+cache:
+  directories:
+  - downloads
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
 
 env:
   - JAVA7_HOME=/usr/lib/jvm/java7-openjdk-amd64/jre

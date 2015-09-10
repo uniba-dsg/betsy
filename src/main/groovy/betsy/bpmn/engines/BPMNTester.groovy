@@ -45,6 +45,7 @@ public class BPMNTester {
                     include(name: "**/*.java")
                 }
             }
+            formatter(type: "plain", usefile: "false")
         }
 
     }

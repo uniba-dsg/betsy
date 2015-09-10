@@ -3,8 +3,7 @@ package betsy.bpmn.engines.jbpm;
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
-import betsy.bpmn.engines.OverlappingTimestampChecker;
-import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
@@ -14,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class JbpmTester {
@@ -90,6 +88,8 @@ public class JbpmTester {
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         checkProcessOutcome();
+
+        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
 
         bpmnTester.test();
     }

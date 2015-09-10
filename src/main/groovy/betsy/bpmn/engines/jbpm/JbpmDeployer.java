@@ -1,6 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
-import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.engines.JsonHelper;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 

@@ -52,6 +52,8 @@ dependencies {
     internal 'org.json:json:5.0.5'
     internal 'org.apache.ant:ant-junit:1.9.6'
 
+    internal 'net.sf.saxon:Saxon-HE:9.6.0-7'
+
     internal 'com.mashape.unirest:unirest-java:1.4.7' // for http requests and responses
 
     internal 'org.slf4j:slf4j-api:1.7.12'
@@ -82,7 +84,7 @@ task downloadMaven {
 
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
+        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true,  maxtime: 240, {
             ant.url url: props.getProperty("maven.download.url")
         }
     }
@@ -107,7 +109,7 @@ task downloadSoapUI {
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
     // maxtime is set to this value to ensure that travis-ci can download this file
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 1524, verbose: true, {
+        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true, maxtime: 1524, verbose: true, {
             ant.url url: props.getProperty("soapui.download.url")
         }
     }

@@ -2,8 +2,7 @@ package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.camunda.JsonHelper;
-import betsy.bpmn.model.BPMNAssertions;
+import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
@@ -18,7 +17,6 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +32,6 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
             ActivitiTester tester = new ActivitiTester();
             tester.setTestCase(testCase);
-            tester.setRestURL(URL);
             tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
             tester.setLogDir(getTomcat().getTomcatLogsDir());
@@ -160,6 +157,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
+
     public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
 
     @Override
