@@ -142,34 +142,6 @@ public class Configuration {
         return java7home;
     }
 
-    public static Path getJre7Home() {
-        // Trying to determine JDK7 Path using SysEnv
-        String jre7env = System.getenv("JRE7_HOME");
-        Path result;
-
-        if (jre7env == null) {
-            // Fallback to properties file
-            result = Paths.get(PROPERTIES.getProperty("jre7.home"));
-        } else {
-            result = Paths.get(jre7env);
-        }
-
-        if (!Files.isDirectory(result)) {
-            log.info("Found [" + result + "] for key [jre7.home] " + "Path to JRE_HOME, but the directory does not exist! -> trying JDK7 HOME");
-
-
-            Path jreInJava7Home = getJava7Home().resolve("jre");
-
-            if(!Files.isDirectory(jreInJava7Home)) {
-                throw new ConfigurationException("No JRE of Java 7 could be found!");
-            }
-
-            result = jreInJava7Home;
-        }
-
-        return result;
-    }
-
     private static final Logger log = Logger.getLogger(Configuration.class);
 
 }
