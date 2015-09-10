@@ -14,10 +14,7 @@ import org.json.JSONObject;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CamundaTester {
 
@@ -71,6 +68,9 @@ public class CamundaTester {
         }
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
+
+        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
+
         bpmnTester.test();
     }
 

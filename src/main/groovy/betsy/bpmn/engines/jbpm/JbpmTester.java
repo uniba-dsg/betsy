@@ -91,6 +91,8 @@ public class JbpmTester {
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
         checkProcessOutcome();
 
+        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
+
         bpmnTester.test();
     }
 

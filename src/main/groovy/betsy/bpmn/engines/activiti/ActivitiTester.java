@@ -67,6 +67,9 @@ public class ActivitiTester {
         }
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
+
+        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
+
         bpmnTester.test();
     }
 
