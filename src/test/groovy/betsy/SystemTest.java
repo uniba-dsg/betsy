@@ -81,6 +81,11 @@ public class SystemTest {
     }
 
     @Test
+    public void test_B3_BpelBpelgInvokeSync() throws IOException, InterruptedException {
+        testBPELEngine("bpelg", "Invoke-Sync");
+    }
+
+    @Test
     public void test_B3_BpelBpelgInMemSequence() throws IOException, InterruptedException {
         testBPELEngine("bpelg-in-memory");
     }
@@ -98,9 +103,13 @@ public class SystemTest {
     }
 
     private void testBPELEngine(String engine) throws IOException {
+        testBPELEngine(engine, "Sequence");
+    }
+
+    private void testBPELEngine(String engine, String process) throws IOException {
         BPELMain.shutdownSoapUiAfterCompletion(false);
-        BPELMain.main(engine, "sequence", "-f", "test-" + engine);
-        assertEquals("[Sequence;" + engine + ";structured;1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
+        BPELMain.main(engine, process, "-f", "test-" + engine);
+        assertEquals("[" + process + ";" + engine + ";structured;1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
     }
 
 }
