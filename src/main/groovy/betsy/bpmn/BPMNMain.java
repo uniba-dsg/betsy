@@ -36,6 +36,7 @@ public class BPMNMain {
 
             betsy.setEngines(params.getEngines());
             betsy.setProcesses(params.getProcesses());
+            betsy.setTestFolder(params.getTestFolderName());
 
             // execute
             try {

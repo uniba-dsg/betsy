@@ -10,14 +10,24 @@ import java.util.Collections;
 import java.util.List;
 
 public class BPMNBetsy {
+
+    private String testFolderName;
+    private List<AbstractBPMNEngine> engines = new ArrayList<>();
+    private List<BPMNProcess> processes = new ArrayList<>();
+    private BPMNComposite composite = new BPMNComposite();
+
     public void execute() {
         new BPMNValidator().validate();
 
         Collections.sort(processes);
-        BPMNTestSuite testSuite = BPMNTestSuite.createTests(engines, processes);
+        BPMNTestSuite testSuite = BPMNTestSuite.createTests(engines, processes, testFolderName);
 
         composite.setTestSuite(testSuite);
         composite.execute();
+    }
+
+    public void setTestFolder(String testFolderName) {
+        this.testFolderName = testFolderName;
     }
 
     public List<AbstractBPMNEngine> getEngines() {
@@ -43,8 +53,4 @@ public class BPMNBetsy {
     public void setComposite(BPMNComposite composite) {
         this.composite = composite;
     }
-
-    private List<AbstractBPMNEngine> engines = new ArrayList<>();
-    private List<BPMNProcess> processes = new ArrayList<>();
-    private BPMNComposite composite = new BPMNComposite();
 }

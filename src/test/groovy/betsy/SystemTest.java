@@ -17,16 +17,16 @@ public class SystemTest {
 
     @Test
     public void test_A_BpmnActivitiSequenceFlow() throws IOException {
-        Main.main("bpmn", "activiti", "SequenceFlow");
+        Main.main("bpmn", "-f", "test-activiti", "activiti", "SequenceFlow");
 
-        assertEquals("[SequenceFlow;activiti;basics;1;0;1;1]", Files.readAllLines(Paths.get("test/reports/results.csv")).toString());
+        assertEquals("[SequenceFlow;activiti;basics;1;0;1;1]", Files.readAllLines(Paths.get("test-activiti/reports/results.csv")).toString());
     }
 
     @Test
     public void test_A_BpmnCamunda720SequenceFlow() throws IOException {
-        Main.main("bpmn", "camunda720", "SequenceFlow");
+        Main.main("bpmn", "-f", "test-camunda720", "camunda720", "SequenceFlow");
 
-        assertEquals("[SequenceFlow;camunda720;basics;1;0;1;1]", Files.readAllLines(Paths.get("test/reports/results.csv")).toString());
+        assertEquals("[SequenceFlow;camunda720;basics;1;0;1;1]", Files.readAllLines(Paths.get("test-camunda720/reports/results.csv")).toString());
     }
 
     @Test

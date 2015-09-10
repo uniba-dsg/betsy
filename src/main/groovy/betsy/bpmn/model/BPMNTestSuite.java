@@ -15,12 +15,13 @@ public class BPMNTestSuite extends TestSuite<AbstractBPMNEngine, BPMNProcess> {
      *
      * @param engines   a list of engines to be included in the test suite
      * @param processes a list of processes to be included in the test suite
+     * @param testFolderName
      * @return a test suite where each engine tests all passed processes
      */
-    public static BPMNTestSuite createTests(List<AbstractBPMNEngine> engines, final List<BPMNProcess> processes) {
+    public static BPMNTestSuite createTests(List<AbstractBPMNEngine> engines, final List<BPMNProcess> processes, String testFolderName) {
 
         BPMNTestSuite test = new BPMNTestSuite();
-        test.setPath(Paths.get("test"));
+        test.setPath(Paths.get(testFolderName));
 
         for (AbstractBPMNEngine engine : engines) {
             List<BPMNProcess> clonedProcesses = processes.stream().map(BPMNProcess::createCopyWithoutEngine).collect(Collectors.toList());

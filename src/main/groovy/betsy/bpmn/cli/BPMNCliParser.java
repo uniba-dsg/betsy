@@ -12,6 +12,7 @@ import java.util.List;
 public class BPMNCliParser {
 
     public static final BPMNCliParameter HELP_ONLY = new BPMNCliParameter() {
+
         @Override
         public List<AbstractBPMNEngine> getEngines() {
             return Collections.emptyList();
@@ -20,6 +21,10 @@ public class BPMNCliParser {
         @Override
         public List<BPMNProcess> getProcesses() {
             return Collections.emptyList();
+        }
+
+        @Override public String getTestFolderName() {
+            return "test";
         }
 
         @Override
@@ -40,6 +45,7 @@ public class BPMNCliParser {
     public static final String HELP = "help";
     public static final String BUILD_ONLY = "build-only";
     public static final String OPEN_RESULTS_IN_BROWSER = "open-results-in-browser";
+    public static final String USE_CUSTOM_TEST_FOLDER= "use-custom-test-folder";
 
     private final String[] args;
 
@@ -52,7 +58,7 @@ public class BPMNCliParser {
         try {
             CommandLine cmd = parser.parse(getOptions(), args);
 
-            for(Option option : cmd.getOptions()) {
+            for (Option option : cmd.getOptions()) {
                 System.out.println(option.toString());
             }
 
@@ -61,6 +67,7 @@ public class BPMNCliParser {
             }
 
             return new BPMNCliParameter() {
+
                 @Override
                 public List<AbstractBPMNEngine> getEngines() {
                     return new BPMNEngineParser(cmd.getArgs()).parse();
@@ -69,6 +76,15 @@ public class BPMNCliParser {
                 @Override
                 public List<BPMNProcess> getProcesses() {
                     return new BPMNProcessParser(cmd.getArgs()).parse();
+                }
+
+                @Override public String getTestFolderName() {
+                    String optionValue = cmd.getOptionValue(USE_CUSTOM_TEST_FOLDER);
+                    if (optionValue != null) {
+                        return optionValue;
+                    } else {
+                        return "test";
+                    }
                 }
 
                 @Override
@@ -96,6 +112,7 @@ public class BPMNCliParser {
         options.addOption("o", OPEN_RESULTS_IN_BROWSER, false, "Opens results in default browser");
         options.addOption("b", BUILD_ONLY, false, "Builds only the artifacts. Does nothing else.");
         options.addOption("h", HELP, false, "Print usage information.");
+        options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
         return options;
     }
 
