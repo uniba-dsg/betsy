@@ -11,6 +11,10 @@ addons:
     packages:
     - openjdk-7-jre
 
+cache:
+  directories:
+  - downloads
+
 env:
   - JAVA7_HOME=/usr/lib/jvm/java7-openjdk-amd64/jre
 
