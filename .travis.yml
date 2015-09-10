@@ -14,6 +14,8 @@ addons:
 cache:
   directories:
   - downloads
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
 
 env:
   - JAVA7_HOME=/usr/lib/jvm/java7-openjdk-amd64/jre
