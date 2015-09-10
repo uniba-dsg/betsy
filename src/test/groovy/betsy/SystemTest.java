@@ -62,7 +62,6 @@ public class SystemTest {
         assertEquals("[Sequence;wso2_v3_2_0;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-wso320/reports/results.csv")).toString());
     }
 
-    @Ignore
     @Test
     public void test_B5_BpelActiveBpelSequence() throws IOException, InterruptedException {
         BPELMain.shutdownSoapUiAfterCompletion(true);
