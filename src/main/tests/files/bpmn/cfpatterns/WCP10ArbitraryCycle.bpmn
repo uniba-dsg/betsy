@@ -35,7 +35,7 @@
 	<bpmn2:script>SCRIPT_task1</bpmn2:script>
 	</bpmn2:scriptTask>
 	
-    <bpmn2:exclusiveGateway gatewayDirection="Diverging" id="ExclusiveGateway2" name="ExclusiveGateway2">
+    <bpmn2:exclusiveGateway gatewayDirection="Diverging" default="_17" id="ExclusiveGateway2" name="ExclusiveGateway2">
 	<bpmn2:incoming>_12</bpmn2:incoming>
 	<bpmn2:outgoing>_17</bpmn2:outgoing>
 	<bpmn2:outgoing>_15</bpmn2:outgoing>
@@ -57,7 +57,6 @@
 	</bpmn2:sequenceFlow>
     
 	<bpmn2:sequenceFlow id="_17" name="Flow7" sourceRef="ExclusiveGateway2" targetRef="ScriptTask4">
-			<bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">counter &gt; 5</bpmn2:conditionExpression>
 	</bpmn2:sequenceFlow>
 	
     <bpmn2:sequenceFlow id="_4" name="Flow1" sourceRef="Start" targetRef="ScriptTask1"/>
