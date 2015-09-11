@@ -91,6 +91,22 @@ public class SystemTest {
     }
 
     @Test
+    public void test_B4_BpelWso212Sequence() throws IOException, InterruptedException {
+        testBPELEngine("wso2_v2_1_2");
+    }
+
+    @Test
+    public void test_B4_BpelWso300Sequence() throws IOException, InterruptedException {
+        testBPELEngine("wso2_v3_0_0");
+    }
+
+
+    @Test
+    public void test_B4_BpelWso310Sequence() throws IOException, InterruptedException {
+        testBPELEngine("wso2_v3_1_0");
+    }
+
+    @Test
     public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v3_2_0");
     }
