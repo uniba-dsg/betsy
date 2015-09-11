@@ -40,7 +40,8 @@ public class WaitTasks {
         try {
             while (max > System.currentTimeMillis()) {
                 if (c.call()) {
-                    LOGGER.info("Condition of wait task was met -> proceeding");
+                    long work = max - System.currentTimeMillis();
+                    LOGGER.info("Condition of wait task was met in " + work + "/" + max + "ms -> proceeding");
                     return;
                 }
                 sleepInternal(checkEveryMilliseconds);

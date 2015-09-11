@@ -36,10 +36,10 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), getServerPath());
 
-        FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat");
-        FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd " +
-                getBinDir().toAbsolutePath() + " && call wso2server.bat");
-        FileTasks.createFile(getServerPath().resolve("startup.sh"), "cd " + getBinDir().toAbsolutePath() + " && ./wso2server.bat");
+        FileTasks.createFile(getServerPath().resolve("startup.bat"), "start \"" + getName() + "\" /min startup-helper.bat");
+        FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "cd " + getBinDir().toAbsolutePath() + " && call wso2server.bat");
+
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", getServerPath().toString()));
     }
 
     public String getZipFileName() {
@@ -49,9 +49,11 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), "startup.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
         WaitTasks.sleep(2000);
-        WaitTasks.waitForSubstringInFile(120_000, 500, getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
+
+        Path logFile = getLogsFolder().resolve("wso2carbon.log");
+        WaitTasks.waitFor(120_000, 500, () -> FileTasks.hasFile(logFile) && FileTasks.hasFileSpecificSubstring(logFile, "WSO2 Carbon started in "));
     }
 
     public Path getLogsFolder() {
@@ -68,10 +70,9 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq wso2server"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
 
-        // required for jenkins - may have side effects but this should not be a problem in this context
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Administrator:*"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
     }
 
     @Override

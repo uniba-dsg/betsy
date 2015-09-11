@@ -17,58 +17,118 @@ public class SystemTest {
 
     @Test
     public void test_A_BpmnActivitiSequenceFlow() throws IOException {
-        Main.main("bpmn", "-f", "test-activiti", "activiti", "SequenceFlow");
+        testBPMNEngine("activiti");
+    }
 
-        assertEquals("[SequenceFlow;activiti;basics;1;0;1;1]", Files.readAllLines(Paths.get("test-activiti/reports/results.csv")).toString());
+    @Test
+    public void test_A_BpmnActiviti5170SequenceFlow() throws IOException {
+        testBPMNEngine("activiti5170");
+    }
+
+    @Test
+    public void test_A_BpmnCamunda700SequenceFlow() throws IOException {
+        testBPMNEngine("camunda");
+    }
+
+    @Test
+    public void test_A_BpmnCamunda710SequenceFlow() throws IOException {
+        testBPMNEngine("camunda710");
     }
 
     @Test
     public void test_A_BpmnCamunda720SequenceFlow() throws IOException {
-        Main.main("bpmn", "-f", "test-camunda720", "camunda720", "SequenceFlow");
+        testBPMNEngine("camunda720");
+    }
 
-        assertEquals("[SequenceFlow;camunda720;basics;1;0;1;1]", Files.readAllLines(Paths.get("test-camunda720/reports/results.csv")).toString());
+    @Test
+    public void test_A_BpmnCamunda730SequenceFlow() throws IOException {
+        testBPMNEngine("camunda730");
+    }
+
+    private void testBPMNEngine(String engine) throws IOException {
+        Main.main("bpmn", "-f", "test-" + engine, engine, "SequenceFlow");
+        assertEquals("[SequenceFlow;" + engine + ";basics;1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
     }
 
     @Test
     public void test_B1_BpelOdeSequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(false);
-        BPELMain.main("ode", "sequence", "-f", "test-ode");
+        testBPELEngine("ode");
+    }
 
-        assertEquals("[Sequence;ode;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-ode/reports/results.csv")).toString());
+    @Test
+    public void test_B1_BpelOdeInMemSequence() throws IOException, InterruptedException {
+        testBPELEngine("ode-in-memory");
+    }
+
+    @Test
+    public void test_B1_BpelOde136Sequence() throws IOException, InterruptedException {
+        testBPELEngine("ode136");
+    }
+
+    @Test
+    public void test_B1_BpelOde136InMemorySequence() throws IOException, InterruptedException {
+        testBPELEngine("ode136-in-memory");
     }
 
     @Test
     public void test_B2_BpelOrchestraSequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(false);
-        BPELMain.main("orchestra", "sequence", "-f", "test-orchestra");
-
-        assertEquals("[Sequence;orchestra;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-orchestra/reports/results.csv")).toString());
+        testBPELEngine("orchestra");
     }
 
     @Test
     public void test_B3_BpelBpelgSequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(false);
-        BPELMain.main("bpelg", "sequence", "-f", "test-bpelg");
-
-        assertEquals("[Sequence;bpelg;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-bpelg/reports/results.csv")).toString());
+        testBPELEngine("bpelg");
     }
 
-    @Ignore
+    @Test
+    public void test_B3_BpelBpelgInvokeSync() throws IOException, InterruptedException {
+        testBPELEngine("bpelg", "basic", "Invoke-Sync");
+    }
+
+    @Test
+    public void test_B3_BpelBpelgInMemSequence() throws IOException, InterruptedException {
+        testBPELEngine("bpelg-in-memory");
+    }
+
+    @Test @Ignore("does not work on *nix when starting in the background as a deamon service")
+    public void test_B4_BpelWso212Sequence() throws IOException, InterruptedException {
+        testBPELEngine("wso2_v2_1_2");
+    }
+
+    @Test
+    public void test_B4_BpelWso300Sequence() throws IOException, InterruptedException {
+        testBPELEngine("wso2_v3_0_0");
+    }
+
+    @Test
+    public void test_B4_BpelWso310Sequence() throws IOException, InterruptedException {
+        testBPELEngine("wso2_v3_1_0");
+    }
+
     @Test
     public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(true);
-        BPELMain.main("wso2_v3_2_0", "sequence", "-f", "test-wso320");
-
-        assertEquals("[Sequence;wso2_v3_2_0;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-wso320/reports/results.csv")).toString());
+        testBPELEngine("wso2_v3_2_0");
     }
 
-    @Ignore
     @Test
-    public void test_B5_BpelActiveBpelSequence() throws IOException, InterruptedException {
-        BPELMain.shutdownSoapUiAfterCompletion(true);
-        BPELMain.main("active-bpel", "sequence", "-f", "test-active-bpel");
+    public void test_B5_BpelOpenesb301StandaloneSequence() throws IOException, InterruptedException {
+        testBPELEngine("openesb301standalone");
+    }
 
-        assertEquals("[Sequence;active-bpel;structured;1;0;1;1]", Files.readAllLines(Paths.get("test-active-bpel/reports/results.csv")).toString());
+    @Test
+    public void test_B6_BpelActiveBpelSequence() throws IOException, InterruptedException {
+        testBPELEngine("active-bpel");
+        BPELMain.shutdownSoapUiAfterCompletion(true);
+    }
+
+    private void testBPELEngine(String engine) throws IOException {
+        testBPELEngine(engine, "structured", "Sequence");
+    }
+
+    private void testBPELEngine(String engine, String group, String process) throws IOException {
+        BPELMain.shutdownSoapUiAfterCompletion(false);
+        BPELMain.main(engine, process, "-f", "test-" + engine);
+        assertEquals("[" + process + ";" + engine + ";" + group + ";1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
     }
 
 }

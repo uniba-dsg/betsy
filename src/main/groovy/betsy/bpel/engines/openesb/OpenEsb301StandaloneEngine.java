@@ -109,8 +109,14 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         NetworkTasks.downloadFileFromBetsyRepo(filename);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
 
-        FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start openesb.bat");
-        FileTasks.createFile(getServerPath().resolve("start-openesb.sh"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && ./openesb.sh");
+        FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start \"" + getName() + "\" /min openesb.bat");
+
+        // goto folder
+        // start openesb
+        // put the process in the background
+        FileTasks.createFile(getServerPath().resolve("start-openesb.sh"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && ./openesb.sh >/dev/null 2>&1 &");
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getServerPath().resolve("start-openesb.sh").toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getInstanceBinFolder().resolve("openesb.sh").toString()));
     }
 
     private Path getInstanceBinFolder() {
@@ -138,7 +144,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     public void startup() {
         // start openesb.bat
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.bat"));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), getServerPath().resolve("start-openesb.sh").toAbsolutePath()));
         WaitTasks.waitForAvailabilityOfUrl(10 * 1000, 500, WEB_UI);
 
         // install bpelse
@@ -159,7 +165,10 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq C:\\Windows\\system32\\cmd.exe - openesb.bat"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), "openesb.bat").values("stop"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), getInstanceBinFolder().resolve("openesb.sh")).values("stop"));
     }
 
     @Override
