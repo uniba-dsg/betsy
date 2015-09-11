@@ -129,6 +129,37 @@ public class FileTasks {
         }
     }
 
+    public static void replaceLine(Path path, String oldContent, String newLineContent) {
+        LOGGER.info("Replacing contents of a line which has exactly " + oldContent + " from file " + path.toAbsolutePath() + " with the new content " + newLineContent);
+
+        try {
+            // line numbers start with 1, not with 0!
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            LOGGER.info("File has " + lines.size() + " lines");
+
+            int index = findIndex(oldContent, lines);
+            if(index == -1) {
+                throw new IllegalStateException("Could not find a line with content [" + oldContent + "] in file " + path);
+            }
+
+            lines.set(index, newLineContent);
+
+            Files.write(path, lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not replace line in file " + path, e);
+        }
+    }
+
+    private static int findIndex(String oldContent, List<String> lines) {
+        int line = -1;
+        for(int i = 0; i < lines.size(); i++) {
+            if(lines.get(i).trim().equals(oldContent)) {
+                line = i;
+            }
+        }
+        return line;
+    }
+
     public static void deleteFile(Path file) {
         LOGGER.info("Deleting file " + file.toAbsolutePath());
 
