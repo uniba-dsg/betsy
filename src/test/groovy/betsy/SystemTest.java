@@ -90,7 +90,7 @@ public class SystemTest {
         testBPELEngine("bpelg-in-memory");
     }
 
-    @Test @Ignore
+    @Test @Ignore("does not work on *nix when starting in the background as a deamon service")
     public void test_B4_BpelWso212Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v2_1_2");
     }
