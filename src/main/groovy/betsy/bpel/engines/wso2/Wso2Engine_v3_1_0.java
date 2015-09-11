@@ -41,7 +41,6 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
                 getBinDir().toAbsolutePath() + " && call wso2server.bat");
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getBinDir().resolve("wso2server.sh").toString()));
-        FileTasks.createFile(getServerPath().resolve("startup.sh"), "cd " + getBinDir().toAbsolutePath() + " && ./wso2server.sh");
     }
 
     public String getZipFileName() {
@@ -52,8 +51,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
 
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getServerPath().resolve("startup.sh").toString()));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), getServerPath().resolve("startup.sh")).values("&")); // start wso2 in background
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), getServerPath().resolve("wso2server.sh")).values("start")); // start wso2 in background
         WaitTasks.sleep(2000);
         WaitTasks.waitForSubstringInFile(120_000, 500, getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
@@ -73,7 +71,8 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void shutdown() {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir().resolve("wso2server.bat")).values("--stop"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir().resolve("wso2server.sh")).values("--stop"));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir().resolve("wso2server.sh")).values("stop"));
     }
 
     @Override
