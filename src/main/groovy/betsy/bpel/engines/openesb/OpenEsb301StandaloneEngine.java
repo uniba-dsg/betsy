@@ -111,7 +111,10 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
         FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start openesb.bat");
 
-        FileTasks.createFile(getServerPath().resolve("start-openesb.sh"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && ./openesb.sh");
+        // goto folder
+        // start openesb
+        // put the process in the background
+        FileTasks.createFile(getServerPath().resolve("start-openesb.sh"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && ./openesb.sh &");
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getServerPath().resolve("start-openesb.sh").toString()));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getInstanceBinFolder().resolve("openesb.sh").toString()));
     }
