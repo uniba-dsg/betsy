@@ -36,9 +36,8 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), getServerPath());
 
-        FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat");
-        FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd " +
-                getBinDir().toAbsolutePath() + " && call wso2server.bat");
+        FileTasks.createFile(getServerPath().resolve("startup.bat"), "start \"" + getName() + "\" /min startup-helper.bat");
+        FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "cd " + getBinDir().toAbsolutePath() + " && call wso2server.bat");
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getBinDir().resolve("wso2server.sh").toString()));
     }
@@ -70,10 +69,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq wso2server"));
-        // required for jenkins - may have side effects but this should not be a problem in this context
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Administrator:*"));
-
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName()));
 
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir().resolve("wso2server.sh")).values("stop"));
     }
