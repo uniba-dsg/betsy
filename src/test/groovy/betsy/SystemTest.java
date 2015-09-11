@@ -90,7 +90,7 @@ public class SystemTest {
         testBPELEngine("bpelg-in-memory");
     }
 
-    @Test
+    @Test @Ignore
     public void test_B4_BpelWso212Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v2_1_2");
     }
@@ -99,7 +99,6 @@ public class SystemTest {
     public void test_B4_BpelWso300Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v3_0_0");
     }
-
 
     @Test
     public void test_B4_BpelWso310Sequence() throws IOException, InterruptedException {
