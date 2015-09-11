@@ -159,7 +159,8 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq C:\\Windows\\system32\\cmd.exe - openesb.bat"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "openesb.bat").values("stop"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "openesb.sh").values("stop"));
     }
 
     @Override
