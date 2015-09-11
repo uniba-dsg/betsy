@@ -30,15 +30,14 @@ public class PatternProcesses {
     );
 
 
-     public static final BPMNProcess MERGE_PATTERN_IMPLICIT = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeImplicit",
-             "A Process for Merging multiple branches into a single branch without using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
+    public static final BPMNProcess MERGE_PATTERN_IMPLICIT = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeImplicit",
+            "A Process for Merging multiple branches into a single branch without using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
             new BPMNTestCase().inputA().assertTask1().assertTask4(),
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
             new BPMNTestCase().inputC().assertTask3().assertTask4(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
-             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
-     );
-
+            new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
+    );
 
 
     public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
@@ -62,7 +61,7 @@ public class PatternProcesses {
     public static final BPMNProcess SYNC_MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP07StructuredSynchronizedMerge", "A Process with the synchronised convergence of " +
                     "two or more alternative branches",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
-            );
+    );
 
 
     public static final BPMNProcess MULTI_MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP08MultiMerge", "A Process with the convergence of two or more branches " +
@@ -72,23 +71,23 @@ public class PatternProcesses {
 
 
     public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
-            " incoming branches to complete before activating the subsequent activity\n"+"this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
+                    " incoming branches to complete before activating the subsequent activity\n" + "this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
             new BPMNTestCase().assertTask1().assertTask2());
 
-    public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n"+
-                  "This solution might not work in JBPM because of the implementation used for the Multimerge" ,
+    public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n" +
+                    "This solution might not work in JBPM because of the implementation used for the Multimerge",
 
             new BPMNTestCase().assertTask2().assertTask4().assertTask4().assertTask5().assertTask5().assertTask5().assertTask5().assertTask5());
 
 
-    public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n"+
-                    "This solution should work with JBPM since it uses an alternative for Multimerge" ,
+    public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n" +
+                    "This solution should work with JBPM since it uses an alternative for Multimerge",
 
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
 
     // simply tests whether all activities are executed (even though an end event might be reached on another path before)
-    public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination","A process with the ability to depict the notion that a given sub-process\n" +
+    public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination", "A process with the ability to depict the notion that a given sub-process\n" +
                     "should be terminated when there are no remaining activities to be completed.",
             new BPMNTestCase().assertTask1().assertTask2().assertTask2());
 
@@ -100,20 +99,20 @@ public class PatternProcesses {
     public static final BPMNProcess MULTIPLE_INSTANCES_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP13MultipleInstancesWithAPrioriDesignTimeKnowledge", "A Multiple Instances Process where the process execution loop cardinality is known beforehand during DesignTime",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
-    public static final BPMNProcess MI_APRIORI_RUNTIME_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the loop cardinality is known only during Runtime, this is achieved by \n"+
+    public static final BPMNProcess MI_APRIORI_RUNTIME_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the loop cardinality is known only during Runtime, this is achieved by \n" +
                     "checking the NrOfCompletedInstances against the total Number of possible instances",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
 
     public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
-            "one of several possible branches should be activated.",
+                    "one of several possible branches should be activated.",
             new BPMNTestCase().assertTask1().optionDelay(5000));
 
 
     //Note: doesn't work with jbpm due to MI usage
     public static final BPMNProcess INTER_PAR_ROUTING_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP17InterleavedParallelRouting", " A set of activity instances is executed sequentially in an\n" +
-            "order that is decided at run time. No two activity instances of this set are\n" +
-            "active at the same point in time",
+                    "order that is decided at run time. No two activity instances of this set are\n" +
+                    "active at the same point in time",
             new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2());
 
     public static final BPMNProcess INTER_PAR_ROUTING_PATTERN_AD_HOC = BPMNProcessBuilder.buildPatternProcess("WCP17InterParRoutingAdHoc", " A set of activity instances is executed sequentially in an\n" +
@@ -123,11 +122,11 @@ public class PatternProcesses {
 
 
     public static final BPMNProcess MILESTONE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP18Milestone", "An activity is only enabled\n" +
-            "if a certain milestone has been reached that has not expired yet (Weske 2012)",
+                    "if a certain milestone has been reached that has not expired yet (Weske 2012)",
             new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
-            "disabled in some nominated circumstance.",
+                    "disabled in some nominated circumstance.",
             new BPMNTestCase().assertTask2());
 
     public static final BPMNProcess CANCEL_CASE_PATTERN_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseError",
@@ -201,11 +200,11 @@ public class PatternProcesses {
 
             //WCP19
             CANCEL_TASK_PATTERN,
-			
-		    //WCP20 here
+
+            //WCP20 here
             CANCEL_CASE_PATTERN_ERROR,
             CANCEL_CASE_PATTERN_CANCEL,
             CANCEL_CASE_PATTERN_TERMINATE
 
-    ); 
+    );
 }

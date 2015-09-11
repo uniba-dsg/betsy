@@ -1,14 +1,18 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tns="http://www.jboss.org/drools" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <xsl:output indent="yes" method="xml" />
-    <xsl:strip-space elements="*" />
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tns="http://www.jboss.org/drools"
+                xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsl:output indent="yes" method="xml"/>
+    <xsl:strip-space elements="*"/>
 
     <!-- general settings -->
     <xsl:template match="bpmn2:definitions">
-        <bpmn2:definitions xmlns="http://www.jboss.org/drools" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd">
-            <xsl:namespace name="tns" select="'http://www.jboss.org/drools'" />
+        <bpmn2:definitions xmlns="http://www.jboss.org/drools" expressionLanguage="http://www.mvel.org/2.0"
+                           targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes"
+                           xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd">
+            <xsl:namespace name="tns" select="'http://www.jboss.org/drools'"/>
             <xsl:apply-templates select="@*"/>
-            <bpmn2:itemDefinition id="testItem" structureRef="String" />
-            <bpmn2:itemDefinition id="testCaseNumberItem" structureRef="Long" />
+            <bpmn2:itemDefinition id="testItem" structureRef="String"/>
+            <bpmn2:itemDefinition id="testCaseNumberItem" structureRef="Long"/>
             <xsl:apply-templates select="node()"/>
         </bpmn2:definitions>
     </xsl:template>
@@ -16,8 +20,8 @@
     <xsl:template match="bpmn2:process">
         <bpmn2:process tns:version="1" tns:adHoc="false" name="Test Process" processType="Private">
             <xsl:apply-templates select="@*"/>
-            <bpmn2:property id="test" itemSubjectRef="testItem" />
-            <bpmn2:property id="testCaseNumber" itemSubjectRef="testCaseNumberItem" />
+            <bpmn2:property id="test" itemSubjectRef="testItem"/>
+            <bpmn2:property id="testCaseNumber" itemSubjectRef="testCaseNumberItem"/>
             <xsl:apply-templates select="node()"/>
         </bpmn2:process>
     </xsl:template>
@@ -32,7 +36,7 @@
     <xsl:template match="bpmn2:conditionExpression">
         <bpmn2:conditionExpression language="http://www.java.com/java">
             <xsl:apply-templates select="@*"/>
-            return <xsl:value-of select="." />;
+            return <xsl:value-of select="."/>;
         </bpmn2:conditionExpression>
     </xsl:template>
 
@@ -40,7 +44,7 @@
     <xsl:template match="bpmn2:condition">
         <bpmn2:condition language="http://www.java.com/java">
             <xsl:apply-templates select="@*"/>
-            return <xsl:value-of select="." />;
+            return <xsl:value-of select="."/>;
         </bpmn2:condition>
     </xsl:template>
 
@@ -123,11 +127,9 @@
             <xsl:when test="text() = 'SET_COUNTER'">
             <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
             &lt;![CDATA[
-              //  kcontext.getKnowledgeRuntime().setVariable(count);
-                    //According to JBPM documentation http://docs.jboss.org/jbpm/v6.2/userguide/jBPMBPMN2.html#d0e3086 setting a global variable in a Script is done with the command
-                    //kcontext.getKieRuntime().setGlobal("counter",counter) but the server log reports that "unexpected global variables have been found"
-                kcontext.getKnowledgeRuntime().setGlobal("counter",counter);
-            ]]&gt;&lt;/bpmn2:script&gt;
+               //This is one of the proposed solutions found on stackoverflow
+               kcontext.getKnowledgeRuntime().setVariable("counter","Integer");
+                ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>
 
@@ -136,12 +138,8 @@
             <xsl:when test="text() = 'INC_COUNTER'">
             <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
             &lt;![CDATA[
-                //explicit Integer cast is needed because -> setGlobal(String,Object)
-                //int counter = (Integer) kcontext.getKieRuntime().getGlobal("counter");
-           //counter = counter + 1;
                 kcontext.getKnowledgeRuntime().setVariable("counter", counter + 1);
-                System.out.println(count);
-                 ]]&gt;&lt;/bpmn2:script&gt;
+                ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>
 

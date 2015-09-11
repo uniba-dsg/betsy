@@ -1,8 +1,10 @@
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <xsl:output omit-xml-declaration="yes" indent="yes" method="xml" />
-    <xsl:strip-space elements="*" />
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsl:output omit-xml-declaration="yes" indent="yes" method="xml"/>
+    <xsl:strip-space elements="*"/>
 
-    <xsl:include href="../scriptActivitiCamunda.xsl" />
+    <xsl:include href="../scriptActivitiCamunda.xsl"/>
 
     <xsl:template match="bpmn2:script">
         <xsl:choose>
@@ -88,7 +90,6 @@
             &lt;![CDATA[
             counter++
             execution.setVariable("counter",counter)
-                System.out.println(counter)
             ]]&gt;&lt;/bpmn2:script&gt;
              </xsl:text>
             </xsl:when>
