@@ -90,7 +90,6 @@ public class SystemTest {
         testBPELEngine("bpelg-in-memory");
     }
 
-    @Ignore
     @Test
     public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v3_2_0");
