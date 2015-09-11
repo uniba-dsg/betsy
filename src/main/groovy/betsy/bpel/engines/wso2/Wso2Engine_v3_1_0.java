@@ -40,6 +40,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd " +
                 getBinDir().toAbsolutePath() + " && call wso2server.bat");
 
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getBinDir().resolve("wso2server.sh").toString()));
         FileTasks.createFile(getServerPath().resolve("startup.sh"), "cd " + getBinDir().toAbsolutePath() + " && ./wso2server.sh");
     }
 
