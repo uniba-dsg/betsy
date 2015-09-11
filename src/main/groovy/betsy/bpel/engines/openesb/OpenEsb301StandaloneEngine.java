@@ -109,7 +109,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         NetworkTasks.downloadFileFromBetsyRepo(filename);
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
 
-        FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start openesb.bat");
+        FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start \"OpenEsb 3.0.1 Standalone\" /min openesb.bat");
 
         // goto folder
         // start openesb
@@ -166,6 +166,8 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     @Override
     public void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), "openesb.bat").values("stop"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq OpenEsb 3.0.1 Standalone"));
+        
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), getInstanceBinFolder().resolve("openesb.sh")).values("stop"));
     }
 
