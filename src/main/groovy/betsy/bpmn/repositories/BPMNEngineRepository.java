@@ -35,7 +35,7 @@ public class BPMNEngineRepository {
         return repo.getByName(name);
     }
 
-    public List<AbstractBPMNEngine> getByNames(String[] names) {
+    public List<AbstractBPMNEngine> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

@@ -20,7 +20,7 @@ public class TestCaseToLatexSerializer {
 
     private final String COLOUR_NEXT_ROW = TABLE_NEWLINE + ROW_COLOUR;
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new TestCaseToLatexSerializer().buildTableFromProcesses(new BPMNProcessRepository().getByName("ALL"));
     }
 

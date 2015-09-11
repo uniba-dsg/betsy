@@ -14,7 +14,7 @@ import java.util.List;
  * Applies all CoreBPEL transformations separately on every BPEL test case. The output is stored in corebpel-results.
  */
 public class CoreBPELEnumerator {
-    public static void main(String[] args) throws IOException, TransformerException {
+    public static void main(String... args) throws IOException, TransformerException {
         Path outputFolder = Paths.get("corebpel-results");
 
         if (Files.exists(outputFolder)) {

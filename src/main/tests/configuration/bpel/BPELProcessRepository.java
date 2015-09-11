@@ -87,7 +87,7 @@ public class BPELProcessRepository {
         return repo.getByName(name);
     }
 
-    public List<BPELProcess> getByNames(String[] names) {
+    public List<BPELProcess> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

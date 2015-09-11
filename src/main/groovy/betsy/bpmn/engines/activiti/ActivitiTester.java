@@ -23,7 +23,7 @@ public class ActivitiTester {
     private Path logDir;
     private BPMNTester bpmnTester;
 
-    public static void startProcess(String id, Object[] variables) {
+    public static void startProcess(String id, Object... variables) {
         LOGGER.info("Start process instance for " + id);
         String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
 

@@ -24,7 +24,7 @@ public class Main {
         }
     }
 
-    private static String[] createArgsWithoutFirstValue(String[] args) {
+    private static String[] createArgsWithoutFirstValue(String... args) {
         String[] bpelArgs = new String[args.length - 1];
         System.arraycopy(args, 1, bpelArgs, 0, bpelArgs.length);
         return bpelArgs;

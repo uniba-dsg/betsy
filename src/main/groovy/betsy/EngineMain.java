@@ -12,7 +12,7 @@ public class EngineMain {
 
     private static Map<String, Consumer<EngineLifecycle>> commands = new HashMap<>();
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
 
         if (args.length != 2 || args[0] == null || args[1] == null) {
             usage();

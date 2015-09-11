@@ -18,7 +18,7 @@ public class HtmlAnalytics {
         this.report = report;
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         Path input = Paths.get(args[0]);
         Path output = input.getParent().resolve("myreport.html").toAbsolutePath();
 

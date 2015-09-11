@@ -30,7 +30,7 @@ public class ErrorProcesses {
         return result;// make sure the happy path is the first test
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         createProcesses(); // this is to recreate the error processes
     }
 

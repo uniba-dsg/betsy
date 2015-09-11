@@ -14,7 +14,7 @@ public class EngineParser {
      */
     private final String[] args;
 
-    public EngineParser(String[] args) {
+    public EngineParser(String... args) {
         this.args = args;
     }
 

@@ -43,7 +43,7 @@ public class JbpmDeployer {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         String baseUrl = "http://localhost:8080/jbpm-console";
         String deploymentId = "de.uniba.dsg:SequenceFlow:1.0";
 

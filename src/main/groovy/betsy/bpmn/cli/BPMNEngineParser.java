@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BPMNEngineParser {
 
-    public BPMNEngineParser(String[] args) {
+    public BPMNEngineParser(String... args) {
         this.args = args;
     }
 

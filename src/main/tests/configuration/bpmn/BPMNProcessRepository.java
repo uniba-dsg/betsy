@@ -50,7 +50,7 @@ public class BPMNProcessRepository {
         return repo.getByName(name);
     }
 
-    public List<BPMNProcess> getByNames(String[] names) {
+    public List<BPMNProcess> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

@@ -5,7 +5,7 @@ import configuration.bpmn.BPMNProcessRepository;
 
 public class ProcessMain {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         if ("bpel".equalsIgnoreCase(args[0])) {
             bpel(args[1]);
         } else if ("bpmn".equalsIgnoreCase(args[0])) {

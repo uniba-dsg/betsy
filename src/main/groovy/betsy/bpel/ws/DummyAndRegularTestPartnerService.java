@@ -22,7 +22,7 @@ public final class DummyAndRegularTestPartnerService implements TestPartnerServi
         return testPartnerServiceDummy.isRunning() && testPartnerServiceRegular.isRunning();
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new DummyAndRegularTestPartnerService().startup();
     }
 }

@@ -9,7 +9,7 @@ public class ProcessParser {
 
     private final String[] args;
 
-    public ProcessParser(String[] args) {
+    public ProcessParser(String... args) {
         this.args = args;
     }
 

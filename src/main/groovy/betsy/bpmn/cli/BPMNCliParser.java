@@ -49,7 +49,7 @@ public class BPMNCliParser {
 
     private final String[] args;
 
-    public BPMNCliParser(String[] args) {
+    public BPMNCliParser(String... args) {
         this.args = args;
     }
 

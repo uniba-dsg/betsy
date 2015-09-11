@@ -78,7 +78,7 @@ public class BPELEngineRepository {
         return repo.getByName(name);
     }
 
-    public List<AbstractBPELEngine> getByNames(String[] names) {
+    public List<AbstractBPELEngine> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

@@ -36,7 +36,7 @@ public class Repository<T> {
         return result;
     }
 
-    public List<T> getByNames(final String[] names) {
+    public List<T> getByNames(final String... names) {
         List<T> result = new ArrayList<>();
 
         for (String name : names) {

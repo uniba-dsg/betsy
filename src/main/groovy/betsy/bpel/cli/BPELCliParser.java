@@ -91,7 +91,7 @@ public class BPELCliParser {
 
     private final String[] args;
 
-    public BPELCliParser(String[] args) {
+    public BPELCliParser(String... args) {
         this.args = args;
     }
 

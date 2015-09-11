@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class PartnerServiceControl extends Application {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         PartnerServiceControl.launch(args);
     }
 

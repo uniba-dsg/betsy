@@ -19,7 +19,7 @@ public class Checksum implements Serializable {
      * @param data used to calculate the checksum
      * @return the calculated checksum
      */
-    public static Checksum createChecksum(final byte[] data) {
+    public static Checksum createChecksum(final byte... data) {
         return new Checksum(data);
     }
 
@@ -47,7 +47,7 @@ public class Checksum implements Serializable {
      *
      * @param data {@link Checksum} is created based on the given data
      */
-    private Checksum(final byte[] data) {
+    private Checksum(final byte... data) {
         if (data == null) {
             throw new IllegalArgumentException("data must not be null");
         }

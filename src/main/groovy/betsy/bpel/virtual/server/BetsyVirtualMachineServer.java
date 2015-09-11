@@ -19,7 +19,7 @@ public class BetsyVirtualMachineServer {
 
     private VirtualMachineTcpServer server;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String... args) throws Exception {
         try {
             System.out.println("Starting betsy Virtual Machine Server (bVMS)");
             new BetsyVirtualMachineServer().start();

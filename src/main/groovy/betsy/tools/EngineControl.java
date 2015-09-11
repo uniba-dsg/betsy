@@ -97,7 +97,7 @@ public class EngineControl extends Application {
         toast("UP AND RUNNING");
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void main(String... args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         launch(args);
     }
 
