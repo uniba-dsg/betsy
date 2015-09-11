@@ -112,7 +112,12 @@ public class SystemTest {
     }
 
     @Test
-    public void test_B5_BpelActiveBpelSequence() throws IOException, InterruptedException {
+    public void test_B5_BpelOpenesb301StandaloneSequence() throws IOException, InterruptedException {
+        testBPELEngine("openesb301standalone");
+    }
+
+    @Test
+    public void test_B6_BpelActiveBpelSequence() throws IOException, InterruptedException {
         testBPELEngine("active-bpel");
         BPELMain.shutdownSoapUiAfterCompletion(true);
     }
