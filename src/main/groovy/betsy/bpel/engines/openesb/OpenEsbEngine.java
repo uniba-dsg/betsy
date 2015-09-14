@@ -53,7 +53,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        WaitTasks.waitForAvailabilityOfUrl(15_000, 500, CHECK_URL);
+        WaitTasks.waitForAvailabilityOfUrl(15_000, 500, "http://localhost:8383");
     }
 
     @Override
