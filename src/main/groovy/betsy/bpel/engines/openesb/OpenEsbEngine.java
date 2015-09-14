@@ -37,7 +37,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     public List<Path> getLogs() {
         List<Path> result = new LinkedList<>();
 
-        result.addAll(FileTasks.findAllInFolder(getGlassfishHome().resolve("domains/domain1/logs/")));
+        result.addAll(FileTasks.findAllInFolder(getGlassfishHome().resolve("domains/domain1/logs/"), "*.log"));
 
         return result;
     }
