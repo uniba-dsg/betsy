@@ -47,8 +47,8 @@ public class OpenEsbInstaller {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(reinstallGlassFishBatPath).
                 values(installationScript.toString(), stateXmlPath.toString()));
 
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build("chmod").values("+x", installationScript.toString()));
-        ConsoleTasks.executeOnUnixAndIgnoreError(
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", installationScript.toString()));
+        ConsoleTasks.executeOnUnix(
                 ConsoleTasks.CliCommand.build(path, installationScript).
                 values("--silent", "--state", stateXmlPath.toString()));
     }
