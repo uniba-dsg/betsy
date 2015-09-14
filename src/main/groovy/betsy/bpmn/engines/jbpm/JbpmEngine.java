@@ -53,10 +53,11 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void deploy(final BPMNProcess process) {
         // maven deployment for pushing it to the local maven repository (jbpm-console will fetch it from there)
-        final Path mavenPath = Configuration.getMavenHome().resolve("bin");
+        final Path mvnPath = Configuration.getMavenHome().resolve("bin");
 
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mavenPath.toAbsolutePath() + "/mvn -q clean install"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mavenPath.toAbsolutePath() + "/mvn").values("-q", "clean", "install"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnPath.toAbsolutePath() + "/mvn -q clean install"));
+        ConsoleTasks.setupMvn(mvnPath);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnPath.toAbsolutePath() + "/mvn").values("-q", "clean", "install"));
 
         //wait for maven to deploy
         WaitTasks.sleep(1500);
@@ -144,7 +145,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.setupAnt(getAntPath());
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant").values("-q", "stop.demo"));
 
         if (FileTasks.hasNoFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()))) {
             LOGGER.info("Could not shutdown, because " + getLogFileNameForShutdownAnalysis() + " does not exist. this indicates that the engine was never started");
