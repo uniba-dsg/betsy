@@ -65,8 +65,23 @@ public class BPMNSystemTest {
     }
 
     @After
-    public void cleanup() throws IOException {
+    public void cleanupTestFolders() throws IOException {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("."), "test-*")) {
+            for (Path path : stream) {
+                if (Files.isDirectory(path)) {
+                    try {
+                        FileTasks.deleteDirectory(path);
+                    } catch (Exception ignored) {
+                        // try to clean up even if it would fail
+                    }
+                }
+            }
+        }
+    }
+
+    @After
+    public void cleanupEngineFolders() throws IOException {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(".").resolve("server"))) {
             for (Path path : stream) {
                 if (Files.isDirectory(path)) {
                     try {
