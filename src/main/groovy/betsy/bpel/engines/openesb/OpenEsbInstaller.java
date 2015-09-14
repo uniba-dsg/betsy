@@ -35,10 +35,10 @@ public class OpenEsbInstaller {
         Path stateXmlPath = path.resolve("state.xml").toAbsolutePath();
         FileTasks.copyFileContentsToNewFile(stateXmlTemplate, stateXmlPath);
         Map<String, Object> replacements = new HashMap<>();
-        replacements.put("INSTALL_PATH", path.toAbsolutePath());
-        replacements.put("JDK_LOCATION", System.getenv().get("JAVA_HOME"));
-        replacements.put("HTTP_PORT", 8383);
-        replacements.put("HTTPS_PORT", 8384);
+        replacements.put("@INSTALL_PATH@", path.toAbsolutePath());
+        replacements.put("@JDK_LOCATION@", System.getenv().get("JAVA_HOME"));
+        replacements.put("@HTTP_PORT@", 8383);
+        replacements.put("@HTTPS_PORT@", 8384);
         FileTasks.replaceTokensInFile(stateXmlPath, replacements);
 
         Path reinstallGlassFishBatPath = path.resolve("reinstallGlassFish.bat");
@@ -50,7 +50,7 @@ public class OpenEsbInstaller {
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", installationScript.toString()));
         ConsoleTasks.executeOnUnix(
                 ConsoleTasks.CliCommand.build(path, installationScript).
-                values("--silent", "--state", stateXmlPath.toString()));
+                        values("--silent", "--state", stateXmlPath.toString()));
     }
 
 
