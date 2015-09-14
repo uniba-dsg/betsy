@@ -6,10 +6,10 @@ jdk:
   - oraclejdk8
 
 # some engines need java 7
-addons:
-  apt:
-    packages:
-    - openjdk-7-jre
+#addons:
+#  apt:
+#    packages:
+#    - openjdk-7-jre
 
 cache:
   directories:
@@ -17,8 +17,8 @@ cache:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
 
-env:
-  - JAVA7_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre
+#env:
+#  - JAVA7_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre
 
 install:
   - TERM=dumb travis_retry ./gradlew assemble --info
