@@ -24,10 +24,10 @@ public class JbpmInstaller {
         ConsoleTasks.setupAnt(getAntPath());
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jboss"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant").values("-q", "install.jboss"));
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant -q install.jBPM-console.into.jboss"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(destinationDir.resolve("jbpm-installer"), getAntPath().toAbsolutePath().toString() + "/ant").values("-q", "install.jBPM-console.into.jboss"));
     }
 
     private Path getAntPath() {
