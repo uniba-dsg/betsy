@@ -91,10 +91,36 @@ public class BPELSystemTest {
         testBPELEngine("openesb301standalone");
     }
 
+    @Test @Ignore("untested")
+    public void test_B5_BpelOpenesb23Sequence() throws IOException, InterruptedException {
+        testBPELEngine("openesb23");
+    }
+
+    @Test @Ignore("untested")
+    public void test_B5_BpelOpenesb231Sequence() throws IOException, InterruptedException {
+        testBPELEngine("openesb231");
+    }
+
+    @Test @Ignore("untested")
+    public void test_B5_BpelOpenesbSequence() throws IOException, InterruptedException {
+        testBPELEngine("openesb");
+    }
+
     @Test
     public void test_B6_BpelActiveBpelSequence() throws IOException, InterruptedException {
         testBPELEngine("active-bpel");
     }
+
+    @Test @Ignore("untested")
+    public void test_B7_BpelPetalsesbSequence() throws IOException, InterruptedException {
+        testBPELEngine("petalsesb");
+    }
+
+    @Test @Ignore("untested")
+    public void test_B7_BpelPetalsesb41Sequence() throws IOException, InterruptedException {
+        testBPELEngine("petalsesb41");
+    }
+
 
     private void testBPELEngine(String engine) throws IOException {
         testBPELEngine(engine, "structured", "Sequence");
