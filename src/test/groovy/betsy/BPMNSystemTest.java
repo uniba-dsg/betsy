@@ -46,6 +46,21 @@ public class BPMNSystemTest {
         testBPMNEngine("camunda730");
     }
 
+    @Test
+    public void test_A_BpmnjBPMSequenceFlow() throws IOException {
+        testBPMNEngine("jbpm");
+    }
+
+    @Test
+    public void test_A_BpmnjBPM610SequenceFlow() throws IOException {
+        testBPMNEngine("jbpm610");
+    }
+
+    @Test
+    public void test_A_BpmnjBPM620SequenceFlow() throws IOException {
+        testBPMNEngine("jbpm620");
+    }
+
     private void testBPMNEngine(String engine) throws IOException {
         Main.main("bpmn", "-f", "test-" + engine, engine, "SequenceFlow");
         assertEquals("[SequenceFlow;" + engine + ";basics;1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
