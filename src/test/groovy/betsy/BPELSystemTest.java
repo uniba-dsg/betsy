@@ -91,12 +91,12 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb301standalone");
     }
 
-    @Test @Ignore("untested")
+    @Test
     public void test_B5_BpelOpenesb23Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb23");
     }
 
-    @Test @Ignore("untested")
+    @Test
     public void test_B5_BpelOpenesb231Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb231");
     }
