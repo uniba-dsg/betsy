@@ -1,53 +1,29 @@
 package betsy;
 
 import betsy.bpel.BPELMain;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
-import org.junit.Test;
+import betsy.bpel.soapui.SoapUIShutdownHelper;
+import org.junit.*;
 import org.junit.runners.MethodSorters;
+import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SystemTest {
+public class BPELSystemTest {
 
-    @Test
-    public void test_A_BpmnActivitiSequenceFlow() throws IOException {
-        testBPMNEngine("activiti");
+    @BeforeClass
+    public static void disableSoapUIShutdown() {
+        BPELMain.shutdownSoapUiAfterCompletion(false);
     }
 
-    @Test
-    public void test_A_BpmnActiviti5170SequenceFlow() throws IOException {
-        testBPMNEngine("activiti5170");
-    }
-
-    @Test
-    public void test_A_BpmnCamunda700SequenceFlow() throws IOException {
-        testBPMNEngine("camunda");
-    }
-
-    @Test
-    public void test_A_BpmnCamunda710SequenceFlow() throws IOException {
-        testBPMNEngine("camunda710");
-    }
-
-    @Test
-    public void test_A_BpmnCamunda720SequenceFlow() throws IOException {
-        testBPMNEngine("camunda720");
-    }
-
-    @Test
-    public void test_A_BpmnCamunda730SequenceFlow() throws IOException {
-        testBPMNEngine("camunda730");
-    }
-
-    private void testBPMNEngine(String engine) throws IOException {
-        Main.main("bpmn", "-f", "test-" + engine, engine, "SequenceFlow");
-        assertEquals("[SequenceFlow;" + engine + ";basics;1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
+    @AfterClass
+    public static void tearDownSoapUI() {
+        SoapUIShutdownHelper.shutdownSoapUIForReal();
     }
 
     @Test
@@ -118,7 +94,6 @@ public class SystemTest {
     @Test
     public void test_B6_BpelActiveBpelSequence() throws IOException, InterruptedException {
         testBPELEngine("active-bpel");
-        BPELMain.shutdownSoapUiAfterCompletion(true);
     }
 
     private void testBPELEngine(String engine) throws IOException {
@@ -126,7 +101,6 @@ public class SystemTest {
     }
 
     private void testBPELEngine(String engine, String group, String process) throws IOException {
-        BPELMain.shutdownSoapUiAfterCompletion(false);
         BPELMain.main(engine, process, "-f", "test-" + engine);
         assertEquals("[" + process + ";" + engine + ";" + group + ";1;0;1;1]", Files.readAllLines(Paths.get("test-" + engine + "/reports/results.csv")).toString());
     }
