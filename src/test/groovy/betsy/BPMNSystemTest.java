@@ -17,7 +17,7 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class BPMNSystemTest {
+public class BPMNSystemTest extends AbstractSystemTest {
 
     @Test
     public void testBPMNEngine() throws IOException {
@@ -62,36 +62,6 @@ public class BPMNSystemTest {
     @Test
     public void test_A_BpmnjBPM620SequenceFlow() throws IOException {
         testBPMNEngine("jbpm620");
-    }
-
-    @After
-    public void cleanupTestFolders() throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("."), "test-*")) {
-            for (Path path : stream) {
-                if (Files.isDirectory(path)) {
-                    try {
-                        FileTasks.deleteDirectory(path);
-                    } catch (Exception ignored) {
-                        // try to clean up even if it would fail
-                    }
-                }
-            }
-        }
-    }
-
-    @After
-    public void cleanupEngineFolders() throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(".").resolve("server"))) {
-            for (Path path : stream) {
-                if (Files.isDirectory(path)) {
-                    try {
-                        FileTasks.deleteDirectory(path);
-                    } catch (Exception ignored) {
-                        // try to clean up even if it would fail
-                    }
-                }
-            }
-        }
     }
 
     private void testBPMNEngine(String engine) throws IOException {

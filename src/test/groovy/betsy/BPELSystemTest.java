@@ -14,7 +14,7 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class BPELSystemTest {
+public class BPELSystemTest extends AbstractSystemTest{
 
     @BeforeClass
     public static void disableSoapUIShutdown() {
