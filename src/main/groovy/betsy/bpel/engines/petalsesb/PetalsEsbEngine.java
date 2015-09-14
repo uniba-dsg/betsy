@@ -70,7 +70,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "petals-esb.bat"), environment);
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "chmod").values("+x", "petals-esb.sh"));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("petals-esb.sh")), environment);
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(),  getPetalsBinFolder().resolve("petals-esb.sh") + " >/dev/null 2>&1 &"), environment);
 
         WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
