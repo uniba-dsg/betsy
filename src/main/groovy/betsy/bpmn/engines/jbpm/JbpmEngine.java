@@ -121,7 +121,6 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-        FileTasks.assertDirectory(pathToJava7);
 
         ConsoleTasks.setupAnt(getAntPath());
 

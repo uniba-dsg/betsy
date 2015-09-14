@@ -65,7 +65,6 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-        FileTasks.assertDirectory(pathToJava7);
         Map<String,String> environment = new HashMap<>();
         environment.put("JAVA_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "petals-esb.bat"), environment);

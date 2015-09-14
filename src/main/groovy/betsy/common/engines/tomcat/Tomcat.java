@@ -101,7 +101,6 @@ public class Tomcat {
             return Collections.emptyMap();
         } else {
             Path pathToJava7 = Configuration.getJava7Home();
-            FileTasks.assertDirectory(pathToJava7);
             Map<String, String> environment = new HashMap<>();
             environment.put("JAVA_HOME", pathToJava7.toString());
             return environment;
@@ -112,7 +111,7 @@ public class Tomcat {
      * Shutdown the tomcat if running.
      */
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getTomcatName() + "*"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_shutdown.sh")));
     }
 

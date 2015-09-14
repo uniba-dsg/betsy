@@ -124,19 +124,15 @@ public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-        FileTasks.assertDirectory(pathToJava7);
-
-        Path pathToJre7 = Configuration.getJre7Home();
-        FileTasks.assertDirectory(pathToJre7);
 
         Map<String, String> map = new LinkedHashMap<>(2);
         map.put("JAVA_HOME", pathToJava7.toString());
-        map.put("JRE_HOME", pathToJre7.toString());
+        map.put("JRE_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"), map);
 
         Map<String, String> map1 = new LinkedHashMap<>(2);
         map1.put("JAVA_HOME", pathToJava7.toString());
-        map1.put("JRE_HOME", pathToJre7.toString());
+        map1.put("JRE_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")), map1);
 
         WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());

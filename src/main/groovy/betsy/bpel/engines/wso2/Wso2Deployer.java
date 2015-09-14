@@ -24,7 +24,7 @@ public class Wso2Deployer {
         FileTasks.copyFileIntoFolder(file, deploymentDir);
 
         WaitTasks.waitFor(120_000, 500, () ->
-                FileTasks.hasFileSpecificSubstring(logsDir.resolve("wso2carbon.log"), "{org.apache.ode.bpel.engine.BpelServerImpl} -  Registered process") ||
+                FileTasks.hasFileSpecificSubstring(logsDir.resolve("wso2carbon.log"), "{org.apache.ode.bpel.engine.BpelServerImpl} -  Registered process {http://dsg.wiai.uniba.de/betsy") ||
                 FileTasks.hasFileSpecificSubstring(logsDir.resolve("wso2carbon.log"), "org.apache.axis2.deployment.DeploymentException: Error deploying BPEL package: " + file.getFileName().toString() + " {org.apache.axis2.deployment.DeploymentEngine}")
         );
         WaitTasks.sleep(2_000);
