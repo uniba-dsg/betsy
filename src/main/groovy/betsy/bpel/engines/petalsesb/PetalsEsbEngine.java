@@ -69,7 +69,11 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         environment.put("JAVA_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "petals-esb.bat"), environment);
 
-        WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "chmod").values("+x", "petals-esb.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("petals-esb.sh")), environment);
+
+        WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
+                FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-se-bpel] : Component started"));
 
         try {
@@ -93,7 +97,6 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         } catch (Exception ignore) {
             LOGGER.info("COULD NOT STOP ENGINE " + getName());
         }
-
     }
 
     @Override
