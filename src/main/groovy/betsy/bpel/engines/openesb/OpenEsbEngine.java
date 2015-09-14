@@ -6,6 +6,7 @@ import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.util.OperatingSystem;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -62,7 +63,15 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new OpenEsbInstaller(getServerPath(), "glassfishesb-v2.2-full-installer-windows.exe", ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+        if(OperatingSystem.WINDOWS) {
+            new OpenEsbInstaller(getServerPath(),
+                    "glassfishesb-v2.2-full-installer-windows.exe",
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+        } else {
+            new OpenEsbInstaller(getServerPath(),
+                    "glassfishesb-v2.2-full-installer-linux.sh",
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+        }
     }
 
     @Override

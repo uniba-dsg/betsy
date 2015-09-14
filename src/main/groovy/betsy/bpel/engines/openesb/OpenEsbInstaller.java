@@ -43,10 +43,12 @@ public class OpenEsbInstaller {
 
         Path reinstallGlassFishBatPath = path.resolve("reinstallGlassFish.bat");
         FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/reinstallGlassFish.bat"), reinstallGlassFishBatPath);
-
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(reinstallGlassFishBatPath).
                 values(Configuration.getDownloadsDir().resolve(fileName).toString(), stateXmlPath.toString()));
 
+        ConsoleTasks.executeOnUnixAndIgnoreError(
+                ConsoleTasks.CliCommand.build(path, Configuration.getDownloadsDir().resolve(fileName)).
+                values("--silent", "--state", stateXmlPath.toString()));
     }
 
 
