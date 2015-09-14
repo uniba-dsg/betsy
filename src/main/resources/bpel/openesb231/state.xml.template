@@ -34,7 +34,7 @@
   holder.
 --><state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="state-file.xsd">
 <components>
-        <product platform="windows" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
+        <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
             <properties>
                 <property name="password">adminadmin</property>
                 <property name="installation.location.windows">@INSTALL_PATH@\glassfish</property>
