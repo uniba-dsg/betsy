@@ -87,22 +87,22 @@ public class BPELSystemTest extends AbstractSystemTest{
     }
 
     @Test
-    public void test_B5_BpelOpenesb301StandaloneSequence() throws IOException, InterruptedException {
+    public void test_B5_A_BpelOpenesb301StandaloneSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb301standalone");
     }
 
     @Test
-    public void test_B5_BpelOpenesb23Sequence() throws IOException, InterruptedException {
+    public void test_B5_B2_BpelOpenesb23Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb23");
     }
 
     @Test
-    public void test_B5_BpelOpenesb231Sequence() throws IOException, InterruptedException {
+    public void test_B5__B3_BpelOpenesb231Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb231");
     }
 
     @Test
-    public void test_B5_BpelOpenesbSequence() throws IOException, InterruptedException {
+    public void test_B5__B1_BpelOpenesbSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb");
     }
 
