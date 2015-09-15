@@ -1,6 +1,7 @@
 package betsy.bpel.engines.petalsesb;
 
 import betsy.common.config.Configuration;
+import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
@@ -9,6 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class PetalsEsbInstaller {
+
+    public PetalsEsbInstaller(PetalsEsbEngine engine){
+        this.engine = engine;
+    }
 
     public void install() {
         FileTasks.deleteDirectory(serverDir);
@@ -22,6 +27,10 @@ public class PetalsEsbInstaller {
         // install bpel service engine and binding connector for soap messages
         FileTasks.copyFileIntoFolder(bpelComponentPath, targetEsbInstallDir);
         FileTasks.copyFileIntoFolder(soapComponentPath, targetEsbInstallDir);
+
+        FileTasks.createFile(engine.getPetalsBinFolder().resolve("start-petals.sh"), "cd \"" + engine.getPetalsBinFolder().toAbsolutePath() + "\" && ./petals-esb.sh >/dev/null 2>&1 &");
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(engine.getPetalsBinFolder(), "chmod").values("+x", "start-petals.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(engine.getPetalsBinFolder(), "chmod").values("+x", "petals-esb.sh"));
     }
 
     public Path getServerDir() {
@@ -78,4 +87,5 @@ public class PetalsEsbInstaller {
     private Path bpelComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip");
     private Path soapComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip");
     private Path sourceFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip");
+    private PetalsEsbEngine engine;
 }

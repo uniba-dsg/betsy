@@ -67,10 +67,10 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         Path pathToJava7 = Configuration.getJava7Home();
         Map<String,String> environment = new HashMap<>();
         environment.put("JAVA_HOME", pathToJava7.toString());
+
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "petals-esb.bat"), environment);
 
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "chmod").values("+x", "petals-esb.sh"));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(),  getPetalsBinFolder().resolve("petals-esb.sh").toAbsolutePath() + " >/dev/null 2>&1 &"), environment);
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("start-petals.sh").toAbsolutePath()));
 
         WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
@@ -101,7 +101,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new PetalsEsbInstaller().install();
+        new PetalsEsbInstaller(this).install();
     }
 
     @Override
