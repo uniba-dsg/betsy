@@ -21,7 +21,7 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> im
             return;
         }
 
-        // group by name of test case
+        // make test case names unique
         for (int counter = 1; counter <= testCases.size(); counter++) {
             TestCase testCase = testCases.get(counter - 1);
             testCase.setName(testCase.getName() + "-" + counter);
@@ -30,7 +30,7 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> im
     }
 
     private boolean hasUniqueTestCaseNames(List<TC> testCases) {
-        return testCases.stream().map(s -> s.getName()).distinct().count() != testCases.size();
+        return testCases.stream().map(TestCase::getName).distinct().count() == testCases.size();
     }
 
     public abstract AbstractProcess<TC,E> createCopyWithoutEngine();
