@@ -21,7 +21,7 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
 
     @Override
     public void install() {
-        PetalsEsbInstaller installer = new PetalsEsbInstaller();
+        PetalsEsbInstaller installer = new PetalsEsbInstaller(this);
         installer.setServerDir(Paths.get("server/petalsesb41"));
         installer.setFileName("petals-esb-distrib-4.1.0.zip");
         installer.setTargetEsbInstallDir(Paths.get("server/petalsesb41/petals-esb-4.1/install"));
