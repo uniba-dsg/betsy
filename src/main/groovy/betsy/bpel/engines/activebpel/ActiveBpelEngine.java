@@ -20,7 +20,7 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineId() {
-        return new Engine(ProcessLanguage.BPEL, "active-bpel", "5.0.2");
+        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2");
     }
 
     public Path getXsltPath() {

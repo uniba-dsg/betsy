@@ -108,7 +108,7 @@ public class BPELSystemTest extends AbstractSystemTest{
 
     @Test
     public void test_B6_BpelActiveBpelSequence() throws IOException, InterruptedException {
-        testBPELEngine("active_bpel__5_0_2");
+        testBPELEngine("activebpel__5_0_2");
     }
 
     @Test @Ignore("older revision, possibly unstable")
