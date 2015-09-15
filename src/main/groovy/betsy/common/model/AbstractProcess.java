@@ -16,12 +16,21 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> im
     }
 
     private void uniqueifyTestCaseNames(List<TC> testCases) {
+        // only when not already unique
+        if(!hasUniqueTestCaseNames(testCases)) {
+            return;
+        }
+
         // group by name of test case
         for (int counter = 1; counter <= testCases.size(); counter++) {
             TestCase testCase = testCases.get(counter - 1);
             testCase.setName(testCase.getName() + "-" + counter);
             testCase.setNumber(counter);
         }
+    }
+
+    private boolean hasUniqueTestCaseNames(List<TC> testCases) {
+        return testCases.stream().map(s -> s.getName()).distinct().count() != testCases.size();
     }
 
     public abstract AbstractProcess<TC,E> createCopyWithoutEngine();
