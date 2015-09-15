@@ -33,7 +33,7 @@ public class BPELSystemTest extends AbstractSystemTest{
 
     @Test
     public void test_B1_BpelOdeInMemSequence() throws IOException, InterruptedException {
-        testBPELEngine("ode__1_3_5__ode-in-memory");
+        testBPELEngine("ode__1_3_5__in-memory");
     }
 
     @Test
