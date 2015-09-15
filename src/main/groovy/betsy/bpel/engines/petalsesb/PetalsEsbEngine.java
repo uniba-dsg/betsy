@@ -72,7 +72,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("start-petals.sh").toAbsolutePath()));
 
-        WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
+        WaitTasks.waitFor(60 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-se-bpel] : Component started"));
 
