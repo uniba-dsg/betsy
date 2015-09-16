@@ -96,9 +96,11 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     public void shutdown() {
         try {
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown"));
+
+            ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getPetalsCliBinFolder().resolve("petals-cli.sh").toString()));
             ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown"));
-        } catch (Exception ignore) {
-            LOGGER.info("COULD NOT STOP ENGINE " + getName());
+        } catch (Exception e) {
+            LOGGER.info("COULD NOT STOP ENGINE " + getName(), e);
         }
     }
 
