@@ -43,26 +43,4 @@ public class JbpmDeployer {
         }
     }
 
-    public static void main(String... args) {
-        String baseUrl = "http://localhost:8080/jbpm-console";
-        String deploymentId = "de.uniba.dsg:SequenceFlow:1.0";
-
-        new JbpmDeployer(baseUrl, deploymentId).deploy();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(new JbpmDeployer(baseUrl, deploymentId).isDeployed());
-
-        new JbpmDeployer(baseUrl, deploymentId).undeploy();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
