@@ -32,10 +32,12 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
     public void shutdown() {
         try {
             // create shutdown command script and execute it via the cli
-            FileTasks.createFile(getPetalsCliBinFolder().resolve("shutdown-petals"), "connect\nstop container --shutdown\nexit");
+            FileTasks.createFile(getPetalsCliBinFolder().resolve("shutdown-petals.script"), "connect\nstop container --shutdown\nexit");
 
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown-petals"));
-            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown-petals"));
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown-petals.script"));
+
+            ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getPetalsCliBinFolder().resolve("petals-cli.sh").toString()));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown-petals.script"));
         } catch (Exception ignore) {
             LOGGER.info("COULD NOT STOP ENGINE " + getName());
         }
