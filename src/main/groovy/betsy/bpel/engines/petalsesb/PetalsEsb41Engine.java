@@ -1,6 +1,7 @@
 package betsy.bpel.engines.petalsesb;
 
 import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,11 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
     @Override
     public void shutdown() {
         try {
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPath(), "taskkill").values("/FI", "WINDOWTITLE eq OW2*"));
+            // create shutdown command script and execute it via the cli
+            FileTasks.createFile(getPetalsCliBinFolder().resolve("shutdown-petals"), "connect\nstop container --shutdown\nexit");
+
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown-petals"));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown-petals"));
         } catch (Exception ignore) {
             LOGGER.info("COULD NOT STOP ENGINE " + getName());
         }
