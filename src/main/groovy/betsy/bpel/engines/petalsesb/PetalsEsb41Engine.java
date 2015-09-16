@@ -38,8 +38,8 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
 
             ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getPetalsCliBinFolder().resolve("petals-cli.sh").toString()));
             ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown-petals.script"));
-        } catch (Exception ignore) {
-            LOGGER.info("COULD NOT STOP ENGINE " + getName());
+        } catch (Exception e) {
+            LOGGER.info("COULD NOT STOP ENGINE " + getName(), e);
         }
     }
 
