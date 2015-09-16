@@ -44,6 +44,8 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         return getPetalsFolder().resolve("bin");
     }
 
+    public Path getPetalsCliBinFolder() {return getServerPath().resolve("petals-cli-1.0.0/bin");}
+
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
@@ -93,7 +95,8 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void shutdown() {
         try {
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPath(), "taskkill").values("/FI", "WINDOWTITLE eq OW2*"));
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown"));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown"));
         } catch (Exception ignore) {
             LOGGER.info("COULD NOT STOP ENGINE " + getName());
         }

@@ -21,8 +21,12 @@ public class PetalsEsbInstaller {
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
+        //unzip main esb component
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
         ZipTasks.unzip(sourceFile, serverDir);
+
+        //unzip cli -- needed for shutting down the esb
+        ZipTasks.unzip(cliFile, serverDir);
 
         // install bpel service engine and binding connector for soap messages
         FileTasks.copyFileIntoFolder(bpelComponentPath, targetEsbInstallDir);
@@ -87,5 +91,6 @@ public class PetalsEsbInstaller {
     private Path bpelComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip");
     private Path soapComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip");
     private Path sourceFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip");
+    private Path cliFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-cli-1.0.0.zip");
     private PetalsEsbEngine engine;
 }
