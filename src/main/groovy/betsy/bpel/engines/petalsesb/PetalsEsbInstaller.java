@@ -37,10 +37,6 @@ public class PetalsEsbInstaller {
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(engine.getPetalsBinFolder(), "chmod").values("+x", "petals-esb.sh"));
     }
 
-    public Path getServerDir() {
-        return serverDir;
-    }
-
     public void setServerDir(Path serverDir) {
         this.serverDir = serverDir;
     }
@@ -53,37 +49,23 @@ public class PetalsEsbInstaller {
         this.fileName = fileName;
     }
 
-    public Path getTargetEsbInstallDir() {
-        return targetEsbInstallDir;
-    }
-
     public void setTargetEsbInstallDir(Path targetEsbInstallDir) {
         this.targetEsbInstallDir = targetEsbInstallDir;
-    }
-
-    public Path getBpelComponentPath() {
-        return bpelComponentPath;
     }
 
     public void setBpelComponentPath(Path bpelComponentPath) {
         this.bpelComponentPath = bpelComponentPath;
     }
 
-    public Path getSoapComponentPath() {
-        return soapComponentPath;
-    }
-
     public void setSoapComponentPath(Path soapComponentPath) {
         this.soapComponentPath = soapComponentPath;
-    }
-
-    public Path getSourceFile() {
-        return sourceFile;
     }
 
     public void setSourceFile(Path sourceFile) {
         this.sourceFile = sourceFile;
     }
+
+    public void setCliFile(Path cliFile) { this.cliFile = cliFile;}
 
     private Path serverDir = Paths.get("server/petalsesb");
     private String fileName = "petals-esb-distrib-4.0.zip";
