@@ -44,6 +44,8 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         return getPetalsFolder().resolve("bin");
     }
 
+    public Path getPetalsCliBinFolder() {return getServerPath().resolve("petals-cli-1.0.0/bin");}
+
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
@@ -67,9 +69,13 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         Path pathToJava7 = Configuration.getJava7Home();
         Map<String,String> environment = new HashMap<>();
         environment.put("JAVA_HOME", pathToJava7.toString());
+
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "petals-esb.bat"), environment);
 
-        WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("start-petals.sh").toAbsolutePath()));
+
+        WaitTasks.waitFor(60 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
+                FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-se-bpel] : Component started"));
 
         try {
@@ -89,16 +95,18 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void shutdown() {
         try {
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPath(), "taskkill").values("/FI", "WINDOWTITLE eq OW2*"));
-        } catch (Exception ignore) {
-            LOGGER.info("COULD NOT STOP ENGINE " + getName());
-        }
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown"));
 
+            ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getPetalsCliBinFolder().resolve("petals-cli.sh").toString()));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown"));
+        } catch (Exception e) {
+            LOGGER.info("COULD NOT STOP ENGINE " + getName(), e);
+        }
     }
 
     @Override
     public void install() {
-        new PetalsEsbInstaller().install();
+        new PetalsEsbInstaller(this).install();
     }
 
     @Override

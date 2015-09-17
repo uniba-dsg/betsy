@@ -111,12 +111,12 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("active-bpel");
     }
 
-    @Test @Ignore("untested")
+    @Test
     public void test_B7_BpelPetalsesbSequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb");
     }
 
-    @Test @Ignore("untested")
+    @Test
     public void test_B7_BpelPetalsesb41Sequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb41");
     }
