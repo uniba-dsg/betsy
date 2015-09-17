@@ -17,6 +17,16 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     private static final Logger LOGGER = Logger.getLogger(OpenEsb301StandaloneEngine.class);
     public static final String WEB_UI = "http://localhost:4848/webui";
+    private String openEsbFolder = "OpenESB-SE-3.0.1";
+    private String binariesFileName = "OpenESB-Quickstart-Standalone-v301-server-only.zip";
+
+    public OpenEsb301StandaloneEngine(){
+    }
+
+    public OpenEsb301StandaloneEngine(String openEsbFolder, String binariesFileName){
+        this.openEsbFolder = openEsbFolder;
+        this.binariesFileName = binariesFileName;
+    }
 
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
@@ -105,9 +115,8 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         FileTasks.deleteDirectory(getServerPath());
         FileTasks.mkdirs(getServerPath());
 
-        String filename = "OpenESB-Quickstart-Standalone-v301-server-only.zip";
-        NetworkTasks.downloadFileFromBetsyRepo(filename);
-        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
+        NetworkTasks.downloadFileFromBetsyRepo(binariesFileName);
+        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(binariesFileName), getServerPath());
 
         FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start \"" + getName() + "\" /min openesb.bat");
 
@@ -148,7 +157,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         WaitTasks.waitForAvailabilityOfUrl(10 * 1000, 500, WEB_UI);
 
         // install bpelse
-        Path components = getServerPath().resolve("OpenESB-SE-3.0.1").resolve("OE-Components");
+        Path components = getServerPath().resolve(openEsbFolder).resolve("OE-Components");
         Path installFolder = getInstanceFolder().resolve("server").resolve("jbi").resolve("autoinstall");
 
         WaitTasks.waitFor(10 * 1000, 500, () -> FileTasks.hasFolder(installFolder));
@@ -160,7 +169,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     private Path getInstanceFolder() {
-        return getServerPath().resolve("OpenESB-SE-3.0.1").resolve("OE-Instance");
+        return getServerPath().resolve(openEsbFolder).resolve("OE-Instance");
     }
 
     @Override
