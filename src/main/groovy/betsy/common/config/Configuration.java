@@ -125,17 +125,14 @@ public class Configuration {
     public static Path getJava7Home() {
         // Trying to determine JDK7 Path using SysEnv
         String java7env = System.getenv("JAVA7_HOME");
-        Path java7home;
-
         if (java7env == null) {
             // Fallback to properties file
-            java7home = Paths.get(PROPERTIES.getProperty("java7.home"));
-        } else {
-            java7home = Paths.get(java7env);
+            throw new ConfigurationException("JAVA7_HOME is not set");
         }
 
+        Path java7home = Paths.get(java7env);
         if (!Files.isDirectory(java7home)) {
-            throw new ConfigurationException("Found [" + java7home + "] for key [java7.home] " + "Path to JAVA_HOME, but the directory does not exist!");
+            throw new ConfigurationException("Found [" + java7home + "] via JAVA7_HOME but the directory does not exist!");
         }
 
         return java7home;
