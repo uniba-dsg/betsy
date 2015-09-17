@@ -8,10 +8,7 @@ import betsy.bpel.engines.ode.Ode136Engine;
 import betsy.bpel.engines.ode.Ode136InMemoryEngine;
 import betsy.bpel.engines.ode.OdeEngine;
 import betsy.bpel.engines.ode.OdeInMemoryEngine;
-import betsy.bpel.engines.openesb.OpenEsb231Engine;
-import betsy.bpel.engines.openesb.OpenEsb23Engine;
-import betsy.bpel.engines.openesb.OpenEsb301StandaloneEngine;
-import betsy.bpel.engines.openesb.OpenEsbEngine;
+import betsy.bpel.engines.openesb.*;
 import betsy.bpel.engines.orchestra.OrchestraEngine;
 import betsy.bpel.engines.petalsesb.PetalsEsb41Engine;
 import betsy.bpel.engines.petalsesb.PetalsEsbEngine;
@@ -37,7 +34,7 @@ public class BPELEngineRepository {
     public BPELEngineRepository() {
         List<AbstractBPELEngine> locals = Arrays.asList(
                 new OdeEngine(), new Ode136Engine(), new OdeInMemoryEngine(), new Ode136InMemoryEngine(),
-                new OpenEsbEngine(), new OpenEsb23Engine(), new OpenEsb231Engine(), new OpenEsb301StandaloneEngine(),
+                new OpenEsbEngine(), new OpenEsb23Engine(), new OpenEsb231Engine(), new OpenEsb301StandaloneEngine(), new OpenEsb305StandaloneEngine(),
                 new OrchestraEngine(),
                 new ActiveBpelEngine(),
                 new PetalsEsbEngine(), new PetalsEsb41Engine(),
@@ -47,7 +44,7 @@ public class BPELEngineRepository {
                 new BpelgEngine(),
                 new OrchestraEngine(),
                 new ActiveBpelEngine(),
-                new OpenEsb301StandaloneEngine(),
+                new OpenEsb305StandaloneEngine(),
                 new PetalsEsb41Engine(),
                 new Ode136Engine(),
                 new Wso2Engine_v3_2_0());
