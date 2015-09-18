@@ -71,7 +71,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("wso2_v2_1_2");
     }
 
-    @Test @Ignore("older revision")
+    @Test
     public void test_B4_BpelWso300Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v3_0_0");
     }
