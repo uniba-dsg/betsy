@@ -116,7 +116,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("petalsesb");
     }
 
-    @Test @Ignore("possibly unstable")
+    @Test
     public void test_B7_BpelPetalsesb41Sequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb41");
     }
