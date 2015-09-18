@@ -101,7 +101,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb231");
     }
 
-    @Test @Ignore("older revision")
+    @Test
     public void test_B5__B1_BpelOpenesbSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb");
     }
