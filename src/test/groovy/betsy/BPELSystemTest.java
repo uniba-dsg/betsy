@@ -71,12 +71,12 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("wso2_v2_1_2");
     }
 
-    @Test
+    @Test @Ignore("older revision")
     public void test_B4_BpelWso300Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v3_0_0");
     }
 
-    @Test
+    @Test @Ignore("older revision")
     public void test_B4_BpelWso310Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2_v3_1_0");
     }
@@ -91,7 +91,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb301standalone");
     }
 
-    @Test
+    @Test @Ignore("older revision")
     public void test_B5_B2_BpelOpenesb23Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb23");
     }
@@ -101,7 +101,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb231");
     }
 
-    @Test
+    @Test @Ignore("older revision")
     public void test_B5__B1_BpelOpenesbSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb");
     }
@@ -111,12 +111,12 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("active-bpel");
     }
 
-    @Test
+    @Test @Ignore("older revision, possibly unstable")
     public void test_B7_BpelPetalsesbSequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb");
     }
 
-    @Test
+    @Test @Ignore("possibly unstable")
     public void test_B7_BpelPetalsesb41Sequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb41");
     }
