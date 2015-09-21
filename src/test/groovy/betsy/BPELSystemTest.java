@@ -101,7 +101,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb231");
     }
 
-    @Test
+    @Test @Ignore("unstable")
     public void test_B5__B1_BpelOpenesbSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb");
     }
