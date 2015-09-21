@@ -101,7 +101,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb231");
     }
 
-    @Test
+    @Test @Ignore("unstable")
     public void test_B5__B1_BpelOpenesbSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb");
     }
@@ -111,12 +111,12 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("active-bpel");
     }
 
-    @Test
+    @Test @Ignore("older revision, possibly unstable")
     public void test_B7_BpelPetalsesbSequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb");
     }
 
-    @Test
+    @Test @Ignore("unstable")
     public void test_B7_BpelPetalsesb41Sequence() throws IOException, InterruptedException {
         testBPELEngine("petalsesb41");
     }
