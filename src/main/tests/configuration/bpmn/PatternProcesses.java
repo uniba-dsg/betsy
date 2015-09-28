@@ -18,8 +18,11 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1());
 
 
-    public static final BPMNProcess PARALLEL_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP02ParallelSplit", "A Process for a parallel Split with 3 tasks , each task has to be executed exactly once",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
+    public static final BPMNProcess WCP02_PARALLEL_SPLIT = BPMNProcessBuilder.buildPatternProcess("WCP02_ParallelSplit",
+            "WCP02 ParallelSplit: Checking the ability to create two parallel branches by a ParallelGateway followed by "
+                    + "a ScriptTask in each branch."
+                    + "Test passed successfully if both Tasks are executed.",
+            new BPMNTestCase().assertTask1().assertTask2());
 
 
     public static final BPMNProcess SYNCHRONIZATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP03Synchronization", "A Process for Synchronising 3 branches into a single branch, Task4 should be only executed once if the synchronization is working correctly",
@@ -148,7 +151,7 @@ public class PatternProcesses {
             WCP01_SEQUENCE,
 
             //WCP02
-            PARALLEL_PATTERN,
+            WCP02_PARALLEL_SPLIT,
 
             //WCP03
             SYNCHRONIZATION_PATTERN,
