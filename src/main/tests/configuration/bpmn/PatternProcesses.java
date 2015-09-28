@@ -141,8 +141,8 @@ public class PatternProcesses {
                     "if a certain milestone has been reached that has not expired yet (Weske 2012)",
             new BPMNTestCase().assertTask1().assertTask2());
 
-    public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask", "A process with  the  ability  to  depict  that  an  enabled  activity  should  be\n" +
-                    "disabled in some nominated circumstance.",
+    public static final BPMNProcess CANCEL_TASK_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP19CancelTask",
+            "An activity can be canceled when it emits an error event.",
             new BPMNTestCase().assertTask2());
 
     public static final BPMNProcess CANCEL_CASE_PATTERN_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseError",
