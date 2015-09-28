@@ -22,6 +22,7 @@
             <xsl:apply-templates select="@*"/>
             <bpmn2:property id="test" itemSubjectRef="testItem"/>
             <bpmn2:property id="testCaseNumber" itemSubjectRef="testCaseNumberItem"/>
+            <bpmn2:property id="integerVariable" itemSubjectRef="integerVariableItem"/>
             <xsl:apply-templates select="node()"/>
         </bpmn2:process>
     </xsl:template>

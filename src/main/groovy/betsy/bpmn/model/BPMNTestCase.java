@@ -8,6 +8,8 @@ import java.util.*;
 
 public class BPMNTestCase extends TestCase {
 
+    private Integer integerVariable = new Integer(0);
+
     public BPMNTestCase() {
         this.getTestSteps().add(new BPMNTestStep());
     }
@@ -69,6 +71,11 @@ public class BPMNTestCase extends TestCase {
 
     public BPMNTestCase assertTask5() {
         return addAssertion(BPMNAssertions.SCRIPT_task5);
+    }
+
+    public BPMNTestCase setIntegerVariable(int value) {
+        integerVariable = new Integer(value);
+        return this;
     }
 
     public BPMNTestCase optionDelay(int delay) {
@@ -134,6 +141,7 @@ public class BPMNTestCase extends TestCase {
 
         getTestStep().getVariable().ifPresent(result::add);
         result.add(new BPMNTestVariable("testCaseNumber", "Integer", getNumber()));
+        result.add(new BPMNTestVariable("integerVariable", "Integer", getNumber()));
 
         return result;
     }

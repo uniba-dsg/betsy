@@ -111,9 +111,10 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MI_APRIORI_RUNTIME_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the loop cardinality is known only during Runtime, this is achieved by \n" +
+    public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge",
+            "A Process where the loop cardinality is known only during Runtime, this is achieved by \n" +
                     "checking the NrOfCompletedInstances against the total Number of possible instances",
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
+            new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2());
 
 
     public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
@@ -194,7 +195,7 @@ public class PatternProcesses {
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE,
 
             //WCP14
-            MI_APRIORI_RUNTIME_PATTERN,
+            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE,
 
             //WCP16
             DEFERRED_CHOICE_PATTERN,
