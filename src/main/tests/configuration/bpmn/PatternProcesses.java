@@ -42,7 +42,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputC().assertTask3()
     );
 
-    public static final BPMNProcess MERGE_PATTERN_WITH_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP05SimpleMergeWithGateway",
+    public static final BPMNProcess WCP05_SIMPLE_MERGE = BPMNProcessBuilder.buildPatternProcess("WCP05_SimpleMerge",
             "A Process for Merging multiple branches into a single branch with using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
             new BPMNTestCase().inputA().assertTask1().assertTask4(),
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
@@ -158,7 +158,7 @@ public class PatternProcesses {
             WCP04_EXCLUSIVE_CHOICE,
 
             //WCP05
-            MERGE_PATTERN_WITH_GATEWAY,
+            WCP05_SIMPLE_MERGE,
 
             //WCP06
             MULTI_CHOICE_PATTERN,
