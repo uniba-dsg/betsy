@@ -103,8 +103,10 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1()
     );
 
-    public static final BPMNProcess MULTIPLE_INSTANCES_SYNCH_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP12MultipleInstancesWOSynchronization", "A Process which creates multiple activity instances of one activity model (Weske2012)",
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2());
+    public static final BPMNProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP12_MultipleInstancesWithoutSynchronization",
+            "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
+    );
 
 
     public static final BPMNProcess MULTIPLE_INSTANCES_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP13MultipleInstancesWithAPrioriDesignTimeKnowledge", "A Multiple Instances Process where the process execution loop cardinality is known beforehand during DesignTime",
@@ -188,7 +190,7 @@ public class PatternProcesses {
             IMPLICIT_TERMINATION,
 
             //WCP12
-            MULTIPLE_INSTANCES_SYNCH_PATTERN,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION,
 
             //WCP13
             MULTIPLE_INSTANCES_PATTERN,
