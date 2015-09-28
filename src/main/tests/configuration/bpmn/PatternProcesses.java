@@ -11,7 +11,10 @@ import java.util.List;
  */
 public class PatternProcesses {
 
-    public static final BPMNProcess SEQUENCE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP01SequenceFlow", "A Process for a sequence flow with a single start and end task which assert if the Process has been executed once",
+    public static final BPMNProcess WCP01_SEQUENCE = BPMNProcessBuilder.buildPatternProcess("WCP01_Sequence",
+            "Test Process for WCP01 Sequence: Containing a Start Event, two ScriptTasks (for logging purposes) and an "
+                    + "EndEvent. All connected by only basic SequenceFlows."
+                    + "Test passed successfully if the trace confirms the execution of 'Task1'.",
             new BPMNTestCase().assertTask1());
 
 
@@ -142,8 +145,7 @@ public class PatternProcesses {
             new BPMNTestCase());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
-            //WCP01
-            SEQUENCE_PATTERN,
+            WCP01_SEQUENCE,
 
             //WCP02
             PARALLEL_PATTERN,
