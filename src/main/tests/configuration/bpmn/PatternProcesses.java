@@ -31,7 +31,7 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
 
-    public static final BPMNProcess EXCLUSIVE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP04ExclusiveChoice", "A Process for a decision based workflow, if the process contains a it should execute Task1, if it contains b it should execute Task2, if neither of these is executed, the Default Task should be executed",
+    public static final BPMNProcess WCP04_EXCLUSIVE_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP04_ExclusiveChoice", "A Process for a decision based workflow, if the process contains a it should execute Task1, if it contains b it should execute Task2, if neither of these is executed, the Default Task should be executed",
             new BPMNTestCase().inputA().assertTask1(),
             new BPMNTestCase().inputB().assertTask2(),
             new BPMNTestCase().inputC().assertTask3()
@@ -159,7 +159,7 @@ public class PatternProcesses {
             WCP03_SYNCHRONIZATION,
 
             //WCP04
-            EXCLUSIVE_PATTERN,
+            WCP04_EXCLUSIVE_CHOICE,
 
             //WCP05
             MERGE_PATTERN_IMPLICIT,
