@@ -31,8 +31,13 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
 
-    public static final BPMNProcess WCP04_EXCLUSIVE_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP04_ExclusiveChoice", "A Process for a decision based workflow, if the process contains a it should execute Task1, if it contains b it should execute Task2, if neither of these is executed, the Default Task should be executed",
+    public static final BPMNProcess WCP04_EXCLUSIVE_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP04_ExclusiveChoice",
+            "WCP04 Exclusive Choice: Checking the ability to create exclusive branches based on an input. "
+                    + "If the input contains 'a' it should execute task1, if it contains 'b' it should execute task2, "
+                    + "in any other cases, the default task (task3) should be executed."
+                    + "Special case: If the input contains 'a' and 'b' only the first branch must be activated (task1 here)",
             new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputAB().assertTask1(),
             new BPMNTestCase().inputB().assertTask2(),
             new BPMNTestCase().inputC().assertTask3()
     );
