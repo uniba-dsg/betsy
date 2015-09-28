@@ -68,9 +68,13 @@ public class PatternProcesses {
     );
 
 
-    public static final BPMNProcess SYNC_MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP07StructuredSynchronizedMerge", "A Process with the synchronised convergence of " +
-                    "two or more alternative branches",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
+    public static final BPMNProcess WCP07_STRUCTURED_SYNCHRONIZING_MERGE = BPMNProcessBuilder.buildPatternProcess(
+            "WCP07_StructuredSynchronizingMerge",
+            "WCP07 StructuredSynchronizingMerge: Checks the ability to synchronize the merging of branches created "
+                    + "earlier using a multiple choice (see WCP06).",
+            new BPMNTestCase().inputA().assertTask1().assertTask3(),
+            new BPMNTestCase().inputB().assertTask2().assertTask3(),
+            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3()
     );
 
 
@@ -172,7 +176,7 @@ public class PatternProcesses {
             WCP06_MULTI_CHOICE,
 
             //WCP07
-            SYNC_MERGE_PATTERN,
+            WCP07_STRUCTURED_SYNCHRONIZING_MERGE,
 
             //WCP08
             MULTI_MERGE_PATTERN,
