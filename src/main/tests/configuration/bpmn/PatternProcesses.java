@@ -25,8 +25,10 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2());
 
 
-    public static final BPMNProcess WCP03_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP03_Synchronization", "A Process for Synchronising 3 branches into a single branch, Task4 should be only executed once if the synchronization is working correctly",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4());
+    public static final BPMNProcess WCP03_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP03_Synchronization",
+            "WCP03 Synchronization: Checking the ability to synchronize two parallel branches. The ScriptTask after the "
+                    + "merging ParallelGateway has to be executed only once.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
 
     public static final BPMNProcess EXCLUSIVE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP04ExclusiveChoice", "A Process for a decision based workflow, if the process contains a it should execute Task1, if it contains b it should execute Task2, if neither of these is executed, the Default Task should be executed",
