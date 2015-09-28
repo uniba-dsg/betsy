@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by stssobetzko on 12.06.2015.
+ * Class defining the processes and tests for the basic Workflow Control-Flow Patterns (WCP) 1-20
  */
 public class PatternProcesses {
 
