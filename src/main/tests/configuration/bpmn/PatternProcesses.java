@@ -93,12 +93,10 @@ public class PatternProcesses {
 
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
 
-
-    // simply tests whether all activities are executed (even though an end event might be reached on another path before)
-    public static final BPMNProcess TERMINATION_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP11ImplicitTermination", "A process with the ability to depict the notion that a given sub-process\n" +
-                    "should be terminated when there are no remaining activities to be completed.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask2());
-
+    public static final BPMNProcess IMPLICIT_TERMINATION = BPMNProcessBuilder.buildPatternProcess("WCP11_ImplicitTermination",
+            "A process that terminates when all contained activity instances have completed",
+            new BPMNTestCase().assertTask1()
+    );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_SYNCH_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP12MultipleInstancesWOSynchronization", "A Process which creates multiple activity instances of one activity model (Weske2012)",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2());
@@ -182,7 +180,7 @@ public class PatternProcesses {
             ARBITRARY_PATTERN_2,
 
             //WCP11
-            TERMINATION_PATTERN,
+            IMPLICIT_TERMINATION,
 
             //WCP12
             MULTIPLE_INSTANCES_SYNCH_PATTERN,
