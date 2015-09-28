@@ -112,8 +112,7 @@ public class PatternProcesses {
     );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge",
-            "A Process where the loop cardinality is known only during Runtime, this is achieved by \n" +
-                    "checking the NrOfCompletedInstances against the total Number of possible instances",
+            "A process with a multiple instances activity, where the loop cardinality is read from a variable at run-time",
             new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2());
 
 
