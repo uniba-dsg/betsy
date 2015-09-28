@@ -97,9 +97,11 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-
-    public static final BPMNProcess MULTIPLE_INSTANCES_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP13MultipleInstancesWithAPrioriDesignTimeKnowledge", "A Multiple Instances Process where the process execution loop cardinality is known beforehand during DesignTime",
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
+    public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge",
+            "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
+                    "The number of instances is hard-coded into the process.",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
+    );
 
     public static final BPMNProcess MI_APRIORI_RUNTIME_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP14MIAPrioriRuntimeKnowledge", "A Process where the loop cardinality is known only during Runtime, this is achieved by \n" +
                     "checking the NrOfCompletedInstances against the total Number of possible instances",
@@ -181,7 +183,7 @@ public class PatternProcesses {
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION,
 
             //WCP13
-            MULTIPLE_INSTANCES_PATTERN,
+            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE,
 
             //WCP14
             MI_APRIORI_RUNTIME_PATTERN,
