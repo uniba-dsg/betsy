@@ -13,6 +13,7 @@
             <xsl:apply-templates select="@*"/>
             <bpmn2:itemDefinition id="testItem" structureRef="String"/>
             <bpmn2:itemDefinition id="testCaseNumberItem" structureRef="Long"/>
+            <bpmn2:itemDefinition id="integerVariableItem" structureRef="Long"/>
             <xsl:apply-templates select="node()"/>
         </bpmn2:definitions>
     </xsl:template>
