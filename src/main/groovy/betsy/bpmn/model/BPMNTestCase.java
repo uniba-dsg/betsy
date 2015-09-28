@@ -141,7 +141,7 @@ public class BPMNTestCase extends TestCase {
 
         getTestStep().getVariable().ifPresent(result::add);
         result.add(new BPMNTestVariable("testCaseNumber", "Integer", getNumber()));
-        result.add(new BPMNTestVariable("integerVariable", "Integer", getNumber()));
+        result.add(new BPMNTestVariable("integerVariable", "Integer", integerVariable));
 
         return result;
     }
