@@ -78,9 +78,16 @@ public class PatternProcesses {
     );
 
 
-    public static final BPMNProcess MULTI_MERGE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP08MultiMerge", "A Process with the convergence of two or more branches " +
-                    "into  a  single  path without synchronization",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4()
+    public static final BPMNProcess WCP08_MULTI_MERGE = BPMNProcessBuilder.buildPatternProcess("WCP08_MultiMerge",
+            "WCP08 MultiMerge: Tests the convergence of two or more branches into a single path without synchronization."
+                    + "The test is equivalent to WCP05 for BPMN.",
+            new BPMNTestCase().inputA().assertTask1().assertTask4(),
+            new BPMNTestCase().inputB().assertTask2().assertTask4(),
+            new BPMNTestCase().inputC().assertTask3().assertTask4(),
+            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
+            new BPMNTestCase().inputAC().assertTask1().assertTask3().assertTask4().assertTask4(),
+            new BPMNTestCase().inputBC().assertTask2().assertTask3().assertTask4().assertTask4(),
+            new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
 
@@ -179,7 +186,7 @@ public class PatternProcesses {
             WCP07_STRUCTURED_SYNCHRONIZING_MERGE,
 
             //WCP08
-            MULTI_MERGE_PATTERN,
+            WCP08_MULTI_MERGE,
 
             //WCP09
             DISCRIMINATOR_PATTERN,
