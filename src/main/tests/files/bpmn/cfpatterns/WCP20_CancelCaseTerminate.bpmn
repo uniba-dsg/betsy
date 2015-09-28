@@ -2,10 +2,10 @@
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="WCP20CancelCaseTerminateTest"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/wCP20CancelCaseTerminate">
+                   id="WCP20_CancelCaseTerminateTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP20_CancelCaseTerminate">
     <!-- same as Terminate_Event -->
-    <bpmn2:process id="WCP20CancelCaseTerminate" isExecutable="true">
+    <bpmn2:process id="WCP20_CancelCaseTerminate" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent">
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>

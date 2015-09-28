@@ -154,15 +154,15 @@ public class PatternProcesses {
             "An activity can be canceled when it emits an error event.",
             new BPMNTestCase().assertTask2());
 
-    public static final BPMNProcess CANCEL_CASE_PATTERN_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseError",
+    public static final BPMNProcess WCP20_CANCEL_CASE_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseError",
             "Cancels a sub-process by emitting an error event inside the sub-process which is handled through a boundary event. See Error_BoundaryEvent_SubProcess_Interrupting",
             new BPMNTestCase().assertTask1().assertTask2());
 
-    public static final BPMNProcess CANCEL_CASE_PATTERN_CANCEL = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseCancel",
+    public static final BPMNProcess WCP20_CANCEL_CASE_CANCEL = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseCancel",
             "Cancels a sub-process by emitting a cancel event inside the sub-process which is handled through a boundary event. See Cancel_Event",
             new BPMNTestCase().assertTask1().assertTask2());
 
-    public static final BPMNProcess CANCEL_CASE_PATTERN_TERMINATE = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseTerminate",
+    public static final BPMNProcess WCP20_CANCEL_CASE_TERMINATE = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseTerminate",
             "Cancels a process immediatly by emitting a terminate event. See Terminate_Event",
             new BPMNTestCase());
 
@@ -223,9 +223,9 @@ public class PatternProcesses {
             WCP19_CANCEL_TASK,
 
             //WCP20 here
-            CANCEL_CASE_PATTERN_ERROR,
-            CANCEL_CASE_PATTERN_CANCEL,
-            CANCEL_CASE_PATTERN_TERMINATE
+            WCP20_CANCEL_CASE_ERROR,
+            WCP20_CANCEL_CASE_CANCEL,
+            WCP20_CANCEL_CASE_TERMINATE
 
     );
 }
