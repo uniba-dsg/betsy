@@ -25,18 +25,21 @@ public class BPMNTestCase extends TestCase {
         return addInputTestString(BPMNTestInput.INPUT_B);
     }
 
-    public BPMNTestCase inputAB() {
-        return addInputTestString(BPMNTestInput.INPUT_AB);
-    }
-
     public BPMNTestCase inputC() {
         return addInputTestString(BPMNTestInput.INPUT_C);
     }
 
-    public BPMNTestCase inputAA() {
-        return addInputTestString(BPMNTestInput.INPUT_AA);
+    public BPMNTestCase inputAB() {
+        return addInputTestString(BPMNTestInput.INPUT_AB);
     }
 
+    public BPMNTestCase inputAC() {
+        return addInputTestString(BPMNTestInput.INPUT_AC);
+    }
+
+    public BPMNTestCase inputBC() {
+        return addInputTestString(BPMNTestInput.INPUT_BC);
+    }
 
     public BPMNTestCase inputABC() {
         return addInputTestString(BPMNTestInput.INPUT_ABC);

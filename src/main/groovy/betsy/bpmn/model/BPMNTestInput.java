@@ -2,7 +2,7 @@ package betsy.bpmn.model;
 
 public enum BPMNTestInput {
 
-    INPUT_A("a"), INPUT_B("b"), INPUT_C("c"), INPUT_AB("ab"), INPUT_ABC("abc"), INPUT_AA("a"+"a");
+    INPUT_A("a"), INPUT_B("b"), INPUT_C("c"), INPUT_AB("ab"), INPUT_AC("ac"), INPUT_BC("bc"), INPUT_ABC("abc");
 
     private final String value;
 
