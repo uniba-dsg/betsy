@@ -191,8 +191,6 @@ public class PatternProcesses {
             //WCP14
             MI_APRIORI_RUNTIME_PATTERN,
 
-            //WCP15
-
             //WCP16
             DEFERRED_CHOICE_PATTERN,
 
