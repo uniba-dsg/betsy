@@ -43,11 +43,15 @@ public class PatternProcesses {
     );
 
     public static final BPMNProcess WCP05_SIMPLE_MERGE = BPMNProcessBuilder.buildPatternProcess("WCP05_SimpleMerge",
-            "A Process for Merging multiple branches into a single branch with using a converging XOR gateway, the test checks for single activation of a Task whenever a Token arrives",
+            "WCP05 Simple Merge: Checking the ability to merge multiple branches into a single branch with using a "
+                    + "converging XOR gateway. The ScriptTask after the merging gateway must be triggered each time a "
+                    + "token arrives.",
             new BPMNTestCase().inputA().assertTask1().assertTask4(),
             new BPMNTestCase().inputB().assertTask2().assertTask4(),
             new BPMNTestCase().inputC().assertTask3().assertTask4(),
             new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask4().assertTask4(),
+            new BPMNTestCase().inputAC().assertTask1().assertTask3().assertTask4().assertTask4(),
+            new BPMNTestCase().inputBC().assertTask2().assertTask3().assertTask4().assertTask4(),
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
