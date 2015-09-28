@@ -133,13 +133,6 @@ public class PatternProcesses {
                     "one of several possible branches should be activated.",
             new BPMNTestCase().assertTask1().optionDelay(5000));
 
-
-    //Note: doesn't work with jbpm due to MI usage
-    public static final BPMNProcess INTER_PAR_ROUTING_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP17InterleavedParallelRouting", " A set of activity instances is executed sequentially in an\n" +
-                    "order that is decided at run time. No two activity instances of this set are\n" +
-                    "active at the same point in time",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2());
-
     public static final BPMNProcess INTER_PAR_ROUTING_PATTERN_AD_HOC = BPMNProcessBuilder.buildPatternProcess("WCP17InterParRoutingAdHoc", " A set of activity instances is executed sequentially in an\n" +
                     "order that is decided at run time. No two activity instances of this set are\n" +
                     "active at the same point in time",
@@ -208,7 +201,6 @@ public class PatternProcesses {
             DEFERRED_CHOICE_PATTERN,
 
             //WCP17
-            INTER_PAR_ROUTING_PATTERN,
             INTER_PAR_ROUTING_PATTERN_AD_HOC,
 
             //WCP18 is not supported
