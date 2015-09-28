@@ -50,10 +50,11 @@ public class ProcessValidator {
                     throw new IllegalStateException("No process element with id '" + process.getName() + "' found in process " + process.getName());
                 }
 
-                XPathExpression targetNamespaceExpression = xpath.compile("//*[local-name() = 'definitions' and @targetNamespace =  'http://dsg.wiai.uniba.de/betsy/bpmn/" + process.getName().substring(0, 1).toLowerCase() + process.getName().substring(1, process.getName().length()) + "']");
+                String expectedTargetNamespace = "http://dsg.wiai.uniba.de/betsy/bpmn/"+process.getName();
+                XPathExpression targetNamespaceExpression = xpath.compile("//*[local-name() = 'definitions']/@targetNamespace");
                 nodeList = (NodeList) targetNamespaceExpression.evaluate(doc, XPathConstants.NODESET);
-                if (nodeList.getLength() != 1) {
-                    throw new IllegalStateException("targetNamespace of definitions element of process '" + process.getName() + " is not http://dsg.wiai.uniba.de/betsy/bpmn/" + process.getName().substring(0, 1).toLowerCase() + process.getName().substring(1, process.getName().length()));
+                if (nodeList.getLength() != 1 && expectedTargetNamespace.toLowerCase().equals(nodeList.item(0).getTextContent().toLowerCase())) {
+                    throw new IllegalStateException("targetNamespace of definitions element of process '" + process.getName() + " is not '"+expectedTargetNamespace+"'");
                 }
 
             } catch (SAXException | XPathExpressionException | IOException e) {
