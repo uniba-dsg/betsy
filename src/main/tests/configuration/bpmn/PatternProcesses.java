@@ -90,6 +90,11 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
+    public static final BPMNProcess WCP09_DISCRIMINATOR_COMPLEXGATEWAY = BPMNProcessBuilder.buildPatternProcess(
+            "WCP09_Discriminator_ComplexGateway", "WCP09 Discriminator: Implementation of WCP09 using a merging"
+                    + "ComplexGateway with activationCount>=1. I.e, the gateway fires upon completion of the first "
+                    + "incoming token and is then disabled.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
     public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
                     " incoming branches to complete before activating the subsequent activity\n" + "this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
@@ -180,6 +185,7 @@ public class PatternProcesses {
             WCP08_MULTI_MERGE,
 
             //WCP09
+            WCP09_DISCRIMINATOR_COMPLEXGATEWAY,
             DISCRIMINATOR_PATTERN,
 
             //WCP10
