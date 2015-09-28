@@ -143,15 +143,15 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask2());
 
     public static final BPMNProcess CANCEL_CASE_PATTERN_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseError",
-            "The Cancel Case pattern describes the removal of a complete process instance. (Bizagi)",
+            "Cancels a sub-process by emitting an error event inside the sub-process which is handled through a boundary event. See Error_BoundaryEvent_SubProcess_Interrupting",
             new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess CANCEL_CASE_PATTERN_CANCEL = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseCancel",
-            "The Cancel Case pattern describes the removal of a complete process instance. (Bizagi)",
+            "Cancels a sub-process by emitting a cancel event inside the sub-process which is handled through a boundary event. See Cancel_Event",
             new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess CANCEL_CASE_PATTERN_TERMINATE = BPMNProcessBuilder.buildPatternProcess("WCP20CancelCaseTerminate",
-            "The Cancel Case pattern describes the removal of a complete process instance. (Bizagi)",
+            "Cancels a process immediatly by emitting a terminate event. See Terminate_Event",
             new BPMNTestCase());
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
