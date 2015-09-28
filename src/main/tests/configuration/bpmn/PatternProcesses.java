@@ -112,18 +112,19 @@ public class PatternProcesses {
     );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP12_MultipleInstancesWithoutSynchronization",
-            "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity",
+            "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge",
             "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
-                    "The number of instances is hard-coded into the process.",
+                    "The number of instances is hard-coded into the process. The behavior of the multi instance activity is set to 'All'.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge",
-            "A process with a multiple instances activity, where the loop cardinality is read from a variable at run-time",
+            "A process with a multiple instances activity, where the loop cardinality is read from a variable at run-time. " +
+                    "The behavior of the multi instance activity is set to 'All'.",
             new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2());
 
 
