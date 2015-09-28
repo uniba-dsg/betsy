@@ -112,8 +112,9 @@ public class PatternProcesses {
     );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP12_MultipleInstancesWithoutSynchronization",
-            "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity.",
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
+            "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
+                    "The behavior of the multi instance activity is set to None. Hence, a signal should be fired for every complete multi instance activity.",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3().assertTask3().assertTask3()
     );
 
     public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge",
