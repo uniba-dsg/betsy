@@ -128,7 +128,7 @@ public class PatternProcesses {
                     + "This covers only a special case for WCP09 Discriminator where one of various EQUAL activities are used.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3());
 
-    public static final BPMNProcess WCP10_ArbitraryCycle = BPMNProcessBuilder.buildPatternProcess("WCP10_ArbitraryCycle",
+    public static final BPMNProcess WCP_10_ARBITRARY_CYCLE = BPMNProcessBuilder.buildPatternProcess("WCP10_ArbitraryCycle",
             "WCP10 arbitrary cycle: Structure is based on the example on workflowpatterns.com: The test consists of a "
                     + "series of scripttasks and exclusive gateways. After the creation of the log, task1 is logged, "
                     + "afterwards a counter integerVariable is incremented and task1 is repeated if the integerVariable "
@@ -138,24 +138,27 @@ public class PatternProcesses {
             new BPMNTestCase().setIntegerVariable(0).assertTask1().assertTask1().assertTask2().assertTask2()
     );
 
-    public static final BPMNProcess IMPLICIT_TERMINATION = BPMNProcessBuilder.buildPatternProcess("WCP11_ImplicitTermination",
+    public static final BPMNProcess WCP11_IMPLICIT_TERMINATION = BPMNProcessBuilder.buildPatternProcess("WCP11_ImplicitTermination",
             "A process that terminates when all contained activity instances have completed",
             new BPMNTestCase().assertTask1()
     );
 
-    public static final BPMNProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP12_MultipleInstancesWithoutSynchronization",
+    public static final BPMNProcess WCP12_MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess(
+            "WCP12_MultipleInstancesWithoutSynchronization",
             "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
                     "The behavior of the multi instance activity is set to None. Hence, a signal should be fired for every complete multi instance activity.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3().assertTask3().assertTask3()
     );
 
-    public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge",
+    public static final BPMNProcess WCP13_MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess(
+            "WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge",
             "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
                     "The number of instances is hard-coded into the process. The behavior of the multi instance activity is set to 'All'.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess("WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge",
+    public static final BPMNProcess WCP14_MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess(
+            "WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge",
             "A process with a multiple instances activity, where the loop cardinality is read from a variable at run-time. " +
                     "The behavior of the multi instance activity is set to 'All'.",
             new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2());
@@ -168,7 +171,8 @@ public class PatternProcesses {
             new BPMNTestCase().inputA().assertTask1().optionDelay(5000),
             new BPMNTestCase().inputB().assertTask2().optionDelay(5000));
 
-    public static final BPMNProcess WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess("WCP17_InterleavedParallelRouting",
+    public static final BPMNProcess WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess(
+            "WCP17_InterleavedParallelRouting",
             "A set of activity instances is executed sequentially in an " +
                     "order that is decided at run time. No two activity instances of this set are " +
                     "active at the same point in time",
@@ -179,11 +183,13 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask2());
 
     public static final BPMNProcess WCP20_CANCEL_CASE_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseError",
-            "Cancels a sub-process by emitting an error event inside the sub-process which is handled through a boundary event. See Error_BoundaryEvent_SubProcess_Interrupting",
+            "Cancels a sub-process by emitting an error event inside the sub-process which is handled through a boundary event. "
+                    + "See Error_BoundaryEvent_SubProcess_Interrupting",
             new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess WCP20_CANCEL_CASE_CANCEL = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseCancel",
-            "Cancels a sub-process by emitting a cancel event inside the sub-process which is handled through a boundary event. See Cancel_Event",
+            "Cancels a sub-process by emitting a cancel event inside the sub-process which is handled through a boundary event. "
+                    + "See Cancel_Event",
             new BPMNTestCase().assertTask1().assertTask2());
 
     public static final BPMNProcess WCP20_CANCEL_CASE_TERMINATE = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseTerminate",
@@ -209,34 +215,32 @@ public class PatternProcesses {
 
             WCP08_MULTI_MERGE,
 
-            //WCP09 direct solution:
+            // WCP09 direct solution:
             WCP09_STRUCTURED_DISCRIMINATOR_COMPLEXGATEWAY,
-            //WCP09 workaround:
+            // WCP09 workaround:
             WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE,
 
-            WCP10_ArbitraryCycle,
+            WCP_10_ARBITRARY_CYCLE,
 
-            //WCP11
-            IMPLICIT_TERMINATION,
+            WCP11_IMPLICIT_TERMINATION,
 
-            //WCP12
-            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION,
+            WCP12_MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION,
 
-            //WCP13
-            MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE,
+            WCP13_MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE,
 
-            //WCP14
-            MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE,
+            WCP14_MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE,
+
+            // WCP15 is not supported
 
             WCP16_DEFERRED_CHOICE,
 
             WCP17_INTERLEAVED_PARALLEL_ROUTING,
 
-            //WCP18 is not supported
+            // WCP18 is not supported
 
             WCP19_CANCEL_TASK,
 
-            //WCP20 here
+            // WCP20 here
             WCP20_CANCEL_CASE_ERROR,
             WCP20_CANCEL_CASE_CANCEL,
             WCP20_CANCEL_CASE_TERMINATE
