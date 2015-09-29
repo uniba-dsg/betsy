@@ -10,13 +10,9 @@ import java.nio.file.Paths;
 
 public class LogUtil {
 
-    private TestSuite suite;
+    private final TestSuite suite;
 
     public LogUtil(TestSuite testSuite) {
-        suite = testSuite;
-    }
-
-    public void setTestSuite(TestSuite testSuite){
         suite = testSuite;
     }
 

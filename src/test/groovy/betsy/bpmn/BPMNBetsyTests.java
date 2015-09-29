@@ -2,12 +2,13 @@ package betsy.bpmn;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,8 +55,9 @@ public class BPMNBetsyTests {
             return "myendpoint";
         }
 
-        public String getName() {
-            return "mock";
+        @Override
+        public Engine getEngineId() {
+            return new Engine(ProcessLanguage.BPMN, "mock","1.0");
         }
 
         public Path getXsltPath() {

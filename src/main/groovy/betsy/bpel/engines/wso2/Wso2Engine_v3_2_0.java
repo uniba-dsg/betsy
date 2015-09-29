@@ -1,25 +1,15 @@
 package betsy.bpel.engines.wso2;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.config.Configuration;
-import betsy.common.tasks.*;
-import betsy.common.util.ClasspathHelper;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Wso2Engine_v3_2_0 extends Wso2Engine_v3_1_0 {
 
     @Override
-    public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode");
-    }
-
-    @Override
-    public String getName() {
-        return "wso2_v3_2_0";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.2.0");
     }
 
     public String getZipFileName() {

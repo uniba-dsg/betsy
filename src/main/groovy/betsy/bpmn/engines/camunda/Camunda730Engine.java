@@ -1,16 +1,13 @@
 package betsy.bpmn.engines.camunda;
 
-import betsy.common.tasks.ConsoleTasks;
-import betsy.common.tasks.WaitTasks;
-import betsy.common.util.ClasspathHelper;
-
-import java.nio.file.Path;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 
 public class Camunda730Engine extends Camunda710Engine {
 
     @Override
-    public String getName() {
-        return "camunda730";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.3.0");
     }
 
     @Override

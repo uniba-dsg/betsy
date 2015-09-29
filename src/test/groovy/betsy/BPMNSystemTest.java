@@ -21,47 +21,47 @@ public class BPMNSystemTest extends AbstractSystemTest {
 
     @Test
     public void testBPMNEngine() throws IOException {
-        testBPMNEngine("activiti");
+        testBPMNEngine("activiti__5_16_3");
     }
 
     @Test
     public void test_A_BpmnActiviti5170SequenceFlow() throws IOException {
-        testBPMNEngine("activiti5170");
+        testBPMNEngine("activiti__5_17_0");
     }
 
     @Test
     public void test_A_BpmnCamunda700SequenceFlow() throws IOException {
-        testBPMNEngine("camunda");
+        testBPMNEngine("camunda__7_0_0");
     }
 
     @Test
     public void test_A_BpmnCamunda710SequenceFlow() throws IOException {
-        testBPMNEngine("camunda710");
+        testBPMNEngine("camunda__7_1_0");
     }
 
     @Test
     public void test_A_BpmnCamunda720SequenceFlow() throws IOException {
-        testBPMNEngine("camunda720");
+        testBPMNEngine("camunda__7_2_0");
     }
 
     @Test
     public void test_A_BpmnCamunda730SequenceFlow() throws IOException {
-        testBPMNEngine("camunda730");
+        testBPMNEngine("camunda__7_3_0");
     }
 
     @Test
     public void test_A_BpmnjBPMSequenceFlow() throws IOException {
-        testBPMNEngine("jbpm");
+        testBPMNEngine("jbpm__6_0_1");
     }
 
     @Test
     public void test_A_BpmnjBPM610SequenceFlow() throws IOException {
-        testBPMNEngine("jbpm610");
+        testBPMNEngine("jbpm__6_1_0");
     }
 
     @Test
     public void test_A_BpmnjBPM620SequenceFlow() throws IOException {
-        testBPMNEngine("jbpm620");
+        testBPMNEngine("jbpm__6_2_0");
     }
 
     private void testBPMNEngine(String engine) throws IOException {

@@ -3,6 +3,8 @@ package betsy.bpel.engines.wso2;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 
@@ -20,8 +22,8 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getName() {
-        return "wso2_v3_1_0";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0");
     }
 
     @Override

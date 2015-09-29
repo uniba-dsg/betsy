@@ -8,8 +8,10 @@ import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.engines.tomcat.TomcatInstaller;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.XSLTTasks;
@@ -42,8 +44,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public String getName() {
-        return "activiti";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3");
     }
 
     @Override

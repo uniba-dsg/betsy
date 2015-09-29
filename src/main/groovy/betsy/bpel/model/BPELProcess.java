@@ -81,8 +81,7 @@ public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractBPELEngin
     }
 
     public String getTargetSoapUIProjectName() {
-        String result = getEngine() + "." + getGroup() + "." + getName();
-        return result.replaceAll("__", ".");
+        return getEngine() + "." + getGroup() + "." + getName();
     }
 
     /**

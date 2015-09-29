@@ -13,9 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActiveBpelInstaller {
+
+    private final Path serverDir;
+
+    public ActiveBpelInstaller(Path serverDir) {
+        this.serverDir = serverDir;
+    }
+
     public void install() {
         // setup engine folder
-        Path serverDir = Paths.get("server/active-bpel");
         FileTasks.mkdirs(serverDir);
 
         TomcatInstaller installer = TomcatInstaller.v5(serverDir);

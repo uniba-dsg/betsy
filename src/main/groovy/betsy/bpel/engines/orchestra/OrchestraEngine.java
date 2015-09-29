@@ -2,7 +2,9 @@ package betsy.bpel.engines.orchestra;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
@@ -10,9 +12,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class OrchestraEngine extends AbstractLocalBPELEngine {
+
+    public Path getXsltPath() {
+        throw new IllegalStateException("unused");
+    }
+
     @Override
-    public String getName() {
-        return "orchestra";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "orchestra", "4.9");
     }
 
     public Tomcat getTomcat() {
@@ -21,7 +28,7 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new OrchestraInstaller().install();
+        new OrchestraInstaller(getServerPath()).install();
     }
 
     @Override

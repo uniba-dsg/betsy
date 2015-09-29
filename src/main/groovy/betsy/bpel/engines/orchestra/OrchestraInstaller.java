@@ -17,8 +17,15 @@ import java.util.Properties;
 
 public class OrchestraInstaller {
 
-    private final Path serverDir = Paths.get("server/orchestra");
-    private final Path installDir = serverDir.resolve("orchestra-cxf-tomcat-4.9.0");
+    private final Path serverDir;
+
+    public OrchestraInstaller(Path serverPath) {
+        this.serverDir = serverPath;
+    }
+
+    public Path getInstallDir() {
+        return serverDir.resolve("orchestra-cxf-tomcat-4.9.0");
+    }
 
     public Path getAntPath() {
         return Configuration.getAntHome().resolve("bin");
@@ -36,13 +43,13 @@ public class OrchestraInstaller {
 
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
 
-        setPropertyInPropertiesFile(installDir.resolve("conf").resolve("install.properties"), "catalina.home", "../" + tomcatInstaller.getTomcatName());
+        setPropertyInPropertiesFile(getInstallDir().resolve("conf").resolve("install.properties"), "catalina.home", "../" + tomcatInstaller.getTomcatName());
 
         ConsoleTasks.setupAnt(getAntPath());
 
         // clean up data (with db and config files in the users home directory)
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(installDir, getAntPath().toAbsolutePath().toString() + "/ant install"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(installDir, getAntPath().toAbsolutePath().toString() + "/ant").values("install"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstallDir(), getAntPath().toAbsolutePath().toString() + "/ant install"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstallDir(), getAntPath().toAbsolutePath().toString() + "/ant").values("install"));
     }
 
     private static void setPropertyInPropertiesFile(Path propertiesFile, String key, String value) {

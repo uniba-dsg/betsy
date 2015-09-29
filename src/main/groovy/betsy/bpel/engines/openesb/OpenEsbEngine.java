@@ -2,6 +2,8 @@ package betsy.bpel.engines.openesb;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
@@ -14,9 +16,13 @@ import java.util.List;
 
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
+    }
+
     @Override
-    public String getName() {
-        return "openesb";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2");
     }
 
     @Override

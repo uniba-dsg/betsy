@@ -3,7 +3,10 @@ package betsy.bpel.engines.petalsesb;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
+import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Files;
@@ -14,9 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
+
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/petalsesb");
+    }
+
     @Override
-    public String getName() {
-        return "petalsesb";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0");
     }
 
     @Override
@@ -106,7 +114,16 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new PetalsEsbInstaller(this).install();
+        PetalsEsbInstaller installer = new PetalsEsbInstaller();
+        installer.setServerDir(getServerPath());
+        installer.setFileName("petals-esb-distrib-4.0.zip");
+        installer.setTargetEsbInstallDir(getServerPath().resolve("petals-esb-4.0/install"));
+        installer.setBpelComponentPath(getServerPath().resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip"));
+        installer.setSoapComponentPath(getServerPath().resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip"));
+        installer.setSourceFile(getServerPath().resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip"));
+        installer.setCliFile(getServerPath().resolve("petals-esb-distrib-4.0/esb/petals-cli-1.0.0.zip"));
+        installer.setPetalsBinFolder(getPetalsBinFolder());
+        installer.install();
     }
 
     @Override

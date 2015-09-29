@@ -2,18 +2,26 @@ package betsy.bpel.engines.bpelg;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BpelgEngine extends AbstractLocalBPELEngine {
+
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/bpelg");
+    }
+
     @Override
-    public String getName() {
-        return "bpelg";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3");
     }
 
     public Path getDeploymentDir() {

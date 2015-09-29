@@ -2,9 +2,12 @@ package betsy.bpel.engines.activebpel;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -16,8 +19,12 @@ import java.util.List;
 public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
-    public String getName() {
-        return "active-bpel";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2");
+    }
+
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/active-bpel");
     }
 
     @Override
@@ -81,7 +88,7 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new ActiveBpelInstaller().install();
+        new ActiveBpelInstaller(getServerPath()).install();
     }
 
     @Override
