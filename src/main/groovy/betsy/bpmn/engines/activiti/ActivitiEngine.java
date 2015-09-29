@@ -2,15 +2,16 @@ package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.camunda.JsonHelper;
-import betsy.bpmn.model.BPMNAssertions;
+import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.engines.tomcat.TomcatInstaller;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.XSLTTasks;
@@ -18,8 +19,9 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
     @Override
@@ -32,7 +34,6 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
             ActivitiTester tester = new ActivitiTester();
             tester.setTestCase(testCase);
-            tester.setRestURL(URL);
             tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
             tester.setLogDir(getTomcat().getTomcatLogsDir());
@@ -43,8 +44,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public String getName() {
-        return "activiti";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3");
     }
 
     @Override
@@ -99,13 +100,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
         Path targetLogsPath = process.getTargetLogsPath();
         FileTasks.mkdirs(targetLogsPath);
 
-        // TODO only copy log files from tomcat, the other files are files for the test
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), targetLogsPath);
-
-        for (BPMNTestCase tc : process.getTestCases()) {
-            Path tomcatBinPath = getTomcat().getTomcatBinDir();
-            FileTasks.copyFileIntoFolder(tomcatBinPath.resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
-            FileTasks.copyMatchingFilesIntoFolder(tomcatBinPath, targetLogsPath, "log" + tc.getNumber() + "_*.txt");
+        for(Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
     }
 
@@ -163,5 +159,16 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
+
     public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatLogsDir()));
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatBinDir(), "log*.txt"));
+
+        return result;
+    }
 }

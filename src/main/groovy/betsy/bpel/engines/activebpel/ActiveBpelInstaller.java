@@ -13,9 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActiveBpelInstaller {
+
+    private final Path serverDir;
+
+    public ActiveBpelInstaller(Path serverDir) {
+        this.serverDir = serverDir;
+    }
+
     public void install() {
         // setup engine folder
-        Path serverDir = Paths.get("server/active-bpel");
         FileTasks.mkdirs(serverDir);
 
         TomcatInstaller installer = TomcatInstaller.v5(serverDir);
@@ -28,8 +34,11 @@ public class ActiveBpelInstaller {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
 
         Map<String, String> map = new HashMap<>();
-        map.put("CATALINA_HOME", installer.getDestinationDir().toString());
+        map.put("CATALINA_HOME", "../" + installer.getTomcat().getTomcatName());
 
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), "install.bat"), map);
+
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", serverDir.resolve("activebpel-5.0.2").resolve("install.sh").toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(serverDir.resolve("activebpel-5.0.2"), serverDir.resolve("activebpel-5.0.2").resolve("install.sh")), map);
     }
 }

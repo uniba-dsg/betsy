@@ -1,5 +1,6 @@
 package betsy.common.logging;
 
+import betsy.common.util.StringUtils;
 import org.apache.log4j.MDC;
 
 import java.util.Objects;
@@ -19,7 +20,7 @@ public class LogContext {
     }
 
     public static void setContext(String context) {
-        MDC.put(CONTEXT_KEY_PATH, context.replace("\\", "/"));
+        MDC.put(CONTEXT_KEY_PATH, StringUtils.toUnixStyle(context.replace("\\", "/")));
     }
 
 

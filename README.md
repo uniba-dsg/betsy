@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
 [![Dependency Status](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f)
+[![Coverage Status](https://coveralls.io/repos/uniba-dsg/betsy/badge.svg?branch=master&service=github)](https://coveralls.io/github/uniba-dsg/betsy?branch=master)
 
 Betsy is a tool to check the degree of conformance of a BPEL/BPMN engine against the BPEL/BPMN standard.
 
@@ -54,13 +55,16 @@ Options:
  -p,--partner-address <arg>          Partner IP and Port (defaults to
                                      localhost:2000)
  -t,--to-core-bpel <arg>             Transform to Core BPEL
+ -f,--use-custom-test-folder <arg>   Use a custom test folder (folder name defaults to "test")
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
-<ENGINES>: [ALL, LOCALS, VMS, RECENT, ode, bpelg, openesb, petalsesb,
-orchestra, active-bpel, openesb23, openesb231, petalsesb41, ode136,
-ode-in-memory, ode136-in-memory, bpelg-in-memory, wso2_v3_1_0,
-wso2_v3_0_0, wso2_v2_1_2, ode_v, bpelg_v, openesb_v, petalsesb_v,
-orchestra_v, active_bpel_v]
+<ENGINES>: [ALL, LOCALS, VMS, RECENT, ode__1_3_5, ode__1_3_6,
+ode__1_3_5__in-memory, ode__1_3_6__in-memory, openesb__2_2, openesb__2_3,
+openesb__2_3_1, openesb__3_0_1, orchestra__4_9, active-bpel__5_0_2,
+petalsesb__4_0, petalsesb__4_1, bpelg__5_3, bpelg__5_3__in-memory,
+wso2__3_2_0, wso2__3_1_0, wso2__3_0_0, wso2__2_1_2, ode__1_3_5__virtual,
+bpelg__5_3__virtual, openesb__2_2__virtual, petalsesb__4_0__virtual,
+orchestra__4_9__virtual, active-bpel__5_0_2__virtual]
 <PROCESSES>: [ALL, BASIC_ACTIVITIES_WAIT, BASIC_ACTIVITIES_THROW,
 BASIC_ACTIVITIES_RECEIVE, BASIC_ACTIVITIES_INVOKE,
 BASIC_ACTIVITIES_ASSIGN, BASIC_ACTIVITIES, SCOPES_EVENT_HANDLERS,
@@ -102,8 +106,13 @@ Options:
  -o,--open-results-in-browser   Opens results in default browser
 
 GROUPS for <ENGINES> and <PROCESSES> are in CAPITAL LETTERS.
-<ENGINES>: [ALL, camunda, camunda710, camunda720, activiti, activiti5170, jbpm, jbpm610, jbpm620]
-<PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, PATTERNS...]
+<ENGINES>: [ALL, camunda__7_0_0, camunda__7_1_0, camunda__7_2_0,
+camunda__7_3_0, activiti__5_16_3, activiti__5_17_0, jbpm__6_0_1,
+jbpm__6_1_0, jbpm__6_2_0]
+
+
+<PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, PATTERNS, DATA,
+MINIMAL, ExclusiveGateway, ExclusiveGateway_Default,...]
 ```
 
 ## Administrative Tasks
@@ -173,8 +182,9 @@ The following scientific publications are either about betsy, have used betsy to
  - Lenhard, J., Wirtz, G.: [Detecting Portability Issues in Model-Driven BPEL Mappings](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-03-lenhard-wirtz/), Proceedings of the 25th International Conference on Software Engineering and Knowledge Engineering (SEKE'2013), Boston, Massachusetts, USA, Knowledge Systems Institute, June 27 - 29, 2013
  - Lenhard, J., Wirtz, G.: [Measuring the Portability of Executable Service-Oriented Processes](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-05-lenhard-wirtz/), Proceedings of the 17th IEEE International EDOC Conference, Vancouver, Canada, September 9 - 13, 2013, Awarded Best Student Conference Paper in Service Science
  - Harrer, S., Lenhard, J., Wirtz, G.: [Open Source versus Proprietary Software in Service-Orientation: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-07-harrer-lenhard-wirtz/), Proceedings of the 11th International Conference on Service Oriented Computing (ICSOC '13), Berlin, Germany, December 2 - 5, 2013
- - Lenhard, J. Harrer, S., Wirtz, G.: [Measuring the Installability of Service Orchestrations Using the SQuaRE Method](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-08-harrer-lenhard-wirtz/), Proceedings of the 6th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'13), Kauai, Hawaii, USA, December 16 - 18, 2013, Awarded Best Conference Paper
- - Harrer, S. Röck, C., Wirtz, G.: [Automated and Isolated Tests for Complex Middleware Products: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/14-04-harrer-wirtz/), Proceedings of the 7th IEEE  International Conference on Software Testing, Verification and Validation Workshops (ICSTW 2014), Testing Tools Track, Cleveland, OH, USA, March 30 – April 4, 2014
+ - Lenhard, J., Harrer, S., Wirtz, G.: [Measuring the Installability of Service Orchestrations Using the SQuaRE Method](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/13-08-harrer-lenhard-wirtz/), Proceedings of the 6th IEEE International Conference on Service-Oriented Computing and Applications (SOCA'13), Kauai, Hawaii, USA, December 16 - 18, 2013, Awarded Best Conference Paper
+ - Harrer, S., Röck, C., Wirtz, G.: [Automated and Isolated Tests for Complex Middleware Products: The Case of BPEL Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/14-04-harrer-wirtz/), Proceedings of the 7th IEEE  International Conference on Software Testing, Verification and Validation Workshops (ICSTW 2014), Testing Tools Track, Cleveland, OH, USA, March 30 – April 4, 2014
+ - Geiger, M., Harrer, S. Lenhard, J. Casar, M., Vorndran, A., Wirtz, G.: [BPMN Conformance in Open Source Engines](http://www.uni-bamberg.de/pi/bereich/forschung/publikationen/15-01-geiger-harrer-lenhard-wirtz/), Proceedings of the 9 th IEEE International Symposium on Service-Oriented System Engineering (SOSE), San Francisco Bay, CA, USA, March 30 – April 3 2015
 
 # Contribution Guide
 - Fork

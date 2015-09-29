@@ -1,7 +1,7 @@
 package betsy.bpel.cli;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.repositories.EngineRepository;
+import betsy.bpel.repositories.BPELEngineRepository;
 
 import java.util.List;
 
@@ -14,19 +14,19 @@ public class EngineParser {
      */
     private final String[] args;
 
-    public EngineParser(String[] args) {
+    public EngineParser(String... args) {
         this.args = args;
     }
 
     public List<AbstractBPELEngine> parse() {
-        EngineRepository engineRepository = new EngineRepository();
+        BPELEngineRepository BPELEngineRepository = new BPELEngineRepository();
 
         if (args.length == 0) {
             // local engines are default
-            return engineRepository.getByName("all");
+            return BPELEngineRepository.getByName("all");
         } else {
             String[] names = args[0].trim().toLowerCase().split(",");
-            return engineRepository.getByNames(names);
+            return BPELEngineRepository.getByNames(names);
         }
 
     }

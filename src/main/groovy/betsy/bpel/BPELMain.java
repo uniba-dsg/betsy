@@ -7,6 +7,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
+import betsy.bpel.soapui.SoapUIShutdownHelper;
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.engines.AbstractVirtualBPELEngine;
 import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
@@ -24,13 +25,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPELMain {
+
     private static final Logger LOGGER = Logger.getLogger(BPELMain.class);
 
-    public static void main(String[] args) {
+    private static boolean shouldShutdownSoapUi = true;
+
+    public static void main(String... args) {
         activateLogging();
 
         // parsing cli params
@@ -57,10 +62,12 @@ public class BPELMain {
             coreBpel(params, params.getEngines());
             virtualEngines(params.getEngines());
 
-            onlyBuildSteps(params, betsy);
+            onlyBuildStepsOrUseInstalledEngine(params, betsy);
 
             betsy.setProcesses(params.getProcesses());
             betsy.setEngines(params.getEngines());
+            betsy.setTestFolder(params.getTestFolderName());
+
 
             // execute
             try {
@@ -69,7 +76,6 @@ public class BPELMain {
                 Throwable cleanedException = StackTraceUtils.deepSanitize(e);
                 LOGGER.error("something went wrong during execution", cleanedException);
             }
-
 
             // open results in browser
             if (params.openResultsInBrowser()) {
@@ -82,26 +88,24 @@ public class BPELMain {
 
             }
 
-
         } catch (Exception e) {
             Throwable cleanedException = StackTraceUtils.deepSanitize(e);
             LOGGER.error(cleanedException.getMessage(), cleanedException);
         }
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (shouldShutdownSoapUi) {
+            SoapUIShutdownHelper.shutdownSoapUIForReal();
         }
-        // shutdown as SoapUI creates threads which cannot be shutdown so easily
-        // WARNING when a class is not found in soapUI, the corresponding exception does not show up.
-        // SOLUTION remove exit line for testing purposes
-        System.exit(0);
     }
 
-    public static void onlyBuildSteps(BPELCliParameter params, BPELBetsy betsy) {
+    public static void shutdownSoapUiAfterCompletion(boolean shouldShutdown) {
+        shouldShutdownSoapUi = shouldShutdown;
+    }
+
+    public static void onlyBuildStepsOrUseInstalledEngine(BPELCliParameter params, BPELBetsy betsy) {
         if (params.buildArtifactsOnly()) {
             betsy.setComposite(new BPELComposite() {
+
                 @Override
                 protected void testSoapUi(BPELProcess process) {
                 }
@@ -115,7 +119,11 @@ public class BPELMain {
                 }
 
                 @Override
-                protected void installAndStart(BPELProcess process) {
+                protected void install(BPELProcess process) {
+                }
+
+                @Override
+                protected void startup(BPELProcess process) {
                 }
 
                 @Override
@@ -131,8 +139,16 @@ public class BPELMain {
                 }
 
             });
-        }
+        } else if (params.useInstalledEngine()) {
+            betsy.setComposite(new BPELComposite() {
 
+                @Override
+                protected void install(BPELProcess process) {
+                    // is already installed - use existing installation
+                }
+
+            });
+        }
     }
 
     private static void localhostPartnerAddressNotAllowedForTestingVirtualEngines(List<AbstractBPELEngine> engines) {
@@ -144,7 +160,6 @@ public class BPELMain {
             }
 
         }
-
     }
 
     private static boolean usesVirtualEngines(List<AbstractBPELEngine> engines) {
@@ -160,11 +175,11 @@ public class BPELMain {
         if (!params.useExternalPartnerService()) {
             // test the correctness
             try {
-                betsy.getComposite().getTestPartner().startup();
+                betsy.getComposite().getTestingAPI().startup();
             } catch (Exception e) {
                 throw new IllegalStateException("the given partner address is not bindable for this system", e);
             } finally {
-                betsy.getComposite().getTestPartner().shutdown();
+                betsy.getComposite().getTestingAPI().shutdown();
             }
         }
     }
@@ -172,8 +187,8 @@ public class BPELMain {
     private static void useExternalPartnerService(BPELCliParameter params, BPELBetsy betsy) {
         // do not use internal partner service
         if (params.useExternalPartnerService()) {
-            betsy.getComposite().setTestPartner(new TestPartnerServicePublisherExternal());
-            betsy.getComposite().setRequestTimeout(15 * 1000);// increase request timeout as invoking external service
+            betsy.getComposite().getTestingAPI().setTestPartner(new TestPartnerServicePublisherExternal());
+            betsy.getComposite().getTestingAPI().setRequestTimeout(15_000);// increase request timeout as invoking external service
         }
     }
 
@@ -210,7 +225,7 @@ public class BPELMain {
         if (params.checkDeployment()) {
             // check only whether the processes can be deployed
             for (BPELProcess process : processes) {
-                process.setTestCases(Arrays.asList(new BPELTestCase().checkDeployment()));
+                process.setTestCases(Collections.singletonList(new BPELTestCase().checkDeployment()));
             }
 
         }
@@ -266,7 +281,6 @@ public class BPELMain {
 
                     break;
             }
-
 
         }
 

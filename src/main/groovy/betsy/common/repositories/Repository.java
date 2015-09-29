@@ -24,8 +24,6 @@ public class Repository<T> {
     }
 
     public List<T> getByName(final String name) {
-        log.info("Getting element by name [" + name + "]");
-
         String trimmedName = name.trim();
         final String key = repository.keySet().stream().filter(t -> t.toUpperCase().equals(trimmedName.toUpperCase())).findFirst().orElse(trimmedName);
 
@@ -38,7 +36,7 @@ public class Repository<T> {
         return result;
     }
 
-    public List<T> getByNames(final String[] names) {
+    public List<T> getByNames(final String... names) {
         List<T> result = new ArrayList<>();
 
         for (String name : names) {
@@ -53,6 +51,10 @@ public class Repository<T> {
         }
 
         return result;
+    }
+
+    public List<String> getGroups() {
+        return repository.entrySet().stream().filter(e -> e.getValue().size() > 1).map(Map.Entry::getKey).collect(Collectors.toList());
     }
 
     public List<String> getNames() {

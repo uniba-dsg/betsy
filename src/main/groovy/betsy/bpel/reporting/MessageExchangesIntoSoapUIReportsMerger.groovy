@@ -12,7 +12,11 @@ class MessageExchangesIntoSoapUIReportsMerger {
 
     private static final Logger log = Logger.getLogger(MessageExchangesIntoSoapUIReportsMerger.class)
 
-    BPELTestSuite tests
+    private final BPELTestSuite tests;
+
+    MessageExchangesIntoSoapUIReportsMerger(BPELTestSuite tests) {
+        this.tests = tests
+    }
 
     public void merge() {
         for(AbstractBPELEngine engine : tests.engines) {

@@ -2,26 +2,25 @@ package betsy.bpmn.engines.camunda;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
+import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
-    public String getName() {
-        return "camunda";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0");
     }
 
     public String getCamundaUrl() {
@@ -34,6 +33,11 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     public Path getTomcatDir() {
         return getServerPath().resolve("server").resolve(getTomcatName());
+    }
+
+    @Override
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/camunda");
     }
 
     @Override
@@ -86,17 +90,24 @@ public class CamundaEngine extends AbstractBPMNEngine {
         return "http://localhost:8080/engine-rest/engine/default";
     }
 
+
     @Override
     public void storeLogs(BPMNProcess process) {
-        Path targetLogsPath = process.getTargetLogsPath();
-        FileTasks.mkdirs(targetLogsPath);
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcatLogsDir(), targetLogsPath);
+        FileTasks.mkdirs(process.getTargetLogsPath());
 
-        for (BPMNTestCase tc : process.getTestCases()) {
-            Path tomcatBin = getTomcatDir().resolve("bin");
-            FileTasks.copyFileIntoFolder(tomcatBin.resolve("log" + tc.getNumber() + ".txt"), targetLogsPath);
-            FileTasks.copyMatchingFilesIntoFolder(tomcatBin, targetLogsPath, "log" + tc.getNumber() + "_*.txt");
+        for(Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
         }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcatLogsDir()));
+        result.addAll(FileTasks.findAllInFolder(getTomcatDir().resolve("bin"), "log*.txt"));
+
+        return result;
     }
 
     private Path getTomcatLogsDir() {
@@ -115,19 +126,15 @@ public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-        FileTasks.assertDirectory(pathToJava7);
-
-        Path pathToJre7 = Configuration.getJre7Home();
-        FileTasks.assertDirectory(pathToJre7);
 
         Map<String, String> map = new LinkedHashMap<>(2);
         map.put("JAVA_HOME", pathToJava7.toString());
-        map.put("JRE_HOME", pathToJre7.toString());
+        map.put("JRE_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"), map);
 
         Map<String, String> map1 = new LinkedHashMap<>(2);
         map1.put("JAVA_HOME", pathToJava7.toString());
-        map1.put("JRE_HOME", pathToJre7.toString());
+        map1.put("JRE_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")), map1);
 
         WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());

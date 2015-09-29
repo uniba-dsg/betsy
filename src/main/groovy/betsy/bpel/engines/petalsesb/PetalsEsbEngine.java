@@ -3,18 +3,28 @@ package betsy.bpel.engines.petalsesb;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
+import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
+
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/petalsesb");
+    }
+
     @Override
-    public String getName() {
-        return "petalsesb";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0");
     }
 
     @Override
@@ -42,21 +52,38 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         return getPetalsFolder().resolve("bin");
     }
 
+    public Path getPetalsCliBinFolder() {return getServerPath().resolve("petals-cli-1.0.0/bin");}
+
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFileIntoFolder(getPetalsLogFile(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.add(getPetalsLogFile());
+
+        return result;
     }
 
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-        FileTasks.assertDirectory(pathToJava7);
         Map<String,String> environment = new HashMap<>();
         environment.put("JAVA_HOME", pathToJava7.toString());
+
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), "petals-esb.bat"), environment);
 
-        WaitTasks.waitFor(30 * 1000, 500, () -> FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("start-petals.sh").toAbsolutePath()));
+
+        WaitTasks.waitFor(60 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
+                FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-se-bpel] : Component started"));
 
         try {
@@ -76,16 +103,27 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void shutdown() {
         try {
-            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPath(), "taskkill").values("/FI", "WINDOWTITLE eq OW2*"));
-        } catch (Exception ignore) {
-            LOGGER.info("COULD NOT STOP ENGINE " + getName());
-        }
+            ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown"));
 
+            ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getPetalsCliBinFolder().resolve("petals-cli.sh").toString()));
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.sh")).values("shutdown"));
+        } catch (Exception e) {
+            LOGGER.info("COULD NOT STOP ENGINE " + getName(), e);
+        }
     }
 
     @Override
     public void install() {
-        new PetalsEsbInstaller().install();
+        PetalsEsbInstaller installer = new PetalsEsbInstaller();
+        installer.setServerDir(getServerPath());
+        installer.setFileName("petals-esb-distrib-4.0.zip");
+        installer.setTargetEsbInstallDir(getServerPath().resolve("petals-esb-4.0/install"));
+        installer.setBpelComponentPath(getServerPath().resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip"));
+        installer.setSoapComponentPath(getServerPath().resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip"));
+        installer.setSourceFile(getServerPath().resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip"));
+        installer.setCliFile(getServerPath().resolve("petals-esb-distrib-4.0/esb/petals-cli-1.0.0.zip"));
+        installer.setPetalsBinFolder(getPetalsBinFolder());
+        installer.install();
     }
 
     @Override

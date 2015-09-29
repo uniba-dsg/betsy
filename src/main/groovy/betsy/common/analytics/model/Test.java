@@ -1,23 +1,19 @@
 package betsy.common.analytics.model;
 
+import betsy.common.aggregation.AggregationRules;
+import betsy.common.aggregation.TrivalentResult;
+
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class Test implements Comparable<Test> {
     public String getFullName() {
         return name;
     }
 
-    public Support getSupport() {
-
-        if (engineToResult.values().stream().allMatch((it) -> Support.NONE.equals(it.getSupport()))) {
-            return Support.NONE;
-        } else if (engineToResult.values().stream().allMatch((it) -> Support.TOTAL.equals(it.getSupport()))) {
-            return Support.TOTAL;
-        } else {
-            return Support.PARTIAL;
-        }
-
+    public TrivalentResult getSupport() {
+        return AggregationRules.EXTREMA.aggregate(engineToResult.values().stream().map(Result::getSupport).collect(Collectors.toList()));
     }
 
     public SortedMap<Engine, Result> getEngineToResult() {

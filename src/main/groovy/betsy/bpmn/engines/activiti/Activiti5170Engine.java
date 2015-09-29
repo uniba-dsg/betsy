@@ -1,7 +1,9 @@
 package betsy.bpmn.engines.activiti;
 
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.TomcatInstaller;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
@@ -17,8 +19,8 @@ import java.nio.file.Path;
 public class Activiti5170Engine extends ActivitiEngine {
 
     @Override
-    public String getName() {
-        return "activiti5170"; // 5.17.0
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.17.0");
     }
 
     @Override

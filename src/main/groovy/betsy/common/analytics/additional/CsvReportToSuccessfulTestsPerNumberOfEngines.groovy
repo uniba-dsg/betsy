@@ -1,8 +1,8 @@
 package betsy.common.analytics.additional
 
+import betsy.common.aggregation.TrivalentResult
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
-import betsy.common.analytics.model.Support
 
 import java.nio.file.Paths
 
@@ -22,7 +22,7 @@ class CsvReportToSuccessfulTestsPerNumberOfEngines {
         List<ResultPair> results = []
         writer.println "Raw"
         report.tests.each { test ->
-            int successful = test.engineToResult.values().count { it.support == Support.TOTAL}
+            int successful = test.engineToResult.values().count { it.support == TrivalentResult.PLUS}
             results << new ResultPair(name: test.name, successful: successful)
         }
 
@@ -34,11 +34,13 @@ class CsvReportToSuccessfulTestsPerNumberOfEngines {
 
         writer.println "Aggregated"
         results.groupBy { it.successful }.sort() {it.key}.each { key, values ->
-            writer.println key + "\t" + values.size() + "\t" + (int)Math.round((double) values.size() / total * 100) + "%"
+            int i = (int) Math.round((double) values.size() / total * 100)
+            writer.println key + "\t" + values.size() + "\t" + i  + "%"
         }
 
         writer.println "At least one engine"
-        writer.println results.findAll(){it.successful > 0}.size() + "\t" +  (int)Math.round((double) results.findAll(){it.successful > 0}.size() / total * 100) + "%"
+        int i = (int)Math.round((double) results.findAll(){it.successful > 0}.size() / total * 100);
+        writer.println results.findAll(){it.successful > 0}.size() + "\t" +  i + "%"
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,14 @@
+plugins {
+    id "com.github.kt3k.coveralls" version "2.4.0"
+}
+
 apply plugin: "groovy"
 apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "application"
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'pmd'
 
 // Main class of betsy
 mainClassName = "betsy.Main"
@@ -33,26 +40,28 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.1'
+    internal 'org.codehaus.groovy:groovy-all:2.4.5'
 
-    internal 'org.apache.ant:ant:1.9.4'
+    internal 'org.apache.ant:ant:1.9.6'
     internal 'log4j:log4j:1.2.17'
     internal 'org.virtualbox:vboxjws:4.2.8'
     internal 'commons-daemon:commons-daemon:1.0.15'
     internal 'commons-io:commons-io:2.4'
     internal 'commons-lang:commons-lang:2.6'
-    internal 'org.apache.ant:ant-apache-log4j:1.9.4'
+    internal 'org.apache.ant:ant-apache-log4j:1.9.6'
     internal 'org.json:json:5.0.5'
-    internal 'org.apache.ant:ant-junit:1.9.4'
+    internal 'org.apache.ant:ant-junit:1.9.6'
 
-    internal 'com.mashape.unirest:unirest-java:1.4.5' // for http requests and responses
+    // requires 'net.sf.saxon:Saxon-HE' - we use the one that is shipped with soapUI
 
-    internal 'org.slf4j:slf4j-api:1.7.10'
-    internal 'org.slf4j:slf4j-simple:1.7.10'
+    internal 'com.mashape.unirest:unirest-java:1.4.7' // for http requests and responses
 
-    internal 'commons-cli:commons-cli:1.2' // for the CLI tools
+    internal 'org.slf4j:slf4j-api:1.7.12'
+    internal 'org.slf4j:slf4j-simple:1.7.12'
 
-    internal 'org.apache.santuario:xmlsec:2.0.3' // for canonical XML form
+    internal 'commons-cli:commons-cli:1.3.1' // for the CLI tools
+
+    internal 'org.apache.santuario:xmlsec:2.0.5' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
 
@@ -67,7 +76,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.6'
 }
 
 task downloadMaven {
@@ -75,7 +84,7 @@ task downloadMaven {
 
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 240, {
+        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true,  maxtime: 240, {
             ant.url url: props.getProperty("maven.download.url")
         }
     }
@@ -99,8 +108,8 @@ task downloadSoapUI {
 
     doLast {
         ant.mkdir dir: props.getProperty("downloads.dir")
-	// maxtime is set to this value to ensure that travis-ci can download this file
-        ant.get dest: props.getProperty("downloads.dir"), maxtime: 1524, verbose: true, {
+    // maxtime is set to this value to ensure that travis-ci can download this file
+        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true, maxtime: 1524, verbose: true, {
             ant.url url: props.getProperty("soapui.download.url")
         }
     }
@@ -250,7 +259,7 @@ task runBPEL(type: JavaExec, dependsOn: classes) {
     }
 }
 
-apply plugin: 'pmd'
+
 pmd {
     ignoreFailures = true
     ruleSets = [
@@ -284,3 +293,12 @@ pmd {
 }
 
 
+
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}

@@ -32,7 +32,7 @@ public class FileMessage implements Serializable {
         return new FileMessage(path.getFileName().toString(), data);
     }
 
-    public FileMessage(final String filename, final byte[] data) {
+    public FileMessage(final String filename, final byte... data) {
         if (StringUtils.isBlank(filename)) {
             throw new IllegalArgumentException(
                     "fileName must not be null or empty");

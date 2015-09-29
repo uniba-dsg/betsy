@@ -3,7 +3,7 @@ package betsy.bpel.engines;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
-import betsy.common.util.ClasspathHelper;
+import betsy.common.engines.ProcessLanguage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,14 +15,7 @@ public abstract class AbstractBPELEngine implements EngineAPI<BPELProcess>, HasP
     private BPELEnginePackageBuilder packageBuilder = new BPELEnginePackageBuilder();
     private Path parentFolder;
 
-    /**
-     * The path <code>src/main/xslt/$engine</code>
-     *
-     * @return the path <code>src/main/xslt/$engine</code>
-     */
-    public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/" + getName());
-    }
+    public abstract Path getXsltPath();
 
     /**
      * The path <code>test/$engine</code>
@@ -50,6 +43,11 @@ public abstract class AbstractBPELEngine implements EngineAPI<BPELProcess>, HasP
         AbstractBPELEngine engine = (AbstractBPELEngine) o;
 
         return getName().equals(engine.getName());
+    }
+
+    @Override
+    public ProcessLanguage getSupportedLanguage() {
+        return ProcessLanguage.BPEL;
     }
 
     @Override

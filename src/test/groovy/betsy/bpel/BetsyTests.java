@@ -3,12 +3,14 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BetsyTests {
@@ -19,8 +21,9 @@ public class BetsyTests {
         BPELBetsy betsy = new BPELBetsy();
 
 
-        betsy.setEngines(Arrays.asList(engine));
+        betsy.setEngines(Collections.singletonList(engine));
         betsy.setProcesses(processes);
+        betsy.setTestFolder("test");
         betsy.setComposite(new MockComposite());
         betsy.execute();
     }
@@ -63,14 +66,19 @@ public class BetsyTests {
             return "myendpoint";
         }
 
-        public String getName() {
-            return "mock";
+        @Override
+        public Engine getEngineId() {
+            return new Engine(ProcessLanguage.BPEL, "mock", "1.0");
         }
 
         public Path getXsltPath() {
             return Paths.get("unused_path");
         }
 
+        @Override
+        public List<Path> getLogs() {
+            return null;
+        }
     }
 
     public class MockComposite extends BPELComposite {

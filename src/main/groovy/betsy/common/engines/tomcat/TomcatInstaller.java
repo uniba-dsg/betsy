@@ -39,17 +39,19 @@ public class TomcatInstaller {
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), destinationDir);
 
         FileTasks.createFile(destinationDir.resolve("tomcat_startup.bat"), "SET CATALINA_OPTS=-Xmx3048M -XX:MaxPermSize=2048m " +
-                additionalVmParam + "\ncd " + getTomcat().getTomcatBinDir().toAbsolutePath() + " && call startup.bat");
+                additionalVmParam + "\ncd " + getTomcat().getTomcatBinDir().toAbsolutePath() + " && start \"" + getTomcatName() + "\" /min startup.bat");
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.bat"), "cd " +
                 getTomcat().getTomcatBinDir().toAbsolutePath() + " && call shutdown.bat");
 
-        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), "CATALINA_OPTS=\"-Xmx3048M -XX:MaxPermSize=2048m " +
-                additionalVmParam + "\ncd" + getTomcat().getTomcatBinDir().toAbsolutePath() + " &&. / startup.sh");
+        FileTasks.createFile(destinationDir.resolve("tomcat_startup.sh"), "CATALINA_OPTS=\"-Xmx3048M -XX:MaxPermSize=2048m\"" +
+                additionalVmParam + "\ncd " + getTomcat().getTomcatBinDir().toAbsolutePath() + " && ./startup.sh");
 
         FileTasks.createFile(destinationDir.resolve("tomcat_shutdown.sh"), "cd " +
                 getTomcat().getTomcatBinDir().toAbsolutePath() + " && ./shutdown.sh");
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", destinationDir.toAbsolutePath().toString()));
+
+        FileTasks.replaceLine(getTomcat().getTomcatBinDir().resolve("startup.bat"), "call \"%EXECUTABLE%\" start %CMD_LINE_ARGS%", "call \"%EXECUTABLE%\" run %CMD_LINE_ARGS%");
     }
 
     public Tomcat getTomcat() {

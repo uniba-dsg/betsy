@@ -1,6 +1,5 @@
 package betsy.bpmn;
 
-import betsy.bpel.BPELMain;
 import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPMNMain {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         activateLogging();
 
         // parsing cli params
@@ -37,6 +36,7 @@ public class BPMNMain {
 
             betsy.setEngines(params.getEngines());
             betsy.setProcesses(params.getProcesses());
+            betsy.setTestFolder(params.getTestFolderName());
 
             // execute
             try {
@@ -66,7 +66,7 @@ public class BPMNMain {
 
     protected static void activateLogging() {
         // activate log4j logging
-        DOMConfigurator.configure(BPELMain.class.getResource("/log4j.xml"));
+        DOMConfigurator.configure(BPMNMain.class.getResource("/log4j.xml"));
 
         // set log4j property to avoid conflicts with soapUIs -> effectly disabling soapUI's own logging
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");

@@ -1,13 +1,13 @@
 package betsy.common.tasks;
 
-import ant.tasks.AntUtil;
 import com.google.common.base.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Replace;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -47,9 +47,12 @@ public class FileTasks {
             if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
                 LOGGER.info("Deletion failed -> retrying after short wait");
                 WaitTasks.sleep(5000);
-                if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
+
+                try {
+                    FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
+                }catch (IOException e){
                     LOGGER.info("Retry of deletion also failed.");
-                    throw new IllegalStateException("could not delete directory " + directory);
+                    throw new IllegalStateException("could not delete directory " + directory, e);
                 }
             }
         } else {
@@ -126,6 +129,37 @@ public class FileTasks {
         }
     }
 
+    public static void replaceLine(Path path, String oldContent, String newLineContent) {
+        LOGGER.info("Replacing contents of a line which has exactly " + oldContent + " from file " + path.toAbsolutePath() + " with the new content " + newLineContent);
+
+        try {
+            // line numbers start with 1, not with 0!
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            LOGGER.info("File has " + lines.size() + " lines");
+
+            int index = findIndex(oldContent, lines);
+            if(index == -1) {
+                throw new IllegalStateException("Could not find a line with content [" + oldContent + "] in file " + path);
+            }
+
+            lines.set(index, newLineContent);
+
+            Files.write(path, lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not replace line in file " + path, e);
+        }
+    }
+
+    private static int findIndex(String oldContent, List<String> lines) {
+        int line = -1;
+        for(int i = 0; i < lines.size(); i++) {
+            if(lines.get(i).trim().equals(oldContent)) {
+                line = i;
+            }
+        }
+        return line;
+    }
+
     public static void deleteFile(Path file) {
         LOGGER.info("Deleting file " + file.toAbsolutePath());
 
@@ -173,6 +207,7 @@ public class FileTasks {
             List<String> lines = Files.readAllLines(source);
             mkdirs(target.getParent());
             Files.write(target, lines, StandardCharsets.UTF_8);
+            LOGGER.info("Copying contents of file " + source.toAbsolutePath() + " to file " + target.toAbsolutePath() + " successful");
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy contents of file " + source + " to file " + target, e);
         }
@@ -248,6 +283,52 @@ public class FileTasks {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, glob)) {
                 return stream.iterator().next();
             }
+        } catch (IOException e) {
+            throw new RuntimeException("could not iterate in folder " + folder, e);
+        }
+    }
+
+    public static List<Path> findAllInFolder(Path folder) {
+        LOGGER.info("Finding all files in dir [" + folder + "]");
+
+        List<Path> result = new LinkedList<>();
+
+        try {
+            FileTasks.assertDirectory(folder);
+        } catch (Exception ignore) {
+            return result;
+        }
+
+        try {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
+                for(Path p : stream) {
+                    result.add(p);
+                }
+            }
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException("could not iterate in folder " + folder, e);
+        }
+    }
+
+    public static List<Path> findAllInFolder(Path folder, String glob) {
+        LOGGER.info("Finding all files in dir [" + folder + "] with pattern [" + glob + "]");
+
+        List<Path> result = new LinkedList<>();
+
+        try {
+            FileTasks.assertDirectory(folder);
+        } catch (Exception ignore) {
+            return result;
+        }
+
+        try {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, glob)) {
+                for(Path p : stream) {
+                    result.add(p);
+                }
+            }
+            return result;
         } catch (IOException e) {
             throw new RuntimeException("could not iterate in folder " + folder, e);
         }

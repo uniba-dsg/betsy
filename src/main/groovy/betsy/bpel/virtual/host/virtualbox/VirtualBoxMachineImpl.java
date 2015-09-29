@@ -15,7 +15,7 @@ import java.util.Set;
  * VirtualBox. It can be started, stopped and snapshots may be created of its
  * current state.
  *
- * @author Cedric Roeck  
+ * @author Cedric Roeck
  * @version 1.0
  */
 public class VirtualBoxMachineImpl implements VirtualBoxMachine {

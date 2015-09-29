@@ -26,11 +26,6 @@ public class VirtualActiveBpelEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public String getName() {
-        return "active_bpel_v";
-    }
-
-    @Override
     public List<ServiceAddress> getVerifiableServiceAddresses() {
         List<ServiceAddress> saList = new LinkedList<>();
         saList.add(new ServiceAddress("http://localhost:" + HTTP_PORT + "/active-bpel/services"));

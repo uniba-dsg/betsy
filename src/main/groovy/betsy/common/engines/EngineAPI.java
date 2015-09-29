@@ -1,8 +1,9 @@
 package betsy.common.engines;
 
-import betsy.common.HasName;
+import betsy.common.HasLogs;
+import betsy.common.model.IsEngine;
 
-public interface EngineAPI<P> extends EngineLifecycle, HasName {
+public interface EngineAPI<P> extends EngineLifecycle, IsEngine, HasLogs {
 
     /**
      * Deploy the given <code>process</code> to the current engine.
@@ -33,5 +34,10 @@ public interface EngineAPI<P> extends EngineLifecycle, HasName {
      * @param process the process for which to store the logs.
      */
     void storeLogs(P process);
+
+    /**
+     * @return returns which process language is supported by this engine.
+     */
+    ProcessLanguage getSupportedLanguage();
 
 }

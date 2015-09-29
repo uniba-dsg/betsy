@@ -1,21 +1,13 @@
 package betsy.bpmn.engines.camunda;
 
-import betsy.common.tasks.ConsoleTasks;
-import betsy.common.tasks.WaitTasks;
-import betsy.common.util.ClasspathHelper;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 
-import java.nio.file.Path;
-
-public class Camunda720Engine extends CamundaEngine {
+public class Camunda720Engine extends Camunda710Engine {
 
     @Override
-    public String getName() {
-        return "camunda720";
-    }
-
-    @Override
-    public Path getXsltPath() {
-        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpmn/" + super.getName());
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.2.0");
     }
 
     @Override
@@ -30,13 +22,6 @@ public class Camunda720Engine extends CamundaEngine {
         camundaInstaller.setFileName("camunda-bpm-tomcat-7.2.0.zip");
         camundaInstaller.setTomcatName(getTomcatName());
         camundaInstaller.install();
-    }
-
-    @Override
-    public void startup() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")));
-        WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());
     }
 
 }

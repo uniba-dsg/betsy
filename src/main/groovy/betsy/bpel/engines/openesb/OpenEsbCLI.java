@@ -2,6 +2,7 @@ package betsy.bpel.engines.openesb;
 
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
+import betsy.common.util.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
@@ -16,10 +17,16 @@ public class OpenEsbCLI {
 
     public void stopDomain() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).values("stop-domain", "domain1"));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).values("stop-domain", "domain1"));
     }
 
     public void startDomain() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).values("start-domain", "domain1"));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).values("start-domain", "domain1"));
     }
 
     private Path getAsAdminWindows() {
@@ -40,7 +47,7 @@ public class OpenEsbCLI {
         Path deployCommands = tmpFolder.resolve("deploy_commands.txt");
 
         // QUIRK path must always be in unix style, otherwise it is not correctly deployed
-        String packageFilePathUnixStyle = packageFilePath.toAbsolutePath().toString().replace("\\", "/");
+        String packageFilePathUnixStyle = StringUtils.toUnixStyle(packageFilePath);
 
         String scriptContent = "deploy-jbi-service-assembly " + packageFilePathUnixStyle + "\n";
         scriptContent += "start-jbi-service-assembly " + processName + "Application\n";
@@ -49,6 +56,8 @@ public class OpenEsbCLI {
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
     }

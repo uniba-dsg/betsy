@@ -2,19 +2,29 @@ package betsy.bpel.engines.ode;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class OdeEngine extends AbstractLocalBPELEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
 
     @Override
-    public String getName() {
-        return "ode";
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode");
+    }
+
+    @Override
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "ode", "1.3.5");
     }
 
     @Override
@@ -43,7 +53,19 @@ public class OdeEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder( getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatLogsDir()));
+
+        return result;
     }
 
     @Override

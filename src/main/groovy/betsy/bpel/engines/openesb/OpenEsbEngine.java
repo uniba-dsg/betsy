@@ -2,18 +2,27 @@ package betsy.bpel.engines.openesb;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.util.OperatingSystem;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
+    }
+
     @Override
-    public String getName() {
-        return "openesb";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2");
     }
 
     @Override
@@ -24,7 +33,19 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getGlassfishHome().resolve("domains/domain1/logs/"), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getGlassfishHome().resolve("domains/domain1/logs/"), "*.log"));
+
+        return result;
     }
 
     public OpenEsbCLI getCli() {
@@ -38,7 +59,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        WaitTasks.waitForAvailabilityOfUrl(15_000, 500, CHECK_URL);
+        WaitTasks.waitForAvailabilityOfUrl(15_000, 500, "http://localhost:8383");
     }
 
     @Override
@@ -48,7 +69,15 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new OpenEsbInstaller(getServerPath(), "glassfishesb-v2.2-full-installer-windows.exe", ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+        if(OperatingSystem.WINDOWS) {
+            new OpenEsbInstaller(getServerPath(),
+                    "glassfishesb-v2.2-full-installer-windows.exe",
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+        } else {
+            new OpenEsbInstaller(getServerPath(),
+                    "glassfishesb-v2.2-full-installer-linux.sh",
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+        }
     }
 
     @Override

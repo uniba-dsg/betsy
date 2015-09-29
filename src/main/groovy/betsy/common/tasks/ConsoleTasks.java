@@ -1,6 +1,5 @@
 package betsy.common.tasks;
 
-import ant.tasks.AntUtil;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.types.Environment;
@@ -22,6 +21,10 @@ public class ConsoleTasks {
 
     public static void executeOnWindows(CliCommand cliCommand, Map<String, String> environment) {
         execute(WINDOWS, cliCommand, true, environment);
+    }
+
+    public static void executeOnUnix(CliCommand cliCommand, Map<String, String> environment) {
+        execute(UNIX, cliCommand, true, environment);
     }
 
     private static void execute(String osfamily, CliCommand cliCommand, boolean failOnError, Map<String, String> environment) {
@@ -109,6 +112,16 @@ public class ConsoleTasks {
         execute(UNIX, cliCommand, false, environment);
     }
 
+    public static void setupAnt(Path antPath) {
+        Path binFolder = antPath.toAbsolutePath();
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(binFolder, "chmod").values("+x", binFolder.resolve("ant").toString()));
+    }
+
+    public static void setupMvn(Path mvnPath) {
+        Path binFolder = mvnPath.toAbsolutePath();
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(binFolder, "chmod").values("+x", binFolder.resolve("mvn").toString()));
+    }
+
     /**
      * Represents "dir $ command values[0] values[1] ..."
      */
@@ -193,7 +206,7 @@ public class ConsoleTasks {
             return values;
         }
 
-        public void setValues(String[] values) {
+        public void setValues(String... values) {
             this.values = values;
         }
     }

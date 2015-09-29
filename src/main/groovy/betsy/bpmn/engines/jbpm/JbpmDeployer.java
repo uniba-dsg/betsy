@@ -1,6 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
-import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.engines.JsonHelper;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -40,28 +40,6 @@ public class JbpmDeployer {
         } catch (Exception e) {
             LOGGER.error("error: " + e.getMessage(), e);
             return false;
-        }
-    }
-
-    public static void main(String[] args) {
-        String baseUrl = "http://localhost:8080/jbpm-console";
-        String deploymentId = "de.uniba.dsg:SequenceFlow:1.0";
-
-        new JbpmDeployer(baseUrl, deploymentId).deploy();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(new JbpmDeployer(baseUrl, deploymentId).isDeployed());
-
-        new JbpmDeployer(baseUrl, deploymentId).undeploy();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 

@@ -1,6 +1,7 @@
 package betsy.bpel.engines.petalsesb;
 
 import betsy.common.config.Configuration;
+import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
@@ -10,22 +11,39 @@ import java.nio.file.Paths;
 
 public class PetalsEsbInstaller {
 
+    private Path serverDir;
+    private String fileName;
+    private Path targetEsbInstallDir;
+    private Path bpelComponentPath;
+    private Path soapComponentPath;
+    private Path sourceFile;
+    private Path petalsBinFolder;
+    private Path cliFile;
+
     public void install() {
         FileTasks.deleteDirectory(serverDir);
         FileTasks.mkdirs(serverDir);
 
         NetworkTasks.downloadFileFromBetsyRepo(fileName);
 
+        //unzip main esb component
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
         ZipTasks.unzip(sourceFile, serverDir);
+
+        //unzip cli -- needed for shutting down the esb
+        ZipTasks.unzip(cliFile, serverDir);
 
         // install bpel service engine and binding connector for soap messages
         FileTasks.copyFileIntoFolder(bpelComponentPath, targetEsbInstallDir);
         FileTasks.copyFileIntoFolder(soapComponentPath, targetEsbInstallDir);
+
+        FileTasks.createFile(petalsBinFolder.resolve("start-petals.sh"), "export JAVA_HOME=$JAVA7_HOME\ncd \"" + petalsBinFolder.toAbsolutePath() + "\" && ./petals-esb.sh >/dev/null 2>&1 &");
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(petalsBinFolder, "chmod").values("+x", "start-petals.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(petalsBinFolder, "chmod").values("+x", "petals-esb.sh"));
     }
 
-    public Path getServerDir() {
-        return serverDir;
+    public void setPetalsBinFolder(Path petalsBinFolder) {
+        this.petalsBinFolder = petalsBinFolder;
     }
 
     public void setServerDir(Path serverDir) {
@@ -40,42 +58,22 @@ public class PetalsEsbInstaller {
         this.fileName = fileName;
     }
 
-    public Path getTargetEsbInstallDir() {
-        return targetEsbInstallDir;
-    }
-
     public void setTargetEsbInstallDir(Path targetEsbInstallDir) {
         this.targetEsbInstallDir = targetEsbInstallDir;
-    }
-
-    public Path getBpelComponentPath() {
-        return bpelComponentPath;
     }
 
     public void setBpelComponentPath(Path bpelComponentPath) {
         this.bpelComponentPath = bpelComponentPath;
     }
 
-    public Path getSoapComponentPath() {
-        return soapComponentPath;
-    }
-
     public void setSoapComponentPath(Path soapComponentPath) {
         this.soapComponentPath = soapComponentPath;
-    }
-
-    public Path getSourceFile() {
-        return sourceFile;
     }
 
     public void setSourceFile(Path sourceFile) {
         this.sourceFile = sourceFile;
     }
 
-    private Path serverDir = Paths.get("server/petalsesb");
-    private String fileName = "petals-esb-distrib-4.0.zip";
-    private Path targetEsbInstallDir = serverDir.resolve("petals-esb-4.0/install");
-    private Path bpelComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip");
-    private Path soapComponentPath = serverDir.resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip");
-    private Path sourceFile = serverDir.resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip");
+    public void setCliFile(Path cliFile) { this.cliFile = cliFile;}
+
 }

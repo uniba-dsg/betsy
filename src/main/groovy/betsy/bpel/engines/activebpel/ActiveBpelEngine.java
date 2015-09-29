@@ -2,20 +2,29 @@ package betsy.bpel.engines.activebpel;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
-    public String getName() {
-        return "active-bpel";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2");
+    }
+
+    public Path getXsltPath() {
+        return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/active-bpel");
     }
 
     @Override
@@ -34,8 +43,20 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getTomcat().getTomcatLogsDir(), process.getTargetLogsPath());
-        FileTasks.copyFileIntoFolder(getAeDeploymentLog(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getTomcat().getTomcatLogsDir()));
+        result.add(getAeDeploymentLog());
+
+        return result;
     }
 
     private static Path getAeDeploymentLog() {
@@ -50,7 +71,9 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void startup() {
-        getTomcat().startup();
+        Tomcat tomcat = getTomcat();
+        tomcat.setJavaVersion(Tomcat.JavaVersion.V7);
+        tomcat.startup();
     }
 
     @Override
@@ -65,12 +88,13 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        new ActiveBpelInstaller().install();
+        new ActiveBpelInstaller(getServerPath()).install();
     }
 
     @Override
     public void deploy(BPELProcess process) {
-        new ActiveBpelDeployer(getDeploymentDir(), getAeDeploymentLog()).deploy(process.getTargetPackageFilePath("bpr"), process.getName());
+        new ActiveBpelDeployer(getDeploymentDir(), getAeDeploymentLog()).
+                deploy(process.getTargetPackageFilePath("bpr"), process.getName());
     }
 
     public void buildArchives(BPELProcess process) {

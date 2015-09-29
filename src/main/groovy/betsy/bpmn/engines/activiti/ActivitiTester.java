@@ -2,9 +2,8 @@ package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.DataLogChecker;
 import betsy.bpmn.engines.LogFileAnalyzer;
-import betsy.bpmn.engines.camunda.JsonHelper;
+import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
@@ -14,19 +13,17 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActivitiTester {
     private static final Logger LOGGER = Logger.getLogger(ActivitiTester.class);
     private BPMNTestCase testCase;
-    private String restURL;
     private String key;
     private Path logDir;
     private BPMNTester bpmnTester;
 
-    public static void startProcess(String id, Object[] variables) {
+    public static void startProcess(String id, Object... variables) {
         LOGGER.info("Start process instance for " + id);
         String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
 
@@ -67,6 +64,9 @@ public class ActivitiTester {
         }
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
+
+        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
+
         bpmnTester.test();
     }
 
@@ -99,10 +99,6 @@ public class ActivitiTester {
 
     public void setTestCase(BPMNTestCase testCase) {
         this.testCase = testCase;
-    }
-
-    public void setRestURL(String restURL) {
-        this.restURL = restURL;
     }
 
     public String getKey() {

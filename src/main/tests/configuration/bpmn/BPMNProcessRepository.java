@@ -39,6 +39,8 @@ public class BPMNProcessRepository {
             }
         }
 
+        repo.put("MINIMAL", Collections.singletonList(BasicProcesses.SEQUENCE_FLOW));
+
         // insert every process into the map
         for (BPMNProcess process : repo.getByName("ALL")) {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
@@ -50,7 +52,7 @@ public class BPMNProcessRepository {
         return repo.getByName(name);
     }
 
-    public List<BPMNProcess> getByNames(String[] names) {
+    public List<BPMNProcess> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

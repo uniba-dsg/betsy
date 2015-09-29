@@ -3,10 +3,14 @@ package betsy.bpel.engines.wso2;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
@@ -18,8 +22,8 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getName() {
-        return "wso2_v3_1_0";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0");
     }
 
     @Override
@@ -34,9 +38,10 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), getServerPath());
 
-        FileTasks.createFile(getServerPath().resolve("startup.bat"), "start startup-helper.bat");
-        FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "TITLE wso2server\ncd " +
-                getBinDir().toAbsolutePath() + " && call wso2server.bat");
+        FileTasks.createFile(getServerPath().resolve("startup.bat"), "start \"" + getName() + "\" /min startup-helper.bat");
+        FileTasks.createFile(getServerPath().resolve("startup-helper.bat"), "cd " + getBinDir().toAbsolutePath() + " && call wso2server.bat");
+
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", getServerPath().toString()));
     }
 
     public String getZipFileName() {
@@ -46,8 +51,11 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
         WaitTasks.sleep(2000);
-        WaitTasks.waitForSubstringInFile(60_000, 500, getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
+
+        Path logFile = getLogsFolder().resolve("wso2carbon.log");
+        WaitTasks.waitFor(120_000, 500, () -> FileTasks.hasFile(logFile) && FileTasks.hasFileSpecificSubstring(logFile, "WSO2 Carbon started in "));
     }
 
     public Path getLogsFolder() {
@@ -64,10 +72,9 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq wso2server"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
 
-        // required for jenkins - may have side effects but this should not be a problem in this context
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Administrator:*"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
     }
 
     @Override
@@ -109,7 +116,19 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getLogsFolder(), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getLogsFolder()));
+
+        return result;
     }
 
     public static final String CHECK_URL = "http://localhost:9763";

@@ -2,6 +2,9 @@ package betsy.bpel.virtual.host;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * A {@link ServiceAddress} is an address to a service that is mandatory for the
  * proper execution of an {@link betsy.bpel.engines.AbstractBPELEngine}. It is also possible to specify special
@@ -13,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ServiceAddress {
 
-    private final String address;
+    private final URL address;
     private final String requiredHtmlContent;
 
     public ServiceAddress(final String address, final String requiredHtmlContent) {
@@ -25,7 +28,11 @@ public class ServiceAddress {
             throw new IllegalArgumentException("html content must not be null");
         }
 
-        this.address = address;
+        try {
+            this.address = new URL(address);
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("URL " + address + " is not guilty", e);
+        }
         this.requiredHtmlContent = requiredHtmlContent;
     }
 
@@ -35,10 +42,10 @@ public class ServiceAddress {
 
     @Override
     public String toString() {
-        return address;
+        return address.toString();
     }
 
-    public String getAddress() {
+    public URL getAddress() {
         return address;
     }
 

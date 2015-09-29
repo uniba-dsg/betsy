@@ -26,7 +26,7 @@ public final class TestPartnerServicePublisherInternalRegular implements TestPar
         this.url = Objects.requireNonNull(url);
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new TestPartnerServicePublisherInternalRegular().startup();
     }
 

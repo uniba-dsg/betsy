@@ -3,17 +3,34 @@ package betsy.bpel.engines.openesb;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.util.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     private static final Logger LOGGER = Logger.getLogger(OpenEsb301StandaloneEngine.class);
     public static final String WEB_UI = "http://localhost:4848/webui";
+    private String openEsbFolder = "OpenESB-SE-3.0.1";
+    private String binariesFileName = "OpenESB-Quickstart-Standalone-v301-server-only.zip";
+    private String adminBinariesFile = "openesb-oeadmin-1.0.1.jar";
+
+    public OpenEsb301StandaloneEngine(){
+    }
+
+    public OpenEsb301StandaloneEngine(String openEsbFolder, String binariesFileName, String adminBinariesFile){
+        this.openEsbFolder = openEsbFolder;
+        this.binariesFileName = binariesFileName;
+        this.adminBinariesFile = adminBinariesFile;
+    }
 
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
@@ -24,23 +41,29 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
         String processName = process.getName();
         Path packageFilePath = process.getTargetPackageCompositeFilePath();
-        Path tmpFolder = process.getTargetPath();
 
         LOGGER.info("Deploying " + processName + " from " + packageFilePath);
 
         // QUIRK path must always be in unix style, otherwise it is not correctly deployed
-        String packageFilePathUnixStyle = packageFilePath.toAbsolutePath().toString().replace("\\", "/");
 
         Path passwordFilePath = getServerPath().resolve("password.txt");
         FileTasks.createFile(passwordFilePath, "OE_ADMIN_PASSWORD=admin");
 
-        String command = "java -jar openesb-oeadmin-1.0.1.jar deploy-jbi-service-assembly --user admin --passwordfile " + passwordFilePath.toAbsolutePath().toString().replace("\\", "/") + " " + packageFilePathUnixStyle;
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
+        String[] deployParams = {"-jar", adminBinariesFile, "deploy-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                StringUtils.toUnixStyle(packageFilePath)};
 
-        command = "java -jar openesb-oeadmin-1.0.1.jar start-jbi-service-assembly --user admin --passwordfile " + passwordFilePath.toAbsolutePath().toString().replace("\\", "/") + " " + processName + "Application";
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), command));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
+
+        String[] startParams = {"-jar", adminBinariesFile, "start-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                processName + "Application"};
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
     }
 
     public void buildDeploymentDescriptor(BPELProcess process) {
@@ -76,7 +99,19 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     @Override
     public void storeLogs(BPELProcess process) {
         FileTasks.mkdirs(process.getTargetLogsPath());
-        FileTasks.copyFilesInFolderIntoOtherFolder(getInstanceFolder().resolve("logs"), process.getTargetLogsPath());
+
+        for (Path p : getLogs()) {
+            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
+        }
+    }
+
+    @Override
+    public List<Path> getLogs() {
+        List<Path> result = new LinkedList<>();
+
+        result.addAll(FileTasks.findAllInFolder(getInstanceFolder().resolve("logs")));
+
+        return result;
     }
 
     @Override
@@ -84,11 +119,17 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         FileTasks.deleteDirectory(getServerPath());
         FileTasks.mkdirs(getServerPath());
 
-        String filename = "OpenESB-Quickstart-Standalone-v301-server-only.zip";
-        NetworkTasks.downloadFileFromBetsyRepo(filename);
-        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
+        NetworkTasks.downloadFileFromBetsyRepo(binariesFileName);
+        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(binariesFileName), getServerPath());
 
-        FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start openesb.bat");
+        FileTasks.createFile(getServerPath().resolve("start-openesb.bat"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && start \"" + getName() + "\" /min openesb.bat");
+
+        // goto folder
+        // start openesb
+        // put the process in the background
+        FileTasks.createFile(getServerPath().resolve("start-openesb.sh"), "cd \"" + getInstanceBinFolder().toAbsolutePath() + "\" && ./openesb.sh >/dev/null 2>&1 &");
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getServerPath().resolve("start-openesb.sh").toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", getInstanceBinFolder().resolve("openesb.sh").toString()));
     }
 
     private Path getInstanceBinFolder() {
@@ -116,13 +157,14 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     public void startup() {
         // start openesb.bat
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.bat"));
-        WaitTasks.waitForAvailabilityOfUrl(10*1000,500, WEB_UI);
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), getServerPath().resolve("start-openesb.sh").toAbsolutePath()));
+        WaitTasks.waitForAvailabilityOfUrl(10 * 1000, 500, WEB_UI);
 
         // install bpelse
-        Path components = getServerPath().resolve("OpenESB-SE-3.0.1").resolve("OE-Components");
+        Path components = getServerPath().resolve(openEsbFolder).resolve("OE-Components");
         Path installFolder = getInstanceFolder().resolve("server").resolve("jbi").resolve("autoinstall");
 
-        WaitTasks.waitFor(10*1000, 500, () -> FileTasks.hasFolder(installFolder));
+        WaitTasks.waitFor(10 * 1000, 500, () -> FileTasks.hasFolder(installFolder));
 
         installComponent(components, installFolder, "encoderlib.jar");
         installComponent(components, installFolder, "wsdlextlib.jar");
@@ -131,12 +173,15 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     private Path getInstanceFolder() {
-        return getServerPath().resolve("OpenESB-SE-3.0.1").resolve("OE-Instance");
+        return getServerPath().resolve(openEsbFolder).resolve("OE-Instance");
     }
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq C:\\Windows\\system32\\cmd.exe - openesb.bat"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), "openesb.bat").values("stop"));
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), getInstanceBinFolder().resolve("openesb.sh")).values("stop"));
     }
 
     @Override
@@ -145,7 +190,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getName() {
-        return "openesb301standalone";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1");
     }
 }

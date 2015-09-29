@@ -106,12 +106,8 @@ public class SnapshotCreator {
                                 + "repeatedly, please import the vm manually"
                                 + " with a valid snapshot in 'Running' state.");
             }
-        } catch (MalformedURLException e) {
-            throw new VirtualEngineServiceException("Could not verify "
-                    + "engine service availability. At least one address is "
-                    + "invalid: ", e);
-        } catch (InterruptedException e) {
-            throw new VirtualEngineServiceException("interrupted", e);
+        } catch (Exception e) {
+            throw new VirtualEngineServiceException(e);
         }
     }
 

@@ -26,11 +26,6 @@ public class VirtualPetalsEsbEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public String getName() {
-        return "petalsesb_v";
-    }
-
-    @Override
     public List<ServiceAddress> getVerifiableServiceAddresses() {
         List<ServiceAddress> saList = new LinkedList<>();
         saList.add(new ServiceAddress("http://localhost:" + HTTP_PORT + "/petals/services/listServices"));

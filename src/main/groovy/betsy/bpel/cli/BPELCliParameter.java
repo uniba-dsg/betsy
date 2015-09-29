@@ -9,6 +9,7 @@ public interface BPELCliParameter {
 
     List<AbstractBPELEngine> getEngines();
     List<BPELProcess> getProcesses();
+    String getTestFolderName();
 
     boolean openResultsInBrowser();
     boolean checkDeployment();
@@ -21,4 +22,5 @@ public interface BPELCliParameter {
 
     boolean showHelp();
 
+    boolean useInstalledEngine();
 }

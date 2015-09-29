@@ -51,6 +51,8 @@ public class BPELProcessRepository {
 
         repo.put("ERRORS", ErrorProcesses.getProcesses());
 
+        repo.put("MINIMAL", Collections.singletonList(StructuredActivityProcesses.SEQUENCE));
+
         // automatic group
         repo.put(
                 "FAULTS",
@@ -85,12 +87,16 @@ public class BPELProcessRepository {
         return repo.getByName(name);
     }
 
-    public List<BPELProcess> getByNames(String[] names) {
+    public List<BPELProcess> getByNames(String... names) {
         return repo.getByNames(names);
     }
 
     public List<String> getNames() {
         return repo.getNames();
+    }
+
+    public List<String> getGroups() {
+        return repo.getGroups();
     }
 
 }
