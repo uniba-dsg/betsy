@@ -90,15 +90,19 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
-    public static final BPMNProcess WCP09_DISCRIMINATOR_COMPLEXGATEWAY = BPMNProcessBuilder.buildPatternProcess(
-            "WCP09_Discriminator_ComplexGateway", "WCP09 Discriminator: Implementation of WCP09 using a merging"
+    public static final BPMNProcess WCP09_STRUCTURED_DISCRIMINATOR_COMPLEXGATEWAY = BPMNProcessBuilder.buildPatternProcess(
+            "WCP09_Structured_Discriminator_ComplexGateway",
+            "WCP09 Structured Discriminator: Implementation of WCP09 using a merging"
                     + "ComplexGateway with activationCount>=1. I.e, the gateway fires upon completion of the first "
                     + "incoming token and is then disabled.",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
-    public static final BPMNProcess DISCRIMINATOR_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP09Discriminator", "A point in the workflow process that waits for one of the" +
-                    " incoming branches to complete before activating the subsequent activity\n" + "this is achieved by an N out of M MultiInstance join that completes after ONE instance as depicted in Wohed2005",
-            new BPMNTestCase().assertTask1().assertTask2());
+    public static final BPMNProcess WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE = BPMNProcessBuilder.buildPatternProcess(
+            "WCP09_Structured_Discriminator_MultiInstance",
+            "WCP09 partial workaround using MultiInstance: The flow after a MultiInstance Activity should continue after"
+                    + "the first instance has completed."
+                    + "This covers only a special case for WCP09 Discriminator where one of various EQUAL activities are used.",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3());
 
     public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n" +
                     "This solution might not work in JBPM because of the implementation used for the Multimerge",
@@ -163,30 +167,24 @@ public class PatternProcesses {
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             WCP01_SEQUENCE,
 
-            //WCP02
             WCP02_PARALLEL_SPLIT,
 
-            //WCP03
             WCP03_SYNCHRONIZATION,
 
-            //WCP04
             WCP04_EXCLUSIVE_CHOICE,
 
-            //WCP05
             WCP05_SIMPLE_MERGE,
 
-            //WCP06
             WCP06_MULTI_CHOICE,
 
-            //WCP07
             WCP07_STRUCTURED_SYNCHRONIZING_MERGE,
 
-            //WCP08
             WCP08_MULTI_MERGE,
 
-            //WCP09
-            WCP09_DISCRIMINATOR_COMPLEXGATEWAY,
-            DISCRIMINATOR_PATTERN,
+            //WCP09 direct solution:
+            WCP09_STRUCTURED_DISCRIMINATOR_COMPLEXGATEWAY,
+            //WCP09 workarounds:
+            WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE,
 
             //WCP10
             ARBITRARY_PATTERN,
