@@ -329,6 +329,11 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
+    public static final BPMNProcess EVENT_DEFINITION_REF_ERROR_END_EVENT_TOPLEVEL = BPMNProcessBuilder.buildEventProcess(
+            "EventDefinitionRef_Error_EndEvent_TopLevel", "A simple test for the usage of eventDefinitionRef with an ErrorEndEvent in a top level process.",
+            new BPMNTestCase().assertTask1().assertErrorThrownErrorEvent()
+    );
+
 
 
     public static final List<BPMNProcess> EVENTS = Arrays.asList(
@@ -388,7 +393,9 @@ class EventProcesses {
             MULTIPLE_PARALLEL_INTERMEDIATE_EVENT,
             MULTIPLE_INTERMEDIATE_EVENT_THROW_FIRST_EVENTDEFINITION,
             MULTIPLE_INTERMEDIATE_EVENT_THROW_LAST_EVENTDEFINITION,
-            MULTIPLE_INTERMEDIATE_THROW_EVENT
+            MULTIPLE_INTERMEDIATE_THROW_EVENT,
+
+            EVENT_DEFINITION_REF_ERROR_END_EVENT_TOPLEVEL
     );
 
 }
