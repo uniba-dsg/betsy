@@ -124,27 +124,6 @@
                     }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
             </xsl:when>
 
-
-            <!-- WARNING: Will lead to Runtime Errors when used in JBPM. The support for this employment has been put on hold due to time constraints. For documentation on how to implement this please refer to http://docs.jboss.org/jbpm/v6.2/userguide/jBPMBPMN2.html#d0e3086 -->
-            <xsl:when test="text() = 'SET_COUNTER'">
-            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-            &lt;![CDATA[
-               //This is one of the proposed solutions found on stackoverflow
-               kcontext.getKnowledgeRuntime().setVariable("counter","Integer");
-                ]]&gt;&lt;/bpmn2:script&gt;
-             </xsl:text>
-            </xsl:when>
-
-
-            <!-- WARNING: will lead to Runtime Errors when used in JBPM -->
-            <xsl:when test="text() = 'INC_COUNTER'">
-            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-            &lt;![CDATA[
-                kcontext.getKnowledgeRuntime().setVariable("counter", counter + 1);
-                ]]&gt;&lt;/bpmn2:script&gt;
-             </xsl:text>
-            </xsl:when>
-
             <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE'">
                 <xsl:text disable-output-escaping="yes">
                     &lt;bpmn2:script&gt;
@@ -156,11 +135,11 @@
 
             <!--This variation requires the { <bpmn2:error id="ERR_CODE" name="ERR_CODE"> to be defined in the bpmn file before the bpmn2:process definition-->
             <xsl:when test="text() = 'THROW_ERROR'">
-            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-            &lt;![CDATA[
-                kcontext.getProcessInstance().signalEvent(&quot;ERR_CODE&quot;, null);
-                 ]]&gt;&lt;/bpmn2:script&gt;
-             </xsl:text>
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
+                        kcontext.getProcessInstance().signalEvent(&quot;ERR_CODE&quot;, null);
+                     ]]&gt;&lt;/bpmn2:script&gt;
+                 </xsl:text>
             </xsl:when>
 
 

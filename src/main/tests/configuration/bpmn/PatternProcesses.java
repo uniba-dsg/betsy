@@ -138,11 +138,6 @@ public class PatternProcesses {
             new BPMNTestCase().setIntegerVariable(0).assertTask1().assertTask1().assertTask2().assertTask2()
     );
 
-    public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n" +
-                    "This solution should work with JBPM since it uses an alternative for Multimerge",
-
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().assertTask1().assertTask2());
-
     public static final BPMNProcess IMPLICIT_TERMINATION = BPMNProcessBuilder.buildPatternProcess("WCP11_ImplicitTermination",
             "A process that terminates when all contained activity instances have completed",
             new BPMNTestCase().assertTask1()
@@ -216,12 +211,10 @@ public class PatternProcesses {
 
             //WCP09 direct solution:
             WCP09_STRUCTURED_DISCRIMINATOR_COMPLEXGATEWAY,
-            //WCP09 workarounds:
+            //WCP09 workaround:
             WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE,
 
-            //WCP10
             WCP10_ArbitraryCycle,
-            ARBITRARY_PATTERN_2,
 
             //WCP11
             IMPLICIT_TERMINATION,
@@ -235,15 +228,12 @@ public class PatternProcesses {
             //WCP14
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE,
 
-            //WCP16
             WCP16_DEFERRED_CHOICE,
 
-            //WCP17
             WCP17_INTERLEAVED_PARALLEL_ROUTING,
 
             //WCP18 is not supported
 
-            //WCP19
             WCP19_CANCEL_TASK,
 
             //WCP20 here

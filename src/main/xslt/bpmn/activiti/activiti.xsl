@@ -83,26 +83,6 @@
                     }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
             </xsl:when>
 
-
-            <!-- Set a counter variable with value 0 that can be used for escaping infinite loop conditions -->
-            <xsl:when test="text() = 'SET_COUNTER'">
-            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-            def counter = 0
-                execution.setVariable("counter",counter)
-                &lt;/bpmn2:script&gt;
-             </xsl:text>
-            </xsl:when>
-
-            <!-- Increases the counter variable by 1 Note that unlike in Camunda the counter variable has to be explicitly defined in order to be accessible-->
-            <xsl:when test="text() = 'INC_COUNTER'">
-            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-            def counter = counter
-                counter += 1
-            execution.setVariable("counter",counter)
-            &lt;/bpmn2:script&gt;
-             </xsl:text>
-            </xsl:when>
-
             <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE'">
                 <xsl:text disable-output-escaping="yes">
                     &lt;bpmn2:script&gt;
@@ -112,17 +92,16 @@
             </xsl:when>
 
             <xsl:when test="text() = 'THROW_ERROR'">
-            <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-                &lt;![CDATA[
-               throw new org.activiti.engine.delegate.BpmnError("ERR_CODE");
-            ]]&gt;&lt;/bpmn2:script&gt;
-
-             </xsl:text>
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
+                    &lt;![CDATA[
+                        throw new org.activiti.engine.delegate.BpmnError("ERR_CODE");
+                    ]]&gt;&lt;/bpmn2:script&gt;
+                 </xsl:text>
             </xsl:when>
 
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
-                <xsl:value-of select="text()"/>
+                    <xsl:value-of select="text()"/>
                 <xsl:text disable-output-escaping="yes">&lt;/bpmn2:script&gt;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
