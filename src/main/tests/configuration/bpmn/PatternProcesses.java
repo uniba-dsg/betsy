@@ -55,7 +55,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
-    public static final BPMNProcess WCP06_MULTI_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP06_MultiChoice",
+    public static final BPMNProcess WCP06_MULTI_CHOICE_INCLUSIVE_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP06_MultiChoice_InclusiveGateway",
             "WCP06 Multi Choice: Checking the ability to perform an OR-Split, one or more branches should be created "
                     + "depending on the input. Task3 is only executed if no other condition is evaluated to true.",
             new BPMNTestCase().inputA().assertTask1(),
@@ -175,7 +175,7 @@ public class PatternProcesses {
 
             WCP05_SIMPLE_MERGE,
 
-            WCP06_MULTI_CHOICE,
+            WCP06_MULTI_CHOICE_INCLUSIVE_GATEWAY,
 
             WCP07_STRUCTURED_SYNCHRONIZING_MERGE,
 
