@@ -17,12 +17,8 @@ public class PetalsEsbInstaller {
     private Path bpelComponentPath;
     private Path soapComponentPath;
     private Path sourceFile;
-    private PetalsEsbEngine engine;
+    private Path petalsBinFolder;
     private Path cliFile;
-
-    public PetalsEsbInstaller(PetalsEsbEngine engine){
-        this.engine = engine;
-    }
 
     public void install() {
         FileTasks.deleteDirectory(serverDir);
@@ -41,9 +37,13 @@ public class PetalsEsbInstaller {
         FileTasks.copyFileIntoFolder(bpelComponentPath, targetEsbInstallDir);
         FileTasks.copyFileIntoFolder(soapComponentPath, targetEsbInstallDir);
 
-        FileTasks.createFile(engine.getPetalsBinFolder().resolve("start-petals.sh"), "export JAVA_HOME=$JAVA7_HOME\ncd \"" + engine.getPetalsBinFolder().toAbsolutePath() + "\" && ./petals-esb.sh >/dev/null 2>&1 &");
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(engine.getPetalsBinFolder(), "chmod").values("+x", "start-petals.sh"));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(engine.getPetalsBinFolder(), "chmod").values("+x", "petals-esb.sh"));
+        FileTasks.createFile(petalsBinFolder.resolve("start-petals.sh"), "export JAVA_HOME=$JAVA7_HOME\ncd \"" + petalsBinFolder.toAbsolutePath() + "\" && ./petals-esb.sh >/dev/null 2>&1 &");
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(petalsBinFolder, "chmod").values("+x", "start-petals.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(petalsBinFolder, "chmod").values("+x", "petals-esb.sh"));
+    }
+
+    public void setPetalsBinFolder(Path petalsBinFolder) {
+        this.petalsBinFolder = petalsBinFolder;
     }
 
     public void setServerDir(Path serverDir) {

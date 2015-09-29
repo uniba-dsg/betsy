@@ -114,13 +114,15 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        PetalsEsbInstaller installer = new PetalsEsbInstaller(this);
+        PetalsEsbInstaller installer = new PetalsEsbInstaller();
         installer.setServerDir(getServerPath());
         installer.setFileName("petals-esb-distrib-4.0.zip");
         installer.setTargetEsbInstallDir(getServerPath().resolve("petals-esb-4.0/install"));
         installer.setBpelComponentPath(getServerPath().resolve("petals-esb-distrib-4.0/esb-components/petals-se-bpel-1.1.0.zip"));
         installer.setSoapComponentPath(getServerPath().resolve("petals-esb-distrib-4.0/esb-components/petals-bc-soap-4.1.0.zip"));
         installer.setSourceFile(getServerPath().resolve("petals-esb-distrib-4.0/esb/petals-esb-4.0.zip"));
+        installer.setCliFile(getServerPath().resolve("petals-esb-distrib-4.0/esb/petals-cli-1.0.0.zip"));
+        installer.setPetalsBinFolder(getPetalsBinFolder());
         installer.install();
     }
 
