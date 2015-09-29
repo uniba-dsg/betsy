@@ -56,8 +56,21 @@ public class PatternProcesses {
     );
 
     public static final BPMNProcess WCP06_MULTI_CHOICE_INCLUSIVE_GATEWAY = BPMNProcessBuilder.buildPatternProcess("WCP06_MultiChoice_InclusiveGateway",
-            "WCP06 Multi Choice: Checking the ability to perform an OR-Split, one or more branches should be created "
-                    + "depending on the input. Task3 is only executed if no other condition is evaluated to true.",
+            "WCP06 Multi Choice: Checking the ability to perform an OR-Split using an inclusive gateway. One or more branches should be created "
+                    + "depending on the input. The third branch is only executed if no other condition is evaluated to true.",
+            new BPMNTestCase().inputA().assertTask1(),
+            new BPMNTestCase().inputB().assertTask2(),
+            new BPMNTestCase().inputC().assertTask3(),
+            new BPMNTestCase().inputAB().assertTask1().assertTask2(),
+            new BPMNTestCase().inputAC().assertTask1(),
+            new BPMNTestCase().inputBC().assertTask2(),
+            new BPMNTestCase().inputABC().assertTask1().assertTask2()
+    );
+
+    public static final BPMNProcess WCP06_MULTI_CHOICE_IMPLICIT = BPMNProcessBuilder.buildPatternProcess("WCP06_MultiChoice_Implicit",
+            "WCP06 Multi Choice: Checking the ability to perform an OR-Split using conditional sequence flows without a preceding gateway. " +
+                    "One or more branches should be created depending on the input. " +
+                    "The third branch is only executed if no other condition is evaluated to true.",
             new BPMNTestCase().inputA().assertTask1(),
             new BPMNTestCase().inputB().assertTask2(),
             new BPMNTestCase().inputC().assertTask3(),
@@ -176,6 +189,7 @@ public class PatternProcesses {
             WCP05_SIMPLE_MERGE,
 
             WCP06_MULTI_CHOICE_INCLUSIVE_GATEWAY,
+            WCP06_MULTI_CHOICE_IMPLICIT,
 
             WCP07_STRUCTURED_SYNCHRONIZING_MERGE,
 
