@@ -133,6 +133,7 @@ public class ProcessValidator {
         allowedLogMessages.add("SET_STRING_DATA");
         allowedLogMessages.add("LOG_DATA");
         allowedLogMessages.add("THROW_ERROR");
+        allowedLogMessages.add("INCREMENT_INTEGER_VARIABLE");
         return allowedLogMessages.toArray(new String[allowedLogMessages.size()]);
     }
 

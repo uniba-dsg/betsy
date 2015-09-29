@@ -102,6 +102,15 @@
              </xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE'">
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;
+                    &lt;![CDATA[
+                        integerVariable++
+                    ]]&gt;&lt;/bpmn2:script&gt;
+                 </xsl:text>
+            </xsl:when>
+
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[</xsl:text>
                 <xsl:value-of disable-output-escaping="yes" select="text()"/>

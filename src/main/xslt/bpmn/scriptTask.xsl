@@ -121,6 +121,12 @@ f.createNewFile();
                 <xsl:text disable-output-escaping="yes">&lt;/bpmn2:script&gt;</xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE'">
+                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
+                <xsl:value-of select="text()"/>
+                <xsl:text disable-output-escaping="yes">&lt;/bpmn2:script&gt;</xsl:text>
+            </xsl:when>
+
             <xsl:when test="text() = 'THROW_ERROR'">
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;</xsl:text>
                 <xsl:value-of select="text()"/>

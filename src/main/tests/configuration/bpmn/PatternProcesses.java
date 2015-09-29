@@ -128,11 +128,15 @@ public class PatternProcesses {
                     + "This covers only a special case for WCP09 Discriminator where one of various EQUAL activities are used.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3());
 
-    public static final BPMNProcess ARBITRARY_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycleMM", "An arbitrary Cycle realized by the MultiMerge Solution depicted in Weske2012 Fig.4.18\n" +
-                    "This solution might not work in JBPM because of the implementation used for the Multimerge",
-
-            new BPMNTestCase().assertTask2().assertTask4().assertTask4().assertTask5().assertTask5().assertTask5().assertTask5().assertTask5());
-
+    public static final BPMNProcess WCP10_ArbitraryCycle = BPMNProcessBuilder.buildPatternProcess("WCP10_ArbitraryCycle",
+            "WCP10 arbitrary cycle: Structure is based on the example on workflowpatterns.com: The test consists of a "
+                    + "series of scripttasks and exclusive gateways. After the creation of the log, task1 is logged, "
+                    + "afterwards a counter integerVariable is incremented and task1 is repeated if the integerVariable "
+                    + "is <2; otherwise task2 is logged which will be repeated if integerVariable<3",
+            new BPMNTestCase().setIntegerVariable(2).assertTask1().assertTask2(),
+            new BPMNTestCase().setIntegerVariable(1).assertTask1().assertTask2().assertTask2(),
+            new BPMNTestCase().setIntegerVariable(0).assertTask1().assertTask1().assertTask2().assertTask2()
+    );
 
     public static final BPMNProcess ARBITRARY_PATTERN_2 = BPMNProcessBuilder.buildPatternProcess("WCP10ArbitraryCycle", "An arbitrary Cycle realized without the MultiMerge Solution depicted in Weske2012 Fig.4.17\n" +
                     "This solution should work with JBPM since it uses an alternative for Multimerge",
@@ -216,7 +220,7 @@ public class PatternProcesses {
             WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE,
 
             //WCP10
-            ARBITRARY_PATTERN,
+            WCP10_ArbitraryCycle,
             ARBITRARY_PATTERN_2,
 
             //WCP11
