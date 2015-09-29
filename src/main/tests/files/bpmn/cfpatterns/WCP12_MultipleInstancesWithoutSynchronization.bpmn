@@ -7,6 +7,8 @@
 
     <bpmn2:signal id="Signal" name="Signal"/>
 
+    <bpmn2:signalEventDefinition id="SignalEventDefinition_2" signalRef="Signal"/>
+
     <bpmn2:process id="WCP12_MultipleInstancesWithoutSynchronization" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="StartEvent">
@@ -27,7 +29,7 @@
             <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
             <bpmn2:multiInstanceLoopCharacteristics isSequential="false" behavior="None"
-                                                    noneBehaviorEventRef="SignalEventDefinition_1">
+                                                    noneBehaviorEventRef="SignalEventDefinition_2">
                 <bpmn2:loopCardinality>3</bpmn2:loopCardinality>
             </bpmn2:multiInstanceLoopCharacteristics>
             <bpmn2:script>SCRIPT_task1</bpmn2:script>
