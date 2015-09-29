@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP16_DeferredChoiceTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP16_DeferredChoice">
+
+    <!-- based on EventBasedGateway_Signals -->
+    <bpmn2:signal id="Signal_task1" name="Signal_task1"/>
+    <bpmn2:signal id="Signal_task2" name="Signal_task2"/>
+
+    <bpmn2:process id="WCP16_DeferredChoice" isExecutable="true">
+
+        <bpmn2:startEvent id="StartEvent">
+            <bpmn2:outgoing>StartEvent_to_start</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="StartEvent_to_start" name="" sourceRef="StartEvent" targetRef="start"/>
+
+        <bpmn2:scriptTask id="start" name="Start">
+            <bpmn2:incoming>StartEvent_to_start</bpmn2:incoming>
+            <bpmn2:outgoing>start_to_ParallelGateway</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="start_to_ParallelGateway" name="" sourceRef="start" targetRef="ParallelGateway"/>
+
+        <bpmn2:parallelGateway id="ParallelGateway" gatewayDirection="Diverging">
+            <bpmn2:incoming>start_to_ParallelGateway</bpmn2:incoming>
+            <bpmn2:outgoing>ParallelGateway_to_EventBasedGateway</bpmn2:outgoing>
+            <bpmn2:outgoing>ParallelGateway_to_IntermediateCatchEvent_Timer</bpmn2:outgoing>
+        </bpmn2:parallelGateway>
+
+        <bpmn2:sequenceFlow id="ParallelGateway_to_IntermediateCatchEvent_Timer" name="" sourceRef="ParallelGateway"
+                            targetRef="IntermediateCatchEvent_Timer"/>
+
+        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_Timer">
+            <bpmn2:incoming>ParallelGateway_to_IntermediateCatchEvent_Timer</bpmn2:incoming>
+            <bpmn2:outgoing>IntermediateCatchEvent_Timer_to_ExclusiveGateway</bpmn2:outgoing>
+            <bpmn2:timerEventDefinition id="_TimerEventDefinition_1">
+                <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT5S</bpmn2:timeDuration>
+            </bpmn2:timerEventDefinition>
+        </bpmn2:intermediateCatchEvent>
+
+        <bpmn2:sequenceFlow id="IntermediateCatchEvent_Timer_to_ExclusiveGateway" name=""
+                            sourceRef="IntermediateCatchEvent_Timer" targetRef="ExclusiveGateway"/>
+
+        <bpmn2:exclusiveGateway id="ExclusiveGateway" gatewayDirection="Diverging">
+            <bpmn2:incoming>IntermediateCatchEvent_Timer_to_ExclusiveGateway</bpmn2:incoming>
+            <bpmn2:outgoing>ExclusiveGateway_to_IntermediateThrowEvent_Signal_task1</bpmn2:outgoing>
+            <bpmn2:outgoing>ExclusiveGateway_to_IntermediateThrowEvent_Signal_task2</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>
+
+        <bpmn2:sequenceFlow id="ExclusiveGateway_to_IntermediateThrowEvent_Signal_task1" name=""
+                            sourceRef="ExclusiveGateway" targetRef="IntermediateThrowEvent_Signal_task1">
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">test.contains("a")</bpmn2:conditionExpression>
+        </bpmn2:sequenceFlow>
+
+
+        <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_Signal_task1">
+            <bpmn2:incoming>ExclusiveGateway_to_IntermediateThrowEvent_Signal_task1</bpmn2:incoming>
+            <bpmn2:outgoing>IntermediateThrowEvent_Signal_task1_to_EndEvent_Signal_task1</bpmn2:outgoing>
+            <bpmn2:signalEventDefinition id="SignalEventDefinition_Signal_task1" signalRef="Signal_task1"/>
+        </bpmn2:intermediateThrowEvent>
+
+        <bpmn2:sequenceFlow id="IntermediateThrowEvent_Signal_task1_to_EndEvent_Signal_task1" name=""
+                            sourceRef="IntermediateThrowEvent_Signal_task1" targetRef="EndEvent_Signal_task1"/>
+
+        <bpmn2:endEvent id="EndEvent_Signal_task1">
+            <bpmn2:incoming>IntermediateThrowEvent_Signal_task1_to_EndEvent_Signal_task1</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+
+        <bpmn2:sequenceFlow id="ExclusiveGateway_to_IntermediateThrowEvent_Signal_task2" name=""
+                            sourceRef="ExclusiveGateway" targetRef="IntermediateThrowEvent_Signal_task2">
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">!test.contains("a")</bpmn2:conditionExpression>
+        </bpmn2:sequenceFlow>
+
+        <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_Signal_task2">
+            <bpmn2:incoming>ExclusiveGateway_to_IntermediateThrowEvent_Signal_task2</bpmn2:incoming>
+            <bpmn2:outgoing>IntermediateThrowEvent_Signal_task2_to_EndEvent_Signal_task2</bpmn2:outgoing>
+            <bpmn2:signalEventDefinition id="SignalEventDefinition_Signal_task2" signalRef="Signal_task2"/>
+        </bpmn2:intermediateThrowEvent>
+
+        <bpmn2:sequenceFlow id="IntermediateThrowEvent_Signal_task2_to_EndEvent_Signal_task2" name=""
+                            sourceRef="IntermediateThrowEvent_Signal_task2"
+                            targetRef="EndEvent_Signal_task2"/>
+
+        <bpmn2:endEvent id="EndEvent_Signal_task2">
+            <bpmn2:incoming>IntermediateThrowEvent_Signal_task2_to_EndEvent_Signal_task2</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+
+        <bpmn2:sequenceFlow id="ParallelGateway_to_EventBasedGateway" name="" sourceRef="ParallelGateway"
+                            targetRef="EventBasedGateway"/>
+
+        <!-- event based gateway -->
+        <bpmn2:eventBasedGateway id="EventBasedGateway" gatewayDirection="Diverging">
+            <bpmn2:incoming>ParallelGateway_to_EventBasedGateway</bpmn2:incoming>
+            <bpmn2:outgoing>EventBasedGateway_to_IntermediateCatchEvent_for_Signal_task1</bpmn2:outgoing>
+            <bpmn2:outgoing>EventBasedGateway_to_IntermediateCatchEvent_for_Signal_task2</bpmn2:outgoing>
+        </bpmn2:eventBasedGateway>
+
+        <!-- branch Signal_task2 with ScriptTask2 -->
+        <bpmn2:sequenceFlow id="EventBasedGateway_to_IntermediateCatchEvent_for_Signal_task1" name=""
+                            sourceRef="EventBasedGateway"
+                            targetRef="IntermediateCatchEvent_for_Signal_task1"/>
+
+        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_for_Signal_task1">
+            <bpmn2:incoming>EventBasedGateway_to_IntermediateCatchEvent_for_Signal_task1</bpmn2:incoming>
+            <bpmn2:outgoing>IntermediateCatchEvent_for_Signal_task1_to_ScriptTask1</bpmn2:outgoing>
+            <bpmn2:signalEventDefinition id="SignalEventDefinition_2" signalRef="Signal_task1"/>
+        </bpmn2:intermediateCatchEvent>
+
+        <bpmn2:sequenceFlow id="IntermediateCatchEvent_for_Signal_task1_to_ScriptTask1" name=""
+                            sourceRef="IntermediateCatchEvent_for_Signal_task1" targetRef="ScriptTask1"/>
+
+        <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+            <bpmn2:incoming>IntermediateCatchEvent_for_Signal_task1_to_ScriptTask1</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptTask1_to_EndEvent_1</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="ScriptTask1_to_EndEvent_1" name="" sourceRef="ScriptTask1" targetRef="EndEvent_1"/>
+
+        <bpmn2:endEvent id="EndEvent_1">
+            <bpmn2:incoming>ScriptTask1_to_EndEvent_1</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+
+        <!-- branch Signal_task2 with ScriptTask2 -->
+        <bpmn2:sequenceFlow id="EventBasedGateway_to_IntermediateCatchEvent_for_Signal_task2" name=""
+                            sourceRef="EventBasedGateway"
+                            targetRef="IntermediateCatchEvent_for_Signal_task2"/>
+
+        <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_for_Signal_task2">
+            <bpmn2:incoming>EventBasedGateway_to_IntermediateCatchEvent_for_Signal_task2</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_24</bpmn2:outgoing>
+            <bpmn2:signalEventDefinition id="SignalEventDefinition_3" signalRef="Signal_task2"/>
+        </bpmn2:intermediateCatchEvent>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_24" name="" sourceRef="IntermediateCatchEvent_for_Signal_task2"
+                            targetRef="ScriptTask2"/>
+
+        <bpmn2:scriptTask id="ScriptTask2" name="ScriptTask2">
+            <bpmn2:incoming>SequenceFlow_24</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptTask2_to_EndEvent_3</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="ScriptTask2_to_EndEvent_3" name="" sourceRef="ScriptTask2" targetRef="EndEvent_3"/>
+
+        <bpmn2:endEvent id="EndEvent_3">
+            <bpmn2:incoming>ScriptTask2_to_EndEvent_3</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+    </bpmn2:process>
+</bpmn2:definitions>

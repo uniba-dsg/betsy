@@ -162,9 +162,12 @@ public class PatternProcesses {
             new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2());
 
 
-    public static final BPMNProcess DEFERRED_CHOICE_PATTERN = BPMNProcessBuilder.buildPatternProcess("WCP16DeferredChoice", "A process with the ability to depict a divergence point in a process where\n" +
-                    "one of several possible branches should be activated.",
-            new BPMNTestCase().assertTask1().optionDelay(5000));
+    public static final BPMNProcess WCP16_DEFERRED_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP16_DeferredChoice",
+            "An event-based exclusive gateway with two possible branches wait for one out of two signals which are signaled depending on the input. "
+                    + "Using a timer, it is ensured that the signals are signaled when the event-based gateway is already waiting for them. "
+                    + "Based on EventBasedGateway_Signals",
+            new BPMNTestCase().inputA().assertTask1().optionDelay(5000),
+            new BPMNTestCase().inputB().assertTask2().optionDelay(5000));
 
     public static final BPMNProcess WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess("WCP17_InterleavedParallelRouting",
             "A set of activity instances is executed sequentially in an " +
@@ -229,7 +232,7 @@ public class PatternProcesses {
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE,
 
             //WCP16
-            DEFERRED_CHOICE_PATTERN,
+            WCP16_DEFERRED_CHOICE,
 
             //WCP17
             WCP17_INTERLEAVED_PARALLEL_ROUTING,
