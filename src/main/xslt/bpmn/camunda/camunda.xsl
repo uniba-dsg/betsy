@@ -9,46 +9,51 @@
     <xsl:template match="bpmn2:script">
         <xsl:choose>
             <xsl:when test="text() = 'SET_STRING_DATA'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
-                    // set variable "data" to value "String"
-                    execution.setVariable('data', "String");
-                    }]]&gt;&lt;/bpmn2:script&gt;</xsl:text>
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
+                        // set variable "data" to value "String"
+                        execution.setVariable('data', "String");
+                    ]]&gt;&lt;/bpmn2:script&gt;
+                </xsl:text>
             </xsl:when>
 
             <xsl:when test="text() = 'LOG_DATA'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
-                    // create log file
-                    java.io.File file = new java.io.File("log" + testCaseNumber + "_data.txt");
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
+                        // create log file
+                        java.io.File file = new java.io.File("log" + testCaseNumber + "_data.txt");
 
-                    // create writer
-                    java.io.BufferedWriter bw = null;
-                    try {
-                        file.createNewFile();
-                        bw = new java.io.BufferedWriter(
-                                new java.io.FileWriter(file, true)
-                        );
+                        // create writer
+                        java.io.BufferedWriter bw = null;
+                        try {
+                            file.createNewFile();
+                            bw = new java.io.BufferedWriter(
+                                    new java.io.FileWriter(file, true)
+                            );
 
-                        // get variable
-                        Object obj = execution.getVariable('data');
+                            // get variable
+                            Object obj = execution.getVariable('data');
 
-                        // log value of variable
-                        bw.append(String.valueOf(obj));
-                        bw.newLine();
+                            // log value of variable
+                            bw.append(String.valueOf(obj));
+                            bw.newLine();
 
-                    } catch(java.io.IOException e) {
-                    } finally {
-                        if (bw != null) {
-                            try {
-                                bw.close();
-                            } catch(java.io.IOException e) {
+                        } catch(java.io.IOException e) {
+                        } finally {
+                            if (bw != null) {
+                                try {
+                                    bw.close();
+                                } catch(java.io.IOException e) {
+                                }
                             }
                         }
-                    }]]&gt;&lt;/bpmn2:script&gt; </xsl:text>
+                    ]]&gt;&lt;/bpmn2:script&gt;
+                </xsl:text>
             </xsl:when>
 
             <xsl:when test="text() = 'THROW_ERROR'">
-                <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
-                    &lt;![CDATA[
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
                         throw new org.camunda.bpm.engine.delegate.BpmnError("ERR_CODE");
                     ]]&gt;&lt;/bpmn2:script&gt;
                  </xsl:text>
@@ -56,8 +61,7 @@
 
             <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE'">
                 <xsl:text disable-output-escaping="yes">
-                    &lt;bpmn2:script&gt;
-                    &lt;![CDATA[
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
                         integerVariable++
                     ]]&gt;&lt;/bpmn2:script&gt;
                  </xsl:text>
