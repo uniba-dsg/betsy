@@ -68,34 +68,8 @@
         <xsl:choose>
             <xsl:when test="text() = 'SET_STRING_DATA'">
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
-                    // create log file
-                    java.io.File file = new java.io.File("log" + testCaseNumber + "_dataInput.txt");
-
-                    // create writer
-                    java.io.BufferedWriter bw = null;
-
-                    try {
-                        file.createNewFile();
-                        bw = new java.io.BufferedWriter(
-                                new java.io.FileWriter(file, true)
-                        );
-
-                        // set variable
-                        kcontext.setVariable("data", "String");
-
-                        // log variable
-                        Object obj = kcontext.getVariable("data");
-                        bw.append(String.valueOf(obj));
-                        bw.newLine();
-
-                    } catch(java.io.IOException e) {
-                    } finally {
-                        if (bw != null) {
-                            try {
-                                bw.close();
-                            } catch(java.io.IOException e) {
-                            }
-                        }
+                    // set variable "data" to value "String"
+                    kcontext.setVariable("data", "String");
                     }]]&gt;&lt;/bpmn2:script&gt;</xsl:text>
             </xsl:when>
 
