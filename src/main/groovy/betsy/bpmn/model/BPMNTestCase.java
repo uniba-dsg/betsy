@@ -73,6 +73,10 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.SCRIPT_task5);
     }
 
+    public BPMNTestCase assertMarkerExists() {
+        return addAssertion(BPMNAssertions.MARKER_EXISTS);
+    }
+
     public BPMNTestCase setIntegerVariable(int value) {
         integerVariable = new Integer(value);
         return this;
