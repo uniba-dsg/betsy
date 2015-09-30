@@ -346,6 +346,11 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
     );
 
+    public static final BPMNProcess EVENT_DEFINITION_REF_TIMER_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "EventDefinitionRef_Timer_IntermediateEvent", "A process with two scriptTasks. There is a intermediateCatchEvent in between the tasks that delay the execution for a short period of time.",
+            new BPMNTestCase().assertTask1().optionDelay(5000)
+    );
+
     public static final List<BPMNProcess> EVENTS = Arrays.asList(
             CANCEL,
 
@@ -407,7 +412,8 @@ class EventProcesses {
 
             EVENT_DEFINITION_REF_ERROR_END_EVENT_TOPLEVEL,
             EVENT_DEFINITION_REF_ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
-            EVENT_DEFINITION_REF_SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING
+            EVENT_DEFINITION_REF_SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+            EVENT_DEFINITION_REF_TIMER_INTERMEDIATE_EVENT
     );
 
 }
