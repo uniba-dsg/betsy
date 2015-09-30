@@ -5,6 +5,10 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -40,6 +44,21 @@ public class BPMNEnginesUtil {
             LOGGER.info("Could not validate parallel execution", e);
         }
 
+    }
+
+    public static void checkMarkerFileExists(BPMNTestCase testCase, Path logFile) {
+        if(!testCase.getAssertions().contains(BPMNAssertions.MARKER_EXISTS.toString())) {
+            return;
+        }
+        FileTasks.assertFile(logFile);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
+            if (Files.exists(logFile.getParent().resolve("MARKER"))) {
+                bw.append(BPMNAssertions.MARKER_EXISTS.toString());
+            }
+            bw.newLine();
+        } catch (IOException e) {
+            LOGGER.info("Writing result to file failed", e);
+        }
     }
 
     public static void checkDataLog(BPMNTestCase testCase, Path logFile) {
