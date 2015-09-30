@@ -12,6 +12,13 @@ f.createNewFile();
 }catch(java.io.IOException e){}]]></bpmn2:script>
             </xsl:when>
 
+            <xsl:when test="text() = 'CREATE_MARKER_FILE'">
+                <bpmn2:script><![CDATA[try{
+java.io.File f = new java.io.File("MARKER");
+f.createNewFile();
+}catch(java.io.IOException e){}]]></bpmn2:script>
+            </xsl:when>
+
             <xsl:when test="text() = 'CREATE_TIMESTAMP_LOG_1'">
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
                     int taskWaitingDuration = 10000; // milliseconds to wait between begin and end
