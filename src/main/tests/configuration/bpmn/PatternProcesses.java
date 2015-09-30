@@ -15,20 +15,23 @@ public class PatternProcesses {
             "Test Process for WCP01 Sequence: Containing a Start Event, two ScriptTasks (for logging purposes) and an "
                     + "EndEvent. All connected by only basic SequenceFlows."
                     + "Test passed successfully if the trace confirms the execution of 'Task1'.",
-            new BPMNTestCase().assertTask1());
+            new BPMNTestCase().assertTask1()
+    );
 
 
     public static final BPMNProcess WCP02_PARALLEL_SPLIT = BPMNProcessBuilder.buildPatternProcess("WCP02_ParallelSplit",
             "WCP02 ParallelSplit: Checking the ability to create two parallel branches by a ParallelGateway followed by "
                     + "a ScriptTask in each branch."
                     + "Test passed successfully if both Tasks are executed.",
-            new BPMNTestCase().assertTask1().assertTask2());
+            new BPMNTestCase().assertTask1().assertTask2()
+    );
 
 
     public static final BPMNProcess WCP03_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess("WCP03_Synchronization",
             "WCP03 Synchronization: Checking the ability to synchronize two parallel branches. The ScriptTask after the "
                     + "merging ParallelGateway has to be executed only once.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
 
 
     public static final BPMNProcess WCP04_EXCLUSIVE_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP04_ExclusiveChoice",
@@ -119,14 +122,16 @@ public class PatternProcesses {
             "WCP09 Structured Discriminator: Implementation of WCP09 using a merging"
                     + "ComplexGateway with activationCount>=1. I.e, the gateway fires upon completion of the first "
                     + "incoming token and is then disabled.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
 
     public static final BPMNProcess WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE = BPMNProcessBuilder.buildPatternProcess(
             "WCP09_Structured_Discriminator_MultiInstance",
             "WCP09 partial workaround using MultiInstance: The flow after a MultiInstance Activity should continue after"
                     + "the first instance has completed."
                     + "This covers only a special case for WCP09 Discriminator where one of various EQUAL activities are used.",
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3());
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3()
+    );
 
     public static final BPMNProcess WCP_10_ARBITRARY_CYCLE = BPMNProcessBuilder.buildPatternProcess("WCP10_ArbitraryCycle",
             "WCP10 arbitrary cycle: Structure is based on the example on workflowpatterns.com: The test consists of a "
@@ -161,7 +166,8 @@ public class PatternProcesses {
             "WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge",
             "A process with a multiple instances activity, where the loop cardinality is read from a variable at run-time. " +
                     "The behavior of the multi instance activity is set to 'All'.",
-            new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2());
+            new BPMNTestCase().setIntegerVariable(3).assertTask1().assertTask1().assertTask1().assertTask2()
+    );
 
 
     public static final BPMNProcess WCP16_DEFERRED_CHOICE = BPMNProcessBuilder.buildPatternProcess("WCP16_DeferredChoice",
@@ -169,32 +175,38 @@ public class PatternProcesses {
                     + "Using a timer, it is ensured that the signals are signaled when the event-based gateway is already waiting for them. "
                     + "Based on EventBasedGateway_Signals",
             new BPMNTestCase().inputA().assertTask1().optionDelay(5000),
-            new BPMNTestCase().inputB().assertTask2().optionDelay(5000));
+            new BPMNTestCase().inputB().assertTask2().optionDelay(5000)
+    );
 
     public static final BPMNProcess WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess(
             "WCP17_InterleavedParallelRouting",
             "A set of activity instances is executed sequentially in an " +
                     "order that is decided at run time. No two activity instances of this set are " +
                     "active at the same point in time",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
 
     public static final BPMNProcess WCP19_CANCEL_TASK = BPMNProcessBuilder.buildPatternProcess("WCP19_CancelTask",
             "An activity can be canceled when it emits an error event.",
-            new BPMNTestCase().assertTask2());
+            new BPMNTestCase().assertTask2()
+    );
 
     public static final BPMNProcess WCP20_CANCEL_CASE_ERROR = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseError",
             "Cancels a sub-process by emitting an error event inside the sub-process which is handled through a boundary event. "
                     + "See Error_BoundaryEvent_SubProcess_Interrupting",
-            new BPMNTestCase().assertTask1().assertTask2());
+            new BPMNTestCase().assertTask1().assertTask2()
+    );
 
     public static final BPMNProcess WCP20_CANCEL_CASE_CANCEL = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseCancel",
             "Cancels a sub-process by emitting a cancel event inside the sub-process which is handled through a boundary event. "
                     + "See Cancel_Event",
-            new BPMNTestCase().assertTask1().assertTask2());
+            new BPMNTestCase().assertTask1().assertTask2()
+    );
 
     public static final BPMNProcess WCP20_CANCEL_CASE_TERMINATE = BPMNProcessBuilder.buildPatternProcess("WCP20_CancelCaseTerminate",
             "Cancels a process immediatly by emitting a terminate event. See Terminate_Event",
-            new BPMNTestCase());
+            new BPMNTestCase()
+    );
 
     public static final List<BPMNProcess> PATTERNS = Arrays.asList(
             WCP01_SEQUENCE,
