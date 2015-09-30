@@ -4,8 +4,6 @@ import betsy.bpmn.model.BPMNAssertions;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -37,7 +35,7 @@ public class DataLogChecker {
             List<String> lines = readLogFile();
             values.forEach((value) -> {
                 if (contains(lines, value)) {
-                    writeToLogFile(BPMNAssertions.DATA_CORRECT);
+                    BPMNAssertions.appendToFile(logFile, BPMNAssertions.DATA_CORRECT);
                 }
             });
         } catch (IllegalArgumentException e) {
@@ -61,14 +59,4 @@ public class DataLogChecker {
         }
         return false;
     }
-
-    private void writeToLogFile(Object message) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
-            bw.append(message.toString());
-            bw.newLine();
-        } catch (IOException e) {
-            LOGGER.info("Writing result to file failed", e);
-        }
-    }
-
 }

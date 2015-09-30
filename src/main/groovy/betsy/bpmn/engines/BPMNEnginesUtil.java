@@ -50,14 +50,8 @@ public class BPMNEnginesUtil {
         if(!testCase.getAssertions().contains(BPMNAssertions.MARKER_EXISTS.toString())) {
             return;
         }
-        FileTasks.assertFile(logFile);
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
-            if (Files.exists(logFile.getParent().resolve("MARKER"))) {
-                bw.append(BPMNAssertions.MARKER_EXISTS.toString());
-            }
-            bw.newLine();
-        } catch (IOException e) {
-            LOGGER.info("Writing result to file failed", e);
+        if (Files.exists(logFile.getParent().resolve("MARKER"))) {
+            BPMNAssertions.appendToFile(logFile, BPMNAssertions.MARKER_EXISTS);
         }
     }
 
