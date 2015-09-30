@@ -176,7 +176,7 @@ public class PatternProcesses {
             "A set of activity instances is executed sequentially in an " +
                     "order that is decided at run time. No two activity instances of this set are " +
                     "active at the same point in time",
-            new BPMNTestCase().assertTask1().assertTask2());
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
     public static final BPMNProcess WCP19_CANCEL_TASK = BPMNProcessBuilder.buildPatternProcess("WCP19_CancelTask",
             "An activity can be canceled when it emits an error event.",
