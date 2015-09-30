@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="AdHocSubProcess_ParallelTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/AdHocSubProcess_Parallel"
+                   typeLanguage="http://www.w3.org/2001/XMLSchema">
+
+    <bpmn2:process id="AdHocSubProcess_Parallel" isClosed="false" isExecutable="true" processType="None">
+
+        <bpmn2:startEvent id="StartEvent" name="Start">
+            <bpmn2:outgoing>_2</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="_2" sourceRef="StartEvent" targetRef="start"/>
+
+        <bpmn2:scriptTask id="start" name="Start">
+            <bpmn2:incoming>_2</bpmn2:incoming>
+            <bpmn2:outgoing>_5</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="_5" sourceRef="start" targetRef="SubProcess"/>
+
+        <bpmn2:adHocSubProcess id="SubProcess" name="SubProcess"
+                               ordering="Parallel"
+                               triggeredByEvent="false">
+            <bpmn2:incoming>_5</bpmn2:incoming>
+            <bpmn2:outgoing>_6</bpmn2:outgoing>
+
+            <bpmn2:scriptTask id="Subprocess_ScriptTask1" name="Subprocess_ScriptTask1">
+                <bpmn2:script>SCRIPT_task1</bpmn2:script>
+            </bpmn2:scriptTask>
+
+            <bpmn2:scriptTask id="Subprocess_ScriptTask2" name="Subprocess_ScriptTask2">
+                <bpmn2:script>SCRIPT_task2</bpmn2:script>
+            </bpmn2:scriptTask>
+
+            <!-- a completion condition must wait for the sub processes to complete. As ad hoc processes are not supported, this has not been implemented. -->
+        </bpmn2:adHocSubProcess>
+
+        <bpmn2:sequenceFlow id="_6" sourceRef="SubProcess" targetRef="ScriptTask1"/>
+
+        <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+            <bpmn2:incoming>_6</bpmn2:incoming>
+            <bpmn2:outgoing>_10</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="_10" sourceRef="ScriptTask1" targetRef="EndEvent"/>
+
+        <bpmn2:endEvent id="EndEvent" name="EndEvent">
+            <bpmn2:incoming>_10</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+    </bpmn2:process>
+</bpmn2:definitions>

@@ -71,6 +71,18 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
+    public static final BPMNProcess AD_HOC_SUB_PROCESS_SEQUENTIAL = BPMNProcessBuilder.buildActivityProcess(
+            "AdHocSubProcess_Sequential",
+            "A process that contains an adHocSubProcess, which executes two contained tasks sequentially",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
+
+    public static final BPMNProcess AD_HOC_SUB_PROCESS_PARALLEL = BPMNProcessBuilder.buildActivityProcess(
+            "AdHocSubProcess_Sequential",
+            "A process that contains an adHocSubProcess, which executes two contained tasks sequentially",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
+
     public static final BPMNProcess TOKEN_CARDINALITY_EXPLICIT = BPMNProcessBuilder.buildActivityProcess(
             "Token_Cardinality_Explicit", "A process that contains one scriptTask with completionQuantity=2, one scriptTask with startQuantity=2, " +
                     "and one scriptTask in between with both set to 1. The scriptTask in between must therefore be executed twice.",
@@ -114,6 +126,9 @@ class ActivityProcesses {
             SUB_PROCESS,
 
             TRANSACTION,
+
+            AD_HOC_SUB_PROCESS_SEQUENTIAL,
+            AD_HOC_SUB_PROCESS_PARALLEL,
 
             TOKEN_CARDINALITY_EXPLICIT,
             TOKEN_CARDINALITY_DEFAULT,
