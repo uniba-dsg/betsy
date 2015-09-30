@@ -77,6 +77,10 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.MARKER_EXISTS);
     }
 
+    public BPMNTestCase assertIncrement() {
+        return addAssertion(BPMNAssertions.INCREMENT);
+    }
+
     public BPMNTestCase setIntegerVariable(int value) {
         integerVariable = new Integer(value);
         return this;

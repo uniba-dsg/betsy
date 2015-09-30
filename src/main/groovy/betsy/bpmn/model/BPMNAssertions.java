@@ -27,7 +27,9 @@ public enum BPMNAssertions {
 
     MARKER_EXISTS("MARKER_exists"),
 
-    DATA_CORRECT("DATA_correct");
+    DATA_CORRECT("DATA_correct"),
+
+    INCREMENT("INCREMENT");
 
     private final String name;
 

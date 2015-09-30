@@ -67,6 +67,30 @@
                  </xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE_AND_LOG'">
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
+                        // increment
+                        integerVariable++
+
+                        //log execution
+                        java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+                        try {
+                            bw.append("INCREMENT");
+                            bw.newLine();
+                        } catch(java.io.IOException e) {
+                        } finally{
+                            if(bw != null) {
+                                try{
+                                    bw.close();
+                                } catch(java.io.IOException e) {
+                                }
+                            }
+                        }
+                    ]]&gt;&lt;/bpmn2:script&gt;
+                 </xsl:text>
+            </xsl:when>
+
             <xsl:otherwise>
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[</xsl:text>
                 <xsl:value-of disable-output-escaping="yes" select="text()"/>

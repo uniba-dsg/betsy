@@ -133,6 +133,7 @@ public class BPMNValidator {
         allowedLogMessages.add("LOG_DATA");
         allowedLogMessages.add("THROW_ERROR");
         allowedLogMessages.add("INCREMENT_INTEGER_VARIABLE");
+        allowedLogMessages.add("INCREMENT_INTEGER_VARIABLE_AND_LOG");
         return allowedLogMessages.toArray(new String[allowedLogMessages.size()]);
     }
 

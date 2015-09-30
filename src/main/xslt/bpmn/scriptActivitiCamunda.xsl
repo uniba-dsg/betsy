@@ -16,6 +16,13 @@
         </bpmn2:conditionExpression>
     </xsl:template>
 
+    <xsl:template match="bpmn2:loopCondition">
+        <bpmn2:loopCondition xsi:type="bpmn2:tFormalExpression">
+            <xsl:apply-templates select="@*"/>
+            ${<xsl:value-of select="." />}
+        </bpmn2:loopCondition>
+    </xsl:template>
+
     <!-- for conditional event definitions -->
     <xsl:template match="bpmn2:condition">
         <bpmn2:condition xsi:type="bpmn2:tFormalExpression">

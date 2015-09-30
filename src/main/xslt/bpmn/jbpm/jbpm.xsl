@@ -118,6 +118,30 @@
                  </xsl:text>
             </xsl:when>
 
+            <xsl:when test="text() = 'INCREMENT_INTEGER_VARIABLE_AND_LOG'">
+                <xsl:text disable-output-escaping="yes">
+                    &lt;bpmn2:script&gt;&lt;![CDATA[
+                        // increment
+                        kcontext.setVariable("integerVariable", integerVariable+1);
+
+                        // log execution
+                        java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+                        try {
+                            bw.append("INCREMENT");
+                            bw.newLine();
+                        } catch(java.io.IOException e) {
+                        } finally{
+                            if(bw != null) {
+                                try{
+                                    bw.close();
+                                } catch(java.io.IOException e) {
+                                }
+                            }
+                        }
+                    ]]&gt;&lt;/bpmn2:script&gt;
+                 </xsl:text>
+            </xsl:when>
+
             <!--This variation requires the { <bpmn2:error id="ERR_CODE" name="ERR_CODE"> to be defined in the bpmn file before the bpmn2:process definition-->
             <xsl:when test="text() = 'THROW_ERROR'">
                 <xsl:text disable-output-escaping="yes">
