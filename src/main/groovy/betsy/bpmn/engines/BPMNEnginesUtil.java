@@ -64,7 +64,7 @@ public class BPMNEnginesUtil {
         Path dataLog = Paths.get(logFile.toString().replaceAll("\\.txt", "_data.txt"));
 
         try {
-            DataLogChecker dlc = new DataLogChecker(logFile, dataLog);
+            DataLogChecker dlc = new DataLogChecker(logFile, dataLog, "String");
             dlc.checkDataTypes();
         } catch (IllegalArgumentException e) {
             LOGGER.info("Cloud not evaluate data log");
