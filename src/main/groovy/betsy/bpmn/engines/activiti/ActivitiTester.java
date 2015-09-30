@@ -56,6 +56,9 @@ public class ActivitiTester {
             // Check on parallel execution
             BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
 
+            // Check whether MARKER file exists
+            BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
+
             // Check data type
             BPMNEnginesUtil.checkDataLog(testCase, getFileName());
         } catch (Exception e) {

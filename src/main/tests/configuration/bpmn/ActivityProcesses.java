@@ -9,8 +9,9 @@ import java.util.List;
 class ActivityProcesses {
 
     public static final BPMNProcess CALL_ACTIVITY_PROCESS = BPMNProcessBuilder.buildActivityProcess(
-            "CallActivity_Process", "A collaboration with two participants. One process calls the other one through a callActivity.",
-            new BPMNTestCase().assertTask1().assertTask2()
+            "CallActivity_Process", "A collaboration with two participants. One process calls the other one through a "
+                    + "callActivity. The second process creates a file MARKER which must be present to pass the test.",
+            new BPMNTestCase().assertMarkerExists().assertTask2()
     );
 
     public static final BPMNProcess CALL_ACTIVITY_GLOBAL_TASK = BPMNProcessBuilder.buildActivityProcess(

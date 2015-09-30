@@ -25,6 +25,8 @@ public enum BPMNAssertions {
 
     EXECUTION_PARALLEL("EXECUTION_parallel"),
 
+    MARKER_EXISTS("MARKER_exists"),
+
     DATA_CORRECT("DATA_correct");
 
     private final String name;
