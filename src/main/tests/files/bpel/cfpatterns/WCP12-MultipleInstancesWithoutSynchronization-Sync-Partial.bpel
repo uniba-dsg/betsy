@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP12-MultipleInstancesWithoutSynchronization"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization"
+        name="WCP12-MultipleInstancesWithoutSynchronization-Sync-Partial"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization/sync/partial"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
+    <!-- Partial support, because it replicates the definition of the invoke -->
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" location="../TestInterface.wsdl"
-                importType="http://schemas.xmlsoap.org/wsdl/"/>
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner" location="../TestPartner.wsdl"
             importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
@@ -16,7 +17,8 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
+        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
     </variables>
     <sequence>
 
@@ -24,7 +26,7 @@
                  portType="ti:TestInterfacePortType" variable="InitData"/>
         <assign name="AssignInitData">
             <copy>
-                <from><literal>100</literal></from>
+                <from variable="InitData" part="inputPart" />
                 <to variable="PartnerInitData" part="inputPart"/>
             </copy>
             <copy>
@@ -32,15 +34,20 @@
                 <to variable="ReplyData" part="outputPart"/>
             </copy>
         </assign>
-        <forEach name="MultipleInstances" parallel="yes" counterName="counter">
-            <startCounterValue>0</startCounterValue>
-            <finalCounterValue>$InitData.inputPart</finalCounterValue>
-            <scope name="Scope">
-                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
-                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
-            </scope>
-        </forEach>
-
+        <flow>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"/>
+        </flow>
         <assign name="AddReplyData">
             <copy>
                 <from>$InitData.inputPart</from>

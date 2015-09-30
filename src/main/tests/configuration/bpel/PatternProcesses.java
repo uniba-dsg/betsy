@@ -92,8 +92,31 @@ class PatternProcesses {
     );
 
     public static
+    final BPELProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_SYNC = BPELProcessBuilder.buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronization-Sync",
+            new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(1).
+                    assertConcurrencyAtPartner().assertNumberOfPartnerCalls(2),
+            new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().sendSync(2).
+                    assertConcurrencyAtPartner().assertNumberOfPartnerCalls(3)
+    );
+
+    public static
+    final BPELProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_SYNC_PARTIAL = BPELProcessBuilder.buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronization-Sync-Partial",
+            new BPELTestCase().checkDeployment().buildPartnerConcurrencySetup().
+                    sendSync(100).assertConcurrencyAtPartner().assertNumberOfPartnerCalls(4)
+    );
+
+    public static
     final BPELProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL = BPELProcessBuilder.buildPatternProcessWithPartner(
             "WCP12-MultipleInstancesWithoutSynchronization-While-Partial",
+            new BPELTestCase().checkDeployment().sendSync(1, 1),
+            new BPELTestCase().checkDeployment().sendSync(2, 2)
+    );
+
+    public static
+    final BPELProcess MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_SYNC_PARTIAL = BPELProcessBuilder.buildPatternProcessWithPartner(
+            "WCP12-MultipleInstancesWithoutSynchronization-While-Sync-Partial",
             new BPELTestCase().checkDeployment().sendSync(1, 1),
             new BPELTestCase().checkDeployment().sendSync(2, 2)
     );
@@ -161,7 +184,10 @@ class PatternProcesses {
             DEFERRED_CHOICE_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_PARTIAL,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_SYNC,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_SYNC_PARTIAL,
             MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_PARTIAL,
+            MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION_PATTERN_WHILE_SYNC_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_DESGIN_TIME_KNOWLEDGE_PATTERN_PARTIAL,
             MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE_PATTERN,
