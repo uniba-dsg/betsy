@@ -36,7 +36,7 @@
 
     <!-- for gateways in general -->
     <xsl:template match="bpmn2:conditionExpression">
-        <bpmn2:conditionExpression language="http://www.java.com/java">
+        <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java">
             <xsl:apply-templates select="@*"/>
             return <xsl:value-of select="."/>;
         </bpmn2:conditionExpression>
@@ -44,7 +44,7 @@
 
     <!-- for conditional event definitions -->
     <xsl:template match="bpmn2:condition">
-        <bpmn2:condition language="http://www.java.com/java">
+        <bpmn2:condition xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java">
             <xsl:apply-templates select="@*"/>
             return <xsl:value-of select="."/>;
         </bpmn2:condition>

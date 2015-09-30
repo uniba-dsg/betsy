@@ -30,7 +30,7 @@
             <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
             <bpmn2:multiInstanceLoopCharacteristics isSequential="false" behavior="None"
                                                     noneBehaviorEventRef="SignalEventDefinition_2">
-                <bpmn2:loopCardinality>3</bpmn2:loopCardinality>
+                <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
             </bpmn2:multiInstanceLoopCharacteristics>
             <bpmn2:script>SCRIPT_task1</bpmn2:script>
         </bpmn2:scriptTask>

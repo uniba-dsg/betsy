@@ -72,7 +72,7 @@
             <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
             <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
-            <bpmn2:activationCondition>activationCount >= 1</bpmn2:activationCondition>
+            <bpmn2:activationCondition xsi:type="bpmn2:tFormalExpression">activationCount >= 1</bpmn2:activationCondition>
         </bpmn2:complexGateway>
 
         <bpmn2:sequenceFlow id="SequenceFlow_19" name="" sourceRef="ComplexGateway_2" targetRef="end"/>
