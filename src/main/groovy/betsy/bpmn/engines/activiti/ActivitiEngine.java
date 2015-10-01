@@ -7,21 +7,18 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
-import betsy.common.config.Configuration;
 import betsy.common.engines.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.engines.tomcat.TomcatInstaller;
 import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.XSLTTasks;
-import betsy.common.tasks.ZipTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
     @Override
@@ -107,36 +104,15 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public void install() {
-        // install tomcat
-        TomcatInstaller.v7(getServerPath()).install();
+        ActivitiInstaller installer = new ActivitiInstaller();
+        installer.setFileName("activiti-5.16.3.zip");
+        installer.setDestinationDir(getServerPath());
+        installer.setGroovyFile(Optional.of("groovy-all-2.1.3.jar"));
 
-        // unzip activiti
-        String filename = "activiti-5.16.3.zip";
-        NetworkTasks.downloadFileFromBetsyRepo(filename);
-        ZipTasks.unzip(Configuration.getDownloadsDir().resolve(filename), getServerPath());
+        installer.install();
 
-        // deploy
-        getTomcat().deployWar(getServerPath().resolve("activiti-5.16.3").resolve("wars").resolve("activiti-rest.war"));
-
-        String groovyFile = "groovy-all-2.1.3.jar";
-        NetworkTasks.downloadFileFromBetsyRepo(groovyFile);
-        getTomcat().addLib(Configuration.getDownloadsDir().resolve(groovyFile));
-
-        Path classes = getTomcat().getTomcatWebappsDir().resolve("activiti-rest").resolve("WEB-INF").resolve("classes");
-        FileTasks.createFile(classes.resolve("log4j.properties"), "log4j.rootLogger=DEBUG, CA, FILE\n" +
-                "\n" +
-                "# ConsoleAppender\n" +
-                "log4j.appender.CA=org.apache.log4j.ConsoleAppender\n" +
-                "log4j.appender.CA.layout=org.apache.log4j.PatternLayout\n" +
-                "log4j.appender.CA.layout.ConversionPattern= %d{hh:mm:ss,SSS} [%t] %-5p %c %x - %m%n\n" +
-                "\n" +
-                "log4j.appender.FILE=org.apache.log4j.DailyRollingFileAppender\n" +
-                "log4j.appender.FILE.File=${catalina.base}/logs/activiti.log\n" +
-                "log4j.appender.FILE.Append=true\n" +
-                "log4j.appender.FILE.Encoding=UTF-8\n" +
-                "log4j.appender.FILE.layout=org.apache.log4j.PatternLayout\n" +
-                "log4j.appender.FILE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n\n");
-        FileTasks.replaceTokenInFile(classes.resolve("activiti-context.xml"), "\t\t<property name=\"jobExecutorActivate\" value=\"false\" />", "\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
+        // Modify preferences
+        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-context.xml"), "\t\t<property name=\"jobExecutorActivate\" value=\"false\" />", "\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
     }
 
     public Tomcat getTomcat() {
