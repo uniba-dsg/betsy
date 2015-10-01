@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP19_CancelTaskTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP19_CancelTask">
+
+    <bpmn2:error id="ERR_CODE" errorCode="ERR_CODE" name="ERR_CODE"/>
+
+    <bpmn2:process id="WCP19_CancelTask" isExecutable="true">
+
+        <bpmn2:startEvent id="Start" name="Start">
+            <bpmn2:outgoing>Start_to_ScriptThrowError</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="Start_to_ScriptThrowError" name="Start_to_ScriptThrowError" sourceRef="Start" targetRef="ScriptThrowError"/>
+
+        <bpmn2:scriptTask id="ScriptThrowError" name="ScriptThrowError">
+            <bpmn2:incoming>Start_to_ScriptThrowError</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptThrowError_to_ScriptTask1</bpmn2:outgoing>
+            <bpmn2:script>THROW_ERROR</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:boundaryEvent attachedToRef="ScriptThrowError" cancelActivity="true" id="BoundaryEvent" name="BoundaryEvent">
+            <bpmn2:outgoing>BoundaryEvent_to_ScriptTask2</bpmn2:outgoing>
+            <bpmn2:errorEventDefinition id="_ErrorEventDefinition_2" errorRef="ERR_CODE"/>
+        </bpmn2:boundaryEvent>
+
+        <bpmn2:sequenceFlow id="ScriptThrowError_to_ScriptTask1" name="ScriptThrowError_to_ScriptTask1" sourceRef="ScriptThrowError" targetRef="ScriptTask1"/>
+
+        <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+            <bpmn2:incoming>ScriptThrowError_to_ScriptTask1</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptTask1_to_BadEnd</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="ScriptTask1_to_BadEnd" name="ScriptTask1_to_BadEnd" sourceRef="ScriptTask1" targetRef="BadEnd"/>
+
+        <bpmn2:endEvent id="BadEnd" name="BadEnd">
+            <bpmn2:incoming>ScriptTask1_to_BadEnd</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+        <bpmn2:sequenceFlow id="BoundaryEvent_to_ScriptTask2" name="ErrorCaughtFlow" sourceRef="BoundaryEvent" targetRef="ScriptTask2"/>
+
+        <bpmn2:scriptTask id="ScriptTask2" name="ScriptTask2">
+            <bpmn2:incoming>BoundaryEvent_to_ScriptTask2</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptTask2_to_GoodEnd</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="ScriptTask2_to_GoodEnd" name="ScriptTask2_to_GoodEnd" sourceRef="ScriptTask2" targetRef="GoodEnd"/>
+
+        <bpmn2:endEvent id="GoodEnd" name="GoodEnd">
+            <bpmn2:incoming>ScriptTask2_to_GoodEnd</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+    </bpmn2:process>
+</bpmn2:definitions>

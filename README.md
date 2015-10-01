@@ -111,7 +111,7 @@ camunda__7_3_0, activiti__5_16_3, activiti__5_17_0, jbpm__6_0_1,
 jbpm__6_1_0, jbpm__6_2_0]
 
 
-<PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, DATA,
+<PROCESSES>: [ALL, GATEWAYS, ACTIVITIES, ERRORS, EVENTS, BASICS, PATTERNS, DATA,
 MINIMAL, ExclusiveGateway, ExclusiveGateway_Default,...]
 ```
 

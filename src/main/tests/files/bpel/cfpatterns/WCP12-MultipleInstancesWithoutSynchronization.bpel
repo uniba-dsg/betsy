@@ -16,8 +16,7 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
-        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
     </variables>
     <sequence>
 
@@ -37,9 +36,8 @@
             <startCounterValue>0</startCounterValue>
             <finalCounterValue>$InitData.inputPart</finalCounterValue>
             <scope name="Scope">
-                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                        outputVariable="PartnerReplyData"/>
+                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
             </scope>
         </forEach>
 

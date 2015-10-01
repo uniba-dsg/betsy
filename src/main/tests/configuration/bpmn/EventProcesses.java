@@ -329,7 +329,27 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
+    public static final BPMNProcess EVENT_DEFINITION_REF_ERROR_END_EVENT_TOPLEVEL = BPMNProcessBuilder.buildEventProcess(
+            "EventDefinitionRef_Error_EndEvent_TopLevel", "A simple test for the usage of eventDefinitionRef with an ErrorEndEvent in a top level process.",
+            new BPMNTestCase().assertTask1().assertErrorThrownErrorEvent()
+    );
 
+    public static final BPMNProcess EVENT_DEFINITION_REF_ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
+            "EventDefinitionRef_Error_StartEvent_EventSubProcess_Interrupting", "A test for the usage of eventDefinitionRef with an error start event in an event sub process. " +
+                    "After the execution of the EventSubProcess the flow should continue normally.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
+
+    public static final BPMNProcess EVENT_DEFINITION_REF_SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
+            "EventDefinitionRef_Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for the usage of eventDefinitionRef with a signal boundary event NOT interrupting a subprocess." +
+                    "All tasks (Task1-4) should be executed.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
+    );
+
+    public static final BPMNProcess EVENT_DEFINITION_REF_TIMER_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "EventDefinitionRef_Timer_IntermediateEvent", "A process with two scriptTasks. There is a intermediateCatchEvent in between the tasks that delay the execution for a short period of time.",
+            new BPMNTestCase().assertTask1().optionDelay(5000)
+    );
 
     public static final List<BPMNProcess> EVENTS = Arrays.asList(
             CANCEL,
@@ -388,7 +408,12 @@ class EventProcesses {
             MULTIPLE_PARALLEL_INTERMEDIATE_EVENT,
             MULTIPLE_INTERMEDIATE_EVENT_THROW_FIRST_EVENTDEFINITION,
             MULTIPLE_INTERMEDIATE_EVENT_THROW_LAST_EVENTDEFINITION,
-            MULTIPLE_INTERMEDIATE_THROW_EVENT
+            MULTIPLE_INTERMEDIATE_THROW_EVENT,
+
+            EVENT_DEFINITION_REF_ERROR_END_EVENT_TOPLEVEL,
+            EVENT_DEFINITION_REF_ERROR_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
+            EVENT_DEFINITION_REF_SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
+            EVENT_DEFINITION_REF_TIMER_INTERMEDIATE_EVENT
     );
 
 }

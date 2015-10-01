@@ -46,7 +46,7 @@
             <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
             <bpmn2:conditionalEventDefinition>
                 <bpmn2:condition xsi:type="bpmn2:tFormalExpression">
-                    test.contains("a")>
+                    test.contains("a")
                 </bpmn2:condition>
             </bpmn2:conditionalEventDefinition>
         </bpmn2:boundaryEvent>

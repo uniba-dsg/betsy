@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="WCP01_SequenceTest"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP01_Sequence">
+    <bpmn2:process id="WCP01_Sequence" isExecutable="true">
+
+        <bpmn2:startEvent id="StartEvent" name="Start">
+            <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent" targetRef="start"/>
+
+        <bpmn2:scriptTask id="start" name="Create Log File">
+            <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="start" targetRef="end"/>
+
+        <bpmn2:scriptTask id="end" name="task1">
+            <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="end" targetRef="EndEvent"/>
+
+        <bpmn2:endEvent id="EndEvent">
+            <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+    </bpmn2:process>
+</bpmn2:definitions>

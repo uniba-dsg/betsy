@@ -50,10 +50,11 @@ public class BPMNValidator {
                     throw new IllegalStateException("No process element with id '" + process.getName() + "' found in process " + process.getName());
                 }
 
-                XPathExpression targetNamespaceExpression = xpath.compile("//*[local-name() = 'definitions' and @targetNamespace =  'http://dsg.wiai.uniba.de/betsy/bpmn/" + process.getName().substring(0, 1).toLowerCase() + process.getName().substring(1, process.getName().length()) + "']");
+                String expectedTargetNamespace = "http://dsg.wiai.uniba.de/betsy/bpmn/"+process.getName();
+                XPathExpression targetNamespaceExpression = xpath.compile("//*[local-name() = 'definitions']/@targetNamespace");
                 nodeList = (NodeList) targetNamespaceExpression.evaluate(doc, XPathConstants.NODESET);
-                if (nodeList.getLength() != 1) {
-                    throw new IllegalStateException("targetNamespace of definitions element of process '" + process.getName() + " is not http://dsg.wiai.uniba.de/betsy/bpmn/" + process.getName().substring(0, 1).toLowerCase() + process.getName().substring(1, process.getName().length()));
+                if (nodeList.getLength() != 1 && expectedTargetNamespace.toLowerCase().equals(nodeList.item(0).getTextContent().toLowerCase())) {
+                    throw new IllegalStateException("targetNamespace of definitions element of process '" + process.getName() + " is not '"+expectedTargetNamespace+"'");
                 }
 
             } catch (SAXException | XPathExpressionException | IOException e) {
@@ -126,9 +127,13 @@ public class BPMNValidator {
         allowedLogMessages.add("CREATE_LOG_FILE");
         allowedLogMessages.add("CREATE_TIMESTAMP_LOG_1");
         allowedLogMessages.add("CREATE_TIMESTAMP_LOG_2");
+        allowedLogMessages.add("CREATE_MARKER_FILE");
         allowedLogMessages.add("WAIT_TEN_SECONDS");
         allowedLogMessages.add("SET_STRING_DATA");
         allowedLogMessages.add("LOG_DATA");
+        allowedLogMessages.add("THROW_ERROR");
+        allowedLogMessages.add("INCREMENT_INTEGER_VARIABLE");
+        allowedLogMessages.add("INCREMENT_INTEGER_VARIABLE_AND_LOG");
         return allowedLogMessages.toArray(new String[allowedLogMessages.size()]);
     }
 

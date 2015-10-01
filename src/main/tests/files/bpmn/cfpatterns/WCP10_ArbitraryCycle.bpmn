@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             expressionLanguage="http://www.w3.org/1999/XPath" id="WCP10_ArbitraryCycleTest" name=""
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP10_ArbitraryCycle"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+    <bpmn2:process id="WCP10_ArbitraryCycle" isExecutable="true">
+        <bpmn2:startEvent id="_2" name="Start Event">
+            <bpmn2:outgoing>_18</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="_18" sourceRef="_2" targetRef="_17"/>
+
+        <bpmn2:scriptTask id="_17" name="create log file">
+            <bpmn2:incoming>_18</bpmn2:incoming>
+            <bpmn2:outgoing>_19</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="_19" sourceRef="_17" targetRef="_3"/>
+
+        <bpmn2:exclusiveGateway id="_3" name="Exclusive Gateway" gatewayDirection="Converging" >
+            <bpmn2:incoming>_19</bpmn2:incoming>
+            <bpmn2:incoming>_23</bpmn2:incoming>
+            <bpmn2:outgoing>_6</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>
+
+        <bpmn2:sequenceFlow id="_6" sourceRef="_3" targetRef="_5"/>
+
+        <bpmn2:scriptTask id="_5" name="task1">
+            <bpmn2:incoming>_6</bpmn2:incoming>
+            <bpmn2:outgoing>_8</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="_8" sourceRef="_5" targetRef="_7"/>
+
+        <bpmn2:exclusiveGateway id="_7" name="Exclusive Gateway" gatewayDirection="Converging" >
+            <bpmn2:incoming>_8</bpmn2:incoming>
+            <bpmn2:incoming>_24</bpmn2:incoming>
+            <bpmn2:outgoing>_10</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>
+
+        <bpmn2:sequenceFlow id="_10" sourceRef="_7" targetRef="_9"/>
+
+        <bpmn2:scriptTask id="_9" name="increment A">
+            <bpmn2:incoming>_10</bpmn2:incoming>
+            <bpmn2:outgoing>_12</bpmn2:outgoing>
+            <bpmn2:script>INCREMENT_INTEGER_VARIABLE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="_12" sourceRef="_9" targetRef="_11"/>
+
+        <bpmn2:exclusiveGateway default="_14" gatewayDirection="Diverging" id="_11" name="Exclusive Gateway">
+            <bpmn2:incoming>_12</bpmn2:incoming>
+            <bpmn2:outgoing>_14</bpmn2:outgoing>
+            <bpmn2:outgoing>_23</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>
+
+        <bpmn2:sequenceFlow id="_14" sourceRef="_11" targetRef="_13"/>
+        <bpmn2:sequenceFlow id="_23" sourceRef="_11" targetRef="_3">
+            <bpmn2:conditionExpression>integerVariable&lt;2</bpmn2:conditionExpression>
+        </bpmn2:sequenceFlow>
+
+        <bpmn2:scriptTask id="_13" name="task2">
+            <bpmn2:incoming>_14</bpmn2:incoming>
+            <bpmn2:outgoing>_21</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="_21" sourceRef="_13" targetRef="_20"/>
+
+        <bpmn2:exclusiveGateway default="_22" gatewayDirection="Diverging" id="_20" name="Exclusive Gateway">
+            <bpmn2:incoming>_21</bpmn2:incoming>
+            <bpmn2:outgoing>_22</bpmn2:outgoing>
+            <bpmn2:outgoing>_24</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>
+
+        <bpmn2:sequenceFlow id="_24" sourceRef="_20" targetRef="_7">
+            <bpmn2:conditionExpression>integerVariable&lt;3</bpmn2:conditionExpression>
+        </bpmn2:sequenceFlow>
+
+        <bpmn2:sequenceFlow id="_22" sourceRef="_20" targetRef="_15"/>
+
+        <bpmn2:endEvent id="_15" name="End Event">
+            <bpmn2:incoming>_22</bpmn2:incoming>
+        </bpmn2:endEvent>
+    </bpmn2:process>
+</bpmn2:definitions>

@@ -17,8 +17,7 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
-        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
     </variables>
     <sequence>
 
@@ -35,18 +34,14 @@
             </copy>
         </assign>
         <flow>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
-            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
-                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
-                    outputVariable="PartnerReplyData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
+            <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
+                    portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
         </flow>
         <assign name="AddReplyData">
             <copy>

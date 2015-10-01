@@ -1,23 +1,15 @@
 package betsy.bpmn.engines;
 
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class OverlappingTimestampChecker {
 
@@ -41,8 +33,8 @@ public class OverlappingTimestampChecker {
 
     public void checkParallelism() {
         // Read all Lines from files
-        List<String> listOne = new ArrayList();
-        List<String> listTwo = new ArrayList();
+        List<String> listOne = new ArrayList<>();
+        List<String> listTwo = new ArrayList<>();
         try {
             listOne = Files.readAllLines(logParallelOne, StandardCharsets.ISO_8859_1);
             listTwo = Files.readAllLines(logParallelTwo, StandardCharsets.ISO_8859_1);
@@ -52,7 +44,10 @@ public class OverlappingTimestampChecker {
 
         // Parse Longs
         if (listOne.size() == 2 && listTwo.size() == 2) {
-            long startOne = 0, startTwo = 0, endOne = 0, endTwo = 0;
+            long startOne;
+            long startTwo;
+            long endOne;
+            long endTwo;
 
             try {
                 startOne = Long.parseLong(listOne.get(0));
@@ -73,13 +68,8 @@ public class OverlappingTimestampChecker {
             }
 
             // Write result of comparison to file
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(logFile.toString(), true))) {
-                if (wasParallel) {
-                    bw.append(BPMNAssertions.EXECUTION_PARALLEL.toString());
-                }
-                bw.newLine();
-            } catch (IOException e) {
-                LOGGER.info("Writing result to file failed", e);
+            if(wasParallel) {
+                BPMNAssertions.appendToFile(logFile, BPMNAssertions.EXECUTION_PARALLEL);
             }
 
         } else {

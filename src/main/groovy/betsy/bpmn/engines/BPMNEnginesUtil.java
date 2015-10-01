@@ -5,6 +5,10 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -42,6 +46,15 @@ public class BPMNEnginesUtil {
 
     }
 
+    public static void checkMarkerFileExists(BPMNTestCase testCase, Path logFile) {
+        if(!testCase.getAssertions().contains(BPMNAssertions.MARKER_EXISTS.toString())) {
+            return;
+        }
+        if (Files.exists(logFile.getParent().resolve("MARKER"))) {
+            BPMNAssertions.appendToFile(logFile, BPMNAssertions.MARKER_EXISTS);
+        }
+    }
+
     public static void checkDataLog(BPMNTestCase testCase, Path logFile) {
         // Only check when asked for a data type assertion
         if (!testCase.getAssertions().contains(BPMNAssertions.DATA_CORRECT.toString())) {
@@ -51,7 +64,7 @@ public class BPMNEnginesUtil {
         Path dataLog = Paths.get(logFile.toString().replaceAll("\\.txt", "_data.txt"));
 
         try {
-            DataLogChecker dlc = new DataLogChecker(logFile, dataLog);
+            DataLogChecker dlc = new DataLogChecker(logFile, dataLog, "String");
             dlc.checkDataTypes();
         } catch (IllegalArgumentException e) {
             LOGGER.info("Cloud not evaluate data log");

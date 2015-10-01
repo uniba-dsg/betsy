@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/multiInstance_SubProcess"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   id="MultiInstance_SubProcessTest">
+    <bpmn2:process id="MultiInstance_SubProcess" isExecutable="true">
+
+        <bpmn2:startEvent id="StartEvent" name="Start">
+            <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="StartEvent" targetRef="start"/>
+
+        <bpmn2:scriptTask id="start" name="Start">
+            <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="start" targetRef="SubProcess_1"/>
+
+        <bpmn2:subProcess id="SubProcess_1" name="Subprocess">
+            <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+            <bpmn2:multiInstanceLoopCharacteristics isSequential="true">
+                <bpmn2:loopCardinality xsi:type="bpmn2:tFormalExpression">3</bpmn2:loopCardinality>
+            </bpmn2:multiInstanceLoopCharacteristics>
+
+            <bpmn2:startEvent id="StartEvent_2">
+                <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+            </bpmn2:startEvent>
+
+            <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="StartEvent_2" targetRef="ScriptTask"/>
+
+            <bpmn2:scriptTask id="ScriptTask" name="Subprocess Task">
+                <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+                <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+                <bpmn2:script>SCRIPT_task1</bpmn2:script>
+            </bpmn2:scriptTask>
+
+            <bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="ScriptTask" targetRef="EndEvent_3"/>
+
+            <bpmn2:endEvent id="EndEvent_3">
+                <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+            </bpmn2:endEvent>
+
+        </bpmn2:subProcess>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="SubProcess_1" targetRef="end"/>
+
+        <bpmn2:scriptTask id="end" name="End">
+            <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+            <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="SequenceFlow_10" name="" sourceRef="end" targetRef="EndEvent_2"/>
+
+        <bpmn2:endEvent id="EndEvent_2">
+            <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+    </bpmn2:process>
+</bpmn2:definitions>

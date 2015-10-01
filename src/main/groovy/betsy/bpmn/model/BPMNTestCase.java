@@ -8,13 +8,14 @@ import java.util.*;
 
 public class BPMNTestCase extends TestCase {
 
+    private Integer integerVariable = new Integer(0);
+
     public BPMNTestCase() {
         this.getTestSteps().add(new BPMNTestStep());
     }
 
     private BPMNTestCase addInputTestString(BPMNTestInput value) {
         getTestStep().setInput(value);
-
         return this;
     }
 
@@ -26,12 +27,24 @@ public class BPMNTestCase extends TestCase {
         return addInputTestString(BPMNTestInput.INPUT_B);
     }
 
+    public BPMNTestCase inputC() {
+        return addInputTestString(BPMNTestInput.INPUT_C);
+    }
+
     public BPMNTestCase inputAB() {
         return addInputTestString(BPMNTestInput.INPUT_AB);
     }
 
-    public BPMNTestCase inputC() {
-        return addInputTestString(BPMNTestInput.INPUT_C);
+    public BPMNTestCase inputAC() {
+        return addInputTestString(BPMNTestInput.INPUT_AC);
+    }
+
+    public BPMNTestCase inputBC() {
+        return addInputTestString(BPMNTestInput.INPUT_BC);
+    }
+
+    public BPMNTestCase inputABC() {
+        return addInputTestString(BPMNTestInput.INPUT_ABC);
     }
 
     public BPMNTestCase assertTask1() {
@@ -58,6 +71,19 @@ public class BPMNTestCase extends TestCase {
 
     public BPMNTestCase assertTask5() {
         return addAssertion(BPMNAssertions.SCRIPT_task5);
+    }
+
+    public BPMNTestCase assertMarkerExists() {
+        return addAssertion(BPMNAssertions.MARKER_EXISTS);
+    }
+
+    public BPMNTestCase assertIncrement() {
+        return addAssertion(BPMNAssertions.INCREMENT);
+    }
+
+    public BPMNTestCase setIntegerVariable(int value) {
+        integerVariable = new Integer(value);
+        return this;
     }
 
     public BPMNTestCase optionDelay(int delay) {
@@ -123,6 +149,7 @@ public class BPMNTestCase extends TestCase {
 
         getTestStep().getVariable().ifPresent(result::add);
         result.add(new BPMNTestVariable("testCaseNumber", "Integer", getNumber()));
+        result.add(new BPMNTestVariable("integerVariable", "Integer", integerVariable));
 
         return result;
     }
