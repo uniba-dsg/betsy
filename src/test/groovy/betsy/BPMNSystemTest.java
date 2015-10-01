@@ -30,6 +30,11 @@ public class BPMNSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    public void test_A_BpmnActiviti5180SequenceFlow() throws IOException {
+        testBPMNEngine("activiti__5_18_0");
+    }
+
+    @Test
     public void test_A_BpmnCamunda700SequenceFlow() throws IOException {
         testBPMNEngine("camunda__7_0_0");
     }
@@ -62,6 +67,11 @@ public class BPMNSystemTest extends AbstractSystemTest {
     @Test
     public void test_A_BpmnjBPM620SequenceFlow() throws IOException {
         testBPMNEngine("jbpm__6_2_0");
+    }
+
+    @Test
+    public void test_A_BpmnjBPM630SequenceFlow() throws IOException {
+        testBPMNEngine("jbpm__6_3_0");
     }
 
     private void testBPMNEngine(String engine) throws IOException {
