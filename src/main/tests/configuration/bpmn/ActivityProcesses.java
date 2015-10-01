@@ -53,6 +53,13 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
+    public static final BPMNProcess MULTI_INSTANCE_COMPLEX_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_ComplexBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to 'complex'." +
+                    "The task has a signal boundary event attached that points to another script task which is triggered upon completion of the first instance."
+                    + "All remaining instances are canceled.",
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3()
+    );
+
     public static final BPMNProcess MULTI_INSTANCE_PARALLEL = BPMNProcessBuilder.buildActivityProcess(
             "MultiInstance_Parallel", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
@@ -165,6 +172,7 @@ class ActivityProcesses {
             MULTI_INSTANCE_NONE_BEHAVIOR,
             MULTI_INSTANCE_ONE_BEHAVIOR,
             MULTI_INSTANCE_ALL_BEHAVIOR,
+            MULTI_INSTANCE_COMPLEX_BEHAVIOR,
             MULTI_INSTANCE_PARALLEL,
 
             LOOP_SUBPROCESS,
