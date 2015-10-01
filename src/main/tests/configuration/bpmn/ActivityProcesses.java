@@ -58,7 +58,7 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess LOOP_SUBPROCESS_LOOP_CONDITION_ONLY = BPMNProcessBuilder.buildActivityProcess("LoopSubProcess_LoopConditionOnly",
+    public static final BPMNProcess LOOP_SUBPROCESS = BPMNProcessBuilder.buildActivityProcess("Loop_SubProcess",
             "A subProcess with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3."
                     + "Each time the subProcess is executed a scripttask logs 'INCREMENT'."
                     + "The default for the attribute 'testBefore' is used, which is 'false', i.e., the loopCondition is "
@@ -69,7 +69,7 @@ class ActivityProcesses {
             new BPMNTestCase().setIntegerVariable(0).assertIncrement().assertIncrement().assertIncrement().assertTask1()
     );
 
-    public static final BPMNProcess LOOP_TASK_LOOP_CONDITION_ONLY = BPMNProcessBuilder.buildActivityProcess("LoopTask_LoopConditionOnly",
+    public static final BPMNProcess LOOP_CONDITION_ONLY = BPMNProcessBuilder.buildActivityProcess("Loop_ConditionOnly",
             "A scriptTask with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3."
                     + "Each time the task is executed 'INCREMENT' is logged. "
                     + "The default for the attribute 'testBefore' is used, which is 'false', i.e., the loopCondition is "
@@ -81,18 +81,18 @@ class ActivityProcesses {
     );
 
 
-    public static final BPMNProcess LOOP_TASK_LOOP_MAXIMUM = BPMNProcessBuilder.buildActivityProcess(
-            "LoopTask_LoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to three.",
+    public static final BPMNProcess LOOP_MAXIMUM = BPMNProcessBuilder.buildActivityProcess(
+            "Loop_Maximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to three.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
     public static final BPMNProcess LOOP_NO_ITERATION_TEST_BEFORE_FALSE = BPMNProcessBuilder.buildActivityProcess(
-            "LoopTask_NoIteration_TestBeforeFalse", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false, but has testBefore set to false and, hence, should be executed once.",
+            "Loop_NoIteration_TestBeforeFalse", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false, but has testBefore set to false and, hence, should be executed once.",
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
     public static final BPMNProcess LOOP_NO_ITERATION_TEST_BEFORE_TRUE = BPMNProcessBuilder.buildActivityProcess(
-            "LoopTask_NoIteration_TestBeforeTrue", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false and has testBefore set to true. Hence, the task should never be executed.",
+            "Loop_NoIteration_TestBeforeTrue", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to false and has testBefore set to true. Hence, the task should never be executed.",
             new BPMNTestCase().assertTask2()
     );
 
@@ -156,10 +156,10 @@ class ActivityProcesses {
             MULTI_INSTANCE_ALL_BEHAVIOR,
             MULTI_INSTANCE_PARALLEL,
 
-            LOOP_SUBPROCESS_LOOP_CONDITION_ONLY,
+            LOOP_SUBPROCESS,
 
-            LOOP_TASK_LOOP_CONDITION_ONLY,
-            LOOP_TASK_LOOP_MAXIMUM,
+            LOOP_CONDITION_ONLY,
+            LOOP_MAXIMUM,
             LOOP_NO_ITERATION_TEST_BEFORE_FALSE,
             LOOP_NO_ITERATION_TEST_BEFORE_TRUE,
 

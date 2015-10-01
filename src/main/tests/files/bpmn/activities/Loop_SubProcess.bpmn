@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loopSubProcess_LoopConditionOnly"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/loop_SubProcess"
                    xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
-                   id="LoopSubProcess_LoopConditionOnlyTest">
-    <bpmn2:process id="LoopSubProcess_LoopConditionOnly" isExecutable="true">
+                   id="Loop_SubProcessTest">
+    <bpmn2:process id="Loop_SubProcess" isExecutable="true">
 
         <bpmn2:startEvent id="StartEvent" name="Start">
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
