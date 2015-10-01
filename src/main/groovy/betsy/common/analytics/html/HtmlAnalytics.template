@@ -4,7 +4,7 @@
 	      <link href="bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
-	    <div class="container">
+	    <div class="container-fluid">
 		<% report.nameToGroup.each { groupName, group -> %>
             <div class="row">
                 <div class="panel panel-default">
@@ -13,19 +13,19 @@
                     </div>
                     <div class="panel-body">
 
-                        <table class="table table-condensed table-hover">
+                        <table class="table table-condensed table-hover table-bordered">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th class='col-md-4'></th>
                                 <% report.nameToEngine.each { name, engine -> %>
-                                   <th><%= name %> (<%= report.getNumberOfSuccessfulTestsPer(engine) %>)</td>
+                                   <th class='text-center'><%= name %> (<%= report.getNumberOfSuccessfulTestsPer(engine) %>)</td>
                                 <% } %>
                                 </tr>
                             </thead>
                             <tbody>
                             <% group.tests.each { test -> %>
                                 <tr>
-                                    <td class='${test.support.isTotal() ? "success" : test.support.isNone() ? "danger" : "warning"}'>${test.fullName}</td>
+                                    <td class='${test.support.isTotal() ? "success" : test.support.isNone() ? "danger" : "warning"} col-md-4'>${test.fullName}</td>
                                 <% test.engineToResult.each {engine, result -> %>
                                     <td class='${result.support.isTotal() ? "success" : result.support.isNone() ? "danger" : "warning"} text-center' style="vertical-align: middle">
                                         <a href='${report.getRelativePath(group,engine,test)}'>${result.deployable ? result.support.getSign() : "<span class='label label-danger'>undeployable</span>"}</a>
