@@ -25,6 +25,11 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
+    public static final BPMNProcess MULTI_INSTANCE_TASK = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_Task", "A scriptTask that is marked as a multiInstance task and is enabled three times",
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
+    );
+
     public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL = BPMNProcessBuilder.buildActivityProcess(
             "MultiInstance_Sequential", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
@@ -144,6 +149,7 @@ class ActivityProcesses {
             CALL_ACTIVITY_GLOBAL_TASK,
 
             MULTI_INSTANCE_SUBPROCESS,
+            MULTI_INSTANCE_TASK,
             MULTI_INSTANCE_SEQUENTIAL,
             MULTI_INSTANCE_NONE_BEHAVIOR,
             MULTI_INSTANCE_ONE_BEHAVIOR,
