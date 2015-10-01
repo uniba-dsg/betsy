@@ -49,9 +49,12 @@ class ActivityProcesses {
 
     public static final BPMNProcess LOOP_TASK_LOOP_CONDITION_ONLY = BPMNProcessBuilder.buildActivityProcess("LoopTask_LoopConditionOnly",
             "A scriptTask with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3."
-                    + "Each time the task is executed 'INCREMENT' is logged. After the looped task 'task2' is executed once.",
-            new BPMNTestCase().setIntegerVariable(3).assertTask2(),
-            new BPMNTestCase().setIntegerVariable(2).assertIncrement().assertTask2(),
+                    + "Each time the task is executed 'INCREMENT' is logged. "
+                    + "The default for the attribute 'testBefore' is used, which is 'false', i.e., the loopCondition is "
+                    + "evaluated after the execution (do-while semantics)."
+                    + "After the looped task 'task2' is executed once.",
+            new BPMNTestCase().setIntegerVariable(3).assertIncrement().assertTask2(),
+            new BPMNTestCase().setIntegerVariable(1).assertIncrement().assertIncrement().assertTask2(),
             new BPMNTestCase().setIntegerVariable(0).assertIncrement().assertIncrement().assertIncrement().assertTask2()
     );
 
