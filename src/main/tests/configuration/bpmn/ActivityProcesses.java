@@ -19,37 +19,37 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MULTI_INSTANCE_SUBPROCESS_SEQUENTIAL = BPMNProcessBuilder.buildActivityProcess(
-            "MultiInstanceSubProcess_Sequential", "A subProcess that defines multiInstanceLoopCharactestics with"
+    public static final BPMNProcess MULTI_INSTANCE_SUBPROCESS = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_SubProcess", "A subProcess that defines multiInstanceLoopCharactestics with"
                     + " sequential behavior should be executed three times. Within the subProcess 'task1' is logged.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MULTI_INSTANCE_TASK_SEQUENTIAL = BPMNProcessBuilder.buildActivityProcess(
-            "MultiInstanceTask_Sequential", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
+    public static final BPMNProcess MULTI_INSTANCE_SEQUENTIAL = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_Sequential", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MULTI_INSTANCE_TASK_NONE_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
-            "MultiInstanceTask_NoneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to none." +
+    public static final BPMNProcess MULTI_INSTANCE_NONE_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_NoneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to none." +
                     "The task has a signal boundary event attached that points to another script task. The event should be thrown for every task execution",
             new BPMNTestCase().assertTask1().assertTask3().assertTask1().assertTask3().assertTask1().assertTask3().assertTask2()
     );
 
-    public static final BPMNProcess MULTI_INSTANCE_TASK_ONE_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
-            "MultiInstanceTask_OneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to one." +
+    public static final BPMNProcess MULTI_INSTANCE_ONE_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_OneBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to one." +
                     "The task has a signal boundary event attached that points to another script task. The event should be thrown once.",
             new BPMNTestCase().assertTask1().assertTask3().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MULTI_INSTANCE_TASK_ALL_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
-            "MultiInstanceTask_AllBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to all." +
+    public static final BPMNProcess MULTI_INSTANCE_ALL_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_AllBehavior", "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to all." +
                     "The task has a signal boundary event attached that points to another script task. The event should never be thrown.",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final BPMNProcess MULTI_INSTANCE_TASK_PARALLEL = BPMNProcessBuilder.buildActivityProcess(
-            "MultiInstanceTask_Parallel", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
+    public static final BPMNProcess MULTI_INSTANCE_PARALLEL = BPMNProcessBuilder.buildActivityProcess(
+            "MultiInstance_Parallel", "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
@@ -143,13 +143,12 @@ class ActivityProcesses {
             CALL_ACTIVITY_PROCESS,
             CALL_ACTIVITY_GLOBAL_TASK,
 
-            MULTI_INSTANCE_SUBPROCESS_SEQUENTIAL,
-
-            MULTI_INSTANCE_TASK_SEQUENTIAL,
-            MULTI_INSTANCE_TASK_NONE_BEHAVIOR,
-            MULTI_INSTANCE_TASK_ONE_BEHAVIOR,
-            MULTI_INSTANCE_TASK_ALL_BEHAVIOR,
-            MULTI_INSTANCE_TASK_PARALLEL,
+            MULTI_INSTANCE_SUBPROCESS,
+            MULTI_INSTANCE_SEQUENTIAL,
+            MULTI_INSTANCE_NONE_BEHAVIOR,
+            MULTI_INSTANCE_ONE_BEHAVIOR,
+            MULTI_INSTANCE_ALL_BEHAVIOR,
+            MULTI_INSTANCE_PARALLEL,
 
             LOOP_SUBPROCESS_LOOP_CONDITION_ONLY,
 
