@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process
-        name="WCP12-MultipleInstancesWithoutSynchronization"
-        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization"
+        name="WCP12-MultipleInstancesWithoutSynchronization-Sync"
+        targetNamespace="http://dsg.wiai.uniba.de/betsy/patterns/bpel/control-flow/wcp12/multipleInstancesWithoutSynchronization/sync"
         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
         xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">
@@ -16,7 +16,8 @@
     <variables>
         <variable name="ReplyData" messageType="ti:executeProcessSyncResponse"/>
         <variable name="InitData" messageType="ti:executeProcessSyncRequest"/>
-        <variable name="PartnerInitData" messageType="tp:executeProcessAsyncRequest"/>
+        <variable name="PartnerInitData" messageType="tp:executeProcessSyncRequest"/>
+        <variable name="PartnerReplyData" messageType="tp:executeProcessSyncResponse"/>
     </variables>
     <sequence>
 
@@ -36,8 +37,9 @@
             <startCounterValue>0</startCounterValue>
             <finalCounterValue>$InitData.inputPart</finalCounterValue>
             <scope name="Scope">
-                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessAsync"
-                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"/>
+                <invoke name="InvokePartner" partnerLink="TestPartnerLink" operation="startProcessSync"
+                        portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                        outputVariable="PartnerReplyData"/>
             </scope>
         </forEach>
 
