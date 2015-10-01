@@ -86,7 +86,7 @@ public class OverlappingTimestampCheckerTests {
 
     public boolean executionWasParallel() {
         List<String> lines = FileTasks.readAllLines(PATH_LOG_FILE);
-        return lines.get(0).contains(BPMNAssertions.EXECUTION_PARALLEL.toString());
+        return !lines.isEmpty() && lines.get(0).contains(BPMNAssertions.EXECUTION_PARALLEL.toString());
     }
 
 }
