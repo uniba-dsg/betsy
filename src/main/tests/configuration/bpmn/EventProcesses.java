@@ -211,16 +211,12 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().optionDelay(10000)
     );
 
-    /*
-    * Since we have no way to actually send a starting signal, this test is of no use.
-    * The engines will simply ignore the signal and start the process
-    public static final BPMNProcess SIGNAL_START_EVENT = builder.buildEventProcess(
-            "Signal_StartEvent", "A test with a signal start event",
-            [
-                    new BPMNTestCase(1).assertTask1()
-            ]
-    )
-    */
+
+    public static final BPMNProcess SIGNAL_START_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "Signal_StartEvent", "A test with two processes. The first one starts the second by throwing a signal.",
+            new BPMNTestCase().assertMarkerExists().assertTask1()
+    );
+
 
     public static final BPMNProcess SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Signal_StartEvent_EventSubProcess_Interrupting", "A test for the interrupting signal start event in " +
@@ -247,8 +243,8 @@ class EventProcesses {
 
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_NonInterrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
-            "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
-            "In the meantime, a boundary timer event should fire without interrupting the subProcess.",
+                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
+                    "In the meantime, a boundary timer event should fire without interrupting the subProcess.",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5000)
     );
 
@@ -322,7 +318,7 @@ class EventProcesses {
             new BPMNTestCase().assertTask1()
     );
 
-    public static final BPMNProcess MULTIPLE_INTERMEDIATE_THROW_EVENT= BPMNProcessBuilder.buildEventProcess(
+    public static final BPMNProcess MULTIPLE_INTERMEDIATE_THROW_EVENT = BPMNProcessBuilder.buildEventProcess(
             "Multiple_IntermediateThrowEvent", "A process with a multiple throw event." +
                     "After a parallel split into three branches two of the branches await each one event." +
                     "Both events are thrown in a multiple event on the third branch.",
@@ -389,7 +385,7 @@ class EventProcesses {
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING,
             SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH,
-            //SIGNAL_START_EVENT,
+            SIGNAL_START_EVENT,
             SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             SIGNAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
