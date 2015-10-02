@@ -1,5 +1,8 @@
 package betsy.bpel.engines.openesb;
 
+import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.Engine;
+
 public class OpenEsb305StandaloneEngine extends OpenEsb301StandaloneEngine{
 
     public OpenEsb305StandaloneEngine(){
@@ -7,8 +10,8 @@ public class OpenEsb305StandaloneEngine extends OpenEsb301StandaloneEngine{
     }
 
     @Override
-    public String getName() {
-        return "openesb305standalone";
+    public Engine getEngineId() {
+        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.5");
     }
 
 }
