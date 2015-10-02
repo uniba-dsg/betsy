@@ -69,6 +69,13 @@ public class BPELEngineRepository {
             repo.put(engine.getName(), Collections.singletonList(engine));
         }
 
+        repo.put("ode", repo.getByName("ode__1_3_6"));
+        repo.put("bpelg", repo.getByName("bpelg__5_3"));
+        repo.put("wso2", repo.getByName("wso2__3_2_0"));
+        repo.put("petalsesb", repo.getByName("petalsesb__4_1"));
+        repo.put("active_bpel", repo.getByName("activebpel__5_0_2"));
+        repo.put("orchestra", repo.getByName("orchestra__4_9"));
+        repo.put("openesb", repo.getByName("openesb__3_0_5"));
     }
 
     public List<AbstractBPELEngine> getByName(String name) {

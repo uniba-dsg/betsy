@@ -13,18 +13,17 @@ public class EngineMain {
     private static Map<String, Consumer<EngineLifecycle>> commands = new HashMap<>();
 
     public static void main(String... args) {
-
-        if (args.length != 2 || args[0] == null || args[1] == null) {
-            usage();
-            return;
-        }
-
         commands.put("install", EngineLifecycle::install);
         commands.put("uninstall", EngineLifecycle::uninstall);
         commands.put("isInstalled", EngineLifecycle::isInstalled);
         commands.put("startup", EngineLifecycle::startup);
         commands.put("shutdown", EngineLifecycle::shutdown);
         commands.put("isRunning", EngineLifecycle::isRunning);
+
+        if (args.length != 2 || args[0] == null || args[1] == null) {
+            usage();
+            return;
+        }
 
         String engineName = args[0];
         String commandName = args[1];

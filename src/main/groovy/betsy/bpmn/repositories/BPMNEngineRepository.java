@@ -33,6 +33,9 @@ public class BPMNEngineRepository {
             repo.put(engine.getName(), Collections.singletonList(engine));
         }
 
+        repo.put("activiti", repo.getByName("activiti__5_18_0"));
+        repo.put("jbpm", repo.getByName("jbpm__6_3_0"));
+        repo.put("camunda", repo.getByName("camunda__7_3_0"));
     }
 
     public List<AbstractBPMNEngine> getByName(String name) {
