@@ -167,6 +167,13 @@ class ActivityProcesses {
             new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists()
     );
 
+    public static final BPMNProcess RECEIVE_TASK = BPMNProcessBuilder.buildActivityProcess(
+            "ReceiveTask", "A test with two processes, which start in parallel. " +
+                    "The first one sends a message to the second one via an intermediate message vent." +
+                    "The message is caught in a receive task.",
+            new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists()
+    );
+
 
     public static final List<BPMNProcess> ACTIVITIES = Arrays.asList(
 
@@ -201,6 +208,8 @@ class ActivityProcesses {
             TOKEN_CARDINALITY_SPLIT_DEFAULT,
             TOKEN_CARDINALITY_SPLIT_EXPLICIT,
 
-            SEND_TASK
+            SEND_TASK,
+
+            RECEIVE_TASK
     );
 }
