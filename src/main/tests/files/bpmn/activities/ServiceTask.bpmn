@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/ServiceTask"
+                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   typeLanguage="http://www.w3.org/2001/XMLSchema"
+                   expressionLanguage="http://www.w3.org/1999/XPath"
+                   xmlns:tns="http://dsg.wiai.uniba.de/betsy/bpmn/ServiceTask"
+                   xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+                   xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
+                   id="ServiceTaskTest">
+
+    <import importType="http://schemas.xmlsoap.org/wsdl/"
+            location="http://localhost:2000/bpel-testpartner?wsdl"
+            namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"/>
+
+    <!-- Interface: implementationRef = QName of WSDL Port Type -->
+    <bpmn2:interface name="TestPartnerInterface" implementationRef="tp:TestPartnerPortType">
+
+        <!-- Operation: implementationRef = QName of WSDL Operation -->
+        <bpmn2:operation id="webServiceOperation" name="webServiceOperation" implementationRef="tp:startProcessSync">
+            <bpmn2:inMessageRef>tns:testElementSyncRequestMessage</bpmn2:inMessageRef>
+            <bpmn2:outMessageRef>tns:testElementSyncResponseMessage</bpmn2:outMessageRef>
+        </bpmn2:operation>
+    </bpmn2:interface>
+
+    <!-- itemRef refers to itemDefinition -->
+    <message id="testElementSyncRequestMessage" itemRef="tns:testElementSyncRequestItem"/>
+    <message id="testElementSyncResponseMessage" itemRef="tns:testElementSyncResponseItem"/>
+
+    <!-- structureRef: qname of XSD element -->
+    <itemDefinition id="testElementSyncRequestItem" structureRef="tp:testElementSyncRequest"/>
+    <itemDefinition id="testElementSyncResponseItem" structureRef="tp:testElementSyncResponse"/>
+
+    <bpmn2:process id="ServiceTask" isExecutable="true">
+
+        <!--
+            The Data Inputs and Outputs of a Process have to be explicitly
+            declared with their type to be valid BPMN 2.0
+        -->
+        <ioSpecification>
+            <dataInput id="dataInputOfProcess" itemSubjectRef="xsd:Integer"/>
+            <dataOutput id="dataOutputOfProcess" itemSubjectRef="xsd:Integer"/>
+            <inputSet>
+                <dataInputRefs>dataInputOfProcess</dataInputRefs>
+            </inputSet>
+            <outputSet>
+                <dataOutputRefs>dataOutputOfProcess</dataOutputRefs>
+            </outputSet>
+        </ioSpecification>
+
+        <bpmn2:startEvent id="StartEvent" name="Start">
+            <bpmn2:outgoing>StartEvent_to_CreateLogFile</bpmn2:outgoing>
+        </bpmn2:startEvent>
+
+        <bpmn2:sequenceFlow id="StartEvent_to_CreateLogFile" name="" sourceRef="StartEvent" targetRef="CreateLogFile"/>
+
+        <bpmn2:scriptTask id="CreateLogFile" name="CreateLogFile">
+            <bpmn2:incoming>StartEvent_to_CreateLogFile</bpmn2:incoming>
+            <bpmn2:outgoing>CreateLogFile_to_ScriptTask1</bpmn2:outgoing>
+            <bpmn2:script>CREATE_LOG_FILE</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="CreateLogFile_to_ScriptTask1" name="" sourceRef="CreateLogFile"
+                            targetRef="ScriptTask1"/>
+
+        <bpmn2:scriptTask id="ScriptTask1" name="ScriptTask1">
+            <bpmn2:incoming>CreateLogFile_to_ScriptTask1</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptTask1_to_WebServiceCall</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task1</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="ScriptTask1_to_WebServiceCall" name="" sourceRef="ScriptTask1"
+                            targetRef="WebServiceCall"/>
+
+        <bpmn2:serviceTask id="WebServiceCall"
+                           name="Web service invocation"
+                           implementation="##WebService"
+                           operationRef="tp:sendMessageSync">
+            <bpmn2:incoming>ScriptTask1_to_WebServiceCall</bpmn2:incoming>
+            <bpmn2:outgoing>WebServiceCall_to_ScriptTask2</bpmn2:outgoing>
+
+            <!-- The BPMN 2.0 Meta Model requires an Input/Output Specification -->
+            <ioSpecification>
+                <dataInput itemSubjectRef="tns:testElementSyncRequestItem" id="dataInputOfServiceTask" />
+                <dataOutput itemSubjectRef="tns:testElementSyncResponseItem" id="dataOutputOfServiceTask" />
+                <inputSet>
+                    <dataInputRefs>dataInputOfServiceTask</dataInputRefs>
+                </inputSet>
+                <outputSet>
+                    <dataOutputRefs>dataOutputOfServiceTask</dataOutputRefs>
+                </outputSet>
+            </ioSpecification>
+            <!--
+                 getDataObject, getDataInput, and getDataOutput are custom
+                 XPath functions defined in the BPMN specification
+            -->
+            <dataInputAssociation>
+                <sourceRef>dataInputOfProcess</sourceRef>
+                <targetRef>dataInputOfServiceTask</targetRef>
+                <assignment>
+                    <from>bpmn:getDataObject("dataInputOfProcess")</from>
+                    <to>bpmn:getDataInput("dataInputOfServiceTask")</to>
+                </assignment>
+                <assignment>
+                    <from>bpmn:getDataObject("dataInputOfProcess")</from>
+                    <to>bpmn:getDataInput("dataInputOfServiceTask")</to>
+                </assignment>
+            </dataInputAssociation>
+            <dataOutputAssociation>
+                <targetRef>dataOutputOfProcess</targetRef>
+                <transformation>bpmn:getDataOutput("dataOutputOfServiceTask")/counter:prettyPrint</transformation>
+            </dataOutputAssociation>
+        </bpmn2:serviceTask>
+
+        <bpmn2:sequenceFlow id="WebServiceCall_to_ScriptTask2" name="" sourceRef="WebServiceCall"
+                            targetRef="ScriptTask2"/>
+
+        <bpmn2:scriptTask id="ScriptTask2" name="ScriptTask2">
+            <bpmn2:incoming>WebServiceCall_to_ScriptTask2</bpmn2:incoming>
+            <bpmn2:outgoing>ScriptTask2_to_EndEvent</bpmn2:outgoing>
+            <bpmn2:script>SCRIPT_task2</bpmn2:script>
+        </bpmn2:scriptTask>
+
+        <bpmn2:sequenceFlow id="ScriptTask2_to_EndEvent" name="" sourceRef="ScriptTask2" targetRef="EndEvent"/>
+
+        <bpmn2:endEvent id="EndEvent">
+            <bpmn2:incoming>ScriptTask2_to_EndEvent</bpmn2:incoming>
+        </bpmn2:endEvent>
+
+    </bpmn2:process>
+</bpmn2:definitions>
