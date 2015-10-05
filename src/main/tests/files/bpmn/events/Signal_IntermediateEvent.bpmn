@@ -40,7 +40,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="task1" targetRef="EndEvent_1"/>
 
         <bpmn2:endEvent id="EndEvent_1">
-            <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
         </bpmn2:endEvent>
 
     </bpmn2:process>
@@ -63,7 +63,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="IntermediateCatchEvent_1" targetRef="createMarker"/>
 
         <bpmn2:scriptTask id="createMarker" name="Start">
-            <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
             <bpmn2:script>CREATE_MARKER_FILE</bpmn2:script>
         </bpmn2:scriptTask>
