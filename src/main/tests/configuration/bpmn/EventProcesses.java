@@ -175,15 +175,12 @@ class EventProcesses {
             new BPMNTestCase().assertTask1()
     );
 
-    /*
-     * Since we know no engine-independent way to send message, this is future work
-    public static final BPMNProcess MESSAGE_START_EVENT = builder.buildEventProcess(
+
+    public static final BPMNProcess MESSAGE_START_EVENT = BPMNProcessBuilder.buildEventProcess(
             "Message_StartEvent", "A test with a message start event",
-            [
-                    new BPMNTestCase(1).assertTask1()
-            ]
-    )
-    */
+            new BPMNTestCase().assertTask1().assertMarkerExists()
+    );
+
 
     public static final BPMNProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
@@ -388,7 +385,7 @@ class EventProcesses {
 
             LINK,
 
-            //MESSAGE_START_EVENT,
+            MESSAGE_START_EVENT,
 
             SIGNAL_END_EVENT_SUBPROCESS,
             SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING,
