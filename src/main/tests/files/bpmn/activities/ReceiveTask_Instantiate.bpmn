@@ -59,7 +59,6 @@
     <bpmn2:process id="ParallelProcess" isExecutable="true">
 
         <bpmn2:receiveTask id="ReceiveTask_1" messageRef="message" operationRef="opMsgToProcess" instantiate="true">
-            <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
         </bpmn2:receiveTask>
 
@@ -67,26 +66,20 @@
 
         <bpmn2:scriptTask id="createMarker" name="Start">
             <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
-            <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
             <bpmn2:script>CREATE_MARKER_FILE</bpmn2:script>
         </bpmn2:scriptTask>
 
-        <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="createMarker" targetRef="EndEvent_2"/>
-
-        <bpmn2:endEvent id="EndEvent_2">
-            <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
-        </bpmn2:endEvent>
     </bpmn2:process>
 
     <bpmn2:collaboration id="collaboration" isClosed="false">
-        <bpmn2:participant id="Message_IntermediateEvent_Participant" name="Message_IntermediateEvent_Participant" processRef="Message_IntermediateEvent">
+        <bpmn2:participant id="ReceiveTask_Instantiate_Participant" name="ReceiveTask_Instantiate_Participant" processRef="ReceiveTask_Instantiate">
             <bpmn2:participantMultiplicity maximum="1" minimum="0"/>
         </bpmn2:participant>
         <bpmn2:participant id="ParallelProcess_Participant" name="ParallelProcess_Participant" processRef="ParallelProcess">
             <bpmn2:interfaceRef>interface</bpmn2:interfaceRef>
             <bpmn2:participantMultiplicity maximum="1" minimum="0"/>
         </bpmn2:participant>
-        <bpmn2:messageFlow id="_2" sourceRef="IntermediateThrowEvent_1" targetRef="IntermediateCatchEvent_1" />
+        <bpmn2:messageFlow id="_2" sourceRef="IntermediateThrowEvent_1" targetRef="ReceiveTask_1" />
     </bpmn2:collaboration>
 
 </bpmn2:definitions>
