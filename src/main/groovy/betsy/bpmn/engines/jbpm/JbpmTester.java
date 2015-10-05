@@ -46,7 +46,9 @@ public class JbpmTester {
         addDeploymentErrorsToLogFile(serverLogFile);
 
         if (testCase.hasParallelProcess()) {
-            String parallelProcessUrl = processStartUrl.replace(name, BPMNTestCase.PARALLEL_PROCESS_KEY);
+            // replace processId (".../process/ProcessId/start") with BPMNTestCase.PARALLEL_PROCESS_KEY
+            // deployment id must not be changed
+            String parallelProcessUrl = processStartUrl.replace(name+"/start", BPMNTestCase.PARALLEL_PROCESS_KEY+"/start");
             startProcess(parallelProcessUrl);
         }
 
