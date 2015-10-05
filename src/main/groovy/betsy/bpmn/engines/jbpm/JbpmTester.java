@@ -45,6 +45,11 @@ public class JbpmTester {
     public void runTest() {
         addDeploymentErrorsToLogFile(serverLogFile);
 
+        if (testCase.hasParallelProcess()) {
+            String parallelProcessUrl = processStartUrl.replace(name, BPMNTestCase.PARALLEL_PROCESS_KEY);
+            startProcess(parallelProcessUrl);
+        }
+
         //setup variables and start process
         Map<String, Object> variables = new HashMap<>();
         for (BPMNTestVariable variable : testCase.getVariables()) {
@@ -57,25 +62,7 @@ public class JbpmTester {
         }
 
         String requestUrl = processStartUrl + joiner.toString();
-        try {
-            LOGGER.info("Trying to start process \"" + name + "\".");
-            JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-        } catch (RuntimeException ex) {
-            if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
-                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
-                //retry after delay
-                WaitTasks.sleep(10000);
-                try {
-                    JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-                } catch (RuntimeException innerEx) {
-                    LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
-                    BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-                }
-            } else {
-                LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-            }
-        }
+        startProcess(requestUrl);
 
         //delay for timer intermediate event
         WaitTasks.sleep(testCase.getDelay().orElse(0));
@@ -95,6 +82,28 @@ public class JbpmTester {
         LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
 
         bpmnTester.test();
+    }
+
+    private void startProcess(String requestUrl) {
+        try {
+            LOGGER.info("Trying to start process \"" + name + "\".");
+            JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
+        } catch (RuntimeException ex) {
+            if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
+                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
+                //retry after delay
+                WaitTasks.sleep(10000);
+                try {
+                    JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
+                } catch (RuntimeException innerEx) {
+                    LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
+                    BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+                }
+            } else {
+                LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            }
+        }
     }
 
     private void checkProcessOutcome() {

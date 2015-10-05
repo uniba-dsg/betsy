@@ -35,6 +35,13 @@
         </xsl:copy>
     </xsl:template>
 
+    <!-- Special treatment for test with two processes: Do not create properties for second process in the file -->
+    <xsl:template match="bpmn2:process[@id='ParallelProcess']">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+        </xsl:copy>
+    </xsl:template>
+
     <xsl:template match="bpmn2:scriptTask">
         <bpmn2:scriptTask scriptFormat="http://www.java.com/java">
             <xsl:apply-templates select="@*|node()"/>
