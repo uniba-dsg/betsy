@@ -5,7 +5,16 @@
                    id="Message_StartEventTest"
                    targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/message_StartEvent">
 
-    <bpmn2:message id="message" name="message"/>
+    <bpmn2:itemDefinition id="item" structureRef="String" />
+
+    <bpmn2:message id="message" name="message" itemRef="item"/>
+
+    <bpmn2:interface id="interface" name="interface">
+        <bpmn2:operation id="opMsgToProcess" name="msgToProcess">
+            <bpmn2:inMessageRef>message</bpmn2:inMessageRef>
+        </bpmn2:operation>
+    </bpmn2:interface>
+
 
     <bpmn2:process id="Message_StartEvent" isExecutable="true">
 
@@ -26,7 +35,9 @@
         <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_1">
             <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
             <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-            <bpmn2:messageEventDefinition id="MessageEventDefinition_1" messageRef="message"/>
+            <bpmn2:messageEventDefinition id="MessageEventDefinition_1" messageRef="message">
+                    <bpmn2:operationRef>opMsgToProcess</bpmn2:operationRef>
+            </bpmn2:messageEventDefinition>
         </bpmn2:intermediateThrowEvent>
 
         <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="IntermediateThrowEvent_1" targetRef="task1"/>
@@ -40,7 +51,7 @@
         <bpmn2:sequenceFlow id="SequenceFlow_6" name="" sourceRef="task1" targetRef="EndEvent_1"/>
 
         <bpmn2:endEvent id="EndEvent_1">
-            <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
+            <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
         </bpmn2:endEvent>
 
     </bpmn2:process>
@@ -50,7 +61,9 @@
 
         <bpmn2:startEvent id="StartEvent2" name="Start">
             <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-            <bpmn2:messageEventDefinition id="MessageEventDefinition_2" messageRef="message"/>
+            <bpmn2:messageEventDefinition id="MessageEventDefinition_2" messageRef="message">
+                <bpmn2:operationRef>opMsgToProcess</bpmn2:operationRef>
+            </bpmn2:messageEventDefinition>
         </bpmn2:startEvent>
 
         <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent2" targetRef="createMarker"/>
