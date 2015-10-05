@@ -169,9 +169,16 @@ class ActivityProcesses {
 
     public static final BPMNProcess RECEIVE_TASK = BPMNProcessBuilder.buildActivityProcess(
             "ReceiveTask", "A test with two processes, which start in parallel. " +
-                    "The first one sends a message to the second one via an intermediate message vent." +
+                    "The first one sends a message to the second one via an intermediate message event." +
                     "The message is caught in a receive task.",
             new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists()
+    );
+
+    public static final BPMNProcess RECEIVE_TASK_INSTANTIATE = BPMNProcessBuilder.buildActivityProcess(
+            "ReceiveTask_Instantiate", "A test with two processes. " +
+                    "The first one sends a message to the second one via an intermediate message event." +
+                    "The message is caught in a receive task, which instantiates the second process",
+            new BPMNTestCase().assertTask1().assertMarkerExists()
     );
 
 
@@ -210,6 +217,7 @@ class ActivityProcesses {
 
             SEND_TASK,
 
-            RECEIVE_TASK
+            RECEIVE_TASK,
+            RECEIVE_TASK_INSTANTIATE
     );
 }
