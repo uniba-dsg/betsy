@@ -68,4 +68,13 @@
         </bpmn2:endEvent>
     </bpmn2:process>
 
+    <bpmn2:collaboration id="collaboration" isClosed="false">
+        <bpmn2:participant id="Signal_EndEvent_Participant" name="Signal_EndEvent_Participant" processRef="Signal_StartEvent">
+            <bpmn2:participantMultiplicity maximum="1" minimum="0"/>
+        </bpmn2:participant>
+        <bpmn2:participant id="CalledProcess_Participant" name="CalledProcess_Participant" processRef="CalledProcess">
+            <bpmn2:participantMultiplicity maximum="1" minimum="0"/>
+        </bpmn2:participant>
+    </bpmn2:collaboration>
+
 </bpmn2:definitions>
