@@ -13,7 +13,7 @@ This software is licensed under the LGPL Version 3 Open Source License!
   - Release Notes:
   In this release, we extended betsy from Windows-only to *nix systems and can confirm that engine benchmarking works on Ubuntu. Furthermore, the release includes regular maintainence, updates and a number of minor fixes and improvements.
 
-  Highlights:
+      Highlights:
     * All platform-specific calls and command scripts have been duplicated for both operating environments.
     * Benchmarks can now be executed in contemporary public continuous integration infrastructure and also in container environments.
     * Engines now use a consistent naming scheme: `NAME__VERSION[__CONFIG]*`
