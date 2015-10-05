@@ -223,8 +223,8 @@ class EventProcesses {
     );
 
     public static final BPMNProcess SIGNAL_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Signal_EndEvent", "A test with two processes, which start in parallel. The first one throws a signal, which the second one catches.",
-            new BPMNTestCase().hasParallelProcess().assertTask1().assertMarkerExists()
+            "Signal_IntermediateEvent", "A test with two processes, which start in parallel. The first one throws a signal, which the second one catches.",
+            new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists()
     );
 
     public static final BPMNProcess SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(

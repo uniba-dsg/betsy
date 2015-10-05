@@ -12,6 +12,8 @@ public class BPMNTestCase extends TestCase {
 
     private boolean hasParallelProcess = false;
 
+    public static final String PARALLEL_PROCESS_KEY = "ParallelProcess";
+
     public BPMNTestCase() {
         this.getTestSteps().add(new BPMNTestStep());
     }
@@ -83,9 +85,13 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.INCREMENT);
     }
 
-    public BPMNTestCase hasParallelProcess() {
+    public BPMNTestCase useParallelProcess() {
         this.hasParallelProcess = true;
         return this;
+    }
+
+    public boolean hasParallelProcess() {
+        return hasParallelProcess;
     }
 
     public BPMNTestCase setIntegerVariable(int value) {

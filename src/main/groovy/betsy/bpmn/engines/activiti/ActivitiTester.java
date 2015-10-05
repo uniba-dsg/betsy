@@ -47,6 +47,10 @@ public class ActivitiTester {
         addDeploymentErrorsToLogFile(logFile);
 
         try {
+            if(testCase.hasParallelProcess()) {
+                startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
+            }
+
             startProcess(key, BPMNTestVariable.mapToArrayWithMaps(testCase.getVariables()));
 
             // Wait and check for errors only if process instantiation was successful
