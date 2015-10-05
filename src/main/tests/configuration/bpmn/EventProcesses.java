@@ -176,18 +176,18 @@ class EventProcesses {
     );
 
     public static final BPMNProcess MESSAGE_START_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Message_StartEvent", "A test with a message start event",
+            "Message_StartEvent", "A test with two processes. The first starts the second via a message sent in an intermediate event.",
             new BPMNTestCase().assertTask1().assertMarkerExists()
     );
 
     public static final BPMNProcess MESSAGE_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
             "Message_IntermediateEvent", "A test with two processes, which start in parallel. " +
-                    "The first one sends a message to the second one.",
+                    "The first one sends a message to the second one, which is caught in an intermediate event.",
             new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists()
     );
 
     public static final BPMNProcess MESSAGE_END_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Message_EndEvent", "A test with a message start event",
+            "Message_EndEvent", "A test with two processes. The first starts the second via a message sent in an end event.",
             new BPMNTestCase().assertTask1().assertMarkerExists()
     );
 
