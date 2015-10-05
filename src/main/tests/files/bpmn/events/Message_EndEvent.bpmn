@@ -74,4 +74,15 @@
         </bpmn2:endEvent>
     </bpmn2:process>
 
+    <bpmn2:collaboration id="collaboration" isClosed="false">
+        <bpmn2:participant id="Message_StartEvent_Participant" name="Message_EndEvent_Participant" processRef="Message_EndEvent">
+            <bpmn2:participantMultiplicity maximum="1" minimum="0"/>
+        </bpmn2:participant>
+        <bpmn2:participant id="CalledProcess_Participant" name="CalledProcess_Participant" processRef="CalledProcess">
+            <bpmn2:interfaceRef>interface</bpmn2:interfaceRef>
+            <bpmn2:participantMultiplicity maximum="1" minimum="0"/>
+        </bpmn2:participant>
+        <bpmn2:messageFlow id="_2" sourceRef="EndEvent_1" targetRef="StartEvent2" />
+    </bpmn2:collaboration>
+
 </bpmn2:definitions>
