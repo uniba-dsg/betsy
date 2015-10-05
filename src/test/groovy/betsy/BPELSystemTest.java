@@ -87,11 +87,11 @@ public class BPELSystemTest extends AbstractSystemTest{
     }
 
     @Test
-    public void test_B5_A_BpelOpenesb301StandaloneSequence() throws IOException, InterruptedException {
-        testBPELEngine("openesb__3_0_1");
+    public void test_B5_A_BpelOpenesb305StandaloneSequence() throws IOException, InterruptedException {
+        testBPELEngine("openesb__3_0_5");
     }
 
-    @Test
+    @Test @Ignore("outdated revision")
     public void test_B5_B2_BpelOpenesb23Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb__2_3");
     }
