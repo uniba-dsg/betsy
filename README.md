@@ -9,13 +9,16 @@ Betsy is a tool to check the degree of conformance of a BPEL/BPMN engine against
 This software is licensed under the LGPL Version 3 Open Source License!
 
 ## Releases
-- [Release v2.0.0 January 2015](https://github.com/uniba-dsg/betsy/releases/tag/2.0.0)
-  - Release Notes: After one year since its first major release, we are proud to release the second major release with the following additional features:
-    - Fully automated conformance testing of three BPMN engines
-    - 70 conformance tests for a variety of BPMN features
-    - Separating the code base into three parts, namely, BPEL, BPMN and process-language independent packages
+- [Release v2.1.0 September 2015](https://github.com/uniba-dsg/betsy/releases/tag/2.1.0)
+  - Release Notes:
+  In this release, we extended betsy from Windows-only to *nix systems and can confirm that engine benchmarking works on Ubuntu. Furthermore, the release includes regular maintainence, updates and a number of minor fixes and improvements.
 
-	The changes are detailed in a conference proceedings paper accepted at the [9th International Symposium on Service-oriented System Engineering (SOSE 2015)](http://sose2015.com/).
+  Highlights:
+    * All platform-specific calls and command scripts have been duplicated for both operating environments.
+    * Benchmarks can now be executed in contemporary public continuous integration infrastructure and also in container environments.
+    * Engines now use a consistent naming scheme: `NAME__VERSION[__CONFIG]*`
+   Examples: `bpelg__5_3__in-memory`, `ode__1_3_6`, `openesb__2_2__virtual`
+- [Release v2.0.0 January 2015](https://github.com/uniba-dsg/betsy/releases/tag/2.0.0)
 - [Release v1.1.0 October 2014](https://github.com/uniba-dsg/betsy/releases/tag/v1.1.0)
 - [Release v1.0.0 February 2014](https://github.com/uniba-dsg/betsy/releases/tag/v1.0.0)
 - [Release v0.4.0 February 2014](https://github.com/uniba-dsg/betsy/releases/tag/v0.4.0-icst2014)
