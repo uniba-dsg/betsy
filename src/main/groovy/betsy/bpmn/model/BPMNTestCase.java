@@ -10,6 +10,8 @@ public class BPMNTestCase extends TestCase {
 
     private Integer integerVariable = new Integer(0);
 
+    private boolean hasParallelProcess = false;
+
     public BPMNTestCase() {
         this.getTestSteps().add(new BPMNTestStep());
     }
@@ -79,6 +81,11 @@ public class BPMNTestCase extends TestCase {
 
     public BPMNTestCase assertIncrement() {
         return addAssertion(BPMNAssertions.INCREMENT);
+    }
+
+    public BPMNTestCase hasParallelProcess() {
+        this.hasParallelProcess = true;
+        return this;
     }
 
     public BPMNTestCase setIntegerVariable(int value) {

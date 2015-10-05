@@ -222,6 +222,11 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().assertMarkerExists()
     );
 
+    public static final BPMNProcess SIGNAL_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "Signal_EndEvent", "A test with two processes, which start in parallel. The first one throws a signal, which the second one catches.",
+            new BPMNTestCase().hasParallelProcess().assertTask1().assertMarkerExists()
+    );
+
     public static final BPMNProcess SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Signal_StartEvent_EventSubProcess_Interrupting", "A test for the interrupting signal start event in " +
                     "an event SubProcess. Task1 within in the (normal) SubProcess should not be executed. Task 2 should be executed.",
@@ -391,6 +396,7 @@ class EventProcesses {
             SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH,
             SIGNAL_START_EVENT,
             SIGNAL_END_EVENT,
+            SIGNAL_INTERMEDIATE_EVENT,
             SIGNAL_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             SIGNAL_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
