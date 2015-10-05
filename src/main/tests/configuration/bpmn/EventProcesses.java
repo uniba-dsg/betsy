@@ -170,7 +170,7 @@ class EventProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3()
     );
 
-    public static final BPMNProcess LINK = BPMNProcessBuilder.buildEventProcess(
+    public static final BPMNProcess LINK_EVENT = BPMNProcessBuilder.buildEventProcess(
             "Link_Event", "A simple test for link events",
             new BPMNTestCase().assertTask1()
     );
@@ -383,7 +383,7 @@ class EventProcesses {
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING,
             ESCALATION_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING,
 
-            LINK,
+            LINK_EVENT,
 
             MESSAGE_START_EVENT,
 
