@@ -67,6 +67,17 @@ public class CsvReport {
         return successfulTests;
     }
 
+    public int getNumberOfSuccessfulTestsPerEngineAndGroup(Engine engine, Group group) {
+        int successfulTests = 0;
+        for (Test test : group.getTests()) {
+            Result result = test.getEngineToResult().get(engine);
+            if (result.isSuccessful()) {
+                successfulTests++;
+            }
+        }
+        return successfulTests;
+    }
+
     public String getRelativePath(Group group, Engine engine, Test test) {
         return "#";
     }

@@ -5,6 +5,35 @@
 	</head>
 	<body>
 	    <div class="container-fluid">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Overall Results</h3>
+                    </div>
+                    <div class="panel-body">
+                         <table class="table table-condensed table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class='col-md-4'></th>
+                                <% report.nameToEngine.each { name, engine -> %>
+                                   <th class='text-center'><%= name %> </th>
+                                <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td col-md-4'>Number of successful tests:</td>
+                                    <% report.nameToEngine.each { name, engine -> %>
+                                    <td class='text-center' style="vertical-align: middle">
+                                        <%= report.getNumberOfSuccessfulTestsPer(engine) %> of <%= report.tests.size() %> tests (<%= Math.round(report.getNumberOfSuccessfulTestsPer(engine)/report.tests.size()*100) %>%)
+                                    </td>
+                                <% } %>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 		<% report.nameToGroup.each { groupName, group -> %>
             <div class="row">
                 <div class="panel panel-default">
@@ -18,7 +47,7 @@
                                 <tr>
                                     <th class='col-md-4'></th>
                                 <% report.nameToEngine.each { name, engine -> %>
-                                   <th class='text-center'><%= name %> (<%= report.getNumberOfSuccessfulTestsPer(engine) %>)</td>
+                                   <th class='text-center'><%= name %> (<%= report.getNumberOfSuccessfulTestsPerEngineAndGroup(engine, group) %> / <%= group.tests.size() %>)</th>
                                 <% } %>
                                 </tr>
                             </thead>
