@@ -1,5 +1,7 @@
 package betsy.bpmn;
 
+import betsy.bpel.ws.DummyAndRegularTestPartnerService;
+import betsy.bpel.ws.TestPartnerService;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
@@ -73,13 +75,21 @@ public class BPMNComposite {
         });
     }
 
+    private TestPartnerService testPartner = new DummyAndRegularTestPartnerService();
+
     protected void executeProcess(final BPMNProcess process) {
         log(process.getTargetPath(), () -> {
             buildPackageAndTest(process);
             try {
                 installAndStart(process);
-                deploy(process);
-                test(process);
+
+                try {
+                    testPartner.startup();
+                    deploy(process);
+                    test(process);
+                } finally {
+                    testPartner.shutdown();
+                }
                 collect(process);
             } finally {
                 // ensure shutdown
