@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Replace;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -50,7 +51,9 @@ public class FileTasks {
 
                 try {
                     FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());
-                }catch (IOException e){
+                } catch (FileNotFoundException ignore) {
+                    LOGGER.info("File " + directory.toAbsolutePath().toFile() + " could not be found. Ignoring deletion", ignore);
+                } catch (IOException e) {
                     LOGGER.info("Retry of deletion also failed.");
                     throw new IllegalStateException("could not delete directory " + directory, e);
                 }
@@ -138,7 +141,7 @@ public class FileTasks {
             LOGGER.info("File has " + lines.size() + " lines");
 
             int index = findIndex(oldContent, lines);
-            if(index == -1) {
+            if (index == -1) {
                 throw new IllegalStateException("Could not find a line with content [" + oldContent + "] in file " + path);
             }
 
@@ -152,8 +155,8 @@ public class FileTasks {
 
     private static int findIndex(String oldContent, List<String> lines) {
         int line = -1;
-        for(int i = 0; i < lines.size(); i++) {
-            if(lines.get(i).trim().equals(oldContent)) {
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).trim().equals(oldContent)) {
                 line = i;
             }
         }
@@ -301,7 +304,7 @@ public class FileTasks {
 
         try {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
-                for(Path p : stream) {
+                for (Path p : stream) {
                     result.add(p);
                 }
             }
@@ -324,7 +327,7 @@ public class FileTasks {
 
         try {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, glob)) {
-                for(Path p : stream) {
+                for (Path p : stream) {
                     result.add(p);
                 }
             }
@@ -444,16 +447,16 @@ public class FileTasks {
 
     }
 
-    public static void replaceLogFileContent(List<String> listToReplace, String replacement, Path logPath){
+    public static void replaceLogFileContent(List<String> listToReplace, String replacement, Path logPath) {
         LOGGER.info("Check if content of " + logPath.getFileName().toString() + " needs to be replaced.");
         List<String> allLinesOfLogFile = readAllLines(logPath);
 
-        if(allLinesOfLogFile.removeAll(listToReplace)){
-            try(PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(logPath))) {
+        if (allLinesOfLogFile.removeAll(listToReplace)) {
+            try (PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(logPath))) {
                 allLinesOfLogFile.forEach(printWriter::println);
                 printWriter.println(replacement);
                 LOGGER.info("Replaced " + listToReplace.toString() + " with " + replacement + " in " + logPath.getFileName().toString() + ".");
-            }catch (IOException e) {
+            } catch (IOException e) {
                 LOGGER.warn("Error while writing to " + logPath.getFileName() + ".");
             }
         }
