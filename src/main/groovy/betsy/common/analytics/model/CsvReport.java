@@ -59,9 +59,13 @@ public class CsvReport {
     public int getNumberOfSuccessfulTestsPer(Engine engine) {
         int successfulTests = 0;
         for (Test test : getTests()) {
-            Result result = test.getEngineToResult().get(engine);
-            if (result.isSuccessful()) {
-                successfulTests++;
+            try {
+                Result result = test.getEngineToResult().get(engine);
+                if (result.isSuccessful()) {
+                    successfulTests++;
+                }
+            } catch (NullPointerException ignore) {
+                // test has not been recorded due to a crash
             }
         }
         return successfulTests;
@@ -70,9 +74,13 @@ public class CsvReport {
     public int getNumberOfSuccessfulTestsPerEngineAndGroup(Engine engine, Group group) {
         int successfulTests = 0;
         for (Test test : group.getTests()) {
-            Result result = test.getEngineToResult().get(engine);
-            if (result.isSuccessful()) {
-                successfulTests++;
+            try {
+                Result result = test.getEngineToResult().get(engine);
+                if (result.isSuccessful()) {
+                    successfulTests++;
+                }
+            } catch (NullPointerException ignore) {
+                // test has not been recorded due to a crash
             }
         }
         return successfulTests;

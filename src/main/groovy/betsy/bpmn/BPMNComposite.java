@@ -13,6 +13,7 @@ import betsy.common.util.Progress;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class BPMNComposite {
@@ -80,8 +81,15 @@ public class BPMNComposite {
                 installAndStart(process);
                 deploy(process);
                 test(process);
-                collect(process);
+            } catch (IllegalStateException e) {
+                LOGGER.error("Test case " + process.getName() + " crashed", e);
             } finally {
+                // always try to collect log files
+                try {
+                    collect(process);
+                } catch(IllegalStateException ignore){
+                    // not being able to store the logs should not crash the build
+                }
                 // ensure shutdown
                 shutdown(process);
             }
