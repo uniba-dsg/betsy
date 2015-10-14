@@ -20,12 +20,20 @@ public class JbpmDeployer {
 
     public void deploy() {
         LOGGER.info("Trying to deploy process \"" + deploymentId + "\".");
-        JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/deploy", 202, user, password);
+        try {
+            JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/deploy", 202, user, password);
+        } catch (RuntimeException e) {
+            LOGGER.error("Deployment failure", e);
+        }
     }
 
     public void undeploy() {
         LOGGER.info("Trying to undeploy process \"" + deploymentId + "\".");
-        JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/undeploy", 202, user, password);
+        try {
+            JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/undeploy", 202, user, password);
+        } catch (RuntimeException e) {
+            LOGGER.error("Undeployment failure", e);
+        }
     }
 
     public boolean isDeployed() {
