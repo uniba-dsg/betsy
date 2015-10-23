@@ -2,18 +2,9 @@ package betsy.bpel.engines.orchestra;
 
 import betsy.common.config.Configuration;
 import betsy.common.engines.tomcat.TomcatInstaller;
-import betsy.common.tasks.ConsoleTasks;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.NetworkTasks;
-import betsy.common.tasks.ZipTasks;
+import betsy.common.tasks.*;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
 
 public class OrchestraInstaller {
 
@@ -43,34 +34,13 @@ public class OrchestraInstaller {
 
         ZipTasks.unzip(Configuration.getDownloadsDir().resolve(fileName), serverDir);
 
-        setPropertyInPropertiesFile(getInstallDir().resolve("conf").resolve("install.properties"), "catalina.home", "../" + tomcatInstaller.getTomcatName());
+        PropertyTasks.setPropertyInPropertiesFile(getInstallDir().resolve("conf").resolve("install.properties"), "catalina.home", "../" + tomcatInstaller.getTomcatName());
 
         ConsoleTasks.setupAnt(getAntPath());
 
         // clean up data (with db and config files in the users home directory)
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstallDir(), getAntPath().toAbsolutePath().toString() + "/ant install"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstallDir(), getAntPath().toAbsolutePath().toString() + "/ant").values("install"));
-    }
-
-    private static void setPropertyInPropertiesFile(Path propertiesFile, String key, String value) {
-        Properties properties = new Properties();
-
-        // read
-        try (BufferedReader reader = Files.newBufferedReader(propertiesFile)) {
-            properties.load(reader);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not load property file " + propertiesFile, e);
-        }
-
-        // modify
-        properties.setProperty(key, value);
-
-        // write
-        try (BufferedWriter writer = Files.newBufferedWriter(propertiesFile)) {
-            properties.store(writer, null);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not store property file " + propertiesFile, e);
-        }
     }
 
 }
