@@ -1,10 +1,7 @@
 package betsy.bpmn.repositories;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.engines.activiti.Activiti5170Engine;
-import betsy.bpmn.engines.activiti.Activiti5180Engine;
-import betsy.bpmn.engines.activiti.Activiti600Beta1Engine;
-import betsy.bpmn.engines.activiti.ActivitiEngine;
+import betsy.bpmn.engines.activiti.*;
 import betsy.bpmn.engines.camunda.Camunda710Engine;
 import betsy.bpmn.engines.camunda.Camunda720Engine;
 import betsy.bpmn.engines.camunda.Camunda730Engine;
@@ -24,7 +21,7 @@ public class BPMNEngineRepository {
     public BPMNEngineRepository() {
         List<AbstractBPMNEngine> all = new ArrayList<>(Arrays.asList(
                 new CamundaEngine(), new Camunda710Engine(), new Camunda720Engine(), new Camunda730Engine(),
-                new ActivitiEngine(), new Activiti5170Engine(), new Activiti5180Engine(), new Activiti600Beta1Engine(),
+                new Activiti5151Engine(), new ActivitiEngine(), new Activiti5170Engine(), new Activiti5180Engine(), new Activiti600Beta1Engine(),
                 new JbpmEngine(), new JbpmEngine610(), new JbpmEngine620(), new JbpmEngine630()));
         repo.put("ALL", all);
 
