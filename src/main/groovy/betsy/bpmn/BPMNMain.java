@@ -40,12 +40,35 @@ public class BPMNMain {
             betsy.setProcesses(params.getProcesses());
             betsy.setTestFolder(params.getTestFolderName());
 
-            if (params.useInstalledEngine()) {
+            if (params.keepEngineRunning() && params.useInstalledEngine()) {
+                betsy.setComposite(new BPMNComposite() {
+
+                    @Override
+                    protected void shutdown(BPMNProcess process) {
+                        // keep engine running - no shutdown!
+                    }
+
+                    @Override
+                    protected void install(BPMNProcess process) {
+                        // is already installed - use existing installation
+                    }
+
+                });
+            } else if (params.useInstalledEngine()) {
                 betsy.setComposite(new BPMNComposite() {
 
                     @Override
                     protected void install(BPMNProcess process) {
                         // is already installed - use existing installation
+                    }
+
+                });
+            } else if (params.keepEngineRunning()) {
+                betsy.setComposite(new BPMNComposite() {
+
+                    @Override
+                    protected void shutdown(BPMNProcess process) {
+                        // keep engine running - no shutdown!
                     }
 
                 });

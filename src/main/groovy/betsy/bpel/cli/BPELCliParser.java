@@ -78,6 +78,11 @@ public class BPELCliParser {
         public boolean useInstalledEngine() {
             return false;
         }
+
+        @Override
+        public boolean keepEngineRunning() {
+            return false;
+        }
     };
     public static final String HELP = "help";
     public static final String OPEN_RESULTS_IN_BROWSER = "open-results-in-browser";
@@ -88,6 +93,7 @@ public class BPELCliParser {
     public static final String TO_CORE_BPEL = "to-core-bpel";
     private static final String USE_INSTALLED_ENGINE = "use-installed-engine";
     private static final String USE_CUSTOM_TEST_FOLDER= "use-custom-test-folder";
+    private static final String KEEP_ENGINE_RUNNING = "keep-engine-running";
 
     private final String[] args;
 
@@ -179,6 +185,11 @@ public class BPELCliParser {
                 public boolean useInstalledEngine() {
                     return cmd.hasOption(USE_INSTALLED_ENGINE);
                 }
+
+                @Override
+                public boolean keepEngineRunning() {
+                    return cmd.hasOption(KEEP_ENGINE_RUNNING);
+                }
             };
         } catch (ParseException e) {
             return HELP_ONLY;
@@ -197,6 +208,7 @@ public class BPELCliParser {
         options.addOption("p", PARTNER_ADDRESS, true, "Partner IP and Port (defaults to " + Configuration.get("partner.ipAndPort") + ")");
         options.addOption("t", TO_CORE_BPEL, true, "Transform to Core BPEL");
         options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
+        options.addOption("k", KEEP_ENGINE_RUNNING, true, "Keep the engine running. No engine shutdown!");
         return options;
     }
 
