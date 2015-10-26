@@ -1,5 +1,7 @@
 package betsy.bpmn;
 
+import betsy.bpel.BPELComposite;
+import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
@@ -37,6 +39,17 @@ public class BPMNMain {
             betsy.setEngines(params.getEngines());
             betsy.setProcesses(params.getProcesses());
             betsy.setTestFolder(params.getTestFolderName());
+
+            if (params.useInstalledEngine()) {
+                betsy.setComposite(new BPMNComposite() {
+
+                    @Override
+                    protected void install(BPMNProcess process) {
+                        // is already installed - use existing installation
+                    }
+
+                });
+            }
 
             // execute
             try {
@@ -90,7 +103,7 @@ public class BPMNMain {
                 }
 
                 @Override
-                protected void installAndStart(BPMNProcess process) {
+                protected void start(BPMNProcess process) {
                 }
 
                 @Override

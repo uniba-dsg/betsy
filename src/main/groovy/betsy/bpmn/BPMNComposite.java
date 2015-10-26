@@ -13,7 +13,6 @@ import betsy.common.util.Progress;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 public class BPMNComposite {
@@ -78,7 +77,8 @@ public class BPMNComposite {
         log(process.getTargetPath(), () -> {
             buildPackageAndTest(process);
             try {
-                installAndStart(process);
+                install(process);
+                start(process);
                 deploy(process);
                 test(process);
             } catch (IllegalStateException e) {
@@ -104,10 +104,12 @@ public class BPMNComposite {
         log(process.getTargetPath().resolve("deploy"), () -> process.getEngine().deploy(process));
     }
 
-    protected void installAndStart(final BPMNProcess process) {
-        // setup infrastructure
-        log(process.getTargetPath().resolve("engine_install"), () -> process.getEngine().install());
+    protected void start(final BPMNProcess process) {
         log(process.getTargetPath().resolve("engine_startup"), () -> process.getEngine().startup());
+    }
+
+    protected void install(BPMNProcess process) {
+        log(process.getTargetPath().resolve("engine_install"), () -> process.getEngine().install());
     }
 
     protected void test(final BPMNProcess process) {
