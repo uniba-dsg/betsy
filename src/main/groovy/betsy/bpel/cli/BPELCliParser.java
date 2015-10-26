@@ -208,7 +208,7 @@ public class BPELCliParser {
         options.addOption("p", PARTNER_ADDRESS, true, "Partner IP and Port (defaults to " + Configuration.get("partner.ipAndPort") + ")");
         options.addOption("t", TO_CORE_BPEL, true, "Transform to Core BPEL");
         options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
-        options.addOption("k", KEEP_ENGINE_RUNNING, true, "Keep the engine running. No engine shutdown!");
+        options.addOption("k", KEEP_ENGINE_RUNNING, false, "Keep the engine running. No engine shutdown!");
         return options;
     }
 

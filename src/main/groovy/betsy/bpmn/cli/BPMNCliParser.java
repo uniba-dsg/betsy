@@ -136,7 +136,7 @@ public class BPMNCliParser {
         options.addOption("h", HELP, false, "Print usage information.");
         options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
         options.addOption("i", USE_INSTALLED_ENGINE, false, "Use already installed engine.");
-        options.addOption("k", KEEP_ENGINE_RUNNING, true, "Keep the engine running. No engine shutdown!");
+        options.addOption("k", KEEP_ENGINE_RUNNING, false, "Keep the engine running. No engine shutdown!");
         return options;
     }
 
