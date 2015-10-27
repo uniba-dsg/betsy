@@ -11,5 +11,17 @@
             <name>Guvnor M2 Repo</name>
             <url>http://127.0.0.1:8888/maven2/</url>
         </repository>
+        <repository>
+            <id>central</id>
+            <name>jcenter</name>
+            <url>http://jcenter.bintray.com </url>
+        </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>jcenter</name>
+            <url>http://jcenter.bintray.com </url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
