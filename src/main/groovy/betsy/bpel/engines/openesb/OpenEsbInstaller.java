@@ -48,6 +48,7 @@ public class OpenEsbInstaller {
                 values(installationScript.toString(), stateXmlPath.toString()));
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("+x", installationScript.toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
         ConsoleTasks.executeOnUnix(
                 ConsoleTasks.CliCommand.build(path, installationScript).
                         values("--silent", "--state", stateXmlPath.toString()));

@@ -19,6 +19,7 @@ public class OpenEsbCLI {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).values("stop-domain", "domain1"));
 
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).values("stop-domain", "domain1"));
     }
 
@@ -26,6 +27,7 @@ public class OpenEsbCLI {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).values("start-domain", "domain1"));
 
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).values("start-domain", "domain1"));
     }
 
@@ -58,6 +60,7 @@ public class OpenEsbCLI {
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
 
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
     }

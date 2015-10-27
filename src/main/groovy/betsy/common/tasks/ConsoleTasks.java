@@ -115,11 +115,13 @@ public class ConsoleTasks {
     public static void setupAnt(Path antPath) {
         Path binFolder = antPath.toAbsolutePath();
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(binFolder, "chmod").values("+x", binFolder.resolve("ant").toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
     }
 
     public static void setupMvn(Path mvnPath) {
         Path binFolder = mvnPath.toAbsolutePath();
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(binFolder, "chmod").values("+x", binFolder.resolve("mvn").toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
     }
 
     /**

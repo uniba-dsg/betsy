@@ -25,6 +25,7 @@ public class OdeDeployer {
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777",
                 getProcessFolder(processName).toString()));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
 
         WaitTasks.waitFor(timeoutInSeconds * 1000, 500, () -> FileTasks.hasFile(getDeploymentIndicator(processName)) &&
                 (

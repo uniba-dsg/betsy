@@ -40,6 +40,7 @@ public class PetalsEsbInstaller {
         FileTasks.createFile(petalsBinFolder.resolve("start-petals.sh"), "export JAVA_HOME=$JAVA7_HOME\ncd \"" + petalsBinFolder.toAbsolutePath() + "\" && ./petals-esb.sh >/dev/null 2>&1 &");
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(petalsBinFolder, "chmod").values("+x", "start-petals.sh"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(petalsBinFolder, "chmod").values("+x", "petals-esb.sh"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
     }
 
     public void setPetalsBinFolder(Path petalsBinFolder) {
