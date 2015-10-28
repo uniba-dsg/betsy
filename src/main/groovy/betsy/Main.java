@@ -19,6 +19,8 @@ public class Main {
             EngineMain.main(createArgsWithoutFirstValue(args));
         } else if ("process".equalsIgnoreCase(args[0])) {
             ProcessMain.main(createArgsWithoutFirstValue(args));
+        } else if ("analytics".equalsIgnoreCase(args[0])) {
+            AnalyticsMain.main(createArgsWithoutFirstValue(args));
         } else {
             printUsage();
         }
