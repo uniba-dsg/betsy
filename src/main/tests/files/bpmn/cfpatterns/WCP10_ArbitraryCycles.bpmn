@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             expressionLanguage="http://www.w3.org/1999/XPath" id="WCP10_ArbitraryCycleTest" name=""
-             targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP10_ArbitraryCycle"
+             expressionLanguage="http://www.w3.org/1999/XPath" id="WCP10_ArbitraryCyclesTest" name=""
+             targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/WCP10_ArbitraryCycles"
              typeLanguage="http://www.w3.org/2001/XMLSchema"
              xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
-    <bpmn2:process id="WCP10_ArbitraryCycle" isExecutable="true">
+    <bpmn2:process id="WCP10_ArbitraryCycles" isExecutable="true">
         <bpmn2:startEvent id="_2" name="Start Event">
             <bpmn2:outgoing>_18</bpmn2:outgoing>
         </bpmn2:startEvent>

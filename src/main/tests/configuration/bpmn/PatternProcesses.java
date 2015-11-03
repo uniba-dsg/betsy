@@ -133,7 +133,7 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3()
     );
 
-    public static final BPMNProcess WCP_10_ARBITRARY_CYCLE = BPMNProcessBuilder.buildPatternProcess("WCP10_ArbitraryCycle",
+    public static final BPMNProcess WCP_10_ARBITRARY_CYCLES = BPMNProcessBuilder.buildPatternProcess("WCP10_ArbitraryCycles",
             "WCP10 arbitrary cycle: Structure is based on the example on workflowpatterns.com: The test consists of a "
                     + "series of scripttasks and exclusive gateways. After the creation of the log, task1 is logged, "
                     + "afterwards a counter integerVariable is incremented and task1 is repeated if the integerVariable "
@@ -232,7 +232,7 @@ public class PatternProcesses {
             // WCP09 workaround:
             WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE,
 
-            WCP_10_ARBITRARY_CYCLE,
+            WCP_10_ARBITRARY_CYCLES,
 
             WCP11_IMPLICIT_TERMINATION,
 
