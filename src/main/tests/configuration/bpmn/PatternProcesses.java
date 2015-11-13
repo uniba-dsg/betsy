@@ -174,8 +174,8 @@ public class PatternProcesses {
             "An event-based exclusive gateway with two possible branches wait for one out of two signals which are signaled depending on the input. "
                     + "Using a timer, it is ensured that the signals are signaled when the event-based gateway is already waiting for them. "
                     + "Based on EventBasedGateway_Signals",
-            new BPMNTestCase().inputA().assertTask1().optionDelay(5000),
-            new BPMNTestCase().inputB().assertTask2().optionDelay(5000)
+            new BPMNTestCase().inputA().assertTask1().assertTask3().optionDelay(8000),
+            new BPMNTestCase().inputB().assertTask2().assertTask4().optionDelay(8000)
     );
 
     public static final BPMNProcess WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess(
