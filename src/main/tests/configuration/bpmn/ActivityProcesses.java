@@ -131,7 +131,7 @@ class ActivityProcesses {
     );
 
     public static final BPMNProcess AD_HOC_SUB_PROCESS_PARALLEL = BPMNProcessBuilder.buildActivityProcess(
-            "AdHocSubProcess_Sequential",
+            "AdHocSubProcess_Parallel",
             "A process that contains an adHocSubProcess, which executes two contained tasks sequentially",
             new BPMNTestCase().assertTask1().assertTask2().assertTask3()
     );
