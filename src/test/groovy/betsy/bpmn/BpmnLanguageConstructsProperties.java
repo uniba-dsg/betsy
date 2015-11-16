@@ -14,7 +14,7 @@ public class BpmnLanguageConstructsProperties {
 
     @Test
     public void testProperties() throws IOException {
-        try(InputStream is =  BpmnLanguageConstructsProperties.class.getResourceAsStream("/betsy/common/analytics/additional/BpmnGroups.properties")) {
+        try(InputStream is =  BpmnLanguageConstructsProperties.class.getResourceAsStream("/betsy/common/analytics/additional/BpmnLanguageConstructs.properties")) {
 
             Properties properties = new Properties();
             properties.load(is);
