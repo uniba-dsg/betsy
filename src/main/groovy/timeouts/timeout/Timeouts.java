@@ -130,5 +130,10 @@ public class Timeouts {
         timeouts.add(new Timeout("Comunda", "deploy", 20000, 500));
         timeouts.add(new Timeout("Comunda", "startup", 30000, 500));
         timeouts.add(new Timeout("Comunda710", "startup", 30000, 500));
+        timeouts.add(new Timeout("Jbpm", "deploy", "maven", 1500));
+        timeouts.add(new Timeout("Jbpm", "deploy", "result", 30000, 1000));
+        timeouts.add(new Timeout("Jbpm", "deploy", "availability", 5000));
+        timeouts.add(new Timeout("Jbpm", "startup", 240000, 5000));
+        timeouts.add(new Timeout("Jbpm", "shutdon", 240000, 5000));
     }
 }
