@@ -141,6 +141,9 @@ public class Timeouts {
         timeouts.add(new Timeout("PortForwardingConfigurator", "clearPortForwarding", "sleep", 100));
         timeouts.add(new Timeout("VBoxApplianceImporter", "importAppliance", "readProgress", 1000));
         timeouts.add(new Timeout("VBoxApplianceImporter", "importAppliance", "importProgress", 1000));
+        timeouts.add(new Timeout("ServiceValidator", "isEngineReady", "HtmlContent", 1000));
+
+        //BPMN
         timeouts.add(new Timeout("Comunda", "deploy", 20000, 500));
         timeouts.add(new Timeout("Comunda", "startup", 30000, 500));
         timeouts.add(new Timeout("Comunda710", "startup", 30000, 500));
