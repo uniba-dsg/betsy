@@ -5,6 +5,7 @@ import betsy.common.model.AbstractProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class Retry {
 
                     Path archiveDir = process.getEngine().getPath().resolve("failed_repeated_tests").resolve(testCount + "_" + process.getNormalizedId());
 
-                    WaitTasks.sleep(500);
+                    WaitTasks.sleep(TimeoutRepository.getTimeout("Retryat.MostThreeTimes").get().getTimeoutInMs());
                     FileTasks.mkdirs(archiveDir);
 
                     FileTasks.moveFolderWithForcedCleanup(process.getTargetPath(), archiveDir);
