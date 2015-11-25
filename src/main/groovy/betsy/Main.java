@@ -2,6 +2,7 @@ package betsy;
 
 import betsy.bpel.BPELMain;
 import betsy.bpmn.BPMNMain;
+import timeouts.TimeoutCalibrator;
 
 public class Main {
 
@@ -21,7 +22,9 @@ public class Main {
             ProcessMain.main(createArgsWithoutFirstValue(args));
         } else if ("analytics".equalsIgnoreCase(args[0])) {
             AnalyticsMain.main(createArgsWithoutFirstValue(args));
-        } else {
+        } else if ("calibrate".equalsIgnoreCase(args[0])) {
+            TimeoutCalibrator.main(createArgsWithoutFirstValue(args));
+        }else {
             printUsage();
         }
     }
