@@ -148,6 +148,7 @@ public class Timeouts {
         timeouts.add(new Timeout("GatewayProcesses", "PARALLEL_GATEWAY_TRUE_PARALLELISM", 22000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_SIGNALS", 10000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_TIMER", 5000));
+        timeouts.add(new Timeout("ActiveBpelDeployer", "constructor", 100000, 500));
         timeouts.add(new Timeout("BpelgDeployer", "deploy", 100000, 500));
         timeouts.add(new Timeout("BpelgDeployer", "undeploy", 100000, 500));
         timeouts.add(new Timeout("OdeDeployer", "deploy", 30000, 500));
