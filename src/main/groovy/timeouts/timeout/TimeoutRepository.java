@@ -38,6 +38,16 @@ public class TimeoutRepository {
         TIMEOUTS.setTimeout(timeout);
     }
 
+
+    /**
+     * This method sets the values of the {@link Timeout} to the {@link TimeoutRepository}, if the {@link Timeout} exists in the {@link Timeouts}.
+     *
+     * @param calibrationTimeouts A {@link HashMap} with the key and the {@link Timeout}.
+     */
+    public static void setAllCalibrationTimeouts(HashMap<String, CalibrationTimeout> calibrationTimeouts) {
+        calibrationTimeouts.values().forEach(TimeoutRepository::setTimeout);
+    }
+
     /**
      * Writes the the values of the {@link Timeout} in the {@link TimeoutRepository} to a csv file.
      */
