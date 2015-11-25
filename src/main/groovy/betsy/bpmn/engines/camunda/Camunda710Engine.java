@@ -4,6 +4,8 @@ import betsy.common.engines.ProcessLanguage;
 import betsy.common.model.Engine;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.WaitTasks;
+import timeouts.timeout.TimeoutRepository;
+
 
 import java.util.Optional;
 
@@ -33,7 +35,7 @@ public class Camunda710Engine extends CamundaEngine {
     public void startup() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")));
-        WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());
+        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Comunda710.startup"), getCamundaUrl());
     }
 
 }
