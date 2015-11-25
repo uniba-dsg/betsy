@@ -46,6 +46,7 @@ public class Timeouts {
         if (nameOfCSV != null && nameOfCSV.length() > 0) {
             this.csv = new File(nameOfCSV + ".csv");
         }
+        addTimeouts();
     }
 
     /**
@@ -62,6 +63,7 @@ public class Timeouts {
      *
      */
     public Timeouts() {
+        addTimeouts();
     }
 
     /**
@@ -121,5 +123,8 @@ public class Timeouts {
      */
     public void writeToCSV() {
         TimeoutIOOperations.writeToCSV(csv, timeouts);
+    }
+
+    private void addTimeouts(){
     }
 }
