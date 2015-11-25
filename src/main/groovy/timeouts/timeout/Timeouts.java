@@ -150,6 +150,8 @@ public class Timeouts {
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_TIMER", 5000));
         timeouts.add(new Timeout("BPELComposite", "test", 2000));
         timeouts.add(new Timeout("BPELComposite", "testSoapUi", 500));
+        timeouts.add(new Timeout("TestingAPI", "constructor", 15000));
+
         timeouts.add(new Timeout("ActiveBpelDeployer", "constructor", 100000, 500));
         timeouts.add(new Timeout("BpelgDeployer", "deploy", 100000, 500));
         timeouts.add(new Timeout("BpelgDeployer", "undeploy", 100000, 500));
