@@ -12,6 +12,7 @@ import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -50,7 +51,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
             throw new IllegalStateException("Could not find catalina log file in " + getTomcatLogsDir());
         }
 
-        WaitTasks.waitFor(20000, 500, () ->
+        WaitTasks.waitFor(TimeoutRepository.getTimeout("Comunda.deploy"), () ->
                 FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + process.getName() + " Application successfully deployed.") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + process.getName() + "] startup failed due to previous errors"));
     }
@@ -137,7 +138,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
         map1.put("JRE_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")), map1);
 
-        WaitTasks.waitForAvailabilityOfUrl(30_000, 500, getCamundaUrl());
+        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Comunda.startup"), getCamundaUrl());
     }
 
     @Override

@@ -127,6 +127,8 @@ public class Timeouts {
 
     private void addTimeouts(){
         timeouts.add(new Timeout("Tomcat", "startup", 30000, 500));
+        timeouts.add(new Timeout("Comunda", "deploy", 20000, 500));
+        timeouts.add(new Timeout("Comunda", "startup", 30000, 500));
         timeouts.add(new Timeout("Comunda710", "startup", 30000, 500));
     }
 }
