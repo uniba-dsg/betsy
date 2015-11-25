@@ -13,6 +13,7 @@ import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 
@@ -70,8 +71,6 @@ public class BPELComposite {
 
                 });
             }
-
-
             createReports();
         });
 
@@ -123,8 +122,8 @@ public class BPELComposite {
                     testingAPI.startup();
                 } catch (Exception ignore) {
                     testingAPI.shutdown();
-                    LOGGER.debug("Address already in use - waiting 2 seconds to get available");
-                    WaitTasks.sleep(2000);
+                    LOGGER.debug("Address already in use - waiting " + TimeoutRepository.getTimeout("BPELCompositetest").get().getTimeoutInSeconds()+ " seconds to get available");
+                    WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.test").get().getTimeoutInMs());
                     testingAPI.startup();
                 }
                 testSoapUi(process);
@@ -141,7 +140,7 @@ public class BPELComposite {
     protected void testSoapUi(final BPELProcess process) {
         log(process.getTargetPath() + "/test_soapui", () -> IOCapture.captureIO(() ->
                 testingAPI.executeEngineDependentTest(process.getTargetSoapUIFilePath(), process.getTargetReportsPath())));
-        WaitTasks.sleep(500);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.testSoapUi").get().getTimeoutInMs());
     }
 
     protected void buildPackageAndTest(final BPELProcess process) {
