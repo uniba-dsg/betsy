@@ -161,5 +161,12 @@ public class Timeouts {
         timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_REPLY_CORRELATION_VIOLATION_YES", 1000));
         timeouts.add(new Timeout("BasicActivityProcesses", "INVOKE_CORRELATION_PATTERN_INIT_ASYNC", 1000));
         timeouts.add(new Timeout("BasicActivityProcesses", "INVOKE_CORRELATION_PATTERN_INIT_SYNC", 1000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_ASYNC_INIT_SYNC", 3000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_INIT_SYNC", 3000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_FLOW_INIT_SYNC", 3000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_SYNC", 3000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_INTERNAL_MESSAGE_EXCHANGE_INIT_SYNC", 3000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_SYNC", 3000));
+        timeouts.add(new Timeout("ScopeProcesses", "SCOPE_EVENT_HANDLER_ELEMENT_INIT_SYNC", 3000));
     }
 }

@@ -5,6 +5,7 @@ import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
 import betsy.common.util.CollectionsUtil;
+import timeouts.timeout.TimeoutRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -88,7 +89,7 @@ class ScopeProcesses {
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_ASYNC_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-Async-InitSync", "A receive-reply pair followed by a wait in a scope and an onEvent eventHandler on this level. A second receive-reply pair which responses the 'event' (initialized in the onEvent), follows the scope. The first receive initiates a correlationSet on which the onEvent correlates with an asynchronous operation and the second receive correlates with a synchronous operation.",
-            new BPELTestCase().checkDeployment().sendSync(1, 2).waitFor(3000).sendAsync(1).sendSyncString(1, "event")
+            new BPELTestCase().checkDeployment().sendSync(1, 2).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_ASYNC_INIT_SYNC").get().getTimeoutInMs()).sendAsync(1).sendSyncString(1, "event")
     );
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_INIT_ASYNC = BPELProcessBuilder.buildScopeProcess(
@@ -98,7 +99,7 @@ class ScopeProcesses {
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-InitSync", "A receive-reply pair followed by a wait and a process-level onMessage eventHandler. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
-            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 2)
     );
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_FLOW_INIT_ASYNC = BPELProcessBuilder.buildScopeProcess(
@@ -108,7 +109,7 @@ class ScopeProcesses {
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_FLOW_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-Flow-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler. The receive initiates a correlationSet on which the onEvent correlates with a synchronous operation. The onEvent contains a assign linked to a reply in a flow.",
-            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_FLOW_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 2)
     );
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_ASYNC = BPELProcessBuilder.buildScopeProcess(
@@ -118,7 +119,7 @@ class ScopeProcesses {
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-MessageExchange-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler that uses messageExchange. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
-            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_MESSAGE_EXCHANGE_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 2)
     );
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_ASYNC = BPELProcessBuilder.buildScopeProcess(
@@ -134,12 +135,12 @@ class ScopeProcesses {
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_INTERNAL_MESSAGE_EXCHANGE_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-Internal-MessageExchange-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler that uses messageExchange in a scope. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation. The messageExchange is defined in the associated scope.",
-            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_INTERNAL_MESSAGE_EXCHANGE_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 2)
     );
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-Scope-MessageExchange-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler that uses messageExchange in a scope. The receive initiates a correlationSet on which the onMessage correlates with a synchronous operation.",
-            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 2)
+            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_SCOPE_MESSAGE_EXCHANGE_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 2)
     );
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_FILO_MESSAGE_EXCHANGES = BPELProcessBuilder.buildScopeProcess(
@@ -159,7 +160,7 @@ class ScopeProcesses {
 
     public static final BPELProcess SCOPE_EVENT_HANDLER_ELEMENT_INIT_SYNC = BPELProcessBuilder.buildScopeProcess(
             "Scope-EventHandlers-Element-InitSync", "A receive-reply pair followed by a wait and a process-level onEvent eventHandler. The receive initiates a correlationSet on which the onEvent correlates with a synchronous operation, initializing the inputData with a element variable.",
-            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(3000).sendSync(1, 1)
+            new BPELTestCase().checkDeployment().sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("ScopeProcesses.SCOPE_EVENT_HANDLER_ELEMENT_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 1)
     );
 
     public static final List<BPELProcess> SCOPES_EVENT_HANDLERS = Arrays.asList(
