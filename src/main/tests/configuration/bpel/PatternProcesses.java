@@ -3,6 +3,7 @@ package configuration.bpel;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.ExitAssertion;
+import timeouts.timeout.TimeoutRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -162,7 +163,7 @@ class PatternProcesses {
     public static final BPELProcess MILESTONE_PATTERN = BPELProcessBuilder.buildPatternProcess(
             "WCP18-Milestone",
             new BPELTestCase("PickAsyncMessage").checkDeployment().sendSync(1, 1).sendAsync(1).sendSyncString(1, "8"),
-            new BPELTestCase("Pick3sTimeout").checkDeployment().sendSync(1, 1).waitFor(4000).sendSyncString(1, "9")
+            new BPELTestCase("Pick3sTimeout").checkDeployment().sendSync(1, 1).waitFor(new TimeoutRepository().getTimeout("PatternProcesses.MILESTONE_PATTERN").get().getTimeoutInMs()).sendSyncString(1, "9")
     );
 
     public static final BPELProcess INTERLEAVED_PARALLEL_ROUTING_PATTERN = BPELProcessBuilder.buildPatternProcess(
