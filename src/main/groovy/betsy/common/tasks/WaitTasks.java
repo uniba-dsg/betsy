@@ -3,6 +3,8 @@ package betsy.common.tasks;
 import org.apache.log4j.Logger;
 import timeouts.timeout.Timeout;
 import timeouts.TimeoutException;
+import timeouts.calibration_timeout.CalibrationTimeout;
+import timeouts.calibration_timeout.CalibrationTimeoutRepository;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,15 +43,15 @@ public class WaitTasks {
             LOGGER.info("wait for at most " + timeout.get().getTimeoutInMs() + "ms or until condition is met.");
             long max = System.currentTimeMillis() + timeout.get().getTimeoutInMs();
 
-            long startTime = System.currentTimeMillis();
-
             try {
                 while (max > System.currentTimeMillis()) {
                     if (c.call()) {
-                        long time = System.currentTimeMillis() - startTime;
                         long work = max - System.currentTimeMillis();
                         LOGGER.info("Condition of wait task was met in " + work + "/" + max + "ms -> proceeding");
-                        return;
+                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
+                        calibrationTimeout.setValue(Math.toIntExact(work));
+                        CalibrationTimeoutRepository.addTimeout(calibrationTimeout);
+                        LOGGER.info("Condition of wait task was met -> proceeding");
                     }
                     sleepInternal(timeout.get().getTimeToRepetitionInMs());
                 }
@@ -59,6 +61,9 @@ public class WaitTasks {
                 }
 
             } catch (IllegalStateException e) {
+                CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
+                calibrationTimeout.setStatus(CalibrationTimeout.Status.TOO_LOW);
+                CalibrationTimeoutRepository.setCalibrationTimeout(calibrationTimeout);
                 throw new TimeoutException(timeout.get());
             } catch (Exception e) {
                 throw new IllegalStateException("internal error", e);
