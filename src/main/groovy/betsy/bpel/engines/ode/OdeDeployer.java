@@ -4,19 +4,26 @@ import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.ZipTasks;
+import timeouts.timeout.Timeout;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class OdeDeployer {
 
     private final Path deploymentFolder;
     private final Path logFile;
-    private final int timeoutInSeconds;
+    private final Optional<Timeout> timeout;
 
-    public OdeDeployer(Path deploymentFolder, Path logFile, int timeoutInSeconds) {
+    public OdeDeployer(Path deploymentFolder, Path logFile, Optional<Timeout> timeout) {
         this.deploymentFolder = deploymentFolder;
         this.logFile = logFile;
-        this.timeoutInSeconds = timeoutInSeconds;
+        this.timeout = timeout;
+    }
+
+    public OdeDeployer(Path deploymentFolder, Path logFile) {
+        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("OdeDeployer.deploy"));
     }
 
     public void deploy(Path packageFilePath, String processName) {
@@ -27,7 +34,7 @@ public class OdeDeployer {
                 getProcessFolder(processName).toString()));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
 
-        WaitTasks.waitFor(timeoutInSeconds * 1000, 500, () -> FileTasks.hasFile(getDeploymentIndicator(processName)) &&
+        WaitTasks.waitFor(timeout, () -> FileTasks.hasFile(getDeploymentIndicator(processName)) &&
                 (
                         FileTasks.hasFileSpecificSubstring(logFile, "Deployment of artifact " + processName + " successful") ||
                                 FileTasks.hasFileSpecificSubstring(logFile, "Deployment of " + processName + " failed")
@@ -36,7 +43,7 @@ public class OdeDeployer {
 
     void undeploy(String processName) {
         FileTasks.deleteDirectory(getProcessFolder(processName));
-        WaitTasks.waitFor(timeoutInSeconds * 1000, 500, () -> FileTasks.hasNoFile(getDeploymentIndicator(processName)));
+        WaitTasks.waitFor(timeout, () -> FileTasks.hasNoFile(getDeploymentIndicator(processName)));
     }
 
     boolean isDeployed(String processName) {
