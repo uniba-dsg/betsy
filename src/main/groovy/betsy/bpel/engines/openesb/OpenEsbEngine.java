@@ -9,6 +9,7 @@ import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -59,7 +60,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        WaitTasks.waitForAvailabilityOfUrl(15_000, 500, "http://localhost:8383");
+        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("OpenEsbEngine.startup"), "http://localhost:8383");
     }
 
     @Override
