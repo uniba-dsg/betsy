@@ -2,27 +2,34 @@ package betsy.bpel.engines.petalsesb;
 
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
+import timeouts.timeout.Timeout;
+import timeouts.timeout.TimeoutRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class PetalsEsbDeployer {
 
+    private final Path deploymentDirPath;
+    private final Path logFilePath;
+    private final Optional<Timeout> timeout;
+
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath) {
-        this(deploymentDirPath, logFilePath, 20);
+        this(deploymentDirPath, logFilePath, TimeoutRepository.getTimeout("PetalsEsbDeployer.deploy"));
     }
 
-    public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath, int timeoutInSeconds) {
+    public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath, Optional<Timeout> timeout) {
         this.deploymentDirPath = deploymentDirPath;
         this.logFilePath = logFilePath;
-        this.timeoutInSeconds = timeoutInSeconds;
+        this.timeout = timeout;
     }
 
     public void deploy(Path packageFilePath, String processName) {
         FileTasks.copyFileIntoFolder(packageFilePath, deploymentDirPath);
 
-        WaitTasks.waitFor(timeoutInSeconds * 1000, 500, () ->
+        WaitTasks.waitFor(timeout, () ->
                 FileTasks.hasNoFile(deploymentDirPath.resolve(getFileName(processName))) &&
                         (FileTasks.hasFileSpecificSubstring(logFilePath,
                                 "Service Assembly \'" + processName + "Application\' started"))
@@ -36,7 +43,7 @@ public class PetalsEsbDeployer {
 
     public void undeploy(String processName) {
         FileTasks.deleteFile(deploymentDirPath.getParent().resolve("installed").resolve(getFileName(processName)));
-        WaitTasks.waitForSubstringInFile(timeoutInSeconds * 1000, 500, logFilePath,
+        WaitTasks.waitForSubstringInFile(timeout, logFilePath,
                 "Service Assembly \'" + processName + "Application\' undeployed");
     }
 
@@ -49,8 +56,4 @@ public class PetalsEsbDeployer {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-
-    private final Path deploymentDirPath;
-    private final Path logFilePath;
-    private final int timeoutInSeconds;
 }

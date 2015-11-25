@@ -154,6 +154,8 @@ public class Timeouts {
         timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "startup", "waitForUrl", 10000, 500));
         timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "startup", "waitForStart", 10000, 500));
         timeouts.add(new Timeout("OpenEsbEngine", "startup", 15000, 500));
+        timeouts.add(new Timeout("PetalsEsbDeployer", "deploy", 20000, 500));
+        timeouts.add(new Timeout("PetalsEsbDeployer", "undeploy", 20000, 500));
         timeouts.add(new Timeout("PetalsEsbEngine", "startup", 30000, 500));
         timeouts.add(new Timeout("Wso2Deployer", "deploy", "waitFor", 120000, 500));
         timeouts.add(new Timeout("Wso2Deployer", "deploy", "sleep", 2000));
