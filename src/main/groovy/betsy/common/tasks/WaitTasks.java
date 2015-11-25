@@ -1,10 +1,13 @@
 package betsy.common.tasks;
 
 import org.apache.log4j.Logger;
+import timeouts.timeout.Timeout;
+import timeouts.TimeoutException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 public class WaitTasks {
@@ -33,50 +36,57 @@ public class WaitTasks {
         }
     }
 
-    public static void waitFor(int untilMilliSeconds, int checkEveryMilliseconds, Callable<Boolean> c) {
-        LOGGER.info("wait for at most " + untilMilliSeconds + "ms or until condition is met.");
-        long max = System.currentTimeMillis() + untilMilliSeconds;
+    public static void waitFor(Optional<Timeout> timeout, Callable<Boolean> c) throws TimeoutException {
+        if(timeout.isPresent()) {
+            LOGGER.info("wait for at most " + timeout.get().getTimeoutInMs() + "ms or until condition is met.");
+            long max = System.currentTimeMillis() + timeout.get().getTimeoutInMs();
 
-        try {
-            while (max > System.currentTimeMillis()) {
-                if (c.call()) {
-                    long work = max - System.currentTimeMillis();
-                    LOGGER.info("Condition of wait task was met in " + work + "/" + max + "ms -> proceeding");
-                    return;
+            long startTime = System.currentTimeMillis();
+
+            try {
+                while (max > System.currentTimeMillis()) {
+                    if (c.call()) {
+                        long time = System.currentTimeMillis() - startTime;
+                        long work = max - System.currentTimeMillis();
+                        LOGGER.info("Condition of wait task was met in " + work + "/" + max + "ms -> proceeding");
+                        return;
+                    }
+                    sleepInternal(timeout.get().getTimeToRepetitionInMs());
                 }
-                sleepInternal(checkEveryMilliseconds);
-            }
-            if (!c.call()) {
-                LOGGER.info("Condition of wait task NOT met within the specified time");
-                throw new IllegalStateException("waited for " + untilMilliSeconds + "ms, but condition was not met");
-            }
+                if (!c.call()) {
+                    LOGGER.info("Condition of wait task NOT met within the specified time");
+                    throw new IllegalStateException("waited for " + timeout.get().getTimeoutInMs() + "ms, but condition was not met");
+                }
 
-        } catch (IllegalStateException e) {
-            throw e;// just rethrow
-        } catch (Exception e) {
-            throw new IllegalStateException("internal error", e);
+            } catch (IllegalStateException e) {
+                throw new TimeoutException(timeout.get());
+            } catch (Exception e) {
+                throw new IllegalStateException("internal error", e);
+            }
+        }else{
+            throw new IllegalStateException("The timeout was null");
         }
     }
 
-    public static void waitForSubstringInFile(int untilMilliSeconds, int checkEveryMilliseconds, Path path, String substring) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> FileTasks.hasFileSpecificSubstring(path, substring));
+    public static void waitForSubstringInFile(Optional<Timeout> timeout, Path path, String substring) {
+        waitFor(timeout, () -> FileTasks.hasFileSpecificSubstring(path, substring));
     }
 
 
-    public static void waitForAvailabilityOfUrl(int untilMilliSeconds, int checkEveryMilliseconds, URL url) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> URLTasks.isUrlAvailable(url));
+    public static void waitForAvailabilityOfUrl(Optional<Timeout> timeout, URL url) {
+        waitFor(timeout, () -> URLTasks.isUrlAvailable(url));
     }
 
-    public static void waitForAvailabilityOfUrl(int untilMilliSeconds, int checkEveryMilliseconds, String url) {
+    public static void waitForAvailabilityOfUrl(Optional<Timeout> timeout, String url) {
         try {
-            waitForAvailabilityOfUrl(untilMilliSeconds, checkEveryMilliseconds, new URL(url));
+            waitForAvailabilityOfUrl(timeout, new URL(url));
         } catch (MalformedURLException e) {
             throw new IllegalStateException("url to check is not a valid url", e);
         }
     }
 
-    public static void waitForContentInUrl(int untilMilliSeconds, int checkEveryMilliseconds, URL url, String substring) {
-        waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> URLTasks.hasUrlSubstring(url, substring));
+    public static void waitForContentInUrl(Optional<Timeout> timeout, URL url, String substring) {
+        waitFor(timeout, () -> URLTasks.hasUrlSubstring(url, substring));
     }
 
     private static final Logger LOGGER = Logger.getLogger(WaitTasks.class);
