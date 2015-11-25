@@ -1,23 +1,23 @@
 package betsy.bpel.virtual.host.virtualbox;
 
-import betsy.common.config.Configuration;
-import betsy.common.tasks.WaitTasks;
 import betsy.bpel.virtual.host.ServiceAddress;
 import betsy.bpel.virtual.host.VirtualBoxException;
 import betsy.bpel.virtual.host.VirtualBoxMachine;
 import betsy.bpel.virtual.host.engines.EngineNamingConstants;
 import betsy.bpel.virtual.host.exceptions.VirtualEngineServiceException;
 import betsy.bpel.virtual.host.virtualbox.utils.ServiceValidator;
-import betsy.bpel.virtual.host.virtualbox.utils.Timeouts;
 import betsy.bpel.virtual.host.virtualbox.utils.port.PortUsageException;
 import betsy.bpel.virtual.host.virtualbox.utils.port.PortVerifier;
+import betsy.common.tasks.WaitTasks;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import timeouts.timeout.Timeout;
+import timeouts.timeout.TimeoutRepository;
 
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class SnapshotCreator {
@@ -74,7 +74,7 @@ public class SnapshotCreator {
             failIfEngineServicesTimeout(engineName, engineServices);
             failIfBetsyServerTimesOut();
 
-            WaitTasks.sleep(30000);
+            WaitTasks.sleep(TimeoutRepository.getTimeout("SnapshotCreator.invoke").get().getTimeoutInMs());
 
             virtualBoxMachine.takeSnapshot(createSnapshotName(engineName), createSnapshotDescription());
 
@@ -89,35 +89,37 @@ public class SnapshotCreator {
     }
 
     private void failIfEngineServicesTimeout(String engineName, List<ServiceAddress> engineServices) throws VirtualEngineServiceException {
-        final int secondsToWait = getServiceTimeout(engineName);
-
-        try {
-            if (!ServiceValidator.isEngineReady(engineServices, secondsToWait)) {
-                log.warn("engine services not found withing " + secondsToWait + " seconds");
-                // timeout in CountDownLatch
-                throw new VirtualEngineServiceException(
-                        "The required services for the engine were "
-                                + "not available within " + secondsToWait
-                                + "s after starting the vm. If using a debian/"
-                                + "ubuntu system, make sure to delete the "
-                                + "'/etc/udev/rules.d/70-persistent-net.rules'"
-                                + "file before exporting the appliance. "
-                                + "If this error occurs "
-                                + "repeatedly, please import the vm manually"
-                                + " with a valid snapshot in 'Running' state.");
+        if (getServiceTimeout(engineName).isPresent()) {
+            try {
+                if (!ServiceValidator.isEngineReady(engineServices, getServiceTimeout(engineName))) {
+                    log.warn("engine services not found withing " + getServiceTimeout(engineName).get().getTimeoutInSeconds() + " seconds");
+                    // timeout in CountDownLatch
+                    throw new VirtualEngineServiceException(
+                            "The required services for the engine were "
+                                    + "not available within " + getServiceTimeout(engineName).get().getTimeoutInSeconds()
+                                    + "s after starting the vm. If using a debian/"
+                                    + "ubuntu system, make sure to delete the "
+                                    + "'/etc/udev/rules.d/70-persistent-net.rules'"
+                                    + "file before exporting the appliance. "
+                                    + "If this error occurs "
+                                    + "repeatedly, please import the vm manually"
+                                    + " with a valid snapshot in 'Running' state.");
+                }
+            } catch (Exception e) {
+                throw new VirtualEngineServiceException(e);
             }
-        } catch (Exception e) {
-            throw new VirtualEngineServiceException(e);
+        } else {
+            throw new IllegalStateException("The timeout does not exist.");
         }
     }
 
-    private int getServiceTimeout(String engineName) {
-        return Integer.parseInt(Configuration.get("virtual.engines." + engineName + ".serviceTimeout"));
+    private Optional<Timeout> getServiceTimeout(String engineName) {
+        return TimeoutRepository.getTimeout(engineName + ".serviceTimeout");
     }
 
     private void failIfBetsyServerTimesOut() throws VirtualEngineServiceException {
-        if (!ServiceValidator.isBetsyServerReady(Timeouts.FIFTEEN_SECONDS)) {
-            log.warn("betsy server not found withing 15s");
+        if (!ServiceValidator.isBetsyServerReady(TimeoutRepository.getTimeout("SnapshotCreator.failIfBetsyServerTimesOut").get().getTimeoutInMs())) {
+            log.warn("betsy server not found withing " + TimeoutRepository.getTimeout("SnapshotCreator.failIfBetsyServerTimesOut").get().getTimeoutInSeconds() + "s");
             throw new VirtualEngineServiceException(
                     "The required betsy server was "
                             + "not available within 15s "
