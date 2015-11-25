@@ -148,6 +148,9 @@ public class Timeouts {
         timeouts.add(new Timeout("GatewayProcesses", "PARALLEL_GATEWAY_TRUE_PARALLELISM", 22000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_SIGNALS", 10000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_TIMER", 5000));
+        timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "installComponent", 10000, 500));
+        timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "startup", "waitForUrl", 10000, 500));
+        timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "startup", "waitForStart", 10000, 500));
         timeouts.add(new Timeout("Wso2Deployer", "deploy", "waitFor", 120000, 500));
         timeouts.add(new Timeout("Wso2Deployer", "deploy", "sleep", 2000));
         timeouts.add(new Timeout("Wso2Deployer", "undeploy", "waitFor", 120000, 500));
