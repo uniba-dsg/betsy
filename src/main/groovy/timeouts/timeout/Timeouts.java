@@ -148,6 +148,8 @@ public class Timeouts {
         timeouts.add(new Timeout("GatewayProcesses", "PARALLEL_GATEWAY_TRUE_PARALLELISM", 22000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_SIGNALS", 10000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_TIMER", 5000));
+        timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "sleep", 2000));
+        timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "waitFor", 120000, 500));
         timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_ASYNC", "1", 1000));
         timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_ASYNC", "2", 1000));
         timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_SYNC", "1", 1000));
