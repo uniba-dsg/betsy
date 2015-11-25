@@ -1,19 +1,15 @@
 package betsy.bpel.virtual.host.virtualbox;
 
+import org.apache.log4j.Logger;
+import org.virtualbox_4_2.*;
+import timeouts.timeout.TimeoutRepository;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.virtualbox_4_2.IAppliance;
-import org.virtualbox_4_2.IMachine;
-import org.virtualbox_4_2.IProgress;
-import org.virtualbox_4_2.ISharedFolder;
-import org.virtualbox_4_2.IVirtualBox;
-import org.virtualbox_4_2.ImportOptions;
 
 /**
  * Offers methods to import an Appliance and adjust the settings of an imported
@@ -44,7 +40,7 @@ class VBoxApplianceImporter {
 
 		IProgress readProgress = appliance.read(importFile.toAbsolutePath().toString());
 		while (!readProgress.getCompleted()) {
-			readProgress.waitForCompletion(1000);
+			readProgress.waitForCompletion(TimeoutRepository.getTimeout("VBoxApplianceImporter.importAppliance.readProgress").get().getTimeoutInMs());
 		}
 
 		appliance.interpret();
@@ -56,7 +52,7 @@ class VBoxApplianceImporter {
 		options.add(ImportOptions.KeepNATMACs);
 		IProgress importProgress = appliance.importMachines(options);
 		while (!importProgress.getCompleted()) {
-			importProgress.waitForCompletion(1000);
+			importProgress.waitForCompletion(TimeoutRepository.getTimeout("VBoxApplianceImporter.importAppliance.importProgress").get().getTimeoutInMs());
 		}
 
         logWarnings(appliance);
