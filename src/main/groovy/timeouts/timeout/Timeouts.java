@@ -128,6 +128,22 @@ public class Timeouts {
     private void addTimeouts(){
         timeouts.add(new Timeout("Tomcat", "startup", 30000, 500));
         timeouts.add(new Timeout("FileTasks", "deleteDirectory", 5000));
+
+        //Virtual engines
+        timeouts.add(new Timeout("active_bpel_v", "serviceTimeout", 30000, 500));
+        timeouts.add(new Timeout("bpelg_v", "serviceTimeout", 30000, 500));
+        timeouts.add(new Timeout("ode_v", "serviceTimeout", 30000, 500));
+        timeouts.add(new Timeout("openesb_v", "serviceTimeout", 30000, 500));
+        timeouts.add(new Timeout("orchestra_v", "serviceTimeout", 30000, 500));
+        timeouts.add(new Timeout("petalsesb_v", "serviceTimeout", 30000, 500));
+
+        timeouts.add(new Timeout("active_bpel_v", "deploymentTimeout", 30000, 500));
+        timeouts.add(new Timeout("bpelg_v", "deploymentTimeout", 30000, 500));
+        timeouts.add(new Timeout("ode_v", "deploymentTimeout", 30000, 500));
+        timeouts.add(new Timeout("openesb_v", "deploymentTimeout", 30000, 500));
+        timeouts.add(new Timeout("orchestra_v", "deploymentTimeout", 30000, 500));
+        timeouts.add(new Timeout("petalsesb_v", "deploymentTimeout", 30000, 500));
+
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "startVirtualMachine", 60000));
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "saveState", 30000));
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "restore", 30000));

@@ -6,6 +6,7 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.FileMessage;
 import betsy.bpel.virtual.host.ServiceAddress;
+import timeouts.timeout.TimeoutRepository;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -63,7 +64,7 @@ public class VirtualOrchestraEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.orchestra_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.orchestra_v.deploymentDir"));
-        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.orchestra_v.deploymentTimeout")));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("orchestra_v.deploymentTimeout"));
 
         return operation;
     }

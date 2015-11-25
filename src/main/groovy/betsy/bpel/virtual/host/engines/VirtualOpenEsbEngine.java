@@ -6,6 +6,7 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.FileMessage;
 import betsy.bpel.virtual.host.ServiceAddress;
+import timeouts.timeout.TimeoutRepository;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -70,7 +71,7 @@ public class VirtualOpenEsbEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.openesb_v.deploymentFile"));
         operation.setDeploymentDir(get("virtual.engines.openesb_v.deploymentDir"));
-        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.openesb_v.deploymentTimeout")));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("openesb_v.deploymentTimeout"));
 
         return operation;
     }
