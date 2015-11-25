@@ -135,6 +135,10 @@ public class Timeouts {
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "takeSnapshot", "sleep", 500));
         timeouts.add(new Timeout("SnapshotCreator", "invoke", 30000));
         timeouts.add(new Timeout("SnapshotCreator", "failIfBetsyServerTimesOut", 15000));
+        timeouts.add(new Timeout("PortForwardingConfigurator", "applyPortForwarding", 10000));
+        timeouts.add(new Timeout("PortForwardingConfigurator", "applyPortForwarding", "sleep", 100));
+        timeouts.add(new Timeout("PortForwardingConfigurator", "clearPortForwarding", 10000));
+        timeouts.add(new Timeout("PortForwardingConfigurator", "clearPortForwarding", "sleep", 100));
         timeouts.add(new Timeout("Comunda", "deploy", 20000, 500));
         timeouts.add(new Timeout("Comunda", "startup", 30000, 500));
         timeouts.add(new Timeout("Comunda710", "startup", 30000, 500));
