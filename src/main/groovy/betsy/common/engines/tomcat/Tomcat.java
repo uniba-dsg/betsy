@@ -2,6 +2,7 @@ package betsy.common.engines.tomcat;
 
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.Collections;
@@ -92,7 +93,7 @@ public class Tomcat {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder, "tomcat_startup.bat"), environment);
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_startup.sh")), environment);
 
-        WaitTasks.waitForAvailabilityOfUrl(30000, 500, getTomcatUrl());
+        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Tomcat.startup"), getTomcatUrl());
 
     }
 
