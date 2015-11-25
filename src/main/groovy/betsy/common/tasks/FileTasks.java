@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Replace;
+import timeouts.timeout.TimeoutRepository;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class FileTasks {
         if (Files.isDirectory(directory)) {
             if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
                 LOGGER.info("Deletion failed -> retrying after short wait");
-                WaitTasks.sleep(5000);
+                WaitTasks.sleep(TimeoutRepository.getTimeout("FileTasks.deleteDirectory").get().getTimeoutInMs());
 
                 try {
                     FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());

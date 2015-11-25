@@ -127,6 +127,7 @@ public class Timeouts {
 
     private void addTimeouts(){
         timeouts.add(new Timeout("Tomcat", "startup", 30000, 500));
+        timeouts.add(new Timeout("FileTasks", "deleteDirectory", 5000));
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "startVirtualMachine", 60000));
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "saveState", 30000));
         timeouts.add(new Timeout("VirtualBoxMachineImpl", "restore", 30000));
