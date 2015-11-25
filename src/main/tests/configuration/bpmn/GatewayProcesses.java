@@ -2,6 +2,7 @@ package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestCase;
+import timeouts.timeout.TimeoutRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -82,7 +83,7 @@ class GatewayProcesses {
     public static final BPMNProcess PARALLEL_GATEWAY_TRUE_PARALLELISM = BPMNProcessBuilder.buildGatewayProcess(
             "ParallelGateway_TrueParallelism", "A process with two scriptTasks between a diverging and a converging parallelGateway. " +
                     "The scriptTasks wait for some time, so their execution time intervals are expected to overlap.",
-            new BPMNTestCase().assertExecutionParallel().optionDelay(22000)
+            new BPMNTestCase().assertExecutionParallel().optionDelay(TimeoutRepository.getTimeout("GatewayProcesses.PARALLEL_GATEWAY_TRUE_PARALLELISM").get().getTimeoutInMs())
     );
 
     public static final BPMNProcess EXCLUSIVE_GATEWAY_MIXED = BPMNProcessBuilder.buildGatewayProcess(
@@ -108,14 +109,14 @@ class GatewayProcesses {
             "EventBasedGateway_Signals", "A process with five scriptTasks, a diverging parallelGateway, a diverging eventBasedGateway, an intermediate signal throw event and two intermediate signal catch events. " +
                     "The parallelGateway points to the eventBasedGateway in one branch and, in the other branch, throws the signal. " +
                     "This signal is caught by one of the branches following the eventBasedGateway.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask4().optionDelay(10000)
+            new BPMNTestCase().assertTask1().assertTask2().assertTask4().optionDelay(TimeoutRepository.getTimeout("GatewayProcesses.EVENT_BASED_GATEWAY_SIGNALS").get().getTimeoutInMs())
     );
 
     public static final BPMNProcess EVENT_BASED_GATEWAY_TIMER = BPMNProcessBuilder.buildGatewayProcess(
             "EventBasedGateway_Timer", "A process with three scriptTasks, a diverging eventBasedGateway and two intermediate catch events. " +
                     "One of the catch events refers to a signal that is never thrown and the other one to a timer. " +
                     "Only the branch of the timer should ever be executed.",
-            new BPMNTestCase().assertTask2().optionDelay(5000)
+            new BPMNTestCase().assertTask2().optionDelay(TimeoutRepository.getTimeout("GatewayProcesses.EVENT_BASED_GATEWAY_TIMER").get().getTimeoutInMs())
     );
 
     public static final List<BPMNProcess> GATEWAYS = Arrays.asList(
