@@ -127,6 +127,12 @@ public class Timeouts {
 
     private void addTimeouts(){
         timeouts.add(new Timeout("Tomcat", "startup", 30000, 500));
+        timeouts.add(new Timeout("VirtualBoxMachineImpl", "startVirtualMachine", 60000));
+        timeouts.add(new Timeout("VirtualBoxMachineImpl", "saveState", 30000));
+        timeouts.add(new Timeout("VirtualBoxMachineImpl", "restore", 30000));
+        timeouts.add(new Timeout("VirtualBoxMachineImpl", "stop", 10000));
+        timeouts.add(new Timeout("VirtualBoxMachineImpl", "takeSnapshot", 30000));
+        timeouts.add(new Timeout("VirtualBoxMachineImpl", "takeSnapshot", "sleep", 500));
         timeouts.add(new Timeout("Comunda", "deploy", 20000, 500));
         timeouts.add(new Timeout("Comunda", "startup", 30000, 500));
         timeouts.add(new Timeout("Comunda710", "startup", 30000, 500));
