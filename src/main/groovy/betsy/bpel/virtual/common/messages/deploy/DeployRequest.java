@@ -1,7 +1,10 @@
 package betsy.bpel.virtual.common.messages.deploy;
 
+import timeouts.timeout.Timeout;
+
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A {@link DeployRequest} contains all relevant information for the
@@ -25,7 +28,7 @@ public class DeployRequest implements Serializable {
     private String engineName;
     private String processName;
 
-    private Integer deployTimeout;
+    private Optional<Timeout> deployTimeout;
 
     private String deploymentDir;
     private String deploymentLogFilePath;
@@ -36,7 +39,7 @@ public class DeployRequest implements Serializable {
         return this.processName;
     }
 
-    public Integer getDeployTimeout() {
+    public Optional<Timeout> getDeployTimeout() {
         return deployTimeout;
     }
 
@@ -75,7 +78,7 @@ public class DeployRequest implements Serializable {
      *
      * @param deployTimeout maximum deployment duration, must be greater than 0
      */
-    public void setDeployTimeout(Integer deployTimeout) {
+    public void setDeployTimeout(Optional<Timeout> deployTimeout) {
         this.deployTimeout = deployTimeout;
     }
 
