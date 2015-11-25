@@ -75,7 +75,7 @@ public class OdeEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void deploy(BPELProcess process) {
-        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"), 30);
+        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"));
         deployer.deploy(process.getTargetPackageFilePath(), process.getName());
     }
 
