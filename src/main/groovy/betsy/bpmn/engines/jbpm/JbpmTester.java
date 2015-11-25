@@ -4,6 +4,7 @@ import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.JsonHelper;
+
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestVariable;
@@ -11,9 +12,12 @@ import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
 
 public class JbpmTester {
 
@@ -92,9 +96,9 @@ public class JbpmTester {
             JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
         } catch (RuntimeException ex) {
             if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
-                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in 10000ms.");
+                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in "+ TimeoutRepository.getTimeout("JbpmTester.runTest").get().getTimeoutInMs() +"ms.");
                 //retry after delay
-                WaitTasks.sleep(10000);
+                WaitTasks.sleep(TimeoutRepository.getTimeout("JbpmTester.runTest").get().getTimeoutInMs());
                 try {
                     JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {
