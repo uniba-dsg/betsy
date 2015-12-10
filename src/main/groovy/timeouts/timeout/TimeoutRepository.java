@@ -30,7 +30,8 @@ public class TimeoutRepository {
     }
 
     /**
-     * This method sets the values of the {@link Timeout} to the {@link TimeoutRepository}, if the {@link Timeout} exists in the {@link Timeouts}.
+     * This method sets the values of the {@link Timeout} to {@link Timeout} with the corresponding link
+     * in  the {@link TimeoutRepository}, if the {@link Timeout} exists in the {@link Timeouts}.
      *
      * @param timeout The {@link Timeout}, which should be set.
      */
@@ -54,5 +55,4 @@ public class TimeoutRepository {
     public static void writeToCSV() {
         TIMEOUTS.writeToCSV();
     }
-
 }
