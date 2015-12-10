@@ -129,6 +129,13 @@ public class CalibrationTimeouts {
         TimeoutIOOperations.writeToCSV(csv, convertCalibrationTimeoutListToTimeoutList(calibrationTimeouts));
     }
 
+    /**
+     *  This method removes all values from the timeout list.
+     */
+    public void clear() {
+        calibrationTimeouts = new ArrayList<>();
+    }
+
     private List<Timeout> convertCalibrationTimeoutListToTimeoutList(List<CalibrationTimeout> calibrationTimeouts) {
         return calibrationTimeouts.stream().collect(Collectors.toCollection(ArrayList::new));
     }

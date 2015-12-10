@@ -62,4 +62,11 @@ public class CalibrationTimeoutRepository {
     public static void writeToCSV() {
         CALIBRATION_TIMEOUTS.writeToCSV();
     }
+
+    /**
+     *  This method removes all values from the repository.
+     */
+    public static void clear(){
+        CALIBRATION_TIMEOUTS.clear();
+    }
 }
