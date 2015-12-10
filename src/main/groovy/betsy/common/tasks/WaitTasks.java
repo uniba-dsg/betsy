@@ -51,7 +51,7 @@ public class WaitTasks {
                         CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
                         calibrationTimeout.setValue(Math.toIntExact(work));
                         CalibrationTimeoutRepository.addTimeout(calibrationTimeout);
-                        LOGGER.info("Condition of wait task was met -> proceeding");
+                        return;
                     }
                     sleepInternal(timeout.get().getTimeToRepetitionInMs());
                 }

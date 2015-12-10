@@ -63,6 +63,9 @@ public class TimeoutsTest {
         timeToRepetition = null;
         timeout = null;
         timeouts = null;
+        LOGGER.removeAllAppenders();
+        LOGGER_OPERATIONS.removeAllAppenders();
+        testAppenderOperations = null;
         testAppender = null;
         LOGGER.addAppender(null);
         Files.deleteIfExists(properties.toPath());

@@ -53,6 +53,7 @@ public class TimeoutIOOperationsTest {
         Files.deleteIfExists(csv.toPath());
         properties = null;
         csv = null;
+        LOGGER.removeAllAppenders();
         testAppender = null;
     }
 
