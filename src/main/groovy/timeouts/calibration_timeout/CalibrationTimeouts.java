@@ -132,7 +132,7 @@ public class CalibrationTimeouts {
     /**
      *  This method removes all values from the timeout list.
      */
-    public void clear() {
+    public void clean() {
         calibrationTimeouts = new ArrayList<>();
     }
 

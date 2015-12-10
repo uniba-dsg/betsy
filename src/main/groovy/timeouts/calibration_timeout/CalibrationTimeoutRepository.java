@@ -66,7 +66,7 @@ public class CalibrationTimeoutRepository {
     /**
      *  This method removes all values from the repository.
      */
-    public static void clear(){
-        CALIBRATION_TIMEOUTS.clear();
+    public static void clean(){
+        CALIBRATION_TIMEOUTS.clean();
     }
 }
