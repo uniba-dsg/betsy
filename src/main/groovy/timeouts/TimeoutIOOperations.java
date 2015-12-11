@@ -1,11 +1,24 @@
 package timeouts;
 
+import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import timeouts.calibration_timeout.CalibrationTimeout;
 import timeouts.timeout.Timeout;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -20,11 +33,11 @@ public class TimeoutIOOperations {
      * This method reads the values of the given timeouts form the properties.
      *
      * @param propertiesFile The file of the properties.
-     * @param timeouts The list with the timeouts.
+     * @param timeouts       The list with the timeouts.
      * @return A {@link List} with the timeouts and the loaded values from the properties.
      */
     public static List<Timeout> readFromProperties(File propertiesFile, List<Timeout> timeouts) {
-        if(propertiesFile != null && timeouts != null){
+        if (propertiesFile != null && timeouts != null) {
             if (Files.isReadable(propertiesFile.toPath())) {
                 Reader reader = null;
                 try {
@@ -64,21 +77,20 @@ public class TimeoutIOOperations {
             } else {
                 LOGGER.info("The file " + propertiesFile.getName() + " is not readable.");
             }
-        }else{
+        } else {
             LOGGER.info("The property file or the timeouts were null.");
         }
         return timeouts;
     }
 
     /**
-     *
      * This method writes the values of the given timeouts to the property file.
      *
      * @param propertiesFile The file were the properties should be saved.
-     * @param timeouts The timeouts, which should be saved.
+     * @param timeouts       The timeouts, which should be saved.
      */
     public static void writeToProperties(File propertiesFile, List<Timeout> timeouts) {
-        if(propertiesFile != null && timeouts != null) {
+        if (propertiesFile != null && timeouts != null) {
             Writer writer = null;
             try {
                 Properties properties;
@@ -107,20 +119,19 @@ public class TimeoutIOOperations {
                     LOGGER.info("Couldn't close the {@link Timeout} properties {@Link FileReader} ");
                 }
             }
-        }else{
+        } else {
             LOGGER.info("The property file or the timeouts were null.");
         }
     }
 
     /**
-     *
      * This method writes the values of timeouts to a csv file.
      *
-     * @param csv The csv file, where the timeout values should be saved.
+     * @param csv      The csv file, where the timeout values should be saved.
      * @param timeouts The timeouts to save.
      */
     public static void writeToCSV(File csv, List<Timeout> timeouts) {
-        if(csv != null && timeouts != null){
+        if (csv != null && timeouts != null) {
             FileWriter writer = null;
             try {
                 writer = new FileWriter(csv);
@@ -148,8 +159,47 @@ public class TimeoutIOOperations {
                     LOGGER.info("Couldn't close the csv file.");
                 }
             }
-        }else{
+        } else {
             LOGGER.info("The csv file or the timeouts were null.");
         }
+    }
+
+
+    /**
+     * This method reads the timeouts from the SOAPUI result xml.
+     *
+     * @param testDirectory The directory, which contains the SOAPUI test files.
+     * @return This method returns a list of CalibrationTimeouts.
+     */
+    public static List<CalibrationTimeout> readSoapUITimeouts(String testDirectory) {
+
+        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
+        String directoryName = testDirectory + "/reports";
+        List<Path> files = FileTasks.findAllInFolder(Paths.get(directoryName), "TESTS-TestSuites.xml");
+
+        for (Path path : files) {
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(path.toFile());
+                document.getDocumentElement();
+                NodeList test = document.getElementsByTagName("testsuite");
+
+                for (int i = 0; i < test.getLength(); i++) {
+                    Node node = test.item(i);
+                    Optional<Node> attribute = Optional.ofNullable(node.getAttributes().getNamedItem("time"));
+                    if (attribute.isPresent()) {
+                        Integer value = Integer.parseInt(attribute.get().getNodeValue().replace(".", ""));
+                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", value));
+                        calibrationTimeouts.add(calibrationTimeout);
+                    }
+                }
+            } catch (IOException e) {
+                LOGGER.info("Couldn't read the file: " + path.getFileName());
+            } catch (ParserConfigurationException | SAXException e) {
+                LOGGER.info("Couldn't parse the file: " + path.getFileName());
+            }
+        }
+        return calibrationTimeouts;
     }
 }
