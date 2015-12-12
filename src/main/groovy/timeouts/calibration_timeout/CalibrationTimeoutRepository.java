@@ -27,27 +27,10 @@ public class CalibrationTimeoutRepository {
      *
      * @param calibrationTimeout The calibrationTime to add to the repository.
      */
-    public static void addTimeout(CalibrationTimeout calibrationTimeout) {
-        CALIBRATION_TIMEOUTS.addTimeout(calibrationTimeout);
+    public static void addCalibrationTimeout(CalibrationTimeout calibrationTimeout) {
+        CALIBRATION_TIMEOUTS.addCalibrationTimeout(calibrationTimeout);
     }
 
-    /**
-     * This method sets the values of the {@link Timeout} to the {@link CalibrationTimeoutRepository}, if the {@link Timeout} exists in the {@link Timeouts}.
-     *
-     * @param calibrationTimeout The {@link Timeout}, which should be set.
-     */
-    public static void setCalibrationTimeout(CalibrationTimeout calibrationTimeout) {
-        CALIBRATION_TIMEOUTS.setTimeoutCalibration(calibrationTimeout);
-    }
-
-    /**
-     * This method sets the values of the {@link CalibrationTimeout} to the {@link CalibrationTimeoutRepository}, if the {@link CalibrationTimeout} exists in the {@link Timeouts}.
-     *
-     * @param calibrationTimeouts A {@link HashMap} with the key and the {@link CalibrationTimeout}.
-     */
-    public static void setAllCalibrationTimeouts(HashMap<String, CalibrationTimeout> calibrationTimeouts) {
-        calibrationTimeouts.values().forEach(CalibrationTimeoutRepository::setCalibrationTimeout);
-    }
 
     /**
      * This method writes all given {@link Timeout} to the properties, if the {@link CalibrationTimeout} exists in the {@link Timeouts}.
