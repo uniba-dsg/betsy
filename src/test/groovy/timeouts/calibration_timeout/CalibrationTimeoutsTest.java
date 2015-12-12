@@ -27,13 +27,9 @@ public class CalibrationTimeoutsTest {
     private File properties;
     private File csv;
     private File testCsv;
-    private static final Logger LOGGER = org.apache.log4j.Logger.getLogger(CalibrationTimeouts.class);
-    private TestAppender testAppender;
 
     @Before
     public void setUp() throws Exception {
-        testAppender = new TestAppender();
-        LOGGER.addAppender(testAppender);
         calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeoutTest = new CalibrationTimeout("tomcat", "startup", "maven", 30_000, 4_000);
         calibrationTimeoutList = new ArrayList<>();
@@ -45,8 +41,6 @@ public class CalibrationTimeoutsTest {
 
     @After
     public void tearDown() throws Exception {
-        LOGGER.removeAllAppenders();
-        testAppender = null;
         calibrationTimeouts = null;
         calibrationTimeout = null;
         calibrationTimeoutTest = null;
@@ -108,26 +102,8 @@ public class CalibrationTimeoutsTest {
     }
 
     @Test
-    public void testAddTimeout() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
-        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get());
-        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get().getTimeoutInMs());
-        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get().getTimeToRepetitionInMs());
-    }
-
-    @Test
-    public void testAddTimeoutNotExisting() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
-        calibrationTimeouts.addTimeout(calibrationTimeout);
-        assertEquals("The timeout, which should be added to the CalibrationTimeouts, is already existing.", testAppender.messages.get(0));
-    }
-
-    @Test
-    public void testSetTimeoutCalibration() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
-        calibrationTimeout.setStatus(CalibrationTimeout.Status.CALIBRATED);
-        calibrationTimeout.setValue(5_000);
-        calibrationTimeout.setTimeToRepetition(20_000);
+    public void testAddCalibrationTimeout() throws Exception {
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get());
         assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get().getTimeoutInMs());
         assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get().getTimeToRepetitionInMs());
@@ -135,7 +111,7 @@ public class CalibrationTimeoutsTest {
 
     @Test
     public void testGetCalibrationTimeout() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get());
         assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get().getTimeoutInMs());
         assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getKey()).get().getTimeToRepetitionInMs());
@@ -143,8 +119,8 @@ public class CalibrationTimeoutsTest {
 
     @Test
     public void testGetAllCalibrationTimeouts() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
-        calibrationTimeouts.addTimeout(calibrationTimeoutTest);
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeoutTest);
         HashMap<String, CalibrationTimeout> timeouts = calibrationTimeouts.getAllCalibrationTimeouts();
         assertEquals(calibrationTimeout, timeouts.get(calibrationTimeout.getKey()));
         assertEquals(calibrationTimeoutTest, timeouts.get(calibrationTimeoutTest.getKey()));
@@ -152,42 +128,22 @@ public class CalibrationTimeoutsTest {
 
     @Test
     public void testWriteAllCalibrationTimeoutsToProperties() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.writeAllCalibrationTimeoutsToProperties();
         assertTrue(properties.exists());
     }
 
     @Test
     public void testWriteToCSV() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.writeToCSV();
         assertTrue(testCsv.exists());
     }
 
     @Test
     public void testClean() throws Exception {
-        calibrationTimeouts.addTimeout(calibrationTimeout);
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.clean();
         assertEquals(0, calibrationTimeouts.getAllCalibrationTimeouts().size());
-    }
-
-    class TestAppender extends AppenderSkeleton {
-        public List<String> messages = new ArrayList<>();
-
-        @Override
-        protected void append(LoggingEvent event) {
-            messages.add(event.getMessage().toString());
-        }
-
-        @Override
-        public void close() {
-            messages = null;
-        }
-
-
-        @Override
-        public boolean requiresLayout() {
-            return false;
-        }
     }
 }

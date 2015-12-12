@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  */
 public class CalibrationTimeouts {
 
-    private static final Logger LOGGER = Logger.getLogger(CalibrationTimeouts.class);
     private List<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
     private File properties = new File("timeout.properties");
     private File csv = new File("calibration_timeouts.csv");
@@ -68,29 +67,14 @@ public class CalibrationTimeouts {
     }
 
     /**
-     * With this method it is possible to add a {@link Timeout} to the {@link CalibrationTimeouts}.
+     * With this method it is possible to add a {@link CalibrationTimeout}.
      *
-     * @param calibrationTimeout The {@link Timeout} to add to the {@link CalibrationTimeouts}.
+     * @param calibrationTimeout The {@link CalibrationTimeout} to add to the {@link CalibrationTimeouts}.
      */
-    public void addTimeout(CalibrationTimeout calibrationTimeout) {
-        if (!getCalibrationTimeout(calibrationTimeout.getKey()).isPresent()) {
+    public void addCalibrationTimeout(CalibrationTimeout calibrationTimeout) {
             calibrationTimeouts.add(calibrationTimeout);
-        } else LOGGER.info("The timeout, which should be added to the CalibrationTimeouts, is already existing.");
     }
 
-    /**
-     * With this method it is possible to change the values of an existing {@link CalibrationTimeout} in the {@link CalibrationTimeouts}.
-     *
-     * @param calibrationTimeout The {@link CalibrationTimeout} with the new values.
-     */
-    public void setTimeoutCalibration(CalibrationTimeout calibrationTimeout) {
-        if (getCalibrationTimeout(calibrationTimeout.getKey()).isPresent()) {
-            getCalibrationTimeout(calibrationTimeout.getKey()).get().setValue(calibrationTimeout.getTimeoutInMs());
-            getCalibrationTimeout(calibrationTimeout.getKey()).get().setStatus(calibrationTimeout.getStatus());
-        } else {
-            calibrationTimeouts.add(calibrationTimeout);
-        }
-    }
 
     /**
      * This method returns the {@link CalibrationTimeout} for given key as {@link Optional}.
@@ -103,7 +87,7 @@ public class CalibrationTimeouts {
     }
 
     /**
-     * This method returns all Timeouts as {@link CalibrationTimeout}.
+     * This method returns all {@link CalibrationTimeout}.
      *
      * @return A {@link HashMap} with the key of {@link CalibrationTimeout} and the {@link CalibrationTimeout}.
      */
