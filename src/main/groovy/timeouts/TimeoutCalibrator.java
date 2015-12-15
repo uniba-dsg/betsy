@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class TimeoutCalibrator {
 
     private static final Logger LOGGER = Logger.getLogger(TimeoutCalibrator.class);
-
+    private static String actualTestFolder;
 
     public static void main(String[] args) {
         calibrateTimeouts(args);
@@ -91,7 +91,8 @@ public class TimeoutCalibrator {
     private static String[] addChangedTestFolderToArgs(String args[], int i) {
         String[] destination = new String[args.length + 1];
         System.arraycopy(args, 0, destination, 0, 1);
-        destination[1] = "-ftest/test" + i;
+        actualTestFolder = "test/test" + i;
+        destination[1] = "-f" + actualTestFolder;
         System.arraycopy(args, 1, destination, 2, args.length - 1);
         return destination;
     }
