@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public class CalibrationTimeout extends Timeout {
 
-    private Optional<Status> status = Optional.of(Status.NOT_SET);
+    private Optional<Status> status = Optional.of(Status.KEPT);
 
     /**
      * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
@@ -57,6 +57,6 @@ public class CalibrationTimeout extends Timeout {
      * The actual {@link Status} of the {@link CalibrationTimeout} during the calibration_timeout via the {@link TimeoutCalibrator}.
      */
     public enum Status {
-        TOO_HIGH, TOO_LOW, NOT_SET, CALIBRATED
+        KEPT, EXCEEDED, CALIBRATED
     }
 }
