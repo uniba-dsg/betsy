@@ -62,8 +62,8 @@ public class WaitTasks {
 
             } catch (IllegalStateException e) {
                 CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
-                calibrationTimeout.setStatus(CalibrationTimeout.Status.TOO_LOW);
-                CalibrationTimeoutRepository.setCalibrationTimeout(calibrationTimeout);
+                calibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
+                CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                 throw new TimeoutException(timeout.get());
             } catch (Exception e) {
                 throw new IllegalStateException("internal error", e);
