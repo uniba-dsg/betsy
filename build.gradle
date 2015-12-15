@@ -62,7 +62,7 @@ dependencies {
 
     internal 'commons-cli:commons-cli:1.3.1' // for the CLI tools
 
-    internal 'org.apache.santuario:xmlsec:2.0.5' // for canonical XML form
+    internal 'org.apache.santuario:xmlsec:2.0.6' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
 
