@@ -39,7 +39,7 @@ public class CalibrationTimeoutTest {
         assertEquals(1200, calibrationTimeout.getTimeToRepetitionInMs());
         assertEquals(new BigDecimal(1.2), calibrationTimeout.getTimeToRepetitionInSeconds());
         assertEquals(new BigDecimal(0.02), calibrationTimeout.getTimeToRepetitionInMinutes());
-        assertEquals(CalibrationTimeout.Status.NOT_SET, calibrationTimeout.getStatus());
+        assertEquals(CalibrationTimeout.Status.KEPT, calibrationTimeout.getStatus());
     }
 
     @Test
@@ -55,24 +55,24 @@ public class CalibrationTimeoutTest {
         assertEquals(1200, calibrationTimeout.getTimeToRepetitionInMs());
         assertEquals(new BigDecimal(1.2), calibrationTimeout.getTimeToRepetitionInSeconds());
         assertEquals(new BigDecimal(0.02), calibrationTimeout.getTimeToRepetitionInMinutes());
-        assertEquals(CalibrationTimeout.Status.NOT_SET, calibrationTimeout.getStatus());
+        assertEquals(CalibrationTimeout.Status.KEPT, calibrationTimeout.getStatus());
     }
 
     @Test
     public void testGetStatusAfterCreation() throws Exception {
-        assertEquals(CalibrationTimeout.Status.NOT_SET, calibrationTimeout.getStatus());
+        assertEquals(CalibrationTimeout.Status.KEPT, calibrationTimeout.getStatus());
     }
 
     @Test
     public void testSetStatus() throws Exception {
-        CalibrationTimeout.Status status = CalibrationTimeout.Status.TOO_HIGH;
+        CalibrationTimeout.Status status = CalibrationTimeout.Status.KEPT;
         calibrationTimeout.setStatus(status);
         assertEquals(status, calibrationTimeout.getStatus());
     }
 
     @Test
     public void testGetStatus() throws Exception {
-        CalibrationTimeout.Status status = CalibrationTimeout.Status.TOO_HIGH;
+        CalibrationTimeout.Status status = CalibrationTimeout.Status.KEPT;
         calibrationTimeout.setStatus(status);
         assertEquals(status, calibrationTimeout.getStatus());
     }
