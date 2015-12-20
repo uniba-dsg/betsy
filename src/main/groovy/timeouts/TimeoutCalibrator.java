@@ -33,7 +33,7 @@ public class TimeoutCalibrator {
         while (!allTimeoutsAreCalibrated) {
             Main.main(addChangedTestFolderToArgs(args, counterTestFolder++));
             //get used timeouts
-            HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllCalibrationTimeouts();
+            HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts);
             if (!allTimeoutsAreCalibrated) {

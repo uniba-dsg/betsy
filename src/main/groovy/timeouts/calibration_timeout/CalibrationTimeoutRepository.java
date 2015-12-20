@@ -52,4 +52,13 @@ public class CalibrationTimeoutRepository {
     public static void clean(){
         CALIBRATION_TIMEOUTS.clean();
     }
+
+    /**
+     * This method returns all CalibrationTimeouts once only.
+     *
+     * @return A {@link HashMap} with the timeouts.
+     */
+    public static HashMap<String, CalibrationTimeout> getAllNonRedundantTimeouts() {
+        return CALIBRATION_TIMEOUTS.getAllNonRedundantTimeouts();
+    }
 }
