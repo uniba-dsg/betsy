@@ -31,18 +31,17 @@ public class TimeoutCalibrator {
         boolean allTimeoutsAreCalibrated = false;
 
         while (!allTimeoutsAreCalibrated) {
-
             Main.main(addChangedTestFolderToArgs(args, counterTestFolder++));
-
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllCalibrationTimeouts();
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts);
-
-            //sets all values to the repositories
-            TimeoutRepository.setAllCalibrationTimeouts(timeouts);
-            CalibrationTimeoutRepository.setAllCalibrationTimeouts(timeouts);
-
+            if (!allTimeoutsAreCalibrated) {
+                //set all values to the repositories
+                TimeoutRepository.setAllCalibrationTimeouts(timeouts);
+                //clean the timeoutRepository for the new run
+                CalibrationTimeoutRepository.clean();
+            }
             for (CalibrationTimeout timeout : timeouts.values()) {
                 LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
             }
@@ -61,27 +60,11 @@ public class TimeoutCalibrator {
         boolean allTimeoutsAreCalibrated = true;
         for (CalibrationTimeout timeout : timeouts.values()) {
             switch (timeout.getStatus()) {
-                case NOT_SET:
-                    timeout.setValue(timeout.getTimeoutInMs() - 100);
-                    timeout.setStatus(CalibrationTimeout.Status.TOO_HIGH);
-                    allTimeoutsAreCalibrated = false;
-                    break;
-                case TOO_HIGH:
-                    if (timeout.getTimeoutInMs() - 100 < 0) {
-                        timeout.setValue(0);
-                        timeout.setStatus(CalibrationTimeout.Status.TOO_HIGH);
-                    } else {
-                        timeout.setValue(timeout.getTimeoutInMs() - 100);
-                        timeout.setStatus(CalibrationTimeout.Status.CALIBRATED);
-                    }
-                    allTimeoutsAreCalibrated = false;
-                    break;
-                case TOO_LOW:
+                case EXCEEDED:
                     timeout.setValue(timeout.getTimeoutInMs() + 100);
-                    timeout.setStatus(CalibrationTimeout.Status.CALIBRATED);
                     allTimeoutsAreCalibrated = false;
                     break;
-                case CALIBRATED:
+                case KEPT:
                     break;
             }
         }
