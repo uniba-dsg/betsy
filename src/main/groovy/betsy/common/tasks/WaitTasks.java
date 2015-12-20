@@ -47,10 +47,14 @@ public class WaitTasks {
                 while (max > System.currentTimeMillis()) {
                     if (c.call()) {
                         long work = max - System.currentTimeMillis();
-                        LOGGER.info("Condition of wait task was met in " + work + "/" + max + "ms -> proceeding");
+                        LOGGER.info("Condition of wait task was met in " + work + "/" + timeout.get().getTimeoutInMs() + "ms -> proceeding");
                         CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
-                        calibrationTimeout.setValue(Math.toIntExact(work));
-                        CalibrationTimeoutRepository.addTimeout(calibrationTimeout);
+                        if(work <= 0){
+                            calibrationTimeout.setValue(timeout.get().getTimeoutInMs() -  Math.toIntExact(work));
+                        }else{
+                            calibrationTimeout.setValue(Math.toIntExact(work));
+                        }
+                        CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                         return;
                     }
                     sleepInternal(timeout.get().getTimeToRepetitionInMs());
