@@ -40,7 +40,8 @@ public class WaitTasks {
 
     public static void waitFor(Optional<Timeout> timeout, Callable<Boolean> c) throws TimeoutException {
         if(timeout.isPresent()) {
-            LOGGER.info("wait for at most " + timeout.get().getTimeoutInMs() + "ms or until condition is met.");
+            LOGGER.info(timeout.get().getKey() + ": wait for at most " + timeout.get().getTimeoutInMs() + "ms or until condition is met.");
+
             long max = System.currentTimeMillis() + timeout.get().getTimeoutInMs();
 
             try {
