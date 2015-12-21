@@ -2,7 +2,6 @@ package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestCase;
-import timeouts.timeout.TimeoutRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -215,7 +214,7 @@ class EventProcesses {
     public static final BPMNProcess SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH = BPMNProcessBuilder.buildEventProcess(
             "Signal_IntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one" +
                     "branch of the process awaits a signal which is thrown by the other branch.",
-            new BPMNTestCase().assertTask1().optionDelay(TimeoutRepository.getTimeout("EventProcesses.SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().optionDelay(10_000)
     );
 
 
@@ -254,42 +253,42 @@ class EventProcesses {
 
     public static final BPMNProcess TIMER_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
             "Timer_IntermediateEvent", "A process with two scriptTasks. There is a intermediateCatchEvent in between the tasks that delay the execution for a short period of time.",
-            new BPMNTestCase().assertTask1().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_INTERMEDIATE_EVENT").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().optionDelay(5_000)
     );
 
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_NonInterrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
                     "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
                     "In the meantime, a boundary timer event should fire without interrupting the subProcess.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5_000)
     );
 
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_TIMECYCLE = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_TimeCycle", "A process with multiple scriptTasks and a subProcess with timer events. " +
                     "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
                     "In the meantime a boundary timer event with the attribute timecycle should fire four times without interrupting the subProcess, which consists of a timer event and a scriptTask.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask3().assertTask3().assertTask3().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_BOUNDARY_EVENT_SUBPROCESS_TIMECYCLE").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask3().assertTask3().assertTask3().optionDelay(65_000)
     );
 
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_Interrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
                     "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
                     "In the meantime, a boundary timer event should fire and interrupt the subProcess.",
-            new BPMNTestCase().assertTask3().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask3().optionDelay(5_000)
     );
 
     public static final BPMNProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_Interrupting_Activity", "A process with multiple scriptTasks and a subProcess with an activity which needs more time for executing than the boundary timer. " +
                     "The execution of the subProcess is therefore longer than the boundary timer event." +
                     "It is expected that the boundary timer event fires before the task is completed and interrupts the subProcess.",
-            new BPMNTestCase().assertTask2().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask2().optionDelay(12_000)
     );
 
     public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_StartEvent_EventSubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess." +
                     "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
                     "All activities should be executed without interruption.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5_000)
     );
 
     public static final BPMNProcess TIMER_START_EVENT_TIMECYCLE_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
@@ -297,20 +296,20 @@ class EventProcesses {
                     "The subProcess encloses the event subProcess and the latter is started by a timer startEvent with the attribute timeCycle. " +
                     "The event SubProcess should be executed four times." +
                     "All activities should be executed without interruption.",
-            new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2().assertTask2().assertTask3().optionDelay(TimeoutRepository.getTimeout("EventProcessesTIMER_START_EVENT_TIMECYCLE_EVENT_SUBPROCESS_NON_INTERRUPTING").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2().assertTask2().assertTask3().optionDelay(35_000)
     );
 
     public static final BPMNProcess TIMER_INTERMEDIATE_TIMECYCLE_EVENT = BPMNProcessBuilder.buildEventProcess(
             "Timer_IntermediateTimeCycleEvent", "A process with two scriptTasks. There is an intermediateCatchEvent with the attribute timeCycle in between" +
                     " the tasks that triggers the second task four times.",
-            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_INTERMEDIATE_TIMECYCLE_EVENT").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask1().optionDelay(5_000)
     );
 
     public static final BPMNProcess TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_StartEvent_EventSubProcess_Interrupting", "A process with an ordinary subProcess and an event subProcess." +
                     "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
                     "The event subProcess interrupts the activities of its parent subProcess.",
-            new BPMNTestCase().assertTask2().optionDelay(TimeoutRepository.getTimeout("EventProcesses.TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING").get().getTimeoutInMs())
+            new BPMNTestCase().assertTask2().optionDelay(5_000)
     );
 
     public static final BPMNProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(

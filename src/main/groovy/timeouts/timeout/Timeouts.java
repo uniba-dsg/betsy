@@ -171,16 +171,6 @@ public class Timeouts {
         timeouts.add(new Timeout("Jbpm", "shutdon", 240000, 5000));
         timeouts.add(new Timeout("JbpmTester", "runTest", 10000));
 
-        timeouts.add(new Timeout("EventProcesses", "SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH", 10000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_INTERMEDIATE_EVENT", 5000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING", 5000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_BOUNDARY_EVENT_SUBPROCESS_TIMECYCLE", 65000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING", 5000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY", 12000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_START_EVENT_EVENT_SUBPROCESS_NON_INTERRUPTING", 5000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_START_EVENT_TIMECYCLE_EVENT_SUBPROCESS_NON_INTERRUPTING", 35000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_INTERMEDIATE_TIMECYCLE_EVENT", 5000));
-        timeouts.add(new Timeout("EventProcesses", "TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING", 5000));
         timeouts.add(new Timeout("GatewayProcesses", "PARALLEL_GATEWAY_TRUE_PARALLELISM", 22000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_SIGNALS", 10000));
         timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_TIMER", 5000));
