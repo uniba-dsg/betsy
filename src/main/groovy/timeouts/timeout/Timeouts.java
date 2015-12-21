@@ -196,19 +196,6 @@ public class Timeouts {
         timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "sleep", 2000));
         timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "waitFor", 120000, 500));
 
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_ASYNC", "1", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_ASYNC", "2", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_SYNC", "1", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CORRELATION_INIT_SYNC", "2", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_AMBIGUOUS_RECEIVE_FAULT", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_CONFLICTING_RECEIVE_FAULT", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT", "1", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT", "2", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_REPLY_CORRELATION_INIT_ASYNC", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_REPLY_CORRELATION_INIT_SYNC", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "RECEIVE_REPLY_CORRELATION_VIOLATION_YES", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "INVOKE_CORRELATION_PATTERN_INIT_ASYNC", 1000));
-        timeouts.add(new Timeout("BasicActivityProcesses", "INVOKE_CORRELATION_PATTERN_INIT_SYNC", 1000));
         timeouts.add(new Timeout("PatternProcesses", "MILESTONE_PATTERN", 4000));
     }
 }

@@ -5,7 +5,6 @@ import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
 import betsy.common.util.CollectionsUtil;
-import timeouts.timeout.TimeoutRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -147,29 +146,29 @@ class BasicActivityProcesses {
 
     public static final BPELProcess RECEIVE_CORRELATION_INIT_ASYNC = BPELProcessBuilder.buildBasicActivityProcess(
             "Receive-Correlation-InitAsync", "Two asynchronous receives, followed by a receive-reply pair, and bound to a single correlationSet.",
-            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_CORRELATION_INIT_ASYNC.1").get().getTimeoutInMs()).sendAsync(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_CORRELATION_INIT_ASYNC.2").get().getTimeoutInMs()).sendSync(1, 1)
+            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(1_000).sendAsync(1).waitFor(1_000).sendSync(1, 1)
     );
 
     public static final BPELProcess RECEIVE_CORRELATION_INIT_SYNC = BPELProcessBuilder.buildBasicActivityProcess(
             "Receive-Correlation-InitSync", "One synchronous receive, one asynchronous receive, followed by a receive-reply pair, and bound to a single correlationSet.",
-            new BPELTestCase().checkDeployment().sendSync(1, 0).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_CORRELATION_INIT_SYNC.1").get().getTimeoutInMs()).sendAsync(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_CORRELATION_INIT_SYNC.2").get().getTimeoutInMs()).sendSync(1, 1)
+            new BPELTestCase().checkDeployment().sendSync(1, 0).waitFor(1_000).sendAsync(1).waitFor(1_000).sendSync(1, 1)
     );
 
     public static final BPELProcess RECEIVE_AMBIGUOUS_RECEIVE_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "Receive-AmbiguousReceiveFault", "An asynchronous receive that initiates two correlationSets, followed by a flow with two sequences that contain synchronous receive-reply pairs for the same operation but differnet correlationSets. Should trigger an ambiguousReceive fault.",
-            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_AMBIGUOUS_RECEIVE_FAULT").get().getTimeoutInMs()).sendSync(1, new SoapFaultTestAssertion("ambiguousReceive"))
+            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(1_000).sendSync(1, new SoapFaultTestAssertion("ambiguousReceive"))
     );
 
     public static final BPELProcess RECEIVE_CONFLICTING_RECEIVE_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "Receive-ConflictingReceiveFault", "An asynchronous receive that initiates a correlationSet, followed by a flow with two sequences that contain synchronous receive-reply pair for the same operation and correlationSet. Should trigger a conflictingReceive fault.",
-            new BPELTestCase().checkDeployment().sendSync(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_CONFLICTING_RECEIVE_FAULT").get().getTimeoutInMs()).sendSync(1, new SoapFaultTestAssertion("conflictingReceive"))
+            new BPELTestCase().checkDeployment().sendSync(1).waitFor(1_000).sendSync(1, new SoapFaultTestAssertion("conflictingReceive"))
     );
 
     public static final BPELProcess RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "ReceiveReply-ConflictingRequestFault", "A synchronous interaction, followed by intermediate while that subsequently enables multiple receives that correspond to a single synchronous message exchange. Should trigger a conflictingRequest fault.",
             new BPELTestCase().checkDeployment().
-                    sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT.1").get().getTimeoutInMs()). // start up, should complete normally
-                    sendSyncString(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT.2").get().getTimeoutInMs()). // no reply, also normal, we need to open the message exchange
+                    sendSync(1, 1).waitFor(1_000). // start up, should complete normally
+                    sendSyncString(1).waitFor(1_000). // no reply, also normal, we need to open the message exchange
                     sendSyncString(1, new SoapFaultTestAssertion("conflictingRequest")) // now, there should be the fault
     );
 
@@ -200,12 +199,12 @@ class BasicActivityProcesses {
 
     public static final BPELProcess RECEIVE_REPLY_CORRELATION_INIT_ASYNC = BPELProcessBuilder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitAsync", "An asynchronous receive that initiates a correlationSet followed by a receive-reply pair that uses this set.",
-            new BPELTestCase().checkDeployment().sendAsync(5).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_REPLY_CORRELATION_INIT_ASYNC").get().getTimeoutInMs()).sendSync(5, 5)
+            new BPELTestCase().checkDeployment().sendAsync(5).waitFor(1_000).sendSync(5, 5)
     );
 
     public static final BPELProcess RECEIVE_REPLY_CORRELATION_INIT_SYNC = BPELProcessBuilder.buildBasicActivityProcess(
             "ReceiveReply-Correlation-InitSync", "A synchronous recieve that initiates a correlationSet followed by a receive-reply pair that uses this set.",
-            new BPELTestCase().checkDeployment().sendSync(5, 0).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_REPLY_CORRELATION_INIT_SYNC").get().getTimeoutInMs()).sendSync(5, 5)
+            new BPELTestCase().checkDeployment().sendSync(5, 0).waitFor(1_000).sendSync(5, 5)
     );
 
     public static final BPELProcess RECEIVE_REPLY_CORRELATION_VIOLATION_NO = BPELProcessBuilder.buildBasicActivityProcess(
@@ -216,7 +215,7 @@ class BasicActivityProcesses {
     public static final BPELProcess RECEIVE_REPLY_CORRELATION_VIOLATION_YES = BPELProcessBuilder.buildBasicActivityProcess(
             "ReceiveReply-CorrelationViolation-Yes", "Two subsequent receive-reply pairs which share a correlationSet and where both receives have initiate set to yes.",
             new BPELTestCase().checkDeployment().
-                    sendSync(1, 1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.RECEIVE_REPLY_CORRELATION_VIOLATION_YES").get().getTimeoutInMs()).
+                    sendSync(1, 1).waitFor(1_000).
                     sendSync(1, new SoapFaultTestAssertion("correlationViolation"))
     );
 
@@ -295,12 +294,12 @@ class BasicActivityProcesses {
 
     public static final BPELProcess INVOKE_CORRELATION_PATTERN_INIT_ASYNC = BPELProcessBuilder.buildProcessWithPartner(
             "basic/Invoke-Correlation-Pattern-InitAsync", "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
-            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.INVOKE_CORRELATION_PATTERN_INIT_ASYNC").get().getTimeoutInMs()).sendSync(1, 1)
+            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(1_000).sendSync(1, 1)
     );
 
     public static final BPELProcess INVOKE_CORRELATION_PATTERN_INIT_SYNC = BPELProcessBuilder.buildProcessWithPartner(
             "basic/Invoke-Correlation-Pattern-InitSync", "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
-            new BPELTestCase().checkDeployment().sendSync(1, 0).waitFor(TimeoutRepository.getTimeout("BasicActivityProcesses.INVOKE_CORRELATION_PATTERN_INIT_SYNC").get().getTimeoutInMs()).sendSync(1, 1)
+            new BPELTestCase().checkDeployment().sendSync(1, 0).waitFor(1_000).sendSync(1, 1)
     );
 
     public static final BPELProcess INVOKE_CATCH = BPELProcessBuilder.buildProcessWithPartner(
