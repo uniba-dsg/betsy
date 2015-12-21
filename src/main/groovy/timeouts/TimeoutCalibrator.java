@@ -29,22 +29,28 @@ public class TimeoutCalibrator {
         BPELMain.shutdownSoapUiAfterCompletion(false);
         int counterTestFolder = 1;
         boolean allTimeoutsAreCalibrated = false;
+        boolean lastRoundFinished = false;
 
-        while (!allTimeoutsAreCalibrated) {
+        while (!lastRoundFinished) {
+            lastRoundFinished = allTimeoutsAreCalibrated;
+
             Main.main(addChangedTestFolderToArgs(args, counterTestFolder++));
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts);
-            if (!allTimeoutsAreCalibrated) {
+            if (!allTimeoutsAreCalibrated || !lastRoundFinished) {
                 //set all values to the repositories
                 TimeoutRepository.setAllCalibrationTimeouts(timeouts);
                 //clean the timeoutRepository for the new run
                 CalibrationTimeoutRepository.clean();
+                //
+                lastRoundFinished = false;
             }
             for (CalibrationTimeout timeout : timeouts.values()) {
                 LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
             }
+
         }
 
         //write timeouts to properties and csv
@@ -61,7 +67,7 @@ public class TimeoutCalibrator {
         for (CalibrationTimeout timeout : timeouts.values()) {
             switch (timeout.getStatus()) {
                 case EXCEEDED:
-                    timeout.setValue(timeout.getTimeoutInMs() + 100);
+                    timeout.setValue(timeout.getTimeoutInMs() + 500);
                     allTimeoutsAreCalibrated = false;
                     break;
                 case KEPT:
