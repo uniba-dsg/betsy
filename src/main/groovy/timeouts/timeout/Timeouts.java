@@ -171,11 +171,6 @@ public class Timeouts {
         timeouts.add(new Timeout("Jbpm", "shutdon", 240000, 5000));
         timeouts.add(new Timeout("JbpmTester", "runTest", 10000));
 
-        timeouts.add(new Timeout("GatewayProcesses", "PARALLEL_GATEWAY_TRUE_PARALLELISM", 22000));
-        timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_SIGNALS", 10000));
-        timeouts.add(new Timeout("GatewayProcesses", "EVENT_BASED_GATEWAY_TIMER", 5000));
-
-
         //BPEL
         timeouts.add(new Timeout("Retry", "atMostThreeTimes", 500));
         timeouts.add(new Timeout("BPELComposite", "test", 2000));
