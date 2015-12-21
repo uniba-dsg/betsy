@@ -7,6 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import timeouts.calibration_timeout.CalibrationTimeout;
+import timeouts.calibration_timeout.CalibrationTimeoutRepository;
 import timeouts.timeout.Timeout;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,7 +17,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -171,9 +171,8 @@ public class TimeoutIOOperations {
      * @param testDirectory The directory, which contains the SOAPUI test files.
      * @return This method returns a list of CalibrationTimeouts.
      */
-    public static List<CalibrationTimeout> readSoapUITimeouts(String testDirectory) {
+    public static void readSoapUITimeouts(String testDirectory) {
 
-        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
         String directoryName = testDirectory + "/reports";
         List<Path> files = FileTasks.findAllInFolder(Paths.get(directoryName), "TESTS-TestSuites.xml");
 
@@ -191,7 +190,7 @@ public class TimeoutIOOperations {
                     if (attribute.isPresent()) {
                         Integer value = Integer.parseInt(attribute.get().getNodeValue().replace(".", ""));
                         CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", value));
-                        calibrationTimeouts.add(calibrationTimeout);
+                        CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                     }
                 }
             } catch (IOException e) {
@@ -200,6 +199,5 @@ public class TimeoutIOOperations {
                 LOGGER.info("Couldn't parse the file: " + path.getFileName());
             }
         }
-        return calibrationTimeouts;
     }
 }

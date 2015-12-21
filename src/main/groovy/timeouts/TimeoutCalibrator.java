@@ -35,16 +35,18 @@ public class TimeoutCalibrator {
             lastRoundFinished = allTimeoutsAreCalibrated;
 
             Main.main(addChangedTestFolderToArgs(args, counterTestFolder++));
+            //gather extern timeouts
+            TimeoutIOOperations.readSoapUITimeouts(actualTestFolder);
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts);
+
             if (!allTimeoutsAreCalibrated || !lastRoundFinished) {
                 //set all values to the repositories
                 TimeoutRepository.setAllCalibrationTimeouts(timeouts);
                 //clean the timeoutRepository for the new run
                 CalibrationTimeoutRepository.clean();
-                //
                 lastRoundFinished = false;
             }
             for (CalibrationTimeout timeout : timeouts.values()) {
