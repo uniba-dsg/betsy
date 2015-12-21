@@ -195,7 +195,5 @@ public class Timeouts {
         timeouts.add(new Timeout("Wso2Deployer", "undeploy", "sleep", 1000));
         timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "sleep", 2000));
         timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "waitFor", 120000, 500));
-
-        timeouts.add(new Timeout("PatternProcesses", "MILESTONE_PATTERN", 4000));
     }
 }
