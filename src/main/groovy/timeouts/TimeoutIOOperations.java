@@ -100,7 +100,7 @@ public class TimeoutIOOperations {
                     properties.load(reader);
                     reader.close();
                 } else {
-                    properties = System.getProperties();
+                    properties = new Properties();
                 }
                 writer = new FileWriter(propertiesFile);
                 for (Timeout timeout : timeouts) {
@@ -135,16 +135,16 @@ public class TimeoutIOOperations {
             FileWriter writer = null;
             try {
                 writer = new FileWriter(csv);
-                writer.append("Key").append(',');
-                writer.append("EngineOrProcessGroup").append(',');
-                writer.append("StepOrProcess").append(',');
-                writer.append("Value").append(',');
+                writer.append("Key").append(';');
+                writer.append("EngineOrProcessGroup").append(';');
+                writer.append("StepOrProcess").append(';');
+                writer.append("Value").append(';');
                 writer.append("TimeToRepetition").append('\n');
                 for (Timeout timeout : timeouts) {
-                    writer.append(timeout.getKey()).append(',');
-                    writer.append(timeout.getEngineOrProcessGroup()).append(',');
-                    writer.append(timeout.getStepOrProcess()).append(',');
-                    writer.append(Integer.toString(timeout.getTimeoutInMs())).append(',');
+                    writer.append(timeout.getKey()).append(';');
+                    writer.append(timeout.getEngineOrProcessGroup()).append(';');
+                    writer.append(timeout.getStepOrProcess()).append(';');
+                    writer.append(Integer.toString(timeout.getTimeoutInMs())).append(';');
                     writer.append(Integer.toString(timeout.getTimeToRepetitionInMs())).append('\n');
                 }
                 writer.flush();
