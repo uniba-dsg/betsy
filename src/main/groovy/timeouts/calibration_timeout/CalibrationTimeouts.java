@@ -1,5 +1,6 @@
 package timeouts.calibration_timeout;
 
+import flex.messaging.io.ArrayCollection;
 import timeouts.TimeoutIOOperations;
 import timeouts.timeout.Timeout;
 
@@ -116,7 +117,7 @@ public class CalibrationTimeouts {
                         calibrationTimeout.getTimeoutInMs() > calibrationTimeouts.get(calibrationTimeout.getKey()).getTimeoutInMs()) {
                     calibrationTimeouts.remove(calibrationTimeout.getKey());
                     calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-                } else if(calibrationTimeout.getStatus() == CalibrationTimeout.Status.EXCEEDED) {
+                } else if (calibrationTimeout.getStatus() == CalibrationTimeout.Status.EXCEEDED) {
                     calibrationTimeouts.remove(calibrationTimeout.getKey());
                     calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
                 }
@@ -130,7 +131,7 @@ public class CalibrationTimeouts {
      * This method writes all given {@link CalibrationTimeout} to the properties.
      */
     public void writeAllCalibrationTimeoutsToProperties() {
-        List<CalibrationTimeout> timeouts = (List<CalibrationTimeout>) getAllNonRedundantTimeoutsProperties().values();
+        List<CalibrationTimeout> timeouts = new ArrayCollection(getAllNonRedundantTimeoutsProperties().values());
         TimeoutIOOperations.writeToProperties(properties, convertCalibrationTimeoutListToTimeoutList(timeouts));
     }
 
@@ -157,15 +158,16 @@ public class CalibrationTimeouts {
         HashMap<String, CalibrationTimeout> calibrationTimeouts = new HashMap<>();
 
         //write only kept and the highest timeouts to the properties
-        timeouts.values().stream().filter(calibrationTimeout -> calibrationTimeouts.get(calibrationTimeout.getKey()).getStatus() == CalibrationTimeout.Status.KEPT).forEach(calibrationTimeout -> {
-            if (!calibrationTimeouts.containsKey(calibrationTimeout.getKey())) {
-                calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-            } else if (calibrationTimeout.getTimeoutInMs() > calibrationTimeouts.get(calibrationTimeout.getKey()).getTimeoutInMs()) {
-                calibrationTimeouts.remove(calibrationTimeout.getKey());
-                calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
+        for (CalibrationTimeout calibrationTimeout : timeouts.values()) {
+            if (calibrationTimeout.getStatus() == CalibrationTimeout.Status.KEPT)
+                if (!calibrationTimeouts.containsKey(calibrationTimeout.getKey())) {
+                    calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
+                } else if (calibrationTimeout.getTimeoutInMs() > calibrationTimeouts.get(calibrationTimeout.getKey()).getTimeoutInMs()) {
+                    calibrationTimeouts.remove(calibrationTimeout.getKey());
+                    calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
+                }
+        }
 
-            }
-        });
         return calibrationTimeouts;
     }
 }
