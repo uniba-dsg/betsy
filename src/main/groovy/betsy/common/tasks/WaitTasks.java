@@ -45,30 +45,31 @@ public class WaitTasks {
             long max = System.currentTimeMillis() + timeout.get().getTimeoutInMs();
 
             try {
+                long work = 0;
+                boolean wasSuccessful = false;
                 while (max > System.currentTimeMillis()) {
-                    if (c.call()) {
-                        long work = max - System.currentTimeMillis();
-                        LOGGER.info("Condition of wait task was met in " + work + "/" + timeout.get().getTimeoutInMs() + "ms -> proceeding");
-                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
-                        if(work <= 0){
-                            calibrationTimeout.setValue(timeout.get().getTimeoutInMs() -  Math.toIntExact(work));
-                        }else{
-                            calibrationTimeout.setValue(Math.toIntExact(work));
-                        }
-                        CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
-                        return;
+                    work = max - System.currentTimeMillis();
+                    if (c.call() && work >= 0) {
+                        wasSuccessful = true;
+                        break;
                     }
                     sleepInternal(timeout.get().getTimeToRepetitionInMs());
                 }
-                if (!c.call()) {
+
+                CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
+                if (wasSuccessful) {
+                    calibrationTimeout.setValue(Math.toIntExact(work));
+                    LOGGER.info("Condition of wait task was met in " + work + "/" + timeout.get().getTimeoutInMs() + "ms -> proceeding");
+                    CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+                }else{
+                    calibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
                     LOGGER.info("Condition of wait task NOT met within the specified time");
+                    CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                     throw new IllegalStateException("waited for " + timeout.get().getTimeoutInMs() + "ms, but condition was not met");
                 }
 
             } catch (IllegalStateException e) {
-                CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout.get());
-                calibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
-                CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+
                 throw new TimeoutException(timeout.get());
             } catch (Exception e) {
                 throw new IllegalStateException("internal error", e);
