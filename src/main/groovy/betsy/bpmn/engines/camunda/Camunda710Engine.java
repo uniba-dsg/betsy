@@ -35,7 +35,7 @@ public class Camunda710Engine extends CamundaEngine {
     public void startup() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")));
-        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Comunda710.startup"), getCamundaUrl());
+        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Camunda710.startup"), getCamundaUrl());
     }
 
 }
