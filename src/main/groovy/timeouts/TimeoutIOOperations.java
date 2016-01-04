@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import timeouts.calibration_timeout.CalibrationTimeout;
 import timeouts.calibration_timeout.CalibrationTimeoutRepository;
 import timeouts.timeout.Timeout;
+import timeouts.timeout.TimeoutRepository;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -182,15 +183,22 @@ public class TimeoutIOOperations {
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document = builder.parse(path.toFile());
                 document.getDocumentElement();
-                NodeList test = document.getElementsByTagName("testsuite");
+                NodeList testCases = document.getElementsByTagName("testcase");
 
-                for (int i = 0; i < test.getLength(); i++) {
-                    Node node = test.item(i);
-                    Optional<Node> attribute = Optional.ofNullable(node.getAttributes().getNamedItem("time"));
-                    if (attribute.isPresent()) {
-                        Integer value = Integer.parseInt(attribute.get().getNodeValue().replace(".", ""));
-                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", value));
+                for (int i = 0; i < testCases.getLength(); i++) {
+                    Node testcase = testCases.item(i);
+                    Optional<Node> failure = Optional.ofNullable(testcase.getFirstChild().getNextSibling());
+
+                    if (failure.isPresent() && failure.get().getNodeName().equals("failure")) {
+                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", TimeoutRepository.getTimeout("TestingAPI.constructor").get().getTimeoutInMs()));
                         CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+                    } else {
+                        Optional<Node> attribute = Optional.ofNullable(testcase.getAttributes().getNamedItem("time"));
+                        if (attribute.isPresent()) {
+                            Integer value = Integer.parseInt(attribute.get().getNodeValue().replace(".", ""));
+                            CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", value));
+                            CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+                        }
                     }
                 }
             } catch (IOException e) {
