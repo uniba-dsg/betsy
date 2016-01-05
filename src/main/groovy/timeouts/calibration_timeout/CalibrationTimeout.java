@@ -27,6 +27,41 @@ public class CalibrationTimeout extends Timeout {
         super(engineOrProcess, stepOrProcess, description, value, timeToRepetition);
     }
 
+    /**
+     * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
+     *
+     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
+     */
+    public CalibrationTimeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition) {
+        super(engineOrProcess, stepOrProcess, value, timeToRepetition);
+    }
+
+    /**
+     * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
+     *
+     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
+     * @param description      The description of the {@link Timeout}.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     */
+    public CalibrationTimeout(String engineOrProcess, String stepOrProcess, String description, int value) {
+        super(engineOrProcess, stepOrProcess, description, value);
+    }
+
+
+    /**
+     * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
+     *
+     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     */
+    public CalibrationTimeout(String engineOrProcess, String stepOrProcess, int value) {
+        super(engineOrProcess, stepOrProcess, value);
+    }
 
     /**
      * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
