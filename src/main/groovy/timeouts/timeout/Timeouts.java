@@ -15,20 +15,15 @@ public class Timeouts {
     private static final Logger LOGGER = Logger.getLogger(Timeouts.class);
     private List<Timeout> timeouts = new ArrayList<>();
     private File properties = new File("timeout.properties");
-    private File csv = new File ("timeouts.csv");
 
     /**
      *
      * @param timeouts The timeouts, which should be managed by the {@link timeouts}.
      * @param nameOfProperties The name of the properties file.
-     * @param nameOfCSV The name of the csv file.
      */
-    public Timeouts(ArrayList<Timeout> timeouts, String nameOfProperties, String nameOfCSV) {
+    public Timeouts(ArrayList<Timeout> timeouts, String nameOfProperties) {
         if (nameOfProperties != null && nameOfProperties.length() > 0) {
             this.properties = new File(nameOfProperties);
-        }
-        if (nameOfCSV != null && nameOfCSV.length() > 0) {
-            this.csv = new File(nameOfCSV + ".csv");
         }
         if(timeouts != null){
             this.timeouts = timeouts;
@@ -37,14 +32,10 @@ public class Timeouts {
 
     /**
      * @param nameOfProperties The name of the properties file.
-     * @param nameOfCSV The name of the csv file.
      */
-    public Timeouts(String nameOfProperties, String nameOfCSV) {
+    public Timeouts(String nameOfProperties) {
         if (nameOfProperties != null && nameOfProperties.length() > 0) {
             this.properties = new File(nameOfProperties);
-        }
-        if (nameOfCSV != null && nameOfCSV.length() > 0) {
-            this.csv = new File(nameOfCSV + ".csv");
         }
         addTimeouts();
     }
@@ -102,27 +93,11 @@ public class Timeouts {
         }
     }
 
-
-    /**
-     * This method writes all given {@link Timeout} to the properties.
-     */
-    public void writeAllTimeoutsToProperties() {
-        TimeoutIOOperations.writeToProperties(properties, timeouts);
-    }
-
-
     /**
      * This method reads all timeouts, which are set in the {@link Timeouts} from the {@link Properties}.
      */
     public void readTimeoutProperties() {
         timeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
-    }
-
-    /**
-     *
-     */
-    public void writeToCSV() {
-        TimeoutIOOperations.writeToCSV(csv, timeouts);
     }
 
     private void addTimeouts(){
