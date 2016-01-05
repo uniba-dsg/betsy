@@ -48,11 +48,4 @@ public class TimeoutRepository {
     public static void setAllCalibrationTimeouts(HashMap<String, CalibrationTimeout> calibrationTimeouts) {
         calibrationTimeouts.values().forEach(TimeoutRepository::setTimeout);
     }
-
-    /**
-     * Writes the the values of the {@link Timeout} in the {@link TimeoutRepository} to a csv file.
-     */
-    public static void writeToCSV() {
-        TIMEOUTS.writeToCSV();
-    }
 }

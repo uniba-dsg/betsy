@@ -3,7 +3,6 @@ package timeouts.timeout;
 import org.junit.Test;
 import timeouts.calibration_timeout.CalibrationTimeout;
 
-import java.io.File;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
@@ -16,8 +15,12 @@ public class TimeoutRepositoryTest {
 
     @Test
     public void testGetTimeout() throws Exception {
-        TimeoutRepository.getTimeout("ode.deploy");
-        assertNotNull(TimeoutRepository.getTimeout("ode.deploy"));
+        assertNotNull(TimeoutRepository.getTimeout("Tomcat.startup").get());
+    }
+
+    @Test
+    public void testGetTimeoutNotExists() throws Exception {
+        assertFalse(TimeoutRepository.getTimeout("ode.deploy").isPresent());
     }
 
     @Test
@@ -40,13 +43,5 @@ public class TimeoutRepositoryTest {
         assertEquals(timeout.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeout.getKey()).get().getTimeToRepetitionInMs());
         assertEquals(timeoutTest.getTimeoutInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).get().getTimeoutInMs());
         assertEquals(timeoutTest.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).get().getTimeToRepetitionInMs());
-    }
-
-    @Test
-    public void testWriteToCSV() throws Exception {
-        TimeoutRepository.writeToCSV();
-        File csv = new File("timeouts.csv");
-        assertTrue(csv.exists());
-        csv.delete();
     }
 }
