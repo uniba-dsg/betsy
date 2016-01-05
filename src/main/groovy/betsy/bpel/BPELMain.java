@@ -19,6 +19,7 @@ import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
+import timeouts.calibration_timeout.CalibrationTimeoutRepository;
 
 import java.awt.*;
 import java.io.IOException;
@@ -95,6 +96,11 @@ public class BPELMain {
 
         if (shouldShutdownSoapUi) {
             SoapUIShutdownHelper.shutdownSoapUIForReal();
+        }
+
+        if(params.saveTimeouts()){
+            CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
+            CalibrationTimeoutRepository.writeToCSV();
         }
     }
 

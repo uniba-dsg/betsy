@@ -14,4 +14,6 @@ public interface CliParameter {
 
     boolean keepEngineRunning();
 
+    boolean saveTimeouts();
+
 }
