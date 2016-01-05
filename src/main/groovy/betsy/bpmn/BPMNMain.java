@@ -1,14 +1,14 @@
 package betsy.bpmn;
 
-import betsy.bpel.BPELComposite;
-import betsy.bpel.model.BPELProcess;
-import betsy.bpmn.cli.*;
+import betsy.bpmn.cli.BPMNCliParameter;
+import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasName;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
+import timeouts.calibration_timeout.CalibrationTimeoutRepository;
 
 import java.awt.*;
 import java.nio.file.Paths;
@@ -91,6 +91,11 @@ public class BPMNMain {
                     // ignore any exceptions
                 }
 
+            }
+
+            if(params.saveTimeouts()){
+                CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
+                CalibrationTimeoutRepository.writeToCSV();
             }
 
         } catch (Exception e) {
