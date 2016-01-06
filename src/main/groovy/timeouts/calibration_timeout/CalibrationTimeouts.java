@@ -94,7 +94,7 @@ public class CalibrationTimeouts {
     public HashMap<String, CalibrationTimeout> getAllCalibrationTimeouts() {
         HashMap<String, CalibrationTimeout> calibrationTimeoutsHashMap = new HashMap<>();
         for (CalibrationTimeout timeout : calibrationTimeouts) {
-            calibrationTimeoutsHashMap.put(timeout.getKey(), timeout);
+            calibrationTimeoutsHashMap.put(timeout.getCalibrationTimeoutKey(), timeout);
         }
         return calibrationTimeoutsHashMap;
     }
@@ -157,16 +157,15 @@ public class CalibrationTimeouts {
         HashMap<String, CalibrationTimeout> timeouts = getAllCalibrationTimeouts();
         HashMap<String, CalibrationTimeout> calibrationTimeouts = new HashMap<>();
 
-        //write only kept and the highest timeouts to the properties
-        for (CalibrationTimeout calibrationTimeout : timeouts.values()) {
-            if (calibrationTimeout.getStatus() == CalibrationTimeout.Status.KEPT)
-                if (!calibrationTimeouts.containsKey(calibrationTimeout.getKey())) {
-                    calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-                } else if (calibrationTimeout.getTimeoutInMs() > calibrationTimeouts.get(calibrationTimeout.getKey()).getTimeoutInMs()) {
-                    calibrationTimeouts.remove(calibrationTimeout.getKey());
-                    calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-                }
-        }
+        //write only kept and highest timeouts to the properties
+        timeouts.values().stream().filter(calibrationTimeout -> calibrationTimeout.getStatus() == CalibrationTimeout.Status.KEPT).forEach(calibrationTimeout -> {
+            if (!calibrationTimeouts.containsKey(calibrationTimeout.getKey())) {
+                calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
+            } else if (calibrationTimeout.getTimeoutInMs() > calibrationTimeouts.get(calibrationTimeout.getKey()).getTimeoutInMs()) {
+                calibrationTimeouts.remove(calibrationTimeout.getKey());
+                calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
+            }
+        });
 
         return calibrationTimeouts;
     }

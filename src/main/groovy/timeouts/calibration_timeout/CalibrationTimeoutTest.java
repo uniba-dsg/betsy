@@ -146,4 +146,9 @@ public class CalibrationTimeoutTest {
         calibrationTimeout.setStatus(status);
         assertEquals(status, calibrationTimeout.getStatus());
     }
+
+    @Test
+    public void testGetCalibrationTimeoutKey() throws  Exception{
+        assertEquals(calibrationTimeout.getKey() + "." + calibrationTimeout.getTimestamp(), calibrationTimeout.getCalibrationTimeoutKey());
+    }
 }

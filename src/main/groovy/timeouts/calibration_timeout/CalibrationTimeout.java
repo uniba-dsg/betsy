@@ -1,9 +1,7 @@
 package timeouts.calibration_timeout;
 
-import timeouts.timeout.Timeout;
 import timeouts.TimeoutCalibrator;
-
-import java.util.Optional;
+import timeouts.timeout.Timeout;
 
 /**
  * @author Christoph Broeker
@@ -12,7 +10,8 @@ import java.util.Optional;
  */
 public class CalibrationTimeout extends Timeout {
 
-    private Optional<Status> status = Optional.of(Status.KEPT);
+    private Status status = Status.KEPT;
+    private long timestamp = System.currentTimeMillis();
 
     /**
      * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
@@ -77,7 +76,7 @@ public class CalibrationTimeout extends Timeout {
      * @return Returns the actual {@link Status} of the {@link CalibrationTimeout}.
      */
     public Status getStatus() {
-        return status.get();
+        return status;
     }
 
     /**
@@ -85,7 +84,23 @@ public class CalibrationTimeout extends Timeout {
      * @param status The {@link Status} of the {@link CalibrationTimeout}.
      */
     public void setStatus(Status status) {
-        this.status = Optional.of(status);
+        this.status = status;
+    }
+
+    /**
+     * @return Returns the key composed of the key of the {@link Timeout} and the timestamp.
+     */
+    public String getCalibrationTimeoutKey(){
+        StringBuilder key = new StringBuilder(getKey()).append('.').append(timestamp);
+        return key.toString();
+    }
+
+    /**
+     *
+     * @return Returns the timestamp of the creation of {@link CalibrationTimeout}
+     */
+    public long getTimestamp(){
+        return timestamp;
     }
 
     /**
