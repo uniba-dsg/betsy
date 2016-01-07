@@ -187,8 +187,11 @@ public class TimeoutIOOperations {
 
                 for (int i = 0; i < testCases.getLength(); i++) {
                     Node testcase = testCases.item(i);
-                    Optional<Node> failure = Optional.ofNullable(testcase.getFirstChild().getNextSibling());
-
+                    Optional<Node> child = Optional.ofNullable(testcase.getFirstChild());
+                    Optional<Node> failure = Optional.empty();
+                    if(child.isPresent()){
+                        failure = Optional.ofNullable(child.get().getNextSibling());
+                    }
                     if (failure.isPresent() && failure.get().getNodeName().equals("failure")) {
                         CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", TimeoutRepository.getTimeout("TestingAPI.constructor").get().getTimeoutInMs()));
                         CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
