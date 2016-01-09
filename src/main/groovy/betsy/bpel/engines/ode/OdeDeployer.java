@@ -23,7 +23,7 @@ public class OdeDeployer {
     }
 
     public OdeDeployer(Path deploymentFolder, Path logFile) {
-        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("OdeDeployer.deploy"));
+        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("OdeDeployer.constructor"));
     }
 
     public void deploy(Path packageFilePath, String processName) {

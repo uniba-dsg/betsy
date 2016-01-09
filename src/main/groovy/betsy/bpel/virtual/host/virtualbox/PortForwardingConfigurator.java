@@ -65,10 +65,10 @@ public class PortForwardingConfigurator {
             while (natEngine.getRedirects().size() != forwardingPorts.size()) {
                 if (System.currentTimeMillis() + start > timeout) {
                     throw new PortRedirectException("Could not set redirected "
-                            + "ports within 10s");
+                            + "ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").get().getTimeoutInMs() + "s");
                 }
                 try {
-                    Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding.sleep").get().getTimeoutInMs());
+                    Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").get().getTimeToRepetitionInMs());
                 } catch (InterruptedException e) {
                     // ignore
                 }
@@ -92,10 +92,10 @@ public class PortForwardingConfigurator {
         while (natEngine.getRedirects().size() != 0) {
             if (System.currentTimeMillis() + start > TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").get().getTimeoutInMs()) {
                 throw new PortRedirectException("Could not delete all "
-                        + "redirected ports within 10s");
+                        + "redirected ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").get().getTimeoutInMs() + "s");
             }
             try {
-                Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding.sleep").get().getTimeoutInMs());
+                Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").get().getTimeToRepetitionInMs());
             } catch (InterruptedException e) {
                 // ignore
             }

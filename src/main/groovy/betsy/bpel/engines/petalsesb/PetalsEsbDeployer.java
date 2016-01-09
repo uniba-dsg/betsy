@@ -17,7 +17,7 @@ public class PetalsEsbDeployer {
     private final Optional<Timeout> timeout;
 
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath) {
-        this(deploymentDirPath, logFilePath, TimeoutRepository.getTimeout("PetalsEsbDeployer.deploy"));
+        this(deploymentDirPath, logFilePath, TimeoutRepository.getTimeout("PetalsEsbDeployer.constructor"));
     }
 
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath, Optional<Timeout> timeout) {

@@ -21,7 +21,7 @@ public class BpelgDeployer {
         this.timeout = timeout;
     }
     public BpelgDeployer(Path deploymentFolder, Path logFile) {
-        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("BpelgDeployer.deploy"));
+        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("BpelgDeployer.constructor"));
     }
 
     public void deploy(Path packageFilePath, String processName) {
