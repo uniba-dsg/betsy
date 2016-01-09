@@ -18,6 +18,8 @@ public class TimeoutTest {
     private String engine;
     private String step;
     private String description;
+    private Timeout.Category category;
+    private Timeout.PlaceOfUse placeOfUse;
     private Integer value;
     private Integer timeToRepetition;
 
@@ -26,9 +28,11 @@ public class TimeoutTest {
         engine = "ode";
         step = "deploy";
         description = "maven";
+        category = Timeout.Category.UNMEASURABLE;
+        placeOfUse = Timeout.PlaceOfUse.EXTERN;
         value = 90_000;
         timeToRepetition = 500;
-        timeout = new Timeout(engine, step, description, value, timeToRepetition);
+        timeout = new Timeout(engine, step, description, value, timeToRepetition, category, placeOfUse);
     }
 
     @After
@@ -36,9 +40,23 @@ public class TimeoutTest {
         engine = null;
         step = null;
         description = null;
-        value = 90_000;
-        timeToRepetition = 500;
+        category = null;
+        placeOfUse = null;
+        value = null;
+        timeToRepetition = null;
         timeout = null;
+    }
+
+    @Test
+    public void testConstructor(){
+        timeout = new Timeout(engine, step, value);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
     }
 
     @Test
@@ -47,36 +65,166 @@ public class TimeoutTest {
         assertEquals(engine, timeout.getEngineOrProcessGroup());
         assertEquals(step, timeout.getStepOrProcess());
         assertEquals(description, timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
         assertEquals(value.intValue(), timeout.getTimeoutInMs());
         assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
     }
 
     @Test
-    public void testConstructorWithoutTimeToRepetition(){
-        timeout = new Timeout(engine, step, description, value);
+    public void testConstructorWithCategory(){
+        timeout = new Timeout(engine, step, value, category);
         assertEquals(engine, timeout.getEngineOrProcessGroup());
         assertEquals(step, timeout.getStepOrProcess());
-        assertEquals(description, timeout.getDescription());
+        assertEquals("", timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
         assertEquals(value.intValue(), timeout.getTimeoutInMs());
         assertEquals(0, timeout.getTimeToRepetitionInMs());
     }
 
     @Test
-    public void testConstructorWithoutDescription(){
+    public void testConstructorWithPlaceOfUse(){
+        timeout = new Timeout(engine, step, value, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithCategoryPlaceOfUse(){
+        timeout = new Timeout(engine, step, value, category, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithDescription(){
+        timeout = new Timeout(engine, step, description, value);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals(description, timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithDescriptionCategory(){
+        timeout = new Timeout(engine, step, description, value, category);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals(description, timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithDescriptionPlaceOfUse(){
+        timeout = new Timeout(engine, step, description, value, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals(description, timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithDescriptionCategoryPlaceOfUse(){
+        timeout = new Timeout(engine, step, description, value, category, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals(description, timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithTimeToRepetition(){
         timeout = new Timeout(engine, step, value, timeToRepetition);
         assertEquals(engine, timeout.getEngineOrProcessGroup());
         assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
         assertEquals(value.intValue(), timeout.getTimeoutInMs());
         assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
     }
 
-
     @Test
-    public void testConstructorWithoutTimeToRepetitionAndDescription(){
-        timeout = new Timeout(engine, step, value);
+    public void testConstructorWithTimeToRepetitionCategory(){
+        timeout = new Timeout(engine, step, value, timeToRepetition, category);
         assertEquals(engine, timeout.getEngineOrProcessGroup());
         assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
         assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithTimeToRepetitionPlaceOfUse(){
+        timeout = new Timeout(engine, step, value, timeToRepetition, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithTimeToRepetitionCategoryPlaceOfUse(){
+        timeout = new Timeout(engine, step, value, timeToRepetition,category, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals("", timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithDescriptionTimeToRepetitionCategory(){
+        timeout = new Timeout(engine, step, description, value, timeToRepetition, category);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals(description, timeout.getDescription());
+        assertEquals(category, timeout.getCategory());
+        assertEquals(Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorWithDescriptionTimeToRepetitionPlaceOfUse(){
+        timeout = new Timeout(engine, step, description, value, timeToRepetition, placeOfUse);
+        assertEquals(engine, timeout.getEngineOrProcessGroup());
+        assertEquals(step, timeout.getStepOrProcess());
+        assertEquals(description, timeout.getDescription());
+        assertEquals(Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+        assertEquals(value.intValue(), timeout.getTimeoutInMs());
+        assertEquals(timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
     }
 
     @Test
@@ -131,11 +279,10 @@ public class TimeoutTest {
 
     @Test
     public void testSetTimeToRepetition() throws Exception {
-        int newTimeToRepitionValue = 30_000;
-        timeout.setTimeToRepetition(newTimeToRepitionValue);
-        assertEquals(newTimeToRepitionValue, timeout.getTimeToRepetitionInMs());
+        int newTimeToRepetitionValue = 30_000;
+        timeout.setTimeToRepetition(newTimeToRepetitionValue);
+        assertEquals(newTimeToRepetitionValue, timeout.getTimeToRepetitionInMs());
     }
-
 
     @Test
     public void testGetTimeToRepetitionInMinutesIsNull() throws Exception {
@@ -153,5 +300,27 @@ public class TimeoutTest {
     public void testGetTimeToRepetitionInMsIsNull() throws Exception {
         timeout = new Timeout(engine, step, value);
         assertEquals(0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testGetCategory(){
+        assertEquals(category, timeout.getCategory());
+    }
+
+    @Test
+    public void testGetPlaceOfUse(){
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
+    }
+
+    @Test
+    public void testSetCategory(){
+        timeout.setCategory(Timeout.Category.UNMEASURABLE);
+        assertEquals(category, timeout.getCategory());
+    }
+
+    @Test
+    public void testSetPlaceOfUse(){
+        timeout.setPlaceOfUse(Timeout.PlaceOfUse.EXTERN);
+        assertEquals(placeOfUse, timeout.getPlaceOfUse());
     }
 }
