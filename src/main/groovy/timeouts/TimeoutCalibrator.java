@@ -3,11 +3,13 @@ package timeouts;
 import betsy.Main;
 import betsy.bpel.BPELMain;
 import betsy.bpel.soapui.SoapUIShutdownHelper;
+import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 import timeouts.calibration_timeout.CalibrationTimeout;
 import timeouts.calibration_timeout.CalibrationTimeoutRepository;
 import timeouts.timeout.TimeoutRepository;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -27,14 +29,17 @@ public class TimeoutCalibrator {
         LOGGER.info("Calibration is started.");
         //If it's true, SoapUI turns off after first run
         BPELMain.shutdownSoapUiAfterCompletion(false);
-        int counterTestFolder = 1;
+        int numberOfDuration = 1;
         boolean allTimeoutsAreCalibrated = false;
         boolean lastRoundFinished = false;
+
+        File csv  = new File("calibration_timeouts.csv");
+        FileTasks.deleteFile(csv.toPath());
 
         while (!lastRoundFinished) {
             lastRoundFinished = allTimeoutsAreCalibrated;
 
-            Main.main(addChangedTestFolderToArgs(args, counterTestFolder++));
+            Main.main(addChangedTestFolderToArgs(args, numberOfDuration++));
             //gather extern timeouts
             TimeoutIOOperations.readSoapUITimeouts(actualTestFolder);
             //get used timeouts
@@ -49,6 +54,8 @@ public class TimeoutCalibrator {
                 CalibrationTimeoutRepository.clean();
                 lastRoundFinished = false;
             }
+
+            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
             for (CalibrationTimeout timeout : timeouts.values()) {
                 LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
             }
@@ -57,7 +64,6 @@ public class TimeoutCalibrator {
 
         //write timeouts to properties and csv
         CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
-        CalibrationTimeoutRepository.writeToCSV();
 
         //shutdown SoapUI
         SoapUIShutdownHelper.shutdownSoapUIForReal();
@@ -69,7 +75,7 @@ public class TimeoutCalibrator {
         for (CalibrationTimeout timeout : timeouts.values()) {
             switch (timeout.getStatus()) {
                 case EXCEEDED:
-                    timeout.setValue(timeout.getTimeoutInMs() + 500);
+                    timeout.setValue(timeout.getTimeoutInMs() + 5000);
                     allTimeoutsAreCalibrated = false;
                     break;
                 case KEPT:

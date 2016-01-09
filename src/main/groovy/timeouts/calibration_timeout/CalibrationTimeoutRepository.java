@@ -1,8 +1,8 @@
 package timeouts.calibration_timeout;
 
-import timeouts.timeout.Timeout;
 import timeouts.timeout.Timeouts;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -33,14 +33,24 @@ public class CalibrationTimeoutRepository {
 
 
     /**
-     * This method writes all given {@link Timeout} to the properties, if the {@link CalibrationTimeout} exists in the {@link Timeouts}.
+     * This method writes all given {@link CalibrationTimeout} to the properties, if the {@link CalibrationTimeout} exists in the {@link Timeouts}.
      */
     public static void writeAllCalibrationTimeoutsToProperties() {
         CALIBRATION_TIMEOUTS.writeAllCalibrationTimeoutsToProperties();
     }
 
     /**
-     * Writes the the values of the {@link Timeout} in the {@link CalibrationTimeoutRepository} to a csv file.
+     * Writes the the values of the {@link CalibrationTimeout} in the {@link CalibrationTimeoutRepository} to a csv file.
+     *
+     * @param csv The csv file, where the timeout values should be saved.
+     * @param numberOfDuration The number of calibration iterations.
+     */
+    public static void writeToCSV(File csv, int numberOfDuration) {
+        CALIBRATION_TIMEOUTS.writeToCSV(csv, numberOfDuration);
+    }
+
+    /**
+     * Writes the the values of the {@link CalibrationTimeout} in the {@link CalibrationTimeoutRepository} to a csv file.
      */
     public static void writeToCSV() {
         CALIBRATION_TIMEOUTS.writeToCSV();

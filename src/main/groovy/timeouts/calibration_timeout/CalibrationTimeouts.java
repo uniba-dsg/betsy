@@ -137,9 +137,19 @@ public class CalibrationTimeouts {
 
     /**
      * The method writes all timeouts to a csv file.
+     *
+     * @param csv The csv file, where the timeout values should be saved.
+     * @param numberOfDuration The number of calibration iterations.
+     */
+    public void writeToCSV(File csv, int numberOfDuration) {
+        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts, numberOfDuration);
+    }
+
+    /**
+     * The method writes all timeouts to a csv file.
      */
     public void writeToCSV() {
-        TimeoutIOOperations.writeToCSV(csv, convertCalibrationTimeoutListToTimeoutList(calibrationTimeouts));
+        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
     }
 
     /**

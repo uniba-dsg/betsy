@@ -131,18 +131,38 @@ public class TimeoutIOOperations {
      * @param csv      The csv file, where the timeout values should be saved.
      * @param timeouts The timeouts to save.
      */
-    public static void writeToCSV(File csv, List<Timeout> timeouts) {
+    public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts) {
+        FileTasks.deleteFile(csv.toPath());
+        writeToCSV(csv, timeouts, 1);
+    }
+
+    /**
+     * This method writes the values of timeouts to a csv file.
+     *
+     * @param csv      The csv file, where the timeout values should be saved.
+     * @param timeouts The timeouts to save.
+     * @param numberOfIteration The number of calibration iterations.
+     */
+    public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
         if (csv != null && timeouts != null) {
-            FileWriter writer = null;
+            PrintWriter writer = null;
             try {
-                writer = new FileWriter(csv);
-                writer.append("Key").append(';');
-                writer.append("EngineOrProcessGroup").append(';');
-                writer.append("StepOrProcess").append(';');
-                writer.append("Value").append(';');
-                writer.append("TimeToRepetition").append('\n');
-                for (Timeout timeout : timeouts) {
+                writer = new PrintWriter(new FileWriter(csv, true));
+                if(!csv.exists()){
+                    writer.append("Iteration").append(';');
+                    writer.append("Key").append(';');
+                    writer.append("TimeStamp").append(';');
+                    writer.append("Category").append(';');
+                    writer.append("EngineOrProcessGroup").append(';');
+                    writer.append("StepOrProcess").append(';');
+                    writer.append("Value").append(';');
+                    writer.append("TimeToRepetition").append('\n');
+                }
+                for (CalibrationTimeout timeout : timeouts) {
+                    writer.append(Integer.toString(numberOfIteration)).append(';');
                     writer.append(timeout.getKey()).append(';');
+                    writer.append(Long.toString(timeout.getTimestamp())).append(';');
+                    writer.append(timeout.getCategory().toString()).append(';');
                     writer.append(timeout.getEngineOrProcessGroup()).append(';');
                     writer.append(timeout.getStepOrProcess()).append(';');
                     writer.append(Integer.toString(timeout.getTimeoutInMs())).append(';');
@@ -170,7 +190,6 @@ public class TimeoutIOOperations {
      * This method reads the timeouts from the SOAPUI result xml.
      *
      * @param testDirectory The directory, which contains the SOAPUI test files.
-     * @return This method returns a list of CalibrationTimeouts.
      */
     public static void readSoapUITimeouts(String testDirectory) {
 
