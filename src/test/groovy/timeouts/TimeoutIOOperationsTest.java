@@ -1,16 +1,18 @@
 package timeouts;
 
+import betsy.common.tasks.FileTasks;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import timeouts.calibration_timeout.CalibrationTimeout;
 import timeouts.timeout.Timeout;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,14 +34,44 @@ public class TimeoutIOOperationsTest {
     private TestAppender testAppender;
     private static final Logger LOGGER = Logger.getLogger(TimeoutIOOperations.class);
 
+
+    @BeforeClass
+    public static void setUpClass() {
+        String transitionFolder = "transition_folder";
+        FileTasks.mkdirs(Paths.get(transitionFolder));
+        File properties = new File("timeout.properties");
+        if (properties.exists()) {
+            FileTasks.copyFileIntoFolder(properties.toPath(), Paths.get(transitionFolder));
+            FileTasks.deleteFile(properties.toPath());
+        }
+        File csv = new File("calibration_timeouts.csv");
+        if (csv.exists()) {
+            FileTasks.copyFileIntoFolder(csv.toPath(), Paths.get(transitionFolder));
+            FileTasks.deleteFile(csv.toPath());
+        }
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+        File properties = new File("timeout.properties");
+        File csv = new File("calibration_timeouts.csv");
+        FileTasks.deleteFile(properties.toPath());
+        FileTasks.deleteFile(csv.toPath());
+        String transitionFolder = "transition_folder";
+        Path currentRelativePath = Paths.get("");
+        FileTasks.copyFilesInFolderIntoOtherFolder(Paths.get(transitionFolder), currentRelativePath);
+        FileTasks.deleteDirectory(Paths.get(transitionFolder));
+    }
+
+
     @Before
     public void setUp() throws Exception {
         timeouts = new ArrayList<>();
         timeout = new Timeout("ode", "deploy", 20000, 2000);
         testTimeout = new Timeout("tomcat", "start", 20000, 2000);
         timeouts.add(timeout);
-        properties = new File("timeouts_test.properties");
-        csv = new File("csv_test.csv");
+        properties = new File("timeouts.properties");
+        csv = new File("calibration_timeouts.csv");
         testAppender = new TestAppender();
         LOGGER.addAppender(testAppender);
     }
@@ -89,14 +121,12 @@ public class TimeoutIOOperationsTest {
             assertEquals(timeout.getTimeoutInMs(), actualTimeout.getTimeoutInMs());
             assertEquals(timeout.getTimeToRepetitionInMs(), actualTimeout.getTimeToRepetitionInMs());
         }
-
         timeouts.remove(timeout);
         timeout.setValue(5000);
         timeout.setTimeToRepetition(500);
         timeouts.add(testTimeout);
         TimeoutIOOperations.writeToProperties(properties, timeouts);
         timeouts.add(timeout);
-
 
         List<Timeout> readNewTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
         for (Timeout actualTimeout : readNewTimeouts) {
@@ -158,13 +188,25 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testWriteToCSV() throws Exception {
-        TimeoutIOOperations.writeToCSV(csv, timeouts);
+        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
+        calibrationTimeouts.add(new CalibrationTimeout(timeout));
+        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
     }
 
     @Test
     public void testWriteToCSVNullCSV() throws Exception {
-        TimeoutIOOperations.writeToCSV(null, timeouts);
+        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
+        calibrationTimeouts.add(new CalibrationTimeout(timeout));
+        TimeoutIOOperations.writeToCSV(null, calibrationTimeouts);
         assertEquals("The csv file or the timeouts were null.", testAppender.messages.get(0));
+    }
+
+    @Test
+    public void testWriteToCSVDoesNotExits() throws Exception {
+        FileTasks.deleteFile(csv.toPath());
+        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
+        calibrationTimeouts.add(new CalibrationTimeout(timeout));
+        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
     }
 
     @Test
@@ -185,7 +227,6 @@ public class TimeoutIOOperationsTest {
         public void close() {
             messages = null;
         }
-
 
         @Override
         public boolean requiresLayout() {
