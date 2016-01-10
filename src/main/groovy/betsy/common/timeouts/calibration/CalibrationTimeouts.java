@@ -1,4 +1,4 @@
-package betsy.common.timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration;
 
 import flex.messaging.io.ArrayCollection;
 import betsy.common.timeouts.TimeoutIOOperations;

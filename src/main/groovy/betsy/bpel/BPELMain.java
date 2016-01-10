@@ -19,7 +19,7 @@ import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
-import betsy.common.timeouts.calibration_timeout.CalibrationTimeoutRepository;
+import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 
 import java.awt.*;
 import java.io.IOException;

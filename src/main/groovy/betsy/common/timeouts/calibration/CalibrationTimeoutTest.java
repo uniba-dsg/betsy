@@ -1,4 +1,4 @@
-package betsy.common.timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration;
 
 import org.junit.After;
 import org.junit.Before;

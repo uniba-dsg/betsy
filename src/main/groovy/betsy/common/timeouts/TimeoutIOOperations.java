@@ -6,8 +6,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import betsy.common.timeouts.calibration_timeout.CalibrationTimeout;
-import betsy.common.timeouts.calibration_timeout.CalibrationTimeoutRepository;
+import betsy.common.timeouts.calibration.CalibrationTimeout;
+import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 
