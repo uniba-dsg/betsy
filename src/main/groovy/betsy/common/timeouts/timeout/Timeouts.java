@@ -22,19 +22,19 @@ public class Timeouts {
      * @param nameOfProperties The name of the properties file.
      */
     public Timeouts(ArrayList<Timeout> timeouts, String nameOfProperties) {
-        if (nameOfProperties != null && nameOfProperties.length() > 0) {
+        Objects.requireNonNull(nameOfProperties, "nameOfProperties can't be null.");
+        if (nameOfProperties.length() > 0) {
             this.properties = new File(nameOfProperties);
         }
-        if(timeouts != null){
-            this.timeouts = timeouts;
-        }
+        Objects.requireNonNull(timeouts, "The timeouts can't be null.");
     }
 
     /**
      * @param nameOfProperties The name of the properties file.
      */
     public Timeouts(String nameOfProperties) {
-        if (nameOfProperties != null && nameOfProperties.length() > 0) {
+        Objects.requireNonNull(nameOfProperties, "nameOfProperties can't be null.");
+        if (nameOfProperties.length() > 0) {
             this.properties = new File(nameOfProperties);
         }
         addTimeouts();
@@ -45,9 +45,7 @@ public class Timeouts {
      * @param timeouts The timeouts, which should be managed by the {@link betsy.common.timeouts}.
      */
     public Timeouts(ArrayList<Timeout> timeouts) {
-        if(timeouts != null){
-            this.timeouts = timeouts;
-        }
+        Objects.requireNonNull(timeouts, "The timeouts can't be null.");
     }
 
     /**
@@ -64,6 +62,7 @@ public class Timeouts {
      * @return The {@link Timeout] for the given key as {@link Optional}.
      */
     public Optional<Timeout> getTimeout(String key) {
+        Objects.requireNonNull(key, "The key can't be null.");
         return Optional.ofNullable(getAllTimeouts().get(key));
     }
 
@@ -85,6 +84,7 @@ public class Timeouts {
      * @param timeout The {@link Timeout} with the new values.
      */
     public void setTimeout(Timeout timeout){
+        Objects.requireNonNull(timeout, "The timeout can't be null.");
         if (getTimeout(timeout.getKey()).isPresent()) {
             getTimeout(timeout.getKey()).get().setValue(timeout.getTimeoutInMs());
             getTimeout(timeout.getKey()).get().setTimeToRepetition(timeout.getTimeToRepetitionInMs());

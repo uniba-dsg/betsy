@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -35,8 +36,7 @@ public class ExternalTimeouts {
      * @param testDirectory The directory, which contains the SOAPUI test files.
      */
     public static void readSoapUITimeouts(String testDirectory) {
-
-        String directoryName = testDirectory + "/reports";
+        String directoryName = Objects.requireNonNull(Objects.requireNonNull(testDirectory, "The category can't be null."), "The testDirectory can't be null.") + "/reports";
         List<Path> files = FileTasks.findAllInFolder(Paths.get(directoryName), "TESTS-TestSuites.xml");
 
         for (Path path : files) {

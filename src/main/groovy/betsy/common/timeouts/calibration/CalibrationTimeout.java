@@ -3,6 +3,8 @@ package betsy.common.timeouts.calibration;
 import betsy.common.timeouts.TimeoutCalibrator;
 import betsy.common.timeouts.timeout.Timeout;
 
+import java.util.Objects;
+
 /**
  * @author Christoph Broeker
  *
@@ -84,7 +86,7 @@ public class CalibrationTimeout extends Timeout {
      * @param status The {@link Status} of the {@link CalibrationTimeout}.
      */
     public void setStatus(Status status) {
-        this.status = status;
+        this.status = Objects.requireNonNull(status, "The status can't be null.");
     }
 
     /**

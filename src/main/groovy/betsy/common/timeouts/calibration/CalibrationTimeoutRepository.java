@@ -4,6 +4,7 @@ import betsy.common.timeouts.timeout.Timeouts;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @author Christoph broeker
@@ -28,7 +29,7 @@ public class CalibrationTimeoutRepository {
      * @param calibrationTimeout The calibrationTime to add to the repository.
      */
     public static void addCalibrationTimeout(CalibrationTimeout calibrationTimeout) {
-        CALIBRATION_TIMEOUTS.addCalibrationTimeout(calibrationTimeout);
+        CALIBRATION_TIMEOUTS.addCalibrationTimeout(Objects.requireNonNull(calibrationTimeout, "The calibrationTimeout can't be null."));
     }
 
 
@@ -46,7 +47,7 @@ public class CalibrationTimeoutRepository {
      * @param numberOfDuration The number of calibration iterations.
      */
     public static void writeToCSV(File csv, int numberOfDuration) {
-        CALIBRATION_TIMEOUTS.writeToCSV(csv, numberOfDuration);
+        CALIBRATION_TIMEOUTS.writeToCSV(Objects.requireNonNull(csv, "The csv can't be null."), Objects.requireNonNull(numberOfDuration, "The numberOfDuration can't be null."));
     }
 
     /**

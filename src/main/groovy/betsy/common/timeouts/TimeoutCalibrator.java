@@ -11,6 +11,7 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @author Christoph Broeker
@@ -71,6 +72,7 @@ public class TimeoutCalibrator {
     }
 
     private static boolean handleTimeouts(HashMap<String, CalibrationTimeout> timeouts) {
+        Objects.requireNonNull(timeouts, "The timeouts can't be null.");
         boolean allTimeoutsAreCalibrated = true;
         for (CalibrationTimeout timeout : timeouts.values()) {
             switch (timeout.getStatus()) {

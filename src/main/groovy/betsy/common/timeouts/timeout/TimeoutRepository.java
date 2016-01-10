@@ -3,6 +3,7 @@ package betsy.common.timeouts.timeout;
 import betsy.common.timeouts.calibration.CalibrationTimeout;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -26,7 +27,7 @@ public class TimeoutRepository {
      * @return The {@link Timeout] for the given key as {@link Optional}.
      */
     public static Optional<Timeout> getTimeout(String key) {
-        return TIMEOUTS.getTimeout(key);
+        return TIMEOUTS.getTimeout(Objects.requireNonNull(key, "The key can't be null."));
     }
 
     /**
@@ -36,7 +37,7 @@ public class TimeoutRepository {
      * @param timeout The {@link Timeout}, which should be set.
      */
     public static void setTimeout(Timeout timeout) {
-        TIMEOUTS.setTimeout(timeout);
+        TIMEOUTS.setTimeout(Objects.requireNonNull(timeout, "The timeout can't be null."));
     }
 
 
@@ -46,7 +47,7 @@ public class TimeoutRepository {
      * @param calibrationTimeouts A {@link HashMap} with the key and the {@link Timeout}.
      */
     public static void setAllCalibrationTimeouts(HashMap<String, CalibrationTimeout> calibrationTimeouts) {
-        calibrationTimeouts.values().forEach(TimeoutRepository::setTimeout);
+        Objects.requireNonNull(calibrationTimeouts, "The calibrationTimeouts can't be null.").values().forEach(TimeoutRepository::setTimeout);
     }
 }
 

@@ -1,6 +1,7 @@
 package betsy.common.timeouts.timeout;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -24,8 +25,8 @@ public class Timeout {
      * @param value           The value of the {@link Timeout} in milliseconds.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value) {
-        this.engineOrProcessGroup = engineOrProcess;
-        this.stepOrProcess = stepOrProcess;
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
         this.description = Optional.empty();
         this.value = value;
         this.timeToRepetition = Optional.empty();
@@ -44,8 +45,8 @@ public class Timeout {
         this(engineOrProcess, stepOrProcess, value);
         this.description = Optional.of(description);
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.category = category;
-        this.placeOfUse = placeOfUse;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -56,7 +57,7 @@ public class Timeout {
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, Category category) {
         this(engineOrProcess, stepOrProcess, value);
-        this.category = category;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
     }
 
     /**
@@ -67,7 +68,7 @@ public class Timeout {
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, PlaceOfUse placeOfUse) {
         this(engineOrProcess, stepOrProcess, value);
-        this.placeOfUse = placeOfUse;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -79,8 +80,8 @@ public class Timeout {
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, Category category, PlaceOfUse placeOfUse) {
         this(engineOrProcess, stepOrProcess, value);
-        this.category = category;
-        this.placeOfUse = placeOfUse;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -104,7 +105,7 @@ public class Timeout {
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, Category category) {
         this(engineOrProcess, stepOrProcess, value);
         this.description = Optional.of(description);
-        this.category = category;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
     }
 
     /**
@@ -117,7 +118,7 @@ public class Timeout {
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, PlaceOfUse placeOfUse) {
         this(engineOrProcess, stepOrProcess, value);
         this.description = Optional.of(description);
-        this.placeOfUse = placeOfUse;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -131,8 +132,8 @@ public class Timeout {
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, Category category, PlaceOfUse placeOfUse) {
         this(engineOrProcess, stepOrProcess, value);
         this.description = Optional.of(description);
-        this.category = category;
-        this.placeOfUse = placeOfUse;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -156,7 +157,7 @@ public class Timeout {
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition, PlaceOfUse placeOfUse) {
         this(engineOrProcess, stepOrProcess, value);
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.placeOfUse = placeOfUse;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -169,7 +170,7 @@ public class Timeout {
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition, Category category) {
         this(engineOrProcess, stepOrProcess, value);
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.category = category;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
     }
 
     /**
@@ -183,8 +184,8 @@ public class Timeout {
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition, Category category, PlaceOfUse placeOfUse) {
         this(engineOrProcess, stepOrProcess, value);
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.category = category;
-        this.placeOfUse = placeOfUse;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -212,7 +213,7 @@ public class Timeout {
         this(engineOrProcess, stepOrProcess, value);
         this.timeToRepetition = Optional.of(timeToRepetition);
         this.description = Optional.ofNullable(description);
-        this.category = category;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
     }
 
     /**
@@ -227,7 +228,7 @@ public class Timeout {
         this(engineOrProcess, stepOrProcess, value);
         this.timeToRepetition = Optional.of(timeToRepetition);
         this.description = Optional.ofNullable(description);
-        this.placeOfUse = placeOfUse;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**
@@ -319,7 +320,6 @@ public class Timeout {
         return timeToRepetition.orElse(0);
     }
 
-
     /**
      *
      * @return Returns the {@link Category} of the {@link Timeout}.
@@ -333,7 +333,7 @@ public class Timeout {
      * @param category The {@link Category} of the {@link Timeout}.
      */
     public void setCategory(Category category) {
-        this.category = category;
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
     }
 
     /**
@@ -349,7 +349,7 @@ public class Timeout {
      * @param placeOfUse The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public void setPlaceOfUse(PlaceOfUse placeOfUse){
-        this.placeOfUse = placeOfUse;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
     }
 
     /**

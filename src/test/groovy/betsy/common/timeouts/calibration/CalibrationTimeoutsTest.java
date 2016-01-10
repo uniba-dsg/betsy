@@ -126,6 +126,11 @@ public class CalibrationTimeoutsTest {
     }
 
     @Test
+    public void testAddCalibrationTimeoutNull() throws Exception {
+        calibrationTimeouts.addCalibrationTimeout(null);
+    }
+
+    @Test
     public void testGetCalibrationTimeout() throws Exception {
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get());
