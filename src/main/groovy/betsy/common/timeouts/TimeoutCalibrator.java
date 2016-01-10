@@ -41,7 +41,7 @@ public class TimeoutCalibrator {
 
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration++));
             //gather extern timeouts
-            TimeoutIOOperations.readSoapUITimeouts(actualTestFolder);
+            ExternalTimeouts.readSoapUITimeouts(actualTestFolder);
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //calibrate the timeouts

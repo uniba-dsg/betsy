@@ -1,25 +1,13 @@
 package betsy.common.timeouts;
 
 import betsy.common.tasks.FileTasks;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import betsy.common.timeouts.calibration.CalibrationTimeout;
-import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 import betsy.common.timeouts.timeout.Timeout;
-import betsy.common.timeouts.timeout.TimeoutRepository;
+import org.apache.log4j.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -132,7 +120,7 @@ public class TimeoutIOOperations {
      * @param timeouts The timeouts to save.
      */
     public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts) {
-        if(csv != null){
+        if (csv != null) {
             FileTasks.deleteFile(csv.toPath());
         }
         writeToCSV(csv, timeouts, 1);
@@ -141,15 +129,15 @@ public class TimeoutIOOperations {
     /**
      * This method extends the csv file with the values of timeouts.
      *
-     * @param csv      The csv file, where the timeout values should be saved.
-     * @param timeouts The timeouts to save.
+     * @param csv               The csv file, where the timeout values should be saved.
+     * @param timeouts          The timeouts to save.
      * @param numberOfIteration The number of calibration iterations.
      */
     public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
         if (csv != null && timeouts != null) {
             PrintWriter writer = null;
             try {
-                if(!csv.exists()){
+                if (!csv.exists()) {
                     writer = new PrintWriter(new FileWriter(csv, true));
                     writer.append("Iteration").append(';');
                     writer.append("Key").append(';');
@@ -159,7 +147,7 @@ public class TimeoutIOOperations {
                     writer.append("StepOrProcess").append(';');
                     writer.append("Value").append(';');
                     writer.append("TimeToRepetition").append('\n');
-                }else{
+                } else {
                     writer = new PrintWriter(new FileWriter(csv, true));
                 }
                 for (CalibrationTimeout timeout : timeouts) {
@@ -186,52 +174,6 @@ public class TimeoutIOOperations {
             }
         } else {
             LOGGER.info("The csv file or the timeouts were null.");
-        }
-    }
-
-
-    /**
-     * This method reads the timeouts from the SOAPUI result xml.
-     *
-     * @param testDirectory The directory, which contains the SOAPUI test files.
-     */
-    public static void readSoapUITimeouts(String testDirectory) {
-
-        String directoryName = testDirectory + "/reports";
-        List<Path> files = FileTasks.findAllInFolder(Paths.get(directoryName), "TESTS-TestSuites.xml");
-
-        for (Path path : files) {
-            try {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document document = builder.parse(path.toFile());
-                document.getDocumentElement();
-                NodeList testCases = document.getElementsByTagName("testcase");
-
-                for (int i = 0; i < testCases.getLength(); i++) {
-                    Node testcase = testCases.item(i);
-                    Optional<Node> child = Optional.ofNullable(testcase.getFirstChild());
-                    Optional<Node> failure = Optional.empty();
-                    if(child.isPresent()){
-                        failure = Optional.ofNullable(child.get().getNextSibling());
-                    }
-                    if (failure.isPresent() && failure.get().getNodeName().equals("failure")) {
-                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", TimeoutRepository.getTimeout("TestingAPI.constructor").get().getTimeoutInMs()));
-                        CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
-                    } else {
-                        Optional<Node> attribute = Optional.ofNullable(testcase.getAttributes().getNamedItem("time"));
-                        if (attribute.isPresent()) {
-                            Integer value = Integer.parseInt(attribute.get().getNodeValue().replace(".", ""));
-                            CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", value));
-                            CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                LOGGER.info("Couldn't read the file: " + path.getFileName());
-            } catch (ParserConfigurationException | SAXException e) {
-                LOGGER.info("Couldn't parse the file: " + path.getFileName());
-            }
         }
     }
 }
