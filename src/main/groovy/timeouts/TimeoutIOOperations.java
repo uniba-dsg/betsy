@@ -126,18 +126,20 @@ public class TimeoutIOOperations {
     }
 
     /**
-     * This method writes the values of timeouts to a csv file.
+     * This method deletes the csv file and writes the values of timeouts to a csv file.
      *
      * @param csv      The csv file, where the timeout values should be saved.
      * @param timeouts The timeouts to save.
      */
     public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts) {
-        FileTasks.deleteFile(csv.toPath());
+        if(csv != null){
+            FileTasks.deleteFile(csv.toPath());
+        }
         writeToCSV(csv, timeouts, 1);
     }
 
     /**
-     * This method writes the values of timeouts to a csv file.
+     * This method extends the csv file with the values of timeouts.
      *
      * @param csv      The csv file, where the timeout values should be saved.
      * @param timeouts The timeouts to save.
@@ -147,8 +149,8 @@ public class TimeoutIOOperations {
         if (csv != null && timeouts != null) {
             PrintWriter writer = null;
             try {
-                writer = new PrintWriter(new FileWriter(csv, true));
                 if(!csv.exists()){
+                    writer = new PrintWriter(new FileWriter(csv, true));
                     writer.append("Iteration").append(';');
                     writer.append("Key").append(';');
                     writer.append("TimeStamp").append(';');
@@ -157,6 +159,8 @@ public class TimeoutIOOperations {
                     writer.append("StepOrProcess").append(';');
                     writer.append("Value").append(';');
                     writer.append("TimeToRepetition").append('\n');
+                }else{
+                    writer = new PrintWriter(new FileWriter(csv, true));
                 }
                 for (CalibrationTimeout timeout : timeouts) {
                     writer.append(Integer.toString(numberOfIteration)).append(';');
