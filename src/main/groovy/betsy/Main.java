@@ -36,6 +36,6 @@ public class Main {
     }
 
     private static void printUsage() {
-        System.out.println("The first argument must be bpel, bpmn, engine or process");
+        System.out.println("The first argument must be bpel, bpmn, engine, process, analytics or calibrate");
     }
 }
