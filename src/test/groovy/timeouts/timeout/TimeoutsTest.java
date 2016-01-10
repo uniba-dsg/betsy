@@ -63,7 +63,7 @@ public class TimeoutsTest {
     public void setUp() throws Exception {
         properties = new File("timeout.properties");
         String engine = "OdeDeployer";
-        String step = "deploy";
+        String step = "constructor";
         key = new StringBuilder().append(engine).append(".").append(step);
         value = 20_000;
         timeToRepetition = 500;
@@ -93,7 +93,7 @@ public class TimeoutsTest {
     public void testConstructor() throws Exception {
         timeouts = new Timeouts();
         HashMap<String, Timeout> timeoutHashMap = timeouts.getAllTimeouts();
-        assertEquals(60, timeoutHashMap.size());
+        assertEquals(54, timeoutHashMap.size());
         assertEquals("Tomcat.startup", timeoutHashMap.get("Tomcat.startup").getKey());
     }
 
