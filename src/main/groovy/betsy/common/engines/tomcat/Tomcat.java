@@ -2,7 +2,7 @@ package betsy.common.engines.tomcat;
 
 import betsy.common.config.Configuration;
 import betsy.common.tasks.*;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.Collections;

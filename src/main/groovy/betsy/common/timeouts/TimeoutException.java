@@ -1,7 +1,7 @@
-package timeouts;
+package betsy.common.timeouts;
 
 
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.util.Optional;
 

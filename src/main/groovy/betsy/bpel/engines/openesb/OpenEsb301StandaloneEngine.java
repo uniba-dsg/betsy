@@ -9,7 +9,7 @@ import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.StringUtils;
 import org.apache.log4j.Logger;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration_timeout;
 
 import betsy.common.tasks.FileTasks;
 import org.junit.*;

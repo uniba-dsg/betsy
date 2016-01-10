@@ -9,7 +9,7 @@ import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.LinkedList;

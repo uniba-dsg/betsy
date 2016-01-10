@@ -1,10 +1,10 @@
 package betsy.common.tasks;
 
 import org.apache.log4j.Logger;
-import timeouts.timeout.Timeout;
-import timeouts.TimeoutException;
-import timeouts.calibration_timeout.CalibrationTimeout;
-import timeouts.calibration_timeout.CalibrationTimeoutRepository;
+import betsy.common.timeouts.timeout.Timeout;
+import betsy.common.timeouts.TimeoutException;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeout;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeoutRepository;
 
 import java.net.MalformedURLException;
 import java.net.URL;

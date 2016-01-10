@@ -1,7 +1,7 @@
-package timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration_timeout;
 
-import timeouts.TimeoutCalibrator;
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.TimeoutCalibrator;
+import betsy.common.timeouts.timeout.Timeout;
 
 /**
  * @author Christoph Broeker

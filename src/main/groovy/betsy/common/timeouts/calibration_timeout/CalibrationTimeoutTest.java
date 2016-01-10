@@ -1,9 +1,9 @@
-package timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration_timeout;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.math.BigDecimal;
 

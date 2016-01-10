@@ -1,12 +1,12 @@
-package timeouts;
+package betsy.common.timeouts;
 
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.junit.*;
-import timeouts.calibration_timeout.CalibrationTimeout;
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeout;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.io.File;
 import java.io.FileWriter;

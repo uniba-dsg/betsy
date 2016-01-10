@@ -3,7 +3,7 @@ package betsy.bpel.engines.wso2;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import javax.xml.namespace.QName;
 import java.nio.file.Path;

@@ -10,7 +10,7 @@ import org.virtualbox_4_2.IMachine;
 import org.virtualbox_4_2.INATEngine;
 import org.virtualbox_4_2.INetworkAdapter;
 import org.virtualbox_4_2.NATProtocol;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.util.List;
 import java.util.Set;

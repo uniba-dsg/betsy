@@ -1,13 +1,13 @@
-package timeouts;
+package betsy.common.timeouts;
 
 import betsy.Main;
 import betsy.bpel.BPELMain;
 import betsy.bpel.soapui.SoapUIShutdownHelper;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
-import timeouts.calibration_timeout.CalibrationTimeout;
-import timeouts.calibration_timeout.CalibrationTimeoutRepository;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeout;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.io.File;
 import java.util.HashMap;

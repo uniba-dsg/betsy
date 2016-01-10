@@ -1,6 +1,6 @@
-package timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration_timeout;
 
-import timeouts.timeout.Timeouts;
+import betsy.common.timeouts.timeout.Timeouts;
 
 import java.io.File;
 import java.util.HashMap;

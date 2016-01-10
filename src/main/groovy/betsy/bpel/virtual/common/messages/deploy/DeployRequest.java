@@ -1,6 +1,6 @@
 package betsy.bpel.virtual.common.messages.deploy;
 
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.io.Serializable;
 import java.util.Objects;

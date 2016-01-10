@@ -1,4 +1,4 @@
-package timeouts;
+package betsy.common.timeouts;
 
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
@@ -6,10 +6,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import timeouts.calibration_timeout.CalibrationTimeout;
-import timeouts.calibration_timeout.CalibrationTimeoutRepository;
-import timeouts.timeout.Timeout;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeout;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeoutRepository;
+import betsy.common.timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

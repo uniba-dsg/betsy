@@ -13,7 +13,7 @@ import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 

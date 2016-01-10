@@ -1,8 +1,8 @@
-package timeouts.calibration_timeout;
+package betsy.common.timeouts.calibration_timeout;
 
 import flex.messaging.io.ArrayCollection;
-import timeouts.TimeoutIOOperations;
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.TimeoutIOOperations;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -3,8 +3,8 @@ package betsy.bpel.engines.bpelg;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.util.FileTypes;
-import timeouts.timeout.Timeout;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.util.Optional;

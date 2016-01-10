@@ -2,8 +2,8 @@ package betsy.bpel.engines.petalsesb;
 
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
-import timeouts.timeout.Timeout;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;

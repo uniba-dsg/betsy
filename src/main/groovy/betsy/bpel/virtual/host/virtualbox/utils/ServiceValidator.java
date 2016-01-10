@@ -5,7 +5,7 @@ import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.host.ServiceAddress;
 import betsy.bpel.virtual.host.comm.HostTcpClient;
 import betsy.common.tasks.WaitTasks;
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.util.List;
 import java.util.Optional;

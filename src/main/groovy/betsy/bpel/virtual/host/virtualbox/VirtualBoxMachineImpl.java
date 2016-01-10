@@ -5,7 +5,7 @@ import betsy.bpel.virtual.host.VirtualBoxMachine;
 import betsy.bpel.virtual.host.exceptions.vm.VBoxExceptionCode;
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.*;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.util.Objects;
 import java.util.Set;

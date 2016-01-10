@@ -2,7 +2,7 @@ package betsy;
 
 import betsy.bpel.BPELMain;
 import betsy.bpmn.BPMNMain;
-import timeouts.TimeoutCalibrator;
+import betsy.common.timeouts.TimeoutCalibrator;
 
 public class Main {
 

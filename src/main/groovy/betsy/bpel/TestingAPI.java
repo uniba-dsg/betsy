@@ -5,7 +5,7 @@ import betsy.bpel.soapui.TestBuilder;
 import betsy.bpel.ws.DummyAndRegularTestPartnerService;
 import betsy.bpel.ws.TestPartnerService;
 import soapui.SoapUiRunner;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 

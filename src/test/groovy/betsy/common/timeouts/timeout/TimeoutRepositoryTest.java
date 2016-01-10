@@ -1,7 +1,7 @@
-package timeouts.timeout;
+package betsy.common.timeouts.timeout;
 
 import org.junit.Test;
-import timeouts.calibration_timeout.CalibrationTimeout;
+import betsy.common.timeouts.calibration_timeout.CalibrationTimeout;
 
 import java.util.HashMap;
 

@@ -11,8 +11,8 @@ import betsy.bpel.virtual.host.virtualbox.utils.port.PortVerifier;
 import betsy.common.tasks.WaitTasks;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import timeouts.timeout.Timeout;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

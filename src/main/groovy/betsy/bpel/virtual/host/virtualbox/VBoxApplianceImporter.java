@@ -2,7 +2,7 @@ package betsy.bpel.virtual.host.virtualbox;
 
 import org.apache.log4j.Logger;
 import org.virtualbox_4_2.*;
-import timeouts.timeout.TimeoutRepository;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.io.File;
 import java.nio.file.Path;

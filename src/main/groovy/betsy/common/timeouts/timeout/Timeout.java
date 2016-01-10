@@ -1,4 +1,4 @@
-package timeouts.timeout;
+package betsy.common.timeouts.timeout;
 
 import java.math.BigDecimal;
 import java.util.Optional;

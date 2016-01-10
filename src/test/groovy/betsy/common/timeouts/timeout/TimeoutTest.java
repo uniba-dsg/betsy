@@ -1,4 +1,4 @@
-package timeouts.timeout;
+package betsy.common.timeouts.timeout;
 
 import org.junit.After;
 import org.junit.Before;

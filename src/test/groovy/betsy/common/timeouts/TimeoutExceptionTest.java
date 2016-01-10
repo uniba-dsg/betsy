@@ -1,7 +1,7 @@
-package timeouts;
+package betsy.common.timeouts;
 
 import org.junit.Test;
-import timeouts.timeout.Timeout;
+import betsy.common.timeouts.timeout.Timeout;
 
 import static org.junit.Assert.assertEquals;
 

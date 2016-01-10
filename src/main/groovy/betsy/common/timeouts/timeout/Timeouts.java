@@ -1,7 +1,7 @@
-package timeouts.timeout;
+package betsy.common.timeouts.timeout;
 
 import org.apache.log4j.Logger;
-import timeouts.TimeoutIOOperations;
+import betsy.common.timeouts.TimeoutIOOperations;
 
 import java.io.File;
 import java.util.*;
@@ -18,7 +18,7 @@ public class Timeouts {
 
     /**
      *
-     * @param timeouts The timeouts, which should be managed by the {@link timeouts}.
+     * @param timeouts The timeouts, which should be managed by the {@link betsy.common.timeouts}.
      * @param nameOfProperties The name of the properties file.
      */
     public Timeouts(ArrayList<Timeout> timeouts, String nameOfProperties) {
@@ -42,7 +42,7 @@ public class Timeouts {
 
     /**
      *
-     * @param timeouts The timeouts, which should be managed by the {@link timeouts}.
+     * @param timeouts The timeouts, which should be managed by the {@link betsy.common.timeouts}.
      */
     public Timeouts(ArrayList<Timeout> timeouts) {
         if(timeouts != null){
