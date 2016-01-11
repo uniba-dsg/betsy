@@ -122,8 +122,8 @@ public class BPELComposite {
                     testingAPI.startup();
                 } catch (Exception ignore) {
                     testingAPI.shutdown();
-                    LOGGER.debug("Address already in use - waiting " + TimeoutRepository.getTimeout("BPELCompositetest").get().getTimeoutInSeconds()+ " seconds to get available");
-                    WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.test").get().getTimeoutInMs());
+                    LOGGER.debug("Address already in use - waiting " + TimeoutRepository.getTimeout("BPELCompositetest").getTimeoutInSeconds()+ " seconds to get available");
+                    WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.test").getTimeoutInMs());
                     testingAPI.startup();
                 }
                 testSoapUi(process);
@@ -140,7 +140,7 @@ public class BPELComposite {
     protected void testSoapUi(final BPELProcess process) {
         log(process.getTargetPath() + "/test_soapui", () -> IOCapture.captureIO(() ->
                 testingAPI.executeEngineDependentTest(process.getTargetSoapUIFilePath(), process.getTargetReportsPath())));
-        WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.testSoapUi").get().getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.testSoapUi").getTimeoutInMs());
     }
 
     protected void buildPackageAndTest(final BPELProcess process) {

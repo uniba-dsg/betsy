@@ -68,14 +68,14 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnPath.toAbsolutePath() + "/mvn").values("-q", "clean", "install"));
 
         //wait for maven to deploy
-        WaitTasks.sleep(TimeoutRepository.getTimeout("Jpbm.deploy.maven").get().getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Jpbm.deploy.maven").getTimeoutInMs());
 
         new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process)).deploy();
         //waiting for the result of the deployment
         WaitTasks.waitForSubstringInFile(TimeoutRepository.getTimeout("Jbpm.deploy.result"),  getJbossLogDir().resolve("server.log"), getDeploymentId(process));
 
         // And a few more seconds to ensure availability
-        WaitTasks.sleep(TimeoutRepository.getTimeout("Jbpm.deploy.availability").get().getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Jbpm.deploy.availability").getTimeoutInMs());
     }
 
     @Override

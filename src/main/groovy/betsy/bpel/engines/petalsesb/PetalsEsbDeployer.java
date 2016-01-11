@@ -8,19 +8,18 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 
 public class PetalsEsbDeployer {
 
     private final Path deploymentDirPath;
     private final Path logFilePath;
-    private final Optional<Timeout> timeout;
+    private final Timeout timeout;
 
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath) {
         this(deploymentDirPath, logFilePath, TimeoutRepository.getTimeout("PetalsEsbDeployer.constructor"));
     }
 
-    public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath, Optional<Timeout> timeout) {
+    public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath, Timeout timeout) {
         this.deploymentDirPath = deploymentDirPath;
         this.logFilePath = logFilePath;
         this.timeout = timeout;

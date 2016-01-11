@@ -12,7 +12,7 @@ import java.nio.file.Path;
 public class TestingAPI implements TestPartnerService{
 
     private TestPartnerService testPartner = new DummyAndRegularTestPartnerService();
-    private int requestTimeout = TimeoutRepository.getTimeout("TestingAPI.constructor").get().getTimeoutInMs();
+    private int requestTimeout = TimeoutRepository.getTimeout("TestingAPI.constructor").getTimeoutInMs();
 
     @Override
     public void startup() {

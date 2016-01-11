@@ -4,7 +4,6 @@ import betsy.common.timeouts.timeout.Timeout;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * A {@link DeployRequest} contains all relevant information for the
@@ -28,7 +27,7 @@ public class DeployRequest implements Serializable {
     private String engineName;
     private String processName;
 
-    private Optional<Timeout> deployTimeout;
+    private Timeout deployTimeout;
 
     private String deploymentDir;
     private String deploymentLogFilePath;
@@ -39,7 +38,7 @@ public class DeployRequest implements Serializable {
         return this.processName;
     }
 
-    public Optional<Timeout> getDeployTimeout() {
+    public Timeout getDeployTimeout() {
         return deployTimeout;
     }
 
@@ -78,7 +77,7 @@ public class DeployRequest implements Serializable {
      *
      * @param deployTimeout maximum deployment duration, must be greater than 0
      */
-    public void setDeployTimeout(Optional<Timeout> deployTimeout) {
+    public void setDeployTimeout(Timeout deployTimeout) {
         this.deployTimeout = deployTimeout;
     }
 

@@ -26,7 +26,7 @@ public class TimeoutRepository {
      * @param key The key of the {@link Timeout}.
      * @return The {@link Timeout] for the given key as {@link Optional}.
      */
-    public static Optional<Timeout> getTimeout(String key) {
+    public static Timeout getTimeout(String key) {
         return TIMEOUTS.getTimeout(Objects.requireNonNull(key, "The key can't be null."));
     }
 

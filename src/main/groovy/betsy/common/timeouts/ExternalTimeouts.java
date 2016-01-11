@@ -55,7 +55,7 @@ public class ExternalTimeouts {
                         failure = Optional.ofNullable(child.get().getNextSibling());
                     }
                     if (failure.isPresent() && failure.get().getNodeName().equals("failure")) {
-                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", TimeoutRepository.getTimeout("TestingAPI.constructor").get().getTimeoutInMs()));
+                        CalibrationTimeout calibrationTimeout = new CalibrationTimeout(new Timeout("TestingAPI", "constructor", TimeoutRepository.getTimeout("TestingAPI.constructor").getTimeoutInMs()));
                         CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                     } else {
                         Optional<Node> attribute = Optional.ofNullable(testcase.getAttributes().getNamedItem("time"));

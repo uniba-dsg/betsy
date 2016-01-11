@@ -48,7 +48,7 @@ public class FileTasks {
         if (Files.isDirectory(directory)) {
             if (!FileUtils.deleteQuietly(directory.toAbsolutePath().toFile())) {
                 LOGGER.info("Deletion failed -> retrying after short wait");
-                WaitTasks.sleep(TimeoutRepository.getTimeout("FileTasks.deleteDirectory").get().getTimeoutInMs());
+                WaitTasks.sleep(TimeoutRepository.getTimeout("FileTasks.deleteDirectory").getTimeoutInMs());
 
                 try {
                     FileUtils.deleteDirectory(directory.toAbsolutePath().toFile());

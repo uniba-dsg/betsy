@@ -39,7 +39,7 @@ public class Retry {
 
                     Path archiveDir = process.getEngine().getPath().resolve("failed_repeated_tests").resolve(testCount + "_" + process.getNormalizedId());
 
-                    WaitTasks.sleep(TimeoutRepository.getTimeout("Retry.atMostThreeTimes").get().getTimeoutInMs());
+                    WaitTasks.sleep(TimeoutRepository.getTimeout("Retry.atMostThreeTimes").getTimeoutInMs());
                     FileTasks.mkdirs(archiveDir);
 
                     FileTasks.moveFolderWithForcedCleanup(process.getTargetPath(), archiveDir);

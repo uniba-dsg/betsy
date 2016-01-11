@@ -120,9 +120,9 @@ public class CalibrationTimeoutsTest {
     @Test
     public void testAddCalibrationTimeout() throws Exception {
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
-        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get());
-        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get().getTimeoutInMs());
-        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get().getTimeToRepetitionInMs());
+        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()));
+        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeoutInMs());
+        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeToRepetitionInMs());
     }
 
     @Test
@@ -133,9 +133,9 @@ public class CalibrationTimeoutsTest {
     @Test
     public void testGetCalibrationTimeout() throws Exception {
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
-        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get());
-        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get().getTimeoutInMs());
-        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).get().getTimeToRepetitionInMs());
+        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()));
+        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeoutInMs());
+        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeToRepetitionInMs());
     }
 
     @Test

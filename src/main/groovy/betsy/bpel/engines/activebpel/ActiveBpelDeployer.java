@@ -9,19 +9,18 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.Optional;
 
 public class ActiveBpelDeployer {
 
     private final Path deploymentFolder;
     private final Path logFile;
-    private final Optional<Timeout> timeout;
+    private final Timeout timeout;
 
     public ActiveBpelDeployer(Path deploymentFolder, Path logFile) {
         this(deploymentFolder, logFile, TimeoutRepository.getTimeout("ActiveBpelDeployer.constructor"));
     }
 
-    public ActiveBpelDeployer(Path deploymentFolder, Path logFile, Optional<Timeout> timeout) {
+    public ActiveBpelDeployer(Path deploymentFolder, Path logFile, Timeout timeout) {
         this.deploymentFolder = Objects.requireNonNull(deploymentFolder);
         this.logFile = Objects.requireNonNull(logFile);
         this.timeout = timeout;

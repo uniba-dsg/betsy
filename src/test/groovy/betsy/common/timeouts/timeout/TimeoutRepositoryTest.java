@@ -4,6 +4,7 @@ import org.junit.Test;
 import betsy.common.timeouts.calibration.CalibrationTimeout;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -15,20 +16,20 @@ public class TimeoutRepositoryTest {
 
     @Test
     public void testGetTimeout() throws Exception {
-        assertNotNull(TimeoutRepository.getTimeout("Tomcat.startup").get());
+        assertNotNull(TimeoutRepository.getTimeout("Tomcat.startup"));
     }
 
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void testGetTimeoutNotExists() throws Exception {
-        assertFalse(TimeoutRepository.getTimeout("ode.deploy").isPresent());
+        TimeoutRepository.getTimeout("ode.deploy");
     }
 
     @Test
     public void testSetTimeout() throws Exception {
         Timeout timeout = new Timeout("ode_v", "deploymentTimeout", 20_000, 5_000);
         TimeoutRepository.setTimeout(timeout);
-        assertEquals(timeout.getTimeoutInMs(), TimeoutRepository.getTimeout(timeout.getKey()).get().getTimeoutInMs());
-        assertEquals(timeout.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeout.getKey()).get().getTimeToRepetitionInMs());
+        assertEquals(timeout.getTimeoutInMs(), TimeoutRepository.getTimeout(timeout.getKey()).getTimeoutInMs());
+        assertEquals(timeout.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeout.getKey()).getTimeToRepetitionInMs());
     }
 
     @Test
@@ -39,9 +40,9 @@ public class TimeoutRepositoryTest {
         timeouts.put(timeout.getKey(), timeout);
         timeouts.put(timeout.getKey(), timeoutTest);
         TimeoutRepository.setAllCalibrationTimeouts(timeouts);
-        assertEquals(timeout.getTimeoutInMs(), TimeoutRepository.getTimeout(timeout.getKey()).get().getTimeoutInMs());
-        assertEquals(timeout.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeout.getKey()).get().getTimeToRepetitionInMs());
-        assertEquals(timeoutTest.getTimeoutInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).get().getTimeoutInMs());
-        assertEquals(timeoutTest.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).get().getTimeToRepetitionInMs());
+        assertEquals(timeout.getTimeoutInMs(), TimeoutRepository.getTimeout(timeout.getKey()).getTimeoutInMs());
+        assertEquals(timeout.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeout.getKey()).getTimeToRepetitionInMs());
+        assertEquals(timeoutTest.getTimeoutInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).getTimeoutInMs());
+        assertEquals(timeoutTest.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).getTimeToRepetitionInMs());
     }
 }

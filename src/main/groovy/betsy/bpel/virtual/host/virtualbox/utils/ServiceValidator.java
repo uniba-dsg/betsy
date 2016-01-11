@@ -8,7 +8,6 @@ import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.Timeout;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The {@link ServiceValidator} validates a {@link ServiceAddress} and can
@@ -27,7 +26,7 @@ public class ServiceValidator {
      * @return true if all services are ready, false if not
      */
     public static boolean isEngineReady(final List<ServiceAddress> engineServices,
-                                        Optional<Timeout> timeout) {
+                                        Timeout timeout) {
         //TODO how to handle wait if it never was true?
         for (ServiceAddress address : engineServices) {
             if (address.isRequiringHtmlContent()) {

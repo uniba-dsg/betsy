@@ -3,6 +3,7 @@ package betsy.common.timeouts;
 
 import betsy.common.timeouts.timeout.Timeout;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -19,7 +20,7 @@ public class TimeoutException extends RuntimeException {
      * @param timeout The {@link Timeout}, which was the reason for this exception.
      */
     public TimeoutException(Timeout timeout) {
-        this.timeout = Optional.ofNullable(timeout);
+        this.timeout = Optional.of(timeout);
     }
 
     /**
@@ -38,7 +39,7 @@ public class TimeoutException extends RuntimeException {
      */
     public TimeoutException(String message, Timeout timeout) {
         super(message);
-        this.timeout = Optional.ofNullable(timeout);
+        this.timeout = Optional.of(timeout);
     }
 
     /**
@@ -59,7 +60,7 @@ public class TimeoutException extends RuntimeException {
      */
     public TimeoutException(String message, Throwable throwable, Timeout timeout) {
         super(message, throwable);
-        this.timeout = Optional.ofNullable(timeout);
+        this.timeout = Optional.of(timeout);
     }
 
     /**
@@ -78,14 +79,18 @@ public class TimeoutException extends RuntimeException {
      */
     public TimeoutException(Throwable throwable, Timeout timeout) {
         super(throwable);
-        this.timeout = Optional.ofNullable(timeout);
+        this.timeout = Optional.of(timeout);
     }
 
     /**
      *
      * @return Return the {@link Timeout} of this Exception.
      */
-    public Optional<Timeout> getTimeout(){
-            return timeout;
+    public Timeout getTimeout(){
+        if(timeout.isPresent()){
+            return timeout.get();
+        }else {
+            throw new NoSuchElementException("The timeout ist null.");
+        }
     }
 }

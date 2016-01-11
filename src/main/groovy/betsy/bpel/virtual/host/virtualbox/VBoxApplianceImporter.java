@@ -40,7 +40,7 @@ class VBoxApplianceImporter {
 
 		IProgress readProgress = appliance.read(importFile.toAbsolutePath().toString());
 		while (!readProgress.getCompleted()) {
-			readProgress.waitForCompletion(TimeoutRepository.getTimeout("VBoxApplianceImporter.importAppliance.readProgress").get().getTimeoutInMs());
+			readProgress.waitForCompletion(TimeoutRepository.getTimeout("VBoxApplianceImporter.importAppliance.readProgress").getTimeoutInMs());
 		}
 
 		appliance.interpret();
@@ -52,7 +52,7 @@ class VBoxApplianceImporter {
 		options.add(ImportOptions.KeepNATMACs);
 		IProgress importProgress = appliance.importMachines(options);
 		while (!importProgress.getCompleted()) {
-			importProgress.waitForCompletion(TimeoutRepository.getTimeout("VBoxApplianceImporter.importAppliance.importProgress").get().getTimeoutInMs());
+			importProgress.waitForCompletion(TimeoutRepository.getTimeout("VBoxApplianceImporter.importAppliance.importProgress").getTimeoutInMs());
 		}
 
         logWarnings(appliance);

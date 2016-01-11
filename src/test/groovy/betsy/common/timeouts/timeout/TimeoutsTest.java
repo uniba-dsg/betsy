@@ -1,12 +1,9 @@
 package betsy.common.timeouts.timeout;
 
 import betsy.common.tasks.FileTasks;
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
-import org.junit.*;
 import betsy.common.timeouts.calibration.CalibrationTimeout;
 import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
+import org.junit.*;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -14,8 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,8 +28,6 @@ public class TimeoutsTest {
     private Timeout timeout;
     ArrayList<Timeout> timeoutList;
     private Timeouts timeouts;
-    private TestAppender testAppender;
-    private static final Logger LOGGER = org.apache.log4j.Logger.getLogger(Timeouts.class);
 
     @BeforeClass
     public static void setUpClass() {
@@ -71,9 +65,6 @@ public class TimeoutsTest {
         timeoutList = new ArrayList<>();
         timeoutList.add(timeout);
         timeouts = new Timeouts(timeoutList);
-
-        testAppender = new TestAppender();
-        LOGGER.addAppender(testAppender);
     }
 
     @After
@@ -83,8 +74,6 @@ public class TimeoutsTest {
         timeToRepetition = null;
         timeout = null;
         timeouts = null;
-        LOGGER.removeAllAppenders();
-        testAppender = null;
         Files.deleteIfExists(properties.toPath());
         properties = null;
     }
@@ -113,8 +102,8 @@ public class TimeoutsTest {
 
         timeouts = new Timeouts(properties.getName());
         timeouts.readTimeoutProperties();
-        assertEquals(timeout.getKey(), timeouts.getTimeout(timeout.getKey()).get().getKey());
-        assertEquals(timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).get().getTimeoutInMs());
+        assertEquals(timeout.getKey(), timeouts.getTimeout(timeout.getKey()).getKey());
+        assertEquals(timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).getTimeoutInMs());
     }
 
     @Test
@@ -125,8 +114,8 @@ public class TimeoutsTest {
 
         timeouts = new Timeouts(timeoutList, properties.getName());
         timeouts.readTimeoutProperties();
-        assertEquals(timeout.getKey(), timeouts.getTimeout(timeout.getKey()).get().getKey());
-        assertEquals(timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).get().getTimeoutInMs());
+        assertEquals(timeout.getKey(), timeouts.getTimeout(timeout.getKey()).getKey());
+        assertEquals(timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).getTimeoutInMs());
     }
 
 
@@ -139,14 +128,13 @@ public class TimeoutsTest {
 
     @Test
     public void testGetTimeout() throws Exception {
-        Optional<Timeout> timeout = timeouts.getTimeout(key.toString());
-        assertEquals(key.toString(), timeout.get().getKey());
+        Timeout timeout = timeouts.getTimeout(key.toString());
+        assertEquals(key.toString(), timeout.getKey());
     }
 
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void testGetTimeoutNotExists() throws Exception {
-        Optional<Timeout> timeout = timeouts.getTimeout("glassfish.deploy");
-        assertEquals(false, timeout.isPresent());
+        timeouts.getTimeout("glassfish.deploy");
     }
 
     @Test
@@ -162,35 +150,14 @@ public class TimeoutsTest {
         timeout.setValue(value);
         timeout.setTimeToRepetition(timeToRepetition);
         timeouts.setTimeout(timeout);
-        Timeout testTimeout = timeouts.getTimeout(timeout.getKey()).get();
+        Timeout testTimeout = timeouts.getTimeout(timeout.getKey());
         assertEquals(value, testTimeout.getTimeoutInMs(), 0);
         assertEquals(timeToRepetition, testTimeout.getTimeToRepetitionInMs(), 0);
     }
 
-    @Test
+    @Test(expected = NoSuchElementException.class)
     public void testSetTimeoutNotExists() throws Exception {
         Timeout timeout = new Timeout("glassfish", "deploy", 20_000, 3_000);
         timeouts.setTimeout(timeout);
-        assertEquals("The timeout(" + timeout.getKey() + ") does not exist.", testAppender.messages.get(0));
-    }
-    
-
-    class TestAppender extends AppenderSkeleton {
-        public List<String> messages = new ArrayList<>();
-
-        @Override
-        protected void append(LoggingEvent event) {
-            messages.add(event.getMessage().toString());
-        }
-
-        @Override
-        public void close() {
-            messages = null;
-        }
-
-        @Override
-        public boolean requiresLayout() {
-            return false;
-        }
     }
 }

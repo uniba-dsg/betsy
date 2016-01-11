@@ -64,7 +64,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
             startProgress = machine.launchVMProcess(session, "gui", null);
         }
 
-        waitForCompletion(startProgress, TimeoutRepository.getTimeout("VirtualBoxMachineImpl.startVirtualMachine").get().getTimeoutInMs());
+        waitForCompletion(startProgress, TimeoutRepository.getTimeout("VirtualBoxMachineImpl.startVirtualMachine").getTimeoutInMs());
     }
 
     private void waitForCompletion(IProgress progress, int timeout) {
@@ -86,7 +86,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
         log.trace("Stopping VM");
         try {
             if (isRunning()) {
-                waitForCompletion(session.getConsole().powerDown(), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.stop").get().getTimeoutInMs());
+                waitForCompletion(session.getConsole().powerDown(), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.stop").getTimeoutInMs());
             }
         } catch (VBoxException e) {
             if (VBoxExceptionCode.valueOf(e).equals(VBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
@@ -113,7 +113,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
         log.trace("Saving VM state");
         try {
             if (isRunning()) {
-                waitForCompletion(session.getConsole().saveState(), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.saveState").get().getTimeoutInMs());
+                waitForCompletion(session.getConsole().saveState(), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.saveState").getTimeoutInMs());
             }
         } catch (VBoxException e) {
             if (VBoxExceptionCode.valueOf(e).equals(VBoxExceptionCode.VBOX_E_INVALID_VM_STATE)) {
@@ -231,7 +231,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
                         + "snapshot.");
             }
 
-            waitForCompletion(console.restoreSnapshot(snapshot), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.restore").get().getTimeoutInMs());
+            waitForCompletion(console.restoreSnapshot(snapshot), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.restore").getTimeoutInMs());
 
             log.trace("State after restoration:" + machine.getState());
             log.trace("restored VM to latest snapshot with name [" + snapshot.getName() + "]");
@@ -276,12 +276,12 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
         log.debug("Pausing VM before taking a snapshot");
         console.pause();
 
-        waitForCompletion(console.takeSnapshot(name, desc), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.takeSnapshot").get().getTimeoutInMs());
+        waitForCompletion(console.takeSnapshot(name, desc), TimeoutRepository.getTimeout("VirtualBoxMachineImpl.takeSnapshot").getTimeoutInMs());
 
         // before resuming make sure the snapshot has been saved
         while (this.machine.getState().equals(MachineState.Saving)) {
             try {
-                Thread.sleep(TimeoutRepository.getTimeout("VirtualBoxMachineImpl.takeSnapshot.sleep").get().getTimeoutInMs());
+                Thread.sleep(TimeoutRepository.getTimeout("VirtualBoxMachineImpl.takeSnapshot.sleep").getTimeoutInMs());
             } catch (InterruptedException e) {
                 // ignore
             }

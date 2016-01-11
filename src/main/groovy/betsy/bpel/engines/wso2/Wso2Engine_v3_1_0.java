@@ -53,7 +53,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
-        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2Engine_v3_1_0.startup.sleep").get().getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2Engine_v3_1_0.startup.sleep").getTimeoutInMs());
 
         Path logFile = getLogsFolder().resolve("wso2carbon.log");
         WaitTasks.waitForSubstringInFile(TimeoutRepository.getTimeout("Wso2Engine_v3_1_0.startup.waitFor"), getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");

@@ -8,15 +8,14 @@ import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
-import java.util.Optional;
 
 public class OdeDeployer {
 
     private final Path deploymentFolder;
     private final Path logFile;
-    private final Optional<Timeout> timeout;
+    private final Timeout timeout;
 
-    public OdeDeployer(Path deploymentFolder, Path logFile, Optional<Timeout> timeout) {
+    public OdeDeployer(Path deploymentFolder, Path logFile, Timeout timeout) {
         this.deploymentFolder = deploymentFolder;
         this.logFile = logFile;
         this.timeout = timeout;

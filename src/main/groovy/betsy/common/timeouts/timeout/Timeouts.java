@@ -1,6 +1,5 @@
 package betsy.common.timeouts.timeout;
 
-import org.apache.log4j.Logger;
 import betsy.common.timeouts.TimeoutIOOperations;
 
 import java.io.File;
@@ -12,13 +11,11 @@ import java.util.*;
  */
 public class Timeouts {
 
-    private static final Logger LOGGER = Logger.getLogger(Timeouts.class);
     private List<Timeout> timeouts = new ArrayList<>();
     private File properties = new File("timeout.properties");
 
     /**
-     *
-     * @param timeouts The timeouts, which should be managed by the {@link betsy.common.timeouts}.
+     * @param timeouts         The timeouts, which should be managed by the {@link betsy.common.timeouts}.
      * @param nameOfProperties The name of the properties file.
      */
     public Timeouts(ArrayList<Timeout> timeouts, String nameOfProperties) {
@@ -26,7 +23,7 @@ public class Timeouts {
         if (nameOfProperties.length() > 0) {
             this.properties = new File(nameOfProperties);
         }
-        Objects.requireNonNull(timeouts, "The timeouts can't be null.");
+        this.timeouts = Objects.requireNonNull(timeouts, "The timeouts can't be null.");
     }
 
     /**
@@ -41,11 +38,10 @@ public class Timeouts {
     }
 
     /**
-     *
      * @param timeouts The timeouts, which should be managed by the {@link betsy.common.timeouts}.
      */
     public Timeouts(ArrayList<Timeout> timeouts) {
-        Objects.requireNonNull(timeouts, "The timeouts can't be null.");
+        this.timeouts = Objects.requireNonNull(timeouts, "The timeouts can't be null.");
     }
 
     /**
@@ -56,14 +52,18 @@ public class Timeouts {
     }
 
     /**
-     * This method returns the {@link Timeout} for given key as {@link Optional}.
+     * This method returns the {@link Timeout} for given key.
      *
      * @param key The key of the {@link Timeout}.
-     * @return The {@link Timeout] for the given key as {@link Optional}.
+     * @return The {@link Timeout] for the given key.
      */
-    public Optional<Timeout> getTimeout(String key) {
+    public Timeout getTimeout(String key) {
         Objects.requireNonNull(key, "The key can't be null.");
-        return Optional.ofNullable(getAllTimeouts().get(key));
+        if (getAllTimeouts().get(key) != null) {
+            return getAllTimeouts().get(key);
+        } else {
+            throw new NoSuchElementException("There is no timeout with this given key.");
+        }
     }
 
     /**
@@ -78,19 +78,14 @@ public class Timeouts {
     }
 
     /**
-     *
      * This method it is possible to change the values of an existing {@link Timeout}.
      *
      * @param timeout The {@link Timeout} with the new values.
      */
-    public void setTimeout(Timeout timeout){
+    public void setTimeout(Timeout timeout) {
         Objects.requireNonNull(timeout, "The timeout can't be null.");
-        if (getTimeout(timeout.getKey()).isPresent()) {
-            getTimeout(timeout.getKey()).get().setValue(timeout.getTimeoutInMs());
-            getTimeout(timeout.getKey()).get().setTimeToRepetition(timeout.getTimeToRepetitionInMs());
-        } else {
-            LOGGER.info("The timeout(" + timeout.getKey() + ") does not exist.");
-        }
+        getTimeout(timeout.getKey()).setValue(timeout.getTimeoutInMs());
+        getTimeout(timeout.getKey()).setTimeToRepetition(timeout.getTimeToRepetitionInMs());
     }
 
     /**
@@ -100,7 +95,7 @@ public class Timeouts {
         timeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
     }
 
-    private void addTimeouts(){
+    private void addTimeouts() {
         timeouts.add(new Timeout("Tomcat", "startup", 30_000, 500));
         timeouts.add(new Timeout("FileTasks", "deleteDirectory", 5_000, Timeout.Category.UNMEASURABLE));
 

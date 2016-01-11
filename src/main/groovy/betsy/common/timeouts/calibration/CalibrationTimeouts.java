@@ -74,13 +74,13 @@ public class CalibrationTimeouts {
 
 
     /**
-     * This method returns the {@link CalibrationTimeout} for given key as {@link Optional}.
+     * This method returns the {@link CalibrationTimeout} for given key.
      *
      * @param key The key of the {@link CalibrationTimeout}.
-     * @return The {@link CalibrationTimeout] for the given key as {@link Optional}.
+     * @return The {@link CalibrationTimeout] for the given key.
      */
-    public Optional<CalibrationTimeout> getCalibrationTimeout(String key) {
-        return Optional.ofNullable(getAllCalibrationTimeouts().get(key));
+    public CalibrationTimeout getCalibrationTimeout(String key) {
+        return getAllCalibrationTimeouts().get(key);
     }
 
     /**

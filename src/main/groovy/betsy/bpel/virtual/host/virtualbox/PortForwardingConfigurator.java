@@ -59,16 +59,16 @@ public class PortForwardingConfigurator {
                 natEngine.addRedirect("", NATProtocol.TCP, "", port, "", port);
             }
 
-            long timeout = TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").get().getTimeoutInMs();
+            long timeout = TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").getTimeoutInMs();
             long start = -System.currentTimeMillis();
 
             while (natEngine.getRedirects().size() != forwardingPorts.size()) {
                 if (System.currentTimeMillis() + start > timeout) {
                     throw new PortRedirectException("Could not set redirected "
-                            + "ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").get().getTimeoutInMs() + "s");
+                            + "ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").getTimeoutInMs() + "s");
                 }
                 try {
-                    Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").get().getTimeToRepetitionInMs());
+                    Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").getTimeToRepetitionInMs());
                 } catch (InterruptedException e) {
                     // ignore
                 }
@@ -90,12 +90,12 @@ public class PortForwardingConfigurator {
         long start = -System.currentTimeMillis();
 
         while (natEngine.getRedirects().size() != 0) {
-            if (System.currentTimeMillis() + start > TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").get().getTimeoutInMs()) {
+            if (System.currentTimeMillis() + start > TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").getTimeoutInMs()) {
                 throw new PortRedirectException("Could not delete all "
-                        + "redirected ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").get().getTimeoutInMs() + "s");
+                        + "redirected ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").getTimeoutInMs() + "s");
             }
             try {
-                Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").get().getTimeToRepetitionInMs());
+                Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").getTimeToRepetitionInMs());
             } catch (InterruptedException e) {
                 // ignore
             }

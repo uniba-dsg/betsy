@@ -96,9 +96,9 @@ public class JbpmTester {
             JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
         } catch (RuntimeException ex) {
             if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
-                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in "+ TimeoutRepository.getTimeout("JbpmTester.runTest").get().getTimeoutInMs() +"ms.");
+                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in "+ TimeoutRepository.getTimeout("JbpmTester.runTest").getTimeoutInMs() +"ms.");
                 //retry after delay
-                WaitTasks.sleep(TimeoutRepository.getTimeout("JbpmTester.runTest").get().getTimeoutInMs());
+                WaitTasks.sleep(TimeoutRepository.getTimeout("JbpmTester.runTest").getTimeoutInMs());
                 try {
                     JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {

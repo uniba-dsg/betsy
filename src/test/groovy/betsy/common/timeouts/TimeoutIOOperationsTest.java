@@ -101,18 +101,6 @@ public class TimeoutIOOperationsTest {
     }
 
     @Test
-    public void testWriteToPropertiesTimeoutNull() throws Exception {
-        TimeoutIOOperations.readFromProperties(properties, null);
-        assertEquals("The property file or the timeouts were null.", testAppender.messages.get(0));
-    }
-
-    @Test
-    public void testWriteToPropertiesPropertiesNull() throws Exception {
-        TimeoutIOOperations.readFromProperties(null, timeouts);
-        assertEquals("The property file or the timeouts were null.", testAppender.messages.get(0));
-    }
-
-    @Test
     public void testWriteToPropertiesExtendedValues() throws Exception {
         TimeoutIOOperations.writeToProperties(properties, timeouts);
         List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
@@ -153,18 +141,6 @@ public class TimeoutIOOperationsTest {
     }
 
     @Test
-    public void testReadFromPropertiesPropertiesNull() throws Exception {
-        TimeoutIOOperations.readFromProperties(null, timeouts);
-        assertEquals("The property file or the timeouts were null.", testAppender.messages.get(0));
-    }
-
-    @Test
-    public void testReadFromPropertiesTimeoutsNull() throws Exception {
-        TimeoutIOOperations.readFromProperties(properties, null);
-        assertEquals("The property file or the timeouts were null.", testAppender.messages.get(0));
-    }
-
-    @Test
     public void testReadFromPropertiesReadable() throws Exception {
         properties.setReadable(false);
         TimeoutIOOperations.readFromProperties(properties, timeouts);
@@ -194,25 +170,11 @@ public class TimeoutIOOperationsTest {
     }
 
     @Test
-    public void testWriteToCSVNullCSV() throws Exception {
-        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
-        calibrationTimeouts.add(new CalibrationTimeout(timeout));
-        TimeoutIOOperations.writeToCSV(null, calibrationTimeouts);
-        assertEquals("The csv file or the timeouts were null.", testAppender.messages.get(0));
-    }
-
-    @Test
     public void testWriteToCSVDoesNotExits() throws Exception {
         FileTasks.deleteFile(csv.toPath());
         ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
         calibrationTimeouts.add(new CalibrationTimeout(timeout));
         TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
-    }
-
-    @Test
-    public void testWriteToCSVNullTimeouts() throws Exception {
-        TimeoutIOOperations.writeToCSV(csv, null);
-        assertEquals("The csv file or the timeouts were null.", testAppender.messages.get(0));
     }
 
     class TestAppender extends AppenderSkeleton {
