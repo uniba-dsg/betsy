@@ -37,7 +37,7 @@
         <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
             <properties>
                 <property name="password">adminadmin</property>
-                <property name="installation.location">@INSTALL_PATH@/glassfish</property>
+                <property name="installation.location">@INSTALL_PATH@\glassfish</property>
                 <property name="jmx.admin.port">8686</property>
                 <property name="username">admin</property>
                 <property name="vendor.jdk.allowed.pattern">Sun Microsystems.*|Oracle.*</property>
@@ -57,12 +57,12 @@
         </product>
         <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-core" version="2.3.1.27.20131115143207">
             <properties>
-                <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                <property name="installation.location">@INSTALL_PATH@\glassfish\addons\jbi-components</property>
             </properties>
         </product>
         <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-components" version="2.3.1.30.20131119172140">
             <properties>
-                <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                <property name="installation.location">@INSTALL_PATH@\glassfish\addons\jbi-components</property>
             </properties>
         </product>
     </components>
