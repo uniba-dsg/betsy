@@ -138,7 +138,7 @@ public class Timeouts {
         timeouts.add(new Timeout("Jbpm", "deploy", "result", 30_000, 1000));
         timeouts.add(new Timeout("Jbpm", "deploy", "availability", 5000));
         timeouts.add(new Timeout("Jbpm", "startup", 24_0000, 5000));
-        timeouts.add(new Timeout("Jbpm", "shutdon", 24_0000, 5000));
+        timeouts.add(new Timeout("Jbpm", "shutdown", 24_0000, 5000));
         timeouts.add(new Timeout("JbpmTester", "runTest", 10_000));
 
         //BPEL

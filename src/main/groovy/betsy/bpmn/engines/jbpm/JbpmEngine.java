@@ -68,7 +68,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnPath.toAbsolutePath() + "/mvn").values("-q", "clean", "install"));
 
         //wait for maven to deploy
-        WaitTasks.sleep(TimeoutRepository.getTimeout("Jpbm.deploy.maven").getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Jbpm.deploy.maven").getTimeoutInMs());
 
         new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process)).deploy();
         //waiting for the result of the deployment
@@ -162,7 +162,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         try {
             //waiting for shutdown completion using log files; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(TimeoutRepository.getTimeout("Jbpm.shutdon"), getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
+            WaitTasks.waitForSubstringInFile(TimeoutRepository.getTimeout("Jbpm.shutdown"), getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
