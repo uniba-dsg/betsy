@@ -38,8 +38,9 @@ public class TimeoutCalibrator {
         FileTasks.deleteFile(csv.toPath());
 
         while (!lastRoundFinished) {
+            //if the last round all timeouts were kept, it's the last round
             lastRoundFinished = allTimeoutsAreCalibrated;
-
+            //execute betsy
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration++));
             //gather extern timeouts
             ExternalTimeouts.readSoapUITimeouts(actualTestFolder);
@@ -48,21 +49,23 @@ public class TimeoutCalibrator {
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts);
 
+            //if it
             if (!allTimeoutsAreCalibrated || !lastRoundFinished) {
                 //set all values to the repositories
                 TimeoutRepository.setAllCalibrationTimeouts(timeouts);
+                lastRoundFinished = false;
+                //write all timeouts to csv for traceability
+                CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
                 //clean the timeoutRepository for the new run
                 CalibrationTimeoutRepository.clean();
-                lastRoundFinished = false;
             }
-
-            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
             for (CalibrationTimeout timeout : timeouts.values()) {
                 LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
             }
 
         }
-
+        //write all timeouts to csv for traceability
+        CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
         //write timeouts to properties and csv
         CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
 
