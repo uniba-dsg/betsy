@@ -4,10 +4,10 @@ import betsy.Main;
 import betsy.bpel.BPELMain;
 import betsy.bpel.soapui.SoapUIShutdownHelper;
 import betsy.common.tasks.FileTasks;
-import org.apache.log4j.Logger;
 import betsy.common.timeouts.calibration.CalibrationTimeout;
 import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 import betsy.common.timeouts.timeout.TimeoutRepository;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.HashMap;
@@ -30,16 +30,15 @@ public class TimeoutCalibrator {
         LOGGER.info("Calibration is started.");
         //If it's true, SoapUI turns off after first run
         BPELMain.shutdownSoapUiAfterCompletion(false);
-        int numberOfDuration = 1;
-        boolean allTimeoutsAreCalibrated = false;
-        boolean lastRoundFinished = false;
+        int numberOfDuration = 0;
+        boolean allTimeoutsAreCalibrated;
+        boolean lastRound = false;
+        boolean finished = false;
 
         File csv  = new File("calibration_timeouts.csv");
         FileTasks.deleteFile(csv.toPath());
 
-        while (!lastRoundFinished) {
-            //if the last round all timeouts were kept, it's the last round
-            lastRoundFinished = allTimeoutsAreCalibrated;
+        while (!finished) {
             //execute betsy
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration++));
             //gather extern timeouts
@@ -49,29 +48,31 @@ public class TimeoutCalibrator {
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts);
 
-            //if it
-            if (!allTimeoutsAreCalibrated || !lastRoundFinished) {
+            if (!allTimeoutsAreCalibrated || !lastRound) {
+                //if all timeouts aren't calibrated and/or this isn't the last round, it isn't finished
+                finished = false;
                 //set all values to the repositories
                 TimeoutRepository.setAllCalibrationTimeouts(timeouts);
-                lastRoundFinished = false;
-                //write all timeouts to csv for traceability
-                CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
-                //clean the timeoutRepository for the new run
-                CalibrationTimeoutRepository.clean();
+            }else{
+                //if all timeouts are calibrated and this was the last round, it is finished
+                finished = true;
+                //write timeouts to properties
+                CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
+                //shutdown SoapUI
+                SoapUIShutdownHelper.shutdownSoapUIForReal();
+                LOGGER.info("Calibration is finished.");
             }
+            //if the last round all timeouts were kept, it's the last round
+            lastRound = allTimeoutsAreCalibrated;
+            //write all timeouts to csv for traceability
+            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
+            //clean the timeoutRepository for the new run
+            CalibrationTimeoutRepository.clean();
+            //write all timeouts to the console
             for (CalibrationTimeout timeout : timeouts.values()) {
                 LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
             }
-
         }
-        //write all timeouts to csv for traceability
-        CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
-        //write timeouts to properties and csv
-        CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
-
-        //shutdown SoapUI
-        SoapUIShutdownHelper.shutdownSoapUIForReal();
-        LOGGER.info("Calibration is finished.");
     }
 
     private static boolean handleTimeouts(HashMap<String, CalibrationTimeout> timeouts) {
@@ -86,6 +87,8 @@ public class TimeoutCalibrator {
                 case KEPT:
                     break;
             }
+            Double value = timeout.getTimeoutInMs() * 1.1;
+            timeout.setValue(value.intValue());
         }
         return allTimeoutsAreCalibrated;
     }
