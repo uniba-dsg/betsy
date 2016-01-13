@@ -137,7 +137,7 @@ public class TimeoutIOOperations {
                 writer.append("Iteration").append(';');
                 writer.append("Key").append(';');
                 writer.append("TimeStamp").append(';');
-                writer.append("Category").append(';');
+                writer.append("Status").append(';');
                 writer.append("EngineOrProcessGroup").append(';');
                 writer.append("StepOrProcess").append(';');
                 writer.append("Value").append(';');
@@ -149,7 +149,7 @@ public class TimeoutIOOperations {
                 writer.append(Integer.toString(numberOfIteration)).append(';');
                 writer.append(timeout.getKey()).append(';');
                 writer.append(Long.toString(timeout.getTimestamp())).append(';');
-                writer.append(timeout.getCategory().toString()).append(';');
+                writer.append(timeout.getStatus().toString()).append(';');
                 writer.append(timeout.getEngineOrProcessGroup()).append(';');
                 writer.append(timeout.getStepOrProcess()).append(';');
                 writer.append(Integer.toString(timeout.getTimeoutInMs())).append(';');
