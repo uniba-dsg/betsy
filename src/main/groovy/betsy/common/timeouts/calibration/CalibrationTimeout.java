@@ -14,6 +14,7 @@ public class CalibrationTimeout extends Timeout {
 
     private Status status = Status.KEPT;
     private long timestamp = System.currentTimeMillis();
+    private int measuredTime;
 
     /**
      * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
@@ -26,6 +27,21 @@ public class CalibrationTimeout extends Timeout {
      */
     public CalibrationTimeout(String engineOrProcess, String stepOrProcess, String description, int value, int timeToRepetition) {
         super(engineOrProcess, stepOrProcess, description, value, timeToRepetition);
+    }
+
+    /**
+     * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
+     *
+     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
+     * @param description      The description of the {@link Timeout}.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
+     * @param measuredTime     The measured time of the timeout.
+     */
+    public CalibrationTimeout(String engineOrProcess, String stepOrProcess, String description, int value, int timeToRepetition, int measuredTime) {
+        super(engineOrProcess, stepOrProcess, description, value, timeToRepetition);
+        this.measuredTime = measuredTime;
     }
 
     /**
@@ -74,6 +90,18 @@ public class CalibrationTimeout extends Timeout {
     }
 
     /**
+     * This {@link CalibrationTimeout} represents a {@link Timeout} for the calibration_timeout to optimize the test duration of betsy.
+     *
+     * @param timeout       The basic {@link Timeout} to create a {@link CalibrationTimeout}.
+     * @param measuredTime  The measured time of the timeout.
+     */
+    public CalibrationTimeout(Timeout timeout, int measuredTime) {
+        super(timeout.getEngineOrProcessGroup(), timeout.getStepOrProcess(), timeout.getDescription(), timeout.getTimeoutInMs(), timeout.getTimeToRepetitionInMs());
+        this.measuredTime = measuredTime;
+    }
+
+
+    /**
      *
      * @return Returns the actual {@link Status} of the {@link CalibrationTimeout}.
      */
@@ -103,6 +131,21 @@ public class CalibrationTimeout extends Timeout {
      */
     public long getTimestamp(){
         return timestamp;
+    }
+
+    /**
+     *
+     * @return Returns the measured time.
+     */
+    public int getMeasuredTime() {
+        return measuredTime;
+    }
+
+    /**
+     * @param measuredTime The measured time.
+     */
+    public void setMeasuredTime(int measuredTime) {
+        this.measuredTime = measuredTime;
     }
 
     /**
