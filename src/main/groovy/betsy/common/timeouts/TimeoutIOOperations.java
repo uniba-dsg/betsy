@@ -7,9 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Christoph Broeker
@@ -171,6 +169,40 @@ public class TimeoutIOOperations {
                 LOGGER.info("Couldn't close the csv file.");
             }
         }
+    }
+
+    /**
+     *
+     * This method reads the csv file and returns a list with CalibrationTimeouts.
+     *
+     * @param csv The csv, which should be read.
+     * @return The list with the CalibrationTimeouts. 
+     */
+    public static List<CalibrationTimeout> readFromCSV(File csv) {
+        Objects.requireNonNull(csv, "The csv file can't be null.");
+        BufferedReader reader = null;
+        List<CalibrationTimeout> timeouts = new ArrayList<>();
+        String line;
+
+        try {
+            reader = new BufferedReader(new FileReader(csv));
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] entries = line.split(";");
+                CalibrationTimeout timeout = new CalibrationTimeout(entries[4], entries[5], entries[6], Integer.valueOf(entries[8]), Integer.valueOf(entries[9]), Integer.valueOf(entries[7]));
+                timeouts.add(timeout);
+            }
+        } catch (IOException e) {
+            LOGGER.info("Could not read the timeouts from csv file.");
+        } finally {
+            try {
+                assert reader != null;
+                reader.close();
+            } catch (Exception e) {
+                LOGGER.info("Couldn't close the csv file.");
+            }
+        }
+        return timeouts;
     }
 }
 
