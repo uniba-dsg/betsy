@@ -60,6 +60,11 @@ public class BPMNSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    public void test_A_BpmnCamunda740SequenceFlow() throws IOException {
+        testBPMNEngine("camunda__7_4_0");
+    }
+
+    @Test
     public void test_A_BpmnjBPMSequenceFlow() throws IOException {
         testBPMNEngine("jbpm__6_0_1");
     }
