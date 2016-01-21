@@ -94,7 +94,6 @@ public class BPMNMain {
             }
 
             if(params.saveTimeouts()){
-                CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
                 CalibrationTimeoutRepository.writeToCSV();
             }
 

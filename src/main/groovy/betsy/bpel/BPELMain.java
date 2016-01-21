@@ -99,7 +99,6 @@ public class BPELMain {
         }
 
         if(params.saveTimeouts()){
-            CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
             CalibrationTimeoutRepository.writeToCSV();
         }
     }
