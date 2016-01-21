@@ -41,8 +41,6 @@ public class TimeoutCalibrator {
         while (!finished) {
             //execute betsy
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration++));
-            //gather extern timeouts
-            ExternalTimeouts.readSoapUITimeouts(actualTestFolder);
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //calibrate the timeouts
