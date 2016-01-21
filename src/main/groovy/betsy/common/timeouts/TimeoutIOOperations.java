@@ -140,6 +140,8 @@ public class TimeoutIOOperations {
                 writer.append("Status").append(';');
                 writer.append("EngineOrProcessGroup").append(';');
                 writer.append("StepOrProcess").append(';');
+                writer.append("Description").append(';');
+                writer.append("Measured time").append(';');
                 writer.append("Value").append(';');
                 writer.append("TimeToRepetition").append('\n');
             } else {
@@ -152,6 +154,8 @@ public class TimeoutIOOperations {
                 writer.append(timeout.getStatus().toString()).append(';');
                 writer.append(timeout.getEngineOrProcessGroup()).append(';');
                 writer.append(timeout.getStepOrProcess()).append(';');
+                writer.append(timeout.getDescription()).append(';');
+                writer.append(Integer.toString(timeout.getMeasuredTime())).append(';');
                 writer.append(Integer.toString(timeout.getTimeoutInMs())).append(';');
                 writer.append(Integer.toString(timeout.getTimeToRepetitionInMs())).append('\n');
             }

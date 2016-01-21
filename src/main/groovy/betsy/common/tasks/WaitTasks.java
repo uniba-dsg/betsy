@@ -56,11 +56,12 @@ public class WaitTasks {
 
             CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout);
             if (wasSuccessful) {
-                calibrationTimeout.setValue(Math.toIntExact(work));
+                calibrationTimeout.setMeasuredTime(Math.toIntExact(work));
                 LOGGER.info("Condition of wait task was met in " + work + "/" + timeout.getTimeoutInMs() + "ms -> proceeding");
                 CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
             } else {
                 calibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
+                calibrationTimeout.setMeasuredTime(calibrationTimeout.getTimeoutInMs());
                 LOGGER.info("Condition of wait task NOT met within the specified time");
                 CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                 throw new IllegalStateException("waited for " + timeout.getTimeoutInMs() + "ms, but condition was not met");
