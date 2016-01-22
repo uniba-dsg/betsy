@@ -39,7 +39,6 @@ public class WaitTasks {
 
     public static void waitFor(Timeout timeout, Callable<Boolean> c) throws TimeoutException {
         LOGGER.info(timeout.getKey() + ": wait for at most " + timeout.getTimeoutInMs() + "ms or until condition is met.");
-
         long max = System.currentTimeMillis() + timeout.getTimeoutInMs();
 
         try {
@@ -53,7 +52,6 @@ public class WaitTasks {
                 }
                 sleepInternal(timeout.getTimeToRepetitionInMs());
             }
-
             CalibrationTimeout calibrationTimeout = new CalibrationTimeout(timeout);
             if (wasSuccessful) {
                 calibrationTimeout.setMeasuredTime(Math.toIntExact(work));
@@ -66,9 +64,7 @@ public class WaitTasks {
                 CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                 throw new IllegalStateException("waited for " + timeout.getTimeoutInMs() + "ms, but condition was not met");
             }
-
         } catch (IllegalStateException e) {
-
             throw new TimeoutException(timeout);
         } catch (Exception e) {
             throw new IllegalStateException("internal error", e);

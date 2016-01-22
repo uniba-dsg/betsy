@@ -37,7 +37,7 @@ public class TimeoutCalibrator {
         int numberOfDuration = 0;
         boolean allTimeoutsAreCalibrated;
         boolean lastRound = false;
-        boolean finished = false;
+        boolean isCalibrated = false;
 
         File properties = new File("timeout.properties");
         File csv = new File("calibration_timeouts.csv");
@@ -57,13 +57,17 @@ public class TimeoutCalibrator {
             }
         }
 
-        while (!finished) {
+        while (!isCalibrated) {
             //execute betsy
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration));
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //calibrate the timeouts
             allTimeoutsAreCalibrated = handleTimeouts(timeouts, csv);
+            //write all timeouts to csv for traceability
+            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
+            //clean the timeoutRepository for the next run
+            CalibrationTimeoutRepository.clean();
 
             if (!allTimeoutsAreCalibrated || !lastRound) {
                 if (allTimeoutsAreCalibrated) {
@@ -71,22 +75,18 @@ public class TimeoutCalibrator {
                     TimeoutIOOperations.writeToProperties(properties, new ArrayList<>(timeouts.values()));
                 }
                 //if all timeouts aren't calibrated and/or this isn't the last round, it isn't finished
-                finished = false;
+                isCalibrated = false;
                 //set all values to the repositories
                 TimeoutRepository.setAllCalibrationTimeouts(timeouts);
+                //if the last round all timeouts were kept, it's the last round
+                lastRound = allTimeoutsAreCalibrated;
             } else {
                 //if all timeouts are calibrated and this was the last round, it is finished
-                finished = true;
+                isCalibrated = true;
                 //shutdown SoapUI
                 SoapUIShutdownHelper.shutdownSoapUIForReal();
                 LOGGER.info("Calibration is finished.");
             }
-            //if the last round all timeouts were kept, it's the last round
-            lastRound = allTimeoutsAreCalibrated;
-            //write all timeouts to csv for traceability
-            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
-            //clean the timeoutRepository for the new run
-            CalibrationTimeoutRepository.clean();
             //write all timeouts to the console
             for (CalibrationTimeout timeout : timeouts.values()) {
                 LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
@@ -94,24 +94,19 @@ public class TimeoutCalibrator {
         }
     }
 
-    private static boolean handleTimeouts(HashMap<String, CalibrationTimeout> timeouts, File csv) {
+    public static boolean handleTimeouts(HashMap<String, CalibrationTimeout> timeouts, File csv) {
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
         boolean allTimeoutsAreCalibrated = true;
         for (CalibrationTimeout timeout : timeouts.values()) {
-            switch (timeout.getStatus()) {
-                case EXCEEDED:
-                    timeout.setValue(calculatedTimeout(timeout, 2, csv));
-                    allTimeoutsAreCalibrated = false;
-                    break;
-                case KEPT:
-                    timeout.setValue(calculatedTimeout(timeout, 2, csv));
-                    break;
+            timeout.setValue(calculatedTimeout(timeout, 2, csv));
+            if (timeout.getStatus() == CalibrationTimeout.Status.EXCEEDED) {
+                allTimeoutsAreCalibrated = false;
             }
         }
         return allTimeoutsAreCalibrated;
     }
 
-    private static String[] addChangedTestFolderToArgs(String args[], int i) {
+    public static String[] addChangedTestFolderToArgs(String args[], int i) {
         String[] destination = new String[args.length + 1];
         System.arraycopy(args, 0, destination, 0, 1);
         actualTestFolder = "test/test" + i;
@@ -120,7 +115,7 @@ public class TimeoutCalibrator {
         return destination;
     }
 
-    private static int calculateExpectation(List<CalibrationTimeout> timeouts) {
+    public static int calculateExpectation(List<CalibrationTimeout> timeouts) {
         int expectation = 0;
         for (CalibrationTimeout timeoutValue : timeouts) {
             expectation = expectation + timeoutValue.getMeasuredTime();
@@ -128,7 +123,7 @@ public class TimeoutCalibrator {
         return expectation / timeouts.size();
     }
 
-    private static double calculateVariance(List<CalibrationTimeout> timeouts, int expectation) {
+    public static double calculateVariance(List<CalibrationTimeout> timeouts, int expectation) {
         double standardVariance = 0;
         for (CalibrationTimeout timeoutValue : timeouts) {
             standardVariance = standardVariance + Math.pow(timeoutValue.getMeasuredTime() - expectation, 2);
@@ -136,11 +131,11 @@ public class TimeoutCalibrator {
         return standardVariance / timeouts.size();
     }
 
-    private static double standardDeviation(List<CalibrationTimeout> timeouts, int expectation) {
+    public static double standardDeviation(List<CalibrationTimeout> timeouts, int expectation) {
         return Math.sqrt(calculateVariance(timeouts, expectation));
     }
 
-    private static int calculatedTimeout(Timeout timeout, int x, File csv) {
+    public static int calculatedTimeout(Timeout timeout, int x, File csv) {
         List<CalibrationTimeout> timeouts = TimeoutIOOperations.readFromCSV(csv).stream().filter(actualTimeout -> actualTimeout.getKey().equals(timeout.getKey())).collect(Collectors.toList());
         int expectation = calculateExpectation(timeouts);
         return expectation + (x * new Double(standardDeviation(timeouts, expectation)).intValue());
