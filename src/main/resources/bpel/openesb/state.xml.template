@@ -78,7 +78,7 @@
                         <property name="maximum.jdk.version">1.6.99</property>
                         <property name="minimum.jdk.version">1.5.0</property>
                         <property name="jdk.location">@JDK_LOCATION@</property>
-                        <property name="installation.location">@INSTALL_PATH@/glassfish</property>
+                        <property name="installation.location">@INSTALL_PATH@\glassfish</property>
                         <property name="http.port">@HTTP_PORT@</property>
                         <property name="https.port">@HTTPS_PORT@</property>
                         <property name="preferred.jdk.version.macosx">1.5.0.13.0</property>
@@ -92,12 +92,12 @@
                 </product>
                 <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb" version="2.0.0.091216.0">
                     <properties>
-                        <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                        <property name="installation.location">@INSTALL_PATH@\glassfish\addons\jbi-components</property>
                     </properties>
                 </product>
                 <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="jbicomponents" version="2.0.0.091216.0">
                     <properties>
-                        <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                        <property name="installation.location">@INSTALL_PATH@\glassfish\addons\jbi-components</property>
                     </properties>
                 </product>
     </components>
