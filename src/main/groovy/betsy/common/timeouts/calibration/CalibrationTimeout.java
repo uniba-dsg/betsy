@@ -152,7 +152,7 @@ public class CalibrationTimeout extends Timeout {
      * The actual {@link Status} of the {@link CalibrationTimeout} during the calibration_timeout via the {@link TimeoutCalibrator}.
      */
     public enum Status {
-        KEPT, EXCEEDED, CALIBRATED
+        KEPT, EXCEEDED
     }
 }
 
