@@ -98,21 +98,25 @@ public class TimeoutCalibrator {
     /**
      * The method extended the args with the argument for test folder.
      *
-     * @param args The arguments to extend.
+     * @param args             The arguments to extend.
      * @param testFolderNumber The number of the folder (test1, test2...).
      * @return Returns the extended arguments.
      */
     public static String[] addChangedTestFolderToArgs(String args[], int testFolderNumber) {
         Objects.requireNonNull(args, "The arguments can't be null.");
         String[] destination = new String[args.length + 1];
-        System.arraycopy(args, 0, destination, 0, 1);
-        destination[1] = "-f" + "test/test" + testFolderNumber;
-        System.arraycopy(args, 1, destination, 2, args.length - 1);
+        if (args.length > 0) {
+            System.arraycopy(args, 0, destination, 0, 1);
+            destination[1] = "-f" + "test/test" + testFolderNumber;
+            System.arraycopy(args, 1, destination, 2, args.length - 1);
+        } else {
+            LOGGER.info("Can't add test folder to args, because the args aren't greater than null.");
+        }
         return destination;
     }
 
     /**
-     *This method evaluated the the given timeouts. If one of the timeouts has the status exceeded, the method returns false.
+     * This method evaluates the the given timeouts. If one of the timeouts has the status exceeded, the method returns false.
      *
      * @param timeouts The timeouts to evaluate.
      * @return The result of the evaluation
@@ -132,71 +136,93 @@ public class TimeoutCalibrator {
      * This method determines the values of the given timeouts. The calculated value of the timeout consists of
      * the expectation and the standardDeviation based on the values of the csv file.
      *
-     * @param timeouts The timeouts, which should be calcualted.
-     * @param csv The csv file with the timeouts for calculation.
+     * @param timeouts The timeouts, which should be calculated.
+     * @param csv      The csv file with the timeouts for calculation.
      * @return Returns the new determined timeouts.
      */
     public static HashMap<String, CalibrationTimeout> determineTimeouts(HashMap<String, CalibrationTimeout> timeouts, File csv) {
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
-        for (CalibrationTimeout timeout : timeouts.values()) {
-            timeout.setValue(calculateTimeout(timeout, 2, csv));
+        Objects.requireNonNull(csv, "The csv file can't be null.");
+        if (timeouts.size() > 0) {
+            for (CalibrationTimeout timeout : timeouts.values()) {
+                timeout.setValue(calculateTimeout(timeout, 2, csv));
+            }
+        } else {
+            LOGGER.info("The number of the timeouts has to be greater than null to determine the timeouts.");
         }
         return timeouts;
     }
 
     /**
+     * This method calculates the expectation of the given timeouts.
      *
      * @param timeouts The timeouts for calculation of the expectation.
      * @return Returns the calculated expectation.
      */
     public static int calculateExpectation(List<CalibrationTimeout> timeouts) {
-        Objects.requireNonNull(timeouts, "The arguments can't be null.");
-        int expectation = 0;
-        for (CalibrationTimeout timeoutValue : timeouts) {
-            expectation = expectation + timeoutValue.getMeasuredTime();
+        if (timeouts.size() > 0) {
+            Objects.requireNonNull(timeouts, "The timeouts can't be null.");
+            int expectation = 0;
+            for (CalibrationTimeout timeoutValue : timeouts) {
+                expectation = expectation + timeoutValue.getMeasuredTime();
+            }
+            return expectation / timeouts.size();
+        } else {
+            LOGGER.info("The number of the timeouts has to be greater than null to calculate the expectation.");
+            return 0;
         }
-        return expectation / timeouts.size();
     }
 
     /**
-     *
      * This method calculates the variance for the given timeouts.
      *
-     * @param timeouts The timeouts for calculating the variance.
+     * @param timeouts    The timeouts for calculating the variance.
      * @param expectation The expectation of the timeouts.
      * @return Returns the calculated variance.
      */
     public static double calculateVariance(List<CalibrationTimeout> timeouts, int expectation) {
-        Objects.requireNonNull(timeouts, "The timeouts can't be null.");
-        double standardVariance = 0;
-        for (CalibrationTimeout timeoutValue : timeouts) {
-            standardVariance = standardVariance + Math.pow(timeoutValue.getMeasuredTime() - expectation, 2);
+        if (timeouts.size() > 0) {
+            Objects.requireNonNull(timeouts, "The timeouts can't be null.");
+            double standardVariance = 0;
+            for (CalibrationTimeout timeoutValue : timeouts) {
+                standardVariance = standardVariance + Math.pow(timeoutValue.getMeasuredTime() - expectation, 2);
+            }
+            return standardVariance / timeouts.size();
+        } else {
+            LOGGER.info("The number of the timeouts has to be greater than null to calculate the variance.");
+            return 0;
         }
-        return standardVariance / timeouts.size();
     }
 
     /**
      * This method calculates the standardDeviation of given
      *
-     * @param timeouts The timeouts for calculating the standardDeviation
+     * @param timeouts    The timeouts for calculating the standardDeviation
      * @param expectation The expectation of the timeouts.
      * @return Returns the calculated standardDeviation.
      */
     public static double standardDeviation(List<CalibrationTimeout> timeouts, int expectation) {
-        Objects.requireNonNull(timeouts, "The arguments can't be null.");
-        return Math.sqrt(calculateVariance(timeouts, expectation));
+        if (timeouts.size() > 0) {
+            Objects.requireNonNull(timeouts, "The timeouts can't be null.");
+            return Math.sqrt(calculateVariance(timeouts, expectation));
+        } else {
+            LOGGER.info("The number of the timeouts has to be greater than null to calculate the standardDeviation.");
+            return 0;
+        }
     }
 
     /**
      * This method calculates the timeout based on the timeouts values in the csv. The calculated timeout consists of the
      * expectation and the x-fold of the standardDeviation.
      *
-     * @param timeout The {@link Timeout}, which should be calculated.
+     * @param timeout                     The {@link Timeout}, which should be calculated.
      * @param standardDeviationMultiplier The value indicates, how often the standardDeviation is multiplied.
-     * @param csv The csv file withe the timeout values.
+     * @param csv                         The csv file withe the timeout values.
      * @return returns the calculated timeout value.
      */
     public static int calculateTimeout(Timeout timeout, int standardDeviationMultiplier, File csv) {
+        Objects.requireNonNull(timeout, "The timeout can't be null.");
+        Objects.requireNonNull(csv, "The csv file can't be null.");
         List<CalibrationTimeout> timeouts = TimeoutIOOperations.readFromCSV(csv).stream().filter(actualTimeout -> actualTimeout.getKey().equals(timeout.getKey())).collect(Collectors.toList());
         int expectation = calculateExpectation(timeouts);
         return expectation + (standardDeviationMultiplier * new Double(standardDeviation(timeouts, expectation)).intValue());
