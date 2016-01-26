@@ -121,8 +121,7 @@ public class CalibrationTimeout extends Timeout {
      * @return Returns the key composed of the key of the {@link Timeout} and the timestamp.
      */
     public String getCalibrationTimeoutKey(){
-        StringBuilder key = new StringBuilder(getKey()).append('.').append(timestamp);
-        return key.toString();
+        return getKey() + '.' + timestamp;
     }
 
     /**
