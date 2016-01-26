@@ -92,6 +92,15 @@ public class CalibrationTimeoutRepositoryTest {
     }
 
     @Test
+    public void testWriteToCSVParameters() throws Exception {
+        CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+        CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
+        File csv = new File("calibration_timeouts.csv");
+        CalibrationTimeoutRepository.writeToCSV(csv, 1);
+        assertTrue(csv.exists());
+    }
+
+    @Test
     public void testWriteToCSV() throws Exception {
         CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
         CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();

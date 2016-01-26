@@ -155,6 +155,14 @@ public class CalibrationTimeoutsTest {
     }
 
     @Test
+    public void testWriteToCSVParameters() throws Exception {
+        calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
+        File csv = new File("calibration_timeouts.csv");
+        calibrationTimeouts.writeToCSV(csv, 0);
+        assertTrue(csv.exists());
+    }
+
+    @Test
     public void testWriteToCSV() throws Exception {
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.writeToCSV();
