@@ -55,7 +55,7 @@ dependencies {
 
     // requires 'net.sf.saxon:Saxon-HE' - we use the one that is shipped with soapUI
 
-    internal 'com.mashape.unirest:unirest-java:1.4.7' // for http requests and responses
+    internal 'com.mashape.unirest:unirest-java:1.4.8' // for http requests and responses
 
     internal 'org.slf4j:slf4j-api:1.7.14'
     internal 'org.slf4j:slf4j-simple:1.7.14'
