@@ -52,6 +52,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
         WaitTasks.waitFor(20000, 500, () ->
                 FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + process.getName() + " Application successfully deployed.") ||
+                        FileTasks.hasFileSpecificSubstring(logFile, "Process application " + process.getName() + " Application successfully deployed") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + process.getName() + "] startup failed due to previous errors"));
     }
 
