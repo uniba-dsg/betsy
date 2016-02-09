@@ -1,6 +1,6 @@
 plugins {
-    id "com.github.kt3k.coveralls" version "2.4.0"
-    id 'com.github.johnrengelman.shadow' version '1.2.2'
+    id "com.github.kt3k.coveralls" version "2.6.3"
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
 }
 
 apply plugin: "groovy"
@@ -77,7 +77,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.10'
+    gradleVersion = '2.11'
 }
 
 task downloadMaven {
