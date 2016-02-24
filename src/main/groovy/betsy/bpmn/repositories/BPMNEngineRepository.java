@@ -44,5 +44,5 @@ public class BPMNEngineRepository {
         return repo.getNames();
     }
 
-    private Repository<AbstractBPMNEngine> repo = new Repository<>();
+    private final Repository<AbstractBPMNEngine> repo = new Repository<>();
 }

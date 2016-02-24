@@ -26,9 +26,9 @@ public class VBoxController {
 
     private final Map<String, VirtualBoxMachineImpl> virtualMachines = new HashMap<>();
 
-    private IVirtualBox vBox;
-    private VBoxApplianceImporter vBoxImporter;
-    private VirtualBoxManager vBoxManager;
+    private final IVirtualBox vBox;
+    private final VBoxApplianceImporter vBoxImporter;
+    private final VirtualBoxManager vBoxManager;
 
     public VBoxController() {
         log.trace("Initializing VBoxController");

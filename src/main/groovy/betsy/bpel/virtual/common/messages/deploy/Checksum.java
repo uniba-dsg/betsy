@@ -40,7 +40,7 @@ public class Checksum implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private long data;
+    private final long data;
 
     /**
      * Create a new instance of the object. <br>
