@@ -60,5 +60,5 @@ public class BPMNProcessRepository {
         return repo.getNames();
     }
 
-    private Repository<BPMNProcess> repo = new Repository<>();
+    private final Repository<BPMNProcess> repo = new Repository<>();
 }
