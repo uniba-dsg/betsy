@@ -123,7 +123,7 @@ public class CalibrationTimeoutRepositoryTest {
         CalibrationTimeout calibrationTimeoutTest = new CalibrationTimeout("ode", "deploy", "install", 70_000, 5_000);
         CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeoutTest);
         HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
-        assertEquals("The timeouts in ms should be equal.", calibrationTimeoutTest.getTimeoutInMs(), timeouts.get(calibrationTimeout.getKey()).getTimeoutInMs());
+        assertEquals("The keys should be equal.", calibrationTimeoutTest.getKey(), timeouts.get(calibrationTimeout.getKey()).getKey());
     }
 
     @Test

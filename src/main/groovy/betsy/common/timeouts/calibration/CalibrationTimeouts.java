@@ -108,16 +108,11 @@ public class CalibrationTimeouts {
         for (CalibrationTimeout calibrationTimeout : timeouts.values()) {
             if (!calibrationTimeouts.containsKey(calibrationTimeout.getKey())) {
                 calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-            } else {
-                if (calibrationTimeout.getStatus() == CalibrationTimeout.Status.KEPT &&
-                        calibrationTimeouts.get(calibrationTimeout.getKey()).getStatus() == CalibrationTimeout.Status.KEPT &&
-                        calibrationTimeout.getTimeoutInMs() > calibrationTimeouts.get(calibrationTimeout.getKey()).getTimeoutInMs()) {
-                    calibrationTimeouts.remove(calibrationTimeout.getKey());
-                    calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-                } else if (calibrationTimeout.getStatus() == CalibrationTimeout.Status.EXCEEDED) {
-                    calibrationTimeouts.remove(calibrationTimeout.getKey());
-                    calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
-                }
+
+            } else if (calibrationTimeout.getStatus() == CalibrationTimeout.Status.EXCEEDED) {
+                calibrationTimeouts.remove(calibrationTimeout.getKey());
+                calibrationTimeouts.put(calibrationTimeout.getKey(), calibrationTimeout);
+
 
             }
         }
@@ -135,7 +130,7 @@ public class CalibrationTimeouts {
     /**
      * The method writes all timeouts to a csv file.
      *
-     * @param csv The csv file, where the timeout values should be saved.
+     * @param csv              The csv file, where the timeout values should be saved.
      * @param numberOfDuration The number of calibration iterations.
      */
     public void writeToCSV(File csv, int numberOfDuration) {
