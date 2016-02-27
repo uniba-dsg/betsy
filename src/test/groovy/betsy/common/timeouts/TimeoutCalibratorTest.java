@@ -63,25 +63,25 @@ public class TimeoutCalibratorTest {
     public void testDetermineTimeouts() throws Exception {
         File csv = new File("calibration_timeouts.csv");
         List<CalibrationTimeout> timeouts = new ArrayList<>();
-        CalibrationTimeout timeout1 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout1.setMeasuredTime(10_000);
-        timeouts.add(timeout1);
-        CalibrationTimeout timeout2 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout2.setMeasuredTime(40_000);
-        timeouts.add(timeout2);
-        CalibrationTimeout timeout3 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout3.setMeasuredTime(50_000);
-        timeouts.add(timeout3);
-        CalibrationTimeout timeout4 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout4.setMeasuredTime(20_000);
-        timeouts.add(timeout4);
+        CalibrationTimeout timeoutFirst = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutFirst.setMeasuredTime(10_000);
+        timeouts.add(timeoutFirst);
+        CalibrationTimeout timeoutSecond = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutSecond.setMeasuredTime(40_000);
+        timeouts.add(timeoutSecond);
+        CalibrationTimeout timeoutThird = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutThird.setMeasuredTime(50_000);
+        timeouts.add(timeoutThird);
+        CalibrationTimeout timeoutFourth = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutFourth.setMeasuredTime(20_000);
+        timeouts.add(timeoutFourth);
         TimeoutIOOperations.writeToCSV(csv, timeouts);
 
         CalibrationTimeout timeout = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         HashMap<String, CalibrationTimeout> hashMap = new HashMap<>();
         hashMap.put("openesb_v.deploymentTimeout", timeout);
         TimeoutCalibrator.determineTimeouts(hashMap, csv);
-        assertEquals(61622, hashMap.get("openesb_v.deploymentTimeout").getTimeoutInMs());
+        assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61622, hashMap.get("openesb_v.deploymentTimeout").getTimeoutInMs());
     }
 
     @Test
@@ -98,9 +98,9 @@ public class TimeoutCalibratorTest {
         String[] result = TimeoutCalibrator.addChangedTestFolderToArgs(args, i);
         assertEquals(args[0], result[0]);
         assertEquals("-ftest/test" + i, result[1]);
-        assertEquals(args[1], result[2]);
-        assertEquals(args[2], result[3]);
-        assertEquals(args[3], result[4]);
+        assertEquals("The args should be equal.", args[1], result[2]);
+        assertEquals("The args should be equal.", args[2], result[3]);
+        assertEquals("The args should be equal.", args[3], result[4]);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class TimeoutCalibratorTest {
         List<CalibrationTimeout> timeouts = new ArrayList<>();
         timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 20000));
         timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 40000));
-        assertEquals(30000, TimeoutCalibrator.calculateExpectation(timeouts));
+        assertEquals("The value should be the expectation of the given timeouts.", 30000, TimeoutCalibrator.calculateExpectation(timeouts));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class TimeoutCalibratorTest {
         List<CalibrationTimeout> timeouts = new ArrayList<>();
         timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 20000));
         timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 40000));
-        assertEquals(1.0E8, TimeoutCalibrator.calculateVariance(timeouts, TimeoutCalibrator.calculateExpectation(timeouts)), 0);
+        assertEquals("The value should be the variance of the given timeouts.",  1.0E8, TimeoutCalibrator.calculateVariance(timeouts, TimeoutCalibrator.calculateExpectation(timeouts)), 0);
     }
 
     @Test
@@ -145,7 +145,7 @@ public class TimeoutCalibratorTest {
         List<CalibrationTimeout> timeouts = new ArrayList<>();
         timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 20000));
         timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 40000));
-        assertEquals(10000.0, TimeoutCalibrator.standardDeviation(timeouts, TimeoutCalibrator.calculateExpectation(timeouts)), 0);
+        assertEquals("The value should be the deviation of the given timeouts.", 10000.0, TimeoutCalibrator.standardDeviation(timeouts, TimeoutCalibrator.calculateExpectation(timeouts)), 0);
     }
 
     @Test
@@ -158,21 +158,21 @@ public class TimeoutCalibratorTest {
     public void testCalculatedTimeout() throws Exception {
         File csv = new File("calibration_timeouts.csv");
         List<CalibrationTimeout> timeouts = new ArrayList<>();
-        CalibrationTimeout timeout1 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout1.setMeasuredTime(10_000);
-        timeouts.add(timeout1);
-        CalibrationTimeout timeout2 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout2.setMeasuredTime(40_000);
-        timeouts.add(timeout2);
-        CalibrationTimeout timeout3 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout3.setMeasuredTime(50_000);
-        timeouts.add(timeout3);
-        CalibrationTimeout timeout4 = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        timeout4.setMeasuredTime(20_000);
-        timeouts.add(timeout4);
+        CalibrationTimeout timeoutFirst = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutFirst.setMeasuredTime(10_000);
+        timeouts.add(timeoutFirst);
+        CalibrationTimeout timeoutSecond = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutSecond.setMeasuredTime(40_000);
+        timeouts.add(timeoutSecond);
+        CalibrationTimeout timeoutThird = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutThird.setMeasuredTime(50_000);
+        timeouts.add(timeoutThird);
+        CalibrationTimeout timeoutFourth = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
+        timeoutFourth.setMeasuredTime(20_000);
+        timeouts.add(timeoutFourth);
         TimeoutIOOperations.writeToCSV(csv, timeouts);
         CalibrationTimeout timeout = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        assertEquals(61622, TimeoutCalibrator.calculateTimeout(timeout, 2, csv));
+        assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61622, TimeoutCalibrator.calculateTimeout(timeout, 2, csv));
     }
 
     class TestAppender extends AppenderSkeleton {

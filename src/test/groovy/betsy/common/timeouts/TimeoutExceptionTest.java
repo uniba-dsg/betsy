@@ -17,14 +17,14 @@ public class TimeoutExceptionTest {
     public void testConstructorTimeout() throws Exception {
         Timeout timeout = new Timeout("ode", "sequence", 20_000, 500);
         TimeoutException timeoutException = new TimeoutException(timeout);
-        assertEquals(timeout, timeoutException.getTimeout());
+        assertEquals("The timeouts should be equal.", timeout, timeoutException.getTimeout());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testConstructorMessage() throws Exception {
         String message = "This is a message.";
         TimeoutException timeoutException = new TimeoutException(message);
-        assertEquals(message, timeoutException.getMessage());
+        assertEquals("The messages should be equal.", message, timeoutException.getMessage());
         timeoutException.getTimeout();
     }
 
@@ -33,8 +33,8 @@ public class TimeoutExceptionTest {
         String message = "This is a message.";
         Timeout timeout = new Timeout("ode", "sequence", 20_000, 500);
         TimeoutException timeoutException = new TimeoutException(message, timeout);
-        assertEquals(message, timeoutException.getMessage());
-        assertEquals(timeout, timeoutException.getTimeout());
+        assertEquals("The messages should be equal.",  message, timeoutException.getMessage());
+        assertEquals("The timeouts should be equal.", timeout, timeoutException.getTimeout());
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -42,7 +42,7 @@ public class TimeoutExceptionTest {
         String message = "This is a message.";
         Throwable throwable = new Throwable();
         TimeoutException timeoutException = new TimeoutException(message, throwable);
-        assertEquals(message, timeoutException.getMessage());
+        assertEquals("The messages should be equal.", message, timeoutException.getMessage());
         timeoutException.getTimeout();
     }
 
@@ -52,15 +52,14 @@ public class TimeoutExceptionTest {
         Throwable throwable = new Throwable();
         Timeout timeout = new Timeout("ode", "sequence", 20_000, 500);
         TimeoutException timeoutException = new TimeoutException(message, throwable, timeout);
-        assertEquals(message, timeoutException.getMessage());
-        assertEquals(timeout, timeoutException.getTimeout());
+        assertEquals("The messages should be equal.",  message, timeoutException.getMessage());
+        assertEquals("The timeouts should be equal.", timeout, timeoutException.getTimeout());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testConstructorThrowable() throws Exception {
         Throwable throwable = new Throwable();
         new TimeoutException(throwable).getTimeout();
-
     }
 
     @Test
@@ -68,13 +67,13 @@ public class TimeoutExceptionTest {
         Throwable throwable = new Throwable();
         Timeout timeout = new Timeout("ode", "sequence", 20_000, 500);
         TimeoutException timeoutException = new TimeoutException(throwable, timeout);
-        assertEquals(timeout, timeoutException.getTimeout());
+        assertEquals("The timeouts should be equal.", timeout, timeoutException.getTimeout());
     }
 
     @Test
     public void testGetTimeout() throws Exception {
         Timeout timeout = new Timeout("ode", "sequence", 20_000, 500);
         TimeoutException timeoutException = new TimeoutException(timeout);
-        assertEquals(timeout, timeoutException.getTimeout());
+        assertEquals("The timeouts should be equal.", timeout, timeoutException.getTimeout());
     }
 }

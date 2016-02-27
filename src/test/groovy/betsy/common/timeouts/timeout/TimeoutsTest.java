@@ -22,12 +22,11 @@ import static org.junit.Assert.assertEquals;
 public class TimeoutsTest {
 
     private File properties;
-    private StringBuilder key;
+    private String engine;
+    private String step;
     private Integer value;
-    private Integer timeToRepetition;
-    private Timeout timeout;
-    ArrayList<Timeout> timeoutList;
-    private Timeouts timeouts;
+
+
 
     @BeforeClass
     public static void setUpClass() {
@@ -56,108 +55,144 @@ public class TimeoutsTest {
     @Before
     public void setUp() throws Exception {
         properties = new File("timeout.properties");
-        String engine = "OdeDeployer";
-        String step = "constructor";
-        key = new StringBuilder().append(engine).append(".").append(step);
+        engine = "OdeDeployer";
+        step = "constructor";
         value = 20_000;
-        timeToRepetition = 500;
-        timeout = new Timeout(engine, step, value, timeToRepetition);
-        timeoutList = new ArrayList<>();
-        timeoutList.add(timeout);
-        timeouts = new Timeouts(timeoutList);
     }
 
     @After
     public void tearDown() throws Exception {
-        key = null;
+        engine = null;
+        step = null;
         value = null;
-        timeToRepetition = null;
-        timeout = null;
-        timeouts = null;
         Files.deleteIfExists(properties.toPath());
         properties = null;
     }
 
     @Test
     public void testConstructor() throws Exception {
-        timeouts = new Timeouts();
+        Timeouts timeouts = new Timeouts();
         HashMap<String, Timeout> timeoutHashMap = timeouts.getAllTimeouts();
-        assertEquals(54, timeoutHashMap.size());
-        assertEquals("Tomcat.startup", timeoutHashMap.get("Tomcat.startup").getKey());
+        assertEquals("The number should conform with the number of timeouts in method 'addtimeouts'", 54, timeoutHashMap.size());
+        assertEquals("The keys should be equal.", "Tomcat.startup", timeoutHashMap.get("Tomcat.startup").getKey());
     }
 
     @Test
     public void testConstructorWithOwnTimeouts() throws Exception {
-        timeouts = new Timeouts(timeoutList);
+        StringBuilder key = new StringBuilder().append(engine).append(".").append(step);
+        Timeout timeout = new Timeout(engine, step, value);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+        Timeouts timeouts = new Timeouts(timeoutList);
         HashMap<String, Timeout> timeoutHashMap = timeouts.getAllTimeouts();
-        assertEquals(timeoutList.size(), timeoutHashMap.size());
-        assertEquals(key.toString(), timeoutHashMap.get(key.toString()).getKey());
+        assertEquals("The sizes should be equal.", timeoutList.size(), timeoutHashMap.size());
+        assertEquals("The keys should be equal.", key.toString(), timeoutHashMap.get(key.toString()).getKey());
     }
 
     @Test
     public void testConstructorWithOwnProperties() throws Exception {
         FileTasks.deleteFile(properties.toPath());
+        Timeout timeout = new Timeout(engine, step, value);
         CalibrationTimeoutRepository.addCalibrationTimeout(new CalibrationTimeout(timeout));
         CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
 
-        timeouts = new Timeouts(properties.getName());
+        Timeouts timeouts = new Timeouts(properties.getName());
         timeouts.readTimeoutProperties();
-        assertEquals(timeout.getKey(), timeouts.getTimeout(timeout.getKey()).getKey());
-        assertEquals(timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).getTimeoutInMs());
+        assertEquals("The keys should be equal.", timeout.getKey(), timeouts.getTimeout(timeout.getKey()).getKey());
+        assertEquals("The timeouts in ms should be equal.", timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).getTimeoutInMs());
     }
 
     @Test
     public void testConstructorWithOwnPropertiesTimeouts() throws Exception {
         FileTasks.deleteFile(properties.toPath());
+        Integer timeToRepetition = 500;
+        Timeout timeout = new Timeout(engine, step, value, timeToRepetition);
         CalibrationTimeoutRepository.addCalibrationTimeout(new CalibrationTimeout(timeout));
         CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
 
-        timeouts = new Timeouts(timeoutList, properties.getName());
+        Timeout timeoutTest = new Timeout(engine, step, value, timeToRepetition);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeoutTest);
+
+        Timeouts timeouts = new Timeouts(timeoutList, properties.getName());
         timeouts.readTimeoutProperties();
-        assertEquals(timeout.getKey(), timeouts.getTimeout(timeout.getKey()).getKey());
-        assertEquals(timeout.getTimeoutInMs(), timeouts.getTimeout(timeout.getKey()).getTimeoutInMs());
+        assertEquals("The keys should be equal.", timeoutTest.getKey(), timeouts.getTimeout(timeoutTest.getKey()).getKey());
+        assertEquals("The timeouts in ms should be equal.", timeoutTest.getTimeoutInMs(), timeouts.getTimeout(timeoutTest.getKey()).getTimeoutInMs());
     }
 
 
     @Test
     public void testGetHashMap() throws Exception {
+        Timeout timeout = new Timeout(engine, step, value);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+
+        Timeouts timeouts = new Timeouts(timeoutList);
         HashMap<String, Timeout> timeoutHashMap = timeouts.getAllTimeouts();
-        assertEquals(timeoutList.size(), timeoutHashMap.size());
-        assertEquals(timeout, timeoutHashMap.get(key.toString()));
+        assertEquals("The sizes should be equal.", timeoutList.size(), timeoutHashMap.size());
+        assertEquals("The timeouts should be equal.", timeout, timeoutHashMap.get(engine + "." + step));
     }
 
     @Test
     public void testGetTimeout() throws Exception {
-        Timeout timeout = timeouts.getTimeout(key.toString());
-        assertEquals(key.toString(), timeout.getKey());
+        StringBuilder key = new StringBuilder().append(engine).append(".").append(step);
+
+        Timeout timeout = new Timeout(engine, step, value);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+
+        Timeouts timeouts = new Timeouts(timeoutList);
+        Timeout timeoutTest = timeouts.getTimeout(key.toString());
+        assertEquals("The keys should be equal.", key.toString(), timeoutTest.getKey());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testGetTimeoutNotExists() throws Exception {
+        Timeout timeout = new Timeout(engine, step, value);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+
+        Timeouts timeouts = new Timeouts(timeoutList);
         timeouts.getTimeout("glassfish.deploy");
     }
 
     @Test
     public void testGetAllTimeouts() throws Exception {
+        Timeout timeout = new Timeout(engine, step, value);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+
+        Timeouts timeouts = new Timeouts(timeoutList);
         HashMap<String, Timeout> timeoutHashMap = timeouts.getAllTimeouts();
-        assertEquals(timeoutList.size(), timeoutHashMap.size());
+        assertEquals("The sizes should be equal.", timeoutList.size(), timeoutHashMap.size());
     }
 
     @Test
     public void testSetTimeout() throws Exception {
+        Integer timeToRepetition = 500;
+        Timeout timeout = new Timeout(engine, step, value, timeToRepetition);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+
         value = 30_000;
         timeToRepetition = 5_000;
         timeout.setValue(value);
         timeout.setTimeToRepetition(timeToRepetition);
+        Timeouts timeouts = new Timeouts(timeoutList);
         timeouts.setTimeout(timeout);
         Timeout testTimeout = timeouts.getTimeout(timeout.getKey());
-        assertEquals(value, testTimeout.getTimeoutInMs(), 0);
-        assertEquals(timeToRepetition, testTimeout.getTimeToRepetitionInMs(), 0);
+        assertEquals("The values in ms should be equal.", value, testTimeout.getTimeoutInMs(), 0);
+        assertEquals("The timeToRepetitions should be equal.", timeToRepetition, testTimeout.getTimeToRepetitionInMs(), 0);
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testSetTimeoutNotExists() throws Exception {
-        Timeout timeout = new Timeout("glassfish", "deploy", 20_000, 3_000);
-        timeouts.setTimeout(timeout);
+        Timeout timeout = new Timeout(engine, step, value);
+        ArrayList<Timeout> timeoutList = new ArrayList<>();
+        timeoutList.add(timeout);
+
+        Timeouts timeouts = new Timeouts(timeoutList);
+        Timeout timeoutTest = new Timeout("glassfish", "deploy", 20_000, 3_000);
+        timeouts.setTimeout(timeoutTest);
     }
 }

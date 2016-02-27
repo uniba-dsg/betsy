@@ -26,9 +26,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class TimeoutIOOperationsTest {
 
-    private ArrayList<Timeout> timeouts;
+
     private Timeout timeout;
-    private Timeout testTimeout;
     private File csv;
     private File properties;
     private TestAppender testAppender;
@@ -66,10 +65,7 @@ public class TimeoutIOOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        timeouts = new ArrayList<>();
         timeout = new Timeout("ode", "deploy", 20000, 2000);
-        testTimeout = new Timeout("tomcat", "start", 20000, 2000);
-        timeouts.add(timeout);
         properties = new File("timeouts.properties");
         csv = new File("calibration_timeouts.csv");
         testAppender = new TestAppender();
@@ -78,9 +74,7 @@ public class TimeoutIOOperationsTest {
 
     @After
     public void tearDown() throws Exception {
-        timeouts = null;
         timeout = null;
-        testTimeout = null;
         Files.deleteIfExists(properties.toPath());
         Files.deleteIfExists(csv.toPath());
         properties = null;
@@ -91,6 +85,9 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testWriteToProperties() throws Exception {
+        ArrayList<Timeout> timeouts = new ArrayList<>();
+        timeouts.add(timeout);
+
         TimeoutIOOperations.writeToProperties(properties, timeouts);
         List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
         for (Timeout actualTimeout : readTimeouts) {
@@ -102,6 +99,10 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testWriteToPropertiesExtendedValues() throws Exception {
+        ArrayList<Timeout> timeouts = new ArrayList<>();
+        timeouts.add(timeout);
+        Timeout testTimeout = new Timeout("tomcat", "start", 20000, 2000);
+
         TimeoutIOOperations.writeToProperties(properties, timeouts);
         List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
         for (Timeout actualTimeout : readTimeouts) {
@@ -132,6 +133,9 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testReadFromProperties() throws Exception {
+        ArrayList<Timeout> timeouts = new ArrayList<>();
+        timeouts.add(timeout);
+
         List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
         for (Timeout actualTimeout : readTimeouts) {
             assertEquals(timeout.getKey(), actualTimeout.getKey());
@@ -142,6 +146,9 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testReadFromPropertiesReadable() throws Exception {
+        ArrayList<Timeout> timeouts = new ArrayList<>();
+        timeouts.add(timeout);
+
         properties.setReadable(false);
         TimeoutIOOperations.readFromProperties(properties, timeouts);
         assertEquals("The file " + properties.getName() + " is not readable.", testAppender.messages.get(0));
@@ -149,6 +156,9 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testReadFromPropertiesTimeoutNumberFormat() throws Exception {
+        ArrayList<Timeout> timeouts = new ArrayList<>();
+        timeouts.add(timeout);
+
         Properties timeoutProperties = System.getProperties();
         FileWriter writer = new FileWriter(properties);
         timeoutProperties.setProperty(timeout.getKey() + ".value", "test");

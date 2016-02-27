@@ -18,9 +18,6 @@ import static org.junit.Assert.*;
 public class CalibrationTimeoutsTest {
 
     private CalibrationTimeouts calibrationTimeouts;
-    private CalibrationTimeout calibrationTimeout;
-    private CalibrationTimeout calibrationTimeoutTest;
-    private ArrayList<CalibrationTimeout> calibrationTimeoutList;
     private File properties;
     private File csv;
     private File testCsv;
@@ -55,21 +52,15 @@ public class CalibrationTimeoutsTest {
 
     @Before
     public void setUp() throws Exception {
-        calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
-        calibrationTimeoutTest = new CalibrationTimeout("tomcat", "startup", "maven", 30_000, 4_000);
-        calibrationTimeoutList = new ArrayList<>();
         properties = new File("timeout.properties");
         csv = new File("calibration_timeouts");
         testCsv = new File(csv.getName() + ".csv");
-        calibrationTimeouts = new CalibrationTimeouts(calibrationTimeoutList, properties.getName(), csv.getName());
+        calibrationTimeouts = new CalibrationTimeouts();
     }
 
     @After
     public void tearDown() throws Exception {
         calibrationTimeouts = null;
-        calibrationTimeout = null;
-        calibrationTimeoutTest = null;
-        calibrationTimeoutList = null;
         properties.delete();
         properties = null;
         testCsv.delete();
@@ -81,48 +72,51 @@ public class CalibrationTimeoutsTest {
     public void testConstructor() throws Exception {
         calibrationTimeouts = new CalibrationTimeouts();
         calibrationTimeouts.writeAllCalibrationTimeoutsToProperties();
-        assertTrue(properties.exists());
+        assertTrue("The properties should exist.",properties.exists());
         calibrationTimeouts.writeToCSV();
-        assertTrue(testCsv.exists());
-        assertNotNull(calibrationTimeouts.getAllCalibrationTimeouts());
-        assertEquals(0, calibrationTimeouts.getAllCalibrationTimeouts().size());
+        assertTrue("The csv file should exist.", testCsv.exists());
+        assertNotNull("The value should not be null.", calibrationTimeouts.getAllCalibrationTimeouts());
+        assertEquals("After creation there shouldn't exists values.", 0, calibrationTimeouts.getAllCalibrationTimeouts().size());
     }
 
     @Test
     public void testConstructorOwnTimeoutsPropertiesCSV() throws Exception {
+        ArrayList<CalibrationTimeout> calibrationTimeoutList = new ArrayList<>();
         calibrationTimeouts = new CalibrationTimeouts(calibrationTimeoutList, properties.getName(), csv.getName());
         calibrationTimeouts.writeAllCalibrationTimeoutsToProperties();
-        assertTrue(properties.exists());
+        assertTrue("The properties should exist.", properties.exists());
         calibrationTimeouts.writeToCSV();
-        assertTrue(testCsv.exists());
-        assertNotNull(calibrationTimeouts.getAllCalibrationTimeouts());
-        assertEquals(calibrationTimeoutList.size(), calibrationTimeouts.getAllCalibrationTimeouts().size());
+        assertTrue("The csv file should exist.", testCsv.exists());
+        assertNotNull("The timeoutList shouldn't not be null",  calibrationTimeouts.getAllCalibrationTimeouts());
+        assertEquals("The sizes have to be equal.", calibrationTimeoutList.size(), calibrationTimeouts.getAllCalibrationTimeouts().size());
     }
 
     @Test
     public void testConstructorOwnPropertiesCSV() throws Exception {
         calibrationTimeouts = new CalibrationTimeouts(properties.getName(), csv.getName());
         calibrationTimeouts.writeAllCalibrationTimeoutsToProperties();
-        assertTrue(properties.exists());
+        assertTrue("The properties should exist.",  properties.exists());
         calibrationTimeouts.writeToCSV();
-        assertTrue(testCsv.exists());
-        assertNotNull(calibrationTimeouts.getAllCalibrationTimeouts());
-        assertEquals(0, calibrationTimeouts.getAllCalibrationTimeouts().size());
+        assertTrue("The csv file should exist.",  testCsv.exists());
+        assertNotNull("The timeoutList shouldn't be null.", calibrationTimeouts.getAllCalibrationTimeouts());
+        assertEquals("After creation there shouldn't exists values.", 0, calibrationTimeouts.getAllCalibrationTimeouts().size());
     }
 
     @Test
     public void testConstructorOwnTimeouts() throws Exception {
+        ArrayList<CalibrationTimeout> calibrationTimeoutList = new ArrayList<>();
         calibrationTimeouts = new CalibrationTimeouts(calibrationTimeoutList);
-        assertNotNull(calibrationTimeouts.getAllCalibrationTimeouts());
-        assertEquals(calibrationTimeoutList.size(), calibrationTimeouts.getAllCalibrationTimeouts().size());
+        assertNotNull("The value shouldn't be null.", calibrationTimeouts.getAllCalibrationTimeouts());
+        assertEquals("The values sizes  be equal.", calibrationTimeoutList.size(), calibrationTimeouts.getAllCalibrationTimeouts().size());
     }
 
     @Test
     public void testAddCalibrationTimeout() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
-        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()));
-        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeoutInMs());
-        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeToRepetitionInMs());
+        assertEquals("The keys should be equal.", calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()));
+        assertEquals("The timeouts in ms should be equal.", calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeoutInMs());
+        assertEquals("The timeToRepetition in ms should be equal.", calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeToRepetitionInMs());
     }
 
     @Test
@@ -132,63 +126,72 @@ public class CalibrationTimeoutsTest {
 
     @Test
     public void testGetCalibrationTimeout() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
-        assertEquals(calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()));
-        assertEquals(calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeoutInMs());
-        assertEquals(calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeToRepetitionInMs());
+        assertEquals("The keys should be equal.", calibrationTimeout, calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()));
+        assertEquals("The timeouts in ms should be equal.", calibrationTimeout.getTimeoutInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeoutInMs());
+        assertEquals("The timeToRepetition in ms should be equal.", calibrationTimeout.getTimeToRepetitionInMs(), calibrationTimeouts.getCalibrationTimeout(calibrationTimeout.getCalibrationTimeoutKey()).getTimeToRepetitionInMs());
     }
 
     @Test
     public void testGetAllCalibrationTimeouts() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
+        CalibrationTimeout calibrationTimeoutTest = new CalibrationTimeout("tomcat", "startup", "maven", 30_000, 4_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeoutTest);
         HashMap<String, CalibrationTimeout> timeouts = calibrationTimeouts.getAllCalibrationTimeouts();
-        assertEquals(calibrationTimeout, timeouts.get(calibrationTimeout.getCalibrationTimeoutKey()));
-        assertEquals(calibrationTimeoutTest, timeouts.get(calibrationTimeoutTest.getCalibrationTimeoutKey()));
+        assertEquals("The values should be equal.", calibrationTimeout, timeouts.get(calibrationTimeout.getCalibrationTimeoutKey()));
+        assertEquals("The values should be equal.", calibrationTimeoutTest, timeouts.get(calibrationTimeoutTest.getCalibrationTimeoutKey()));
     }
 
     @Test
     public void testWriteAllCalibrationTimeoutsToProperties() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.writeAllCalibrationTimeoutsToProperties();
-        assertTrue(properties.exists());
+        assertTrue("The properties should exist.", properties.exists());
     }
 
     @Test
     public void testWriteToCSVParameters() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         File csv = new File("calibration_timeouts.csv");
         calibrationTimeouts.writeToCSV(csv, 0);
-        assertTrue(csv.exists());
+        assertTrue("The csv file should exist.", csv.exists());
     }
 
     @Test
     public void testWriteToCSV() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.writeToCSV();
-        assertTrue(testCsv.exists());
+        assertTrue("The csv file should exist.",  testCsv.exists());
     }
 
     @Test
     public void testClean() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         calibrationTimeouts.clean();
-        assertEquals(0, calibrationTimeouts.getAllCalibrationTimeouts().size());
+        assertEquals("After cleaning there shouldn't be values.", 0, calibrationTimeouts.getAllCalibrationTimeouts().size());
     }
 
     @Test
     public void testGetAllNonRedundantTimeouts() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         //to secure, that the timestamps are different
         Thread.sleep(1);
         CalibrationTimeout calibrationTimeoutTest = new CalibrationTimeout("ode", "deploy", "maven", 70_000, 5_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeoutTest);
         HashMap<String, CalibrationTimeout> timeouts = calibrationTimeouts.getAllNonRedundantTimeouts();
-        assertEquals(calibrationTimeoutTest.getTimeoutInMs(), timeouts.get(calibrationTimeout.getKey()).getTimeoutInMs());
+        assertEquals("The keys should be equal.", calibrationTimeoutTest.getTimeoutInMs(), timeouts.get(calibrationTimeout.getKey()).getTimeoutInMs());
     }
 
     @Test
     public void testGetAllNonRedundantTimeoutsStatusExceeded() throws Exception {
+        CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
         //to secure, that the timestamps are different
         Thread.sleep(1);
@@ -196,8 +199,8 @@ public class CalibrationTimeoutsTest {
         secondCalibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
         calibrationTimeouts.addCalibrationTimeout(secondCalibrationTimeout);
         HashMap<String, CalibrationTimeout> timeouts = calibrationTimeouts.getAllNonRedundantTimeouts();
-        assertEquals(secondCalibrationTimeout.getTimeoutInMs(), timeouts.get(calibrationTimeout.getKey()).getTimeoutInMs());
-        assertEquals(secondCalibrationTimeout.getStatus(), timeouts.get(calibrationTimeout.getKey()).getStatus());
+        assertEquals("The timeouts in ms should be equal.", secondCalibrationTimeout.getTimeoutInMs(), timeouts.get(calibrationTimeout.getKey()).getTimeoutInMs());
+        assertEquals("The statuses should be equal.", secondCalibrationTimeout.getStatus(), timeouts.get(calibrationTimeout.getKey()).getStatus());
     }
 }
 
