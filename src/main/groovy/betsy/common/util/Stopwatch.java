@@ -28,7 +28,7 @@ public class Stopwatch {
      * @return raw diff in seconds seconds.
      */
     public String getSecondsDiff() {
-        return "" + (getDiff() / 1000);
+        return Long.toString((getDiff() / 1000));
     }
 
     public String toString() {
