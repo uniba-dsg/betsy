@@ -34,9 +34,9 @@ public class BPELEngineRepository {
     public BPELEngineRepository() {
         List<AbstractBPELEngine> locals = Arrays.asList(
                 new OdeEngine(), new Ode136Engine(), new OdeInMemoryEngine(), new Ode136InMemoryEngine(),
-                //new OpenEsbEngine(),
-                //new OpenEsb23Engine(),
-                //new OpenEsb231Engine(),
+                new OpenEsbEngine(),
+                new OpenEsb23Engine(),
+                new OpenEsb231Engine(),
                 new OpenEsb301StandaloneEngine(), new OpenEsb305StandaloneEngine(),
                 new OrchestraEngine(),
                 new ActiveBpelEngine(),
