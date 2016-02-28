@@ -35,10 +35,10 @@
 -->
 <state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="state-file.xsd">
     <components>
-        <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
+        <product platform="windows" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
                     <properties>
                         <property name="password">adminadmin</property>
-                        <property name="installation.location">@INSTALL_PATH@/glassfish</property>
+                        <property name="installation.location">@INSTALL_PATH@\glassfish</property>
                         <property name="jmx.admin.port">8686</property>
                         <property name="username">admin</property>
                         <property name="vendor.jdk.allowed.pattern">Sun Microsystems.*|Oracle.*</property>
@@ -56,14 +56,14 @@
                         <property name="iiop.ssl.port">3820</property>
                     </properties>
                 </product>
-                <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-core" version="2.3.1.27.20131115143207">
+                <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-core" version="2.3.1.27.20131115143207">
                     <properties>
-                        <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                        <property name="installation.location">@INSTALL_PATH@\glassfish\addons\jbi-components</property>
                     </properties>
                 </product>
-                <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-components" version="2.3.1.30.20131119172140">
+                <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-components" version="2.3.1.30.20131119172140">
                     <properties>
-                        <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                        <property name="installation.location">@INSTALL_PATH@\glassfish\addons\jbi-components</property>
                     </properties>
                 </product>
     </components>
