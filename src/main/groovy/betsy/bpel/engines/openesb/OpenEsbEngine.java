@@ -73,7 +73,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
         if(OperatingSystem.WINDOWS) {
             new OpenEsbInstaller(getServerPath(),
                     "glassfishesb-v2.2-full-installer-windows.exe",
-                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/windows_state.xml.template")).install();
         } else {
             new OpenEsbInstaller(getServerPath(),
                     "glassfishesb-v2.2-full-installer-linux.sh",
