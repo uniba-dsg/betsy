@@ -25,7 +25,7 @@ public class EngineMain {
             return;
         }
 
-        String engineName = args[0];
+
         String commandName = args[1];
 
         Consumer<EngineLifecycle> command = commands.get(commandName);
@@ -33,6 +33,8 @@ public class EngineMain {
             usage();
             return;
         }
+
+        String engineName = args[0];
 
         Optional<EngineLifecycle> engine = getEngines().stream().filter((e) -> e.toString().equalsIgnoreCase(engineName)).findFirst();
         if (!engine.isPresent()) {

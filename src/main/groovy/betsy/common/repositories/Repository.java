@@ -25,7 +25,7 @@ public class Repository<T> {
 
     public List<T> getByName(final String name) {
         String trimmedName = name.trim();
-        final String key = repository.keySet().stream().filter(t -> t.toUpperCase().equals(trimmedName.toUpperCase())).findFirst().orElse(trimmedName);
+        final String key = repository.keySet().stream().filter(t -> t.equalsIgnoreCase(trimmedName)).findFirst().orElse(trimmedName);
 
         if (!repository.containsKey(key)) {
             throw new IllegalArgumentException("Name '" + key + "' does not exist in repository.");

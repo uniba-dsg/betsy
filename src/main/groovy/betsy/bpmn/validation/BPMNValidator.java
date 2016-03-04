@@ -53,7 +53,7 @@ public class BPMNValidator {
                 String expectedTargetNamespace = "http://dsg.wiai.uniba.de/betsy/bpmn/"+process.getName();
                 XPathExpression targetNamespaceExpression = xpath.compile("//*[local-name() = 'definitions']/@targetNamespace");
                 nodeList = (NodeList) targetNamespaceExpression.evaluate(doc, XPathConstants.NODESET);
-                if (nodeList.getLength() != 1 && expectedTargetNamespace.toLowerCase().equals(nodeList.item(0).getTextContent().toLowerCase())) {
+                if (nodeList.getLength() != 1 && expectedTargetNamespace.equalsIgnoreCase(nodeList.item(0).getTextContent())) {
                     throw new IllegalStateException("targetNamespace of definitions element of process '" + process.getName() + " is not '"+expectedTargetNamespace+"'");
                 }
 

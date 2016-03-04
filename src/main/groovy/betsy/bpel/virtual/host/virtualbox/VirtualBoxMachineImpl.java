@@ -222,7 +222,6 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
 
             subSession = vbManager.getSessionObject();
             machine.lockMachine(subSession, LockType.Write);
-            IConsole console = subSession.getConsole();
 
             ISnapshot snapshot = machine.getCurrentSnapshot();
             if (snapshot == null) {
@@ -231,6 +230,7 @@ public class VirtualBoxMachineImpl implements VirtualBoxMachine {
                         + "snapshot.");
             }
 
+            IConsole console = subSession.getConsole();
             waitForCompletion(console.restoreSnapshot(snapshot), Timeouts.THIRTY_SECONDS);
 
             log.trace("State after restoration:" + machine.getState());
