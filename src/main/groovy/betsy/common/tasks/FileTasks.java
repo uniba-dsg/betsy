@@ -28,7 +28,7 @@ public class FileTasks {
 
         String[] lines = content.split("\n");
 
-        String showOutput = "" + lines.length + " lines";
+        String showOutput = Integer.toString(lines.length) + " lines";
         if (lines.length < 5) {
             showOutput = content.replace("\n", "@LINE_BREAK@");
         }
@@ -362,10 +362,10 @@ public class FileTasks {
         Replace replaceTask = new Replace();
         replaceTask.setFile(targetFile.toFile());
 
-        for (String token : replacements.keySet()) {
-            String value = String.valueOf(replacements.get(token));
+        for (Map.Entry<String, ?> stringEntry : replacements.entrySet()) {
+            String value = String.valueOf(stringEntry.getValue());
             Replace.Replacefilter filter = replaceTask.createReplacefilter();
-            filter.setToken(token);
+            filter.setToken(stringEntry.getKey());
             filter.setValue(value);
         }
 
@@ -390,10 +390,10 @@ public class FileTasks {
         Replace replaceTask = new Replace();
         replaceTask.setDir(targetFile.toFile());
 
-        for (String token : replacements.keySet()) {
-            String value = String.valueOf(replacements.get(token));
+        for (Map.Entry<String, ?> stringEntry : replacements.entrySet()) {
+            String value = String.valueOf(stringEntry.getValue());
             Replace.Replacefilter filter = replaceTask.createReplacefilter();
-            filter.setToken(token);
+            filter.setToken(stringEntry.getKey());
             filter.setValue(value);
         }
 

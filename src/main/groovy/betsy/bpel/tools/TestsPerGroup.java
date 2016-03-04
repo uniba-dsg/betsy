@@ -26,7 +26,7 @@ public class TestsPerGroup {
             } else if(size < 100) {
                 output.add("0" + size + "\t" + name );
             } else {
-                output.add("" + size + "\t" + name );
+                output.add(Integer.toString(size) + "\t" + name );
             }
 
         }

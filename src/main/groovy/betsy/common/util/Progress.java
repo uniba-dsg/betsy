@@ -20,7 +20,7 @@ public class Progress {
      * @return "current/max"
      */
     public String toString() {
-        return "" + current + "/" + max;
+        return Integer.toString(current) + "/" + max;
     }
 
 }
