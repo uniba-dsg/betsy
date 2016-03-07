@@ -1,6 +1,7 @@
 package betsy.common.analytics;
 
 import betsy.common.analytics.model.*;
+import betsy.common.reporting.CsvRow;
 import betsy.common.tasks.FileTasks;
 
 import java.io.IOException;
@@ -24,22 +25,16 @@ public class CsvReportLoader {
         csvReport.setFile(csvFile);
 
         for (String line : readCsvFile()) {
-            String[] fields = line.split(";");
-            String testName = fields[0];
-            String engineName = fields[1];
-            String testGroup = fields[2];
-            Integer failedTests = Integer.parseInt(fields[4]);
-            Integer totalTests = Integer.parseInt(fields[5]);
-            Boolean deployable = fields[6].equals("1");
+            CsvRow row = new CsvRow(line);
 
-            Group group = csvReport.getGroup(testGroup);
-            Engine engine = csvReport.getEngine(engineName);
+            Group group = csvReport.getGroup(row.getGroup());
+            Engine engine = csvReport.getEngine(row.getEngine());
             Result result = new Result();
 
-            result.setFailed(failedTests);
-            result.setTotal(totalTests);
-            result.setDeployable(deployable);
-            Test test = csvReport.getTest(testName);
+            result.setFailed(row.getFailures());
+            result.setTotal(row.getTests());
+            result.setDeployable(row.isDeployable());
+            Test test = csvReport.getTest(row.getName());
             test.getEngineToResult().put(engine, result);
             group.getTests().add(test);
         }
