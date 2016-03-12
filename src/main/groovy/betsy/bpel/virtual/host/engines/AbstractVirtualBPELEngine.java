@@ -60,7 +60,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
         return new Engine(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), configuration);
     }
 
-    private VirtualBoxMachine vm = null;
+    private VirtualBoxMachine vm;
 
     public void setVirtualBox(VirtualBox virtualBox) {
         this.virtualBox = virtualBox;

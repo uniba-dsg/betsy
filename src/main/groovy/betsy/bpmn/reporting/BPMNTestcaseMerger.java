@@ -28,13 +28,13 @@ public class BPMNTestcaseMerger {
 
     static class MergeResult {
         String name = "";
-        int errors = 0;
-        int failures = 0;
-        int skipped = 0;
-        int tests = 0;
-        double time = 0.0;
+        int errors;
+        int failures;
+        int skipped;
+        int tests;
+        double time;
         List<Node> testCases = new ArrayList<>();
-        Node properties = null;
+        Node properties;
     }
 
 
