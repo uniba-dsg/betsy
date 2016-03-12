@@ -9,8 +9,8 @@ public class JbpmDeployer {
     private static final Logger LOGGER = Logger.getLogger(JbpmDeployer.class);
 
     private final String deploymentId;
-    private final String user = "admin";
-    private final String password = "admin";
+    private static final String USER = "admin";
+    private static final String PASSWORD = "admin";
     private final String baseUrl;
 
     public JbpmDeployer(String baseUrl, String deploymentId) {
@@ -21,7 +21,7 @@ public class JbpmDeployer {
     public void deploy() {
         LOGGER.info("Trying to deploy process \"" + deploymentId + "\".");
         try {
-            JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/deploy", 202, user, password);
+            JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/deploy", 202, USER, PASSWORD);
         } catch (RuntimeException e) {
             LOGGER.error("Deployment failure", e);
         }
@@ -30,7 +30,7 @@ public class JbpmDeployer {
     public void undeploy() {
         LOGGER.info("Trying to undeploy process \"" + deploymentId + "\".");
         try {
-            JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/undeploy", 202, user, password);
+            JsonHelper.postWithAuthWithAcceptJson(baseUrl + "/rest/deployment/" + deploymentId + "/undeploy", 202, USER, PASSWORD);
         } catch (RuntimeException e) {
             LOGGER.error("Undeployment failure", e);
         }
@@ -41,7 +41,7 @@ public class JbpmDeployer {
 
         try {
 
-            JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, user, password);
+            JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, USER, PASSWORD);
             String status = object.getString("status");
             return status != null && "DEPLOYED".equals(status);
 
