@@ -20,10 +20,10 @@ class VBoxConnector {
 
     private final VirtualBoxManager vBoxManager;
 
-    private IVirtualBox vBox = null;
-    private VBoxApplianceImporter vBoxImporter = null;
+    private IVirtualBox vBox;
+    private VBoxApplianceImporter vBoxImporter;
 
-    private boolean isConnected = false;
+    private boolean isConnected;
 
     public VBoxConnector() {
         this.vBoxManager = VirtualBoxManager.createInstance(null);
