@@ -14,11 +14,11 @@ import java.util.Optional;
  */
 public class TestCaseToLatexSerializer {
 
-    private final String TABLE_NEWLINE = "\\\\";
+    private static final String TABLE_NEWLINE = "\\\\";
 
-    private final String ROW_COLOUR = "\\myrowcolour";
+    private static final String ROW_COLOUR = "\\myrowcolour";
 
-    private final String COLOUR_NEXT_ROW = TABLE_NEWLINE + ROW_COLOUR;
+    private static final String COLOUR_NEXT_ROW = TABLE_NEWLINE + ROW_COLOUR;
 
     public static void main(String... args) {
         new TestCaseToLatexSerializer().buildTableFromProcesses(new BPMNProcessRepository().getByName("ALL"));
