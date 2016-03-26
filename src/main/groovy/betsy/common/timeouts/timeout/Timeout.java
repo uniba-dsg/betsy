@@ -1,14 +1,28 @@
 package betsy.common.timeouts.timeout;
 
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.WaitTasks;
+import betsy.common.timeouts.TimeoutException;
+import betsy.common.timeouts.calibration.CalibrationTimeout;
+import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
+import org.apache.log4j.Logger;
+
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 /**
  * @author Christoph Broeker
  * @version 1.0
  */
 public class Timeout {
+
+    private static final Logger LOGGER = Logger.getLogger(Timeout.class);
 
     private final String engineOrProcessGroup;
     private final String stepOrProcess;
@@ -350,6 +364,84 @@ public class Timeout {
      */
     public void setPlaceOfUse(PlaceOfUse placeOfUse){
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+    }
+
+    /**
+     *
+     * @param c
+     * @throws TimeoutException
+     */
+    public void waitFor(Callable<Boolean> c) throws TimeoutException {
+        LOGGER.info(getKey() + ": wait for at most " + getTimeoutInMs() + "ms or until condition is met.");
+        long max = System.currentTimeMillis() + getTimeoutInMs();
+
+        try {
+            long work = 0;
+            boolean wasSuccessful = false;
+            while (max > System.currentTimeMillis()) {
+                work = max - System.currentTimeMillis();
+                if (c.call() && work >= 0) {
+                    wasSuccessful = true;
+                    break;
+                }
+                WaitTasks.sleepInternal(getTimeToRepetitionInMs());
+            }
+            CalibrationTimeout calibrationTimeout = new CalibrationTimeout(this);
+            if (wasSuccessful) {
+                calibrationTimeout.setMeasuredTime(Math.toIntExact(work));
+                LOGGER.info("Condition of wait task was met in " + work + "/" + getTimeoutInMs() + "ms -> proceeding");
+                CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+            } else {
+                calibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
+                calibrationTimeout.setMeasuredTime(calibrationTimeout.getTimeoutInMs());
+                LOGGER.info("Condition of wait task NOT met within the specified time");
+                CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
+                throw new IllegalStateException("waited for " + getTimeoutInMs() + "ms, but condition was not met");
+            }
+        } catch (IllegalStateException e) {
+            throw new TimeoutException(this);
+        } catch (Exception e) {
+            throw new IllegalStateException("internal error", e);
+        }
+    }
+
+    /**
+     *
+     * @param path
+     * @param substring
+     */
+    public void waitForSubstringInFile(Path path, String substring) {
+        waitFor(() -> FileTasks.hasFileSpecificSubstring(path, substring));
+    }
+
+
+    /**
+     *
+     * @param url
+     */
+    public void waitForAvailabilityOfUrl(URL url) {
+        waitFor(() -> URLTasks.isUrlAvailable(url));
+    }
+
+    /**
+     *
+     * @param url
+     */
+    public void waitForAvailabilityOfUrl(String url) {
+        try {
+            waitForAvailabilityOfUrl(new URL(url));
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("url to check is not a valid url", e);
+        }
+    }
+
+    /**
+     *
+     * @param url
+     * @param substring
+     */
+    public void waitForContentInUrl(URL url, String substring) {
+        waitFor(() -> URLTasks.hasUrlSubstring(url, substring));
     }
 
     /**
