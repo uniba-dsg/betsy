@@ -34,8 +34,6 @@ public class TimeoutCalibrator {
         //If it's true, SoapUI turns off after first run
         BPELMain.shutdownSoapUiAfterCompletion(false);
         int numberOfDuration = 0;
-        boolean allTimeoutsAreCalibrated;
-        boolean lastRound = false;
         boolean isCalibrated = false;
 
         File properties = new File("timeout.properties");
@@ -44,54 +42,57 @@ public class TimeoutCalibrator {
 
 
         while (numberOfDuration < 4) {
-            //execute betsy
-            Main.main(addChangedTestFolderToArgs(args, numberOfDuration));
-            if (numberOfDuration > 0) {
-                //write all timeouts to csv for traceability
-                CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
-                CalibrationTimeoutRepository.clean();
-            } else {
-                numberOfDuration++;
-                CalibrationTimeoutRepository.clean();
-            }
-        }
-
-        while (!isCalibrated) {
+            //clean the calibrationTimeoutRepository for the next run
+            CalibrationTimeoutRepository.clean();
             //execute betsy
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration));
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
-            //write all timeouts to csv for traceability
-            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
             //evaluate the timeouts
-            allTimeoutsAreCalibrated = evaluateTimeouts(timeouts);
+            if (!evaluateTimeouts(timeouts)) {
+                SoapUIShutdownHelper.shutdownSoapUIForReal();
+                System.exit(0);
+            }
+            if (numberOfDuration > 0) {
+                //write all timeouts to csv for traceability
+                CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
+            } else {
+                if (!evaluateTimeouts(timeouts)) {
+                    SoapUIShutdownHelper.shutdownSoapUIForReal();
+                    System.exit(0);
+                }
+            }
+            numberOfDuration++;
+        }
+
+        while (!isCalibrated) {
+            //get used timeouts
+            HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //determine the timeouts
             timeouts = determineTimeouts(timeouts, csv);
-            //clean the timeoutRepository for the next run
+            //write all timeouts to the console
+            for (CalibrationTimeout timeout : timeouts.values()) {
+                LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
+            }
+            //set all values to the repositories
+            TimeoutRepository.setAllCalibrationTimeouts(timeouts);
+            //write timeouts to properties
+            TimeoutIOOperations.writeToProperties(properties, new ArrayList<>(timeouts.values()));
+            //clean the calibrationTimeoutRepository for the next run
             CalibrationTimeoutRepository.clean();
-
-            if (!allTimeoutsAreCalibrated || !lastRound) {
-                if (allTimeoutsAreCalibrated) {
-                    //write timeouts to properties
-                    TimeoutIOOperations.writeToProperties(properties, new ArrayList<>(timeouts.values()));
-                }
-                //if all timeouts aren't calibrated and/or this isn't the last round, it isn't finished
+            //execute betsy
+            Main.main(addChangedTestFolderToArgs(args, numberOfDuration));
+            //write all timeouts to csv
+            CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
+            if (evaluateTimeouts(timeouts)) {
                 isCalibrated = false;
-                //set all values to the repositories
-                TimeoutRepository.setAllCalibrationTimeouts(timeouts);
-                //if the last round all timeouts were kept, it's the last round
-                lastRound = allTimeoutsAreCalibrated;
             } else {
-                //if all timeouts are calibrated and this was the last round, it is finished
                 isCalibrated = true;
                 //shutdown SoapUI
                 SoapUIShutdownHelper.shutdownSoapUIForReal();
                 LOGGER.info("Calibration is finished.");
             }
-            //write all timeouts to the console
-            for (CalibrationTimeout timeout : timeouts.values()) {
-                LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
-            }
+
         }
     }
 
