@@ -65,7 +65,7 @@ public class VirtualBpelgEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.bpelg_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.bpelg_v.deploymentDir"));
-        operation.setDeployTimeout(TimeoutRepository.getTimeout("bpelg_v.deploymentTimeout"));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("bpelg_v.deployment"));
 
         return operation;
     }

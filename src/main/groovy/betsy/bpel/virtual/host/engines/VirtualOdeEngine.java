@@ -53,7 +53,7 @@ public class VirtualOdeEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.ode_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.ode_v.deploymentDir"));
-        operation.setDeployTimeout(TimeoutRepository.getTimeout("ode_v.deploymentTimeout"));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("ode_v.deployment"));
 
         return operation;
     }

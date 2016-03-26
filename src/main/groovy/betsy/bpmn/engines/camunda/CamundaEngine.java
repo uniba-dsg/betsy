@@ -51,7 +51,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
             throw new IllegalStateException("Could not find catalina log file in " + getTomcatLogsDir());
         }
 
-        WaitTasks.waitFor(TimeoutRepository.getTimeout("Camunda.deploy"), () ->
+        TimeoutRepository.getTimeout("Camunda.deploy").waitFor(() ->
                 FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + process.getName() + " Application successfully deployed.") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + process.getName() + "] startup failed due to previous errors"));
     }
@@ -138,7 +138,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
         map1.put("JRE_HOME", pathToJava7.toString());
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")), map1);
 
-        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Camunda.startup"), getCamundaUrl());
+        TimeoutRepository.getTimeout("Camunda.startup").waitForAvailabilityOfUrl(getCamundaUrl());
     }
 
     @Override

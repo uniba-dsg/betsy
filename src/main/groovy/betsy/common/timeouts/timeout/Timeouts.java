@@ -100,19 +100,19 @@ public class Timeouts {
         timeouts.add(new Timeout("FileTasks", "deleteDirectory", 5_000, Timeout.Category.UNMEASURABLE));
 
         //Virtual engines
-        timeouts.add(new Timeout("active_bpel_v", "serviceTimeout", 30_000, 500));
-        timeouts.add(new Timeout("bpelg_v", "serviceTimeout", 30_000, 500));
-        timeouts.add(new Timeout("ode_v", "serviceTimeout", 30_000, 500));
-        timeouts.add(new Timeout("openesb_v", "serviceTimeout", 30_000, 500));
-        timeouts.add(new Timeout("orchestra_v", "serviceTimeout", 30_000, 500));
-        timeouts.add(new Timeout("petalsesb_v", "serviceTimeout", 30_000, 500));
+        timeouts.add(new Timeout("active_bpel_v", "service", 30_000, 500));
+        timeouts.add(new Timeout("bpelg_v", "service", 30_000, 500));
+        timeouts.add(new Timeout("ode_v", "service", 30_000, 500));
+        timeouts.add(new Timeout("openesb_v", "service", 30_000, 500));
+        timeouts.add(new Timeout("orchestra_v", "service", 30_000, 500));
+        timeouts.add(new Timeout("petalsesb_v", "service", 30_000, 500));
 
-        timeouts.add(new Timeout("active_bpel_v", "deploymentTimeout", 30_000, 500));
-        timeouts.add(new Timeout("bpelg_v", "deploymentTimeout", 30_000, 500));
-        timeouts.add(new Timeout("ode_v", "deploymentTimeout", 30_000, 500));
-        timeouts.add(new Timeout("openesb_v", "deploymentTimeout", 30_000, 500));
-        timeouts.add(new Timeout("orchestra_v", "deploymentTimeout", 30_000, 500));
-        timeouts.add(new Timeout("petalsesb_v", "deploymentTimeout", 30_000, 500));
+        timeouts.add(new Timeout("active_bpel_v", "deployment", 30_000, 500));
+        timeouts.add(new Timeout("bpelg_v", "deployment", 30_000, 500));
+        timeouts.add(new Timeout("ode_v", "deployment", 30_000, 500));
+        timeouts.add(new Timeout("openesb_v", "deployment", 30_000, 500));
+        timeouts.add(new Timeout("orchestra_v", "deployment", 30_000, 500));
+        timeouts.add(new Timeout("petalsesb_v", "deployment", 30_000, 500));
 
         timeouts.add(new Timeout("PortForwardingConfigurator", "applyPortForwarding", 10_000, 100));
         timeouts.add(new Timeout("PortForwardingConfigurator", "clearPortForwarding", 10_000, 100));
@@ -145,23 +145,23 @@ public class Timeouts {
         timeouts.add(new Timeout("Retry", "atMostThreeTimes", 500, Timeout.Category.UNMEASURABLE));
         timeouts.add(new Timeout("BPELComposite", "test", 2_000, Timeout.Category.UNMEASURABLE));
         timeouts.add(new Timeout("BPELComposite", "testSoapUi", 500, Timeout.Category.UNMEASURABLE));
-        timeouts.add(new Timeout("TestingAPI", "constructor", 15_000, Timeout.PlaceOfUse.EXTERN));
+        timeouts.add(new Timeout("TestingAPI", "generateEngineDependentTest", 15_000, Timeout.PlaceOfUse.EXTERN));
 
-        timeouts.add(new Timeout("ActiveBpelDeployer", "constructor", 100_000, 500));
-        timeouts.add(new Timeout("BpelgDeployer", "constructor", 100_000, 500));
-        timeouts.add(new Timeout("OdeDeployer", "constructor", 30_000, 500));
-        timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "installComponent", 10_000, 500));
-        timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "startup", "waitForUrl", 10_000, 500));
-        timeouts.add(new Timeout("OpenEsb301StandaloneEngine", "startup", "waitForStart", 10_000, 500));
-        timeouts.add(new Timeout("OpenEsbEngine", "startup", 15_000, 500));
-        timeouts.add(new Timeout("PetalsEsbDeployer", "constructor", 20_000, 500));
-        timeouts.add(new Timeout("PetalsEsbEngine", "startup", 30_000, 500));
-        timeouts.add(new Timeout("Wso2Deployer", "deploy", 120_000, 500));
-        timeouts.add(new Timeout("Wso2Deployer", "deploy", "sleep", 2_000, Timeout.Category.UNMEASURABLE));
-        timeouts.add(new Timeout("Wso2Deployer", "undeploy", 120_000, 500));
-        timeouts.add(new Timeout("Wso2Deployer", "undeploy", "sleep", 1_000, Timeout.Category.UNMEASURABLE));
-        timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", 120_000, 500));
-        timeouts.add(new Timeout("Wso2Engine_v3_1_0", "startup", "sleep", 2_000, Timeout.Category.UNMEASURABLE));
+        timeouts.add(new Timeout("ActiveBpel", "deploy", 100_000, 500));
+        timeouts.add(new Timeout("Bpelg", "deploy", 100_000, 500));
+        timeouts.add(new Timeout("Ode", "deploy", 30_000, 500));
+        timeouts.add(new Timeout("OpenEsb30x", "installComponent", 10_000, 500));
+        timeouts.add(new Timeout("OpenEsb30x", "startup", "waitForUrl", 10_000, 500));
+        timeouts.add(new Timeout("OpenEsb30x", "startup", "waitForStart", 10_000, 500));
+        timeouts.add(new Timeout("OpenEsb", "startup", 15_000, 500));
+        timeouts.add(new Timeout("PetalsEsb", "deploy", 20_000, 500));
+        timeouts.add(new Timeout("PetalsEsb", "startup", 30_000, 500));
+        timeouts.add(new Timeout("Wso2", "deploy", 120_000, 500));
+        timeouts.add(new Timeout("Wso2", "deploy", "sleep", 2_000, Timeout.Category.UNMEASURABLE));
+        timeouts.add(new Timeout("Wso2", "undeploy", 120_000, 500));
+        timeouts.add(new Timeout("Wso2", "undeploy", "sleep", 1_000, Timeout.Category.UNMEASURABLE));
+        timeouts.add(new Timeout("Wso2_v3_1_0", "startup", 120_000, 500));
+        timeouts.add(new Timeout("Wso2_v3_1_0", "startup", "sleep", 2_000, Timeout.Category.UNMEASURABLE));
     }
 }
 

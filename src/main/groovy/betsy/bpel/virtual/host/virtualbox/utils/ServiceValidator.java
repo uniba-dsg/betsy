@@ -30,9 +30,9 @@ public class ServiceValidator {
         //TODO how to handle wait if it never was true?
         for (ServiceAddress address : engineServices) {
             if (address.isRequiringHtmlContent()) {
-                WaitTasks.waitForContentInUrl(timeout, address.getAddress(), address.getRequiredHtmlContent());
+                timeout.waitForContentInUrl(address.getAddress(), address.getRequiredHtmlContent());
             } else {
-                WaitTasks.waitForAvailabilityOfUrl(timeout, address.getAddress());
+                timeout.waitForAvailabilityOfUrl(address.getAddress());
             }
         }
         return true;

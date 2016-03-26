@@ -1,7 +1,6 @@
 package betsy.bpel.engines.petalsesb;
 
 import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 
@@ -16,7 +15,7 @@ public class PetalsEsbDeployer {
     private final Timeout timeout;
 
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath) {
-        this(deploymentDirPath, logFilePath, TimeoutRepository.getTimeout("PetalsEsbDeployer.constructor"));
+        this(deploymentDirPath, logFilePath, TimeoutRepository.getTimeout("PetalsEsb.deploy"));
     }
 
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath, Timeout timeout) {
@@ -28,7 +27,7 @@ public class PetalsEsbDeployer {
     public void deploy(Path packageFilePath, String processName) {
         FileTasks.copyFileIntoFolder(packageFilePath, deploymentDirPath);
 
-        WaitTasks.waitFor(timeout, () ->
+        timeout.waitFor(() ->
                 FileTasks.hasNoFile(deploymentDirPath.resolve(getFileName(processName))) &&
                         (FileTasks.hasFileSpecificSubstring(logFilePath,
                                 "Service Assembly \'" + processName + "Application\' started"))
@@ -42,7 +41,7 @@ public class PetalsEsbDeployer {
 
     public void undeploy(String processName) {
         FileTasks.deleteFile(deploymentDirPath.getParent().resolve("installed").resolve(getFileName(processName)));
-        WaitTasks.waitForSubstringInFile(timeout, logFilePath,
+        timeout.waitForSubstringInFile(logFilePath,
                 "Service Assembly \'" + processName + "Application\' undeployed");
     }
 

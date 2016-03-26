@@ -2,7 +2,6 @@ package betsy.bpel.engines.activebpel;
 
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
-import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 
@@ -17,7 +16,7 @@ public class ActiveBpelDeployer {
     private final Timeout timeout;
 
     public ActiveBpelDeployer(Path deploymentFolder, Path logFile) {
-        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("ActiveBpelDeployer.constructor"));
+        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("ActiveBpel.deploy"));
     }
 
     public ActiveBpelDeployer(Path deploymentFolder, Path logFile, Timeout timeout) {
@@ -29,7 +28,7 @@ public class ActiveBpelDeployer {
     public void deploy(Path packageFilePath, String processName) {
         FileTasks.copyFileIntoFolder(packageFilePath, deploymentFolder);
 
-        WaitTasks.waitFor(timeout, () ->
+        timeout.waitFor(() ->
                 FileTasks.hasFile(deploymentFolder.resolve("work/ae_temp_" + processName + "_bpr/META-INF/catalog.xml")) &&
                         FileTasks.hasFileSpecificSubstring(logFile, "[" + processName + ".pdd]") &&
                         URLTasks.hasUrlSubstring(new URL("http://localhost:8080/BpelAdmin/"), "Running"));

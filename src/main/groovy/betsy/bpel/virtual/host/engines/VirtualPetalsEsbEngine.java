@@ -63,7 +63,7 @@ public class VirtualPetalsEsbEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.petalsesb_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.petalsesb_v.deploymentDir"));
-        operation.setDeployTimeout(TimeoutRepository.getTimeout("petalsesb_v.deploymentTimeout"));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("petalsesb_v.deployment"));
 
         return operation;
     }

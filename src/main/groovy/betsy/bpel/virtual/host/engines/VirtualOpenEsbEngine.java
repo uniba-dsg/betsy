@@ -71,7 +71,7 @@ public class VirtualOpenEsbEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.openesb_v.deploymentFile"));
         operation.setDeploymentDir(get("virtual.engines.openesb_v.deploymentDir"));
-        operation.setDeployTimeout(TimeoutRepository.getTimeout("openesb_v.deploymentTimeout"));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("openesb_v.deployment"));
 
         return operation;
     }

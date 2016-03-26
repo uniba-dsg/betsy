@@ -64,7 +64,7 @@ public class VirtualOrchestraEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.orchestra_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.orchestra_v.deploymentDir"));
-        operation.setDeployTimeout(TimeoutRepository.getTimeout("orchestra_v.deploymentTimeout"));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("orchestra_v.deployment"));
 
         return operation;
     }

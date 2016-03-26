@@ -93,7 +93,7 @@ public class Tomcat {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder, "tomcat_startup.bat"), environment);
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_startup.sh")), environment);
 
-        WaitTasks.waitForAvailabilityOfUrl(TimeoutRepository.getTimeout("Tomcat.startup"), getTomcatUrl());
+        TimeoutRepository.getTimeout("Tomcat.startup").waitForAvailabilityOfUrl(getTomcatUrl());
 
     }
 

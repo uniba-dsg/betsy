@@ -1,7 +1,6 @@
 package betsy.bpel.engines.bpelg;
 
 import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.FileTypes;
@@ -20,7 +19,7 @@ public class BpelgDeployer {
         this.timeout = timeout;
     }
     public BpelgDeployer(Path deploymentFolder, Path logFile) {
-        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("BpelgDeployer.constructor"));
+        this(deploymentFolder, logFile, TimeoutRepository.getTimeout("Bpelg.deploy"));
     }
 
     public void deploy(Path packageFilePath, String processName) {
@@ -28,7 +27,7 @@ public class BpelgDeployer {
         FileTasks.copyFileIntoFolder(packageFilePath, deploymentFolder);
 
         // ensure correct deployment
-        WaitTasks.waitFor(timeout, () ->
+        timeout.waitFor(() ->
                 FileTasks.hasFile(deploymentFolder.resolve("work/ae_temp_" + processName + "_zip/deploy.xml")) &&
                         (
                                 FileTasks.hasFileSpecificSubstring(logFile, "Deployment successful") ||
@@ -42,7 +41,7 @@ public class BpelgDeployer {
         FileTasks.deleteFile(deploymentFolder.resolve(processName + ".zip"));
 
         // ensure correct undeployment
-        WaitTasks.waitForSubstringInFile(timeout, logFile, "Undeploying bpel: " + processName + FileTypes.BPEL);
+        timeout.waitForSubstringInFile(logFile, "Undeploying bpel: " + processName + FileTypes.BPEL);
     }
 
     public boolean isDeployed(String processName) {

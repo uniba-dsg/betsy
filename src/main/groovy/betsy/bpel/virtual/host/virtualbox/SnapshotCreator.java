@@ -109,7 +109,7 @@ public class SnapshotCreator {
     }
 
     private Timeout getServiceTimeout(String engineName) {
-        return TimeoutRepository.getTimeout(engineName + ".serviceTimeout");
+        return TimeoutRepository.getTimeout(engineName + ".service");
     }
 
     private void failIfBetsyServerTimesOut() throws VirtualEngineServiceException {
