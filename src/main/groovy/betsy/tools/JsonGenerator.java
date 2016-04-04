@@ -5,6 +5,8 @@ import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
 import betsy.bpel.model.assertions.XpathTestAssertion;
 import betsy.bpel.model.steps.DelayTestStep;
+import betsy.bpel.model.steps.DeployableCheckTestStep;
+import betsy.bpel.model.steps.NotDeployableCheckTestStep;
 import betsy.bpel.model.steps.SoapTestStep;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpel.virtual.host.VirtualEngineAPI;
@@ -234,12 +236,24 @@ public class JsonGenerator {
 
                     for(TestStep testStep : testCase.getTestSteps()) {
                         JSONObject testStepObject = new JSONObject();
-                        testStepObject.put("type", testStep.getClass().getSimpleName());
                         testStepObject.put("description", testStep.getDescription());
                         if(testStep instanceof DelayTestStep) {
+                            testStepObject.put("type", testStep.getClass().getSimpleName());
                             testStepObject.put("delay", ((DelayTestStep) testStep).getTimeToWaitAfterwards());
+                        } else if(testStep instanceof DeployableCheckTestStep) {
+                            JSONArray assertionsArray = new JSONArray();
+                            testStepObject.put("assertions", assertionsArray);
+                            JSONObject assertionObject = new JSONObject();
+                            assertionObject.put("type", "DeployableAssertion");
+                            assertionsArray.put(assertionObject);
+                        } else if(testStep instanceof NotDeployableCheckTestStep) {
+                            JSONArray assertionsArray = new JSONArray();
+                            testStepObject.put("assertions", assertionsArray);
+                            JSONObject assertionObject = new JSONObject();
+                            assertionObject.put("type", "NotDeployableAssertion");
+                            assertionsArray.put(assertionObject);
                         } else if(testStep instanceof SoapTestStep) {
-
+                            testStepObject.put("type", testStep.getClass().getSimpleName());
                             testStepObject.put("input", ((SoapTestStep) testStep).getInput());
                             if(((SoapTestStep) testStep).getOperation() != null) {
                                 testStepObject.put("operation", ((SoapTestStep) testStep).getOperation().getName());
