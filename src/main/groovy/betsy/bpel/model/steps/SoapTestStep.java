@@ -24,7 +24,6 @@ public class SoapTestStep extends AssertableTestStep {
         XpathTestAssertion assertion = new XpathTestAssertion();
         assertion.setExpectedOutput(output);
         assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer");
-        assertion.setOutput(output);
         getAssertions().add(assertion);
     }
 
@@ -32,7 +31,6 @@ public class SoapTestStep extends AssertableTestStep {
         XpathTestAssertion assertion = new XpathTestAssertion();
         assertion.setExpectedOutput(output);
         assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';number(//test:testElementSyncResponse) cast as xs:integer");
-        assertion.setOutput(output);
         getAssertions().add(assertion);
     }
 
@@ -40,7 +38,6 @@ public class SoapTestStep extends AssertableTestStep {
         XpathTestAssertion assertion = new XpathTestAssertion();
         assertion.setExpectedOutput(output);
         assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncStringResponse");
-        assertion.setOutput(output);
         getAssertions().add(assertion);
     }
 
@@ -48,7 +45,6 @@ public class SoapTestStep extends AssertableTestStep {
         XpathTestAssertion assertion = new XpathTestAssertion();
         assertion.setExpectedOutput("true");
         assertion.setXpathExpression("declare namespace test=\'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface\';//test:testElementSyncResponse >= " + output);
-        assertion.setOutput(output);
         getAssertions().add(assertion);
     }
 

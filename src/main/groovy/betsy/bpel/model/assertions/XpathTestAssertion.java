@@ -5,11 +5,10 @@ import betsy.common.model.TestAssertion;
 public class XpathTestAssertion extends TestAssertion {
     private String xpathExpression;
     private String expectedOutput;
-    private String output;
 
     @Override
     public String toString() {
-        return "XpathTestAssertion{" + "xpathExpression='" + xpathExpression + "\'" + ", expectedOutput='" + expectedOutput + "\'" + ", output='" + output + "\'" + "}";
+        return "XpathTestAssertion{" + "xpathExpression='" + xpathExpression + "\'" + ", expectedOutput='" + expectedOutput + "\'" + "}";
     }
 
     public String getXpathExpression() {
@@ -28,11 +27,4 @@ public class XpathTestAssertion extends TestAssertion {
         this.expectedOutput = expectedOutput;
     }
 
-    public String getOutput() {
-        return output;
-    }
-
-    public void setOutput(String output) {
-        this.output = output;
-    }
 }
