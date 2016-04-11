@@ -13,24 +13,31 @@ import java.util.Arrays;
 
 public class BPMNProcessBuilder {
 
-    public static BPMNProcess buildActivityProcess(String name, String description, BPMNTestCase... testCases) {
-        return new BPMNProcess(ROOT_FOLDER.resolve("activities").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), Groups.ACTIVITIES);
+    public static EngineIndependentProcess buildActivityProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
+        return new EngineIndependentProcess(ROOT_FOLDER.resolve("activities").resolve(name + FileTypes.BPMN),
+                description,
+                Arrays.asList(testCases),
+                feature);
     }
 
-    public static BPMNProcess buildGatewayProcess(String name, String description, BPMNTestCase... testCases) {
-        return new BPMNProcess(ROOT_FOLDER.resolve("gateways").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), Groups.GATEWAYS);
+    public static EngineIndependentProcess buildGatewayProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
+        return new EngineIndependentProcess(ROOT_FOLDER.resolve("gateways").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases),
+                feature);
     }
 
-    public static BPMNProcess buildErrorProcess(String name, String description, BPMNTestCase... testCases) {
-        return new BPMNProcess(ROOT_FOLDER.resolve("errors").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), Groups.ERRORS);
+    public static EngineIndependentProcess buildErrorProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
+        return new EngineIndependentProcess(ROOT_FOLDER.resolve("errors").resolve(name + FileTypes.BPMN),
+                description,
+                Arrays.asList(testCases),
+                feature);
     }
 
     public static BPMNProcess buildEventProcess(String name, String description, BPMNTestCase... testCases) {
         return new BPMNProcess(ROOT_FOLDER.resolve("events").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), Groups.EVENTS);
     }
 
-    public static BPMNProcess buildBasicProcess(String name, String description, BPMNTestCase... testCases) {
-        return new BPMNProcess(ROOT_FOLDER.resolve("basics").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), Groups.BASICS);
+    public static EngineIndependentProcess buildBasicProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
+        return new EngineIndependentProcess(ROOT_FOLDER.resolve("basics").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), feature);
     }
 
     public static EngineIndependentProcess buildDataProcess(String description, Feature feature, BPMNTestCase... testCases) {
