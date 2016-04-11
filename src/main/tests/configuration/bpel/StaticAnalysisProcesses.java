@@ -2,6 +2,10 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.Feature;
+import betsy.common.model.feature.Group;
 import betsy.common.util.FileTypes;
 
 import java.io.IOException;
@@ -12,30 +16,28 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class StaticAnalysisProcesses {
+class StaticAnalysisProcesses {
 
-    public static List<BPELProcess> getStaticAnalysisProcesses() {
+    static List<EngineIndependentProcess> getStaticAnalysisProcesses() {
         Path path = Paths.get("src/main/tests/files/bpel/sa-rules");
         if (!Files.exists(path)) {
             return Collections.emptyList();
         }
 
-        List<BPELProcess> result = new LinkedList<>();
+        List<EngineIndependentProcess> result = new LinkedList<>();
 
         try {
             Files.walk(path, Integer.MAX_VALUE).forEach(dir -> {
 
                 boolean isTestDirectory = hasFolderBpelFiles(dir);
                 if (isTestDirectory) {
-                    BPELProcess process = new BPELProcess();
-                    process.setProcess(getBpelFileInFolder(dir));
-                    process.setTestCases(Collections.singletonList(new BPELTestCase().checkFailedDeployment()));
-
-                    process.setWsdls(createWSDLPaths(dir));
-                    process.setAdditionalFiles(createXSDPaths(dir));
-                    process.setGroup(Groups.SA);
-
-                    result.add(process);
+                    // FIXME this is not done yet, as the feature and the description are not well done
+                    Path process = getBpelFileInFolder(dir);
+                    result.add(new EngineIndependentProcess(process,
+                            "",
+                            Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
+                            new Feature(new Construct(Groups.SA, "SA000"), process.getFileName().toString()),
+                            createXSDandWSDLPaths(dir)));
                 }
             });
 
@@ -63,12 +65,12 @@ public class StaticAnalysisProcesses {
         }
     }
 
-    public static Map<String, List<BPELProcess>> getGroupsPerRuleForSAProcesses(List<BPELProcess> processes) {
-        Map<String, List<BPELProcess>> result = new HashMap<>();
+    static Map<String, List<EngineIndependentProcess>> getGroupsPerRuleForSAProcesses(List<EngineIndependentProcess> processes) {
+        Map<String, List<EngineIndependentProcess>> result = new HashMap<>();
 
         IntStream.rangeClosed(1, 95).forEach((n) -> {
             String rule = convertIntegerToSARuleNumber(n);
-            List<BPELProcess> processList = processes.stream().filter((p) -> p.getName().startsWith(rule)).collect(Collectors.toList());
+            List<EngineIndependentProcess> processList = processes.stream().filter((p) -> p.getName().startsWith(rule)).collect(Collectors.toList());
 
             if (!processList.isEmpty()) {
                 result.put(rule, processList);
@@ -78,25 +80,17 @@ public class StaticAnalysisProcesses {
         return result;
     }
 
-    public static String convertIntegerToSARuleNumber(int number) {
+    static String convertIntegerToSARuleNumber(int number) {
         return String.format("SA%05d", number);
     }
 
-    private static List<Path> createXSDPaths(Path dir) {
+    private static List<Path> createXSDandWSDLPaths(Path dir) {
         try {
-            return Files.list(dir).filter(FileTypes::isXsdFile).collect(Collectors.toList());
+            return Files.list(dir).filter(f -> FileTypes.isWsdlFile(f) || FileTypes.isXsdFile(f)).collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("Could not open folder " + dir, e);
         }
     }
 
-    private static List<Path> createWSDLPaths(Path dir) {
-        try {
-            return Files.list(dir).filter(FileTypes::isWsdlFile).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not open folder " + dir, e);
-        }
-    }
-
-    public static List<BPELProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses();
+    static List<EngineIndependentProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses();
 }

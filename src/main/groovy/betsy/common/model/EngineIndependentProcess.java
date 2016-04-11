@@ -6,10 +6,7 @@ import betsy.common.model.feature.FeatureDimension;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -18,18 +15,23 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
     private final Path process;
     private final List<TestCase> testCases;
     private final Feature feature;
-    private final List<Path> files = new ArrayList<>();
+    private final List<Path> files;
     private final String description;
 
     public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature) {
-        this.process = process;
-        this.feature = feature;
-        this.description = description;
-        this.testCases = Collections.unmodifiableList(uniqueifyTestCaseNames(new ArrayList<>(testCases)));
+        this(process, description, testCases, feature, Collections.emptyList());
     }
 
-    public List<String> getFileNames() {
-        return files.stream().map((p) -> p.getFileName().toString()).collect(Collectors.toList());
+    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<Path> files) {
+        this.process = Objects.requireNonNull(process);
+        this.feature = Objects.requireNonNull(feature);
+        this.description = Objects.requireNonNull(description);
+        this.testCases = Collections.unmodifiableList(uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases))));
+        this.files = Objects.requireNonNull(files);
+    }
+
+    public EngineIndependentProcess withNewProcess(Path process) {
+        return new EngineIndependentProcess(process, description, testCases, feature, files);
     }
 
     public List<Path> getFiles() {

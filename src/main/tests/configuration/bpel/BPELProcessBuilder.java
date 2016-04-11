@@ -2,6 +2,9 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.Feature;
 import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
@@ -123,11 +126,12 @@ public class BPELProcessBuilder {
         return process;
     }
 
-    public static BPELProcess buildErrorProcessWithPartner(String name, String description, BPELTestCase... testCases) {
-        BPELProcess process = buildProcessWithPartner(name, testCases);
-        process.setDescription(description);
-        process.setGroup(Groups.ERROR);
-        return process;
+    public static EngineIndependentProcess buildErrorProcessWithPartner(String constructName, String name, String description, BPELTestCase... testCases) {
+        return new EngineIndependentProcess(PATH_PREFIX.resolve(name + FileTypes.BPEL),
+                description,
+                Arrays.asList(testCases),
+                new Feature(new Construct(Groups.ERROR, constructName), name),
+                Arrays.asList(testInterface, partnerInterface));
     }
 
     public static BPELProcess buildStructuredProcessWithPartner(String name, String description, BPELTestCase... testCases) {
