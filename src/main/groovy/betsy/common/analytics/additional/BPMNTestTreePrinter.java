@@ -2,6 +2,7 @@ package betsy.common.analytics.additional;
 
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.AbstractProcess;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
 import configuration.bpmn.BPMNProcessRepository;
 
@@ -38,16 +39,15 @@ public class BPMNTestTreePrinter {
         TestNameToLanguageFeature bpmn = new TestNameToLanguageFeature(BPMNTestTreePrinter.class.getResourceAsStream("BpmnLanguageConstructs.properties"));
 
         BPMNProcessRepository repository = new BPMNProcessRepository();
-        List<BPMNProcess> processes = repository.getByName("ALL");
-
-        Map<String, Map<String, List<BPMNProcess>>> entries = processes.stream().
-                collect(Collectors.groupingBy(AbstractProcess::getGroup,
+        List<EngineIndependentProcess> processes = repository.getByName("ALL");
+        Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
+                collect(Collectors.groupingBy(p -> p.getGroup().getName(),
                         Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
-        for(Map.Entry<String, Map<String, List<BPMNProcess>>> entry : entries.entrySet()) {
+        for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
             String group = entry.getKey();
-            for(Map.Entry<String, List<BPMNProcess>> entry2 : entry.getValue().entrySet()) {
+            for(Map.Entry<String, List<EngineIndependentProcess>> entry2 : entry.getValue().entrySet()) {
                 String languageFeature = entry2.getKey();
-                for(BPMNProcess process : entry2.getValue()) {
+                for(EngineIndependentProcess process : entry2.getValue()) {
                     System.out.println(String.join(", ", group, languageFeature, process.getName()));
                 }
             }

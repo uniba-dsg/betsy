@@ -1,28 +1,35 @@
 package betsy.bpmn.model;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.BPMNTester;
+import betsy.common.HasPath;
 import betsy.common.model.AbstractProcess;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.feature.Group;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class BPMNProcess extends AbstractProcess<BPMNTestCase, AbstractBPMNEngine> {
+public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess> {
 
-    public BPMNProcess() {
+    private EngineIndependentProcess engineIndependentProcess;
+    private AbstractBPMNEngine engine;
 
-    }
-
-    public BPMNProcess(Path process, String description, List<BPMNTestCase> testCases, Group group) {
-        this.setProcess(process);
-        this.setDescription(description);
-        this.setTestCases(new LinkedList<>(testCases));
-        this.setGroup(group);
+    public BPMNProcess(EngineIndependentProcess engineIndependentProcess) {
+        this.engineIndependentProcess = Objects.requireNonNull(engineIndependentProcess);
     }
 
     public BPMNProcess createCopyWithoutEngine() {
-        return new BPMNProcess(getProcess(), getDescription(), getTestCases(), getGroupObject());
+        return new BPMNProcess(engineIndependentProcess);
+    }
+
+    public void setEngine(AbstractBPMNEngine engine) {
+        this.engine = engine;
     }
 
     public String getGroupId() {
@@ -53,4 +60,32 @@ public class BPMNProcess extends AbstractProcess<BPMNTestCase, AbstractBPMNEngin
         return getTargetTestSrcPath().resolve("case" + testCaseNumber);
     }
 
+    @Override
+    public AbstractBPMNEngine getEngine() {
+        return engine;
+    }
+
+    @Override
+    public Path getProcess() {
+        return engineIndependentProcess.getProcess();
+    }
+
+    @Override
+    public String getGroup() {
+        return engineIndependentProcess.getGroup().getName();
+    }
+
+    @Override
+    public Group getGroupObject() {
+        return engineIndependentProcess.getGroup();
+    }
+
+    public List<BPMNTestCase> getTestCases() {
+        return engineIndependentProcess.getTestCases().stream().map(p -> (BPMNTestCase) p).collect(Collectors.toList());
+    }
+
+    @Override
+    public int compareTo(BPMNProcess o) {
+        return engineIndependentProcess.compareTo(o.engineIndependentProcess);
+    }
 }

@@ -1,9 +1,9 @@
 package betsy.bpmn.reporting;
 
 import betsy.bpmn.model.*;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.TestAssertion;
 import betsy.common.model.TestCase;
-import betsy.common.model.TestStep;
 import configuration.bpmn.BPMNProcessRepository;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class TestCaseToLatexSerializer {
         new TestCaseToLatexSerializer().buildTableFromProcesses(new BPMNProcessRepository().getByName("ALL"));
     }
 
-    private void buildTableFromProcesses(List<BPMNProcess> processes) {
+    private void buildTableFromProcesses(List<EngineIndependentProcess> processes) {
         buildTableHeader();
         buildTableBody(processes);
         buildTableFooter();
@@ -49,7 +49,7 @@ public class TestCaseToLatexSerializer {
         println("\\endlastfoot");
     }
 
-    private void buildTableBody(List<BPMNProcess> processes) {
+    private void buildTableBody(List<EngineIndependentProcess> processes) {
         for (int i = 0; i < processes.size(); i++) {
             buildTestCases(processes.get(i));
 
@@ -60,14 +60,14 @@ public class TestCaseToLatexSerializer {
         }
     }
 
-    private void buildTestCases(BPMNProcess process) {
-        println("Name & " + process.getName().replace("_","-") + COLOUR_NEXT_ROW);
+    private void buildTestCases(EngineIndependentProcess process) {
+        println("Name & " + process.getName().replace("_", "-") + COLOUR_NEXT_ROW);
         println("Description & " + process.getDescription() + TABLE_NEWLINE);
 
-        List<BPMNTestCase> cases = process.getTestCases();
+        List<TestCase> cases = process.getTestCases();
 
         for (int i = 0; i < cases.size(); i++) {
-            BPMNTestCase testCase = cases.get(i);
+            TestCase testCase = cases.get(i);
 
             if (i % 2 != 0 || i == cases.size() - 1) {
                 println("Test case " + testCase.getNumber() + " & " + getTestCaseTable(testCase));
@@ -77,11 +77,12 @@ public class TestCaseToLatexSerializer {
         }
     }
 
-    private String getTestCaseTable(BPMNTestCase testCase) {
+    private String getTestCaseTable(TestCase testCase) {
         StringBuilder result = new StringBuilder("\\begin{tabular}{cc}");
         result.append("input & trace " + TABLE_NEWLINE + "\\midrule ");
 
-        BPMNTestStep testStep = testCase.getTestStep();
+        BPMNTestCase bpmnTestCase = (BPMNTestCase) testCase;
+        BPMNTestStep testStep = bpmnTestCase.getTestStep();
 
         Optional<BPMNTestVariable> variable = testStep.getVariable();
         if (variable.isPresent()) {
@@ -106,7 +107,7 @@ public class TestCaseToLatexSerializer {
             TestAssertion testAssertion = assertions.get(i);
             if (testAssertion instanceof BPMNTestAssertion) {
                 BPMNTestAssertion bpmnAssertion = (BPMNTestAssertion) testAssertion;
-                result.append(bpmnAssertion.getAssertion().toString().replace("SCRIPT_","").replace("_","-"));
+                result.append(bpmnAssertion.getAssertion().toString().replace("SCRIPT_", "").replace("_", "-"));
             }
         }
 

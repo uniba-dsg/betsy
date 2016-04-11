@@ -1,6 +1,7 @@
 package betsy.bpmn.cli;
 
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.EngineIndependentProcess;
 import configuration.bpmn.BPMNProcessRepository;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class BPMNProcessParser {
         this.args = args;
     }
 
-    public List<BPMNProcess> parse() {
+    public List<EngineIndependentProcess> parse() {
         BPMNProcessRepository repository = new BPMNProcessRepository();
         if (args.length <= 1) {
             return repository.getByName("ALL");
