@@ -1,8 +1,12 @@
-package betsy.common.model;
+package betsy.common.model.feature;
+
+import betsy.common.HasName;
+import betsy.common.model.HasID;
+import betsy.common.model.ProcessLanguage;
 
 import java.util.Objects;
 
-public class Group implements HasID {
+public class Group implements HasID, HasName {
 
     public final String name;
     public final ProcessLanguage processLanguage;
@@ -23,4 +27,8 @@ public class Group implements HasID {
         return "Group " + getID();
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
 }

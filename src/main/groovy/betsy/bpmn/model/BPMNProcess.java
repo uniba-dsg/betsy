@@ -2,7 +2,7 @@ package betsy.bpmn.model;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.AbstractProcess;
-import betsy.common.model.Group;
+import betsy.common.model.feature.Group;
 
 import java.nio.file.Path;
 import java.util.LinkedList;

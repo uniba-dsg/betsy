@@ -8,7 +8,7 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-public final class Engine {
+public final class Engine implements HasID {
 
     public static final String DELIMITER = "--";
     private final String name;
@@ -80,5 +80,10 @@ public final class Engine {
 
     public List<String> getConfiguration() {
         return configuration;
+    }
+
+    @Override
+    public String getID() {
+        return getNormalizedId();
     }
 }

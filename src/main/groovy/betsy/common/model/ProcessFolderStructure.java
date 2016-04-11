@@ -2,6 +2,7 @@ package betsy.common.model;
 
 import betsy.common.HasName;
 import betsy.common.HasPath;
+import betsy.common.model.feature.Group;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
