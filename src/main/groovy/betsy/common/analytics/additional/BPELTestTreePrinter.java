@@ -43,7 +43,7 @@ public class BPELTestTreePrinter {
         List<BPELProcess> processes = repository.getByName("ALL");
 
         Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                collect(Collectors.groupingBy(AbstractProcess::getGroup,
+                collect(Collectors.groupingBy(BPELProcess::getGroup,
                         Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
         for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
             String group = entry.getKey();

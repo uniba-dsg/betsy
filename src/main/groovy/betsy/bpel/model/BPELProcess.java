@@ -1,27 +1,33 @@
 package betsy.bpel.model;
 
 import betsy.bpel.engines.AbstractBPELEngine;
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.model.BPMNProcess;
+import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.HasPath;
 import betsy.common.model.AbstractProcess;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.ProcessFolderStructure;
+import betsy.common.model.TestCase;
+import betsy.common.model.feature.Group;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractBPELEngine> {
+public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>  {
 
-    @Override
+    private EngineIndependentProcess engineIndependentProcess;
+    private AbstractBPELEngine engine;
+
+    public BPELProcess(EngineIndependentProcess engineIndependentProcess) {
+        this.engineIndependentProcess = Objects.requireNonNull(engineIndependentProcess);
+    }
+
     public BPELProcess createCopyWithoutEngine() {
-        BPELProcess process = new BPELProcess();
-        process.setProcess(getProcess());
-        process.setTestCases(getTestCases());
-        process.setDescription(getDescription());
-        process.setGroup(getGroupObject());
-
-        process.setWsdls(wsdls);
-        process.setAdditionalFiles(additionalFiles);
-
-        return process;
+        return new BPELProcess(engineIndependentProcess);
     }
 
     public String getEndpoint() {
@@ -107,11 +113,11 @@ public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractBPELEngin
     }
 
     public List<String> getWsdlFileNames() {
-        return wsdls.stream().map((p) -> p.getFileName().toString()).collect(Collectors.toList());
+        return getWsdls().stream().map((p) -> p.getFileName().toString()).collect(Collectors.toList());
     }
 
     public List<Path> getAdditionalFilePaths() {
-        return additionalFiles;
+        return engineIndependentProcess.getFiles().stream().filter(p -> !p.toString().endsWith(".wsdl")).collect(Collectors.toList());
     }
 
     public String getShortId() {
@@ -119,27 +125,44 @@ public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractBPELEngin
     }
 
     public List<Path> getWsdls() {
-        return wsdls;
+        return engineIndependentProcess.getFiles().stream().filter(p -> p.toString().endsWith(".wsdl")).collect(Collectors.toList());
     }
 
-    public void setWsdls(List<Path> wsdls) {
-        this.wsdls = wsdls;
+    @Override
+    public AbstractBPELEngine getEngine() {
+        return engine;
     }
 
-    public List<Path> getAdditionalFiles() {
-        return additionalFiles;
+    @Override
+    public Path getProcess() {
+        return engineIndependentProcess.getProcess();
     }
 
-    public void setAdditionalFiles(List<Path> additionalFiles) {
-        this.additionalFiles = additionalFiles;
+    @Override
+    public String getGroup() {
+        return getGroupObject().getName();
     }
 
-    private List<Path> wsdls = new ArrayList<>();
-    /**
-     * Additional files like xslt scripts or other resources.
-     */
-    private List<Path> additionalFiles = new ArrayList<>();
+    @Override
+    public Group getGroupObject() {
+        return engineIndependentProcess.getGroup();
+    }
 
+    @Override
+    public int compareTo(BPELProcess o) {
+        return engineIndependentProcess.compareTo(o.engineIndependentProcess);
+    }
 
+    public void setEngine(AbstractBPELEngine engine) {
+        this.engine = engine;
+    }
+
+    public List<TestCase> getTestCases() {
+        return engineIndependentProcess.getTestCases();
+    }
+
+    public void setTestCases(List<TestCase> testCases) {
+        engineIndependentProcess.setTestCases(testCases);
+    }
 }
 

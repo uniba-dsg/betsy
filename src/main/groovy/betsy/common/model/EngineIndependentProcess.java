@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class EngineIndependentProcess implements Comparable<EngineIndependentProcess>, HasName, FeatureDimension {
@@ -29,6 +30,10 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
 
     public List<String> getFileNames() {
         return files.stream().map((p) -> p.getFileName().toString()).collect(Collectors.toList());
+    }
+
+    public List<Path> getFiles() {
+        return files;
     }
 
     private List<TestCase> uniqueifyTestCaseNames(List<TestCase> testCases) {
@@ -108,7 +113,7 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
         return testCases;
     }
 
-    private void setTestCases(List<TestCase> testCases) {
+    public void setTestCases(List<TestCase> testCases) {
         uniqueifyTestCaseNames(testCases);
         this.testCases.clear();
         this.testCases.addAll(testCases);
@@ -123,4 +128,10 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
     public Feature getFeature() {
         return feature;
     }
+
+    public List<Path> getFiles(Predicate<Path> predicate) {
+        return getFiles().stream().filter(predicate).collect(Collectors.toList());
+    }
+
 }
+

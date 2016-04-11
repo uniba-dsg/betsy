@@ -68,12 +68,12 @@ public class JsonGenerator {
             TestNameToLanguageFeature bpel = new TestNameToLanguageFeature(BPELTestTreePrinter.class.getResourceAsStream("BpelLanguageConstructs.properties"));
 
             BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
-            List<BPELProcess> processes = repository.getByName("ALL");
+            List<EngineIndependentProcess> processes = repository.getByName("ALL");
 
-            Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                    collect(Collectors.groupingBy(AbstractProcess::getGroup,
+            Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
+                    collect(Collectors.groupingBy(p -> p.getGroup().getName(),
                             Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
-            for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
+            for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
 
                 JSONObject groupObject = new JSONObject();
@@ -83,7 +83,7 @@ public class JsonGenerator {
                 JSONArray constructsArray = new JSONArray();
                 groupObject.put("constructs", constructsArray);
 
-                for(Map.Entry<String, List<BPELProcess>> entry2 : entry.getValue().entrySet()) {
+                for(Map.Entry<String, List<EngineIndependentProcess>> entry2 : entry.getValue().entrySet()) {
                     String construct = entry2.getKey();
 
                     JSONObject constructObject = new JSONObject();
@@ -93,10 +93,10 @@ public class JsonGenerator {
                     JSONArray featuresArray = new JSONArray();
                     constructObject.put("features", featuresArray);
 
-                    for(BPELProcess process : entry2.getValue()) {
+                    for(EngineIndependentProcess process : entry2.getValue()) {
                         String feature = process.getName();
 
-                        groupObject.put("description", process.getGroupObject().description);
+                        groupObject.put("description", process.getGroup().description);
 
                         JSONObject featureObject = new JSONObject();
                         featureObject.put("name", feature);
@@ -210,15 +210,15 @@ public class JsonGenerator {
             TestNameToLanguageFeature bpel = new TestNameToLanguageFeature(BPELTestTreePrinter.class.getResourceAsStream("BpelLanguageConstructs.properties"));
 
             BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
-            List<BPELProcess> processes = repository.getByName("ALL");
+            List<EngineIndependentProcess> processes = repository.getByName("ALL");
 
-            Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                    collect(Collectors.groupingBy(AbstractProcess::getGroup,
+            Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
+                    collect(Collectors.groupingBy(p -> p.getGroup().getName(),
                             Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
-            for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
+            for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
 
-                for(Map.Entry<String, List<BPELProcess>> entry2 : entry.getValue().entrySet()) {
+                for(Map.Entry<String, List<EngineIndependentProcess>> entry2 : entry.getValue().entrySet()) {
                     String construct = entry2.getKey();
 
                     JSONObject constructObject = new JSONObject();
@@ -228,13 +228,13 @@ public class JsonGenerator {
                     JSONArray featuresArray = new JSONArray();
                     constructObject.put("features", featuresArray);
 
-                    for(BPELProcess process : entry2.getValue()) {
+                    for(EngineIndependentProcess process : entry2.getValue()) {
                         String feature = process.getName();
 
                         JSONObject featureObject = new JSONObject();
                         featureObject.put("name", feature);
                         featureObject.put("description", process.getDescription());
-                        featureObject.put("id", process.getNormalizedId());
+                        featureObject.put("id", process.getFeature().getID());
                         featureObject.put("language", process.getProcessLanguage().name());
                         featuresArray.put(featureObject);
                     }
@@ -350,7 +350,7 @@ public class JsonGenerator {
 
         private static void addBPELTests(JSONArray array) {
             BPELProcessRepository bpelRepo = BPELProcessRepository.INSTANCE;
-            for(BPELProcess p : bpelRepo.getByName("ALL")) {
+            for(EngineIndependentProcess p : bpelRepo.getByName("ALL")) {
 
                 JSONObject testObject = new JSONObject();
                 testObject.put("name", p.getName());
@@ -361,20 +361,20 @@ public class JsonGenerator {
                 JSONArray engineIndependentFiles = new JSONArray();
                 testObject.put("engineIndependentFiles", engineIndependentFiles);
                 engineIndependentFiles.put(p.getProcess().toString());
-                for(Path path : p.getAdditionalFilePaths()) {
+                for(Path path : p.getFiles(x -> !x.toString().endsWith(".wsdl"))) {
                     engineIndependentFiles.put(path.toString());
                 }
-                for(Path path : p.getWsdlPaths()) {
+                for(Path path : p.getFiles(x -> x.toString().endsWith(".wsdl"))) {
                     engineIndependentFiles.put(path.toString());
                 }
 
                 testObject.put("language", p.getProcessLanguage().name());
-                testObject.put("featureID", p.getNormalizedId());
+                testObject.put("featureID", p.getFeature().getID());
 
                 JSONArray testCasesArray = new JSONArray();
                 testObject.put("testCases", testCasesArray);
 
-                for(BPELTestCase testCase : p.getTestCases()) {
+                for(TestCase testCase : p.getTestCases()) {
                     JSONObject testCaseObject = new JSONObject();
 
                     testCaseObject.put("number", testCase.getNumber());

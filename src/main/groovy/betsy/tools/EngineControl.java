@@ -56,7 +56,9 @@ public class EngineControl extends Application {
             final Path tmpFolder = createTempFolder(e.toString());
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
-                eNew.storeLogs(new BPELProcess() {
+                Feature feature = new Feature(new Construct(new Group("group", ProcessLanguage.BPEL, "description"), "construct"), "feature");
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
                     @Override
                     public Path getTargetLogsPath() {
                         return tmpFolder;
