@@ -18,6 +18,7 @@ import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.analytics.additional.BPELTestTreePrinter;
 import betsy.common.analytics.additional.BPMNTestTreePrinter;
 import betsy.common.engines.EngineLifecycle;
+import betsy.common.engines.ProcessLanguage;
 import betsy.common.model.*;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -38,6 +39,150 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class JsonGenerator {
+
+    static class FeatureTreeJsonGenerator {
+        private static void generatesConstructsJson() {
+            JSONArray featureTree = new JSONArray();
+
+            try {
+                addBpmn(featureTree);
+                addBpel(featureTree);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try(BufferedWriter writer = Files.newBufferedWriter(Paths.get("feature-tree.json"), StandardOpenOption.CREATE)) {
+                writer.append(featureTree.toString(2));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private static void addBpel(JSONArray featureTreeArray) throws IOException {
+            JSONObject languageObject = new JSONObject();
+            languageObject.put("name", ProcessLanguage.BPEL.name());
+            languageObject.put("id", String.join("__", languageObject.getString("name")));
+            JSONArray groupsArray = new JSONArray();
+            languageObject.put("groups", groupsArray);
+
+            TestNameToLanguageFeature bpel = new TestNameToLanguageFeature(BPELTestTreePrinter.class.getResourceAsStream("BpelLanguageConstructs.properties"));
+
+            BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
+            List<BPELProcess> processes = repository.getByName("ALL");
+
+            Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
+                    collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                            Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
+            for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
+                String group = entry.getKey();
+
+                JSONObject groupObject = new JSONObject();
+                groupObject.put("name", group);
+                groupObject.put("description", "");
+                groupObject.put("id", String.join("__", languageObject.getString("name"), groupObject.getString("name")));
+                JSONArray constructsArray = new JSONArray();
+                groupObject.put("constructs", constructsArray);
+
+                for(Map.Entry<String, List<BPELProcess>> entry2 : entry.getValue().entrySet()) {
+                    String construct = entry2.getKey();
+
+                    JSONObject constructObject = new JSONObject();
+                    constructObject.put("name", construct);
+                    constructObject.put("description", "");
+                    constructObject.put("id", String.join("__", languageObject.getString("name"), groupObject.getString("name"), constructObject.getString("name")));
+                    JSONArray featuresArray = new JSONArray();
+                    constructObject.put("features", featuresArray);
+
+                    for(BPELProcess process : entry2.getValue()) {
+                        String feature = process.getName();
+
+                        JSONObject featureObject = new JSONObject();
+                        featureObject.put("name", feature);
+                        featureObject.put("description", process.getDescription());
+                        String featureID = String.join("__", languageObject.getString("name"), groupObject.getString("name"), constructObject.getString("name"), featureObject.getString("name"));
+                        featureObject.put("id", featureID);
+                        featureObject.put("language", process.getProcessLanguage().name());
+                        featuresArray.put(featureObject);
+                    }
+
+                    constructsArray.put(constructObject);
+                }
+
+                groupsArray.put(groupObject);
+            }
+            featureTreeArray.put(languageObject);
+        }
+
+        private static void addBpmn(JSONArray featureTreeArray) throws IOException {
+            JSONObject languageObject = new JSONObject();
+            languageObject.put("name", ProcessLanguage.BPMN.name());
+            languageObject.put("id", String.join("__", languageObject.getString("name")));
+            JSONArray groupsArray = new JSONArray();
+            languageObject.put("groups", groupsArray);
+
+            TestNameToLanguageFeature bpmn = new TestNameToLanguageFeature(BPMNTestTreePrinter.class.getResourceAsStream("BpmnLanguageConstructs.properties"));
+            BPMNProcessRepository repository = new BPMNProcessRepository();
+            List<BPMNProcess> processes = repository.getByName("ALL");
+            Map<String, Map<String, List<BPMNProcess>>> entries = processes.stream().
+                    collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                            Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
+            for(Map.Entry<String, Map<String, List<BPMNProcess>>> entry : entries.entrySet()) {
+                String group = entry.getKey();
+
+                JSONObject groupObject = new JSONObject();
+                groupObject.put("name", group);
+                groupObject.put("description", "");
+                groupObject.put("id", String.join("__", languageObject.getString("name"), groupObject.getString("name")));
+                JSONArray constructsArray = new JSONArray();
+                groupObject.put("constructs", constructsArray);
+
+                for(Map.Entry<String, List<BPMNProcess>> entry2 : entry.getValue().entrySet()) {
+                    String construct = entry2.getKey();
+
+                    JSONObject constructObject = new JSONObject();
+                    constructObject.put("name", construct);
+                    constructObject.put("id", String.join("__", languageObject.getString("name"), groupObject.getString("name"), constructObject.getString("name")));
+                    constructObject.put("description", "");
+                    JSONArray featuresArray = new JSONArray();
+                    constructObject.put("features", featuresArray);
+
+                    for(BPMNProcess process : entry2.getValue()) {
+                        String feature = process.getName();
+
+                        JSONObject featureObject = new JSONObject();
+                        featureObject.put("name", feature);
+                        featureObject.put("description", process.getDescription());
+                        String featureID = String.join("__", languageObject.getString("name"), groupObject.getString("name"), constructObject.getString("name"), featureObject.getString("name"));
+                        featureObject.put("id", featureID);
+                        featureObject.put("language", process.getProcessLanguage().name());
+                        featuresArray.put(featureObject);
+                    }
+
+                    constructsArray.put(constructObject);
+                }
+
+                groupsArray.put(groupObject);
+            }
+            featureTreeArray.put(languageObject);
+        }
+
+        static class TestNameToLanguageFeature {
+
+            private final Properties properties = new Properties();
+
+            public TestNameToLanguageFeature(InputStream stream) throws IOException {
+                properties.load(stream);
+            }
+
+            public String getGroupByTestName(String testname){
+                Object group = properties.get(testname);
+                if(group == null){
+                    throw new IllegalStateException(testname + " has no language feature");
+                }
+                return group.toString();
+            }
+        }
+    }
 
     static class ConstructsJsonGenerator {
         private static void generatesConstructsJson() {
@@ -95,7 +240,7 @@ public class JsonGenerator {
             }
         }
 
-        private static TestNameToLanguageFeature addBpmn(JSONArray constructArray) throws IOException {
+        private static void addBpmn(JSONArray constructArray) throws IOException {
             TestNameToLanguageFeature bpmn = new TestNameToLanguageFeature(BPMNTestTreePrinter.class.getResourceAsStream("BpmnLanguageConstructs.properties"));
             BPMNProcessRepository repository = new BPMNProcessRepository();
             List<BPMNProcess> processes = repository.getByName("ALL");
@@ -128,7 +273,6 @@ public class JsonGenerator {
                     constructArray.put(constructObject);
                 }
             }
-            return bpmn;
         }
 
         static class TestNameToLanguageFeature {
@@ -353,6 +497,7 @@ public class JsonGenerator {
 
     public static void main(String[] args) {
         EnginesJsonGenerator.generateEnginesJson();
+        FeatureTreeJsonGenerator.generatesConstructsJson();
         ConstructsJsonGenerator.generatesConstructsJson();
         TestsEngineIndependentJsonGenerator.generateTestsEngineIndependentJson();
     }
