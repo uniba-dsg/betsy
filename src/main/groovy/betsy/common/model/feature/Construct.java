@@ -11,6 +11,10 @@ public class Construct implements HasID, HasName {
     public final String name;
     public final String description;
 
+    public Construct(Group group, String name) {
+        this(group, name, "");
+    }
+
     public Construct(Group group, String name, String description) {
         this.group = Objects.requireNonNull(group);
         this.name = Objects.requireNonNull(name);
