@@ -3,7 +3,7 @@ package betsy.bpel.engines;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

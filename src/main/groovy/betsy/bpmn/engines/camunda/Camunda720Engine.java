@@ -1,6 +1,6 @@
 package betsy.bpmn.engines.camunda;
 
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 
 public class Camunda720Engine extends Camunda710Engine {

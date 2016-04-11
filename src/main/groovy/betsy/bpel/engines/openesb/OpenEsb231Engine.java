@@ -1,11 +1,9 @@
 package betsy.bpel.engines.openesb;
 
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
-
-import java.nio.file.Paths;
 
 public class OpenEsb231Engine extends OpenEsbEngine {
 

@@ -7,7 +7,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;

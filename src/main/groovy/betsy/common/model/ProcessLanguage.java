@@ -1,10 +1,10 @@
-package betsy.common.engines;
+package betsy.common.model;
 
 import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
 
-public enum ProcessLanguage {
+public enum ProcessLanguage implements HasID {
     BPEL, BPMN, UNKNOWN;
 
     public static ProcessLanguage getByPath(Path path) {
@@ -20,5 +20,9 @@ public enum ProcessLanguage {
         } else {
             return ProcessLanguage.UNKNOWN;
         }
+    }
+
+    public String getID() {
+        return name();
     }
 }

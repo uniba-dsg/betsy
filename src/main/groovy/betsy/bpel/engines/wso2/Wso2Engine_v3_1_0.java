@@ -3,7 +3,7 @@ package betsy.bpel.engines.wso2;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;

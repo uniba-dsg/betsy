@@ -25,12 +25,12 @@ class BasicActivityProcesses {
                     sendSync(1, new ExitAssertion())
     );
 
-    public static final BPELProcess VALIDATE = BPELProcessBuilder.buildProcessWithXsd(
+    public static final BPELProcess VALIDATE = BPELProcessBuilder.buildBasicProcessWithXsd(
             "basic/Validate", "A receive-reply pair with an intermediate variable validation. The variable to be validated describes a month, so only values in the range of 1 and 12 should validate successfully.",
             new BPELTestCase("Input Value 13 should return validation fault").checkDeployment().sendSync(13, new SoapFaultTestAssertion("invalidVariables"))
     );
 
-    public static final BPELProcess VALIDATE_INVALID_VARIABLES = BPELProcessBuilder.buildProcessWithXsd(
+    public static final BPELProcess VALIDATE_INVALID_VARIABLES = BPELProcessBuilder.buildBasicProcessWithXsd(
             "basic/Validate-InvalidVariables", "A receive-reply pair with an intermediate variable validation. The variable to be validated is of type xs:int and xs:boolean is copied into it.",
             new BPELTestCase().
                     checkDeployment().
@@ -44,7 +44,7 @@ class BasicActivityProcesses {
                     sendSync(1, new SoapFaultTestAssertion("uninitializedVariable"))
     );
 
-    public static final BPELProcess VARIABLES_UNINITIALIZED_VARIABLE_FAULT_INVOKE = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess VARIABLES_UNINITIALIZED_VARIABLE_FAULT_INVOKE = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Variables-UninitializedVariableFault-Invoke", "A receive-reply pair with intermediate invoke. The inputVariable of the invoke is not initialized.",
             new BPELTestCase().
                     checkDeployment().
@@ -219,7 +219,7 @@ class BasicActivityProcesses {
                     sendSync(1, new SoapFaultTestAssertion("correlationViolation"))
     );
 
-    public static final BPELProcess RECEIVE_REPLY_CORRELATION_VIOLATION_JOIN = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess RECEIVE_REPLY_CORRELATION_VIOLATION_JOIN = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/ReceiveReply-CorrelationViolation-Join", "A receive-reply pair that initates a correlationSet with an intermediate invoke that tries to join the correlationSet. The join operation should only work if the correlationSet was initiate with a certain value.",
             new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("correlationViolation")),
             new BPELTestCase().checkDeployment().sendSync(2, 2)
@@ -262,92 +262,92 @@ class BasicActivityProcesses {
             RECEIVE_REPLY_FAULT
     );
 
-    public static final BPELProcess INVOKE_ASYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_ASYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Async", "A receive-reply pair with an intermediate asynchronous invoke.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess INVOKE_SYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_SYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Sync", "A receive-reply pair with an intermediate synchronous invoke.",
             new BPELTestCase().checkDeployment().sendSync(1, 1)
     );
 
-    public static final BPELProcess INVOKE_SYNC_FAULT = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_SYNC_FAULT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             new BPELTestCase().checkDeployment().sendSync(-5, new SoapFaultTestAssertion("CustomFault"))
     );
 
-    public static final BPELProcess INVOKE_TO_PARTS = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_TO_PARTS = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-ToParts", "A receive-reply pair with an intermediate synchronous invoke that uses the toParts syntax.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess INVOKE_FROM_PARTS = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_FROM_PARTS = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-FromParts", "A receive-reply pair with an intermediate synchronous invoke that uses the fromParts syntax.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess INVOKE_EMPTY = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_EMPTY = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Empty", "A receive-reply pair with an intermediate invoke of an operation that has no message associated with it. No definition of inputVariable or outputVariable is required.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess INVOKE_CORRELATION_PATTERN_INIT_ASYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_CORRELATION_PATTERN_INIT_ASYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Correlation-Pattern-InitAsync", "An asynchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             new BPELTestCase().checkDeployment().sendAsync(1).waitFor(1000).sendSync(1, 1)
     );
 
-    public static final BPELProcess INVOKE_CORRELATION_PATTERN_INIT_SYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_CORRELATION_PATTERN_INIT_SYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Correlation-Pattern-InitSync", "A synchronous receive that initiates a correlationSet used by a subsequent invoke that also uses a request-response pattern and is thereafter followed by receive-reply pair that also uses the correlationSet.",
             new BPELTestCase().checkDeployment().sendSync(1, 0).waitFor(1000).sendSync(1, 1)
     );
 
-    public static final BPELProcess INVOKE_CATCH = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_CATCH = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Catch", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, 0)
     );
 
-    public static final BPELProcess INVOKE_CATCH_UNDECLARED_FAULT = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_CATCH_UNDECLARED_FAULT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-Catch-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches that fault and replies. The fault is not declared in the Web Service Definition of the partner service.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, 0)
     );
 
-    public static final BPELProcess INVOKE_CATCHALL = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_CATCHALL = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-CatchAll", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             new BPELTestCase("Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
     );
 
-    public static final BPELProcess INVOKE_CATCHALL_UNDECLARED_FAULT = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_CATCHALL_UNDECLARED_FAULT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-CatchAll-UndeclaredFault", "A receive-reply pair with an intermediate invoke that results in a fault for certain input, but catches all faults and replies.",
             new BPELTestCase("Enter-CatchAll").checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, 0)
     );
 
-    public static final BPELProcess INVOKE_COMPENSATION_HANDLER = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_COMPENSATION_HANDLER = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-CompensationHandler", "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
             new BPELTestCase().checkDeployment().sendSync(1, 0)
     );
 
-    public static final BPELProcess INVOKE_COMPENSATE_SCOPE_COMPENSATION_HANDLER = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_COMPENSATE_SCOPE_COMPENSATION_HANDLER = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-CompensateScope-CompensationHandler", "A receive-reply pair combined with an invoke that has a compensationHandler, followed by a throw. The fault is caught by the process-level faultHandler containing a compensateScope. That faultHandler triggers the compensationHandler of the invoke which contains the reply.",
             new BPELTestCase().checkDeployment().sendSync(1, 0)
     );
 
-    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_YES_ASYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_YES_ASYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-InitializePartnerRole-Yes-Async", "A receive-reply pair with an intermediate asynchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to yes.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_YES_SYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_YES_SYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-InitializePartnerRole-Yes-Sync", "A receive-reply pair with an intermediate synchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to yes.",
             new BPELTestCase().checkDeployment().sendSync(1, 1)
     );
 
-    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_NO_ASYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_NO_ASYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-InitializePartnerRole-No-Async", "A receive-reply pair with an intermediate asynchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to no.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_NO_SYNC = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess INVOKE_INITIALIZE_PARTNER_ROLE_NO_SYNC = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Invoke-InitializePartnerRole-No-Sync", "A receive-reply pair with an intermediate synchronous invoke. The invoke has a partnerLink with initializePartnerRole attribute set to no.",
             new BPELTestCase().checkDeployment().sendSync(1, 1)
     );
@@ -374,7 +374,7 @@ class BasicActivityProcesses {
     );
 
 
-    public static final BPELProcess ASSIGN_VALIDATE = BPELProcessBuilder.buildProcessWithXsd(
+    public static final BPELProcess ASSIGN_VALIDATE = BPELProcessBuilder.buildBasicProcessWithXsd(
             "basic/Assign-Validate", "A receive-reply pair with an intermediate assign that has validate set to yes. The assign copies to a variable that represents a month and the validation should fail for values not in the range of one to twelve.",
             new BPELTestCase("Input Value 13 should return validation fault").checkDeployment().
                     sendSync(13, new SoapFaultTestAssertion("invalidVariables"))
@@ -395,18 +395,18 @@ class BasicActivityProcesses {
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess ASSIGN_PARTNERLINK = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess ASSIGN_PARTNERLINK = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
             new BPELTestCase().checkDeployment().sendSync(5, 0)
     );
 
 
-    public static final BPELProcess ASSIGN_PARTNERLINK_PARTNER_ROLE = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess ASSIGN_PARTNERLINK_PARTNER_ROLE = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Assign-PartnerLink-PartnerRole", "A receive-reply pair with an intermediate assign that assigns an existing partnerLink to another partnerLink of the same type which is used in a subsequent invoke.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus reference to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("unsupportedReference"))
     );
@@ -441,7 +441,7 @@ class BasicActivityProcesses {
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess ASSIGN_INT = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess ASSIGN_INT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "basic/Assign-Int", "A receive-reply pair combined with an assign and an invoke in between. The assign copies an int value as an expression to the inputVariable of the invoke. The invocation fails if the value copied is not an int (but, for instance, a float).",
             new BPELTestCase().checkDeployment().sendSync(1, 10)
     );
@@ -486,28 +486,28 @@ class BasicActivityProcesses {
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM = BPELProcessBuilder.buildProcessWithXslt(
+    public static final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM = BPELProcessBuilder.buildBasicProcessWithXslt(
             "basic/Assign-Copy-DoXslTransform", "A receive-reply pair with an intermediate assign that uses the doXslTransform function.",
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM_INVALID_SOURCE_FAULT = BPELProcessBuilder.buildProcessWithXslt(
+    public static final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM_INVALID_SOURCE_FAULT = BPELProcessBuilder.buildBasicProcessWithXslt(
             "basic/Assign-Copy-DoXslTransform-InvalidSourceFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function without a proper source for the script.",
             new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("xsltInvalidSource"))
     );
 
-    public static final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM_STYLESHEET_NOT_FOUND = BPELProcessBuilder.buildProcessWithXslt(
+    public static final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM_STYLESHEET_NOT_FOUND = BPELProcessBuilder.buildBasicProcessWithXslt(
             "basic/Assign-Copy-DoXslTransform-XsltStylesheetNotFound", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the stylesheet does not exist.",
             new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("xsltStylesheetNotFound"))
     );
 
     public static
-    final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM_SUB_LANGUAGE_EXECUTION_FAULT = BPELProcessBuilder.buildProcessWithXslt(
+    final BPELProcess ASSIGN_COPY_DO_XSL_TRANSFORM_SUB_LANGUAGE_EXECUTION_FAULT = BPELProcessBuilder.buildBasicProcessWithXslt(
             "basic/Assign-Copy-DoXslTransform-SubLanguageExecutionFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the actual stylesheet has errors.",
             new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("subLanguageExecutionFault"))
     );
 
-    public static final BPELProcess ASSIGN_VARIABLES_UNCHANGED_INSPITE_OF_FAULT = BPELProcessBuilder.buildProcessWithXslt(
+    public static final BPELProcess ASSIGN_VARIABLES_UNCHANGED_INSPITE_OF_FAULT = BPELProcessBuilder.buildBasicProcessWithXslt(
             "basic/Assign-VariablesUnchangedInspiteOfFault", "A receive-reply pair with two intermediate assigns, the second of which produces a fault that is handled by the process-level faultHandler to send the response. Because of the fault, the second assign should have no impact on the response.",
             new BPELTestCase().checkDeployment().sendSync(1, -1)
     );

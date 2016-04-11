@@ -2,7 +2,7 @@ package betsy.bpel.engines.orchestra;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.engines.tomcat.Tomcat;
 import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;

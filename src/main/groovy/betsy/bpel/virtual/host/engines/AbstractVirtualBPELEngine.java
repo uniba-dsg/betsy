@@ -20,7 +20,7 @@ import betsy.bpel.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import betsy.bpel.virtual.host.virtualbox.SnapshotCreator;
 import betsy.common.config.Configuration;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;

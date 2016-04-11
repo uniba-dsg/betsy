@@ -16,6 +16,7 @@ public class BPELProcess extends AbstractProcess<BPELTestCase, AbstractBPELEngin
         process.setProcess(getProcess());
         process.setTestCases(getTestCases());
         process.setDescription(getDescription());
+        process.setGroup(getGroupObject());
 
         process.setWsdls(wsdls);
         process.setAdditionalFiles(additionalFiles);

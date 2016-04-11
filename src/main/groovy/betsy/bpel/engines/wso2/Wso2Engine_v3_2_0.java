@@ -1,6 +1,6 @@
 package betsy.bpel.engines.wso2;
 
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 
 import java.nio.file.Path;

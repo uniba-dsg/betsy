@@ -18,7 +18,7 @@ import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.analytics.additional.BPELTestTreePrinter;
 import betsy.common.analytics.additional.BPMNTestTreePrinter;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.*;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -61,7 +61,7 @@ public class JsonGenerator {
         private static void addBpel(JSONArray featureTreeArray) throws IOException {
             JSONObject languageObject = new JSONObject();
             languageObject.put("name", ProcessLanguage.BPEL.name());
-            languageObject.put("id", String.join("__", languageObject.getString("name")));
+            languageObject.put("id", ProcessLanguage.BPEL.getID());
             JSONArray groupsArray = new JSONArray();
             languageObject.put("groups", groupsArray);
 
@@ -71,7 +71,7 @@ public class JsonGenerator {
             List<BPELProcess> processes = repository.getByName("ALL");
 
             Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                    collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                    collect(Collectors.groupingBy(AbstractProcess::getGroup,
                             Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
             for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
@@ -96,6 +96,8 @@ public class JsonGenerator {
                     for(BPELProcess process : entry2.getValue()) {
                         String feature = process.getName();
 
+                        groupObject.put("description", process.getGroupObject().description);
+
                         JSONObject featureObject = new JSONObject();
                         featureObject.put("name", feature);
                         featureObject.put("description", process.getDescription());
@@ -116,7 +118,7 @@ public class JsonGenerator {
         private static void addBpmn(JSONArray featureTreeArray) throws IOException {
             JSONObject languageObject = new JSONObject();
             languageObject.put("name", ProcessLanguage.BPMN.name());
-            languageObject.put("id", String.join("__", languageObject.getString("name")));
+            languageObject.put("id", ProcessLanguage.BPMN.getID());
             JSONArray groupsArray = new JSONArray();
             languageObject.put("groups", groupsArray);
 
@@ -124,7 +126,7 @@ public class JsonGenerator {
             BPMNProcessRepository repository = new BPMNProcessRepository();
             List<BPMNProcess> processes = repository.getByName("ALL");
             Map<String, Map<String, List<BPMNProcess>>> entries = processes.stream().
-                    collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                    collect(Collectors.groupingBy(AbstractProcess::getGroup,
                             Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
             for(Map.Entry<String, Map<String, List<BPMNProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
@@ -148,6 +150,8 @@ public class JsonGenerator {
 
                     for(BPMNProcess process : entry2.getValue()) {
                         String feature = process.getName();
+
+                        groupObject.put("description", process.getGroupObject().description);
 
                         JSONObject featureObject = new JSONObject();
                         featureObject.put("name", feature);
@@ -209,7 +213,7 @@ public class JsonGenerator {
             List<BPELProcess> processes = repository.getByName("ALL");
 
             Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                    collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                    collect(Collectors.groupingBy(AbstractProcess::getGroup,
                             Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
             for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
@@ -245,7 +249,7 @@ public class JsonGenerator {
             BPMNProcessRepository repository = new BPMNProcessRepository();
             List<BPMNProcess> processes = repository.getByName("ALL");
             Map<String, Map<String, List<BPMNProcess>>> entries = processes.stream().
-                    collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                    collect(Collectors.groupingBy(AbstractProcess::getGroup,
                             Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
             for(Map.Entry<String, Map<String, List<BPMNProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();

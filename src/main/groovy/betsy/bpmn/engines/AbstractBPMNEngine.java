@@ -4,7 +4,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;

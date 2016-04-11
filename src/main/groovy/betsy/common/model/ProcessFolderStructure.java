@@ -6,7 +6,7 @@ import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
 
-public interface ProcessFolderStructure extends HasName {
+public interface ProcessFolderStructure extends HasName, HasID {
 
     HasPath getEngine();
     Path getProcess();
@@ -23,6 +23,10 @@ public interface ProcessFolderStructure extends HasName {
         return getGroup() + "__" + getProcessFileNameWithoutExtension();
     }
 
+    default String getID() {
+        return String.join(SEPARATOR, getGroupObject().getID(), getProcessFileNameWithoutExtension());
+    }
+
     /**
      * A bpel path as "language_features/structured_activities/Sequence.bpel" is used to extract "Sequence.bpel"
      *
@@ -32,9 +36,9 @@ public interface ProcessFolderStructure extends HasName {
         return getProcess().getFileName().toString();
     }
 
-    default String getGroup() {
-        return getProcess().getParent().getFileName().toString();
-    }
+    String getGroup();
+
+    Group getGroupObject();
 
     default String getProcessFileNameWithoutExtension() {
         return FileTasks.getFilenameWithoutExtension(getProcess());

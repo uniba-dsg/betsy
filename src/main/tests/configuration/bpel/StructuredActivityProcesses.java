@@ -253,7 +253,7 @@ class StructuredActivityProcesses {
             new BPELTestCase("0plus1plus2-equals-3").checkDeployment().sendSync(2, 3)
     );
 
-    public static final BPELProcess FOR_EACH_PARALLEL_INVOKE = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess FOR_EACH_PARALLEL_INVOKE = BPELProcessBuilder.buildStructuredProcessWithPartner(
             "structured/ForEach-Parallel-Invoke", "A receive-reply pair with an intermediate forEach that executes its children in parallel.",
             new BPELTestCase("0plus1plus2-equals-3").checkDeployment().buildPartnerConcurrencySetup().
                     sendSync(2, 3).

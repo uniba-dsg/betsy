@@ -1,6 +1,6 @@
 package betsy.bpel.engines.openesb;
 
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 
 public class OpenEsb305StandaloneEngine extends OpenEsb301StandaloneEngine{

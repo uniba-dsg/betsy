@@ -201,12 +201,12 @@ class ScopeProcesses {
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final BPELProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE = BPELProcessBuilder.buildScopeProcessWithPartner(
             "scopes/Scope-FaultHandlers-CatchAll-Invoke", "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
     );
 
-    public static final BPELProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE = BPELProcessBuilder.buildScopeProcessWithPartner(
             // only used for error processes. but may also be used as a test
             "scopes/Scope-FaultHandlers-CatchAll-Invoke-Validate", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
@@ -274,7 +274,7 @@ class ScopeProcesses {
             SCOPE_FAULT_HANDLERS_FAULT_VARIABLE_DATA
     );
 
-    public static final BPELProcess SCOPE_PARTNER_LINKS = BPELProcessBuilder.buildProcessWithPartner(
+    public static final BPELProcess SCOPE_PARTNER_LINKS = BPELProcessBuilder.buildScopeProcessWithPartner(
             "scopes/Scope-PartnerLinks", "A scope with a receive-reply pair and an intermediate invoke. The partnerLink which is invoked is defined at scope-level.",
             new BPELTestCase().checkDeployment().sendSync(1, 1)
     );

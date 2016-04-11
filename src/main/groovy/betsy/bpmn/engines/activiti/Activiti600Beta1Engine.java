@@ -1,6 +1,6 @@
 package betsy.bpmn.engines.activiti;
 
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 import betsy.common.tasks.FileTasks;
 

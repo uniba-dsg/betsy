@@ -2,13 +2,11 @@ package betsy.bpel.engines.petalsesb;
 
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
-import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
-import betsy.common.engines.ProcessLanguage;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class PetalsEsb41Engine extends PetalsEsbEngine {
 

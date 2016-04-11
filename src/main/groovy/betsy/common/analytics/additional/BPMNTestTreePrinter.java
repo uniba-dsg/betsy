@@ -1,6 +1,7 @@
 package betsy.common.analytics.additional;
 
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.AbstractProcess;
 import betsy.common.model.ProcessFolderStructure;
 import configuration.bpmn.BPMNProcessRepository;
 
@@ -40,7 +41,7 @@ public class BPMNTestTreePrinter {
         List<BPMNProcess> processes = repository.getByName("ALL");
 
         Map<String, Map<String, List<BPMNProcess>>> entries = processes.stream().
-                collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                collect(Collectors.groupingBy(AbstractProcess::getGroup,
                         Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
         for(Map.Entry<String, Map<String, List<BPMNProcess>>> entry : entries.entrySet()) {
             String group = entry.getKey();

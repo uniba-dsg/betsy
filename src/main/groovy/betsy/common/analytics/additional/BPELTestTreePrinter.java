@@ -2,6 +2,7 @@ package betsy.common.analytics.additional;
 
 import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.AbstractProcess;
 import betsy.common.model.ProcessFolderStructure;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -42,7 +43,7 @@ public class BPELTestTreePrinter {
         List<BPELProcess> processes = repository.getByName("ALL");
 
         Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                collect(Collectors.groupingBy(ProcessFolderStructure::getGroup,
+                collect(Collectors.groupingBy(AbstractProcess::getGroup,
                         Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
         for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
             String group = entry.getKey();

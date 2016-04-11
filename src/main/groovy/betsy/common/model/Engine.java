@@ -1,6 +1,5 @@
 package betsy.common.model;
 
-import betsy.common.engines.ProcessLanguage;
 import com.google.common.base.Objects;
 
 import java.util.Collections;

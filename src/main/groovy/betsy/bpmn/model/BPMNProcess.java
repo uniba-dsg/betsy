@@ -2,6 +2,7 @@ package betsy.bpmn.model;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.AbstractProcess;
+import betsy.common.model.Group;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -13,14 +14,15 @@ public class BPMNProcess extends AbstractProcess<BPMNTestCase, AbstractBPMNEngin
 
     }
 
-    public BPMNProcess(Path process, String description, List<BPMNTestCase> testCases) {
+    public BPMNProcess(Path process, String description, List<BPMNTestCase> testCases, Group group) {
         this.setProcess(process);
         this.setDescription(description);
         this.setTestCases(new LinkedList<>(testCases));
+        this.setGroup(group);
     }
 
     public BPMNProcess createCopyWithoutEngine() {
-        return new BPMNProcess(getProcess(), getDescription(), getTestCases());
+        return new BPMNProcess(getProcess(), getDescription(), getTestCases(), getGroupObject());
     }
 
     public String getGroupId() {

@@ -2,7 +2,6 @@ package betsy.common.model;
 
 import betsy.common.HasName;
 import betsy.common.HasPath;
-import betsy.common.engines.ProcessLanguage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -10,9 +9,24 @@ import java.util.List;
 
 public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> implements Comparable, HasName, ProcessFolderStructure {
 
-    public void setTestCases(List<TC> testCases) {
-        uniqueifyTestCaseNames(testCases);
-        this.testCases = testCases;
+    private Path process;
+    private String description = "";
+    private List<TC> testCases = new ArrayList<>();
+    private E engine;
+
+    @Override
+    public Group getGroupObject() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    private Group group;
+
+    public String getGroup() {
+        return group.name;
     }
 
     private void uniqueifyTestCaseNames(List<TC> testCases) {
@@ -77,11 +91,6 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> im
         return process.compareTo(((AbstractProcess) o).process);
     }
 
-    private Path process;
-    private String description = "";
-    private List<TC> testCases = new ArrayList<>();
-    private E engine;
-
     public Path getProcess() { return this.process; }
 
     public void setProcess(Path process) {
@@ -98,6 +107,11 @@ public abstract class AbstractProcess<TC extends TestCase, E extends HasPath> im
 
     public List<TC> getTestCases() {
         return testCases;
+    }
+
+    public void setTestCases(List<TC> testCases) {
+        uniqueifyTestCaseNames(testCases);
+        this.testCases = testCases;
     }
 
     public E getEngine() {

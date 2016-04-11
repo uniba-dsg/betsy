@@ -33,6 +33,7 @@ public class StaticAnalysisProcesses {
 
                     process.setWsdls(createWSDLPaths(dir));
                     process.setAdditionalFiles(createXSDPaths(dir));
+                    process.setGroup(BPELProcessBuilder.SA);
 
                     result.add(process);
                 }
