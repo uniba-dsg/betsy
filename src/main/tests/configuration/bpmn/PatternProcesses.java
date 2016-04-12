@@ -222,7 +222,7 @@ public class PatternProcesses {
 
     public static final EngineIndependentProcess WCP20_CANCEL_CASE_TERMINATE = BPMNProcessBuilder.buildPatternProcess(
             "Cancels a process immediatly by emitting a terminate event. See Terminate_Event",
-            new Feature(new Construct(Groups.CFPATTERNS, "WC20"), "WCP20_CancelCaseTerminate"),
+            new Feature(new Construct(Groups.CFPATTERNS, "WCP20"), "WCP20_CancelCaseTerminate"),
             new BPMNTestCase()
     );
 

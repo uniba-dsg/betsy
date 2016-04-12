@@ -15,8 +15,6 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestStep;
 import betsy.bpmn.model.BPMNTestVariable;
 import betsy.bpmn.repositories.BPMNEngineRepository;
-import betsy.common.analytics.additional.BPELTestTreePrinter;
-import betsy.common.analytics.additional.BPMNTestTreePrinter;
 import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.*;
@@ -65,14 +63,12 @@ public class JsonGenerator {
             JSONArray groupsArray = new JSONArray();
             languageObject.put("groups", groupsArray);
 
-            TestNameToLanguageFeature bpel = new TestNameToLanguageFeature(BPELTestTreePrinter.class.getResourceAsStream("BpelLanguageConstructs.properties"));
-
             BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
             List<EngineIndependentProcess> processes = repository.getByName("ALL");
 
             Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
                     collect(Collectors.groupingBy(p -> p.getGroup().getName(),
-                            Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
+                            Collectors.groupingBy(p -> p.getConstruct().getName())));
             for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
 
@@ -122,12 +118,11 @@ public class JsonGenerator {
             JSONArray groupsArray = new JSONArray();
             languageObject.put("groups", groupsArray);
 
-            TestNameToLanguageFeature bpmn = new TestNameToLanguageFeature(BPMNTestTreePrinter.class.getResourceAsStream("BpmnLanguageConstructs.properties"));
             BPMNProcessRepository repository = new BPMNProcessRepository();
             List<EngineIndependentProcess> processes = repository.getByName("ALL");
             Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
                     collect(Collectors.groupingBy(p -> p.getGroup().getName(),
-                            Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
+                            Collectors.groupingBy(p -> p.getConstruct().getName())));
             for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
 
@@ -207,14 +202,12 @@ public class JsonGenerator {
         }
 
         private static void addBpel(JSONArray constructArray) throws IOException {
-            TestNameToLanguageFeature bpel = new TestNameToLanguageFeature(BPELTestTreePrinter.class.getResourceAsStream("BpelLanguageConstructs.properties"));
-
             BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
             List<EngineIndependentProcess> processes = repository.getByName("ALL");
 
             Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
                     collect(Collectors.groupingBy(p -> p.getGroup().getName(),
-                            Collectors.groupingBy(p -> bpel.getGroupByTestName(p.getName()))));
+                            Collectors.groupingBy(p -> p.getConstruct().getName())));
             for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
 
@@ -245,12 +238,11 @@ public class JsonGenerator {
         }
 
         private static void addBpmn(JSONArray constructArray) throws IOException {
-            TestNameToLanguageFeature bpmn = new TestNameToLanguageFeature(BPMNTestTreePrinter.class.getResourceAsStream("BpmnLanguageConstructs.properties"));
             BPMNProcessRepository repository = new BPMNProcessRepository();
             List<EngineIndependentProcess> processes = repository.getByName("ALL");
             Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
                     collect(Collectors.groupingBy(p -> p.getGroup().getName(),
-                            Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
+                            Collectors.groupingBy(p -> p.getConstruct().getName())));
             for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
                 String group = entry.getKey();
                 for(Map.Entry<String, List<EngineIndependentProcess>> entry2 : entry.getValue().entrySet()) {

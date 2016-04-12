@@ -22,18 +22,12 @@ public class BPELBetsy {
     public void execute() {
         Objects.requireNonNull(testFolderName, "test folder must be set");
 
-        validate();
-
         Collections.sort(processes);
 
         BPELTestSuite testSuite = BPELTestSuite.createTests(engines, processes, testFolderName);
 
         composite.setTestSuite(testSuite);
         composite.execute();
-    }
-
-    private void validate() {
-        new BPELValidator(processes).validate();
     }
 
     public List<AbstractBPELEngine> getEngines() {
@@ -49,6 +43,8 @@ public class BPELBetsy {
     }
 
     public void setProcesses(List<EngineIndependentProcess> processes) {
+        new BPELValidator(Objects.requireNonNull(processes)).validate();
+
         List<BPELProcess> processList = new ArrayList<>();
         for(EngineIndependentProcess engineIndependentProcess : processes) {
             processList.add(new BPELProcess(engineIndependentProcess));

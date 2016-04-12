@@ -1,6 +1,8 @@
 package betsy.bpel.validation
 
 import betsy.bpel.model.BPELProcess
+import betsy.common.model.EngineIndependentProcess
+import betsy.common.util.FileTypes
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -10,9 +12,9 @@ import java.nio.file.Path
  */
 class BPELValidator {
 
-    private final List<BPELProcess> processes
+    private final List<EngineIndependentProcess> processes
 
-    BPELValidator(List<BPELProcess> processes) {
+    BPELValidator(List<EngineIndependentProcess> processes) {
         this.processes = processes
     }
 
@@ -57,8 +59,7 @@ class BPELValidator {
         processes.each { process ->
             List<Path> paths = new LinkedList<>()
             paths.add(process.process)
-            paths.addAll(process.wsdlPaths)
-            paths.addAll(process.additionalFilePaths)
+            paths.addAll(process.getFiles());
 
             paths.each { path ->
                 if (!Files.isRegularFile(path)) {

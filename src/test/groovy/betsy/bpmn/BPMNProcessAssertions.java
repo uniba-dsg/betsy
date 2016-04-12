@@ -1,6 +1,7 @@
 package betsy.bpmn;
 
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.EngineIndependentProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
 
@@ -12,8 +13,8 @@ public class BPMNProcessAssertions {
 
     @Test
     public void test() {
-        BPMNProcess process = new BPMNProcessRepository().getByName("SequenceFlow").get(0);
-        assertEquals("basics", process.getGroup());
+        EngineIndependentProcess process = new BPMNProcessRepository().getByName("SequenceFlow").get(0);
+        assertEquals("basics", process.getGroup().getName());
     }
 
 }

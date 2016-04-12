@@ -246,7 +246,7 @@ class ScopeProcesses {
     public static final EngineIndependentProcess SCOPE_FAULT_HANDLERS_CATCH_ALL_INVOKE_VALIDATE = BPELProcessBuilder.buildScopeProcessWithPartner(
             // only used for error processes. but may also be used as a test
             "Scope-FaultHandlers-CatchAll-Invoke-Validate", "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
-            new Feature(new Construct(Groups.SCOPES, "FaultHandlers"), "Scope-FaultHandlers-CatchAll-Invoke"),
+            new Feature(new Construct(Groups.SCOPES, "FaultHandlers"), "Scope-FaultHandlers-CatchAll-Invoke-Validate"),
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)
     );
 

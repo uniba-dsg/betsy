@@ -64,7 +64,7 @@ public class BPELProcessBuilder {
     }
 
     public static EngineIndependentProcess buildBasicProcessWithXslt(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new EngineIndependentProcess(PATH_PREFIX.resolve(name + FileTypes.BPEL),
+        return new EngineIndependentProcess(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL),
                 description,
                 Arrays.asList(testCases),
                 feature,
