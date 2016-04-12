@@ -32,8 +32,11 @@ public class BPMNProcessBuilder {
                 feature);
     }
 
-    public static BPMNProcess buildEventProcess(String name, String description, BPMNTestCase... testCases) {
-        return new BPMNProcess(ROOT_FOLDER.resolve("events").resolve(name + FileTypes.BPMN), description, Arrays.asList(testCases), Groups.EVENTS);
+    public static EngineIndependentProcess buildEventProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
+        return new EngineIndependentProcess(ROOT_FOLDER.resolve("events").resolve(name + FileTypes.BPMN),
+                description,
+                Arrays.asList(testCases),
+                feature);
     }
 
     public static EngineIndependentProcess buildBasicProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
