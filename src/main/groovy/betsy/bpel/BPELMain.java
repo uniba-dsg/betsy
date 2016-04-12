@@ -15,6 +15,7 @@ import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.HasName;
 import betsy.common.config.Configuration;
+import betsy.common.model.EngineIndependentProcess;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -226,7 +227,7 @@ public class BPELMain {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<AbstractBPELEngine> engines, List<BPELProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<AbstractBPELEngine> engines, List<EngineIndependentProcess> processes) {
         // print selection of engines and processes
         LOGGER.info("Engines (" + engines.size() + "): " + HasName.getNames(engines));
         LOGGER.info("Processes (" + processes.size() + "): " + HasName.getNames(processes).stream().limit(10).collect(Collectors.toList()));
@@ -247,15 +248,14 @@ public class BPELMain {
 
     }
 
-    protected static void checkDeployment(BPELCliParameter params, List<BPELProcess> processes) {
+    protected static void checkDeployment(BPELCliParameter params, List<EngineIndependentProcess> processes) {
         if (params.checkDeployment()) {
             // check only whether the processes can be deployed
-            for (BPELProcess process : processes) {
-                process.setTestCases(Collections.singletonList(new BPELTestCase().checkDeployment()));
+            for (int i = 0; i < processes.size(); i++) {
+                EngineIndependentProcess process = processes.get(i);
+                processes.set(i, process.withNewTestCases(Collections.singletonList(new BPELTestCase().checkDeployment())));
             }
-
         }
-
     }
 
     protected static void virtualEngines(List<AbstractBPELEngine> engines) {
