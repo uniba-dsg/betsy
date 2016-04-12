@@ -78,23 +78,6 @@ class ErrorProcesses {
             new BPMNTestCase().assertGenericError()
     );
 
-    // FIXME move to events?
-    public static final EngineIndependentProcess MULTIPLE_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildErrorProcess(
-            "Multiple_IntermediateEvent_MissingEvent", "A process with a multiple event." +
-                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
-                    "This event is never thrown. The multiple event is never thrown and thus the process is never finished.",
-            new Feature(new Construct(Groups.EVENTS, "ParallelGateway_Conditions"), "Multiple_IntermediateEvent_MissingEvent"),
-            new BPMNTestCase()
-    );
-
-    public static final EngineIndependentProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildErrorProcess(
-            "Multiple_Parallel_IntermediateEvent_MissingEvent", "A process with a multiple parallel event." +
-                    "After a parallel split one branch of the process awaits two signals of which only one is thrown by the other branch. " +
-                    "The multiple parallel event is never thrown and thus the process is never finished.",
-            new Feature(new Construct(Groups.ERRORS, "InvalidLoopConditions"), "Multiple_Parallel_IntermediateEvent_MissingEvent"),
-            new BPMNTestCase()
-    );
-
 
     public static final List<EngineIndependentProcess> ERRORS = Arrays.asList(
             PARALLEL_GATEWAY_WITH_CONDITIONS,
@@ -107,9 +90,6 @@ class ErrorProcesses {
 
             TOKEN_START_QUANTITY_TWO,
             TOKEN_START_QUANTITY_ZERO,
-            TOKEN_COMPLETION_QUANTITY_ZERO,
-
-            MULTIPLE_INTERMEDIATE_EVENT_MISSING_EVENT,
-            MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_MISSING_EVENT
+            TOKEN_COMPLETION_QUANTITY_ZERO
     );
 }

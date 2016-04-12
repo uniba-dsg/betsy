@@ -12,6 +12,9 @@ public interface ProcessFolderStructure extends HasName, HasID {
     HasPath getEngine();
     Path getProcess();
 
+    String getGroup();
+    Group getGroupObject();
+
     default String getName() { return getProcessFileNameWithoutExtension(); }
 
     /**
@@ -36,10 +39,6 @@ public interface ProcessFolderStructure extends HasName, HasID {
     default String getProcessFileName() {
         return getProcess().getFileName().toString();
     }
-
-    String getGroup();
-
-    Group getGroupObject();
 
     default String getProcessFileNameWithoutExtension() {
         return FileTasks.getFilenameWithoutExtension(getProcess());

@@ -2,11 +2,30 @@ package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.Feature;
 
 import java.util.Arrays;
 import java.util.List;
 
 class EventProcesses {
+
+    public static final EngineIndependentProcess MULTIPLE_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_IntermediateEvent_MissingEvent", "A process with a multiple event." +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+                    "This event is never thrown. The multiple event is never thrown and thus the process is never finished.",
+            new Feature(new Construct(Groups.EVENTS, "Multiple_Events"), "Multiple_IntermediateEvent_MissingEvent"),
+            new BPMNTestCase()
+    );
+
+    public static final EngineIndependentProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildEventProcess(
+            "Multiple_Parallel_IntermediateEvent_MissingEvent", "A process with a multiple parallel event." +
+                    "After a parallel split one branch of the process awaits two signals of which only one is thrown by the other branch. " +
+                    "The multiple parallel event is never thrown and thus the process is never finished.",
+            new Feature(new Construct(Groups.EVENTS, "Multiple_Events"), "Multiple_Parallel_IntermediateEvent_MissingEvent"),
+            new BPMNTestCase()
+    );
 
     public static final BPMNProcess CANCEL = BPMNProcessBuilder.buildEventProcess(
             "Cancel_Event", "A simple test for canceling a transaction. This test uses the two allowed cancel event types:" +
