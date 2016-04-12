@@ -162,7 +162,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     public void setTestCases(List<TestCase> testCases) {
-        engineIndependentProcess.setTestCases(testCases);
+        engineIndependentProcess = engineIndependentProcess.withNewTestCases(testCases);
     }
 }
 

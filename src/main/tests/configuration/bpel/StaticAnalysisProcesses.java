@@ -6,6 +6,7 @@ import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.Group;
+import betsy.common.tasks.FileTasks;
 import betsy.common.util.FileTypes;
 
 import java.io.IOException;
@@ -31,12 +32,12 @@ class StaticAnalysisProcesses {
 
                 boolean isTestDirectory = hasFolderBpelFiles(dir);
                 if (isTestDirectory) {
-                    // FIXME this is not done yet, as the feature and the description are not well done
                     Path process = getBpelFileInFolder(dir);
+                    String rule = getRule(process);
                     result.add(new EngineIndependentProcess(process,
-                            "",
+                            FileTasks.getFilenameWithoutExtension(process),
                             Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
-                            new Feature(new Construct(Groups.SA, "SA000"), process.getFileName().toString()),
+                            new Feature(new Construct(Groups.SA, rule), process.getFileName().toString()),
                             createXSDandWSDLPaths(dir)));
                 }
             });
@@ -78,6 +79,10 @@ class StaticAnalysisProcesses {
         });
 
         return result;
+    }
+
+    private static String getRule(Path process) {
+        return IntStream.rangeClosed(1, 95).mapToObj(StaticAnalysisProcesses::convertIntegerToSARuleNumber).filter(n -> process.getFileName().toString().startsWith(n)).findFirst().orElse("UNKNOWN");
     }
 
     static String convertIntegerToSARuleNumber(int number) {

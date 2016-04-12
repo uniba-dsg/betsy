@@ -62,14 +62,14 @@ public class ErrorProcesses {
         List<EngineIndependentProcess> result = new LinkedList<>();
 
         EngineIndependentProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir);
-        happyPathProcess.setTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
+        happyPathProcess = happyPathProcess.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
         result.add(happyPathProcess);
 
         for (Map.Entry<String, String> entry : getInputToErrorCode().entrySet()) {
             int number = Integer.parseInt(entry.getKey());
             String name = entry.getValue();
             EngineIndependentProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir);
-            process.setTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
+            process = process.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
 
             result.add(process);
         }

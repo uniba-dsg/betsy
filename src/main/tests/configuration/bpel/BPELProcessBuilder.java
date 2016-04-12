@@ -15,22 +15,12 @@ import java.util.Collections;
 
 public class BPELProcessBuilder {
 
-    public static BPELProcess buildPatternProcess(final String name, BPELTestCase... testCases) {
-        BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL));
-        process.setWsdls(new ArrayList<>(Collections.singletonList(testInterface)));
-        process.setTestCases(Arrays.asList(testCases));
-        process.setGroup(Groups.CFPATTERNS);
-        return process;
+    public static EngineIndependentProcess buildPatternProcess(final String name, Feature feature, BPELTestCase... testCases) {
+        return new EngineIndependentProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Collections.singletonList(testInterface));
     }
 
-    public static BPELProcess buildPatternProcessWithPartner(final String name, BPELTestCase... testCases) {
-        BPELProcess process = new BPELProcess();
-        process.setProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL));
-        process.setWsdls(new ArrayList<>(Arrays.asList(testInterface, partnerInterface)));
-        process.setTestCases(Arrays.asList(testCases));
-        process.setGroup(Groups.CFPATTERNS);
-        return process;
+    public static EngineIndependentProcess buildPatternProcessWithPartner(final String name, Feature feature, BPELTestCase... testCases) {
+        return new EngineIndependentProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface));
     }
 
     private static BPELProcess buildProcess(final String name, BPELTestCase... testCases) {

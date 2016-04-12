@@ -3,6 +3,7 @@ package betsy.common.analytics.additional;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.AbstractProcess;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -40,16 +41,16 @@ public class BPELTestTreePrinter {
         TestNameToLanguageFeature bpmn = new TestNameToLanguageFeature(BPELTestTreePrinter.class.getResourceAsStream("BpelLanguageConstructs.properties"));
 
         BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = repository.getByName("ALL");
+        List<EngineIndependentProcess> processes = repository.getByName("ALL");
 
-        Map<String, Map<String, List<BPELProcess>>> entries = processes.stream().
-                collect(Collectors.groupingBy(BPELProcess::getGroup,
+        Map<String, Map<String, List<EngineIndependentProcess>>> entries = processes.stream().
+                collect(Collectors.groupingBy(p -> p.getGroup().getName(),
                         Collectors.groupingBy(p -> bpmn.getGroupByTestName(p.getName()))));
-        for(Map.Entry<String, Map<String, List<BPELProcess>>> entry : entries.entrySet()) {
+        for(Map.Entry<String, Map<String, List<EngineIndependentProcess>>> entry : entries.entrySet()) {
             String group = entry.getKey();
-            for(Map.Entry<String, List<BPELProcess>> entry2 : entry.getValue().entrySet()) {
+            for(Map.Entry<String, List<EngineIndependentProcess>> entry2 : entry.getValue().entrySet()) {
                 String languageFeature = entry2.getKey();
-                for(BPELProcess process : entry2.getValue()) {
+                for(EngineIndependentProcess process : entry2.getValue()) {
                     System.out.println(String.join(", ", group, languageFeature, process.getName()));
                 }
             }

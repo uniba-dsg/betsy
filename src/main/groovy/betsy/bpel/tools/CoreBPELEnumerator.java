@@ -1,6 +1,8 @@
 package betsy.bpel.tools;
 
 import betsy.bpel.model.BPELProcess;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.util.FileTypes;
 import configuration.bpel.BPELProcessRepository;
 import corebpel.CoreBPEL;
 
@@ -41,14 +43,14 @@ public class CoreBPELEnumerator {
         Files.createDirectories(outputFolder);
 
         String[] groups = new String[]{"BASIC_ACTIVITIES", "SCOPES", "STRUCTURED_ACTIVITIES"};
-        List<BPELProcess> processes = BPELProcessRepository.INSTANCE.getByNames(groups);
+        List<EngineIndependentProcess> processes = BPELProcessRepository.INSTANCE.getByNames(groups);
 
         for (String transformation : CoreBPEL.XSL_SHEETS) {
 
             Path transformationDirectory = outputFolder.resolve(transformation);
             Files.createDirectories(transformationDirectory);
 
-            for (BPELProcess process : processes) {
+            for (EngineIndependentProcess process : processes) {
 
                 Path processDirectory = transformationDirectory.resolve(process.getName());
                 Files.createDirectories(processDirectory);
@@ -57,11 +59,11 @@ public class CoreBPELEnumerator {
                 Files.createDirectories(bpelDirectory);
 
                 // copy BPEL file
-                Path targetBpelFilePath = bpelDirectory.resolve(process.getProcessFileName());
+                Path targetBpelFilePath = bpelDirectory.resolve(process.getProcess().getFileName());
                 Files.copy(process.getProcess(), targetBpelFilePath);
 
                 // copy WSDL files and XSD files
-                for (Path wsdl : process.getWsdlPaths()) {
+                for (Path wsdl : process.getFiles(FileTypes::isWsdlFile)) {
                     Files.copy(wsdl, processDirectory.resolve(wsdl.getFileName().toString()));
                 }
 

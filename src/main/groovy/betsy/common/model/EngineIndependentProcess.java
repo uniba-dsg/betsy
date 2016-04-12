@@ -34,6 +34,10 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
         return new EngineIndependentProcess(process, description, testCases, feature, files);
     }
 
+    public EngineIndependentProcess withNewTestCases(List<TestCase> testCases) {
+        return new EngineIndependentProcess(process, description, testCases, feature, files);
+    }
+
     public List<Path> getFiles() {
         return files;
     }
@@ -115,7 +119,7 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
         return testCases;
     }
 
-    public void setTestCases(List<TestCase> testCases) {
+    private void setTestCases(List<TestCase> testCases) {
         uniqueifyTestCaseNames(testCases);
         this.testCases.clear();
         this.testCases.addAll(testCases);
