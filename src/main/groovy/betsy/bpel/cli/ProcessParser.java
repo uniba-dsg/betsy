@@ -1,6 +1,5 @@
 package betsy.bpel.cli;
 
-import betsy.bpel.model.BPELProcess;
 import betsy.common.model.EngineIndependentProcess;
 import configuration.bpel.BPELProcessRepository;
 

@@ -2,9 +2,9 @@ package betsy.bpmn;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.Engine;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
 

@@ -1,11 +1,8 @@
 package betsy.bpmn;
 
-import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.EngineIndependentProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 

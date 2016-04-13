@@ -1,6 +1,5 @@
 package configuration.bpel;
 
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
 import betsy.bpel.model.steps.SoapTestStep;

@@ -1,18 +1,12 @@
 package betsy.bpel.model;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.model.BPMNProcess;
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.common.HasPath;
-import betsy.common.model.AbstractProcess;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.TestCase;
 import betsy.common.model.feature.Group;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

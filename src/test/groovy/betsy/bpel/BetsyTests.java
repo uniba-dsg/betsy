@@ -3,9 +3,9 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.model.Engine;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 

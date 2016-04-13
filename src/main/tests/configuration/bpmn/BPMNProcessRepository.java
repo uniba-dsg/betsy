@@ -1,6 +1,5 @@
 package configuration.bpmn;
 
-import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.repositories.Repository;
 

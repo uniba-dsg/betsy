@@ -2,7 +2,6 @@ package betsy.bpel;
 
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.host.exceptions.TemporaryFailedTestException;
-import betsy.common.model.AbstractProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;

@@ -1,7 +1,6 @@
 package betsy.bpel;
 
 import betsy.bpel.model.BPELIdShortener;
-import betsy.bpel.model.BPELProcess;
 import betsy.common.model.EngineIndependentProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;

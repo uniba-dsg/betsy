@@ -1,6 +1,5 @@
 package configuration.bpel;
 
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.feature.Construct;
@@ -9,7 +8,6 @@ import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 

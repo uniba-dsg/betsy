@@ -1,7 +1,5 @@
 package betsy.tools;
 
-import betsy.bpel.model.BPELProcess;
-import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
 import betsy.bpel.model.assertions.XpathTestAssertion;
 import betsy.bpel.model.steps.DelayTestStep;
@@ -10,7 +8,6 @@ import betsy.bpel.model.steps.NotDeployableCheckTestStep;
 import betsy.bpel.model.steps.SoapTestStep;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpel.virtual.host.VirtualEngineAPI;
-import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestStep;
 import betsy.bpmn.model.BPMNTestVariable;
@@ -22,7 +19,6 @@ import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
-import com.jniwrapper.Const;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;

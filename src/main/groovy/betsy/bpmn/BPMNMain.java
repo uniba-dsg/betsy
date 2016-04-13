@@ -1,7 +1,5 @@
 package betsy.bpmn;
 
-import betsy.bpel.BPELComposite;
-import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;

@@ -2,7 +2,6 @@ package betsy.common.model.feature;
 
 import betsy.common.HasName;
 import betsy.common.model.HasID;
-import com.jniwrapper.Const;
 
 import java.util.Objects;
 

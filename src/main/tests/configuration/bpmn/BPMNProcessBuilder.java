@@ -1,9 +1,7 @@
 package configuration.bpmn;
 
-import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.model.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.util.FileTypes;
 

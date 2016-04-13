@@ -1,6 +1,5 @@
 package configuration.bpel;
 
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.common.model.EngineIndependentProcess;
