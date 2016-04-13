@@ -1,6 +1,5 @@
 package betsy.common.model.feature;
 
-import betsy.common.model.HasID;
 import betsy.common.model.ProcessLanguage;
 
 public interface FeatureDimension {

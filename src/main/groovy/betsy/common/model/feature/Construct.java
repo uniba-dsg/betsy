@@ -30,4 +30,19 @@ public class Construct implements HasID, HasName {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Construct construct = (Construct) o;
+        return Objects.equals(getID(), construct.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getID());
+    }
 }
