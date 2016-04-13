@@ -1,6 +1,8 @@
 package betsy.bpel;
 
+import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELProcess;
+import betsy.common.model.EngineIndependentProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,9 +17,9 @@ public class ShortIdsTests {
         List<String> shortIds = new LinkedList<>();
 
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processed = processRepository.getByName("ALL");
-        for(BPELProcess process : processed){
-            shortIds.add(process.getShortId());
+        List<EngineIndependentProcess> processed = processRepository.getByName("ALL");
+        for(EngineIndependentProcess process : processed){
+            shortIds.add(new BPELIdShortener(process.getName()).getShortenedId());
         }
 
         for(String shortId : shortIds) {

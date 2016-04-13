@@ -11,6 +11,10 @@ public class Construct implements HasID, HasName {
     public final String name;
     public final String description;
 
+    public Construct(Group group, String name) {
+        this(group, name, "");
+    }
+
     public Construct(Group group, String name, String description) {
         this.group = Objects.requireNonNull(group);
         this.name = Objects.requireNonNull(name);
@@ -25,5 +29,20 @@ public class Construct implements HasID, HasName {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Construct construct = (Construct) o;
+        return Objects.equals(getID(), construct.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getID());
     }
 }

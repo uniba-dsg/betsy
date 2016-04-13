@@ -2,6 +2,7 @@ package betsy.bpmn;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.Engine;
 import configuration.bpmn.BPMNProcessRepository;
@@ -17,7 +18,7 @@ public class BPMNBetsyTests {
     public void simulateATestRun() throws Exception {
         AbstractBPMNEngine engine = new MockEngine();
 
-        List<BPMNProcess> processes = new BPMNProcessRepository().getByName("ALL");
+        List<EngineIndependentProcess> processes = new BPMNProcessRepository().getByName("ALL");
 
         BPMNBetsy betsy = new BPMNBetsy();
 

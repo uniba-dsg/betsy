@@ -1,5 +1,6 @@
 package betsy.bpel;
 
+import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.host.exceptions.TemporaryFailedTestException;
 import betsy.common.model.AbstractProcess;
 import betsy.common.tasks.FileTasks;
@@ -13,9 +14,9 @@ public class Retry {
 
     private static final Logger LOGGER = Logger.getLogger(Retry.class);
 
-    public final AbstractProcess process;
+    public final BPELProcess process;
 
-    public Retry(AbstractProcess process) {
+    public Retry(BPELProcess process) {
         this.process = Objects.requireNonNull(process);
     }
 

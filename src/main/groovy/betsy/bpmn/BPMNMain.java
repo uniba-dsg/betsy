@@ -6,6 +6,7 @@ import betsy.bpmn.cli.*;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasName;
+import betsy.common.model.EngineIndependentProcess;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
@@ -108,7 +109,7 @@ public class BPMNMain {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<AbstractBPMNEngine> engines, List<BPMNProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<AbstractBPMNEngine> engines, List<EngineIndependentProcess> processes) {
         // print selection of engines and processes
         LOGGER.info("Engines (" + engines.size() + "): " + HasName.getNames(engines));
         LOGGER.info("Processes (" + processes.size() + "): " + HasName.getNames(processes).stream().limit(10).collect(Collectors.toList()));

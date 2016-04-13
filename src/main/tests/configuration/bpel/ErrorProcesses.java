@@ -1,7 +1,8 @@
 package configuration.bpel;
 
-import betsy.bpel.model.BPELProcess;
+import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
@@ -12,18 +13,19 @@ public class ErrorProcesses {
 
     private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
 
-    public static List<BPELProcess> createProcesses() {
+    private static List<EngineIndependentProcess> createProcesses() {
         FileTasks.deleteDirectory(ERRORS_DIR);
         FileTasks.mkdirs(ERRORS_DIR);
 
-        List<BPELProcess> result = getProcesses();
+        List<EngineIndependentProcess> result = getProcesses();
 
-        for(BPELProcess process : result) {
+        for (EngineIndependentProcess process : result) {
             // update fileName
-            if(process.getProcessFileName().startsWith("IBR_")) {
-                XMLTasks.updatesNameAndNamespaceOfRootElement(IMPROVED_BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), process.getProcessFileName());
-            } else if(process.getProcessFileName().startsWith("BR_")){
-                XMLTasks.updatesNameAndNamespaceOfRootElement(BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), process.getProcessFileName());
+            String processFileName = process.getProcess().getFileName().toString();
+            if (processFileName.startsWith("IBR_")) {
+                XMLTasks.updatesNameAndNamespaceOfRootElement(IMPROVED_BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), processFileName);
+            } else if (processFileName.startsWith("BR_")) {
+                XMLTasks.updatesNameAndNamespaceOfRootElement(BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), processFileName);
             }
         }
 
@@ -34,43 +36,40 @@ public class ErrorProcesses {
         createProcesses(); // this is to recreate the error processes
     }
 
-    public static List<BPELProcess> getProcesses() {
+    public static List<EngineIndependentProcess> getProcesses() {
         Path errorsDir = Paths.get("src/main/tests/files/bpel/errors");
 
-        List<BPELProcess> result = new LinkedList<>();
+        List<EngineIndependentProcess> result = new LinkedList<>();
 
-        result.addAll(createTestsForCatchAll(errorsDir));
-        result.addAll(createTestsForCatchAllInvokeValidate(errorsDir));
+        result.addAll(createTests(errorsDir, BACKDOOR_ROBUSTNESS));
+        result.addAll(createTests(errorsDir, IMPROVED_BACKDOOR_ROBUSTNESS));
 
         Collections.sort(result);
 
         return result;// make sure the happy path is the first test
     }
 
-    private static BPELProcess cloneErrorBetsyProcess(final BPELProcess baseProcess, final int number, final String name, Path errorsDir) {
-        BPELProcess result = baseProcess.createCopyWithoutEngine();
-
+    private static EngineIndependentProcess cloneErrorBetsyProcess(final EngineIndependentProcess baseProcess, final int number, final String name, Path errorsDir) {
         // copy file
-        final String filename = baseProcess.getShortId() + "_ERR" + String.valueOf(number) + "_" + name;
+        String shortenedId = new BPELIdShortener(baseProcess.getName()).getShortenedId();
+        final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + name;
         Path newPath = errorsDir.resolve(filename + ".bpel");
 
-        result.setProcess(newPath);
-
-        return result;
+        return baseProcess.withNewProcess(newPath);
     }
 
-    private static List<BPELProcess> createTestsForCatchAll(Path errorsDir) {
-        List<BPELProcess> result = new LinkedList<>();
+    private static List<EngineIndependentProcess> createTests(Path errorsDir, EngineIndependentProcess baseProcess) {
+        List<EngineIndependentProcess> result = new LinkedList<>();
 
-        BPELProcess happyPathProcess = cloneErrorBetsyProcess(BACKDOOR_ROBUSTNESS, 0, "happy-path", errorsDir);
-        happyPathProcess.setTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
+        EngineIndependentProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, "happy-path", errorsDir);
+        happyPathProcess = happyPathProcess.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
         result.add(happyPathProcess);
 
         for (Map.Entry<String, String> entry : getInputToErrorCode().entrySet()) {
             int number = Integer.parseInt(entry.getKey());
             String name = entry.getValue();
-            BPELProcess process = cloneErrorBetsyProcess(BACKDOOR_ROBUSTNESS, number, name, errorsDir);
-            process.setTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
+            EngineIndependentProcess process = cloneErrorBetsyProcess(baseProcess, number, name, errorsDir);
+            process = process.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
 
             result.add(process);
         }
@@ -78,26 +77,7 @@ public class ErrorProcesses {
         return result;
     }
 
-    private static List<BPELProcess> createTestsForCatchAllInvokeValidate(Path errorsDir) {
-        List<BPELProcess> result = new LinkedList<>();
-
-        BPELProcess happyPathProcess = cloneErrorBetsyProcess(IMPROVED_BACKDOOR_ROBUSTNESS, 0, "happy-path", errorsDir);
-        happyPathProcess.setTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
-        result.add(happyPathProcess);
-
-        for (Map.Entry<String, String> entry : getInputToErrorCode().entrySet()) {
-            int number = Integer.parseInt(entry.getKey());
-            String name = entry.getValue();
-            BPELProcess process = cloneErrorBetsyProcess(IMPROVED_BACKDOOR_ROBUSTNESS, number, name, errorsDir);
-            process.setTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
-
-            result.add(process);
-        }
-
-        return result;
-    }
-
-    public static Map<String, String> getInputToErrorCode() {
+    private static Map<String, String> getInputToErrorCode() {
         Map<String, String> map = new LinkedHashMap<>(34);
         map.put("40001", "custom-xsd-rm-elem");
         map.put("40002", "custom-xsd-rm-content");
@@ -137,11 +117,13 @@ public class ErrorProcesses {
         return map;
     }
 
-    public static final BPELProcess BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+    private static final EngineIndependentProcess BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+            "BackdoorRobustness",
             "errorsbase/BackdoorRobustness",
             "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
-    public static final BPELProcess IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+    private static final EngineIndependentProcess IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+            "ImprovedBackdoorRobustness",
             "errorsbase/ImprovedBackdoorRobustness",
             "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));

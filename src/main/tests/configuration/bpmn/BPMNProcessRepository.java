@@ -1,6 +1,7 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;
@@ -8,7 +9,7 @@ import java.util.*;
 
 public class BPMNProcessRepository {
     public BPMNProcessRepository() {
-        List<BPMNProcess> all = new LinkedList<>();
+        List<EngineIndependentProcess> all = new LinkedList<>();
         all.addAll(GatewayProcesses.GATEWAYS);
         all.addAll(ActivityProcesses.ACTIVITIES);
         all.addAll(EventProcesses.EVENTS);
@@ -32,7 +33,7 @@ public class BPMNProcessRepository {
                 // f.get(null) returns the value of the field. the null parameter is ignored as the field is static.
                 try {
                     Object value = f.get(null);
-                    repo.put(f.getName(), (List<BPMNProcess>) value);
+                    repo.put(f.getName(), (List<EngineIndependentProcess>) value);
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException("Could not retrieve field value", e);
                 }
@@ -42,17 +43,17 @@ public class BPMNProcessRepository {
         repo.put("MINIMAL", Collections.singletonList(BasicProcesses.SEQUENCE_FLOW));
 
         // insert every process into the map
-        for (BPMNProcess process : repo.getByName("ALL")) {
+        for (EngineIndependentProcess process : repo.getByName("ALL")) {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
 
     }
 
-    public List<BPMNProcess> getByName(String name) {
+    public List<EngineIndependentProcess> getByName(String name) {
         return repo.getByName(name);
     }
 
-    public List<BPMNProcess> getByNames(String... names) {
+    public List<EngineIndependentProcess> getByNames(String... names) {
         return repo.getByNames(names);
     }
 
@@ -60,5 +61,5 @@ public class BPMNProcessRepository {
         return repo.getNames();
     }
 
-    private final Repository<BPMNProcess> repo = new Repository<>();
+    private final Repository<EngineIndependentProcess> repo = new Repository<>();
 }

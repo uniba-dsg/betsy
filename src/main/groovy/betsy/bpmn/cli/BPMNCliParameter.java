@@ -3,10 +3,11 @@ package betsy.bpmn.cli;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.cli.CliParameter;
+import betsy.common.model.EngineIndependentProcess;
 
 import java.util.List;
 
 public interface BPMNCliParameter extends CliParameter {
     List<AbstractBPMNEngine> getEngines();
-    List<BPMNProcess> getProcesses();
+    List<EngineIndependentProcess> getProcesses();
 }

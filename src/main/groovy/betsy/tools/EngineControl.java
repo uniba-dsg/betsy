@@ -7,6 +7,11 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
+import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.Feature;
+import betsy.common.model.feature.Group;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -27,9 +32,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -49,7 +56,9 @@ public class EngineControl extends Application {
             final Path tmpFolder = createTempFolder(e.toString());
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
-                eNew.storeLogs(new BPELProcess() {
+                Feature feature = new Feature(new Construct(new Group("group", ProcessLanguage.BPEL, "description"), "construct"), "feature");
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
                     @Override
                     public Path getTargetLogsPath() {
                         return tmpFolder;
@@ -57,7 +66,9 @@ public class EngineControl extends Application {
                 });
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
-                eNew.storeLogs(new BPMNProcess() {
+                Feature feature = new Feature(new Construct(new Group("group", ProcessLanguage.BPEL, "description"), "construct"), "feature");
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                eNew.storeLogs(new BPMNProcess(engineIndependentProcess) {
                     @Override
                     public Path getTargetLogsPath() {
                         return tmpFolder;

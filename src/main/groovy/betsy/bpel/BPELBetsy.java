@@ -4,6 +4,8 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.validation.BPELValidator;
+import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.EngineIndependentProcess;
 import betsy.common.util.LogUtil;
 
 import java.util.ArrayList;
@@ -20,18 +22,12 @@ public class BPELBetsy {
     public void execute() {
         Objects.requireNonNull(testFolderName, "test folder must be set");
 
-        validate();
-
         Collections.sort(processes);
 
         BPELTestSuite testSuite = BPELTestSuite.createTests(engines, processes, testFolderName);
 
         composite.setTestSuite(testSuite);
         composite.execute();
-    }
-
-    private void validate() {
-        new BPELValidator(processes).validate();
     }
 
     public List<AbstractBPELEngine> getEngines() {
@@ -46,8 +42,14 @@ public class BPELBetsy {
         return processes;
     }
 
-    public void setProcesses(List<BPELProcess> processes) {
-        this.processes = processes;
+    public void setProcesses(List<EngineIndependentProcess> processes) {
+        new BPELValidator(Objects.requireNonNull(processes)).validate();
+
+        List<BPELProcess> processList = new ArrayList<>();
+        for(EngineIndependentProcess engineIndependentProcess : processes) {
+            processList.add(new BPELProcess(engineIndependentProcess));
+        }
+        this.processes = processList;
     }
 
     public void setTestFolder(String folderName){
