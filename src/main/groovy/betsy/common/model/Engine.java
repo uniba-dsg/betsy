@@ -61,7 +61,7 @@ public final class Engine implements HasID {
         return Objects.hashCode(toString());
     }
 
-    public String getId() {
+    private String getId() {
         List<String> values = new LinkedList<>();
         values.add(name);
         values.add(version);

@@ -4,8 +4,12 @@ import betsy.common.model.ProcessLanguage;
 
 public interface FeatureDimension {
 
-    default ProcessLanguage getLanguage() {
-        return getGroup().processLanguage;
+    default Capability getCapability() {
+        return getLanguage().capability;
+    }
+
+    default Language getLanguage() {
+        return getGroup().language;
     }
 
     default Group getGroup() {
@@ -22,7 +26,7 @@ public interface FeatureDimension {
      * @return LANGUAGE__FEATURE
      */
     default String getLanguageFeatureID() {
-        return String.join("__", getLanguage().name(), getFeature().getName());
+        return String.join("__", getLanguage().getName(), getFeature().getName());
     }
 
     /**

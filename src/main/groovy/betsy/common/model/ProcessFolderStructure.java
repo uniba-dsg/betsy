@@ -84,6 +84,10 @@ public interface ProcessFolderStructure extends HasName, HasID {
         return getTargetPath().resolve("reports");
     }
 
+    default Path getTargetReportsPathJUnitXml() {
+        return getTargetReportsPath().resolve("TEST-Complete.TestSuite.xml");
+    }
+
     /**
      * The path <code>test/$engine/$process/bpel</code>
      *

@@ -9,17 +9,17 @@ import java.util.Objects;
 public class Group implements HasID, HasName {
 
     public final String name;
-    public final ProcessLanguage processLanguage;
+    public final Language language;
     public final String description;
 
-    public Group(String name, ProcessLanguage processLanguage, String description) {
+    public Group(String name, Language language, String description) {
         this.name = Objects.requireNonNull(name);
-        this.processLanguage = Objects.requireNonNull(processLanguage);
+        this.language = Objects.requireNonNull(language);
         this.description = Objects.requireNonNull(description);
     }
 
     public String getID() {
-        return String.join(SEPARATOR, processLanguage.name(), name);
+        return String.join(SEPARATOR, language.getID(), name);
     }
 
     @Override

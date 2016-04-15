@@ -112,7 +112,7 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
     }
 
     public String getDescription() {
-        return getFeature().description;
+        return description;
     }
 
     public List<TestCase> getTestCases() {

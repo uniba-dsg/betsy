@@ -73,6 +73,10 @@ public class CsvRow implements Comparable<CsvRow> {
         return deployable;
     }
 
+    public int getSuccesses() {
+        return getTests() - getFailures();
+    }
+
     @Override
     public int compareTo(CsvRow o) {
         int engineComparison = engine.compareTo(o.engine);

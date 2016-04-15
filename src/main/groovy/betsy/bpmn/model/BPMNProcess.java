@@ -6,6 +6,8 @@ import betsy.common.HasPath;
 import betsy.common.model.AbstractProcess;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
+import betsy.common.model.feature.Feature;
+import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
 
 import java.nio.file.Path;
@@ -73,6 +75,14 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
         return engineIndependentProcess.getGroup().getName();
     }
 
+    public Feature getFeature() {
+        return this.engineIndependentProcess.getFeature();
+    }
+
+    public FeatureDimension getFeatureDimension() {
+        return this.engineIndependentProcess;
+    }
+
     @Override
     public Group getGroupObject() {
         return engineIndependentProcess.getGroup();
@@ -85,5 +95,9 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
     @Override
     public int compareTo(BPMNProcess o) {
         return engineIndependentProcess.compareTo(o.engineIndependentProcess);
+    }
+
+    public String getDescription() {
+        return engineIndependentProcess.getDescription();
     }
 }
