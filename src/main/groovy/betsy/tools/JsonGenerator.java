@@ -80,10 +80,10 @@ public class JsonGenerator {
                     JSONObject languageObject = new JSONObject();
                     languageObject.put("name", language.getName());
                     languageObject.put("id", language.getID());
+                    JSONArray groupsArray = new JSONArray();
+                    languageObject.put("groups", groupsArray);
 
                     for(Map.Entry<Group, Map<Construct, List<EngineIndependentProcess>>> entryGroup : entryLanguage.getValue().entrySet()) {
-                        JSONArray groupsArray = new JSONArray();
-                        languageObject.put("groups", groupsArray);
                         Group group = entryGroup.getKey();
 
                         JSONObject groupObject = new JSONObject();
