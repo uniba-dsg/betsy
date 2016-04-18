@@ -13,7 +13,6 @@ public class GitUil {
 
             try (BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()))) {
                 String line = input.readLine();
-                System.out.println("GIT COMMIT: " + line);
                 if (line.startsWith("fatal:")) {
                     //no commit hash
                     return "";
