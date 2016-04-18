@@ -316,7 +316,7 @@ class BasicActivityProcesses {
     public static final EngineIndependentProcess INVOKE_SYNC_FAULT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             new Feature(new Construct(Groups.BASIC, "Invoke"), "Invoke-Sync-Fault"),
-            new BPELTestCase().checkDeployment().sendSync(-5, new SoapFaultTestAssertion("CustomFault"))
+            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, new SoapFaultTestAssertion("CustomFault"))
     );
 
     public static final EngineIndependentProcess INVOKE_TO_PARTS = BPELProcessBuilder.buildBasicProcessWithPartner(

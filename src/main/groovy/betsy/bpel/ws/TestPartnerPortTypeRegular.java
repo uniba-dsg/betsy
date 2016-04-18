@@ -22,8 +22,8 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
     public static final int CODE_THROW_FAULT = -6;
 
     public static final int CODE_CONCURRENCY_DETECTION___OPERATION_UNDER_TEST = 100;
-    public static final int CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS_AND_RESET = 101;
-    public static final int CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES_AND_RESET = 102;
+    public static final int CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS = 101;
+    public static final int CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES = 102;
     public static final int CODE_CONCURRENCY_DETECTION___RESET_COUNTERS = 103;
 
     private final ConcurrencyDetector detector = new ConcurrencyDetector();
@@ -70,13 +70,12 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
     private int detectConcurrency(final int inputPart) {
         if (inputPart == CODE_CONCURRENCY_DETECTION___OPERATION_UNDER_TEST) {
             return detector.access();
-        } else if (inputPart == CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS_AND_RESET) {
+        } else if (inputPart == CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS) {
             return detector.getNumberOfConcurrentCalls();
-        } else if (inputPart == CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES_AND_RESET) {
+        } else if (inputPart == CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES) {
             return detector.getNumberOfCalls();
         } else if (inputPart == CODE_CONCURRENCY_DETECTION___RESET_COUNTERS) {
-            detector.access();
-            return 0;
+            return detector.reset();
         } else {
             return inputPart;
         }
