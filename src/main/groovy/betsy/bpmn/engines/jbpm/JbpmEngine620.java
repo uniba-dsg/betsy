@@ -1,12 +1,12 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 
 public class JbpmEngine620 extends JbpmEngine {
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPMN, "jbpm", "6.2.0");
     }
 

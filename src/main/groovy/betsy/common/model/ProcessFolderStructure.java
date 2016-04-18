@@ -7,12 +7,12 @@ import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
 
-public interface ProcessFolderStructure extends HasName, HasID {
+public interface ProcessFolderStructure extends HasName {
 
     HasPath getEngine();
     Path getProcess();
 
-    Group getGroup();
+    String getGroupName();
 
     default String getName() { return getProcessFileNameWithoutExtension(); }
 
@@ -23,11 +23,7 @@ public interface ProcessFolderStructure extends HasName, HasID {
      * @return the id without / or \ signs
      */
     default String getNormalizedId() {
-        return getGroup().getName() + "__" + getProcessFileNameWithoutExtension();
-    }
-
-    default String getID() {
-        return String.join(SEPARATOR, getGroup().getID(), getProcessFileNameWithoutExtension());
+        return getGroupName() + "__" + getProcessFileNameWithoutExtension();
     }
 
     /**

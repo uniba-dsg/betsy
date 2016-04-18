@@ -70,7 +70,7 @@ public class BPMNComposite {
         log(testSuite.getReportsPath(), () -> {
             new BPMNReporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPMNCsvReport());
-            new TestsEngineDependent(testSuite).createJson();
+            new TestsEngineDependent().createJson(testSuite);
         });
     }
 

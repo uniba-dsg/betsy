@@ -1,6 +1,6 @@
 package betsy.bpmn.model;
 
-import betsy.common.model.AssertableTestStep;
+import betsy.common.model.input.AssertableTestStep;
 
 import java.util.Optional;
 

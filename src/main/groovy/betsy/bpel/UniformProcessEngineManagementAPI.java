@@ -4,7 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.EngineAPI;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -77,9 +77,7 @@ public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess>
         return engine.getLogs();
     }
 
-    @Override
-    public Engine getEngineId() {
-        return engine.getEngineId();
+    @Override public Engine getEngineObject() {
+        return engine.getEngineObject();
     }
-
 }

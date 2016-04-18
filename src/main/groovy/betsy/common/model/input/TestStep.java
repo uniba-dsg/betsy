@@ -1,4 +1,4 @@
-package betsy.common.model;
+package betsy.common.model.input;
 
 public class TestStep {
 

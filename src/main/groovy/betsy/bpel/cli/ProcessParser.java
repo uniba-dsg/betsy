@@ -1,6 +1,6 @@
 package betsy.bpel.cli;
 
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import configuration.bpel.BPELProcessRepository;
 
 import java.util.List;

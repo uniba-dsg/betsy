@@ -1,9 +1,9 @@
 package betsy.bpel.model;
 
 import betsy.bpel.ws.TestPartnerPortTypeRegular;
-import betsy.common.model.TestAssertion;
-import betsy.common.model.TestCase;
-import betsy.common.model.TestStep;
+import betsy.common.model.input.TestAssertion;
+import betsy.common.model.input.TestCase;
+import betsy.common.model.input.TestStep;
 import betsy.bpel.model.steps.*;
 
 import java.util.Objects;

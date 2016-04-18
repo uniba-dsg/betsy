@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Test;
 

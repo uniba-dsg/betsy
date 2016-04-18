@@ -1,14 +1,17 @@
-package betsy.common.model;
-
-import com.google.common.base.Objects;
+package betsy.common.model.engine;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import betsy.common.HasName;
+import betsy.common.model.HasID;
+import betsy.common.model.ProcessLanguage;
+import com.google.common.base.Objects;
+
 import static java.util.Objects.requireNonNull;
 
-public final class Engine implements HasID {
+public final class Engine implements HasID, HasName {
 
     public static final String DELIMITER = "--";
     private final String name;
@@ -39,7 +42,7 @@ public final class Engine implements HasID {
     }
 
     public String getNormalizedId() {
-        return getId().replaceAll(DELIMITER,"__").replaceAll("\\.","_");
+        return getId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
     }
 
     @Override

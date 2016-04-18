@@ -4,7 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.validation.BPELValidator;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 
 import java.util.ArrayList;
 import java.util.Collections;

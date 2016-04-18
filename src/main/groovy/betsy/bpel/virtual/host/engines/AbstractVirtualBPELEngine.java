@@ -21,7 +21,7 @@ import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import betsy.bpel.virtual.host.virtualbox.SnapshotCreator;
 import betsy.common.config.Configuration;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
@@ -52,8 +52,8 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     public AbstractBPELEngine defaultEngine;
 
     @Override
-    public Engine getEngineId() {
-        Engine engineId = defaultEngine.getEngineId();
+    public Engine getEngineObject() {
+        Engine engineId = defaultEngine.getEngineObject();
         List<String> configuration = new LinkedList<>();
         configuration.addAll(engineId.getConfiguration());
         configuration.add("virtual");

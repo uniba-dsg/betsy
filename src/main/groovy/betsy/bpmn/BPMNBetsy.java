@@ -4,7 +4,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.validation.BPMNValidator;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 
 import java.util.ArrayList;
 import java.util.Collections;

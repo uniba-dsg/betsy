@@ -2,7 +2,7 @@ package betsy.bpmn.cli;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.repositories.BPMNEngineRepository;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.apache.commons.cli.*;
 

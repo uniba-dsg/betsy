@@ -3,7 +3,7 @@ package betsy.bpel.cli;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.common.config.Configuration;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.apache.commons.cli.*;
 

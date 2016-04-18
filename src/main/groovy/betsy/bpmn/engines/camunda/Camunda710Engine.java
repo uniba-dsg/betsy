@@ -1,7 +1,7 @@
 package betsy.bpmn.engines.camunda;
 
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.WaitTasks;
 
@@ -10,7 +10,7 @@ import java.util.Optional;
 public class Camunda710Engine extends CamundaEngine {
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPMN, "camunda", "7.1.0");
     }
 

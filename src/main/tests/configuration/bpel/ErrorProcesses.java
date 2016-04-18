@@ -2,7 +2,7 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;

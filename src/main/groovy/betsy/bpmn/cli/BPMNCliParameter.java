@@ -2,7 +2,7 @@ package betsy.bpmn.cli;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.cli.CliParameter;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 
 import java.util.List;
 

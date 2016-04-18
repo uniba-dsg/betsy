@@ -1,6 +1,6 @@
 package betsy.bpmn.model;
 
-import betsy.common.model.TestAssertion;
+import betsy.common.model.input.TestAssertion;
 
 import java.util.Objects;
 

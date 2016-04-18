@@ -1,7 +1,7 @@
 package betsy.bpmn.engines.activiti;
 
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 import betsy.common.tasks.FileTasks;
 
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.Optional;
 public class Activiti5151Engine extends ActivitiEngine {
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPMN, "activiti", "5.15.1");
     }
 

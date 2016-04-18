@@ -1,7 +1,7 @@
 package configuration.bpel;
 
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.util.FileTypes;

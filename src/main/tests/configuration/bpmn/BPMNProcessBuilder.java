@@ -1,7 +1,7 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.feature.Feature;
 import betsy.common.util.FileTypes;
 

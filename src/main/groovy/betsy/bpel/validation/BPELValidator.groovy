@@ -1,6 +1,6 @@
 package betsy.bpel.validation
 
-import betsy.common.model.EngineIndependentProcess
+import betsy.common.model.input.EngineIndependentProcess
 
 import java.nio.file.Files
 import java.nio.file.Path

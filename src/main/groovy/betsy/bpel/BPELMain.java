@@ -15,7 +15,7 @@ import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.HasName;
 import betsy.common.config.Configuration;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;

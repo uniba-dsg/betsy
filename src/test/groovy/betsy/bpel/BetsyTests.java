@@ -3,8 +3,8 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.model.Engine;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.engine.Engine;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.ProcessLanguage;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class BetsyTests {
         }
 
         @Override
-        public Engine getEngineId() {
+        public Engine getEngineObject() {
             return new Engine(ProcessLanguage.BPEL, "mock", "1.0");
         }
 

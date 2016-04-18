@@ -1,6 +1,6 @@
 package configuration.bpmn;
 
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;

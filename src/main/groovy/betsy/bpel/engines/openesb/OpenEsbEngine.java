@@ -3,7 +3,7 @@ package betsy.bpel.engines.openesb;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
@@ -21,7 +21,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPEL, "openesb", "2.2");
     }
 

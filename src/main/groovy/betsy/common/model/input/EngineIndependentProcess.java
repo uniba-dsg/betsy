@@ -1,6 +1,7 @@
-package betsy.common.model;
+package betsy.common.model.input;
 
 import betsy.common.HasName;
+import betsy.common.model.ProcessLanguage;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.tasks.FileTasks;

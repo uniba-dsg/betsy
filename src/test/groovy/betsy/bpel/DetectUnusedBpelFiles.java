@@ -1,6 +1,6 @@
 package betsy.bpel;
 
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.util.FileTypes;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;

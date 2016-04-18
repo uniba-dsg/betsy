@@ -8,7 +8,7 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
@@ -19,7 +19,7 @@ import java.util.*;
 public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0");
     }
 

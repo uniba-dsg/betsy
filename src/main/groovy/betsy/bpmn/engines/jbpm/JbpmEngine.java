@@ -8,7 +8,7 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
@@ -29,7 +29,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1");
     }
 

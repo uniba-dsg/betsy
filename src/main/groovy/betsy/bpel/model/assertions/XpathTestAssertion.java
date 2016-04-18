@@ -1,6 +1,6 @@
 package betsy.bpel.model.assertions;
 
-import betsy.common.model.TestAssertion;
+import betsy.common.model.input.TestAssertion;
 
 public class XpathTestAssertion extends TestAssertion {
     private String xpathExpression;

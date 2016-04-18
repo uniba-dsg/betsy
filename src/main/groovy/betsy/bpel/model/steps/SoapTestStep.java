@@ -1,7 +1,7 @@
 package betsy.bpel.model.steps;
 
 import betsy.bpel.model.assertions.XpathTestAssertion;
-import betsy.common.model.AssertableTestStep;
+import betsy.common.model.input.AssertableTestStep;
 
 public class SoapTestStep extends AssertableTestStep {
 

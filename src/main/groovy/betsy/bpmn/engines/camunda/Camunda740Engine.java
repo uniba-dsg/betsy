@@ -1,12 +1,12 @@
 package betsy.bpmn.engines.camunda;
 
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 
 public class Camunda740Engine extends Camunda710Engine {
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPMN, "camunda", "7.4.0");
     }
 

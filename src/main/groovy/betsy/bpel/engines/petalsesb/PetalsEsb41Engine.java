@@ -4,7 +4,7 @@ import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 import betsy.common.model.ProcessLanguage;
-import betsy.common.model.Engine;
+import betsy.common.model.engine.Engine;
 
 import java.nio.file.Path;
 
@@ -13,7 +13,7 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
     private static final Logger LOGGER = Logger.getLogger(PetalsEsb41Engine.class);
 
     @Override
-    public Engine getEngineId() {
+    public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1");
     }
 

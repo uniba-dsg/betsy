@@ -1,9 +1,9 @@
 package betsy.bpmn.reporting;
 
 import betsy.bpmn.model.*;
-import betsy.common.model.EngineIndependentProcess;
-import betsy.common.model.TestAssertion;
-import betsy.common.model.TestCase;
+import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.model.input.TestAssertion;
+import betsy.common.model.input.TestCase;
 import configuration.bpmn.BPMNProcessRepository;
 
 import java.util.List;

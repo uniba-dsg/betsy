@@ -1,5 +1,6 @@
 package betsy.common.model.feature;
 
+import betsy.common.model.HasID;
 import betsy.common.model.ProcessLanguage;
 
 public interface FeatureDimension {
@@ -36,6 +37,10 @@ public interface FeatureDimension {
      */
     default String getGroupFeatureID() {
         return String.join("__", getGroup().getName(), getFeature().getName());
+    }
+
+    default String getFeatureID() {
+        return getFeature().getID();
     }
 
     Feature getFeature();

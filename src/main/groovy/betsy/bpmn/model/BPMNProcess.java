@@ -1,8 +1,10 @@
 package betsy.bpmn.model;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
+import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineDimension;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess>, FeatureDimension {
+public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess>, FeatureDimension, EngineDimension {
 
     private EngineIndependentProcess engineIndependentProcess;
     private AbstractBPMNEngine engine;
@@ -88,5 +90,19 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
 
     public String getDescription() {
         return engineIndependentProcess.getDescription();
+    }
+
+    @Override
+    public Engine getEngineObject() {
+        return getEngine().getEngineObject();
+    }
+
+    public FeatureDimension getFeatureDimension() {
+        return engineIndependentProcess;
+    }
+
+    @Override
+    public String getGroupName() {
+        return getFeatureDimension().getGroup().getName();
     }
 }

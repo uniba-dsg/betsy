@@ -13,14 +13,18 @@ import betsy.bpmn.model.BPMNTestStep;
 import betsy.bpmn.model.BPMNTestVariable;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.*;
+import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.IsEngine;
 import betsy.common.model.feature.Capability;
 import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
 import betsy.common.model.feature.Language;
+import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.model.input.TestAssertion;
+import betsy.common.model.input.TestCase;
+import betsy.common.model.input.TestStep;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
@@ -28,7 +32,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,7 +39,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class JsonGenerator {
@@ -133,7 +135,7 @@ public class JsonGenerator {
             for(EngineLifecycle e : getEngines()) {
                 boolean excludeVirtualEngines = !(e instanceof VirtualEngineAPI);
                 if(e instanceof IsEngine && excludeVirtualEngines) {
-                    Engine engine = ((IsEngine) e).getEngineId();
+                    Engine engine = ((IsEngine) e).getEngineObject();
                     JSONObject object = new JSONObject();
                     object.put("id", engine.getNormalizedId());
                     object.put("name", engine.getName());

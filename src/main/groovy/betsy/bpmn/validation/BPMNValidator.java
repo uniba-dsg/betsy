@@ -1,7 +1,7 @@
 package betsy.bpmn.validation;
 
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Assert;
 import org.w3c.dom.Document;

@@ -1,9 +1,11 @@
 package betsy.bpel.model;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineDimension;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
-import betsy.common.model.TestCase;
+import betsy.common.model.input.TestCase;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>, FeatureDimension  {
+public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>, FeatureDimension, EngineDimension {
 
     private EngineIndependentProcess engineIndependentProcess;
     private AbstractBPELEngine engine;
@@ -135,6 +137,11 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     @Override
+    public String getGroupName() {
+        return getFeatureDimension().getGroup().getName();
+    }
+
+    @Override
     public Group getGroup() {
         return getFeatureDimension().getGroup();
     }
@@ -163,6 +170,11 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
 
     public FeatureDimension getFeatureDimension() {
         return engineIndependentProcess;
+    }
+
+    @Override
+    public Engine getEngineObject() {
+        return getEngine().getEngineObject();
     }
 }
 

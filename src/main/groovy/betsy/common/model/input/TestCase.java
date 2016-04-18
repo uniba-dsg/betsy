@@ -1,4 +1,4 @@
-package betsy.common.model;
+package betsy.common.model.input;
 
 import java.util.ArrayList;
 import java.util.List;

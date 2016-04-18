@@ -1,7 +1,7 @@
 package betsy.common.engines;
 
 import betsy.common.HasLogs;
-import betsy.common.model.IsEngine;
+import betsy.common.model.engine.IsEngine;
 import betsy.common.model.ProcessLanguage;
 
 public interface EngineAPI<P> extends EngineLifecycle, IsEngine, HasLogs {

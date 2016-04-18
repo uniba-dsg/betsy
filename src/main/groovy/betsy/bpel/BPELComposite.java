@@ -6,6 +6,7 @@ import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.common.analytics.Analyzer;
+import betsy.common.reporting.TestsEngineDependent;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.util.IOCapture;
@@ -81,6 +82,7 @@ public class BPELComposite {
         log(testSuite.getReportsPath(), () -> {
             new Reporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPELCsvReport());
+            new TestsEngineDependent().createJson(testSuite);
         });
     }
 

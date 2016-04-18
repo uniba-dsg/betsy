@@ -3,7 +3,7 @@ package configuration.bpel;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
 import betsy.bpel.model.steps.SoapTestStep;
-import betsy.common.model.EngineIndependentProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;
