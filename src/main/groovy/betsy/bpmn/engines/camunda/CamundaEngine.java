@@ -80,7 +80,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public void buildTest(final BPMNProcess process) {
         BPMNTestBuilder builder = new BPMNTestBuilder();
-        builder.setPackageString(process.getEngineID() + "." + process.getGroup().getName() + "." + process.getName());
+        builder.setPackageString(String.join(".", process.getEngineID() + "." + process.getGroup().getName()));
         builder.setLogDir(getTomcatDir().resolve("bin"));
         builder.setProcess(process);
         builder.buildTests();
