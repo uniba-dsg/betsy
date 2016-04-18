@@ -114,7 +114,7 @@ public class TestsEngineDependent {
             } catch (IOException e) {
             }
         }
-        jsonObject.put("engineDependentFiles", new JSONArray(logFiles));
+        jsonObject.put("engineDependentFiles", new JSONArray(engineDependentFiles));
 
         long executionTime = -1;
         try {
