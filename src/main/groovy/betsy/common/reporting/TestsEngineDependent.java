@@ -22,10 +22,10 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.common.model.ProcessFolderStructure;
+import betsy.common.model.Tool;
 import betsy.common.model.engine.EngineDimension;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.util.DurationCsv;
-import betsy.common.util.GitUil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -43,13 +43,12 @@ public class TestsEngineDependent {
 
         // TODO also write other jsons to test folder
 
-        String currentGitCommit = GitUil.getGitCommit();
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();
 
         for (AbstractBPMNEngine engine : testSuite.getEngines()) {
             for (BPMNProcess process : engine.getProcesses()) {
-                rootArray.put(createJsonObject(currentGitCommit, idToDuration, csvRows, process));
+                rootArray.put(createJsonObject(idToDuration, csvRows, process));
             }
         }
 
@@ -65,13 +64,12 @@ public class TestsEngineDependent {
 
         // TODO also write other jsons to test folder
 
-        String currentGitCommit = GitUil.getGitCommit();
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();
 
         for (AbstractBPELEngine engine : testSuite.getEngines()) {
             for (BPELProcess process : engine.getProcesses()) {
-                rootArray.put(createJsonObject(currentGitCommit, idToDuration, csvRows, process));
+                rootArray.put(createJsonObject(idToDuration, csvRows, process));
             }
         }
 
@@ -82,12 +80,12 @@ public class TestsEngineDependent {
         }
     }
 
-    private static <P extends FeatureDimension & ProcessFolderStructure & EngineDimension> JSONObject createJsonObject(String currentGitCommit, Map<String, Long> idToDuration, List<CsvRow> csvRows, P process) {
+    private static <P extends FeatureDimension & ProcessFolderStructure & EngineDimension> JSONObject createJsonObject(Map<String, Long> idToDuration, List<CsvRow> csvRows, P process) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("featureID", process.getFeature().getID());
         jsonObject.put("engineID", process.getEngineObject().getID());
 
-        jsonObject.put("tool", createToolJsonObject(currentGitCommit));
+        jsonObject.put("tool", createToolJsonObject(Tool.BETSY));
 
         List<String> logFiles = new LinkedList<>();
         try {
@@ -147,11 +145,11 @@ public class TestsEngineDependent {
         return jsonObject;
     }
 
-    private static JSONObject createToolJsonObject(String currentGitCommit) {
+    private static JSONObject createToolJsonObject(Tool tool) {
         JSONObject toolObject = new JSONObject();
-        toolObject.put("name", "betsy");
-        toolObject.put("version", currentGitCommit);
-        toolObject.put("toolID", String.join("__", "betsy", currentGitCommit));
+        toolObject.put("name", tool.getName());
+        toolObject.put("version", tool.version);
+        toolObject.put("toolID", tool.getID());
         return toolObject;
     }
 

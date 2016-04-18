@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class GitUil {
+public class GitUtil {
 
     public static String getGitCommit() {
         Runtime rt = Runtime.getRuntime();
