@@ -45,13 +45,13 @@ dependencies {
 
     internal 'org.apache.ant:ant:1.9.7'
     internal 'org.apache.ant:ant-junit:1.9.7'
+    internal 'org.apache.ant:ant-apache-log4j:1.9.7'
 
     internal 'log4j:log4j:1.2.17'
     internal 'org.virtualbox:vboxjws:4.2.8'
     internal 'commons-daemon:commons-daemon:1.0.15'
     internal 'commons-io:commons-io:2.4'
     internal 'commons-lang:commons-lang:2.6'
-    internal 'org.apache.ant:ant-apache-log4j:1.9.6'
     internal 'org.json:json:5.0.5'
 
     // requires 'net.sf.saxon:Saxon-HE' - we use the one that is shipped with soapUI
