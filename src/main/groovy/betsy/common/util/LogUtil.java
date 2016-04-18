@@ -1,7 +1,8 @@
 package betsy.common.util;
 
+import betsy.bpel.model.BPELTestSuite;
 import betsy.common.logging.LogContext;
-import betsy.common.model.TestSuite;
+import betsy.common.model.AbstractTestSuite;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
 
@@ -10,9 +11,9 @@ import java.nio.file.Paths;
 
 public class LogUtil {
 
-    private final TestSuite suite;
+    private final AbstractTestSuite suite;
 
-    public LogUtil(TestSuite testSuite) {
+    public LogUtil(AbstractTestSuite testSuite) {
         suite = testSuite;
     }
 
@@ -48,7 +49,9 @@ public class LogUtil {
 
     private Path getCsvDurationFilePath() {
         if(suite == null){
-            return Paths.get("test").resolve(TestSuite.getCsvDurationFile());
+            BPELTestSuite testSuite = new BPELTestSuite();
+            testSuite.setPath(Paths.get("test"));
+            return testSuite.getCsvDurationFilePath();
         } else {
             return suite.getCsvDurationFilePath();
         }

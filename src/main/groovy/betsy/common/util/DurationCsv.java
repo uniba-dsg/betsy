@@ -1,11 +1,14 @@
 package betsy.common.util;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -38,6 +41,24 @@ public class DurationCsv {
             throw new RuntimeException("could not save task duration " + durationInMilliseconds + " for task " +
                     taskName + " in file " + storage, e);
         }
+    }
+
+    public static Map<String, Long> readDurations(Path durationsCsv) {
+        Map<String, Long> idToDuration = new HashMap<>();
+        try (BufferedReader br = Files.newBufferedReader(durationsCsv, StandardCharsets.UTF_8)) {
+            String line = br.readLine();
+            while (line != null) {
+                String[] tokens = line.split(CSV_SEPARATOR);
+                if (tokens.length == 4) {
+                    long duration = Long.parseLong(tokens[0]);
+                    String engineTestId = tokens[2] + "__" + tokens[3];
+                    idToDuration.put(engineTestId, duration);
+                }
+                line = br.readLine();
+            }
+        } catch (IOException ioe) {
+        }
+        return idToDuration;
     }
 
 }

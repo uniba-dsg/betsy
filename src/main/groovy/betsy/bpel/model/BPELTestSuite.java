@@ -1,14 +1,14 @@
 package betsy.bpel.model;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.common.model.TestSuite;
+import betsy.common.model.AbstractTestSuite;
 
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPELTestSuite extends TestSuite<AbstractBPELEngine, BPELProcess> {
+public class BPELTestSuite extends AbstractTestSuite<AbstractBPELEngine, BPELProcess> {
 
     /**
      * Factory method for a list of engines and processes.

@@ -4,6 +4,8 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.common.model.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.TestCase;
+import betsy.common.model.feature.Feature;
+import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
 
 import java.nio.file.Path;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>  {
+public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>, FeatureDimension  {
 
     private EngineIndependentProcess engineIndependentProcess;
     private AbstractBPELEngine engine;
@@ -82,7 +84,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     public String getTargetSoapUIProjectName() {
-        return getEngine() + "." + getGroup() + "." + getName();
+        return getEngine() + "." + getGroup().getName() + "." + getName();
     }
 
     /**
@@ -91,7 +93,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
      * @return the file name <code>test_$engine_$process_soapui.xml</code>
      */
     public String getTargetSoapUIFileName() {
-        return "test_" + getEngine() + "_" + getGroup() + "_" + getName() + "_soapui.xml";
+        return "test_" + getEngine() + "_" + getGroup().getName() + "_" + getName() + "_soapui.xml";
     }
 
     public Path getTargetSoapUIFilePath() {
@@ -133,13 +135,13 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     @Override
-    public String getGroup() {
-        return getGroupObject().getName();
+    public Group getGroup() {
+        return getFeatureDimension().getGroup();
     }
 
     @Override
-    public Group getGroupObject() {
-        return engineIndependentProcess.getGroup();
+    public Feature getFeature() {
+        return engineIndependentProcess.getFeature();
     }
 
     @Override
@@ -157,6 +159,10 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
 
     public void setTestCases(List<TestCase> testCases) {
         engineIndependentProcess = engineIndependentProcess.withNewTestCases(testCases);
+    }
+
+    public FeatureDimension getFeatureDimension() {
+        return engineIndependentProcess;
     }
 }
 

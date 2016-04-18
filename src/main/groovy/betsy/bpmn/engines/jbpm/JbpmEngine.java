@@ -206,7 +206,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void buildTest(final BPMNProcess process) {
         BPMNTestBuilder builder = new BPMNTestBuilder();
-        builder.setPackageString(getName() + "." + process.getGroup());
+        builder.setPackageString(process.getEngine() + "." + process.getGroup().getName() + "." + getName());
         builder.setLogDir(getJbpmInstallerPath());
         builder.setProcess(process);
         builder.buildTests();
