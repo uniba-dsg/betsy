@@ -79,12 +79,12 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public void buildTest(BPMNProcess process) {
-        BPMNTestBuilder bpmnTestBuilder = new BPMNTestBuilder();
-        bpmnTestBuilder.setPackageString(process.getEngine() + "." + process.getGroup().getName() + "." + getName());
-        bpmnTestBuilder.setLogDir(getTomcat().getTomcatBinDir());
-        bpmnTestBuilder.setProcess(process);
+        BPMNTestBuilder builder = new BPMNTestBuilder();
+        builder.setPackageString(process.getEngineID() + "." + process.getGroup().getName() + "." + process.getName());
+        builder.setLogDir(getTomcat().getTomcatBinDir());
+        builder.setProcess(process);
 
-        bpmnTestBuilder.buildTests();
+        builder.buildTests();
     }
 
     @Override
