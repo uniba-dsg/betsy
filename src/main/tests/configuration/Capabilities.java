@@ -4,7 +4,7 @@ import betsy.common.model.feature.Capability;
 
 public class Capabilities {
 
-    public static Capability conformance = new Capability("Conformance");
-    public static Capability expressiveness = new Capability("Expressiveness");
+    public static final Capability CONFORMANCE = new Capability("Conformance");
+    public static final Capability EXPRESSIVENESS = new Capability("Expressiveness");
 
 }

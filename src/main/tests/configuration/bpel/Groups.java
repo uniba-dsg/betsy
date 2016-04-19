@@ -7,8 +7,8 @@ import configuration.Capabilities;
 public class Groups {
 
 
-    public static Language CONFORMANCE_BPEL = new Language(Capabilities.conformance, "BPEL");
-    public static Language EXPRESSIVENESS_BPEL = new Language(Capabilities.expressiveness, "BPEL");
+    public static Language CONFORMANCE_BPEL = new Language(Capabilities.CONFORMANCE, "BPEL");
+    public static Language EXPRESSIVENESS_BPEL = new Language(Capabilities.EXPRESSIVENESS, "BPEL");
 
     public static Group BASIC = new Group("basic", CONFORMANCE_BPEL, "Basic activities are the basic building blocks of a BPEL process.");
     public static Group STRUCTURED = new Group("structured", CONFORMANCE_BPEL, "Structured activities compose basic activities into a control-flow graph.");

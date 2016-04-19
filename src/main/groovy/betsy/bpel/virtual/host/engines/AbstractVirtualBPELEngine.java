@@ -78,7 +78,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
         }
 
         LOGGER.info("Startup virtual engine " + getName());
-        // required for compatibility with EngineControl
+        // required for compatibility with EngineControlGUI
         try {
             // verify port usage
             Set<Integer> ports = getRequiredPorts();

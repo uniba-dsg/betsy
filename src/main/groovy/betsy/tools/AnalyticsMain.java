@@ -1,4 +1,4 @@
-package betsy;
+package betsy.tools;
 
 import betsy.common.analytics.Analyzer;
 import betsy.common.analytics.model.CsvReport;

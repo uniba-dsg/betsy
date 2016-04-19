@@ -1,4 +1,4 @@
-package betsy;
+package betsy.tools;
 
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpmn.repositories.BPMNEngineRepository;
