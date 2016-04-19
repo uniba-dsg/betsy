@@ -45,6 +45,25 @@ public class TestPartner {
         }
     }
 
+    public static class RawOutput extends Output {
+
+        public final String value;
+
+        public RawOutput(String value) {
+            this.value = value;
+        }
+    }
+
+    public static class IntegerOutputWithStatusCode extends IntegerOutput {
+
+        public final int statusCode;
+
+        public IntegerOutputWithStatusCode(int value, int statusCode) {
+            super(value);
+            this.statusCode = statusCode;
+        }
+    }
+
     public static class IntegerOutputBasedOnScriptResult extends Output {
 
         public final String variable;
@@ -83,11 +102,6 @@ public class TestPartner {
             new OperationInputActionOutput("startProcessSync", new AnyInput(), new EchoInputAsOutput())
     );
 
-    public static final TestPartner ERROR_TEST_PARTNER = new TestPartner(
-            Paths.get("TestPartner.wsdl"),
-            "http://localhost:200/bpel-testpartner",
-            new OperationInputActionOutput("startProcessSync", new AnyInput(), new EchoInputAsOutput()));
-
     private final Path interfaceDescription;
     private final String publishedUrl;
 
@@ -100,17 +114,17 @@ public class TestPartner {
         this.semantics.addAll(Arrays.asList(operationInputActionOutputs));
     }
 
-    private static final class OperationInputActionOutput {
+    public static final class OperationInputActionOutput {
 
         public final String operation;
         public final Input input;
         public final Output output;
 
-        private OperationInputActionOutput(String operation, Input input) {
+        public OperationInputActionOutput(String operation, Input input) {
             this(operation, input, new Output());
         }
 
-        private OperationInputActionOutput(String operation, Input input, Output output) {
+        public OperationInputActionOutput(String operation, Input input, Output output) {
             this.output = Objects.requireNonNull(output);
             this.operation = Objects.requireNonNull(operation);
             this.input = Objects.requireNonNull(input);
@@ -121,4 +135,7 @@ public class TestPartner {
         return publishedUrl + "?wsdl";
     }
 
+    public static class TimeoutInsteadOfOutput extends Output {
+
+    }
 }

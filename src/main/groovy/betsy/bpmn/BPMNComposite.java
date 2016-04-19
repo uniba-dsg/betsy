@@ -11,6 +11,7 @@ import betsy.common.tasks.FileTasks;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
+import betsy.tools.JsonMain;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 
@@ -71,6 +72,7 @@ public class BPMNComposite {
             new BPMNReporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPMNCsvReport());
             new TestsEngineDependent().createJson(testSuite);
+            JsonMain.writeIntoSpecificFolder(testSuite.getPath());
         });
     }
 

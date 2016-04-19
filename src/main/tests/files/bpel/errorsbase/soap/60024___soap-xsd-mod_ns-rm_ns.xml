@@ -1,0 +1,5 @@
+<Envelope>
+  <Body>
+    <aetgt:testElementSyncResponse xmlns:aetgt="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner">0</aetgt:testElementSyncResponse>
+  </Body>
+</Envelope>

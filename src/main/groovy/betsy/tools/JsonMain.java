@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class JsonMain {
 
     static class FeatureTreeJsonGenerator {
-        private static void generatesConstructsJson() {
+        private static void generatesConstructsJson(Path folder) {
             JSONArray featureTree = new JSONArray();
 
             List<EngineIndependentProcess> processes = new LinkedList<>();
@@ -52,7 +52,7 @@ public class JsonMain {
             processes.addAll(new BPMNProcessRepository().getByName("ALL"));
             convertProcess(featureTree, processes);
 
-            try(BufferedWriter writer = Files.newBufferedWriter(Paths.get("feature-tree.json"), StandardOpenOption.CREATE)) {
+            try(BufferedWriter writer = Files.newBufferedWriter(folder.resolve("feature-tree.json"), StandardOpenOption.CREATE)) {
                 writer.append(featureTree.toString(2));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -129,7 +129,7 @@ public class JsonMain {
 
     static class EnginesJsonGenerator {
 
-        private static void generateEnginesJson() {
+        private static void generateEnginesJson(Path folder) {
             JSONArray array = new JSONArray();
 
             for(EngineLifecycle e : getEngines()) {
@@ -146,7 +146,7 @@ public class JsonMain {
                 }
             }
 
-            try(BufferedWriter writer = Files.newBufferedWriter(Paths.get("engines.json"), StandardOpenOption.CREATE)) {
+            try(BufferedWriter writer = Files.newBufferedWriter(folder.resolve("engines.json"), StandardOpenOption.CREATE)) {
                 writer.append(array.toString(2));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -165,13 +165,13 @@ public class JsonMain {
     }
 
     static class TestsEngineIndependentJsonGenerator {
-        private static void generateTestsEngineIndependentJson() {
+        private static void generateTestsEngineIndependentJson(Path folder) {
             JSONArray array = new JSONArray();
 
             addBPMNTests(array);
             addBPELTests(array);
 
-            try(BufferedWriter writer = Files.newBufferedWriter(Paths.get("tests-engine-independent.json"), StandardOpenOption.CREATE)) {
+            try(BufferedWriter writer = Files.newBufferedWriter(folder.resolve("tests-engine-independent.json"), StandardOpenOption.CREATE)) {
                 writer.append(array.toString(2));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -329,9 +329,16 @@ public class JsonMain {
     }
 
     public static void main(String[] args) {
-        EnginesJsonGenerator.generateEnginesJson();
-        FeatureTreeJsonGenerator.generatesConstructsJson();
-        TestsEngineIndependentJsonGenerator.generateTestsEngineIndependentJson();
+        Path workingDirectory = Paths.get(".");
+        EnginesJsonGenerator.generateEnginesJson(workingDirectory);
+        FeatureTreeJsonGenerator.generatesConstructsJson(workingDirectory);
+        TestsEngineIndependentJsonGenerator.generateTestsEngineIndependentJson(workingDirectory);
+    }
+
+    public static void writeIntoSpecificFolder(Path folder) {
+        EnginesJsonGenerator.generateEnginesJson(folder);
+        FeatureTreeJsonGenerator.generatesConstructsJson(folder);
+        TestsEngineIndependentJsonGenerator.generateTestsEngineIndependentJson(folder);
     }
 
 }

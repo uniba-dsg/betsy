@@ -1,15 +1,23 @@
 package configuration.bpel;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.tasks.FileTasks;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-
 public class ErrorProcesses {
+
+    // TODO 50_002 and 50_003 should be better handled
+    // TODO better naming according to the feature-tree for these tests
 
     private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
 
@@ -78,7 +86,47 @@ public class ErrorProcesses {
     }
 
     private static Map<String, String> getInputToErrorCode() {
-        Map<String, String> map = new LinkedHashMap<>(34);
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("22100", "header-correctMessage-statusCode-100");
+        map.put("22101", "header-correctMessage-statusCode-101");
+        map.put("22201", "header-correctMessage-statusCode-201");
+        map.put("22202", "header-correctMessage-statusCode-202");
+        map.put("22203", "header-correctMessage-statusCode-203");
+        map.put("22204", "header-correctMessage-statusCode-204");
+        map.put("22205", "header-correctMessage-statusCode-205");
+        map.put("22206", "header-correctMessage-statusCode-206");
+        map.put("22300", "header-correctMessage-statusCode-300");
+        map.put("22301", "header-correctMessage-statusCode-301");
+        map.put("22302", "header-correctMessage-statusCode-302");
+        map.put("22303", "header-correctMessage-statusCode-303");
+        map.put("22304", "header-correctMessage-statusCode-304");
+        map.put("22305", "header-correctMessage-statusCode-305");
+        map.put("22306", "header-correctMessage-statusCode-306");
+        map.put("22307", "header-correctMessage-statusCode-307");
+        map.put("22400", "header-correctMessage-statusCode-400");
+        map.put("22401", "header-correctMessage-statusCode-401");
+        map.put("22402", "header-correctMessage-statusCode-402");
+        map.put("22403", "header-correctMessage-statusCode-403");
+        map.put("22404", "header-correctMessage-statusCode-404");
+        map.put("22405", "header-correctMessage-statusCode-405");
+        map.put("22406", "header-correctMessage-statusCode-406");
+        map.put("22407", "header-correctMessage-statusCode-407");
+        map.put("22408", "header-correctMessage-statusCode-408");
+        map.put("22409", "header-correctMessage-statusCode-409");
+        map.put("22410", "header-correctMessage-statusCode-410");
+        map.put("22411", "header-correctMessage-statusCode-411");
+        map.put("22412", "header-correctMessage-statusCode-412");
+        map.put("22413", "header-correctMessage-statusCode-413");
+        map.put("22414", "header-correctMessage-statusCode-414");
+        map.put("22415", "header-correctMessage-statusCode-415");
+        map.put("22416", "header-correctMessage-statusCode-416");
+        map.put("22417", "header-correctMessage-statusCode-417");
+        map.put("22500", "header-correctMessage-statusCode-500");
+        map.put("22501", "header-correctMessage-statusCode-501");
+        map.put("22502", "header-correctMessage-statusCode-502");
+        map.put("22503", "header-correctMessage-statusCode-503");
+        map.put("22504", "header-correctMessage-statusCode-504");
+        map.put("22505", "header-correctMessage-statusCode-505");
         map.put("40001", "custom-xsd-rm-elem");
         map.put("40002", "custom-xsd-rm-content");
         map.put("40003", "custom-xsd-mod_content-int_to_string");
@@ -112,6 +160,8 @@ public class ErrorProcesses {
         map.put("60024", "soap-xsd-mod_ns-rm_ns");
         map.put("60025", "soap-xsd-mod_ns-wrong_ns");
         map.put("60026", "soap-xsd-mod_ns-unbound_prefix");
+        map.put("50001", "tcp-dns-unresolveable");
+        map.put("50002", "tcp-host-unreachable");
         map.put("50003", "tcp-request_timeout");
 
         return map;
