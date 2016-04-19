@@ -49,25 +49,27 @@ public class TimeoutCalibrator {
             //get used timeouts
             HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //evaluate the timeouts
-            if (!evaluateTimeouts(timeouts)) {
-                SoapUIShutdownHelper.shutdownSoapUIForReal();
-                System.exit(0);
-            }
-            if (numberOfDuration > 0) {
-                //write all timeouts to csv for traceability
-                CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
-            } else {
-                if (!evaluateTimeouts(timeouts)) {
+            if (evaluateTimeouts(timeouts)) {
+                if (numberOfDuration < 1 && !TimeoutIOOperations.testsAreCorrect("test/test" + numberOfDuration)) {
                     SoapUIShutdownHelper.shutdownSoapUIForReal();
+                    LOGGER.info("Calibration finished, because tests failed.");
                     System.exit(0);
+                }else if(numberOfDuration > 0){
+                    //write all timeouts to csv for traceability
+                    CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
                 }
+            }else{
+                SoapUIShutdownHelper.shutdownSoapUIForReal();
+                LOGGER.info("Calibration finished, because timeouts exceeded.");
+                System.exit(0);
             }
             numberOfDuration++;
         }
 
+        HashMap<String, CalibrationTimeout> timeouts = null;
         while (!isCalibrated) {
             //get used timeouts
-            HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
+             timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //determine the timeouts
             timeouts = determineTimeouts(timeouts, csv);
             //write all timeouts to the console
@@ -85,14 +87,16 @@ public class TimeoutCalibrator {
             //write all timeouts to csv
             CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
             if (evaluateTimeouts(timeouts)) {
-                isCalibrated = false;
-            } else {
                 isCalibrated = true;
                 //shutdown SoapUI
                 SoapUIShutdownHelper.shutdownSoapUIForReal();
                 LOGGER.info("Calibration is finished.");
+            } else {
+                isCalibrated = false;
             }
-
+        }
+        for (CalibrationTimeout timeout : timeouts.values()) {
+            LOGGER.info(timeout.getKey() + " " + timeout.getStatus() + " " + timeout.getTimeoutInMs());
         }
     }
 
