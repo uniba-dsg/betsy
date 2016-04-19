@@ -12,8 +12,11 @@ import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.nio.file.Path;
+
+import static betsy.common.config.Configuration.get;
 
 public class BPMNComposite {
     private static final Logger LOGGER = Logger.getLogger(BPMNComposite.class);
@@ -55,8 +58,16 @@ public class BPMNComposite {
 
                         progress.next();
                         MDC.put("progress", progress.toString());
-
-                        executeProcess(process);
+                        try{
+                            executeProcess(process);
+                        } catch (Exception e) {
+                            if(get("continue.on.exception").contains("true")){
+                                Throwable cleanedException = StackTraceUtils.deepSanitize(e);
+                                LOGGER.error("something went wrong during execution", cleanedException);
+                            }else{
+                                throw e;
+                            }
+                        }
                     }
                 });
             }
