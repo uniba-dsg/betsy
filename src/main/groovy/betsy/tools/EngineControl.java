@@ -58,7 +58,7 @@ public class EngineControl extends Application {
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
                 Feature feature = new Feature(new Construct(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "construct"), "feature");
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, partners);
                 eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
                     @Override
                     public Path getTargetLogsPath() {
@@ -68,7 +68,7 @@ public class EngineControl extends Application {
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
                 Feature feature = new Feature(new Construct(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "construct"), "feature");
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, partners);
                 eNew.storeLogs(new BPMNProcess(engineIndependentProcess) {
                     @Override
                     public Path getTargetLogsPath() {

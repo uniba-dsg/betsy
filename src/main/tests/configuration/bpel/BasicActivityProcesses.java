@@ -456,7 +456,7 @@ class BasicActivityProcesses {
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final EngineIndependentProcess ASSIGN_PARTNERLINK = BPELProcessBuilder.buildBasicProcessWithPartner(
+    public static final EngineIndependentProcess ASSIGN_PARTNERLINK = BPELProcessBuilder.buildBasicProcessWithRegularAndDummyPartner(
             "Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
             new Feature(new Construct(Groups.BASIC, "Assign"), "Assign-PartnerLink"),
             new BPELTestCase().checkDeployment().sendSync(5, 0)

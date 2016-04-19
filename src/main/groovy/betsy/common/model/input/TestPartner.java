@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public class TestPartner {
 
+
+
     public static class Input {
 
     }
@@ -80,6 +82,11 @@ public class TestPartner {
             new OperationInputActionOutput("startProcessSync", new IntegerInput(103), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.reset()")),
             new OperationInputActionOutput("startProcessSync", new AnyInput(), new EchoInputAsOutput())
     );
+
+    public static final TestPartner ERROR_TEST_PARTNER = new TestPartner(
+            Paths.get("TestPartner.wsdl"),
+            "http://localhost:200/bpel-testpartner",
+            new OperationInputActionOutput("startProcessSync", new AnyInput(), new EchoInputAsOutput()));
 
     private final Path interfaceDescription;
     private final String publishedUrl;
