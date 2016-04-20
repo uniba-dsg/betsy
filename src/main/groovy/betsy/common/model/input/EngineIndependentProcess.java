@@ -37,7 +37,7 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
         this.files = Objects.requireNonNull(files);
     }
 
-    public EngineIndependentProcess withNewProcess(Path process) {
+    public EngineIndependentProcess withNewProcessAndFeature(Path process, Feature feature) {
         return new EngineIndependentProcess(process, description, testCases, feature, files, partners);
     }
 
