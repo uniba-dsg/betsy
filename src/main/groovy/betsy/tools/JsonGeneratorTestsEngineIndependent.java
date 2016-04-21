@@ -18,11 +18,13 @@ import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestStep;
 import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.model.input.ExternalWSDLTestPartner;
+import betsy.common.model.input.NoTestPartner;
 import betsy.common.model.input.TestAssertion;
 import betsy.common.model.input.TestCase;
 import betsy.common.model.input.TestPartner;
 import betsy.common.model.input.TestStep;
-import betsy.common.model.input.WSDLTestPartner;
+import betsy.common.model.input.InternalWSDLTestPartner;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
@@ -96,68 +98,69 @@ class JsonGeneratorTestsEngineIndependent {
     private static JSONObject createTestPartnerObject(TestPartner testPartner) {
         JSONObject testPartnerObject = new JSONObject();
 
-        if (testPartner instanceof WSDLTestPartner) {
-            WSDLTestPartner wsdlTestPartner = (WSDLTestPartner) testPartner;
+        if (testPartner instanceof InternalWSDLTestPartner) {
+            InternalWSDLTestPartner internalWsdlTestPartner = (InternalWSDLTestPartner) testPartner;
 
             testPartnerObject.put("type", "WSDL");
+            testPartnerObject.put("external", false);
 
-            testPartnerObject.put("interfaceDescription", wsdlTestPartner.interfaceDescription);
-            testPartnerObject.put("publishedUrl", wsdlTestPartner.publishedUrl);
-            testPartnerObject.put("wsdlUrl", wsdlTestPartner.getWSDLUrl());
+            testPartnerObject.put("interfaceDescription", internalWsdlTestPartner.interfaceDescription);
+            testPartnerObject.put("publishedUrl", internalWsdlTestPartner.publishedUrl);
+            testPartnerObject.put("wsdlUrl", internalWsdlTestPartner.getWSDLUrl());
 
             JSONArray rulesArray = new JSONArray();
-            for (WSDLTestPartner.OperationInputOutputRule operationInputOutputRule : wsdlTestPartner.getRules()) {
+            for (InternalWSDLTestPartner.OperationInputOutputRule operationInputOutputRule : internalWsdlTestPartner.getRules()) {
                 JSONObject ruleObject = new JSONObject();
                 ruleObject.put("operation", operationInputOutputRule.operation);
 
-                WSDLTestPartner.Input input = operationInputOutputRule.input;
-                if (input instanceof WSDLTestPartner.AnyInput) {
+                InternalWSDLTestPartner.Input input = operationInputOutputRule.input;
+                if (input instanceof InternalWSDLTestPartner.AnyInput) {
                     JSONObject anyInputObject = new JSONObject();
                     anyInputObject.put("type", "any");
                     ruleObject.put("input", anyInputObject);
-                } else if (input instanceof WSDLTestPartner.IntegerInput) {
+                } else if (input instanceof InternalWSDLTestPartner.IntegerInput) {
                     JSONObject integerInputObject = new JSONObject();
                     integerInputObject.put("type", "integer");
-                    integerInputObject.put("value", ((WSDLTestPartner.IntegerInput) input).value);
+                    integerInputObject.put("value", ((InternalWSDLTestPartner.IntegerInput) input).value);
                     ruleObject.put("input", integerInputObject);
                 } else {
                     throw new IllegalStateException();
                 }
 
-                WSDLTestPartner.Output output = operationInputOutputRule.output;
-                if (output instanceof WSDLTestPartner.IntegerOutputWithStatusCode) {
+                InternalWSDLTestPartner.Output output = operationInputOutputRule.output;
+                if (output instanceof InternalWSDLTestPartner.IntegerOutputWithStatusCode) {
                     JSONObject object = new JSONObject();
                     object.put("type", "integer");
-                    object.put("value", ((WSDLTestPartner.IntegerOutputWithStatusCode) output).value);
-                    object.put("statusCode", ((WSDLTestPartner.IntegerOutputWithStatusCode) output).statusCode);
+                    object.put("value", ((InternalWSDLTestPartner.IntegerOutputWithStatusCode) output).value);
+                    object.put("statusCode", ((InternalWSDLTestPartner.IntegerOutputWithStatusCode) output).statusCode);
                     ruleObject.put("output", object);
-                } else if (output instanceof WSDLTestPartner.IntegerOutput) {
+                } else if (output instanceof InternalWSDLTestPartner.IntegerOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "integer");
-                    object.put("value", ((WSDLTestPartner.IntegerOutput) output).value);
+                    object.put("value", ((InternalWSDLTestPartner.IntegerOutput) output).value);
                     ruleObject.put("output", object);
-                } else if (output instanceof WSDLTestPartner.RawOutput) {
+                } else if (output instanceof InternalWSDLTestPartner.RawOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "raw");
-                    object.put("value", ((WSDLTestPartner.RawOutput) output).value);
+                    object.put("value", ((InternalWSDLTestPartner.RawOutput) output).value);
                     ruleObject.put("output", object);
-                } else if (output instanceof WSDLTestPartner.FaultOutput) {
+                } else if (output instanceof InternalWSDLTestPartner.FaultOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "fault");
-                    object.put("value", ((WSDLTestPartner.FaultOutput) output).variant);
+                    object.put("value", ((InternalWSDLTestPartner.FaultOutput) output).variant);
                     ruleObject.put("output", object);
-                } else if (output instanceof WSDLTestPartner.TimeoutInsteadOfOutput) {
+                } else if (output instanceof InternalWSDLTestPartner.TimeoutInsteadOfOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "timeout");
                     ruleObject.put("output", object);
-                } else if (output instanceof WSDLTestPartner.EchoInputAsOutput) {
+                } else if (output instanceof InternalWSDLTestPartner.EchoInputAsOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "echo");
                     ruleObject.put("output", object);
-                } else if (output instanceof WSDLTestPartner.IntegerOutputBasedOnScriptResult) {
+                } else if (output instanceof InternalWSDLTestPartner.IntegerOutputBasedOnScriptResult) {
                     JSONObject object = new JSONObject();
                     object.put("type", "script");
-                    object.put("value", ((WSDLTestPartner.IntegerOutputBasedOnScriptResult) output).script);
+                    object.put("value", ((InternalWSDLTestPartner.IntegerOutputBasedOnScriptResult) output).script);
                     ruleObject.put("output", object);
                 } else {
                     // do nothing
@@ -168,6 +171,15 @@ class JsonGeneratorTestsEngineIndependent {
             }
             testPartnerObject.put("rules", rulesArray);
 
+        } else if(testPartner instanceof ExternalWSDLTestPartner){
+            testPartnerObject.put("type", "WSDL");
+            testPartnerObject.put("external", true);
+
+            testPartnerObject.put("interfaceDescription", ((ExternalWSDLTestPartner) testPartner).wsdl);
+            testPartnerObject.put("publishedUrl", ((ExternalWSDLTestPartner) testPartner).url);
+            testPartnerObject.put("wsdlUrl", ((ExternalWSDLTestPartner) testPartner).getWSDLUrl());
+        } else if(testPartner instanceof NoTestPartner) {
+            testPartnerObject.put("type", "NONE");
         }
 
         return testPartnerObject;

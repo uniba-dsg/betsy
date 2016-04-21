@@ -9,7 +9,7 @@ import betsy.bpel.model.BPELTestCase;
 import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.input.WSDLTestPartner;
+import betsy.common.model.input.InternalWSDLTestPartner;
 import betsy.common.util.FileTypes;
 
 public class BPELProcessBuilder {
@@ -19,7 +19,7 @@ public class BPELProcessBuilder {
     }
 
     public static EngineIndependentProcess buildPatternProcessWithPartner(final String name, Feature feature, BPELTestCase... testCases) {
-        return new EngineIndependentProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(WSDLTestPartner.REGULAR_TEST_PARTNER));
+        return new EngineIndependentProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(InternalWSDLTestPartner.REGULAR_TEST_PARTNER));
     }
 
     public static EngineIndependentProcess buildStructuredActivityProcess(String name, String description, Feature feature, BPELTestCase... testCases) {
@@ -31,7 +31,7 @@ public class BPELProcessBuilder {
     }
 
     public static EngineIndependentProcess buildScopeProcessWithPartner(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new EngineIndependentProcess(PATH_PREFIX.resolve("scopes/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(WSDLTestPartner.REGULAR_TEST_PARTNER));
+        return new EngineIndependentProcess(PATH_PREFIX.resolve("scopes/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(InternalWSDLTestPartner.REGULAR_TEST_PARTNER));
     }
 
     public static EngineIndependentProcess buildBasicActivityProcess(String name, String description, Feature feature, BPELTestCase... testCases) {
@@ -43,7 +43,7 @@ public class BPELProcessBuilder {
     }
 
     public static EngineIndependentProcess buildBasicProcessWithPartner(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new EngineIndependentProcess(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(WSDLTestPartner.REGULAR_TEST_PARTNER));
+        return new EngineIndependentProcess(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(InternalWSDLTestPartner.REGULAR_TEST_PARTNER));
     }
 
     public static EngineIndependentProcess buildBasicProcessWithRegularAndDummyPartner(String name, String description, Feature feature, BPELTestCase... testCases) {
@@ -52,7 +52,7 @@ public class BPELProcessBuilder {
                 Arrays.asList(testCases),
                 feature,
                 Arrays.asList(testInterface, partnerInterface),
-                Arrays.asList(WSDLTestPartner.REGULAR_TEST_PARTNER, WSDLTestPartner.DUMMY_TEST_PARTNER));
+                Arrays.asList(InternalWSDLTestPartner.REGULAR_TEST_PARTNER, InternalWSDLTestPartner.DUMMY_TEST_PARTNER));
     }
 
     public static EngineIndependentProcess buildErrorProcessWithPartner(String constructName, String name, String description, BPELTestCase... testCases) {
@@ -68,7 +68,7 @@ public class BPELProcessBuilder {
                 description,
                 Arrays.asList(testCases),
                 feature,
-                Arrays.asList(testInterface, partnerInterface), Collections.singletonList(WSDLTestPartner.REGULAR_TEST_PARTNER));
+                Arrays.asList(testInterface, partnerInterface), Collections.singletonList(InternalWSDLTestPartner.REGULAR_TEST_PARTNER));
     }
 
     public static EngineIndependentProcess buildBasicProcessWithXslt(String name, String description, Feature feature, BPELTestCase... testCases) {
