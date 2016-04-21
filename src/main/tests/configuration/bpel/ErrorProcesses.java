@@ -40,7 +40,7 @@ public class ErrorProcesses {
 
         for (EngineIndependentProcess process : result) {
             // update fileName
-            String processFileName = process.getProcess().getFileName().toString();
+            String processFileName = process.getName();
             if (processFileName.startsWith("IBR_")) {
                 XMLTasks.updatesNameAndNamespaceOfRootElement(IMPROVED_BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), processFileName);
             } else if (processFileName.startsWith("BR_")) {
