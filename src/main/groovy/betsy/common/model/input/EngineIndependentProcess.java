@@ -29,12 +29,12 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
     }
 
     public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<Path> files, List<TestPartner> partners) {
-        this.partners = partners;
+        this.partners = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(partners)));
         this.process = Objects.requireNonNull(process);
         this.feature = Objects.requireNonNull(feature);
         this.description = Objects.requireNonNull(description);
         this.testCases = Collections.unmodifiableList(uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases))));
-        this.files = Objects.requireNonNull(files);
+        this.files = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(files)));
     }
 
     public EngineIndependentProcess withNewProcessAndFeature(Path process, Feature feature) {
@@ -146,5 +146,8 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
         return getFiles().stream().filter(predicate).collect(Collectors.toList());
     }
 
+    public List<TestPartner> getTestPartners() {
+        return partners;
+    }
 }
 

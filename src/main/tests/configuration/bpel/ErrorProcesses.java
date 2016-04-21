@@ -6,10 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -104,25 +102,25 @@ public class ErrorProcesses {
     private static final Construct APP_CONSTRUCT = new Construct(Groups.ERROR, "app");
 
     static TestPartner createErrorTestPartner(String url) {
-        List<WSDLTestPartner.OperationInputActionOutput> tcpActions = new ArrayList<>();
-        tcpActions.add(new WSDLTestPartner.OperationInputActionOutput(
+        List<WSDLTestPartner.OperationInputOutputRule> tcpActions = new ArrayList<>();
+        tcpActions.add(new WSDLTestPartner.OperationInputOutputRule(
                         "startProcessSync",
                         new WSDLTestPartner.IntegerInput(50_001),
                         new WSDLTestPartner.TimeoutInsteadOfOutput()));
 
-        List<WSDLTestPartner.OperationInputActionOutput> httpActions = IntStream.of(
+        List<WSDLTestPartner.OperationInputOutputRule> httpActions = IntStream.of(
                 100, 101,
                 201, 202, 203, 204, 205, 206,
                 300, 301, 302, 303, 304, 305, 306, 307,
                 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417,
-                500, 501, 502, 503, 504, 505).mapToObj(i -> new WSDLTestPartner.OperationInputActionOutput(
+                500, 501, 502, 503, 504, 505).mapToObj(i -> new WSDLTestPartner.OperationInputOutputRule(
                         "startProcessSync",
                         new WSDLTestPartner.IntegerInput(i + 22_000),
                         new WSDLTestPartner.IntegerOutputWithStatusCode(0, i)
                 )
         ).collect(Collectors.toList());
 
-        List<WSDLTestPartner.OperationInputActionOutput> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
+        List<WSDLTestPartner.OperationInputOutputRule> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
             String rawOutput = "";
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/soap");
@@ -133,13 +131,13 @@ public class ErrorProcesses {
             } catch (IOException e) {
             }
 
-            return new WSDLTestPartner.OperationInputActionOutput(
+            return new WSDLTestPartner.OperationInputOutputRule(
                     "startProcessSync",
                     new WSDLTestPartner.IntegerInput(i),
                     new WSDLTestPartner.RawOutput(rawOutput));
         }).collect(Collectors.toList());
 
-        List<WSDLTestPartner.OperationInputActionOutput> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
+        List<WSDLTestPartner.OperationInputOutputRule> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
             String rawOutput = "";
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/app");
@@ -150,22 +148,22 @@ public class ErrorProcesses {
             } catch (IOException e) {
             }
 
-            return new WSDLTestPartner.OperationInputActionOutput(
+            return new WSDLTestPartner.OperationInputOutputRule(
                     "startProcessSync",
                     new WSDLTestPartner.IntegerInput(i),
                     new WSDLTestPartner.RawOutput(rawOutput));
         }).collect(Collectors.toList());
 
-        List<WSDLTestPartner.OperationInputActionOutput> actions = new ArrayList<>();
+        List<WSDLTestPartner.OperationInputOutputRule> actions = new ArrayList<>();
         actions.addAll(httpActions);
         actions.addAll(soapActions);
         actions.addAll(appActions);
-        actions.add(new WSDLTestPartner.OperationInputActionOutput("startProcessSync", new WSDLTestPartner.AnyInput(), new WSDLTestPartner.EchoInputAsOutput()));
+        actions.add(new WSDLTestPartner.OperationInputOutputRule("startProcessSync", new WSDLTestPartner.AnyInput(), new WSDLTestPartner.EchoInputAsOutput()));
 
         return new WSDLTestPartner(
                 Paths.get("TestPartner.wsdl"),
                 url,
-                actions.toArray(new WSDLTestPartner.OperationInputActionOutput[] {})
+                actions.toArray(new WSDLTestPartner.OperationInputOutputRule[] {})
         );
     }
 
@@ -271,7 +269,7 @@ public class ErrorProcesses {
         result.add(new Error(50002, "tcp-host-unreachable", TCP_CONSTRUCT, new NoTestPartner()));
         result.add(new Error(50003, "tcp-timeout", TCP_CONSTRUCT, new WSDLTestPartner(Paths.get("TestPartner.wsdl"),
                 "http://localhost:2000/bpel-testpartner",
-                new WSDLTestPartner.OperationInputActionOutput("startProcessSync", new WSDLTestPartner.AnyInput(), new WSDLTestPartner.TimeoutInsteadOfOutput()))));
+                new WSDLTestPartner.OperationInputOutputRule("startProcessSync", new WSDLTestPartner.AnyInput(), new WSDLTestPartner.TimeoutInsteadOfOutput()))));
 
         return result;
     }

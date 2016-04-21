@@ -3,6 +3,7 @@ package betsy.common.model.input;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -64,10 +65,10 @@ public class WSDLTestPartner implements TestPartner {
 
     public static class IntegerOutputBasedOnScriptResult extends Output {
 
-        public final String variable;
+        public final String script;
 
-        public IntegerOutputBasedOnScriptResult(String variable) {
-            this.variable = variable;
+        public IntegerOutputBasedOnScriptResult(String script) {
+            this.script = script;
         }
     }
 
@@ -85,44 +86,48 @@ public class WSDLTestPartner implements TestPartner {
     }
 
     public static final WSDLTestPartner DUMMY_TEST_PARTNER = new WSDLTestPartner(
-            Paths.get("TestPartner.wsdl"), "http://localhost:200/bpel-assigned-testpartner");
+            Paths.get("TestPartner.wsdl"), "http://localhost:2000/bpel-assigned-testpartner");
     public static final WSDLTestPartner REGULAR_TEST_PARTNER = new WSDLTestPartner(
             Paths.get("TestPartner.wsdl"),
-            "http://localhost:200/bpel-testpartner",
-            new OperationInputActionOutput("startProcessAsync", new AnyInput()),
-            new OperationInputActionOutput("startProcessWithEmptyMessage", new AnyInput()),
-            new OperationInputActionOutput("startProcessSync", new IntegerInput(-5), new FaultOutput(FaultOutput.FaultVariant.UNDECLARED)),
-            new OperationInputActionOutput("startProcessSync", new IntegerInput(-6), new FaultOutput(FaultOutput.FaultVariant.DECLARED)),
-            new OperationInputActionOutput("startProcessSync", new IntegerInput(100), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.access()")),
-            new OperationInputActionOutput("startProcessSync", new IntegerInput(101), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
-            new OperationInputActionOutput("startProcessSync", new IntegerInput(102), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfCalls()")),
-            new OperationInputActionOutput("startProcessSync", new IntegerInput(103), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.reset()")),
-            new OperationInputActionOutput("startProcessSync", new AnyInput(), new EchoInputAsOutput())
+            "http://localhost:2000/bpel-testpartner",
+            new OperationInputOutputRule("startProcessAsync", new AnyInput()),
+            new OperationInputOutputRule("startProcessWithEmptyMessage", new AnyInput()),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(-5), new FaultOutput(FaultOutput.FaultVariant.UNDECLARED)),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(-6), new FaultOutput(FaultOutput.FaultVariant.DECLARED)),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(100), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.access()")),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(101), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(102), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfCalls()")),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(103), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.reset()")),
+            new OperationInputOutputRule("startProcessSync", new AnyInput(), new EchoInputAsOutput())
     );
 
-    private final Path interfaceDescription;
-    private final String publishedUrl;
+    public final Path interfaceDescription;
+    public final String publishedUrl;
 
     // operation -> input -> action
-    private final List<OperationInputActionOutput> semantics = new LinkedList<>();
+    private final List<OperationInputOutputRule> rules;
 
-    public WSDLTestPartner(Path interfaceDescription, String publishedUrl, OperationInputActionOutput... operationInputActionOutputs) {
+    public WSDLTestPartner(Path interfaceDescription, String publishedUrl, OperationInputOutputRule... operationInputOutputRules) {
         this.publishedUrl = publishedUrl;
         this.interfaceDescription = Objects.requireNonNull(interfaceDescription);
-        this.semantics.addAll(Arrays.asList(operationInputActionOutputs));
+        this.rules = Collections.unmodifiableList(new LinkedList<>(Arrays.asList(operationInputOutputRules)));
     }
 
-    public static final class OperationInputActionOutput {
+    public List<OperationInputOutputRule> getRules() {
+        return rules;
+    }
+
+    public static final class OperationInputOutputRule {
 
         public final String operation;
         public final Input input;
         public final Output output;
 
-        public OperationInputActionOutput(String operation, Input input) {
+        public OperationInputOutputRule(String operation, Input input) {
             this(operation, input, new Output());
         }
 
-        public OperationInputActionOutput(String operation, Input input, Output output) {
+        public OperationInputOutputRule(String operation, Input input, Output output) {
             this.output = Objects.requireNonNull(output);
             this.operation = Objects.requireNonNull(operation);
             this.input = Objects.requireNonNull(input);
