@@ -27,14 +27,14 @@ import java.util.List;
 public class BPMNTestcaseMerger {
 
     static class MergeResult {
-        String name = "";
-        int errors;
-        int failures;
-        int skipped;
-        int tests;
-        double time;
-        List<Node> testCases = new ArrayList<>();
-        Node properties;
+        private String name = "";
+        private int errors;
+        private int failures;
+        private int skipped;
+        private int tests;
+        private double time;
+        private List<Node> testCases = new ArrayList<>();
+        private Node properties;
     }
 
 

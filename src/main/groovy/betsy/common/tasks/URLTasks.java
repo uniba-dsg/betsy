@@ -60,14 +60,14 @@ public class URLTasks {
     }
 
     public static String inputStreamToString(InputStream inputStream) throws IOException {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String inputLine;
             while ((inputLine = reader.readLine()) != null) {
-                result += inputLine;
+                result.append(inputLine);
             }
         }
-        return result;
+        return result.toString();
     }
 
     private static final Logger LOGGER = Logger.getLogger(URLTasks.class);
