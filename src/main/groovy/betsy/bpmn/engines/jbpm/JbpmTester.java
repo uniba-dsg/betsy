@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,41 +51,58 @@ public class JbpmTester {
     public void runTest() {
         addDeploymentErrorsToLogFile(serverLogFile);
 
-        if (testCase.hasParallelProcess()) {
-            // replace processId (".../process/ProcessId/start") with BPMNTestCase.PARALLEL_PROCESS_KEY
-            // deployment id must not be changed
-            String parallelProcessUrl = processStartUrl.replace(name+"/start", BPMNTestCase.PARALLEL_PROCESS_KEY+"/start");
-            startProcess(parallelProcessUrl);
+        // skip execution if deployment is expected to fail
+        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
+            LOGGER.info("Skipping execution of process as deployment is expected to have failed.");
+            // if deployment has not failed the logX.txt file has to be generated for further test processing
+            if(!Files.exists(getFileName())) {
+                try {
+                    Files.createFile(getFileName());
+                } catch (IOException e) {
+                    LOGGER.warn("Creation of file "+getFileName()+" failed.", e);
+                }
+            }
+        } else {
+            // try execution of deployed process
+
+            if (testCase.hasParallelProcess()) {
+                // replace processId (".../process/ProcessId/start") with BPMNTestCase.PARALLEL_PROCESS_KEY
+                // deployment id must not be changed
+                String parallelProcessUrl = processStartUrl
+                        .replace(name + "/start", BPMNTestCase.PARALLEL_PROCESS_KEY + "/start");
+                startProcess(parallelProcessUrl);
+            }
+
+            //setup variables and start process
+            Map<String, Object> variables = new HashMap<>();
+            for (BPMNTestVariable variable : testCase.getVariables()) {
+                variables.put(variable.getName(), variable.getValue());
+            }
+
+            StringJoiner joiner = new StringJoiner("&", "?", "");
+            for (Map.Entry<String, Object> entry : variables.entrySet()) {
+                joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
+            }
+
+            String requestUrl = processStartUrl + joiner.toString();
+            startProcess(requestUrl);
+
+            //delay for timer intermediate event
+            WaitTasks.sleep(testCase.getDelay().orElse(0));
+
+            // Check on parallel execution
+            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+
+            // Check whether MARKER file exists
+            BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
+
+            // Check data type
+            BPMNEnginesUtil.checkDataLog(testCase, getFileName());
+
+            BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
+            checkProcessOutcome();
+
         }
-
-        //setup variables and start process
-        Map<String, Object> variables = new HashMap<>();
-        for (BPMNTestVariable variable : testCase.getVariables()) {
-            variables.put(variable.getName(), variable.getValue());
-        }
-
-        StringJoiner joiner = new StringJoiner("&", "?", "");
-        for (Map.Entry<String, Object> entry : variables.entrySet()) {
-            joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
-        }
-
-        String requestUrl = processStartUrl + joiner.toString();
-        startProcess(requestUrl);
-
-        //delay for timer intermediate event
-        WaitTasks.sleep(testCase.getDelay().orElse(0));
-
-        // Check on parallel execution
-        BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
-
-        // Check whether MARKER file exists
-        BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
-
-        // Check data type
-        BPMNEnginesUtil.checkDataLog(testCase, getFileName());
-
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
-        checkProcessOutcome();
 
         LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
 
