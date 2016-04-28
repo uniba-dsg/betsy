@@ -117,6 +117,10 @@ public class BPMNTestCase extends TestCase {
         return addAssertion(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
     }
 
+    public BPMNTestCase assertDeploymentFailed() {
+        return addAssertion(BPMNAssertions.ERROR_DEPLOYMENT);
+    }
+
     public BPMNTestCase assertGenericError() {
         return addAssertion(BPMNAssertions.ERROR_GENERIC);
     }
