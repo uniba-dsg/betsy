@@ -53,6 +53,30 @@ public class BPMNMain {
                     }
 
                 });
+            } else if (params.keepEngineRunning() && params.useRunningEngine()) {
+                betsy.setComposite(new BPMNComposite() {
+
+                    @Override
+                    protected void checkRunning(AbstractBPMNEngine engine) {
+                        // no checks as the engine should be running
+                    }
+
+                    @Override
+                    protected void start(BPMNProcess process) {
+                        // already started
+                    }
+
+                    @Override
+                    protected void shutdown(BPMNProcess process) {
+                        // keep engine running - no shutdown!
+                    }
+
+                    @Override
+                    protected void install(BPMNProcess process) {
+                        // is already installed - use existing installation
+                    }
+
+                });
             } else if (params.useInstalledEngine()) {
                 betsy.setComposite(new BPMNComposite() {
 

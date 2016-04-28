@@ -44,9 +44,7 @@ public class BPMNComposite {
 
             // fail fast
             for (AbstractBPMNEngine engine : testSuite.getEngines()) {
-                if (engine.isRunning()) {
-                    throw new IllegalStateException("Engine " + engine.getName() + " is running");
-                }
+                checkRunning(engine);
             }
 
             for (AbstractBPMNEngine engine : testSuite.getEngines()) {
@@ -64,6 +62,12 @@ public class BPMNComposite {
 
             createReports();
         });
+    }
+
+    protected void checkRunning(AbstractBPMNEngine engine) {
+        if (engine.isRunning()) {
+            throw new IllegalStateException("Engine " + engine.getName() + " is running");
+        }
     }
 
     protected void createReports() {

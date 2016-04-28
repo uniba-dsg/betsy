@@ -52,9 +52,7 @@ public class BPELComposite {
 
             // fail fast
             for (AbstractBPELEngine engine : testSuite.getEngines()) {
-                if (engine.isRunning()) {
-                    throw new IllegalStateException("Engine " + engine + " is running");
-                }
+                checkIsRunning(engine);
             }
 
             for (AbstractBPELEngine engine : testSuite.getEngines()) {
@@ -76,6 +74,12 @@ public class BPELComposite {
             createReports();
         });
 
+    }
+
+    protected void checkIsRunning(AbstractBPELEngine engine) {
+        if (engine.isRunning()) {
+            throw new IllegalStateException("Engine " + engine + " is running");
+        }
     }
 
     protected void createReports() {
