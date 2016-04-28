@@ -12,6 +12,8 @@ import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,30 +48,44 @@ public class ActivitiTester {
 
         addDeploymentErrorsToLogFile(logFile);
 
-        try {
-            if(testCase.hasParallelProcess()) {
-                startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
+        // skip execution if deployment is expected to fail
+        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
+            LOGGER.info("Skipping execution of process as deployment is expected to have failed.");
+            // if deployment has not failed the logX.txt file has to be generated for further test processing
+            if(!Files.exists(getFileName())) {
+                try {
+                    Files.createFile(getFileName());
+                } catch (IOException e) {
+                    LOGGER.warn("Creation of file "+getFileName()+" failed.", e);
+                }
+            }
+        } else {
+            // try execution of deployed process
+            try {
+                if (testCase.hasParallelProcess()) {
+                    startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
+                }
+
+                startProcess(key, BPMNTestVariable.mapToArrayWithMaps(testCase.getVariables()));
+
+                // Wait and check for errors only if process instantiation was successful
+                WaitTasks.sleep(testCase.getDelay().orElse(0));
+                addRuntimeErrorsToLogFile(logFile);
+
+                // Check on parallel execution
+                BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+
+                // Check whether MARKER file exists
+                BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
+
+                // Check data type
+                BPMNEnginesUtil.checkDataLog(testCase, getFileName());
+            } catch (Exception e) {
+                LOGGER.info("Could not start process", e);
+                addRuntimeErrorsToLogFile(logFile);
             }
 
-            startProcess(key, BPMNTestVariable.mapToArrayWithMaps(testCase.getVariables()));
-
-            // Wait and check for errors only if process instantiation was successful
-            WaitTasks.sleep(testCase.getDelay().orElse(0));
-            addRuntimeErrorsToLogFile(logFile);
-
-            // Check on parallel execution
-            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
-
-            // Check whether MARKER file exists
-            BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
-
-            // Check data type
-            BPMNEnginesUtil.checkDataLog(testCase, getFileName());
-        } catch (Exception e) {
-            LOGGER.info("Could not start process", e);
-            addRuntimeErrorsToLogFile(logFile);
         }
-
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
 
         LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
