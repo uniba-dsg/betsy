@@ -143,6 +143,7 @@ public class JsonGenerator {
                     object.put("version", engine.getVersion());
                     object.put("configuration", engine.getConfiguration());
                     object.put("language", engine.getLanguage().name());
+                    object.put("programmingLanguage", engine.getProgrammingLanguage());
                     object.put("releaseDate", DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()));
                     array.put(object);
                 }

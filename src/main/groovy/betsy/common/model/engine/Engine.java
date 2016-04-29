@@ -20,6 +20,7 @@ public final class Engine implements HasID, HasName {
     private final List<String> configuration;
     private final ProcessLanguage language;
     private final LocalDate releaseDate;
+    private final String programmingLanguage = "Java";
 
     public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate) {
         this(language, name, version, releaseDate, Collections.emptyList());
@@ -95,5 +96,9 @@ public final class Engine implements HasID, HasName {
 
     public LocalDate getReleaseDate() {
         return releaseDate;
+    }
+
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
     }
 }
