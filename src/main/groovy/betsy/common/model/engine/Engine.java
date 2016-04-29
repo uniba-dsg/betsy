@@ -1,5 +1,6 @@
 package betsy.common.model.engine;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,17 +19,19 @@ public final class Engine implements HasID, HasName {
     private final String version;
     private final List<String> configuration;
     private final ProcessLanguage language;
+    private final LocalDate releaseDate;
 
-    public Engine(ProcessLanguage language, String name, String version) {
-        this(language, name, version, Collections.emptyList());
+    public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate) {
+        this(language, name, version, releaseDate, Collections.emptyList());
     }
 
-    public Engine(ProcessLanguage language, String name, String version, String configuration) {
-        this(language, name, version, Collections.singletonList(configuration));
+    public Engine(ProcessLanguage language, String name, String version, String configuration, LocalDate releaseDate) {
+        this(language, name, version, releaseDate, Collections.singletonList(configuration));
     }
 
-    public Engine(ProcessLanguage language, String name, String version, List<String> configuration) {
+    public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate, List<String> configuration) {
         this.language = language;
+        this.releaseDate = releaseDate;
         this.name = requireNonNull(name);
         this.version = requireNonNull(version);
 
@@ -88,5 +91,9 @@ public final class Engine implements HasID, HasName {
     @Override
     public String getID() {
         return getNormalizedId();
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
     }
 }

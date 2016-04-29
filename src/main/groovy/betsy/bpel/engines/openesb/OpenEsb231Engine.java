@@ -1,5 +1,7 @@
 package betsy.bpel.engines.openesb;
 
+import java.time.LocalDate;
+
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 import betsy.common.util.ClasspathHelper;
@@ -9,12 +11,12 @@ public class OpenEsb231Engine extends OpenEsbEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "2.3.1");
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.3.1", LocalDate.of(2013, 10, 1));
     }
 
     @Override
     public void install() {
-        if(OperatingSystem.WINDOWS) {
+        if (OperatingSystem.WINDOWS) {
             new OpenEsbInstaller(getServerPath(),
                     "openesb-v231-installer-windows.exe",
                     ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb231/state.xml.template")).install();

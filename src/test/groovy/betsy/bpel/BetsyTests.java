@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class BetsyTests {
 
         @Override
         public Engine getEngineObject() {
-            return new Engine(ProcessLanguage.BPEL, "mock", "1.0");
+            return new Engine(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1));
         }
 
         public Path getXsltPath() {

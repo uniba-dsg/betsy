@@ -16,6 +16,7 @@ import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3");
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3", LocalDate.of(2014, 9, 17));
     }
 
     @Override

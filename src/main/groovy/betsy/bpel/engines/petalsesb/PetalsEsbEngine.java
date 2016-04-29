@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0");
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0", LocalDate.of(2012,2,2));
     }
 
     @Override

@@ -5,12 +5,13 @@ import betsy.common.model.engine.Engine;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 
 public class Wso2Engine_v2_1_2 extends Wso2Engine_v3_1_0 {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "2.1.2");
+        return new Engine(ProcessLanguage.BPEL, "wso2", "2.1.2", LocalDate.of(2011, 10, 30));
     }
 
     @Override
