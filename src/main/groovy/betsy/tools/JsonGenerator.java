@@ -36,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +143,7 @@ public class JsonGenerator {
                     object.put("version", engine.getVersion());
                     object.put("configuration", engine.getConfiguration());
                     object.put("language", engine.getLanguage().name());
+                    object.put("releaseDate", DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()));
                     array.put(object);
                 }
             }
