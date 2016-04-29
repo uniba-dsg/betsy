@@ -49,6 +49,10 @@ public final class Engine implements HasID, HasName {
         this.configuration = requireNonNull(Collections.unmodifiableList(values));
     }
 
+    public String getURL() {
+        return EngineDetails.getEngineToURL().get(this.getName());
+    }
+
     public String toString() {
         return getNormalizedId();
     }
