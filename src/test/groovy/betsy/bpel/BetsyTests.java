@@ -70,7 +70,7 @@ public class BetsyTests {
 
         @Override
         public Engine getEngineObject() {
-            return new Engine(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1));
+            return new Engine(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
         }
 
         public Path getXsltPath() {

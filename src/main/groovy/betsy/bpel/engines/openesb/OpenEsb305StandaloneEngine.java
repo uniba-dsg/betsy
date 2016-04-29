@@ -13,7 +13,7 @@ public class OpenEsb305StandaloneEngine extends OpenEsb301StandaloneEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.5", LocalDate.of(2015, 6, 24));
+        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.5", LocalDate.of(2015, 6, 24), "CDDL-1.0");
     }
 
 }

@@ -43,7 +43,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3", LocalDate.of(2014, 9, 17));
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3", LocalDate.of(2014, 9, 17), "Apache-2.0");
     }
 
     @Override

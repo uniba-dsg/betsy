@@ -57,7 +57,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
         List<String> configuration = new LinkedList<>();
         configuration.addAll(engineId.getConfiguration());
         configuration.add("virtual");
-        return new Engine(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), engineId.getReleaseDate(), configuration);
+        return new Engine(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), engineId.getReleaseDate(), configuration, engineId.getLicense());
     }
 
     private VirtualBoxMachine vm;

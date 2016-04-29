@@ -16,7 +16,7 @@ public class BpelgInMemoryEngine extends BpelgEngine {
     @Override
     public Engine getEngineObject() {
         // TODO this is the snapshot release, the real 5.3 was released on 2012-12-26
-        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3", "in-memory", LocalDate.of(2012, 4, 27));
+        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3", "in-memory", LocalDate.of(2012, 4, 27), "GPL-2.0+");
     }
 
 }

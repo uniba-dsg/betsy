@@ -21,7 +21,7 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2", LocalDate.of(2008, 5, 9));
+        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2", LocalDate.of(2008, 5, 9), "GPL-2.0+");
     }
 
     public Path getXsltPath() {

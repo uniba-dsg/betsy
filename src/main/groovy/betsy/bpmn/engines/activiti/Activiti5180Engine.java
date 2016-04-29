@@ -15,7 +15,7 @@ public class Activiti5180Engine extends ActivitiEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "activiti", "5.18.0", LocalDate.of(2015, 7,31));
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.18.0", LocalDate.of(2015, 7,31), "Apache-2.0");
     }
 
     @Override

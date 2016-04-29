@@ -31,7 +31,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1", LocalDate.of(2014, 5, 14));
+        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1", LocalDate.of(2014, 5, 14), "Apache-2.0");
     }
 
     public Path getJbpmInstallerPath() {

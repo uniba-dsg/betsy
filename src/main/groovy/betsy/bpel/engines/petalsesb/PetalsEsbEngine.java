@@ -25,7 +25,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0", LocalDate.of(2012,2,2));
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0", LocalDate.of(2012,2,2), "LGPL 2.1+");
     }
 
     @Override

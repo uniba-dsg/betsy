@@ -15,7 +15,7 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1", LocalDate.of(2012, 7, 6));
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1", LocalDate.of(2012, 7, 6), "LGPL 2.1+");
     }
 
     public String getPetalsFolderName() {

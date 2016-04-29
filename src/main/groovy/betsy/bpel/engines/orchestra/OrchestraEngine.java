@@ -20,7 +20,7 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "orchestra", "4.9", LocalDate.of(2012,1,23));
+        return new Engine(ProcessLanguage.BPEL, "orchestra", "4.9", LocalDate.of(2012,1,23), "LGPL-2.1+");
     }
 
     public Tomcat getTomcat() {

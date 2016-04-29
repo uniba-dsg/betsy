@@ -11,7 +11,7 @@ public class OpenEsb231Engine extends OpenEsbEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "2.3.1", LocalDate.of(2013, 10, 1));
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.3.1", LocalDate.of(2013, 10, 1), "CDDL-1.0");
     }
 
     @Override

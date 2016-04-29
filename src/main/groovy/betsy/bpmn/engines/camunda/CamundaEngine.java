@@ -21,7 +21,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0", LocalDate.of(2013, 8, 31));
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0", LocalDate.of(2013, 8, 31), "Apache-2.0");
     }
 
     public String getCamundaUrl() {

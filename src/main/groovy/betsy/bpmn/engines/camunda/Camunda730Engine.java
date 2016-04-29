@@ -9,7 +9,7 @@ public class Camunda730Engine extends Camunda710Engine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "camunda", "7.3.0", LocalDate.of(2015, 5, 29));
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.3.0", LocalDate.of(2015, 5, 29), "Apache-2.0");
     }
 
     @Override

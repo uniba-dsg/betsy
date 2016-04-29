@@ -10,7 +10,7 @@ public class Wso2Engine_v3_0_0 extends Wso2Engine_v3_1_0 {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "3.0.0", LocalDate.of(2012, 10, 17));
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.0.0", LocalDate.of(2012, 10, 17), "Apache-2.0");
     }
 
     @Override

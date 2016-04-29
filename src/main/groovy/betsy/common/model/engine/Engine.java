@@ -15,24 +15,32 @@ import static java.util.Objects.requireNonNull;
 public final class Engine implements HasID, HasName {
 
     public static final String DELIMITER = "--";
+
     private final String name;
     private final String version;
     private final List<String> configuration;
     private final ProcessLanguage language;
     private final LocalDate releaseDate;
+
+    /**
+     * http://spdx.org/licenses/
+     */
+    private final String license;
+
     private final String programmingLanguage = "Java";
 
-    public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate) {
-        this(language, name, version, releaseDate, Collections.emptyList());
+    public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate, String license) {
+        this(language, name, version, releaseDate, Collections.emptyList(), license);
     }
 
-    public Engine(ProcessLanguage language, String name, String version, String configuration, LocalDate releaseDate) {
-        this(language, name, version, releaseDate, Collections.singletonList(configuration));
+    public Engine(ProcessLanguage language, String name, String version, String configuration, LocalDate releaseDate, String license) {
+        this(language, name, version, releaseDate, Collections.singletonList(configuration), license);
     }
 
-    public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate, List<String> configuration) {
+    public Engine(ProcessLanguage language, String name, String version, LocalDate releaseDate, List<String> configuration, String license) {
         this.language = language;
         this.releaseDate = releaseDate;
+        this.license = license;
         this.name = requireNonNull(name);
         this.version = requireNonNull(version);
 
@@ -100,5 +108,9 @@ public final class Engine implements HasID, HasName {
 
     public String getProgrammingLanguage() {
         return programmingLanguage;
+    }
+
+    public String getLicense() {
+        return license;
     }
 }

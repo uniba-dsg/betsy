@@ -9,7 +9,7 @@ public class JbpmEngine630 extends JbpmEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.3.0", LocalDate.of(2015, 9, 28));
+        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.3.0", LocalDate.of(2015, 9, 28), "Apache-2.0");
     }
 
     @Override

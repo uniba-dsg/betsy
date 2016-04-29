@@ -59,7 +59,7 @@ public class BPMNBetsyTests {
 
         @Override
         public Engine getEngineObject() {
-            return new Engine(ProcessLanguage.BPMN, "mock","1.0", LocalDate.of(1, 1, 1));
+            return new Engine(ProcessLanguage.BPMN, "mock","1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
         }
 
         public Path getXsltPath() {

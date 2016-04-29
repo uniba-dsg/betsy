@@ -23,7 +23,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2", LocalDate.of(2009, 12, 1));
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2", LocalDate.of(2009, 12, 1), "CDDL-1.0");
     }
 
     @Override
