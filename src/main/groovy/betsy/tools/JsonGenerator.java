@@ -145,6 +145,7 @@ public class JsonGenerator {
                     object.put("language", engine.getLanguage().name());
                     object.put("programmingLanguage", engine.getProgrammingLanguage());
                     object.put("license", engine.getLicense());
+                    object.put("licenseURL", engine.getLicenseURL());
                     object.put("releaseDate", DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()));
                     array.put(object);
                 }

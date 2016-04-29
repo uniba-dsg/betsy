@@ -113,4 +113,8 @@ public final class Engine implements HasID, HasName {
     public String getLicense() {
         return license;
     }
+
+    public String getLicenseURL() {
+        return String.format("http://spdx.org/licenses/%s.html", getLicense());
+    }
 }
