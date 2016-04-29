@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1394992157340" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.2.22 (GPLv3, Non-Commercial)" expressionLanguage="http://www.w3.org/1999/XPath" id="_1394992157340" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1394992157340" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_2" isInterrupting="true" name="Start Event" parallelMultiple="false">
+	  <incoming>_8</incoming>
+      <outgoing>_6</outgoing>
+    </startEvent>
+    <endEvent id="_3" name="End Event">
+      <incoming>_7</incoming>
+    </endEvent>
+    <task completionQuantity="1" id="_5" isForCompensation="false" name="Task" startQuantity="1">
+      <incoming>_6</incoming>
+      <outgoing>_7</outgoing>
+	  <outgoing>_8</outgoing>
+    </task>
+    <sequenceFlow id="_6" sourceRef="_2" targetRef="_5"/>
+    <sequenceFlow id="_7" sourceRef="_5" targetRef="_3"/>
+	<sequenceFlow id="_8" sourceRef="_5" targetRef="_2"/>
+  </process>
+</definitions>
