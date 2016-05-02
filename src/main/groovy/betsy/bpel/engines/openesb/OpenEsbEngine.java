@@ -17,6 +17,8 @@ import java.util.List;
 
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
+    private static final String CHECK_URL = "http://localhost:18181";
+
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
     }
@@ -121,5 +123,4 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
         return CHECK_URL;
     }
 
-    private static final String CHECK_URL = "http://localhost:18181";
 }

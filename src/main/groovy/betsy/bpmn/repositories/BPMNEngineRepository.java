@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class BPMNEngineRepository {
+    private final Repository<AbstractBPMNEngine> repo = new Repository<>();
+
     public BPMNEngineRepository() {
         List<AbstractBPMNEngine> all = new ArrayList<>(Arrays.asList(
                 new CamundaEngine(), new Camunda710Engine(), new Camunda720Engine(), new Camunda730Engine(), new Camunda740Engine(),
@@ -44,5 +46,4 @@ public class BPMNEngineRepository {
         return repo.getNames();
     }
 
-    private final Repository<AbstractBPMNEngine> repo = new Repository<>();
 }

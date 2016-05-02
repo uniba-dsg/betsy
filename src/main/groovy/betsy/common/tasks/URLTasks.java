@@ -14,6 +14,8 @@ import java.nio.file.Path;
 
 public class URLTasks {
 
+    private static final Logger LOGGER = Logger.getLogger(URLTasks.class);
+
     public static boolean isUrlAvailable(URL url) {
         LOGGER.info("Checking whether the url " + url + " returns HTTP 200");
         try {
@@ -69,8 +71,6 @@ public class URLTasks {
         }
         return result.toString();
     }
-
-    private static final Logger LOGGER = Logger.getLogger(URLTasks.class);
 
     public static void downloadInto(URL url, Path downloadFolder) {
         FileTasks.mkdirs(downloadFolder);

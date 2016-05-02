@@ -22,6 +22,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
+
+    private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
+
+    public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
+
     @Override
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
@@ -134,10 +139,6 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     public boolean isRunning() {
         return getTomcat().checkIfIsRunning();
     }
-
-    private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
-
-    public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
 
     @Override
     public List<Path> getLogs() {

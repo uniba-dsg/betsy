@@ -6,6 +6,9 @@ import configuration.bpmn.BPMNProcessRepository;
 import java.util.List;
 
 public class BPMNProcessParser {
+
+    private final String[] args;
+
     public BPMNProcessParser(String... args) {
         this.args = args;
     }
@@ -24,5 +27,4 @@ public class BPMNProcessParser {
         return args;
     }
 
-    private final String[] args;
 }

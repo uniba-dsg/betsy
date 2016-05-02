@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPMNMain {
+
+    private static final Logger LOGGER = Logger.getLogger(BPMNMain.class);
+
     public static void main(String... args) {
         activateLogging();
 
@@ -169,5 +172,4 @@ public class BPMNMain {
 
     }
 
-    private static final Logger LOGGER = Logger.getLogger(BPMNMain.class);
 }

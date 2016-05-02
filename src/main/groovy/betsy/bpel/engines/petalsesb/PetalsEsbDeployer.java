@@ -9,6 +9,10 @@ import java.nio.file.Path;
 
 public class PetalsEsbDeployer {
 
+    private final Path deploymentDirPath;
+    private final Path logFilePath;
+    private final int timeoutInSeconds;
+
     public PetalsEsbDeployer(Path deploymentDirPath, Path logFilePath) {
         this(deploymentDirPath, logFilePath, 20);
     }
@@ -50,7 +54,4 @@ public class PetalsEsbDeployer {
         }
     }
 
-    private final Path deploymentDirPath;
-    private final Path logFilePath;
-    private final int timeoutInSeconds;
 }

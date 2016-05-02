@@ -10,6 +10,8 @@ import java.util.Objects;
 
 public class OpenEsbCompositePackager {
 
+    private final BPELProcess process;
+
     public OpenEsbCompositePackager(BPELProcess process) {
         this.process = Objects.requireNonNull(process);
     }
@@ -60,5 +62,4 @@ public class OpenEsbCompositePackager {
         return process.getTargetTmpPath().resolve("sun-http-binding.jar");
     }
 
-    private final BPELProcess process;
 }

@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HtmlAnalytics {
+    private final CsvReport report;
+
     public HtmlAnalytics(CsvReport report) {
         this.report = report;
     }
@@ -47,5 +49,4 @@ public class HtmlAnalytics {
         return binding;
     }
 
-    private final CsvReport report;
 }
