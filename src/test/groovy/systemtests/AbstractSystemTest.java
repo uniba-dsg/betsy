@@ -1,4 +1,4 @@
-package betsy;
+package systemtests;
 
 import betsy.common.tasks.FileTasks;
 import org.junit.After;

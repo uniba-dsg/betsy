@@ -1,18 +1,12 @@
-package betsy;
+package systemtests;
 
-import betsy.bpel.BPELMain;
-import betsy.bpel.soapui.SoapUIShutdownHelper;
-import betsy.common.tasks.FileTasks;
+import betsy.Main;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
-import org.junit.runners.Parameterized;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class BPMNSystemTest extends AbstractSystemTest {
 
     @Test
-    public void testBPMNEngine() throws IOException {
+    public void test_A_BpmnActiviti5163SequenceFlow() throws IOException {
         testBPMNEngine("activiti__5_16_3");
     }
 
