@@ -7,6 +7,14 @@ import java.util.List;
 
 public class BPMNEngineParser {
 
+    /**
+     * Name of the engines, separated by comma (,), case does not matter, duplicates are filtered out
+     * <p>
+     * Example:
+     * all, camunda
+     */
+    private final String[] args;
+
     public BPMNEngineParser(String... args) {
         this.args = args;
     }
@@ -28,11 +36,4 @@ public class BPMNEngineParser {
         return args;
     }
 
-    /**
-     * Name of the engines, separated by comma (,), case does not matter, duplicates are filtered out
-     * <p>
-     * Example:
-     * all, camunda
-     */
-    private final String[] args;
 }

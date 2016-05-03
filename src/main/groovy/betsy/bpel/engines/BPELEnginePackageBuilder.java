@@ -10,6 +10,8 @@ import java.nio.file.Path;
 
 public class BPELEnginePackageBuilder {
 
+    private static final Logger log = Logger.getLogger(BPELEnginePackageBuilder.class);
+
     public void createFolderAndCopyProcessFilesToTarget(BPELProcess process) {
         // engine independent package steps
         FileTasks.mkdirs(process.getTargetPath());
@@ -43,5 +45,4 @@ public class BPELEnginePackageBuilder {
         FileTasks.replaceTokensInFolder(process.getTargetProcessPath(), "PARTNER_IP_AND_PORT", Configuration.get("partner.ipAndPort"));
     }
 
-    private static final Logger log = Logger.getLogger(BPELEnginePackageBuilder.class);
 }

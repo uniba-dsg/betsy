@@ -59,11 +59,11 @@ public enum VBoxExceptionCode {
 
 	private long code;
 
+	private static Map<Long, VBoxExceptionCode> table = new HashMap<>();
+
 	VBoxExceptionCode(long code) {
 		this.code = code;
 	}
-
-	private static Map<Long, VBoxExceptionCode> table = new HashMap<>();
 
 	static {
 		for (VBoxExceptionCode errorCode : VBoxExceptionCode.values()) {

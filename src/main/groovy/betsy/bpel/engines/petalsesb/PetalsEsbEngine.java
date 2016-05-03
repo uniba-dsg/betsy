@@ -19,6 +19,9 @@ import java.util.Map;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
+    private static final Logger LOGGER = Logger.getLogger(PetalsEsbEngine.class);
+    public static final String CHECK_URL = "http://localhost:8084";
+
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/petalsesb");
     }
@@ -167,6 +170,4 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         return URLTasks.isUrlAvailable(CHECK_URL);
     }
 
-    private static final Logger LOGGER = Logger.getLogger(PetalsEsbEngine.class);
-    public static final String CHECK_URL = "http://localhost:8084";
 }

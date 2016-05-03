@@ -20,15 +20,15 @@ import java.nio.file.Path;
 public class BPELComposite {
     private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
 
-    public TestingAPI getTestingAPI() {
-        return testingAPI;
-    }
-
     private final TestingAPI testingAPI = new TestingAPI();
 
     private BPELTestSuite testSuite;
 
     private LogUtil logUtil;
+
+    public TestingAPI getTestingAPI() {
+        return testingAPI;
+    }
 
     private void log(String name, Runnable closure) {
         logUtil.log(name, LOGGER, closure);

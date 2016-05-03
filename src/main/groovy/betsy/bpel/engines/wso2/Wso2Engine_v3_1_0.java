@@ -17,6 +17,8 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
 
+    public static final String CHECK_URL = "http://localhost:9763";
+
     @Override
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/ode");
@@ -132,5 +134,4 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         return result;
     }
 
-    public static final String CHECK_URL = "http://localhost:9763";
 }

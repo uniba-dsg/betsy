@@ -13,6 +13,17 @@ public class ErrorProcesses {
 
     private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
 
+    private static final EngineIndependentProcess BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+            "BackdoorRobustness",
+            "errorsbase/BackdoorRobustness",
+            "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
+    private static final EngineIndependentProcess IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+            "ImprovedBackdoorRobustness",
+            "errorsbase/ImprovedBackdoorRobustness",
+            "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
+
     private static List<EngineIndependentProcess> createProcesses() {
         FileTasks.deleteDirectory(ERRORS_DIR);
         FileTasks.mkdirs(ERRORS_DIR);
@@ -117,14 +128,4 @@ public class ErrorProcesses {
         return map;
     }
 
-    private static final EngineIndependentProcess BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
-            "BackdoorRobustness",
-            "errorsbase/BackdoorRobustness",
-            "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
-            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
-    private static final EngineIndependentProcess IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
-            "ImprovedBackdoorRobustness",
-            "errorsbase/ImprovedBackdoorRobustness",
-            "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
-            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
 }

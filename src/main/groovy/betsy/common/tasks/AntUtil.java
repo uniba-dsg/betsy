@@ -7,6 +7,7 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.listener.Log4jListener;
 
 public class AntUtil {
+    private static AntBuilder ant;
 
     public static AntBuilder builder() {
         if (ant == null) {
@@ -65,5 +66,4 @@ public class AntUtil {
         return ant;
     }
 
-    private static AntBuilder ant;
 }

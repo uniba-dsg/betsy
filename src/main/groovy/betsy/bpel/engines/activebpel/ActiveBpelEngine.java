@@ -19,6 +19,8 @@ import java.util.List;
 
 public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
+    private static final Logger log = Logger.getLogger(betsy.bpel.engines.activebpel.ActiveBpelEngine.class);
+
     @Override
     public Engine getEngineObject() {
         return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2", LocalDate.of(2008, 5, 9), "GPL-2.0+");
@@ -115,6 +117,4 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
         FileTasks.move(process.getTargetPackageFilePath(), process.getTargetPackageFilePath("bpr"));
     }
 
-    private static
-    final Logger log = Logger.getLogger(betsy.bpel.engines.activebpel.ActiveBpelEngine.class);
 }

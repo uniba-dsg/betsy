@@ -7,6 +7,9 @@ import org.apache.tools.ant.taskdefs.Zip;
 import java.nio.file.Path;
 
 public class ZipTasks {
+
+    private static final Logger LOGGER = Logger.getLogger(ZipTasks.class);
+
     public static void zipFolder(Path tempZipFile, Path folder) {
         LOGGER.info("Creating zip archive " + tempZipFile + " using the contents of " + folder);
 
@@ -36,5 +39,4 @@ public class ZipTasks {
         expand.execute();
     }
 
-    private static final Logger LOGGER = Logger.getLogger(ZipTasks.class);
 }
