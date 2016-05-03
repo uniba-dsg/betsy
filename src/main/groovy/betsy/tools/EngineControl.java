@@ -46,9 +46,11 @@ import java.util.stream.Collectors;
 /**
  * The GUI to install, start and stop a local engine or all local engines.
  */
-public class EngineControl extends Application {
+public final class EngineControl extends Application {
 
-    private static class LogFileUtil {
+    private static final class LogFileUtil {
+
+        private LogFileUtil() {}
 
         /**
          * Requires BPEL or BPMN Engine to be passed!

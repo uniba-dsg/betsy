@@ -4,7 +4,9 @@ import betsy.bpel.BPELMain;
 import betsy.bpmn.BPMNMain;
 import betsy.tools.JsonGenerator;
 
-public class Main {
+public final class Main {
+
+    private Main() {}
 
     public static void main(String... args) {
         if (args.length == 0) {

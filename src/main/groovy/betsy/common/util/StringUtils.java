@@ -2,7 +2,10 @@ package betsy.common.util;
 
 import java.nio.file.Path;
 
-public class StringUtils {
+public final class StringUtils {
+
+    private StringUtils() {}
+
     public static String capitalize(String self) {
         if (self == null || self.length() == 0) {
             return self;

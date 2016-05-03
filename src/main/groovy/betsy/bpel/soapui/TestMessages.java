@@ -1,6 +1,8 @@
 package betsy.bpel.soapui;
 
-public class TestMessages {
+public final class TestMessages {
+
+    private TestMessages() {}
 
     public static String createSyncTestPartnerInputMessage(String input) {
         return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +

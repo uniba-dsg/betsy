@@ -2,7 +2,7 @@ package betsy.common.aggregation;
 
 import static java.util.Objects.requireNonNull;
 
-public class AggregationRules {
+public final class AggregationRules {
 
     public static AggregationRule<Boolean, TrivalentResult> GO_BIG_OR_GO_HOME = values -> {
         if(requireNonNull(values).stream().allMatch(i -> i)) {
@@ -32,5 +32,6 @@ public class AggregationRules {
      */
     public static AggregationRule<TrivalentResult, TrivalentResult> BEST = values -> requireNonNull(values).stream().sorted().findFirst().orElse(TrivalentResult.MINUS);
 
+    private AggregationRules() {}
 
 }

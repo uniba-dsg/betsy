@@ -8,11 +8,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class TrustModifier {
+public final class TrustModifier {
 
         private static final TrustingHostnameVerifier
                 TRUSTING_HOSTNAME_VERIFIER = new TrustingHostnameVerifier();
         private static SSLSocketFactory factory;
+
+        private TrustModifier() {}
 
         /** Call this with any HttpURLConnection, and it will
          modify the trust settings if it is an HTTPS connection. */

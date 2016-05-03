@@ -15,7 +15,9 @@ import java.util.List;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class ServiceValidator {
+public final class ServiceValidator {
+
+    private ServiceValidator() {}
 
     /**
      * Check whether the {@link AbstractBPELEngine} is ready for usage.

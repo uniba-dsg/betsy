@@ -12,7 +12,9 @@ import java.util.Collection;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class PortVerifier {
+public final class PortVerifier {
+
+	private PortVerifier() {}
 
 	private static void failForUnreachablePort(final int portNumber) throws PortUsageException{
 		try (ServerSocket serverSocket = new ServerSocket(portNumber);

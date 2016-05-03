@@ -3,7 +3,9 @@ package betsy;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 
-public class ProcessMain {
+public final class ProcessMain {
+
+    private ProcessMain() {}
 
     public static void main(String... args) {
         if ("bpel".equalsIgnoreCase(args[0])) {

@@ -14,9 +14,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPMNMain {
+public final class BPMNMain {
 
     private static final Logger LOGGER = Logger.getLogger(BPMNMain.class);
+
+    private BPMNMain() {}
 
     public static void main(String... args) {
         activateLogging();

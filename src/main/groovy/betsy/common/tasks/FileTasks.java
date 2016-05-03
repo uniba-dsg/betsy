@@ -16,9 +16,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
-public class FileTasks {
+public final class FileTasks {
 
     private static final Logger LOGGER = Logger.getLogger(FileTasks.class);
+
+    private FileTasks() {}
 
     public static void createFile(Path file, String content) {
         mkdirs(file.getParent());

@@ -7,9 +7,11 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
-public class WaitTasks {
+public final class WaitTasks {
 
     private static final Logger LOGGER = Logger.getLogger(WaitTasks.class);
+
+    private WaitTasks() {}
 
     /**
      * Sleeps/waits for a specific amount of milliseconds.

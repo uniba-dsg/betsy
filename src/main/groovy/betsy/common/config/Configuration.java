@@ -11,11 +11,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-public class Configuration {
+public final class Configuration {
 
     private static final Logger log = Logger.getLogger(Configuration.class);
 
     public static final Properties PROPERTIES;
+
+    private Configuration() {}
 
     /**
      * Get the value of the given key.

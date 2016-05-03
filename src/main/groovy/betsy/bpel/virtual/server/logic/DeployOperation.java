@@ -20,9 +20,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class DeployOperation {
+public final class DeployOperation {
 
     private final static Logger log = Logger.getLogger(DeployOperation.class);
+
+    private DeployOperation() {}
 
     public static DeployResponse deployOperation(DeployRequest request) throws DeployException, ChecksumException, ConnectionException {
         if (request.getFileMessage().isInvalid()) {

@@ -7,7 +7,9 @@ import configuration.bpmn.BPMNProcessRepository;
 
 import java.nio.file.Paths;
 
-public class AnalyticsMain {
+public final class AnalyticsMain {
+
+    private AnalyticsMain() {}
 
     public static void main(String... args) {
         if ("dashboard".equalsIgnoreCase(args[0])) {

@@ -3,7 +3,9 @@ package betsy.common.model.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EngineDetails {
+public final class EngineDetails {
+
+    private EngineDetails() {}
 
     public static Map<String, String> getEngineToURL() {
         Map<String, String> result = new HashMap<>();

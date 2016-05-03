@@ -14,9 +14,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BPMNEnginesUtil {
+public final class BPMNEnginesUtil {
 
     private static final Logger LOGGER = Logger.getLogger(BPMNEnginesUtil.class);
+
+    private BPMNEnginesUtil() {}
 
     public static void substituteSpecificErrorsForGenericError(BPMNTestCase testCase, Path logDir) {
         if (testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {

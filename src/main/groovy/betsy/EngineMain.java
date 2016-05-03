@@ -8,9 +8,11 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class EngineMain {
+public final class EngineMain {
 
     private static Map<String, Consumer<EngineLifecycle>> commands = new HashMap<>();
+
+    private EngineMain() {}
 
     public static void main(String... args) {
         commands.put("install", EngineLifecycle::install);
