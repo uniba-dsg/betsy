@@ -40,6 +40,11 @@ public class BPMNSystemTest extends AbstractSystemTest {
     }
 
     @Test
+    public void test_A_BpmnActiviti51902SequenceFlow() throws IOException {
+        testBPMNEngine("activiti__5_19_0_2");
+    }
+
+    @Test
     public void test_A_BpmnActiviti5200SequenceFlow() throws IOException {
         testBPMNEngine("activiti__5_20_0");
     }
