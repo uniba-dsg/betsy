@@ -42,9 +42,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class JsonGenerator {
+public final class JsonGenerator {
 
-    static class FeatureTreeJsonGenerator {
+    private JsonGenerator() {}
+
+    static final class FeatureTreeJsonGenerator {
+
+        private FeatureTreeJsonGenerator() {}
+
         private static void generatesConstructsJson() {
             JSONArray featureTree = new JSONArray();
 
@@ -129,7 +134,9 @@ public class JsonGenerator {
         }
     }
 
-    static class EnginesJsonGenerator {
+    static final class EnginesJsonGenerator {
+
+        private EnginesJsonGenerator() {}
 
         private static void generateEnginesJson() {
             JSONArray array = new JSONArray();
@@ -171,7 +178,10 @@ public class JsonGenerator {
         }
     }
 
-    static class TestsEngineIndependentJsonGenerator {
+    static final class TestsEngineIndependentJsonGenerator {
+
+        private TestsEngineIndependentJsonGenerator() {}
+
         private static void generateTestsEngineIndependentJson() {
             JSONArray array = new JSONArray();
 

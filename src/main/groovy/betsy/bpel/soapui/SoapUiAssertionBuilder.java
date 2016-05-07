@@ -20,7 +20,10 @@ import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
 
 import java.util.Objects;
 
-public class SoapUiAssertionBuilder {
+public final class SoapUiAssertionBuilder {
+
+    private SoapUiAssertionBuilder() {}
+
     public static void addSynchronousAssertion(SoapTestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
         for (TestAssertion assertion : testStep.getAssertions()) {
 

@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-public class PropertyTasks {
+public final class PropertyTasks {
+
+    private PropertyTasks() {}
 
     public static void setPropertyInPropertiesFile(Path propertiesFile, String key, String value) {
         Properties properties = new Properties();

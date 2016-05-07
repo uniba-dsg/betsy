@@ -7,7 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
-public class SoapUIShutdownHelper {
+public final class SoapUIShutdownHelper {
+
+    private SoapUIShutdownHelper() {}
 
     public static void shutdownSoapUIForReal() {
         SoapUI.shutdown();

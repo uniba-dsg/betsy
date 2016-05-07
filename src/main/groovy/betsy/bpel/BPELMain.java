@@ -30,11 +30,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BPELMain {
+public final class BPELMain {
 
     private static final Logger LOGGER = Logger.getLogger(BPELMain.class);
 
     private static boolean shouldShutdownSoapUi = true;
+
+    private BPELMain() {}
 
     public static void main(String... args) {
         activateLogging();

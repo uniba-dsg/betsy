@@ -6,7 +6,10 @@ import corebpel.CoreBPEL;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CoreBPELEngineExtension {
+public final class CoreBPELEngineExtension {
+
+    private CoreBPELEngineExtension() {}
+
     public static void extendEngine(AbstractBPELEngine engine, final List<String> transformations) {
         assertValidTransformations(transformations);
         engine.setPackageBuilder(new CoreBPELBPELEnginePackageBuilder(transformations));

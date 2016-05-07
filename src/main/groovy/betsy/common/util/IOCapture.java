@@ -5,8 +5,10 @@ import org.apache.log4j.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class IOCapture {
+public final class IOCapture {
     private static final Logger LOGGER = Logger.getLogger(IOCapture.class);
+
+    private IOCapture() {}
 
     public static void captureIO(Runnable closure) {
         //stdout

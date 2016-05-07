@@ -5,7 +5,7 @@ import org.apache.log4j.MDC;
 
 import java.util.Objects;
 
-public class LogContext {
+public final class LogContext {
 
     public static final String CONTEXT_KEY_PATH = "path";
 
@@ -13,6 +13,8 @@ public class LogContext {
         // default log context is BETSY
         MDC.put(CONTEXT_KEY_PATH, "betsy");
     }
+
+    private LogContext() {}
 
     public static String getContext() {
         Object context = MDC.get(CONTEXT_KEY_PATH);

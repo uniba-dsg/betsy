@@ -20,9 +20,11 @@ import java.util.List;
  * @author Cedric Roeck
  * @version 1.0
  */
-public class CollectLogFilesOperation {
+public final class CollectLogFilesOperation {
 
     private static final Logger log = Logger.getLogger(CollectLogFilesOperation.class);
+
+    private CollectLogFilesOperation() {}
 
     /**
      * Collect the log files of an engine and the betsy server. The directories

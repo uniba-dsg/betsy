@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.nio.file.Path;
 
-public class JsonHelper {
+public final class JsonHelper {
 
     private static final Logger log = Logger.getLogger(JsonHelper.class);
 
@@ -24,6 +24,8 @@ public class JsonHelper {
     }
 
     public static final String REST_CALL_FAILED_WITH_URL = "rest call failed with url ";
+
+    private JsonHelper() {}
 
     public static JSONObject get(String url, int expectedCode) {
         log.info("HTTP GET " + url);

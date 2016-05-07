@@ -10,10 +10,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.StringJoiner;
 
-public class ConsoleTasks {
+public final class ConsoleTasks {
     private static final Logger log = Logger.getLogger(ConsoleTasks.class);
     public static final String WINDOWS = "windows";
     public static final String UNIX = "unix";
+
+    private ConsoleTasks() {}
 
     public static void executeOnWindows(CliCommand cliCommand) {
         execute(WINDOWS, cliCommand, true, Collections.emptyMap());

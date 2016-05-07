@@ -20,7 +20,9 @@ import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.engine.Engine;
 import betsy.common.model.engine.IsEngine;
 
-public class EngineTableGenerator {
+public final class EngineTableGenerator {
+
+    private EngineTableGenerator() {}
 
     public static void main(String[] args) {
         generateEnginesJson();

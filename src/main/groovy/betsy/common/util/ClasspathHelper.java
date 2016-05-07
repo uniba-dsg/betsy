@@ -6,7 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-public class ClasspathHelper {
+public final class ClasspathHelper {
+
+    private ClasspathHelper() {}
 
     public static Path getFilesystemPathFromClasspathPath(String classpathPath) {
         try {

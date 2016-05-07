@@ -9,7 +9,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Util {
+public final class Util {
+
+    private Util() {}
 
     public static List<String> computeMatchingPattern(BPELProcess process) {
         // This method works based on the knowledge that we have no more than two operations available anyway

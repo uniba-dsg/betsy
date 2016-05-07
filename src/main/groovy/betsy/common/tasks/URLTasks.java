@@ -12,9 +12,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 
-public class URLTasks {
+public final class URLTasks {
 
     private static final Logger LOGGER = Logger.getLogger(URLTasks.class);
+
+    private URLTasks() {}
 
     public static boolean isUrlAvailable(URL url) {
         LOGGER.info("Checking whether the url " + url + " returns HTTP 200");

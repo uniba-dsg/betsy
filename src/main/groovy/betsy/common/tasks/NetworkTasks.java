@@ -7,9 +7,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class NetworkTasks {
+public final class NetworkTasks {
 
     public static final String BETSY_SVN_BASE_URL = "https://lspi.wiai.uni-bamberg.de/svn/betsy/";
+
+    private NetworkTasks() {}
 
     public static void downloadFile(String url, Path fileOrFolder) {
         try {
