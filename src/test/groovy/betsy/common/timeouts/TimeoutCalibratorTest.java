@@ -114,8 +114,8 @@ public class TimeoutCalibratorTest {
     @Test
     public void testCalculateExpectation() throws Exception {
         List<CalibrationTimeout> timeouts = new ArrayList<>();
-        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 20000));
-        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 40000));
+        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("Bpelg.deploy"), 20000));
+        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("Bpelg.deploy"), 40000));
         assertEquals("The value should be the expectation of the given timeouts.", 30000, TimeoutCalibrator.calculateExpectation(timeouts));
     }
 
@@ -129,8 +129,8 @@ public class TimeoutCalibratorTest {
     @Test
     public void testCalculateVariance() throws Exception {
         List<CalibrationTimeout> timeouts = new ArrayList<>();
-        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 20000));
-        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 40000));
+        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("Bpelg.deploy"), 20000));
+        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("Bpelg.deploy"), 40000));
         assertEquals("The value should be the variance of the given timeouts.",  1.0E8, TimeoutCalibrator.calculateVariance(timeouts, TimeoutCalibrator.calculateExpectation(timeouts)), 0);
     }
 
@@ -143,8 +143,8 @@ public class TimeoutCalibratorTest {
     @Test
     public void testStandardDeviation() throws Exception {
         List<CalibrationTimeout> timeouts = new ArrayList<>();
-        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 20000));
-        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("BpelgDeployer.constructor"), 40000));
+        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("Bpelg.deploy"), 20000));
+        timeouts.add(new CalibrationTimeout(TimeoutRepository.getTimeout("Bpelg.deploy"), 40000));
         assertEquals("The value should be the deviation of the given timeouts.", 10000.0, TimeoutCalibrator.standardDeviation(timeouts, TimeoutCalibrator.calculateExpectation(timeouts)), 0);
     }
 

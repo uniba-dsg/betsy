@@ -59,7 +59,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        TimeoutRepository.getTimeout("OpenEsbEngine.startup").waitForAvailabilityOfUrl("http://localhost:8383");
+        TimeoutRepository.getTimeout("OpenEsb.startup").waitForAvailabilityOfUrl("http://localhost:8383");
     }
 
     @Override

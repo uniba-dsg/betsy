@@ -55,8 +55,8 @@ public class TimeoutsTest {
     @Before
     public void setUp() throws Exception {
         properties = new File("timeout.properties");
-        engine = "OdeDeployer";
-        step = "constructor";
+        engine = "Ode";
+        step = "deploy";
         value = 20_000;
     }
 

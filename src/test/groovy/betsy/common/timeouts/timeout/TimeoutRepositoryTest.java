@@ -26,7 +26,7 @@ public class TimeoutRepositoryTest {
 
     @Test
     public void testSetTimeout() throws Exception {
-        Timeout timeout = new Timeout("ode_v", "deploymentTimeout", 20_000, 5_000);
+        Timeout timeout = new Timeout("ode_v", "service", 20_000, 5_000);
         TimeoutRepository.setTimeout(timeout);
         assertEquals("The timeouts in ms should be equal.", timeout.getTimeoutInMs(), TimeoutRepository.getTimeout(timeout.getKey()).getTimeoutInMs());
         assertEquals("The timeToRepetitions in ms should be equal.", timeout.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeout.getKey()).getTimeToRepetitionInMs());
@@ -34,8 +34,8 @@ public class TimeoutRepositoryTest {
 
     @Test
     public void testSetAllCalibrationTimeouts() throws Exception {
-        CalibrationTimeout timeout = new CalibrationTimeout("ode_v", "deploymentTimeout", "", 20_000, 5_000);
-        CalibrationTimeout timeoutTest = new CalibrationTimeout("bpelg_v", "deploymentTimeout", "", 20_000, 5_000);
+        CalibrationTimeout timeout = new CalibrationTimeout("ode_v", "service", "", 20_000, 5_000);
+        CalibrationTimeout timeoutTest = new CalibrationTimeout("bpelg_v", "service", "", 20_000, 5_000);
         HashMap<String, CalibrationTimeout> timeouts = new HashMap<>();
         timeouts.put(timeout.getKey(), timeout);
         timeouts.put(timeout.getKey(), timeoutTest);
