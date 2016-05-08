@@ -368,10 +368,10 @@ public class Timeout {
 
     /**
      *
-     * @param c
-     * @throws TimeoutException
+     * @param condition The condition on
+     * @throws TimeoutException If the time
      */
-    public void waitFor(Callable<Boolean> c) throws TimeoutException {
+    public void waitFor(Callable<Boolean> condition) throws TimeoutException {
         LOGGER.info(getKey() + ": wait for at most " + getTimeoutInMs() + "ms or until condition is met.");
         long max = System.currentTimeMillis() + getTimeoutInMs();
 
@@ -380,7 +380,7 @@ public class Timeout {
             boolean wasSuccessful = false;
             while (max > System.currentTimeMillis()) {
                 work = max - System.currentTimeMillis();
-                if (c.call() && work >= 0) {
+                if (condition.call() && work >= 0) {
                     wasSuccessful = true;
                     break;
                 }
@@ -407,8 +407,8 @@ public class Timeout {
 
     /**
      *
-     * @param path
-     * @param substring
+     * @param path The path of the file.
+     * @param substring The searched substring.
      */
     public void waitForSubstringInFile(Path path, String substring) {
         waitFor(() -> FileTasks.hasFileSpecificSubstring(path, substring));
@@ -417,7 +417,7 @@ public class Timeout {
 
     /**
      *
-     * @param url
+     * @param url The url, which availability is expected.
      */
     public void waitForAvailabilityOfUrl(URL url) {
         waitFor(() -> URLTasks.isUrlAvailable(url));
@@ -425,7 +425,7 @@ public class Timeout {
 
     /**
      *
-     * @param url
+     * @param url The url, which availability is expected.
      */
     public void waitForAvailabilityOfUrl(String url) {
         try {
@@ -437,8 +437,8 @@ public class Timeout {
 
     /**
      *
-     * @param url
-     * @param substring
+     * @param url The scanned url.
+     * @param substring The searched substring.
      */
     public void waitForContentInUrl(URL url, String substring) {
         waitFor(() -> URLTasks.hasUrlSubstring(url, substring));
