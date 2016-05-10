@@ -1,12 +1,11 @@
 package betsy.common.timeouts;
 
 import betsy.common.tasks.FileTasks;
+import betsy.common.timeouts.timeout.Timeout;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.junit.*;
-import betsy.common.timeouts.calibration.CalibrationTimeout;
-import betsy.common.timeouts.timeout.Timeout;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,14 +22,11 @@ import static org.junit.Assert.assertEquals;
  * @author Christoph Broeker
  * @version 1.0
  */
-public class TimeoutIOOperationsTest {
-
-
+public class PropertiesTest {
     private Timeout timeout;
-    private Path csv;
     private Path properties;
-    private TestAppender testAppender;
-    private static final Logger LOGGER = Logger.getLogger(TimeoutIOOperations.class);
+    private PropertiesTest.TestAppender testAppender;
+    private static final Logger LOGGER = Logger.getLogger(Properties.class);
 
 
     @BeforeClass
@@ -43,19 +38,12 @@ public class TimeoutIOOperationsTest {
             FileTasks.copyFileIntoFolder(properties.toPath(), Paths.get(transitionFolder));
             FileTasks.deleteFile(properties.toPath());
         }
-        File csv = new File("calibration_timeouts.csv");
-        if (csv.exists()) {
-            FileTasks.copyFileIntoFolder(csv.toPath(), Paths.get(transitionFolder));
-            FileTasks.deleteFile(csv.toPath());
-        }
     }
 
     @AfterClass
     public static void tearDownClass() {
         File properties = new File("timeout.properties");
-        File csv = new File("calibration_timeouts.csv");
         FileTasks.deleteFile(properties.toPath());
-        FileTasks.deleteFile(csv.toPath());
         String transitionFolder = "transition_folder";
         Path currentRelativePath = Paths.get("");
         FileTasks.copyFilesInFolderIntoOtherFolder(Paths.get(transitionFolder), currentRelativePath);
@@ -67,7 +55,6 @@ public class TimeoutIOOperationsTest {
     public void setUp() throws Exception {
         timeout = new Timeout("ode", "deploy", 20000, 2000);
         properties = Paths.get("timeouts.properties");
-        csv = Paths.get("calibration_timeouts.csv");
         testAppender = new TestAppender();
         LOGGER.addAppender(testAppender);
     }
@@ -76,9 +63,7 @@ public class TimeoutIOOperationsTest {
     public void tearDown() throws Exception {
         timeout = null;
         Files.deleteIfExists(properties);
-        Files.deleteIfExists(csv);
         properties = null;
-        csv = null;
         LOGGER.removeAllAppenders();
         testAppender = null;
     }
@@ -88,8 +73,8 @@ public class TimeoutIOOperationsTest {
         ArrayList<Timeout> timeouts = new ArrayList<>();
         timeouts.add(timeout);
 
-        TimeoutIOOperations.writeToProperties(properties, timeouts);
-        List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
+        Properties.read(properties, timeouts);
+        List<Timeout> readTimeouts = Properties.read(properties, timeouts);
         for (Timeout actualTimeout : readTimeouts) {
             assertEquals(timeout.getKey(), actualTimeout.getKey());
             assertEquals(timeout.getTimeoutInMs(), actualTimeout.getTimeoutInMs());
@@ -103,8 +88,8 @@ public class TimeoutIOOperationsTest {
         timeouts.add(timeout);
         Timeout testTimeout = new Timeout("tomcat", "start", 20000, 2000);
 
-        TimeoutIOOperations.writeToProperties(properties, timeouts);
-        List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
+        Properties.write(properties, timeouts);
+        List<Timeout> readTimeouts = Properties.read(properties, timeouts);
         for (Timeout actualTimeout : readTimeouts) {
             assertEquals(timeout.getKey(), actualTimeout.getKey());
             assertEquals(timeout.getTimeoutInMs(), actualTimeout.getTimeoutInMs());
@@ -114,10 +99,10 @@ public class TimeoutIOOperationsTest {
         timeout.setValue(5000);
         timeout.setTimeToRepetition(500);
         timeouts.add(testTimeout);
-        TimeoutIOOperations.writeToProperties(properties, timeouts);
+        Properties.write(properties, timeouts);
         timeouts.add(timeout);
 
-        List<Timeout> readNewTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
+        List<Timeout> readNewTimeouts = Properties.read(properties, timeouts);
         for (Timeout actualTimeout : readNewTimeouts) {
             if (Objects.equals(actualTimeout.getKey(), timeout.getKey())) {
                 assertEquals(timeout.getKey(), actualTimeout.getKey());
@@ -136,7 +121,7 @@ public class TimeoutIOOperationsTest {
         ArrayList<Timeout> timeouts = new ArrayList<>();
         timeouts.add(timeout);
 
-        List<Timeout> readTimeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
+        List<Timeout> readTimeouts = Properties.read(properties, timeouts);
         for (Timeout actualTimeout : readTimeouts) {
             assertEquals(timeout.getKey(), actualTimeout.getKey());
             assertEquals(timeout.getTimeoutInMs(), actualTimeout.getTimeoutInMs());
@@ -150,7 +135,7 @@ public class TimeoutIOOperationsTest {
         timeouts.add(timeout);
 
         properties.toFile().setReadable(false);
-        TimeoutIOOperations.readFromProperties(properties, timeouts);
+        Properties.read(properties, timeouts);
         assertEquals("The file " + properties.toString() + " is not readable.", testAppender.messages.get(0));
     }
 
@@ -159,32 +144,16 @@ public class TimeoutIOOperationsTest {
         ArrayList<Timeout> timeouts = new ArrayList<>();
         timeouts.add(timeout);
 
-        Properties timeoutProperties = System.getProperties();
+        java.util.Properties timeoutProperties = System.getProperties();
         FileWriter writer = new FileWriter(properties.toString());
         timeoutProperties.setProperty(timeout.getKey() + ".value", "test");
         timeoutProperties.setProperty(timeout.getKey() + ".timeToRepetition", "test");
         timeoutProperties.store(writer, "Timeout_properties");
         writer.close();
 
-        TimeoutIOOperations.readFromProperties(properties, timeouts);
+        Properties.read(properties, timeouts);
         assertEquals("The timeout with the key " + timeout.getKey() + " was not read from the properties. The timeout have to be an integer.", testAppender.messages.get(0));
         assertEquals("The timeToRepetition with the key " + timeout.getKey() + " was not read from the properties. The timeToRepetition have to be an integer.", testAppender.messages.get(1));
-    }
-
-
-    @Test
-    public void testWriteToCSV() throws Exception {
-        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
-        calibrationTimeouts.add(new CalibrationTimeout(timeout));
-        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
-    }
-
-    @Test
-    public void testWriteToCSVDoesNotExits() throws Exception {
-        FileTasks.deleteFile(csv);
-        ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
-        calibrationTimeouts.add(new CalibrationTimeout(timeout));
-        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
     }
 
     class TestAppender extends AppenderSkeleton {
@@ -206,4 +175,3 @@ public class TimeoutIOOperationsTest {
         }
     }
 }
-

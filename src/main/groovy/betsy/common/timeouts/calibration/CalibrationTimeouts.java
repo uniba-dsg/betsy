@@ -1,6 +1,7 @@
 package betsy.common.timeouts.calibration;
 
-import betsy.common.timeouts.TimeoutIOOperations;
+import betsy.common.timeouts.CSV;
+import betsy.common.timeouts.Properties;
 import betsy.common.timeouts.timeout.Timeout;
 import flex.messaging.io.ArrayCollection;
 
@@ -128,7 +129,7 @@ public class CalibrationTimeouts {
      */
     public void writeAllCalibrationTimeoutsToProperties() {
         List<CalibrationTimeout> timeouts = new ArrayCollection(getAllNonRedundantTimeoutsProperties().values());
-        TimeoutIOOperations.writeToProperties(properties, convertCalibrationTimeoutListToTimeoutList(timeouts));
+        Properties.write(properties, convertCalibrationTimeoutListToTimeoutList(timeouts));
     }
 
     /**
@@ -139,14 +140,14 @@ public class CalibrationTimeouts {
      */
     public void writeToCSV(Path csv, int numberOfDuration) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
-        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts, numberOfDuration);
+        CSV.write(csv, calibrationTimeouts, numberOfDuration);
     }
 
     /**
      * The method writes all timeouts to a csv file.
      */
     public void writeToCSV() {
-        TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);
+        CSV.write(csv, calibrationTimeouts);
     }
 
     /**

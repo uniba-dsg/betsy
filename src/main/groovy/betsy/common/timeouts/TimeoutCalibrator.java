@@ -80,7 +80,7 @@ public class TimeoutCalibrator {
             //set all values to the repositories
             TimeoutRepository.setAllCalibrationTimeouts(timeouts);
             //write timeouts to properties
-            TimeoutIOOperations.writeToProperties(properties, new ArrayList<>(timeouts.values()));
+            Properties.write(properties, new ArrayList<>(timeouts.values()));
             //clean the calibrationTimeoutRepository for the next run
             CalibrationTimeoutRepository.clean();
             //execute betsy
@@ -229,7 +229,7 @@ public class TimeoutCalibrator {
     public static int calculateTimeout(Timeout timeout, int standardDeviationMultiplier, Path csv) {
         Objects.requireNonNull(timeout, "The timeout can't be null.");
         Objects.requireNonNull(csv, "The csv file can't be null.");
-        List<CalibrationTimeout> timeouts = TimeoutIOOperations.readFromCSV(csv).stream().filter(actualTimeout -> actualTimeout.getKey().equals(timeout.getKey())).collect(Collectors.toList());
+        List<CalibrationTimeout> timeouts = CSV.read(csv).stream().filter(actualTimeout -> actualTimeout.getKey().equals(timeout.getKey())).collect(Collectors.toList());
         int expectation = calculateExpectation(timeouts);
         return expectation + (standardDeviationMultiplier * new Double(standardDeviation(timeouts, expectation)).intValue());
     }

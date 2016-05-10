@@ -1,6 +1,6 @@
 package betsy.common.timeouts.timeout;
 
-import betsy.common.timeouts.TimeoutIOOperations;
+import betsy.common.timeouts.Properties;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -90,10 +90,10 @@ public class Timeouts {
     }
 
     /**
-     * This method reads all timeouts, which are set in the {@link Timeouts} from the {@link Properties}.
+     * This method reads all timeouts, which are set in the {@link Timeouts} from the {@link betsy.common.timeouts.Properties}.
      */
     public void readTimeoutProperties() {
-        timeouts = TimeoutIOOperations.readFromProperties(properties, timeouts);
+        timeouts = Properties.read(properties, timeouts);
     }
 
     private void addTimeouts() {

@@ -186,7 +186,7 @@ public class CalibrationTimeoutsTest {
         CalibrationTimeout calibrationTimeoutTest = new CalibrationTimeout("ode", "deploy", "maven", 70_000, 5_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeoutTest);
         HashMap<String, CalibrationTimeout> timeouts = calibrationTimeouts.getAllNonRedundantTimeouts();
-        assertEquals("The keys should be equal.", calibrationTimeoutTest, timeouts.get(calibrationTimeout.getKey()));
+        assertEquals("The keys should be equal.", calibrationTimeoutTest.getKey(), timeouts.get(calibrationTimeout.getKey()).getKey());
     }
 
     @Test

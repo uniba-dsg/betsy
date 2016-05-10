@@ -74,7 +74,7 @@ public class TimeoutCalibratorTest {
         CalibrationTimeout timeoutFourth = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         timeoutFourth.setMeasuredTime(20_000);
         timeouts.add(timeoutFourth);
-        TimeoutIOOperations.writeToCSV(csv, timeouts);
+        CSV.write(csv, timeouts);
 
         CalibrationTimeout timeout = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         HashMap<String, CalibrationTimeout> hashMap = new HashMap<>();
@@ -169,7 +169,7 @@ public class TimeoutCalibratorTest {
         CalibrationTimeout timeoutFourth = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         timeoutFourth.setMeasuredTime(20_000);
         timeouts.add(timeoutFourth);
-        TimeoutIOOperations.writeToCSV(csv, timeouts);
+        CSV.write(csv, timeouts);
         CalibrationTimeout timeout = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61622, TimeoutCalibrator.calculateTimeout(timeout, 2, csv));
     }
