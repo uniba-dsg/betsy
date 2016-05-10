@@ -74,7 +74,7 @@ public class TimeoutsTest {
         Timeouts timeouts = new Timeouts();
         HashMap<String, Timeout> timeoutHashMap = timeouts.getAllTimeouts();
         assertEquals("The number should conform with the number of timeouts in method 'addtimeouts'", 53, timeoutHashMap.size());
-        assertEquals("The keys should be equal.", "tomcat.startup", timeoutHashMap.get("tomcat.startup").getKey());
+        assertEquals("The keys should be equal.", "tomcat.startup", timeoutHashMap.get("Tomcat.startup").getKey());
     }
 
     @Test

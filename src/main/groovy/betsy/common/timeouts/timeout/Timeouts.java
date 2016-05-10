@@ -97,7 +97,7 @@ public class Timeouts {
     }
 
     private void addTimeouts() {
-        timeouts.add(new Timeout("tomcat.startup", 30_000, 500));
+        timeouts.add(new Timeout("Tomcat.startup", 30_000, 500));
         timeouts.add(new Timeout("fileTasks.deleteDirectory", 5_000, Timeout.Category.UNMEASURABLE));
 
         //Virtual engines
