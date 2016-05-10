@@ -1,5 +1,6 @@
 package betsy.common.timeouts.timeout;
 
+import betsy.common.analytics.model.Engine;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
 import betsy.common.tasks.WaitTasks;
@@ -26,28 +27,30 @@ public class Timeout {
 
     private final String engineOrProcessGroup;
     private final String stepOrProcess;
-    private Optional<String> description;
+    private final String description;
     private Integer value;
     private Optional<Integer> timeToRepetition;
-    private Category category = Category.MEASURABLE;
-    private PlaceOfUse placeOfUse = PlaceOfUse.INTERN;
+    private final Category category;
+    private final PlaceOfUse placeOfUse;
 
 
     /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value           The value of the {@link Timeout} in milliseconds.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value) {
         this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
         this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
-        this.description = Optional.empty();
         this.value = value;
         this.timeToRepetition = Optional.empty();
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = "";
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description      The description of the {@link Timeout}.
      * @param value            The value of the {@link Timeout} in milliseconds.
@@ -56,139 +59,184 @@ public class Timeout {
      * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, int timeToRepetition, Category category, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.description = Optional.of(description);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
         this.category = Objects.requireNonNull(category, "The category can't be null.");
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
-     * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
-     * @param value           The value of the {@link Timeout} in milliseconds.
-     * @param category         The {@link Category} of the {@link Timeout}.
-     */
-    public Timeout(String engineOrProcess, String stepOrProcess, int value, Category category) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.category = Objects.requireNonNull(category, "The category can't be null.");
-    }
-
-    /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
-     * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
-     * @param value           The value of the {@link Timeout} in milliseconds.
-     * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
-     */
-    public Timeout(String engineOrProcess, String stepOrProcess, int value, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
-    }
-
-    /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value           The value of the {@link Timeout} in milliseconds.
      * @param category        The {@link Category} of the {@link Timeout}.
-     * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
      */
-    public Timeout(String engineOrProcess, String stepOrProcess, int value, Category category, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
+    public Timeout(String engineOrProcess, String stepOrProcess, int value, Category category) {
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
         this.category = Objects.requireNonNull(category, "The category can't be null.");
-        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = "";
     }
 
     /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
+     * @param value           The value of the {@link Timeout} in milliseconds.
+     * @param placeOfUse      The {@link PlaceOfUse} of the {@link Timeout}.
+     */
+    public Timeout(String engineOrProcess, String stepOrProcess, int value, PlaceOfUse placeOfUse) {
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = "";
+    }
+
+    /**
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
+     * @param value           The value of the {@link Timeout} in milliseconds.
+     * @param category        The {@link Category} of the {@link Timeout}.
+     * @param placeOfUse      The {@link PlaceOfUse} of the {@link Timeout}.
+     */
+    public Timeout(String engineOrProcess, String stepOrProcess, int value, Category category, PlaceOfUse placeOfUse) {
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = "";
+    }
+
+    /**
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description     The description of the {@link Timeout}.
      * @param value           The value of the {@link Timeout} in milliseconds.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.description = Optional.of(description);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description     The description of the {@link Timeout}.
      * @param value           The value of the {@link Timeout} in milliseconds.
-     * @param category         The {@link Category} of the {@link Timeout}.
+     * @param category        The {@link Category} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, Category category) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.description = Optional.of(description);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
         this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description     The description of the {@link Timeout}.
      * @param value           The value of the {@link Timeout} in milliseconds.
-     * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
+     * @param placeOfUse      The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.description = Optional.of(description);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Category.MEASURABLE;
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description     The description of the {@link Timeout}.
      * @param value           The value of the {@link Timeout} in milliseconds.
-     * @param category         The {@link Category} of the {@link Timeout}.
-     * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
+     * @param category        The {@link Category} of the {@link Timeout}.
+     * @param placeOfUse      The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, Category category, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
-        this.description = Optional.of(description);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
         this.category = Objects.requireNonNull(category, "The category can't be null.");
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value            The value of the {@link Timeout} in milliseconds.
      * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = "";
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value            The value of the {@link Timeout} in milliseconds.
      * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
      * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
+        this.category = Category.MEASURABLE;
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = "";
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value            The value of the {@link Timeout} in milliseconds.
      * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
      * @param category         The {@link Category} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition, Category category) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
         this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = "";
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value            The value of the {@link Timeout} in milliseconds.
      * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
@@ -196,27 +244,34 @@ public class Timeout {
      * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, int value, int timeToRepetition, Category category, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
         this.category = Objects.requireNonNull(category, "The category can't be null.");
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = "";
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description      The description of the {@link Timeout}.
      * @param value            The value of the {@link Timeout} in milliseconds.
      * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, int timeToRepetition) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.description = Optional.ofNullable(description);
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description      The description of the {@link Timeout}.
      * @param value            The value of the {@link Timeout} in milliseconds.
@@ -224,14 +279,17 @@ public class Timeout {
      * @param category         The {@link Category} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, int timeToRepetition, Category category) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.description = Optional.ofNullable(description);
         this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = description;
     }
 
     /**
-     * @param engineOrProcess  The {@link betsy.common.analytics.model.Engine} or the processgroup, where the {@link Timeout} is located.
+     * @param engineOrProcess  The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess    The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param description      The description of the {@link Timeout}.
      * @param value            The value of the {@link Timeout} in milliseconds.
@@ -239,10 +297,13 @@ public class Timeout {
      * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
      */
     public Timeout(String engineOrProcess, String stepOrProcess, String description, int value, int timeToRepetition, PlaceOfUse placeOfUse) {
-        this(engineOrProcess, stepOrProcess, value);
+        this.engineOrProcessGroup = Objects.requireNonNull(engineOrProcess, "The engineOrProcessGroup can't be null.");
+        this.stepOrProcess = Objects.requireNonNull(stepOrProcess, "The stepOrProcess can't be null.");
+        this.value = value;
         this.timeToRepetition = Optional.of(timeToRepetition);
-        this.description = Optional.ofNullable(description);
+        this.category = Category.MEASURABLE;
         this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+        this.description = description;
     }
 
     /**
@@ -250,11 +311,10 @@ public class Timeout {
      */
     public String getKey() {
         StringBuilder key = new StringBuilder(engineOrProcessGroup).append('.').append(stepOrProcess);
-        if (description.isPresent() && description.get().length() > 0) {
-            return key.append('.').append(description.get()).toString();
-        } else {
-            return key.toString();
+        if(description.length() > 0){
+            return key.append('.').append(description).toString();
         }
+        return key.toString();
     }
 
     /**
@@ -275,7 +335,7 @@ public class Timeout {
      * @return Returns the description of the {@link Timeout}.
      */
     public String getDescription() {
-        return description.orElse("");
+        return description;
     }
 
     /**
@@ -335,39 +395,22 @@ public class Timeout {
     }
 
     /**
-     *
      * @return Returns the {@link Category} of the {@link Timeout}.
      */
     public Category getCategory() {
         return category;
     }
 
-    /**
-     *
-     * @param category The {@link Category} of the {@link Timeout}.
-     */
-    public void setCategory(Category category) {
-        this.category = Objects.requireNonNull(category, "The category can't be null.");
-    }
 
     /**
-     *
      * @return Returns the {@link PlaceOfUse} of the {@link Timeout}.
      */
     public PlaceOfUse getPlaceOfUse() {
         return placeOfUse;
     }
 
-    /**
-     *
-     * @param placeOfUse The {@link PlaceOfUse} of the {@link Timeout}.
-     */
-    public void setPlaceOfUse(PlaceOfUse placeOfUse){
-        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
-    }
 
     /**
-     *
      * @param condition The condition on
      * @throws TimeoutException If the time
      */
@@ -406,8 +449,7 @@ public class Timeout {
     }
 
     /**
-     *
-     * @param path The path of the file.
+     * @param path      The path of the file.
      * @param substring The searched substring.
      */
     public void waitForSubstringInFile(Path path, String substring) {
@@ -416,7 +458,6 @@ public class Timeout {
 
 
     /**
-     *
      * @param url The url, which availability is expected.
      */
     public void waitForAvailabilityOfUrl(URL url) {
@@ -424,7 +465,6 @@ public class Timeout {
     }
 
     /**
-     *
      * @param url The url, which availability is expected.
      */
     public void waitForAvailabilityOfUrl(String url) {
@@ -436,8 +476,7 @@ public class Timeout {
     }
 
     /**
-     *
-     * @param url The scanned url.
+     * @param url       The scanned url.
      * @param substring The searched substring.
      */
     public void waitForContentInUrl(URL url, String substring) {
