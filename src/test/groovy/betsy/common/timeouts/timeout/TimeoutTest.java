@@ -341,20 +341,4 @@ public class TimeoutTest {
         Timeout timeout = new Timeout(engine, step, value, placeOfUse);
         assertEquals("The placeOfUse should be equal.", placeOfUse, timeout.getPlaceOfUse());
     }
-
-    @Test
-    public void testSetCategory(){
-        Timeout timeout = new Timeout(engine, step, value);
-        Timeout.Category category = Timeout.Category.UNMEASURABLE;
-        timeout.setCategory(Timeout.Category.UNMEASURABLE);
-        assertEquals("The categories should be equal.",category, timeout.getCategory());
-    }
-
-    @Test
-    public void testSetPlaceOfUse(){
-        Timeout timeout = new Timeout(engine, step, value);
-        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
-        timeout.setPlaceOfUse(Timeout.PlaceOfUse.EXTERN);
-        assertEquals("The placeOfUse should be equal.", placeOfUse, timeout.getPlaceOfUse());
-    }
 }
