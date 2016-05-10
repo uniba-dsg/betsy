@@ -80,7 +80,7 @@ public class TimeoutCalibratorTest {
         HashMap<String, CalibrationTimeout> hashMap = new HashMap<>();
         hashMap.put("openesb_v.deploymentTimeout", timeout);
         TimeoutCalibrator.determineTimeouts(hashMap, csv);
-        assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61622, hashMap.get("openesb_v.deploymentTimeout").getTimeoutInMs());
+        assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61610, hashMap.get("openesb_v.deploymentTimeout").getTimeoutInMs());
     }
 
     @Test
@@ -171,11 +171,11 @@ public class TimeoutCalibratorTest {
         timeouts.add(timeoutFourth);
         CSV.write(csv, timeouts);
         CalibrationTimeout timeout = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
-        assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61622, TimeoutCalibrator.calculateTimeout(timeout, 2, csv));
+        assertEquals("The value is the sum of the 2-fold standardDeviation and the expectation.", 61610, TimeoutCalibrator.calculateTimeout(timeout, 2, csv));
     }
 
-    class TestAppender extends AppenderSkeleton {
-        public List<String> messages = new ArrayList<>();
+    private class TestAppender extends AppenderSkeleton {
+        private List<String> messages = new ArrayList<>();
 
         @Override
         protected void append(LoggingEvent event) {
