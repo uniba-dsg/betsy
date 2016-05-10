@@ -156,9 +156,9 @@ public class CalibrationTimeoutsTest {
     public void testWriteToCSVParameters() throws Exception {
         CalibrationTimeout calibrationTimeout = new CalibrationTimeout("ode", "deploy", "maven", 20_000, 2_000);
         calibrationTimeouts.addCalibrationTimeout(calibrationTimeout);
-        File csv = new File("calibration_timeouts.csv");
+        Path csv = Paths.get("calibration_timeouts.csv");
         calibrationTimeouts.writeToCSV(csv, 0);
-        assertTrue("The csv file should exist.", csv.exists());
+        assertTrue("The csv file should exist.", csv.toFile().exists());
     }
 
     @Test

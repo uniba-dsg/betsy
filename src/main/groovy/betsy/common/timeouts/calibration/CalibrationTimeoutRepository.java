@@ -2,7 +2,7 @@ package betsy.common.timeouts.calibration;
 
 import betsy.common.timeouts.timeout.Timeouts;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -43,10 +43,10 @@ public class CalibrationTimeoutRepository {
     /**
      * Writes the the values of the {@link CalibrationTimeout} in the {@link CalibrationTimeoutRepository} to a csv file.
      *
-     * @param csv The csv file, where the timeout values should be saved.
+     * @param csv The csv path, where the timeout values should be saved.
      * @param numberOfDuration The number of calibration iterations.
      */
-    public static void writeToCSV(File csv, int numberOfDuration) {
+    public static void writeToCSV(Path csv, int numberOfDuration) {
         CALIBRATION_TIMEOUTS.writeToCSV(Objects.requireNonNull(csv, "The csv can't be null."), Objects.requireNonNull(numberOfDuration, "The numberOfDuration can't be null."));
     }
 

@@ -2,7 +2,8 @@ package betsy.common.timeouts.timeout;
 
 import betsy.common.timeouts.TimeoutIOOperations;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -12,7 +13,7 @@ import java.util.*;
 public class Timeouts {
 
     private List<Timeout> timeouts = new ArrayList<>();
-    private File properties = new File("timeout.properties");
+    private Path properties = Paths.get("timeout.properties");
 
     /**
      * @param timeouts         The timeouts, which should be managed by the {@link betsy.common.timeouts}.
@@ -21,7 +22,7 @@ public class Timeouts {
     public Timeouts(ArrayList<Timeout> timeouts, String nameOfProperties) {
         Objects.requireNonNull(nameOfProperties, "nameOfProperties can't be null.");
         if (nameOfProperties.length() > 0) {
-            this.properties = new File(nameOfProperties);
+            this.properties = Paths.get(nameOfProperties);
         }
         this.timeouts = Objects.requireNonNull(timeouts, "The timeouts can't be null.");
     }
@@ -32,7 +33,7 @@ public class Timeouts {
     public Timeouts(String nameOfProperties) {
         Objects.requireNonNull(nameOfProperties, "nameOfProperties can't be null.");
         if (nameOfProperties.length() > 0) {
-            this.properties = new File(nameOfProperties);
+            this.properties = Paths.get(nameOfProperties);
         }
         addTimeouts();
     }

@@ -4,8 +4,12 @@ import betsy.common.timeouts.TimeoutIOOperations;
 import betsy.common.timeouts.timeout.Timeout;
 import flex.messaging.io.ArrayCollection;
 
-import java.io.File;
-import java.util.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -15,8 +19,8 @@ import java.util.stream.Collectors;
 public class CalibrationTimeouts {
 
     private List<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
-    private File properties = new File("timeout.properties");
-    private File csv = new File("calibration_timeouts.csv");
+    private Path properties = Paths.get("timeout.properties");
+    private Path csv = Paths.get("calibration_timeouts.csv");
 
     /**
      *
@@ -32,11 +36,11 @@ public class CalibrationTimeouts {
     public CalibrationTimeouts(ArrayList<CalibrationTimeout> calibrationTimeouts, String nameOfProperties, String nameOfCSV) {
         Objects.requireNonNull(nameOfProperties, "nameOfProperties can't be null.");
         if (nameOfProperties.length() > 0) {
-            this.properties = new File(nameOfProperties);
+            this.properties = Paths.get(nameOfProperties);
         }
         Objects.requireNonNull(nameOfCSV, "nameOfCCSV can't be null.");
         if (nameOfCSV.length() > 0) {
-            this.csv = new File(nameOfCSV + ".csv");
+            this.csv = Paths.get(nameOfCSV + ".csv");
         }
         this.calibrationTimeouts = Objects.requireNonNull(calibrationTimeouts, "calibrationTimeouts can't be null.");
     }
@@ -48,11 +52,11 @@ public class CalibrationTimeouts {
     public CalibrationTimeouts(String nameOfProperties, String nameOfCSV) {
         Objects.requireNonNull(nameOfProperties, "nameOfProperties can't be null.");
         if (nameOfProperties.length() > 0) {
-            this.properties = new File(nameOfProperties);
+            this.properties = Paths.get(nameOfProperties);
         }
         Objects.requireNonNull(nameOfCSV, "nameOfCCSV can't be null.");
         if (nameOfCSV.length() > 0) {
-            this.csv = new File(nameOfCSV + ".csv");
+            this.csv = Paths.get(nameOfCSV + ".csv");
         }
     }
 
@@ -130,10 +134,10 @@ public class CalibrationTimeouts {
     /**
      * The method writes all timeouts to a csv file.
      *
-     * @param csv              The csv file, where the timeout values should be saved.
+     * @param csv              The csv path, where the timeout values should be saved.
      * @param numberOfDuration The number of calibration iterations.
      */
-    public void writeToCSV(File csv, int numberOfDuration) {
+    public void writeToCSV(Path csv, int numberOfDuration) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
         TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts, numberOfDuration);
     }

@@ -30,17 +30,17 @@ public class TimeoutIOOperations {
     /**
      * This method reads the values of the given timeouts form the properties.
      *
-     * @param propertiesFile The file of the properties.
+     * @param propertiesFile The path of the properties.
      * @param timeouts       The list with the timeouts.
      * @return A {@link List} with the timeouts and the loaded values from the properties.
      */
-    public static List<Timeout> readFromProperties(File propertiesFile, List<Timeout> timeouts) {
+    public static List<Timeout> readFromProperties(Path propertiesFile, List<Timeout> timeouts) {
         Objects.requireNonNull(propertiesFile, "The propertiesFile can't be null.");
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
-        if (Files.isReadable(propertiesFile.toPath())) {
+        if (Files.isReadable(propertiesFile)) {
             Reader reader = null;
             try {
-                reader = new FileReader(propertiesFile);
+                reader = new FileReader(propertiesFile.toString());
                 Properties properties = new Properties();
                 properties.load(reader);
 
@@ -74,7 +74,7 @@ public class TimeoutIOOperations {
                 }
             }
         } else {
-            LOGGER.info("The file " + propertiesFile.getName() + " is not readable.");
+            LOGGER.info("The file " + propertiesFile.toString() + " is not readable.");
         }
         return timeouts;
     }
@@ -82,24 +82,24 @@ public class TimeoutIOOperations {
     /**
      * This method writes the values of the given timeouts to the property file.
      *
-     * @param propertiesFile The file were the properties should be saved.
+     * @param propertiesPath The path were the properties should be saved.
      * @param timeouts       The timeouts, which should be saved.
      */
-    public static void writeToProperties(File propertiesFile, List<Timeout> timeouts) {
-        Objects.requireNonNull(propertiesFile, "The propertiesFile can't be null.");
+    public static void writeToProperties(Path propertiesPath, List<Timeout> timeouts) {
+        Objects.requireNonNull(propertiesPath, "The propertiesFile can't be null.");
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
         Writer writer = null;
         try {
             Properties properties;
-            if (Files.isReadable(propertiesFile.toPath())) {
-                Reader reader = new FileReader(propertiesFile);
+            if (Files.isReadable(propertiesPath)) {
+                Reader reader = new FileReader(propertiesPath.toString());
                 properties = new Properties();
                 properties.load(reader);
                 reader.close();
             } else {
                 properties = new Properties();
             }
-            writer = new FileWriter(propertiesFile);
+            writer = new FileWriter(propertiesPath.toString());
             for (Timeout timeout : timeouts) {
                 properties.setProperty(timeout.getKey() + ".value", Integer.toString(timeout.getTimeoutInMs()));
                 properties.setProperty(timeout.getKey() + ".timeToRepetition", Integer.toString(timeout.getTimeToRepetitionInMs()));
@@ -121,27 +121,27 @@ public class TimeoutIOOperations {
     /**
      * This method deletes the csv file and writes the values of timeouts to a csv file.
      *
-     * @param csv      The csv file, where the timeout values should be saved.
+     * @param csv      The csv path, where the timeout values should be saved.
      * @param timeouts The timeouts to save.
      */
-    public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts) {
-        FileTasks.deleteFile(Objects.requireNonNull(csv, "The csv file can't be null.").toPath());
+    public static void writeToCSV(Path csv, List<CalibrationTimeout> timeouts) {
+        FileTasks.deleteFile(Objects.requireNonNull(csv, "The csv file can't be null."));
         writeToCSV(csv, Objects.requireNonNull(timeouts, "The timeouts can't be null."), 1);
     }
 
     /**
      * This method extends the csv file with the values of timeouts.
      *
-     * @param csv               The csv file, where the timeout values should be saved.
+     * @param csv               The csv path, where the timeout values should be saved.
      * @param timeouts          The timeouts to save.
      * @param numberOfIteration The number of calibration iterations.
      */
-    public static void writeToCSV(File csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
+    public static void writeToCSV(Path csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
         PrintWriter writer = null;
         try {
-            if (!csv.exists()) {
-                writer = new PrintWriter(new FileWriter(csv, true));
+            if (!csv.toFile().exists()) {
+                writer = new PrintWriter(new FileWriter(csv.toString(), true));
                 writer.append("Iteration").append(';');
                 writer.append("Key").append(';');
                 writer.append("TimeStamp").append(';');
@@ -153,7 +153,7 @@ public class TimeoutIOOperations {
                 writer.append("Value").append(';');
                 writer.append("TimeToRepetition").append('\n');
             } else {
-                writer = new PrintWriter(new FileWriter(csv, true));
+                writer = new PrintWriter(new FileWriter(csv.toString(), true));
             }
             for (CalibrationTimeout timeout : timeouts) {
                 writer.append(Integer.toString(numberOfIteration)).append(';');
@@ -188,14 +188,14 @@ public class TimeoutIOOperations {
      * @param csv The csv, which should be read.
      * @return The list with the CalibrationTimeouts. 
      */
-    public static List<CalibrationTimeout> readFromCSV(File csv) {
+    public static List<CalibrationTimeout> readFromCSV(Path csv) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
         BufferedReader reader = null;
         List<CalibrationTimeout> timeouts = new ArrayList<>();
         String line;
 
         try {
-            reader = new BufferedReader(new FileReader(csv));
+            reader = new BufferedReader(new FileReader(csv.toString()));
             reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] entries = line.split(";");

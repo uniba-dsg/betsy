@@ -28,8 +28,8 @@ public class TimeoutIOOperationsTest {
 
 
     private Timeout timeout;
-    private File csv;
-    private File properties;
+    private Path csv;
+    private Path properties;
     private TestAppender testAppender;
     private static final Logger LOGGER = Logger.getLogger(TimeoutIOOperations.class);
 
@@ -66,8 +66,8 @@ public class TimeoutIOOperationsTest {
     @Before
     public void setUp() throws Exception {
         timeout = new Timeout("ode", "deploy", 20000, 2000);
-        properties = new File("timeouts.properties");
-        csv = new File("calibration_timeouts.csv");
+        properties = Paths.get("timeouts.properties");
+        csv = Paths.get("calibration_timeouts.csv");
         testAppender = new TestAppender();
         LOGGER.addAppender(testAppender);
     }
@@ -75,8 +75,8 @@ public class TimeoutIOOperationsTest {
     @After
     public void tearDown() throws Exception {
         timeout = null;
-        Files.deleteIfExists(properties.toPath());
-        Files.deleteIfExists(csv.toPath());
+        Files.deleteIfExists(properties);
+        Files.deleteIfExists(csv);
         properties = null;
         csv = null;
         LOGGER.removeAllAppenders();
@@ -149,9 +149,9 @@ public class TimeoutIOOperationsTest {
         ArrayList<Timeout> timeouts = new ArrayList<>();
         timeouts.add(timeout);
 
-        properties.setReadable(false);
+        properties.toFile().setReadable(false);
         TimeoutIOOperations.readFromProperties(properties, timeouts);
-        assertEquals("The file " + properties.getName() + " is not readable.", testAppender.messages.get(0));
+        assertEquals("The file " + properties.toString() + " is not readable.", testAppender.messages.get(0));
     }
 
     @Test
@@ -160,7 +160,7 @@ public class TimeoutIOOperationsTest {
         timeouts.add(timeout);
 
         Properties timeoutProperties = System.getProperties();
-        FileWriter writer = new FileWriter(properties);
+        FileWriter writer = new FileWriter(properties.toString());
         timeoutProperties.setProperty(timeout.getKey() + ".value", "test");
         timeoutProperties.setProperty(timeout.getKey() + ".timeToRepetition", "test");
         timeoutProperties.store(writer, "Timeout_properties");
@@ -181,7 +181,7 @@ public class TimeoutIOOperationsTest {
 
     @Test
     public void testWriteToCSVDoesNotExits() throws Exception {
-        FileTasks.deleteFile(csv.toPath());
+        FileTasks.deleteFile(csv);
         ArrayList<CalibrationTimeout> calibrationTimeouts = new ArrayList<>();
         calibrationTimeouts.add(new CalibrationTimeout(timeout));
         TimeoutIOOperations.writeToCSV(csv, calibrationTimeouts);

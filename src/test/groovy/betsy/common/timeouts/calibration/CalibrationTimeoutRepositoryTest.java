@@ -94,9 +94,9 @@ public class CalibrationTimeoutRepositoryTest {
     public void testWriteToCSVParameters() throws Exception {
         CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
         CalibrationTimeoutRepository.writeAllCalibrationTimeoutsToProperties();
-        File csv = new File("calibration_timeouts.csv");
+        Path csv = Paths.get("calibration_timeouts.csv");
         CalibrationTimeoutRepository.writeToCSV(csv, 1);
-        assertTrue("The csv file should exists.", csv.exists());
+        assertTrue("The csv file should exists.", csv.toFile().exists());
     }
 
     @Test

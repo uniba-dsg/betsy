@@ -10,7 +10,8 @@ import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +37,9 @@ public class TimeoutCalibrator {
         int numberOfDuration = 0;
         boolean isCalibrated = false;
 
-        File properties = new File("timeout.properties");
-        File csv = new File("calibration_timeouts.csv");
-        FileTasks.deleteFile(csv.toPath());
+        Path properties = Paths.get("timeout.properties");
+        Path csv = Paths.get("calibration_timeouts.csv");
+        FileTasks.deleteFile(csv);
 
 
         while (numberOfDuration < 4) {
@@ -142,10 +143,10 @@ public class TimeoutCalibrator {
      * the expectation and the standardDeviation based on the values of the csv file.
      *
      * @param timeouts The timeouts, which should be calculated.
-     * @param csv      The csv file with the timeouts for calculation.
+     * @param csv      The csv path with the timeouts for calculation.
      * @return Returns the new determined timeouts.
      */
-    public static HashMap<String, CalibrationTimeout> determineTimeouts(HashMap<String, CalibrationTimeout> timeouts, File csv) {
+    public static HashMap<String, CalibrationTimeout> determineTimeouts(HashMap<String, CalibrationTimeout> timeouts, Path csv) {
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
         Objects.requireNonNull(csv, "The csv file can't be null.");
         if (timeouts.size() > 0) {
@@ -222,10 +223,10 @@ public class TimeoutCalibrator {
      *
      * @param timeout                     The {@link Timeout}, which should be calculated.
      * @param standardDeviationMultiplier The value indicates, how often the standardDeviation is multiplied.
-     * @param csv                         The csv file withe the timeout values.
+     * @param csv                         The csv path withe the timeout values.
      * @return returns the calculated timeout value.
      */
-    public static int calculateTimeout(Timeout timeout, int standardDeviationMultiplier, File csv) {
+    public static int calculateTimeout(Timeout timeout, int standardDeviationMultiplier, Path csv) {
         Objects.requireNonNull(timeout, "The timeout can't be null.");
         Objects.requireNonNull(csv, "The csv file can't be null.");
         List<CalibrationTimeout> timeouts = TimeoutIOOperations.readFromCSV(csv).stream().filter(actualTimeout -> actualTimeout.getKey().equals(timeout.getKey())).collect(Collectors.toList());

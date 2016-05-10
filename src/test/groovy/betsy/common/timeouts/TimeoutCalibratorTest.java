@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.junit.*;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -30,17 +29,17 @@ public class TimeoutCalibratorTest {
     public static void setUpClass() {
         String transitionFolder = "transition_folder";
         FileTasks.mkdirs(Paths.get(transitionFolder));
-        File csv = new File("calibration_timeouts.csv");
-        if (csv.exists()) {
-            FileTasks.copyFileIntoFolder(csv.toPath(), Paths.get(transitionFolder));
-            FileTasks.deleteFile(csv.toPath());
+        Path csv = Paths.get("calibration_timeouts.csv");
+        if (csv.toFile().exists()) {
+            FileTasks.copyFileIntoFolder(csv, Paths.get(transitionFolder));
+            FileTasks.deleteFile(csv);
         }
     }
 
     @AfterClass
     public static void tearDownClass() {
-        File csv = new File("calibration_timeouts.csv");
-        FileTasks.deleteFile(csv.toPath());
+        Path csv = Paths.get("calibration_timeouts.csv");
+        FileTasks.deleteFile(csv);
         String transitionFolder = "transition_folder";
         Path currentRelativePath = Paths.get("");
         FileTasks.copyFilesInFolderIntoOtherFolder(Paths.get(transitionFolder), currentRelativePath);
@@ -61,7 +60,7 @@ public class TimeoutCalibratorTest {
 
     @Test
     public void testDetermineTimeouts() throws Exception {
-        File csv = new File("calibration_timeouts.csv");
+        Path csv = Paths.get("calibration_timeouts.csv");
         List<CalibrationTimeout> timeouts = new ArrayList<>();
         CalibrationTimeout timeoutFirst = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         timeoutFirst.setMeasuredTime(10_000);
@@ -87,7 +86,7 @@ public class TimeoutCalibratorTest {
     @Test
     public void testDetermineTimeoutsTimeoutsSmallerNull() throws Exception {
         HashMap<String, CalibrationTimeout> hashMap = new HashMap<>();
-        TimeoutCalibrator.determineTimeouts(hashMap, new File("calibration_timeouts.csv"));
+        TimeoutCalibrator.determineTimeouts(hashMap, Paths.get("calibration_timeouts.csv"));
         assertEquals("The number of the timeouts has to be greater than null to determine the timeouts.", testAppender.messages.get(0));
     }
 
@@ -156,7 +155,7 @@ public class TimeoutCalibratorTest {
 
     @Test
     public void testCalculatedTimeout() throws Exception {
-        File csv = new File("calibration_timeouts.csv");
+        Path csv = Paths.get("calibration_timeouts.csv");
         List<CalibrationTimeout> timeouts = new ArrayList<>();
         CalibrationTimeout timeoutFirst = new CalibrationTimeout("openesb_v", "deploymentTimeout", 30_000, 500);
         timeoutFirst.setMeasuredTime(10_000);
