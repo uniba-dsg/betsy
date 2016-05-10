@@ -28,9 +28,7 @@ public class Properties {
         Objects.requireNonNull(propertiesFile, "The propertiesFile can't be null.");
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
         if (Files.isReadable(propertiesFile)) {
-            Reader reader = null;
-            try {
-                reader = new FileReader(propertiesFile.toString());
+            try (Reader reader = Files.newBufferedReader(propertiesFile)) {
                 java.util.Properties properties = new java.util.Properties();
                 properties.load(reader);
 
@@ -55,13 +53,6 @@ public class Properties {
                 }
             } catch (IOException e) {
                 LOGGER.info("Couldn't read the {@link Timeout} properties.");
-            } finally {
-                assert reader != null;
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    LOGGER.info("Couldn't close the {@link Timeout} properties {@Link FileReader}.");
-                }
             }
         } else {
             LOGGER.info("The file " + propertiesFile.toString() + " is not readable.");
@@ -78,34 +69,28 @@ public class Properties {
     public static void write(Path propertiesPath, List<Timeout> timeouts) {
         Objects.requireNonNull(propertiesPath, "The propertiesFile can't be null.");
         Objects.requireNonNull(timeouts, "The timeouts can't be null.");
-        Writer writer = null;
-        try {
-            java.util.Properties properties;
-            if (Files.isReadable(propertiesPath)) {
-                Reader reader = new FileReader(propertiesPath.toString());
-                properties = new java.util.Properties();
+        java.util.Properties properties = new java.util.Properties();
+        if (Files.isReadable(propertiesPath)) {
+            try (Reader reader = Files.newBufferedReader(propertiesPath)) {
                 properties.load(reader);
                 reader.close();
-            } else {
-                properties = new java.util.Properties();
+            } catch (IOException e) {
+                LOGGER.info("Couldn't store the properties ");
             }
-            writer = new FileWriter(propertiesPath.toString());
-            for (Timeout timeout : timeouts) {
-                properties.setProperty(timeout.getKey() + ".value", Integer.toString(timeout.getTimeoutInMs()));
-                properties.setProperty(timeout.getKey() + ".timeToRepetition", Integer.toString(timeout.getTimeToRepetitionInMs()));
-            }
-            properties.store(writer, "Timeout_properties");
-            writer.close();
-        } catch (IOException e) {
-            LOGGER.info("Couldn't store the properties ");
-        } finally {
-            try {
-                assert writer != null;
+        } else {
+            try (Writer writer = new FileWriter(propertiesPath.toString())) {
+                for (Timeout timeout : timeouts) {
+                    properties.setProperty(timeout.getKey() + ".value", Integer.toString(timeout.getTimeoutInMs()));
+                    properties.setProperty(timeout.getKey() + ".timeToRepetition", Integer.toString(timeout.getTimeToRepetitionInMs()));
+                }
+                properties.store(writer, "Timeout_properties");
                 writer.close();
-            } catch (Exception e) {
-                LOGGER.info("Couldn't close the {@link Timeout} properties {@Link FileReader} ");
+            } catch (IOException e) {
+                LOGGER.info("Couldn't store the properties ");
             }
         }
-    }
 
+    }
 }
+
+

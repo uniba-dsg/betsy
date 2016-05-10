@@ -5,6 +5,7 @@ import betsy.common.timeouts.calibration.CalibrationTimeout;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +39,8 @@ public class CSV {
      */
     public static void write(Path csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
-        PrintWriter writer = null;
-        try {
+        try (BufferedWriter writer = Files.newBufferedWriter(csv)) {
             if (!csv.toFile().exists()) {
-                writer = new PrintWriter(new FileWriter(csv.toString(), true));
                 writer.append("Iteration").append(';');
                 writer.append("Key").append(';');
                 writer.append("TimeStamp").append(';');
@@ -53,36 +52,27 @@ public class CSV {
                 writer.append("Value").append(';');
                 writer.append("TimeToRepetition").append('\n');
             } else {
-                writer = new PrintWriter(new FileWriter(csv.toString(), true));
+                for (CalibrationTimeout timeout : timeouts) {
+                    writer.append(Integer.toString(numberOfIteration)).append(';');
+                    writer.append(timeout.getKey()).append(';');
+                    writer.append(Long.toString(timeout.getTimestamp())).append(';');
+                    writer.append(timeout.getStatus().toString()).append(';');
+                    writer.append(timeout.getEngineOrProcessGroup()).append(';');
+                    writer.append(timeout.getStepOrProcess()).append(';');
+                    writer.append(timeout.getDescription()).append(';');
+                    writer.append(Integer.toString(timeout.getMeasuredTime())).append(';');
+                    writer.append(Integer.toString(timeout.getTimeoutInMs())).append(';');
+                    writer.append(Integer.toString(timeout.getTimeToRepetitionInMs())).append('\n');
+                }
+                writer.flush();
+                writer.close();
             }
-            for (CalibrationTimeout timeout : timeouts) {
-                writer.append(Integer.toString(numberOfIteration)).append(';');
-                writer.append(timeout.getKey()).append(';');
-                writer.append(Long.toString(timeout.getTimestamp())).append(';');
-                writer.append(timeout.getStatus().toString()).append(';');
-                writer.append(timeout.getEngineOrProcessGroup()).append(';');
-                writer.append(timeout.getStepOrProcess()).append(';');
-                writer.append(timeout.getDescription()).append(';');
-                writer.append(Integer.toString(timeout.getMeasuredTime())).append(';');
-                writer.append(Integer.toString(timeout.getTimeoutInMs())).append(';');
-                writer.append(Integer.toString(timeout.getTimeToRepetitionInMs())).append('\n');
-            }
-            writer.flush();
-            writer.close();
         } catch (IOException e) {
             LOGGER.info("Could not write the timeouts to csv file.");
-        } finally {
-            try {
-                assert writer != null;
-                writer.close();
-            } catch (Exception e) {
-                LOGGER.info("Couldn't close the csv file.");
-            }
         }
     }
 
     /**
-     *
      * This method reads the csv file and returns a list with CalibrationTimeouts.
      *
      * @param csv The csv, which should be read.
@@ -90,13 +80,10 @@ public class CSV {
      */
     public static List<CalibrationTimeout> read(Path csv) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
-        BufferedReader reader = null;
         List<CalibrationTimeout> timeouts = new ArrayList<>();
-        String line;
-
-        try {
-            reader = new BufferedReader(new FileReader(csv.toString()));
+        try(BufferedReader reader = Files.newBufferedReader(csv)) {
             reader.readLine();
+            String line;
             while ((line = reader.readLine()) != null) {
                 String[] entries = line.split(";");
                 CalibrationTimeout timeout = new CalibrationTimeout(entries[4], entries[5], entries[6], Integer.valueOf(entries[8]), Integer.valueOf(entries[9]), Integer.valueOf(entries[7]));
@@ -104,13 +91,6 @@ public class CSV {
             }
         } catch (IOException e) {
             LOGGER.info("Could not read the timeouts from csv file.");
-        } finally {
-            try {
-                assert reader != null;
-                reader.close();
-            } catch (Exception e) {
-                LOGGER.info("Couldn't close the csv file.");
-            }
         }
         return timeouts;
     }
