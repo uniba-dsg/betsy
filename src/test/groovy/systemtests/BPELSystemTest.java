@@ -1,15 +1,13 @@
-package betsy;
+package systemtests;
 
 import betsy.bpel.BPELMain;
 import betsy.bpel.soapui.SoapUIShutdownHelper;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
-import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 

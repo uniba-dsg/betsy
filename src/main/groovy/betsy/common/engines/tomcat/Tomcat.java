@@ -31,14 +31,6 @@ public class Tomcat {
 
     private final String tomcatName;
 
-    public JavaVersion getJavaVersion() {
-        return javaVersion;
-    }
-
-    public void setJavaVersion(JavaVersion javaVersion) {
-        this.javaVersion = javaVersion;
-    }
-
     private JavaVersion javaVersion = JavaVersion.V8;
 
     public Tomcat(Path parentFolder, String tomcatName, int port) {
@@ -47,6 +39,14 @@ public class Tomcat {
         this.parentFolder = Objects.requireNonNull(parentFolder);
         this.tomcatName = Objects.requireNonNull(tomcatName);
         this.port = port;
+    }
+
+    public JavaVersion getJavaVersion() {
+        return javaVersion;
+    }
+
+    public void setJavaVersion(JavaVersion javaVersion) {
+        this.javaVersion = javaVersion;
     }
 
     public static Tomcat v7(Path parentFolder) {

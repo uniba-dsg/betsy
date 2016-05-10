@@ -14,13 +14,14 @@ import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.*;
 
 public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0");
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0", LocalDate.of(2013, 8, 31), "Apache-2.0");
     }
 
     public String getCamundaUrl() {
@@ -58,16 +59,25 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
     public void buildArchives(final BPMNProcess process) {
-        Path targetWarWebinfClassesPath = process.getTargetPath().resolve("war/WEB-INF/classes");
+        Path targetProcessPath = process.getTargetProcessPath();
+        FileTasks.mkdirs(targetProcessPath);
+        FileTasks.copyFileIntoFolder(process.getProcess(), targetProcessPath);
+
+        Path targetProcessFilePath = targetProcessPath.resolve(process.getProcessFileName());
         XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
-                process.getProcess(),
-                targetWarWebinfClassesPath.resolve(process.getName() + ".bpmn-temp"));
+                targetProcessFilePath,
+                targetProcessPath.resolve(process.getName() + ".bpmn-temp"));
 
         XSLTTasks.transform(getXsltPath().resolve("camunda.xsl"),
-                targetWarWebinfClassesPath.resolve(process.getName() + ".bpmn-temp"),
-                targetWarWebinfClassesPath.resolve(process.getName() + FileTypes.BPMN));
+                targetProcessPath.resolve(process.getName() + ".bpmn-temp"),
+                targetProcessPath.resolve(process.getName() + FileTypes.BPMN));
 
-        FileTasks.deleteFile(targetWarWebinfClassesPath.resolve(process.getName() + ".bpmn-temp"));
+        FileTasks.deleteFile(targetProcessPath.resolve(process.getName() + ".bpmn-temp"));
+
+
+        Path targetWarWebinfClassesPath = process.getTargetPath().resolve("war/WEB-INF/classes");
+        FileTasks.mkdirs(targetWarWebinfClassesPath);
+        FileTasks.copyFileIntoFolder(targetProcessFilePath, targetWarWebinfClassesPath);
 
         CamundaResourcesGenerator generator = new CamundaResourcesGenerator();
         generator.setGroupId(process.getGroupId());

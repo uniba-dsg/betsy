@@ -5,13 +5,14 @@ import betsy.common.model.engine.Engine;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.WaitTasks;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class Camunda710Engine extends CamundaEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "camunda", "7.1.0");
+        return new Engine(ProcessLanguage.BPMN, "camunda", "7.1.0", LocalDate.of(2014, 3, 31), "Apache-2.0");
     }
 
     @Override

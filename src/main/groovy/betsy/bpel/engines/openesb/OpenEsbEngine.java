@@ -11,10 +11,13 @@ import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
+
+    private static final String CHECK_URL = "http://localhost:18181";
 
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
@@ -22,7 +25,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2");
+        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2", LocalDate.of(2009, 12, 1), "CDDL-1.0");
     }
 
     @Override
@@ -69,7 +72,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void install() {
-        if(OperatingSystem.WINDOWS) {
+        if (OperatingSystem.WINDOWS) {
             new OpenEsbInstaller(getServerPath(),
                     "glassfishesb-v2.2-full-installer-windows.exe",
                     ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
@@ -119,5 +122,5 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     public static String getCHECK_URL() {
         return CHECK_URL;
     }
-    private static final String CHECK_URL = "http://localhost:18181";
+
 }

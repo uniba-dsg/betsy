@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DetectUnusedBpelFiles {
+public class DetectUnusedBpelFilesTest {
 
     @Test
     public void detectUnusedBpelFiles() throws IOException {

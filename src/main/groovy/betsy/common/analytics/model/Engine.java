@@ -2,6 +2,8 @@ package betsy.common.analytics.model;
 
 public class Engine implements Comparable<Engine> {
 
+    private final String name;
+
     public Engine(String name) {
         this.name = name;
     }
@@ -20,5 +22,4 @@ public class Engine implements Comparable<Engine> {
         return name;
     }
 
-    private final String name;
 }

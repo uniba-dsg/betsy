@@ -7,6 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Result {
+
+    private Integer failed;
+    private Integer total;
+    private Boolean deployable;
+
     public TrivalentResult getSupport() {
         return AggregationRules.GO_BIG_OR_GO_HOME.aggregate(getTestCaseResults());
     }
@@ -56,7 +61,4 @@ public class Result {
         this.deployable = deployable;
     }
 
-    private Integer failed;
-    private Integer total;
-    private Boolean deployable;
 }

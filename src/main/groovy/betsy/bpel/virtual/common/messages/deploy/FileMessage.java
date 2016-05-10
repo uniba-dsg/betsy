@@ -27,11 +27,6 @@ public class FileMessage implements Serializable {
     private final String filename;
     private final Checksum checksum;
 
-    public static FileMessage build(Path path) throws IOException {
-        byte[] data = Files.readAllBytes(path);
-        return new FileMessage(path.getFileName().toString(), data);
-    }
-
     public FileMessage(final String filename, final byte... data) {
         if (StringUtils.isBlank(filename)) {
             throw new IllegalArgumentException(
@@ -41,6 +36,11 @@ public class FileMessage implements Serializable {
         this.filename = filename;
         this.data = Objects.requireNonNull(data);
         this.checksum = Checksum.createChecksum(data);
+    }
+
+    public static FileMessage build(Path path) throws IOException {
+        byte[] data = Files.readAllBytes(path);
+        return new FileMessage(path.getFileName().toString(), data);
     }
 
     public byte[] getData() {

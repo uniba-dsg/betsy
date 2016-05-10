@@ -16,11 +16,17 @@ import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
+
+    private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
+
+    public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
+
     @Override
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
@@ -42,7 +48,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3");
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.16.3", LocalDate.of(2014, 9, 17), "Apache-2.0");
     }
 
     @Override
@@ -133,10 +139,6 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     public boolean isRunning() {
         return getTomcat().checkIfIsRunning();
     }
-
-    private static final Logger LOGGER = Logger.getLogger(ActivitiEngine.class);
-
-    public static final String URL = "http://kermit:kermit@localhost:8080/activiti-rest";
 
     @Override
     public List<Path> getLogs() {

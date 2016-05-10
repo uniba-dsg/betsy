@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 public class PetalsEsbCompositePackager {
+
+    private final BPELProcess process;
+
     public PetalsEsbCompositePackager(BPELProcess process) {
         this.process = Objects.requireNonNull(process);
     }
@@ -58,5 +61,4 @@ public class PetalsEsbCompositePackager {
         return process.getTargetTmpPath().resolve(process.getName() + "Binding.zip");
     }
 
-    private final BPELProcess process;
 }

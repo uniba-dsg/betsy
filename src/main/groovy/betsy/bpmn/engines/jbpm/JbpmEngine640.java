@@ -1,20 +1,20 @@
 package betsy.bpmn.engines.jbpm;
 
-import java.time.LocalDate;
-
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 
-public class JbpmEngine630 extends JbpmEngine {
+import java.time.LocalDate;
+
+public class JbpmEngine640 extends JbpmEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.3.0", LocalDate.of(2015, 9, 28), "Apache-2.0");
+        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.4.0", LocalDate.of(2016, 4, 19), "Apache-2.0");
     }
 
     @Override
     public String getJbossName() {
-        return "wildfly-8.1.0.Final";
+        return "wildfly-8.2.1.Final";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class JbpmEngine630 extends JbpmEngine {
     public void install() {
         JbpmInstaller jbpmInstaller = new JbpmInstaller();
         jbpmInstaller.setDestinationDir(getServerPath());
-        jbpmInstaller.setFileName("jbpm-6.3.0.Final-installer-full.zip");
+        jbpmInstaller.setFileName("jbpm-6.4.0.Final-installer-full.zip");
         jbpmInstaller.install();
     }
 

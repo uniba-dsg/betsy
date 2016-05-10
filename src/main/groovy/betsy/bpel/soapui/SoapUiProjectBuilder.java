@@ -18,6 +18,12 @@ import java.nio.file.Path;
  * Not Thread-Safe!
  */
 public class SoapUiProjectBuilder {
+
+    private final WsdlProjectFactory projectFactory = new WsdlProjectFactory();
+    private BPELProcess process;
+    private int requestTimeout;
+    private WsdlProject project;
+
     public void createSoapUIProject() {
         try {
             createProject();
@@ -81,8 +87,4 @@ public class SoapUiProjectBuilder {
         this.requestTimeout = requestTimeout;
     }
 
-    private final WsdlProjectFactory projectFactory = new WsdlProjectFactory();
-    private BPELProcess process;
-    private int requestTimeout;
-    private WsdlProject project;
 }

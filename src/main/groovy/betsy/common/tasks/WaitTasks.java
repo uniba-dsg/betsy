@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 public class WaitTasks {
+
+    private static final Logger LOGGER = Logger.getLogger(WaitTasks.class);
+
     /**
      * Sleeps/waits for a specific amount of milliseconds.
      *
@@ -79,5 +82,4 @@ public class WaitTasks {
         waitFor(untilMilliSeconds, checkEveryMilliseconds, () -> URLTasks.hasUrlSubstring(url, substring));
     }
 
-    private static final Logger LOGGER = Logger.getLogger(WaitTasks.class);
 }

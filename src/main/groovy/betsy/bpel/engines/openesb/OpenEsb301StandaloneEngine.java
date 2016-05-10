@@ -11,6 +11,7 @@ import betsy.common.util.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -23,10 +24,10 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     private String binariesFileName = "OpenESB-Quickstart-Standalone-v301-server-only.zip";
     private String adminBinariesFile = "openesb-oeadmin-1.0.1.jar";
 
-    public OpenEsb301StandaloneEngine(){
+    public OpenEsb301StandaloneEngine() {
     }
 
-    public OpenEsb301StandaloneEngine(String openEsbFolder, String binariesFileName, String adminBinariesFile){
+    public OpenEsb301StandaloneEngine(String openEsbFolder, String binariesFileName, String adminBinariesFile) {
         this.openEsbFolder = openEsbFolder;
         this.binariesFileName = binariesFileName;
         this.adminBinariesFile = adminBinariesFile;
@@ -192,6 +193,6 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1");
+        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1", LocalDate.of(2015, 2, 13), "CDDL-1.0");
     }
 }

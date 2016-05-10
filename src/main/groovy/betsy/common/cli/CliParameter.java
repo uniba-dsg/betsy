@@ -12,6 +12,8 @@ public interface CliParameter {
 
     boolean useInstalledEngine();
 
+    boolean useRunningEngine();
+
     boolean keepEngineRunning();
 
 }

@@ -8,19 +8,20 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 /**
- * Activiti 5.18.0
+ * Activiti 5.19.0.2
+ *
  */
-public class Activiti600Beta1Engine extends ActivitiEngine {
+public class Activiti51902Engine extends ActivitiEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "activiti", "6.0.0.beta1", LocalDate.of(2015, 9, 2), "Apache-2.0");
+        return new Engine(ProcessLanguage.BPMN, "activiti", "5.19.0.2", LocalDate.of(2016, 1, 29), "Apache-2.0");
     }
 
     @Override
     public void install() {
         ActivitiInstaller installer = new ActivitiInstaller();
-        installer.setFileName("activiti-6.0.0.Beta1.zip");
+        installer.setFileName("activiti-5.19.0.2.zip");
         installer.setDestinationDir(getServerPath());
         installer.setGroovyFile(Optional.of("groovy-all-2.4.3.jar"));
 
@@ -28,8 +29,8 @@ public class Activiti600Beta1Engine extends ActivitiEngine {
 
         // Modify preferences
         FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-custom-context.xml"), "\t\t<property name=\"jobExecutorActivate\" value=\"false\" />", "\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
-        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-custom-context.xml"), "<!--", "");
-        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-custom-context.xml"), "-->", "");
+        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-custom-context.xml"),"<!--","");
+        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-custom-context.xml"),"-->","");
     }
 }
 

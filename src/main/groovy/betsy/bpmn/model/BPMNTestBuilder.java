@@ -10,6 +10,8 @@ import java.util.StringJoiner;
 
 public class BPMNTestBuilder {
 
+    public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\"";
+
     private String packageString;
 
     private Path logDir;
@@ -51,8 +53,6 @@ public class BPMNTestBuilder {
 
         return joiner.toString();
     }
-
-    public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\"";
 
     public void setPackageString(String packageString) {
         this.packageString = packageString;

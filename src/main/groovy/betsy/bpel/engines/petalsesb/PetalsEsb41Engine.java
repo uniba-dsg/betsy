@@ -7,6 +7,7 @@ import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 
 public class PetalsEsb41Engine extends PetalsEsbEngine {
 
@@ -14,7 +15,7 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1");
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1", LocalDate.of(2012, 7, 6), "LGPL 2.1+");
     }
 
     public String getPetalsFolderName() {
@@ -22,7 +23,9 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
     }
 
     @Override
-    public Path getPetalsCliBinFolder() {return getServerPath().resolve("petals-cli-2.0.0/bin");}
+    public Path getPetalsCliBinFolder() {
+        return getServerPath().resolve("petals-cli-2.0.0/bin");
+    }
 
     @Override
     public void shutdown() {

@@ -142,12 +142,37 @@ public class BPELMain {
             });
         } else {
 
+
             if (params.keepEngineRunning() && params.useInstalledEngine()) {
                 betsy.setComposite(new BPELComposite() {
 
                     @Override
                     protected void shutdown(BPELProcess process) {
                         // is already installed - use existing installation
+                    }
+
+                    @Override
+                    protected void install(BPELProcess process) {
+                        // is already installed - use existing installation
+                    }
+
+                });
+            } else if (params.keepEngineRunning() && params.useRunningEngine()) {
+                betsy.setComposite(new BPELComposite() {
+
+                    @Override
+                    protected void checkIsRunning(AbstractBPELEngine engine) {
+                        // no checks
+                    }
+
+                    @Override
+                    protected void startup(BPELProcess process) {
+                        // already running
+                    }
+
+                    @Override
+                    protected void shutdown(BPELProcess process) {
+                        // not required
                     }
 
                     @Override

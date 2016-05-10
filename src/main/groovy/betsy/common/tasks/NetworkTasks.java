@@ -9,6 +9,8 @@ import java.nio.file.Path;
 
 public class NetworkTasks {
 
+    public static final String BETSY_SVN_BASE_URL = "https://lspi.wiai.uni-bamberg.de/svn/betsy/";
+
     public static void downloadFile(String url, Path fileOrFolder) {
         try {
             URLTasks.downloadInto(new URL(url), fileOrFolder);
@@ -30,5 +32,4 @@ public class NetworkTasks {
         downloadFile(BETSY_SVN_BASE_URL + filename, Configuration.getDownloadsDir());
     }
 
-    public static final String BETSY_SVN_BASE_URL = "https://lspi.wiai.uni-bamberg.de/svn/betsy/";
 }

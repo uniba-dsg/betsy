@@ -14,6 +14,7 @@ import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1");
+        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1", LocalDate.of(2014, 5, 14), "Apache-2.0");
     }
 
     public Path getJbpmInstallerPath() {

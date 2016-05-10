@@ -14,6 +14,12 @@ import betsy.common.util.FileTypes;
 
 public class BPELProcessBuilder {
 
+    public static final Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel");
+    public static final Path testInterface = PATH_PREFIX.resolve("TestInterface.wsdl");
+    public static final Path partnerInterface = PATH_PREFIX.resolve("TestPartner.wsdl");
+    public static final int UNDECLARED_FAULT = -5;
+    public static final int DECLARED_FAULT = -6;
+
     public static EngineIndependentProcess buildPatternProcess(final String name, Feature feature, BPELTestCase... testCases) {
         return new EngineIndependentProcess(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Collections.singletonList(testInterface), Collections.emptyList());
     }
@@ -79,9 +85,4 @@ public class BPELProcessBuilder {
                 Arrays.asList(testInterface, PATH_PREFIX.resolve("basic/echo.xslt"), PATH_PREFIX.resolve("basic/notCompileable.xslt")), Collections.emptyList());
     }
 
-    public static final Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel");
-    public static final Path testInterface = PATH_PREFIX.resolve("TestInterface.wsdl");
-    public static final Path partnerInterface = PATH_PREFIX.resolve("TestPartner.wsdl");
-    public static final int UNDECLARED_FAULT = -5;
-    public static final int DECLARED_FAULT = -6;
 }

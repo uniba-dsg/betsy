@@ -48,6 +48,11 @@ public class BPMNCliParser {
         }
 
         @Override
+        public boolean useRunningEngine() {
+            return false;
+        }
+
+        @Override
         public boolean keepEngineRunning() {
             return false;
         }
@@ -57,6 +62,7 @@ public class BPMNCliParser {
     public static final String OPEN_RESULTS_IN_BROWSER = "open-results-in-browser";
     public static final String USE_CUSTOM_TEST_FOLDER = "use-custom-test-folder";
     private static final String USE_INSTALLED_ENGINE = "use-installed-engine";
+    private static final String USE_RUNNING_ENGINE = "use-running-engine";
     private static final String KEEP_ENGINE_RUNNING = "keep-engine-running";
 
     private final String[] args;
@@ -120,6 +126,11 @@ public class BPMNCliParser {
                 }
 
                 @Override
+                public boolean useRunningEngine() {
+                    return cmd.hasOption(USE_RUNNING_ENGINE);
+                }
+
+                @Override
                 public boolean keepEngineRunning() {
                     return cmd.hasOption(KEEP_ENGINE_RUNNING);
                 }
@@ -137,6 +148,7 @@ public class BPMNCliParser {
         options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
         options.addOption("i", USE_INSTALLED_ENGINE, false, "Use already installed engine.");
         options.addOption("k", KEEP_ENGINE_RUNNING, false, "Keep the engine running. No engine shutdown!");
+        options.addOption("r", USE_RUNNING_ENGINE, false, "Use already running engine.");
         return options;
     }
 

@@ -9,12 +9,15 @@ import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
+
+    public static final String CHECK_URL = "http://localhost:9763";
 
     @Override
     public Path getXsltPath() {
@@ -23,7 +26,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0");
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0", LocalDate.of(2013, 12, 6), "Apache-2.0");
     }
 
     @Override
@@ -131,5 +134,4 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         return result;
     }
 
-    public static final String CHECK_URL = "http://localhost:9763";
 }

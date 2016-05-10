@@ -19,6 +19,13 @@ public class BetsyVirtualMachineServer {
 
     private VirtualMachineTcpServer server;
 
+    private final static Logger log = Logger.getLogger(BetsyVirtualMachineServer.class);
+
+    public BetsyVirtualMachineServer() throws Exception {
+        log.info("bVMS: initializing");
+        logStandardErrorToFile();
+    }
+
     public static void main(String... args) throws Exception {
         try {
             System.out.println("Starting betsy Virtual Machine Server (bVMS)");
@@ -26,13 +33,6 @@ public class BetsyVirtualMachineServer {
         } catch (Exception exception) {
             log.error("bVMS execution failed", exception);
         }
-    }
-
-    private final static Logger log = Logger.getLogger(BetsyVirtualMachineServer.class);
-
-    public BetsyVirtualMachineServer() throws Exception {
-        log.info("bVMS: initializing");
-        logStandardErrorToFile();
     }
 
     private void logStandardErrorToFile() {

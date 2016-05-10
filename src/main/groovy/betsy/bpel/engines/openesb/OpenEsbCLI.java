@@ -9,6 +9,9 @@ import java.nio.file.Path;
 
 public class OpenEsbCLI {
 
+    private static final Logger LOGGER = Logger.getLogger(OpenEsbCLI.class);
+    private final Path glassfishHome;
+
     public OpenEsbCLI(Path glassfishHome) {
         FileTasks.assertDirectory(glassfishHome);
 
@@ -65,6 +68,4 @@ public class OpenEsbCLI {
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
     }
 
-    private static final Logger LOGGER = Logger.getLogger(OpenEsbCLI.class);
-    private final Path glassfishHome;
 }

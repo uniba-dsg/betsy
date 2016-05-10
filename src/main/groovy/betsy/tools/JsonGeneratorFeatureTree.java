@@ -123,6 +123,7 @@ class JsonGeneratorFeatureTree {
         featureObject.put("id", feature.getID());
         featureObject.put("name", feature.getName());
         featureObject.put("description", feature.description);
+        feature.upperBound.ifPresent(upperBound -> featureObject.put("upperBound", upperBound));
         return featureObject;
     }
 }

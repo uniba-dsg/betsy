@@ -21,15 +21,15 @@ import java.nio.file.Path;
 public class BPELComposite {
     private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
 
-    public TestingAPI getTestingAPI() {
-        return testingAPI;
-    }
-
     private final TestingAPI testingAPI = new TestingAPI();
 
     private BPELTestSuite testSuite;
 
     private LogUtil logUtil;
+
+    public TestingAPI getTestingAPI() {
+        return testingAPI;
+    }
 
     private void log(String name, Runnable closure) {
         logUtil.log(name, LOGGER, closure);
@@ -53,9 +53,7 @@ public class BPELComposite {
 
             // fail fast
             for (AbstractBPELEngine engine : testSuite.getEngines()) {
-                if (engine.isRunning()) {
-                    throw new IllegalStateException("Engine " + engine + " is running");
-                }
+                checkIsRunning(engine);
             }
 
             for (AbstractBPELEngine engine : testSuite.getEngines()) {
@@ -77,6 +75,12 @@ public class BPELComposite {
             createReports();
         });
 
+    }
+
+    protected void checkIsRunning(AbstractBPELEngine engine) {
+        if (engine.isRunning()) {
+            throw new IllegalStateException("Engine " + engine + " is running");
+        }
     }
 
     protected void createReports() {

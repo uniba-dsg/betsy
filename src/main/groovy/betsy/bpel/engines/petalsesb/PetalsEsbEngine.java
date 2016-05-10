@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,13 +19,16 @@ import java.util.Map;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
+    private static final Logger LOGGER = Logger.getLogger(PetalsEsbEngine.class);
+    public static final String CHECK_URL = "http://localhost:8084";
+
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/petalsesb");
     }
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0");
+        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.0", LocalDate.of(2012,2,2), "LGPL 2.1+");
     }
 
     @Override
@@ -166,6 +170,4 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         return URLTasks.isUrlAvailable(CHECK_URL);
     }
 
-    private static final Logger LOGGER = Logger.getLogger(PetalsEsbEngine.class);
-    public static final String CHECK_URL = "http://localhost:8084";
 }

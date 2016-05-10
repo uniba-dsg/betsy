@@ -13,14 +13,17 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ActiveBpelEngine extends AbstractLocalBPELEngine {
 
+    private static final Logger log = Logger.getLogger(betsy.bpel.engines.activebpel.ActiveBpelEngine.class);
+
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2");
+        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2", LocalDate.of(2008, 5, 9), "GPL-2.0+");
     }
 
     public Path getXsltPath() {
@@ -114,6 +117,4 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
         FileTasks.move(process.getTargetPackageFilePath(), process.getTargetPackageFilePath("bpr"));
     }
 
-    private static
-    final Logger log = Logger.getLogger(betsy.bpel.engines.activebpel.ActiveBpelEngine.class);
 }
