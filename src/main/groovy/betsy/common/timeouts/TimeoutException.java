@@ -87,10 +87,6 @@ public class TimeoutException extends RuntimeException {
      * @return Return the {@link Timeout} of this Exception.
      */
     public Timeout getTimeout(){
-        if(timeout.isPresent()){
-            return timeout.get();
-        }else {
-            throw new NoSuchElementException("The timeout ist null.");
-        }
+        return timeout.orElseThrow(() -> new NoSuchElementException("The timeout ist null."));
     }
 }
