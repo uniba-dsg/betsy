@@ -6,6 +6,7 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.FileMessage;
 import betsy.bpel.virtual.host.ServiceAddress;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -52,7 +53,7 @@ public class VirtualOdeEngine extends AbstractVirtualBPELEngine {
         operation.setProcessName(process.getName());
         operation.setDeploymentLogFilePath(get("virtual.engines.ode_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.ode_v.deploymentDir"));
-        operation.setDeployTimeout(Integer.parseInt(get("virtual.engines.ode_v.deploymentTimeout")));
+        operation.setDeployTimeout(TimeoutRepository.getTimeout("ode_v.deployment"));
 
         return operation;
     }

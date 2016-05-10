@@ -56,6 +56,10 @@ public class BPMNCliParser {
         public boolean keepEngineRunning() {
             return false;
         }
+
+        @Override
+        public boolean saveTimeouts() {return false;
+        }
     };
     public static final String HELP = "help";
     public static final String BUILD_ONLY = "build-only";
@@ -64,6 +68,7 @@ public class BPMNCliParser {
     private static final String USE_INSTALLED_ENGINE = "use-installed-engine";
     private static final String USE_RUNNING_ENGINE = "use-running-engine";
     private static final String KEEP_ENGINE_RUNNING = "keep-engine-running";
+    private static final String SAVE_TIMEOUTS = "save-timeouts";
 
     private final String[] args;
 
@@ -134,6 +139,10 @@ public class BPMNCliParser {
                 public boolean keepEngineRunning() {
                     return cmd.hasOption(KEEP_ENGINE_RUNNING);
                 }
+
+                @Override
+                public boolean saveTimeouts() {return cmd.hasOption(SAVE_TIMEOUTS);
+                }
             };
         } catch (ParseException e) {
             return HELP_ONLY;
@@ -149,6 +158,7 @@ public class BPMNCliParser {
         options.addOption("i", USE_INSTALLED_ENGINE, false, "Use already installed engine.");
         options.addOption("k", KEEP_ENGINE_RUNNING, false, "Keep the engine running. No engine shutdown!");
         options.addOption("r", USE_RUNNING_ENGINE, false, "Use already running engine.");
+        options.addOption("s", SAVE_TIMEOUTS, false, "Save the during the execution measured timeouts");
         return options;
     }
 

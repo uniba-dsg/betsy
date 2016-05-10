@@ -3,7 +3,6 @@ package betsy.bpel.virtual.host.virtualbox;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.host.VirtualBoxException;
 import betsy.bpel.virtual.host.exceptions.vm.PortRedirectException;
-import betsy.bpel.virtual.host.virtualbox.utils.Timeouts;
 import betsy.bpel.virtual.host.virtualbox.utils.port.PortUsageException;
 import betsy.bpel.virtual.host.virtualbox.utils.port.PortVerifier;
 import org.apache.log4j.Logger;
@@ -11,6 +10,7 @@ import org.virtualbox_4_2.IMachine;
 import org.virtualbox_4_2.INATEngine;
 import org.virtualbox_4_2.INetworkAdapter;
 import org.virtualbox_4_2.NATProtocol;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -59,16 +59,16 @@ public class PortForwardingConfigurator {
                 natEngine.addRedirect("", NATProtocol.TCP, "", port, "", port);
             }
 
-            long timeout = 10000;
+            long timeout = TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").getTimeoutInMs();
             long start = -System.currentTimeMillis();
 
             while (natEngine.getRedirects().size() != forwardingPorts.size()) {
                 if (System.currentTimeMillis() + start > timeout) {
                     throw new PortRedirectException("Could not set redirected "
-                            + "ports within 10s");
+                            + "ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").getTimeoutInMs() + "s");
                 }
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.applyPortForwarding").getTimeToRepetitionInMs());
                 } catch (InterruptedException e) {
                     // ignore
                 }
@@ -90,12 +90,12 @@ public class PortForwardingConfigurator {
         long start = -System.currentTimeMillis();
 
         while (natEngine.getRedirects().size() != 0) {
-            if (System.currentTimeMillis() + start > Timeouts.TEN_SECONDS) {
+            if (System.currentTimeMillis() + start > TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").getTimeoutInMs()) {
                 throw new PortRedirectException("Could not delete all "
-                        + "redirected ports within 10s");
+                        + "redirected ports within " + TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").getTimeoutInMs() + "s");
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(TimeoutRepository.getTimeout("PortForwardingConfigurator.clearPortForwarding").getTimeToRepetitionInMs());
             } catch (InterruptedException e) {
                 // ignore
             }

@@ -8,6 +8,7 @@ import betsy.common.model.engine.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -86,7 +87,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getPetalsBinFolder(), getPetalsBinFolder().resolve("start-petals.sh").toAbsolutePath()));
 
-        WaitTasks.waitFor(60 * 1000, 500, () -> FileTasks.hasFile(getPetalsLogFile()) &&
+        TimeoutRepository.getTimeout("PetalsEsb.startup").waitFor(() -> FileTasks.hasFile(getPetalsLogFile()) &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-bc-soap] : Component started") &&
                 FileTasks.hasFileSpecificSubstring(getPetalsLogFile(), "[Petals.Container.Components.petals-se-bpel] : Component started"));
 
