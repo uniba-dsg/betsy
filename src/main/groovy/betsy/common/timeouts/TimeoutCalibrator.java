@@ -41,14 +41,14 @@ public class TimeoutCalibrator {
         Path csv = Paths.get("calibration_timeouts.csv");
         FileTasks.deleteFile(csv);
 
-
+        HashMap<String, CalibrationTimeout> timeouts = new HashMap<>();
         while (numberOfDuration < 4) {
             //clean the calibrationTimeoutRepository for the next run
             CalibrationTimeoutRepository.clean();
             //execute betsy
             Main.main(addChangedTestFolderToArgs(args, numberOfDuration));
             //get used timeouts
-            HashMap<String, CalibrationTimeout> timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
+            timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //evaluate the timeouts
             if (evaluateTimeouts(timeouts)) {
                 if (numberOfDuration < 1 && !TimeoutIOOperations.testsAreCorrect("test/test" + numberOfDuration)) {
@@ -62,13 +62,12 @@ public class TimeoutCalibrator {
             }else{
                 SoapUIShutdownHelper.shutdownSoapUIForReal();
                 LOGGER.info("Calibration finished, because timeouts exceeded.");
-                System.exit(0);
+                break;
             }
             numberOfDuration++;
         }
 
-        HashMap<String, CalibrationTimeout> timeouts = null;
-        while (!isCalibrated) {
+        while (!isCalibrated && numberOfDuration > 3) {
             //get used timeouts
              timeouts = CalibrationTimeoutRepository.getAllNonRedundantTimeouts();
             //determine the timeouts
