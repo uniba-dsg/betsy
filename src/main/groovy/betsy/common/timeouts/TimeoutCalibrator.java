@@ -54,7 +54,7 @@ public class TimeoutCalibrator {
                 if (numberOfDuration < 1 && !TimeoutIOOperations.testsAreCorrect("test/test" + numberOfDuration)) {
                     SoapUIShutdownHelper.shutdownSoapUIForReal();
                     LOGGER.info("Calibration finished, because tests failed.");
-                    System.exit(0);
+                    break;
                 }else if(numberOfDuration > 0){
                     //write all timeouts to csv for traceability
                     CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
