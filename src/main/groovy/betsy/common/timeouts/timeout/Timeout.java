@@ -35,6 +35,175 @@ public class Timeout {
 
 
     /**
+     * @param key   The key of the timeout.
+     * @param value The value of the {@link Timeout} in milliseconds.
+     */
+    public Timeout(String key, int value) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = PlaceOfUse.INTERN;
+        this.description = "";
+    }
+
+    /**
+     * @param key              The key of the timeout.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
+     * @param category         The {@link Category} of the {@link Timeout}.
+     * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
+     */
+    public Timeout(String key, int value, int timeToRepetition, Category category, PlaceOfUse placeOfUse) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values.length > 2) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.of(timeToRepetition);
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+    }
+
+    /**
+     * @param key      The key of the timeout.
+     * @param value    The value of the {@link Timeout} in milliseconds.
+     * @param category The {@link Category} of the {@link Timeout}.
+     */
+    public Timeout(String key, int value, Category category) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values.length > 2) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = PlaceOfUse.INTERN;
+    }
+
+    /**
+     * @param key        The key of the timeout.
+     * @param value      The value of the {@link Timeout} in milliseconds.
+     * @param placeOfUse The {@link PlaceOfUse} of the {@link Timeout}.
+     */
+    public Timeout(String key, int value, PlaceOfUse placeOfUse) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values.length > 2) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+    }
+
+    /**
+     * @param key        The key of the timeout.
+     * @param value      The value of the {@link Timeout} in milliseconds.
+     * @param category   The {@link Category} of the {@link Timeout}.
+     * @param placeOfUse The {@link PlaceOfUse} of the {@link Timeout}.
+     */
+    public Timeout(String key, int value, Category category, PlaceOfUse placeOfUse) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values.length > 2) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.empty();
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+    }
+
+
+    /**
+     * @param key              The key of the timeout.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
+     */
+    public Timeout(String key, int value, int timeToRepetition) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values.length > 2) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.of(timeToRepetition);
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = PlaceOfUse.INTERN;
+    }
+
+    /**
+     * @param key              The key of the timeout.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
+     * @param placeOfUse       The {@link PlaceOfUse} of the {@link Timeout}.
+     */
+    public Timeout(String key, int value, int timeToRepetition, PlaceOfUse placeOfUse) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values[2].length() > 0) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.of(timeToRepetition);
+        this.category = Category.MEASURABLE;
+        this.placeOfUse = Objects.requireNonNull(placeOfUse, "The placeOfUse can't be null.");
+    }
+
+    /**
+     * @param key              The key of the timeout.
+     * @param value            The value of the {@link Timeout} in milliseconds.
+     * @param timeToRepetition The time to wait till repetition, if the {@link Timeout} is exceeded.
+     * @param category         The {@link Category} of the {@link Timeout}.
+     */
+    public Timeout(String key, int value, int timeToRepetition, Category category) {
+        Objects.requireNonNull(key, "The key can't be null.");
+        String[] values = key.split("\\.");
+        this.engineOrProcessGroup = values[0];
+        this.stepOrProcess = values[1];
+        if (values[2].length() > 0) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
+        this.value = value;
+        this.timeToRepetition = Optional.of(timeToRepetition);
+        this.category = Objects.requireNonNull(category, "The category can't be null.");
+        this.placeOfUse = PlaceOfUse.INTERN;
+    }
+
+    /**
      * @param engineOrProcess The {@link Engine} or the processgroup, where the {@link Timeout} is located.
      * @param stepOrProcess   The method of the engine or the {@link Process}, where the {@link Timeout} is located.
      * @param value           The value of the {@link Timeout} in milliseconds.

@@ -16,7 +16,7 @@ public class TimeoutRepositoryTest {
 
     @Test
     public void testGetTimeout() throws Exception {
-        assertNotNull("It isn't null, if the list in the timeouts contains the timeout.", TimeoutRepository.getTimeout("Tomcat.startup"));
+        assertNotNull("It isn't null, if the list in the timeouts contains the timeout.", TimeoutRepository.getTimeout("tomcat.startup"));
     }
 
     @Test(expected = NoSuchElementException.class)
