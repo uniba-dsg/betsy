@@ -45,4 +45,10 @@ public class TimeoutRepositoryTest {
         assertEquals("The timeouts in ms should be equal.", timeoutTest.getTimeoutInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).getTimeoutInMs());
         assertEquals("The timeToRepetitions in ms should be equal.", timeoutTest.getTimeToRepetitionInMs(), TimeoutRepository.getTimeout(timeoutTest.getKey()).getTimeToRepetitionInMs());
     }
+
+    @Test
+    public void testGetAllCalibrateable() throws Exception {
+        long count = TimeoutRepository.getAllCalibrateable().values().stream().filter(e -> e.getCategory() == Timeout.Category.MEASURABLE).count();
+        assertEquals("The number have to be equal.", count, TimeoutRepository.getAllCalibrateable().size());
+    }
 }

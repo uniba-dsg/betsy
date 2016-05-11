@@ -49,5 +49,21 @@ public class TimeoutRepository {
     public static void setAllCalibrationTimeouts(HashMap<String, CalibrationTimeout> calibrationTimeouts) {
         Objects.requireNonNull(calibrationTimeouts, "The calibrationTimeouts can't be null.").values().forEach(TimeoutRepository::setTimeout);
     }
+
+    /**
+     *
+     * The method returns all calibrateable timeouts.
+     *
+     * @return Returns all timeouts, which are calibrateable as {@link HashMap}}.
+     */
+    public static HashMap<String, Timeout> getAllCalibrateable() {
+        HashMap<String, Timeout> timeouts = new HashMap<>();
+        TIMEOUTS.getAllTimeouts().forEach((e, k) -> {
+            if(k.getCategory() == Timeout.Category.MEASURABLE){
+                timeouts.put(e, k);
+            }
+        });
+        return timeouts;
+    }
 }
 
