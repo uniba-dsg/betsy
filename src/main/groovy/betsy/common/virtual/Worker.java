@@ -4,7 +4,6 @@ import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.Containers;
 import betsy.common.virtual.docker.DockerMachine;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
@@ -43,7 +42,7 @@ public class Worker implements Callable<Container> {
     @Override
     public Container call() throws Exception {
         Container container = Containers.create(dockerMachine, workerTemplate.getID(), workerTemplate.getEngineName().replace("_", ""), cpuShares, memory, hddSpeed, workerTemplate.getCmd());
-        container.copyToContainer(new File(workerTemplate.getEngineName()+ "/timeout.properties"), Paths.get("/betsy"));
+        container.copyToContainer(Paths.get(workerTemplate.getEngineName()+ "/timeout.properties"), Paths.get("/betsy"));
         container.start(false);
         return container;
     }

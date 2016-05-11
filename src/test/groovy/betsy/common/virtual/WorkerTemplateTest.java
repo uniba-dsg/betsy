@@ -2,10 +2,10 @@ package betsy.common.virtual;
 
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.bpelg.BpelgEngine;
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.repositories.BPMNEngineRepository;
+import betsy.common.model.input.EngineIndependentProcess;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class WorkerTemplateTest {
     @Test
     public void getProcess() throws Exception {
         BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = repository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = repository.getByName("MINIMAL");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), new BpelgEngine());
         assertEquals("The processes should be equal.", processes.get(0) , workerTemplate.getProcess());
     }
@@ -30,7 +30,7 @@ public class WorkerTemplateTest {
     @Test
     public void getBPELEngine() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPELEngineRepository engineRepository = new BPELEngineRepository();
         List<AbstractBPELEngine> engines = engineRepository.getByName("ode");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));
@@ -40,7 +40,7 @@ public class WorkerTemplateTest {
     @Test
     public void getBPMNEngine() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
         List<AbstractBPMNEngine> engines = engineRepository.getByName("jbpm");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));
@@ -50,7 +50,7 @@ public class WorkerTemplateTest {
     @Test
     public void getEngineName() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
         List<AbstractBPMNEngine> engines = engineRepository.getByName("jbpm");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));
@@ -60,7 +60,7 @@ public class WorkerTemplateTest {
     @Test
     public void getTime() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
         List<AbstractBPMNEngine> engines = engineRepository.getByName("jbpm");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));
@@ -70,7 +70,7 @@ public class WorkerTemplateTest {
     @Test
     public void setTime() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
         List<AbstractBPMNEngine> engines = engineRepository.getByName("jbpm");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));
@@ -82,7 +82,7 @@ public class WorkerTemplateTest {
     @Test
     public void getCmd() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
         List<AbstractBPMNEngine> engines = engineRepository.getByName("jbpm");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));
@@ -93,7 +93,7 @@ public class WorkerTemplateTest {
     @Test
     public void getID() throws Exception {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<BPELProcess> processes = processRepository.getByName("MINIMAL");
+        List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         BPMNEngineRepository engineRepository = new BPMNEngineRepository();
         List<AbstractBPMNEngine> engines = engineRepository.getByName("jbpm");
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engines.get(0));

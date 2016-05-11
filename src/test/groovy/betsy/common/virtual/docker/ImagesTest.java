@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.nio.file.Paths;
 
 import static betsy.common.config.Configuration.get;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**

@@ -3,7 +3,6 @@ package betsy.common.virtual.docker;
 import betsy.common.virtual.exceptions.DockerException;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Scanner;
@@ -174,11 +173,11 @@ public class Container {
      *
      * This method copies a file from the container.
      *
-     * @param file The file to copy.
+     * @param filePath The path of the file to copy.
      * @param path The destination {@link Path} of the file.
      */
-    public void copyFromContainer(File file, Path path){
-        String[] cmds = {"cp", name+ ":" + file.getPath(), path.toString()};
+    public void copyFromContainer(Path filePath, Path path){
+        String[] cmds = {"cp", name+ ":" + filePath, path.toString()};
         Tasks.doDockerTask(dockerMachine ,cmds);
     }
 
@@ -186,11 +185,11 @@ public class Container {
      *
      * This method copies a file to the container.
      *
-     * @param file The file to copy
+     * @param filePath The path of file to copy.
      * @param path The destination {@link Path} of the file.
      */
-    public void copyToContainer(File file, Path path){
-        String[] cmds = {"cp", file.getPath(), name+ ":" + path.toString()};
+    public void copyToContainer(Path filePath, Path path){
+        String[] cmds = {"cp", filePath.toString(), name+ ":" + path.toString()};
         Tasks.doDockerTask(dockerMachine ,cmds);
     }
 

@@ -2,7 +2,7 @@ package betsy.common.virtual;
 
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.common.model.AbstractProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public class WorkerTemplate {
 
-    private AbstractProcess process;
+    private EngineIndependentProcess process;
     private Optional<AbstractBPMNEngine> bpmnEngine;
     private Optional<AbstractBPELEngine> bpelEngine;
     private long time = 0;
@@ -27,7 +27,7 @@ public class WorkerTemplate {
      * @param process The process to execute.
      * @param bpmnEngine The engine to test.
      */
-    public WorkerTemplate(AbstractProcess process, AbstractBPMNEngine bpmnEngine){
+    public WorkerTemplate(EngineIndependentProcess process, AbstractBPMNEngine bpmnEngine){
         this.process = process;
         this.bpmnEngine = Optional.of(bpmnEngine);
         this.bpelEngine = Optional.empty();
@@ -38,7 +38,7 @@ public class WorkerTemplate {
      * @param process The process to execute.
      * @param bpelEngine The engine to test.
      */
-    public WorkerTemplate(AbstractProcess process, AbstractBPELEngine bpelEngine){
+    public WorkerTemplate(EngineIndependentProcess process, AbstractBPELEngine bpelEngine){
         this.process = process;
         this.bpelEngine = Optional.of(bpelEngine);
         this.bpmnEngine = Optional.empty();
@@ -50,7 +50,7 @@ public class WorkerTemplate {
      *
      * @return The {@link Process} to execute.
      */
-    public AbstractProcess getProcess() {
+    public EngineIndependentProcess getProcess() {
         return process;
     }
 

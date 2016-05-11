@@ -1,7 +1,7 @@
 package betsy.common.virtual;
 
 import betsy.common.tasks.FileTasks;
-import betsy.common.timeouts.TimeoutIOOperations;
+import betsy.common.timeouts.Properties;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.virtual.docker.Container;
@@ -64,16 +64,16 @@ public class Measurement {
                 container = Containers.create(dockerMachine, "timeoutCalibration_" + engine, engine.replace("_", ""), cpuShares, memory, hddSpeed, "calibrate", "bpmn", engine, "sequenceFlow");
             }
             //Create timeout.properties and copy to container
-            File properties = new File("timeout.properties");
+            Path properties = Paths.get("timeout.properties");
             HashMap<String, Timeout> timeouts = TimeoutRepository.getAllCalibrateable();
             timeouts.forEach((e, k) -> k.setValue(new Double(k.getTimeoutInMs() * multiplier).intValue()));
-            TimeoutIOOperations.writeToProperties(properties, new ArrayList<>(timeouts.values()));
-            container.copyToContainer(properties.getAbsoluteFile(), Paths.get("/betsy"));
+            Properties.write(properties, new ArrayList<>(timeouts.values()));
+            container.copyToContainer(properties, Paths.get("/betsy"));
 
             container.start(false);
 
             //Copy timeout.properties from container
-            container.copyFromContainer(new File("/betsy/timeout.properties"), Paths.get(engine));
+            container.copyFromContainer(Paths.get("/betsy/timeout.properties"), Paths.get(engine));
 
             //if the file is not existing, the calibration wasn't successful.
             if (!Paths.get("docker").resolve(engine).resolve("timeout.properties").toFile().exists()) {

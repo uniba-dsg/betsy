@@ -2,7 +2,7 @@ package betsy.common.virtual.docker;
 
 import org.junit.*;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static betsy.common.config.Configuration.get;
@@ -102,22 +102,22 @@ public class ContainerTest {
 
     @Test
     public void copyToContainer() throws Exception {
-        File file = new File("betsy");
-        container.copyToContainer(file.getAbsoluteFile(), Paths.get("/betsy"));
-        container.copyFromContainer(new File("betsy"), Paths.get("betsy"));
-        File testFile = new File("docker/betsy");
-        assertTrue("The file should exist.", file.exists());
-        testFile.delete();
+        Path path = Paths.get("betsy");
+        container.copyToContainer(path, Paths.get("/betsy"));
+        container.copyFromContainer(Paths.get("betsy"), Paths.get("betsy"));
+        Path testFilePath = Paths.get("docker/betsy");
+        assertTrue("The file should exist.", path.toFile().exists());
+        testFilePath.toFile().delete();
     }
 
     @Test
     public void copyFromContainer() throws Exception {
-        File file = new File("betsy");
-        container.copyToContainer(file.getAbsoluteFile(), Paths.get("/betsy"));
-        container.copyFromContainer(new File("betsy"), Paths.get("betsy"));
-        File testFile = new File("docker/betsy");
-        assertTrue("The file should exist.", file.exists());
-        testFile.delete();
+        Path path = Paths.get("betsy");
+        container.copyToContainer(path, Paths.get("/betsy"));
+        container.copyFromContainer(Paths.get("betsy"), Paths.get("betsy"));
+        Path testFilePath = Paths.get("docker/betsy");
+        assertTrue("The file should exist.", path.toFile().exists());
+        testFilePath.toFile().delete();
     }
 
 

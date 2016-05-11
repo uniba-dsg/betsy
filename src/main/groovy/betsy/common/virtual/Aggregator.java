@@ -3,7 +3,6 @@ package betsy.common.virtual;
 import betsy.common.tasks.FileTasks;
 import betsy.common.virtual.docker.Container;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -36,10 +35,10 @@ public class Aggregator {
         for (Container container : containers) {
             Path containerResults = Paths.get(results.toString()+ "/" + container.getName());
             FileTasks.mkdirs(containerResults);
-            container.copyFromContainer(new File("/betsy/test"), containerResults.toAbsolutePath());
-            container.copyFromContainer(new File("/betsy/betsy.log"), containerResults.toAbsolutePath());
-            container.copyFromContainer(new File("/betsy/betsy_time.log"), containerResults.toAbsolutePath());
-            container.copyFromContainer(new File("/betsy/betsy_console.log"), containerResults.toAbsolutePath());
+            container.copyFromContainer(Paths.get("/betsy/test"), containerResults.toAbsolutePath());
+            container.copyFromContainer(Paths.get("/betsy/betsy.log"), containerResults.toAbsolutePath());
+            container.copyFromContainer(Paths.get("/betsy/betsy_time.log"), containerResults.toAbsolutePath());
+            container.copyFromContainer(Paths.get("/betsy/betsy_console.log"), containerResults.toAbsolutePath());
         }
     }
 }

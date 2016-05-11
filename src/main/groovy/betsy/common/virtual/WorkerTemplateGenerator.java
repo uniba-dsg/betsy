@@ -8,6 +8,7 @@ import betsy.bpmn.cli.BPMNCliParameter;
 import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
+import betsy.common.model.input.EngineIndependentProcess;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class WorkerTemplateGenerator {
             BPELCliParameter bpelParams = bpelParser.parse();
             for (AbstractBPELEngine engine : bpelParams.getEngines()) {
                 engines.put(engine.getName(), true);
-                for (BPELProcess process : bpelParams.getProcesses()) {
+                for (EngineIndependentProcess process : bpelParams.getProcesses()) {
                     WorkerTemplate workerTemplate = new WorkerTemplate(process, engine);
                     workerTemplates.add(workerTemplate);
                 }
@@ -48,7 +49,7 @@ public class WorkerTemplateGenerator {
             BPMNCliParameter bpmnParams = bpmnParser.parse();
             for (AbstractBPMNEngine engine : bpmnParams.getEngines()) {
                 engines.put(engine.getName(), false);
-                for (BPMNProcess process : bpmnParams.getProcesses()) {
+                for (EngineIndependentProcess process : bpmnParams.getProcesses()) {
                     WorkerTemplate workerTemplate = new WorkerTemplate(process, engine);
                     workerTemplates.add(workerTemplate);
                 }
@@ -58,7 +59,7 @@ public class WorkerTemplateGenerator {
             BPELCliParameter params = parser.parse();
             for (AbstractBPELEngine engine : params.getEngines()) {
                 engines.put(engine.getName(), true);
-                for (BPELProcess process : params.getProcesses()) {
+                for (EngineIndependentProcess process : params.getProcesses()) {
                     WorkerTemplate workerTemplate = new WorkerTemplate(process, engine);
                     workerTemplates.add(workerTemplate);
                 }
@@ -68,7 +69,7 @@ public class WorkerTemplateGenerator {
             BPMNCliParameter params = parser.parse();
             for (AbstractBPMNEngine engine : params.getEngines()) {
                 engines.put(engine.getName(), false);
-                for (BPMNProcess process : params.getProcesses()) {
+                for (EngineIndependentProcess process : params.getProcesses()) {
                     WorkerTemplate workerTemplate = new WorkerTemplate(process, engine);
                     workerTemplates.add(workerTemplate);
                 }
