@@ -19,7 +19,7 @@ public class OpenEsb23Engine extends OpenEsbEngine {
         if (OperatingSystem.WINDOWS) {
             new OpenEsbInstaller(getServerPath(),
                     "openesb-v23-installer-windows.exe",
-                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb23/state.xml.template")).install();
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb23/windows_state.xml.template")).install();
         } else {
             new OpenEsbInstaller(getServerPath(),
                     "openesb-v23-installer-linux.sh",

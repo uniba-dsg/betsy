@@ -12,6 +12,7 @@ import betsy.common.model.engine.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -68,14 +69,14 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(process.getTargetPath().resolve("project"), mvnPath.toAbsolutePath() + "/mvn").values("-q", "clean", "install"));
 
         //wait for maven to deploy
-        WaitTasks.sleep(1500);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Jbpm.deploy.maven").getTimeoutInMs());
 
         new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process)).deploy();
         //waiting for the result of the deployment
-        WaitTasks.waitForSubstringInFile(30000, 1000, getJbossLogDir().resolve("server.log"), getDeploymentId(process));
+        TimeoutRepository.getTimeout("Jbpm.deploy.result").waitForSubstringInFile(getJbossLogDir().resolve("server.log"), getDeploymentId(process));
 
         // And a few more seconds to ensure availability
-        WaitTasks.sleep(5000);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Jbpm.deploy.availability").getTimeoutInMs());
     }
 
     @Override
@@ -141,7 +142,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant").values("-q", "start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
-        WaitTasks.waitForSubstringInFile(240000, 5000, getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
+        TimeoutRepository.getTimeout("Jbpm.startup").waitForSubstringInFile(getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
     }
 
     private Path getJbossLogDir() {
@@ -162,7 +163,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
         try {
             //waiting for shutdown completion using log files; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            WaitTasks.waitForSubstringInFile(240000, 5000, getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
+            TimeoutRepository.getTimeout("Jbpm.shutdown").waitForSubstringInFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant -q clean.demo"));

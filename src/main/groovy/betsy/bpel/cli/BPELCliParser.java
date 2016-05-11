@@ -64,6 +64,11 @@ public class BPELCliParser {
         }
 
         @Override
+        public boolean saveTimeouts() {
+            return false;
+        }
+
+        @Override
         public boolean buildArtifactsOnly() {
             return false;
         }
@@ -100,6 +105,7 @@ public class BPELCliParser {
     private static final String USE_RUNNING_ENGINE = "use-running-engine";
     private static final String USE_CUSTOM_TEST_FOLDER= "use-custom-test-folder";
     private static final String KEEP_ENGINE_RUNNING = "keep-engine-running";
+    private static final String SAVE_TIMEOUTS = "save-timeouts";
 
     private final String[] args;
 
@@ -178,6 +184,10 @@ public class BPELCliParser {
                 }
 
                 @Override
+                public boolean saveTimeouts() {return cmd.hasOption(SAVE_TIMEOUTS);
+                }
+
+                @Override
                 public boolean buildArtifactsOnly() {
                     return cmd.hasOption(BUILD_ONLY);
                 }
@@ -221,6 +231,7 @@ public class BPELCliParser {
         options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
         options.addOption("k", KEEP_ENGINE_RUNNING, false, "Keep the engine running. No engine shutdown!");
         options.addOption("r", USE_RUNNING_ENGINE, false, "Use already running engine.");
+        options.addOption("s", SAVE_TIMEOUTS, false, "Save the during the execution measured timeouts");
         return options;
     }
 

@@ -5,8 +5,8 @@ import betsy.bpel.model.BPELProcess;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
 
@@ -62,7 +62,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        WaitTasks.waitForAvailabilityOfUrl(15_000, 500, "http://localhost:8383");
+        TimeoutRepository.getTimeout("OpenEsb.startup").waitForAvailabilityOfUrl("http://localhost:8383");
     }
 
     @Override
@@ -75,7 +75,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
         if (OperatingSystem.WINDOWS) {
             new OpenEsbInstaller(getServerPath(),
                     "glassfishesb-v2.2-full-installer-windows.exe",
-                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/state.xml.template")).install();
+                    ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/windows_state.xml.template")).install();
         } else {
             new OpenEsbInstaller(getServerPath(),
                     "glassfishesb-v2.2-full-installer-linux.sh",

@@ -7,6 +7,7 @@ import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -55,10 +56,10 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
-        WaitTasks.sleep(2000);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2_v3_1_0.startup.sleep").getTimeoutInMs());
 
         Path logFile = getLogsFolder().resolve("wso2carbon.log");
-        WaitTasks.waitFor(120_000, 500, () -> FileTasks.hasFile(logFile) && FileTasks.hasFileSpecificSubstring(logFile, "WSO2 Carbon started in "));
+        TimeoutRepository.getTimeout("Wso2_v3_1_0.startup").waitForSubstringInFile(getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
 
     public Path getLogsFolder() {

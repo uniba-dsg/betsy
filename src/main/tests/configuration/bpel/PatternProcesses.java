@@ -187,7 +187,7 @@ class PatternProcesses {
             "WCP18-Milestone",
             new Feature(new Construct(Groups.CFPATTERNS, "WCP18_Milestone"), "WCP18-Milestone", "", "+/-"),
             new BPELTestCase("PickAsyncMessage").checkDeployment().sendSync(1, 1).sendAsync(1).sendSyncString(1, "8"),
-            new BPELTestCase("Pick3sTimeout").checkDeployment().sendSync(1, 1).waitFor(4000).sendSyncString(1, "9")
+            new BPELTestCase("Pick3sTimeout").checkDeployment().sendSync(1, 1).waitFor(4_000).sendSyncString(1, "9")
     );
 
     public static final EngineIndependentProcess INTERLEAVED_PARALLEL_ROUTING_PATTERN = BPELProcessBuilder.buildPatternProcess(
