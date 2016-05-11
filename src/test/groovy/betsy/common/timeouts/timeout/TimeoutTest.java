@@ -34,6 +34,230 @@ public class TimeoutTest {
     }
 
     @Test
+    public void testConstructorKey(){
+        Timeout timeout = new Timeout(engine+"."+step, value);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithCategory(){
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout timeout = new Timeout(engine+"."+step, value, category);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithPlaceOfUse(){
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step, value, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithCategoryPlaceOfUse(){
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step, value, category, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetition(){
+        Integer timeToRepetition = 500;
+        Timeout timeout = new Timeout(engine+"."+step, value, timeToRepetition);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionCategory(){
+        Integer timeToRepetition = 500;
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout timeout = new Timeout(engine+"."+step, value, timeToRepetition, category);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500..", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionPlaceOfUse(){
+        Integer timeToRepetition = 500;
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step, value, timeToRepetition, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionCategoryPlaceOfUse(){
+        Integer timeToRepetition = 500;
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step, value, timeToRepetition, category, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", "", timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyDescription(){
+        String description = "maven";
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be empty.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithCategoryDescription(){
+        String description = "maven";
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, category);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithPlaceOfUseDescription(){
+        String description = "maven";
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithCategoryPlaceOfUseDescription(){
+        String description = "maven";
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, category, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 0, if no value is set.", 0, timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionDescription(){
+        String description = "maven";
+        Integer timeToRepetition = 500;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, timeToRepetition);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionCategoryDescription(){
+        String description = "maven";
+        Integer timeToRepetition = 500;
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, timeToRepetition, category);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.INTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionPlaceOfUseDescription(){
+        String description = "maven";
+        Integer timeToRepetition = 500;
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, timeToRepetition, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.MEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
+    public void testConstructorKeyWithTimeToRepetitionCategoryPlaceOfUseDescription(){
+        String description = "maven";
+        Integer timeToRepetition = 500;
+        Timeout.Category category = Timeout.Category.UNMEASURABLE;
+        Timeout.PlaceOfUse placeOfUse = Timeout.PlaceOfUse.EXTERN;
+        Timeout timeout = new Timeout(engine+"."+step+"."+description, value, timeToRepetition, category, placeOfUse);
+        assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
+        assertEquals("The steps should be equal.", step, timeout.getStepOrProcess());
+        assertEquals("The descriptions should be equal.", description, timeout.getDescription());
+        assertEquals("The categories should be equal.", Timeout.Category.UNMEASURABLE, timeout.getCategory());
+        assertEquals("The placeOfUse should be equal.", Timeout.PlaceOfUse.EXTERN, timeout.getPlaceOfUse());
+        assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
+        assertEquals("The timeToRepetitions should be 500.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+    }
+
+    @Test
     public void testConstructor(){
         Timeout timeout = new Timeout(engine, step, value);
         assertEquals("The engines should be equal.", engine, timeout.getEngineOrProcessGroup());
