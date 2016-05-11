@@ -43,11 +43,15 @@ public class Timeout {
         String[] values = key.split("\\.");
         this.engineOrProcessGroup = values[0];
         this.stepOrProcess = values[1];
+        if (values.length > 2) {
+            this.description = values[2];
+        } else {
+            description = "";
+        }
         this.value = value;
         this.timeToRepetition = Optional.empty();
         this.category = Category.MEASURABLE;
         this.placeOfUse = PlaceOfUse.INTERN;
-        this.description = "";
     }
 
     /**
@@ -170,7 +174,7 @@ public class Timeout {
         String[] values = key.split("\\.");
         this.engineOrProcessGroup = values[0];
         this.stepOrProcess = values[1];
-        if (values[2].length() > 0) {
+        if (values.length > 2) {
             this.description = values[2];
         } else {
             description = "";
@@ -192,7 +196,7 @@ public class Timeout {
         String[] values = key.split("\\.");
         this.engineOrProcessGroup = values[0];
         this.stepOrProcess = values[1];
-        if (values[2].length() > 0) {
+        if (values.length > 2) {
             this.description = values[2];
         } else {
             description = "";
