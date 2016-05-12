@@ -22,14 +22,18 @@ public class Tasks {
 
     /**
      *
-     * @return
+     * A method to check, if docker is installed.
+     *
+     * @return Returns true, if docker is installed.
      */
     public static Boolean isDockerInstalled(){
         String[] cmds = {};
         Optional<Scanner> scanner = Optional.ofNullable(doDockerTaskWithOutput(new DockerMachine("test"), cmds));
         if(scanner.isPresent()) {
-            if (scanner.get().hasNextLine()) {
-                if (scanner.get().nextLine().contains("Usage: docker")) {
+            while (scanner.get().hasNextLine()) {
+                String nextLine = scanner.get().nextLine();
+                LOGGER.info(nextLine);
+                if (nextLine.contains("Usage: docker")) {
                     return true;
                 }
             }
@@ -44,7 +48,7 @@ public class Tasks {
      * @param args The arguments for the task.
      * @return Returns the scanner to evaluate output.
      */
-    public static Scanner doDockerMachineTaskWithOutput(String[] args) {
+    public static Scanner doDockerMachineTaskWithOutput(String... args) {
         Scanner scanner = null;
         ProcessBuilder builder;
         try {
@@ -73,7 +77,7 @@ public class Tasks {
      *
      * @param args The arguments for the task.
      */
-    public static void doDockerMachineTask(String[] args) {
+    public static void doDockerMachineTask(String... args) {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("docker").toAbsolutePath(), "docker_machine_cmd.bat").values(args));
     }
 
@@ -85,7 +89,7 @@ public class Tasks {
      * @param args The arguments for the task.
      * @return Returns the scanner to evaluate output.
      */
-    public static Scanner doDockerTaskWithOutput(DockerMachine dockerMachine, String[] args) {
+    public static Scanner doDockerTaskWithOutput(DockerMachine dockerMachine, String... args) {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Scanner scanner;
         ProcessBuilder builder;

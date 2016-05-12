@@ -1,5 +1,6 @@
 package betsy.common.virtual;
 
+import betsy.common.virtual.calibration.Measurement;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.DockerMachine;
 import betsy.common.virtual.docker.DockerMachines;

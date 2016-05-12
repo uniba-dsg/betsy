@@ -1,5 +1,7 @@
 package betsy.common.virtual;
 
+import betsy.common.virtual.calibration.Calibrator;
+
 /**
  * @author Christoph Broeker
  * @version 1.0

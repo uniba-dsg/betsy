@@ -1,6 +1,5 @@
 package betsy.common.virtual.calibration;
 
-import betsy.common.virtual.calibration.Measurement;
 import betsy.common.virtual.docker.DockerMachine;
 import betsy.common.virtual.docker.DockerMachines;
 import org.junit.After;

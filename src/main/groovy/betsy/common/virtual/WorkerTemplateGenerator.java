@@ -3,12 +3,12 @@ package betsy.common.virtual;
 import betsy.bpel.cli.BPELCliParameter;
 import betsy.bpel.cli.BPELCliParser;
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.cli.BPMNCliParameter;
 import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.virtual.calibration.Calibrator;
+import betsy.common.virtual.calibration.Properties;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package betsy.common.virtual.calibration;
 
-import betsy.common.virtual.calibration.Properties;
 import org.junit.Test;
 
 import java.nio.file.Path;

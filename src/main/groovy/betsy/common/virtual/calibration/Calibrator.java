@@ -1,6 +1,5 @@
 package betsy.common.virtual.calibration;
 
-import betsy.common.virtual.Properties;
 import betsy.common.virtual.WorkerTemplateGenerator;
 import betsy.common.virtual.docker.*;
 import org.apache.log4j.Logger;

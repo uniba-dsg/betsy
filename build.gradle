@@ -66,6 +66,7 @@ dependencies {
     internal 'org.apache.santuario:xmlsec:2.0.6' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
     external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: [
