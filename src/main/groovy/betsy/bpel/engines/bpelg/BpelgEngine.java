@@ -10,6 +10,7 @@ import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +22,8 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3");
+        // TODO this is the snapshot release, the real 5.3 was released on 2012-12-26
+        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3", LocalDate.of(2012, 4, 27), "GPL-2.0+");
     }
 
     public Path getDeploymentDir() {

@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class BPMNProcessRepository {
+    private final Repository<EngineIndependentProcess> repo = new Repository<>();
+
     public BPMNProcessRepository() {
         List<EngineIndependentProcess> all = new LinkedList<>();
         all.addAll(GatewayProcesses.GATEWAYS);
@@ -62,5 +64,4 @@ public class BPMNProcessRepository {
         return repo.getNames();
     }
 
-    private final Repository<EngineIndependentProcess> repo = new Repository<>();
 }

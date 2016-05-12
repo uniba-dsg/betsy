@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class BPMNTestVariable {
 
+    private final String name;
+    private final String type;
+    private final Object value;
+
     public BPMNTestVariable(String name, String type, Object value) {
         this.name = name;
         this.type = type;
@@ -23,10 +27,6 @@ public class BPMNTestVariable {
     public Object getValue() {
         return value;
     }
-
-    private final String name;
-    private final String type;
-    private final Object value;
 
     public static Object[] mapToArrayWithMaps(List<BPMNTestVariable> variables) {
         Object[] result = new Object[variables.size()];

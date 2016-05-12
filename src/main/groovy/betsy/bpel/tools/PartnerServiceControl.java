@@ -13,10 +13,6 @@ import javafx.stage.Stage;
  */
 public class PartnerServiceControl extends Application {
 
-    public static void main(String... args) {
-        PartnerServiceControl.launch(args);
-    }
-
     private final TestPartnerService publisher = new DummyAndRegularTestPartnerService();
 
     public PartnerServiceControl() {
@@ -25,6 +21,10 @@ public class PartnerServiceControl extends Application {
         createStartButton();
 
         createStopButton();
+    }
+
+    public static void main(String... args) {
+        PartnerServiceControl.launch(args);
     }
 
     @Override

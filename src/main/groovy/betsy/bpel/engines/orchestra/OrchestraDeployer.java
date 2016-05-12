@@ -12,6 +12,8 @@ import java.util.Objects;
 
 public class OrchestraDeployer {
 
+    private final Path orchestraHome;
+
     public OrchestraDeployer(Path orchestraHome) {
         this.orchestraHome = Objects.requireNonNull(orchestraHome);
     }
@@ -51,5 +53,4 @@ public class OrchestraDeployer {
         return FileTasks.hasFile(getDeploymentMarkerFile(processName));
     }
 
-    private final Path orchestraHome;
 }

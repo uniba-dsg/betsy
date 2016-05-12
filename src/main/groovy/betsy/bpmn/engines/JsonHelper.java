@@ -15,6 +15,8 @@ import java.nio.file.Path;
 
 public class JsonHelper {
 
+    private static final Logger log = Logger.getLogger(JsonHelper.class);
+
     static {
         // do not use this annoying thread
         SyncIdleConnectionMonitorThread syncIdleConnectionMonitorThread = (SyncIdleConnectionMonitorThread) Options.getOption(Option.SYNC_MONITOR);
@@ -170,7 +172,5 @@ public class JsonHelper {
             logResponse(response.getObject());
         }
     }
-
-    private static final Logger log = Logger.getLogger(JsonHelper.class);
 
 }

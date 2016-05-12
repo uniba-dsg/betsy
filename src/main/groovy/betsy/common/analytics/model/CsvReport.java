@@ -6,6 +6,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class CsvReport {
+
+    private Path file;
+    private final SortedMap<String, Test> nameToTest = new TreeMap<>();
+    private final SortedMap<String, Group> nameToGroup = new TreeMap<>();
+    private final SortedMap<String, Engine> nameToEngine = new TreeMap<>();
+
     public Group getGroup(String name) {
         if (nameToGroup.containsKey(name)) {
             return nameToGroup.get(name);
@@ -110,8 +116,4 @@ public class CsvReport {
         return nameToEngine;
     }
 
-    private Path file;
-    private final SortedMap<String, Test> nameToTest = new TreeMap<>();
-    private final SortedMap<String, Group> nameToGroup = new TreeMap<>();
-    private final SortedMap<String, Engine> nameToEngine = new TreeMap<>();
 }

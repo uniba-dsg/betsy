@@ -10,6 +10,7 @@ import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class OdeEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "ode", "1.3.5");
+        return new Engine(ProcessLanguage.BPEL, "ode", "1.3.5", LocalDate.of(2011,2,6), "Apache-2.0");
     }
 
     @Override
@@ -75,7 +76,7 @@ public class OdeEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void deploy(BPELProcess process) {
-        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"), 30);
+        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"));
         deployer.deploy(process.getTargetPackageFilePath(), process.getName());
     }
 

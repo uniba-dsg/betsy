@@ -11,6 +11,8 @@ import java.util.Arrays;
 
 public class BPMNProcessBuilder {
 
+    public static final Path ROOT_FOLDER = Paths.get("src/main/tests/files/bpmn");
+
     public static EngineIndependentProcess buildActivityProcess(String name, String description, Feature feature, BPMNTestCase... testCases) {
         return new EngineIndependentProcess(ROOT_FOLDER.resolve("activities").resolve(name + FileTypes.BPMN),
                 description,
@@ -48,5 +50,5 @@ public class BPMNProcessBuilder {
     public static EngineIndependentProcess buildPatternProcess (String description, Feature feature, BPMNTestCase... testCases){
         return new EngineIndependentProcess(ROOT_FOLDER.resolve("cfpatterns").resolve(feature.getName() + FileTypes.BPMN), description, Arrays.asList(testCases), feature);
     }
-    public static final Path ROOT_FOLDER = Paths.get("src/main/tests/files/bpmn");
+
 }

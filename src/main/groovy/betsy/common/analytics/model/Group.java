@@ -6,6 +6,10 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class Group implements Comparable<Group> {
+
+    private final String name;
+    private SortedSet<Test> tests = new TreeSet<>();
+
     public Group(String name) {
         this.name = name;
     }
@@ -31,9 +35,6 @@ public class Group implements Comparable<Group> {
     public void setTests(SortedSet<Test> tests) {
         this.tests = tests;
     }
-
-    private final String name;
-    private SortedSet<Test> tests = new TreeSet<>();
 
     public String getName() {
         return name;

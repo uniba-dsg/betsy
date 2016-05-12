@@ -36,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,7 @@ public class JsonGenerator {
                                 featureObject.put("id", feature.getID());
                                 featureObject.put("name", feature.getName());
                                 featureObject.put("description", feature.description);
+                                feature.upperBound.ifPresent(upperBound -> featureObject.put("upperBound", upperBound));
                                 featuresArray.put(featureObject);
                             }
                             constructsArray.put(constructObject);
@@ -142,6 +144,11 @@ public class JsonGenerator {
                     object.put("version", engine.getVersion());
                     object.put("configuration", engine.getConfiguration());
                     object.put("language", engine.getLanguage().name());
+                    object.put("programmingLanguage", engine.getProgrammingLanguage());
+                    object.put("license", engine.getLicense());
+                    object.put("licenseURL", engine.getLicenseURL());
+                    object.put("releaseDate", DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()));
+                    object.put("url", engine.getURL());
                     array.put(object);
                 }
             }

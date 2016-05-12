@@ -1,6 +1,7 @@
 package betsy.bpmn;
 
-import betsy.bpmn.cli.*;
+import betsy.bpmn.cli.BPMNCliParameter;
+import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasName;
@@ -8,6 +9,7 @@ import betsy.common.model.input.EngineIndependentProcess;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
+import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 
 import java.awt.*;
 import java.nio.file.Paths;
@@ -15,6 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPMNMain {
+
+    private static final Logger LOGGER = Logger.getLogger(BPMNMain.class);
+
     public static void main(String... args) {
         activateLogging();
 
@@ -116,6 +121,10 @@ public class BPMNMain {
 
             }
 
+            if(params.saveTimeouts()){
+                CalibrationTimeoutRepository.writeToCSV();
+            }
+
         } catch (Exception e) {
             Throwable cleanedException = StackTraceUtils.deepSanitize(e);
             LOGGER.error(cleanedException.getMessage(), cleanedException);
@@ -163,11 +172,7 @@ public class BPMNMain {
                 @Override
                 protected void createReports() {
                 }
-
             });
         }
-
     }
-
-    private static final Logger LOGGER = Logger.getLogger(BPMNMain.class);
 }

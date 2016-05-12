@@ -2,6 +2,7 @@ package betsy.bpel.engines.wso2;
 
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 
 import javax.xml.namespace.QName;
@@ -23,18 +24,18 @@ public class Wso2Deployer {
     public void deploy(Path file) {
         FileTasks.copyFileIntoFolder(file, deploymentDir);
 
-        WaitTasks.waitFor(120_000, 500, () ->
+        TimeoutRepository.getTimeout("Wso2.deploy").waitFor(() ->
                 FileTasks.hasFileSpecificSubstring(logsDir.resolve("wso2carbon.log"), "{org.apache.ode.bpel.engine.BpelServerImpl} -  Registered process {http://dsg.wiai.uniba.de/betsy") ||
                 FileTasks.hasFileSpecificSubstring(logsDir.resolve("wso2carbon.log"), "org.apache.axis2.deployment.DeploymentException: Error deploying BPEL package: " + file.getFileName().toString() + " {org.apache.axis2.deployment.DeploymentEngine}")
         );
-        WaitTasks.sleep(2_000);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2.deploy.sleep").getTimeoutInMs());
     }
 
     void undeploy(QName processId) {
         FileTasks.deleteFile(deploymentDir.resolve(processId.getLocalPart() + ".zip"));
 
-        WaitTasks.waitForSubstringInFile(120_000, 500, logsDir.resolve("wso2carbon.log"), "Unregistered process " + processId.toString());
-        WaitTasks.sleep(1_000);
+        TimeoutRepository.getTimeout("Wso2.undeploy").waitForSubstringInFile(logsDir.resolve("wso2carbon.log"), "Unregistered process " + processId.toString());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2.undeploy.sleep").getTimeoutInMs());
     }
 
     boolean isDeployed(String filename) {
