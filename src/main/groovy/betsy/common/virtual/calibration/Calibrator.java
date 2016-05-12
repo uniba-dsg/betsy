@@ -1,10 +1,10 @@
-package betsy.common.virtual;
+package betsy.common.virtual.calibration;
 
+import betsy.common.virtual.Properties;
+import betsy.common.virtual.WorkerTemplateGenerator;
 import betsy.common.virtual.docker.*;
-import betsy.common.virtual.exceptions.DockerException;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import static betsy.common.config.Configuration.get;
 /**
  * @author Christoph Broeker
  * @version 1.0
- *          <p>
  *          With this class it is possible to calibrate the duration for an engine.
  */
 public class Calibrator {
@@ -56,48 +55,36 @@ public class Calibrator {
     private static String[] measure(DockerMachine dockerMachine, String engine, boolean isBPELEngine) {
         Container container;
         if (isBPELEngine) {
-            container = Containers.create(dockerMachine, "calibration_" +engine, engine.replace("_", ""), "bpel", engine, "sequence");
+            container = Containers.create(dockerMachine, "calibration_" + engine, engine.replace("_", ""), "bpel", engine, "sequence");
         } else {
-            container = Containers.create(dockerMachine, "calibration_" +engine, engine.replace("_", ""), "bpmn", engine, "sequenceFlow");
+            container = Containers.create(dockerMachine, "calibration_" + engine, engine.replace("_", ""), "bpmn", engine, "sequenceFlow");
         }
         long start;
         long end = 0;
-        Scanner scanner;
-        ProcessBuilder builder;
         double memory = 0;
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                builder = new ProcessBuilder("cmd", "/c", "docker_cmd", dockerMachine.getName(), "stats");
-            } else {
-                builder = new ProcessBuilder("docker", "stats");
-            }
-            builder.directory(Paths.get("docker").toFile());
-            start = System.currentTimeMillis();
-            int position = 0;
-            Process process = builder.start();
-            container.start(true);
-            scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
-            int counter = 0;
-            while (scanner.hasNextLine() && counter < 10) {
-                String nextLine = scanner.nextLine();
-                if (nextLine.contains(container.getId().substring(0, 11))) {
-                    counter = 0;
-                    end = System.currentTimeMillis();
-                    String resultText = nextLine.substring(position, nextLine.indexOf("/"));
-                    double result = Double.valueOf(resultText.replaceAll("[^0-9.]", ""));
-                    if (resultText.contains("GB")) {
-                        result = result * 1000;
-                    }
-                    if (memory < result) {
-                        memory = result;
-                    }
-                } else if (nextLine.contains("CONTAINER")) {
-                    position = nextLine.indexOf("CPU %");
-                    counter++;
+        start = System.currentTimeMillis();
+
+        int position = 0;
+        Scanner scanner = Tasks.doDockerTaskWithOutput(dockerMachine, "stats");
+        container.start(true);
+        int counter = 0;
+        while (scanner.hasNextLine() && counter < 10) {
+            String nextLine = scanner.nextLine();
+            if (nextLine.contains(container.getId().substring(0, 11))) {
+                counter = 0;
+                end = System.currentTimeMillis();
+                String resultText = nextLine.substring(position, nextLine.indexOf("/"));
+                double result = Double.valueOf(resultText.replaceAll("[^0-9.]", ""));
+                if (resultText.contains("GB")) {
+                    result = result * 1000;
                 }
+                if (memory < result) {
+                    memory = result;
+                }
+            } else if (nextLine.contains("CONTAINER")) {
+                position = nextLine.indexOf("CPU %");
+                counter++;
             }
-        } catch (IOException a) {
-            throw new DockerException("Couldn't execute the 'stats' command for docker.");
         }
         return new String[]{engine, String.valueOf(end - start), String.valueOf(memory)};
     }

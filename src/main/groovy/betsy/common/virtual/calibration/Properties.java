@@ -1,5 +1,6 @@
-package betsy.common.virtual;
+package betsy.common.virtual.calibration;
 
+import betsy.common.virtual.WorkerTemplate;
 import org.apache.log4j.Logger;
 
 import java.io.*;
