@@ -39,7 +39,7 @@ public class CSV {
      */
     public static void write(Path csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
-        try (BufferedWriter writer = Files.newBufferedWriter(csv)) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(csv.toFile(), true))) {
             if (!csv.toFile().exists()) {
                 writer.append("Iteration").append(';');
                 writer.append("Key").append(';');

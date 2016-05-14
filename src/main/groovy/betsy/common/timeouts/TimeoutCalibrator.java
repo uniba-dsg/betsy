@@ -57,7 +57,7 @@ public class TimeoutCalibrator {
                     break;
                 }else if(numberOfDuration > 0){
                     //write all timeouts to csv for traceability
-                    CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
+                    CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
                 }
             }else{
                 SoapUIShutdownHelper.shutdownSoapUIForReal();
