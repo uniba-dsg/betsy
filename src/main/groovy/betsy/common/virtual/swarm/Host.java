@@ -1,9 +1,7 @@
 package betsy.common.virtual.swarm;
 
-import betsy.common.virtual.*;
-import betsy.common.virtual.DockerEngine;
+import betsy.common.virtual.cbetsy.*;
 import betsy.common.virtual.calibration.Measurement;
-import betsy.common.virtual.ResourceConfiguration;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.DockerMachine;
 import betsy.common.virtual.docker.DockerMachines;
@@ -34,8 +32,8 @@ class Host {
     private static DockerMachine dockerMachine;
     private static ResourceConfiguration containerConfiguration;
     private static int number;
-    private static ArrayList<ConnectionHandler> connections = new ArrayList<>();
-    private static HashMap<ConnectionHandler, Integer> numbers = new HashMap<>();
+    private static ArrayList<HostConnectionHandler> connections = new ArrayList<>();
+    private static HashMap<HostConnectionHandler, Integer> numbers = new HashMap<>();
     private static ArrayList<WorkerTemplate> workerTemplates = new ArrayList<>();
     private static long build = 0;
     private static long resources = 0;
@@ -56,9 +54,9 @@ class Host {
             while (end >= System.currentTimeMillis()) {
                 SocketChannel client = serverSocketChannel.accept();
                 if(client != null){
-                    ConnectionHandler connectionHandler = new ConnectionHandler(client, this);
-                    connectionHandler.start();
-                    connections.add(connectionHandler);
+                    HostConnectionHandler hostConnectionHandler = new HostConnectionHandler(client, this);
+                    hostConnectionHandler.start();
+                    connections.add(hostConnectionHandler);
                 }
             }
             LOGGER.info("Create templates");
@@ -124,9 +122,9 @@ class Host {
         LOGGER.info("The hole system executes " + sumContainer + " container parallel.");
 
         int start = 0;
-        for (ConnectionHandler connectionHandler : numbers.keySet()) {
-            int end = workerTemplates.size() * (numbers.get(connectionHandler) / sumContainer);
-            connectionHandler.sendWorkerTemplates(workerTemplates.subList(start, end));
+        for (HostConnectionHandler hostConnectionHandler : numbers.keySet()) {
+            int end = workerTemplates.size() * (numbers.get(hostConnectionHandler) / sumContainer);
+            hostConnectionHandler.sendWorkerTemplates(workerTemplates.subList(start, end));
             start = end;
         }
         List<WorkerTemplate> ownTemplates = workerTemplates.subList(start, workerTemplates.size());
@@ -145,17 +143,17 @@ class Host {
         LOGGER.info("Wait for the clients.");
         boolean wait = true;
         while (wait) {
-            if (connections.stream().filter(ConnectionHandler::isReady).count() == connections.size()) {
+            if (connections.stream().filter(HostConnectionHandler::isReady).count() == connections.size()) {
                 wait = false;
             }
         }
         wait = true;
-        connections.forEach(ConnectionHandler::sendStartDataMessage);
+        connections.forEach(HostConnectionHandler::sendStartDataMessage);
 
         LOGGER.info("Wait for the clients.");
         //wait for others execution
         while (wait) {
-            if (connections.stream().filter(ConnectionHandler::isReady).count() == connections.size()) {
+            if (connections.stream().filter(HostConnectionHandler::isReady).count() == connections.size()) {
                 wait = false;
             }
         }
@@ -165,12 +163,12 @@ class Host {
     /**
      * With this method it is possible to remove a failed client.
      *
-     * @param connectionHandler The connectionHandler, which failed.
+     * @param hostConnectionHandler The connectionHandler, which failed.
      * @param workerTemplates   The workerTemplates, which handles the client.
      */
-    public synchronized void connectionFailed(ConnectionHandler connectionHandler, List<WorkerTemplate> workerTemplates) {
-        connections.remove(connectionHandler);
-        numbers.remove(connectionHandler);
+    public synchronized void connectionFailed(HostConnectionHandler hostConnectionHandler, List<WorkerTemplate> workerTemplates) {
+        connections.remove(hostConnectionHandler);
+        numbers.remove(hostConnectionHandler);
         Host.workerTemplates.addAll(workerTemplates);
     }
 
@@ -178,11 +176,11 @@ class Host {
      * With this method it is possible to add the number of containers, which can handle
      * the client to the same time.
      *
-     * @param connectionHandler The concerned connectionHandler.
+     * @param hostConnectionHandler The concerned connectionHandler.
      * @param number            The number of containers.
      */
-    public synchronized void addNumber(ConnectionHandler connectionHandler, int number) {
-        numbers.put(connectionHandler, number);
+    public synchronized void addNumber(HostConnectionHandler hostConnectionHandler, int number) {
+        numbers.put(hostConnectionHandler, number);
     }
 
     /**

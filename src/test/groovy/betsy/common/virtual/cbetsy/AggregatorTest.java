@@ -1,5 +1,6 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
+import betsy.common.virtual.cbetsy.Aggregator;
 import betsy.common.virtual.docker.*;
 import org.junit.After;
 import org.junit.Before;

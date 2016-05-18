@@ -1,4 +1,4 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
 import betsy.bpel.cli.BPELCliParameter;
 import betsy.bpel.cli.BPELCliParser;

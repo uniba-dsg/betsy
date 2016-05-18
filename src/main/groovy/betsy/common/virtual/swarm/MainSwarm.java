@@ -1,7 +1,6 @@
 package betsy.common.virtual.swarm;
 
-import betsy.common.virtual.Teardown;
-import betsy.common.virtual.calibration.Calibrator;
+import betsy.common.virtual.cbetsy.Teardown;
 
 /**
  * @author Christoph Broeker
@@ -20,7 +19,7 @@ public class MainSwarm {
             if ("host".equalsIgnoreCase(args[0])) {
                 new Host().start(createArgsWithoutFirstValue(args));
             } else if ("client".equalsIgnoreCase(args[0])) {
-                Client.main(createArgsWithoutFirstValue(args));
+                new Client().start(createArgsWithoutFirstValue(args));
              Teardown.main(createArgsWithoutFirstValue(args));
             } else {
                 printUsage();

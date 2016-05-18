@@ -1,4 +1,4 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
 import org.junit.Test;
 

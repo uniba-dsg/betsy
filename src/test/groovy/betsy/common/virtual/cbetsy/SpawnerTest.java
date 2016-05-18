@@ -1,6 +1,9 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
 
+import betsy.common.virtual.cbetsy.ResourceConfiguration;
+import betsy.common.virtual.cbetsy.Spawner;
+import betsy.common.virtual.cbetsy.WorkerTemplateGenerator;
 import betsy.common.virtual.docker.*;
 import org.junit.Test;
 

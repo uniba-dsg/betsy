@@ -1,13 +1,10 @@
 package betsy.common.virtual.swarm;
 
-import betsy.common.virtual.WorkerTemplate;
+import betsy.common.virtual.cbetsy.WorkerTemplate;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.net.Socket;
 import java.nio.channels.SocketChannel;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +13,9 @@ import java.util.List;
  * @version 1.0
  *          This class handles the connection to a client.
  */
-public class ConnectionHandler extends Thread {
+public class HostConnectionHandler extends Thread {
 
-    private static final Logger LOGGER = Logger.getLogger(ConnectionHandler.class);
+    private static final Logger LOGGER = Logger.getLogger(ClientConnectionHandler.class);
     private OutputStream outputStream;
     private InputStream inputStream;
     private SocketChannel client;
@@ -31,7 +28,7 @@ public class ConnectionHandler extends Thread {
      *  @param client The socket for the interaction.
      * @param host The host, which starts the connectionHandler.
      */
-    public ConnectionHandler(SocketChannel client, Host host) {
+    public HostConnectionHandler(SocketChannel client, Host host) {
         this.client = client;
         this.host = host;
         try {
@@ -46,36 +43,17 @@ public class ConnectionHandler extends Thread {
     @Override
     public void run() {
         try {
+            ObjectInputStream objectStream = new ObjectInputStream(inputStream);
             while (isFinished) {
-                ObjectInputStream objectStream = new ObjectInputStream(inputStream);
-                Integer number = objectStream.readInt();
-                host.addNumber(this, number);
-
-                isReady = objectStream.readBoolean();
-
-                int filesCount = objectStream.readInt();
-                File[] files = new File[filesCount];
-                objectStream.close();
-
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-                DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
-                Path result = Paths.get("results");
-                for (int i = 0; i < filesCount; i++) {
-                    long fileLength = dataInputStream.readLong();
-                    String fileName = dataInputStream.readUTF();
-
-                    files[i] = result.resolve(fileName).toFile();
-
-                    FileOutputStream fos = new FileOutputStream(files[i]);
-                    BufferedOutputStream bos = new BufferedOutputStream(fos);
-
-                    for (int j = 0; j < fileLength; j++) bos.write(bufferedInputStream.read());
+                Object object = objectStream.readObject();
+                if(object instanceof Integer){
+                    host.addNumber(this, (Integer) object);
+                }else if(object instanceof Boolean){
+                    isReady = objectStream.readBoolean();
                 }
-                dataInputStream.close();
-                bufferedInputStream.close();
-                isReady = true;
+                //TODO: files
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             host.connectionFailed(this, workerTemplates);
             LOGGER.info("The connection to " +client.socket().getInetAddress()+" failed.");
         }
@@ -90,7 +68,6 @@ public class ConnectionHandler extends Thread {
         try {
             ObjectOutputStream stream = new ObjectOutputStream(outputStream);
             stream.writeObject(args);
-            stream.close();
         } catch (IOException e) {
             host.connectionFailed(this, workerTemplates);
             LOGGER.info("The connection to " +client.socket().getInetAddress()+" failed.");
@@ -107,8 +84,8 @@ public class ConnectionHandler extends Thread {
         try {
             workerTemplates = templates;
             ObjectOutputStream stream = new ObjectOutputStream(outputStream);
-            stream.writeObject(templates);
-            stream.close();
+            stream.writeObject(new WorkerTemplateMessage(templates));
+            stream.flush();
         } catch (IOException e) {
             host.connectionFailed(this, workerTemplates);
             LOGGER.info("The connection to " +client.socket().getInetAddress()+" failed.");
@@ -123,7 +100,7 @@ public class ConnectionHandler extends Thread {
         try {
             ObjectOutputStream stream = new ObjectOutputStream(outputStream);
             stream.writeObject(true);
-            stream.close();
+            stream.flush();
         } catch (IOException e) {
             host.connectionFailed(this, workerTemplates);
             LOGGER.info("The connection to " +client.socket().getInetAddress()+" failed.");
@@ -141,7 +118,8 @@ public class ConnectionHandler extends Thread {
         try {
             ObjectOutputStream stream = new ObjectOutputStream(outputStream);
             stream.writeObject(isFinished);
-            stream.close();
+            stream.flush();
+            outputStream.close();
         } catch (IOException e) {
             host.connectionFailed(this, workerTemplates);
             LOGGER.info("The connection to " +client.socket().getInetAddress()+" failed.");

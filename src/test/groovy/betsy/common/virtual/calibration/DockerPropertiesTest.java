@@ -1,8 +1,8 @@
 package betsy.common.virtual.calibration;
 
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.virtual.DockerEngine;
-import betsy.common.virtual.WorkerTemplate;
+import betsy.common.virtual.cbetsy.DockerEngine;
+import betsy.common.virtual.cbetsy.WorkerTemplate;
 import org.junit.Test;
 import org.mockito.Mockito;
 

@@ -1,7 +1,7 @@
 package betsy.common.virtual.calibration;
 
-import betsy.common.virtual.DockerEngine;
-import betsy.common.virtual.WorkerTemplateGenerator;
+import betsy.common.virtual.cbetsy.DockerEngine;
+import betsy.common.virtual.cbetsy.WorkerTemplateGenerator;
 import betsy.common.virtual.docker.DockerMachine;
 import betsy.common.virtual.docker.DockerMachines;
 import betsy.common.virtual.docker.Images;

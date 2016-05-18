@@ -1,12 +1,7 @@
 package betsy.common.virtual.swarm;
 
-import betsy.common.virtual.Aggregator;
-import betsy.common.virtual.Spawner;
-import betsy.common.virtual.WorkerTemplate;
-import betsy.common.virtual.WorkerTemplateGenerator;
-import betsy.common.virtual.DockerEngine;
 import betsy.common.virtual.calibration.Measurement;
-import betsy.common.virtual.ResourceConfiguration;
+import betsy.common.virtual.cbetsy.*;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.DockerMachine;
 import betsy.common.virtual.docker.DockerMachines;
@@ -14,7 +9,8 @@ import betsy.common.virtual.docker.Images;
 import betsy.common.virtual.exceptions.DockerException;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,78 +27,72 @@ class Client {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class);
 
-    public static void main(String args[]) {
+    public void start(String args[]) {
         if (args.length > 0) {
             try {
-                Socket client = new Socket(args[0], 9090);
-                boolean isFinished = false;
+                Optional<Boolean> isFinished = Optional.empty();
+                ClientConnectionHandler host = new ClientConnectionHandler(new Socket(args[0], 9090));
+                host.start();
 
-                while (!isFinished) {
-                    ObjectInputStream objectInputStream = new ObjectInputStream(client.getInputStream());
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(client.getOutputStream());
-                    String[] arguments = (String[]) objectInputStream.readObject();
+                while (!isFinished.isPresent()) {
+                    LOGGER.info("Waiting for arguments.");
+                    Optional<String[]> arguments = Optional.empty();
+                    while (!arguments.isPresent()) {
+                        arguments = host.getArgs();
+                    }
 
                     LOGGER.info("Create the templates for the workers.");
-                    WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator(arguments);
+                    WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator(arguments.get());
 
                     LOGGER.info("Start the dockerMachine and create the images.");
                     DockerMachine dockerMachine = build(workerTemplateGenerator.getEngines());
 
                     LOGGER.info("Start to evaluate the number of containers.");
                     ResourceConfiguration systemResources = Measurement.measureResources();
+
+
                     int number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues()));
                     ResourceConfiguration containerConfiguration = Measurement.calculateResources(systemResources, number);
-                    if(Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), dockerMachine, systemResources)){
-                        objectOutputStream.writeInt(number);
+                    if (Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), dockerMachine, systemResources)) {
+                        host.sendNumber(number);
 
                         LOGGER.info("Waiting for templates.");
-                        List<WorkerTemplate> workerTemplateList = (List<WorkerTemplate>) objectInputStream.readObject();
+                        Optional<List<WorkerTemplate>> workerTemplates = Optional.empty();
+                        while (!arguments.isPresent()) {
+                            workerTemplates = host.getWorkerTemplates();
+                        }
 
                         //start the
                         LOGGER.info("Start the spawner.");
-                        Spawner spawner = new Spawner(dockerMachine, workerTemplateList, containerConfiguration, number);
+                        Spawner spawner = new Spawner(dockerMachine, workerTemplates.get(), containerConfiguration, number);
                         List<Container> containers = spawner.start();
 
                         LOGGER.info("Aggregation of the results.");
                         Aggregator aggregator = new Aggregator(dockerMachine, containers);
                         aggregator.start();
-                        objectOutputStream.writeBoolean(true);
+                        host.sendBoolean(true);
 
-                        objectInputStream.readBoolean();
-                        objectOutputStream.close();
-
+                        //TODO: collect files
                         LOGGER.info("Send files.");
-                        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(client.getOutputStream());
-                        DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
-
-                        ArrayList<File> files = displayDirectoryContents(Paths.get("results"));
-                        dataOutputStream.writeInt(files.size());
-
-                        for (File file : files) {
-                            long length = file.length();
-                            dataOutputStream.writeLong(length);
-                            String name = file.getName();
-                            dataOutputStream.writeUTF(name);
-                            FileInputStream fileInputStream = new FileInputStream(file);
-                            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-                            int theByte = 0;
-                            while ((theByte = bufferedInputStream.read()) != -1) bufferedOutputStream.write(theByte);
-
-                            bufferedInputStream.close();
+                        host.sendData(true);
+                        while (!isFinished.isPresent()) {
+                            isFinished = host.getFinished();
                         }
-                        dataOutputStream.close();
+                        if(!isFinished.get()){
+                            isFinished = Optional.empty();
+                        }
                     }
-                    isFinished = objectInputStream.readBoolean();
-                    objectInputStream.close();
-                    objectOutputStream.close();
+
                 }
-            } catch (Exception e) {
-                LOGGER.info("The connection to the host failed.");
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } else {
-            printUsage();
         }
+
     }
+
 
     /**
      * This method creates the dockerMachine, the betsy image and the images for the engines.

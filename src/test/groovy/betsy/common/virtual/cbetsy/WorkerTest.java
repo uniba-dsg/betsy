@@ -1,6 +1,5 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
-import betsy.bpel.engines.bpelg.BpelgEngine;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.virtual.docker.*;
 import org.junit.After;

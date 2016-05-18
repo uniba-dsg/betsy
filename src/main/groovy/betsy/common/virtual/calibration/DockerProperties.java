@@ -1,7 +1,7 @@
 package betsy.common.virtual.calibration;
 
-import betsy.common.virtual.DockerEngine;
-import betsy.common.virtual.WorkerTemplate;
+import betsy.common.virtual.cbetsy.DockerEngine;
+import betsy.common.virtual.cbetsy.WorkerTemplate;
 import org.apache.log4j.Logger;
 
 import java.io.*;

@@ -1,8 +1,8 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
-import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.virtual.cbetsy.DockerEngine;
+import betsy.common.virtual.cbetsy.WorkerTemplate;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 

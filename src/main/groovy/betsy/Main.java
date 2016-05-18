@@ -2,7 +2,7 @@ package betsy;
 
 import betsy.bpel.BPELMain;
 import betsy.bpmn.BPMNMain;
-import betsy.common.virtual.DockerMain;
+import betsy.common.virtual.cbetsy.DockerMain;
 import betsy.tools.JsonGenerator;
 import betsy.common.timeouts.TimeoutCalibrator;
 

@@ -1,4 +1,4 @@
-package betsy.common.virtual;
+package betsy.common.virtual.cbetsy;
 
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
