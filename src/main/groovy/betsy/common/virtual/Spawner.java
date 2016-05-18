@@ -20,31 +20,25 @@ import java.util.concurrent.Future;
  */
 public class Spawner {
 
-    private static final Logger LOGGER = Logger.getLogger(ParallelRunner.class);
+    private static final Logger LOGGER = Logger.getLogger(Spawner.class);
 
-    private ArrayList<WorkerTemplate> workerTemplates;
+    private List<WorkerTemplate> workerTemplates;
     private DockerMachine dockerMachine;
     private ExecutorService executor;
-    private int cpuShares;
-    private int memory;
-    private int hddSpeed;
+   private ResourceConfiguration resourceConfiguration;
 
     /**
      *
-     * @param dockerMachine The dockermachine to execute on.
+     * @param dockerMachine The dockerMachine to execute on.
      * @param workerTemplates The workerTemplates to execute.
+     * @param resourceConfiguration The configurations for memory, hdd and cpu for this worker.
      * @param number The number of parallel executed containers.
-     * @param cpuShares The cpuShares for a single container.
-     * @param memory The maximum memory usage of container.
-     * @param hddSpeed The maximum hddSpeed of a single container.
      */
-    public Spawner(DockerMachine dockerMachine, ArrayList<WorkerTemplate> workerTemplates, int number, int cpuShares, int memory, int hddSpeed) {
+    public Spawner(DockerMachine dockerMachine, List<WorkerTemplate> workerTemplates, ResourceConfiguration resourceConfiguration, int number) {
         this.dockerMachine = dockerMachine;
         this.workerTemplates = workerTemplates;
-        this.cpuShares = cpuShares;
-        this.memory = memory;
-        this.hddSpeed = hddSpeed;
-        executor = Executors.newFixedThreadPool(number);
+        this.resourceConfiguration = resourceConfiguration;
+        this.executor = Executors.newFixedThreadPool(number);
     }
 
 
@@ -59,7 +53,7 @@ public class Spawner {
         ArrayList<Container> containers = new ArrayList<>();
 
         for(WorkerTemplate workerTemplate : workerTemplates){
-            Future<Container> container = executor.submit(new Worker(dockerMachine, workerTemplate, cpuShares, memory, hddSpeed));
+            Future<Container> container = executor.submit(new Worker(dockerMachine, workerTemplate, resourceConfiguration.getMemory(), resourceConfiguration.getHddSpeed()));
             futures.add(container);
         }
 

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
  * @author Christoph Broeker
  * @version 1.0
  */
-public class PropertiesTest {
+public class DockerPropertiesTest {
 
     //TODO:
     /**
@@ -40,7 +40,7 @@ public class PropertiesTest {
         Path path = Paths.get("test.properties");
         ArrayList<String[]> values = new ArrayList<>();
         values.add(new String[] {"ode136", "1000", "1000"});
-        Properties.write(path, values);
+        //DockerProperties.write(path, values);
         assertTrue("The file have to exist.", path.toFile().exists());
         path.toFile().delete();
     }

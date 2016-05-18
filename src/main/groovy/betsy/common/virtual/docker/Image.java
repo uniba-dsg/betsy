@@ -11,8 +11,8 @@ import java.util.Objects;
  */
 public class Image {
 
-    private String id;
-    private String name;
+    private final String id;
+    private final String name;
 
     /**
      *

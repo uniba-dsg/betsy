@@ -19,6 +19,7 @@ import java.util.*;
 public class Tasks {
 
     private static final Logger LOGGER = Logger.getLogger(Tasks.class);
+    //TODO: config path
 
     /**
      *
@@ -58,7 +59,6 @@ public class Tasks {
                 Collections.addAll(cmds, args);
                 builder.command(cmds);
                 builder.directory(Paths.get("docker").toFile());
-                LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.command()+ ".");
                 Process process = builder.start();
                 scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
             }
@@ -103,7 +103,6 @@ public class Tasks {
             Collections.addAll(cmds, args);
             builder.command(cmds);
             builder.directory(Paths.get("docker").toFile());
-            LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.directory()+ ".");
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
         } catch (IOException e) {
@@ -130,7 +129,7 @@ public class Tasks {
         }
         LOGGER.info("Execute command: " + Arrays.toString(cmds) + " .");
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(Paths.get("docker"), "docker_cmd.bat").values(cmds));
-        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(Paths.get("docker"), "docker").values(cmds));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("docker").values(cmds));
     }
 
     /**
@@ -161,7 +160,7 @@ public class Tasks {
             List<String> cmds = builder.command();
             Collections.addAll(cmds, args);
             builder.command(cmds);
-            LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.command()+ ".");
+            LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.directory()+ ".");
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
         } catch (IOException e) {
@@ -228,6 +227,9 @@ public class Tasks {
             }else{
                 builder = new ProcessBuilder("docker", args[0]);
                 args[0] = "--name";
+                List<String> cmds = builder.command();
+                Collections.addAll(cmds, args);
+                builder.command(cmds);
             }
             builder.directory(Paths.get("docker").toFile());
             LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.directory()+ ".");
@@ -247,7 +249,7 @@ public class Tasks {
      * @param args The arguments for the task.
      * @return Returns the scanner to evaluate output.
      */
-    public static Scanner doDockerCreateRunTaskWithConstraints(DockerMachine dockerMachine, String[] args) {
+    public static Scanner doDockerCreateRunTaskWithConstraints(DockerMachine dockerMachine, String... args) {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Scanner scanner;
         ProcessBuilder builder;
@@ -264,10 +266,10 @@ public class Tasks {
                 cmds.remove(index);
                 builder.command(cmds);
             }else{
-                builder = new ProcessBuilder("docker", args[0], "--name", args[1], "--cpu-shares", args[2], "--device-read-bps=/dev/sda:" +args[3]+ "mb", "--device-write-bps=/dev/sda:" +args[3]+ "mb", "--memory=" +args[4]+ "mb", args[5], "sh", "betsy", args[6], args[7], args[8]);
-                if(args.length > 9){
+                builder = new ProcessBuilder("docker", args[0], "--name", args[1], "--device-read-bps=/dev/sda:" +args[2]+ "mb", "--device-write-bps=/dev/sda:" +args[2]+ "mb", "--memory=" +args[3]+ "mb", args[4], "sh", "betsy", args[5], args[6], args[7]);
+                if(args.length > 8){
                     List<String> list = builder.command();
-                    list.add(args[9]);
+                    list.add(args[8]);
                     builder.command(list);
                 }
             }

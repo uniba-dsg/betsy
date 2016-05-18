@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class Images {
 
-    private static final Logger LOGGER = Logger.getLogger(Container.class);
+    private static final Logger LOGGER = Logger.getLogger(Images.class);
 
     /**
      * This method creates a {@link Image} from a dockerfile for an engine.
@@ -119,8 +119,7 @@ public class Images {
         HashMap<String, Image> images = dockerMachine.getImages();
         String[] cmds = {"images"};
         Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(dockerMachine, cmds));
-        int counter = 0;
-        int line = 0;
+        boolean containsRepository = false;
         int beginName = 0;
         int beginID = 0;
         if (scanner.isPresent()) {
@@ -129,9 +128,8 @@ public class Images {
                 if (nextLine.contains("REPOSITORY")) {
                     beginName = nextLine.indexOf("REPOSITORY");
                     beginID = nextLine.indexOf("IMAGE ID");
-                    line = counter;
-                }
-                if (counter > line && line > 0) {
+                    containsRepository = true;
+                }else if (containsRepository) {
                     String id = nextLine.substring(beginID);
                     id = id.substring(0, id.indexOf(" "));
                     String name = nextLine.substring(beginName);
@@ -139,7 +137,6 @@ public class Images {
                     Image image = new Image(id, name);
                     images.putIfAbsent(image.getName(), image);
                 }
-                counter++;
             }
         } else {
             throw new DockerException("Executing the task 'images' failed.");

@@ -4,8 +4,11 @@ import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.Containers;
 import betsy.common.virtual.docker.DockerMachine;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
+
+import static betsy.common.config.Configuration.get;
 
 /**
  * @author Christoph Broeker
@@ -16,9 +19,9 @@ import java.util.concurrent.Callable;
  */
 public class Worker implements Callable<Container> {
 
+    private static Path docker = Paths.get(get("docker.dir")).toAbsolutePath();
     private WorkerTemplate workerTemplate;
     private DockerMachine dockerMachine;
-    private int cpuShares;
     private int memory;
     private int hddSpeed;
 
@@ -26,14 +29,12 @@ public class Worker implements Callable<Container> {
      *
      * @param dockerMachine The dockerMachine to execute on.
      * @param workerTemplate The workerTemplate to execute.
-     * @param cpuShares The cpuShares for the container.
      * @param memory The maximum memory of the container.
      * @param hddSpeed The hddSpeed of the container.
      */
-    public Worker(DockerMachine dockerMachine, WorkerTemplate workerTemplate, int cpuShares, int memory, int hddSpeed) {
+    public Worker(DockerMachine dockerMachine, WorkerTemplate workerTemplate, int memory, int hddSpeed) {
         this.dockerMachine = dockerMachine;
         this.workerTemplate = workerTemplate;
-        this.cpuShares = cpuShares;
         this.memory = memory;
         this.hddSpeed = hddSpeed;
     }
@@ -41,8 +42,8 @@ public class Worker implements Callable<Container> {
 
     @Override
     public Container call() throws Exception {
-        Container container = Containers.create(dockerMachine, workerTemplate.getID(), workerTemplate.getEngineName().replace("_", ""), cpuShares, memory, hddSpeed, workerTemplate.getCmd());
-        container.copyToContainer(Paths.get(workerTemplate.getEngineName()+ "/timeout.properties"), Paths.get("/betsy"));
+        Container container = Containers.create(dockerMachine, workerTemplate.getID(), workerTemplate.getDockerEngine().getName().replace("_", ""), memory, hddSpeed, workerTemplate.getCmd());
+        container.copyToContainer(docker.resolve("timeouts").resolve(workerTemplate.getDockerEngine().getName().replace("_", "")).resolve("timeout.properties").toAbsolutePath(), Paths.get("/betsy"));
         container.start(false);
         return container;
     }
