@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Results</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="page-header">
+    <h1>Results</h1>
+</div>
+<div class="col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Times and statistics</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item"><span class="badge">@BUILD@ sec</span>Build</li>
+                <li class="list-group-item"><span class="badge">@RESOURCE@ sec</span>Resource calibration</li>
+                <li class="list-group-item"><span class="badge">@TIMEOUT@ sec</span>Timeouts calibration</li>
+                <li class="list-group-item"><span class="badge">@EXECUTION@ sec</span>Execution</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">BPEL</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item"><span class="badge">@BPELSUCCESSFUL@</span>Successful tests</li>
+                <li class="list-group-item"><span class="badge">@BPELFAILED@</span>Failed tests</li>
+                <li class="list-group-item"><span class="badge">@BPELMISSING@</span>Missing tests</li>
+                <li class="list-group-item"><span class="badge">@BPELTOTAL@</span>Total tests</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">BPMN</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item"><span class="badge">@BPMNSUCCESSFUL@</span>Successful tests</li>
+                <li class="list-group-item"><span class="badge">@BPMNFAILED@</span>Failed tests</li>
+                <li class="list-group-item"><span class="badge">@BPMNMISSING@</span>Missing tests</li>
+                <li class="list-group-item"><span class="badge">@BPMNTOTAL@</span>Total tests</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div>
+    @BPEL@
+    @BPMN@
+</div>
+</body>
