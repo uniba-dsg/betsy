@@ -1,6 +1,7 @@
 package betsy.common.virtual;
 
 import betsy.common.virtual.calibration.Calibrator;
+import betsy.common.virtual.swarm.MainSwarm;
 
 /**
  * @author Christoph Broeker
@@ -9,30 +10,30 @@ import betsy.common.virtual.calibration.Calibrator;
 public class DockerMain {
 
     /**
-     *
      * The main method of docker.
      *
      * @param args The arguments for the execution.
      */
     public static void main(String[] args) {
-        if(args.length > 0) {
+        if (args.length > 0) {
             if ("run".equalsIgnoreCase(args[0])) {
                 ParallelRunner.main(createArgsWithoutFirstValue(args));
             } else if ("calibrate".equalsIgnoreCase(args[0])) {
                 Calibrator.main(createArgsWithoutFirstValue(args));
+            } else if ("swarm".equalsIgnoreCase(args[0])) {
+                MainSwarm.main(createArgsWithoutFirstValue(args));
             } else if ("teardown".equalsIgnoreCase(args[0])) {
                 Teardown.main(createArgsWithoutFirstValue(args));
             } else {
                 printUsage();
             }
-        }else{
+        } else {
             printUsage();
         }
 
     }
 
     /**
-     *
      * This method removes the first of the arguments.
      *
      * @param args The arguments to change.
@@ -45,9 +46,9 @@ public class DockerMain {
     }
 
     /**
-     *  This method prints the right usage of the arguments.
+     * This method prints the right usage of the arguments.
      */
     private static void printUsage() {
-        System.out.println("The second argument must be calibrate, run or teardown");
+        System.out.println("The second argument must be calibrate, run, swarm or teardown.");
     }
 }
