@@ -64,7 +64,6 @@ public class Teardown {
             List<DockerMachine> dockerMachines = new ArrayList<>();
             dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.run.name")));
             dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.test.name")));
-            dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.calibrate.name")));
             dockerMachines.removeAll(Collections.singleton(null));
             for (DockerMachine dockerMachine : dockerMachines) {
                 Containers.removeAll(dockerMachine, new ArrayList<>(Containers.getAll(dockerMachine).values()));
@@ -74,7 +73,6 @@ public class Teardown {
             List<DockerMachine> dockerMachines = new ArrayList<>();
             dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.run.name")));
             dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.test.name")));
-            dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.calibrate.name")));
             dockerMachines.removeAll(Collections.singleton(null));
             for (DockerMachine dockerMachine : dockerMachines) {
                 Images.removeAll(dockerMachine, new ArrayList<>(Images.getAll(dockerMachine).values()));
@@ -84,7 +82,6 @@ public class Teardown {
             List<DockerMachine> dockerMachines = new ArrayList<>();
             dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.run.name")));
             dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.test.name")));
-            dockerMachines.add(DockerMachines.getAll().get(get("dockermachine.calibrate.name")));
             dockerMachines.removeAll(Collections.singleton(null));
             dockerMachines.forEach(DockerMachine::stop);
             dockerMachines.forEach(DockerMachines::remove);
