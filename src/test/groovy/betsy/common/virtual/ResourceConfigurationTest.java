@@ -5,27 +5,26 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by christoph on 14.05.16.
+ *
+ * @author Christoph Broeker
+ * @version 1.0
  */
 public class ResourceConfigurationTest {
-    @Test
-    public void getNumber() throws Exception {
 
-    }
 
     @Test
     public void getMemory() throws Exception {
-
+        int memory = 2000;
+        int hddSpeed = 200;
+        ResourceConfiguration resourceConfiguration = new ResourceConfiguration(memory, hddSpeed);
+        assertEquals("The values memory values be equal.", memory, resourceConfiguration.getMemory());
     }
 
     @Test
     public void getHddSpeed() throws Exception {
-
+        int memory = 2000;
+        int hddSpeed = 200;
+        ResourceConfiguration resourceConfiguration = new ResourceConfiguration(memory, hddSpeed);
+        assertEquals("The values of the hddSpeed should be equal", hddSpeed, resourceConfiguration.getHddSpeed());
     }
-
-    @Test
-    public void getCpuShares() throws Exception {
-
-    }
-
 }

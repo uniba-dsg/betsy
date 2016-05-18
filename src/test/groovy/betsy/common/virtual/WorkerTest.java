@@ -38,12 +38,37 @@ public class WorkerTest {
 
     @Test
     public void call() throws Exception {
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasCreated = false;
+        if (!betsyImage.isPresent()) {
+            betsyImageWasCreated = true;
+            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        }
+        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode135"));
+        boolean engineImageWasCreated = false;
+        if (!engineImage.isPresent()) {
+            engineImageWasCreated = true;
+            Images.buildEngine(dockerMachine, Paths.get("docker/image/engine").toAbsolutePath(), "ode__1_3_5");
+        }
+
         EngineIndependentProcess process = Mockito.mock(EngineIndependentProcess.class);
         when(process.getName()).thenReturn("sequence");
+        DockerEngine dockerEngine = new DockerEngine("ode__1_3_5", DockerEngine.TypeOfEngine.BPEL);
 
-        Worker worker = new Worker(dockerMachine, new WorkerTemplate(process, new BpelgEngine()), 200, 2000, 100);
+        Worker worker = new Worker(dockerMachine, new WorkerTemplate(process, dockerEngine), 2000, 100);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<Container> container = executor.submit(worker);
-        assertNotNull("The container should not be null.", container.get());
+        Container containerResult = container.get();
+        assertNotNull("The container should not be null.", containerResult);
+
+        Containers.remove(dockerMachine, containerResult);
+
+        if (engineImage.isPresent() && !engineImageWasCreated) {
+            Images.remove(dockerMachine, engineImage.get());
+        }
+
+        if (betsyImage.isPresent() && !betsyImageWasCreated) {
+            Images.remove(dockerMachine, betsyImage.get());
+        }
     }
 }

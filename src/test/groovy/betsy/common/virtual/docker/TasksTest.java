@@ -1,5 +1,6 @@
 package betsy.common.virtual.docker;
 
+import betsy.common.tasks.WaitTasks;
 import com.google.common.base.Optional;
 import org.junit.After;
 import org.junit.Before;
@@ -39,71 +40,147 @@ public class TasksTest {
 
     @Test
     public void doDockerMachineTaskWithOutput() throws Exception {
-        Scanner scanner = Tasks.doDockerMachineTaskWithOutput("all");
-        assertTrue("The scanner should have a next line.", scanner.hasNextLine());
+        if (System.getProperty("os.name").contains("Windows")) {
+            Scanner scanner = Tasks.doDockerMachineTaskWithOutput("all");
+            assertTrue("The scanner should have a next line.", scanner.hasNextLine());
+        }
 
     }
 
     @Test
     public void doDockerMachineTask() throws Exception {
-        String nameOfTheMachine = "testMachine";
-        Tasks.doDockerMachineTask("create", "--driver", "virtualbox", nameOfTheMachine);
-        HashMap<String, DockerMachine> dockerMachines = DockerMachines.getAll();
-        assertEquals("", nameOfTheMachine, dockerMachines.get(nameOfTheMachine).getName());
-        DockerMachines.remove(DockerMachines.getAll().get(nameOfTheMachine));
+        if (System.getProperty("os.name").contains("Windows")) {
+            String nameOfTheMachine = "testMachine";
+            Tasks.doDockerMachineTask("create", "--driver", "virtualbox", nameOfTheMachine);
+            HashMap<String, DockerMachine> dockerMachines = DockerMachines.getAll();
+            assertEquals("The names should be equal.", nameOfTheMachine, dockerMachines.get(nameOfTheMachine).getName());
+            DockerMachines.remove(DockerMachines.getAll().get(nameOfTheMachine));
+        }
     }
 
     @Test
     public void doDockerTaskWithOutput() throws Exception {
         String[] cmds = {"ps", "--all"};
         Optional<Scanner> scanner = Optional.fromNullable(Tasks.doDockerTaskWithOutput(dockerMachine, cmds));
-        while (scanner.get().hasNextLine()) {
-            assertTrue("", scanner.get().nextLine().contains("CONTAINER ID"));
+        boolean taskWasExecuted = false;
+        if (scanner.isPresent()) {
+            while (scanner.get().hasNextLine()) {
+                if (scanner.get().nextLine().contains("CONTAINER ID")) {
+                    taskWasExecuted = true;
+                }
+            }
         }
+        assertTrue("If the task was executed, the value has to be true.", taskWasExecuted);
     }
 
     @Test
     public void doDockerTask() throws Exception {
-        String[] cmds = {"run", "hello-world"};
-        Tasks.doDockerTask(dockerMachine, cmds);
-        assertEquals("", 1, Containers.getAll(dockerMachine).size());
+        int size = Containers.getAll(dockerMachine).size();
+        String name = "test";
+        java.util.Optional<Container> container = java.util.Optional.ofNullable(Containers.getAll(dockerMachine).get(name));
+        if (!container.isPresent()) {
+            String[] cmds = {"run", "--name", name, "hello-world"};
+            Tasks.doDockerTask(dockerMachine, cmds);
+            assertEquals("The values have to be equal.", ++size, Containers.getAll(dockerMachine).size());
+            Containers.remove(dockerMachine, Containers.getAll(dockerMachine).get(name));
+        }
     }
 
     @Test
     public void doImageTask() throws Exception {
-        Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
-        assertEquals("There should be two engines installed.", 2, Images.getAll(dockerMachine).size());
+        String name = "test";
+        java.util.Optional<Image> image = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("test"));
+        if (!image.isPresent()) {
+            int size = Images.getAll(dockerMachine).size();
+            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), name);
+            assertEquals("The values have to be equal.", ++size, Images.getAll(dockerMachine).size());
+            Images.remove(dockerMachine, Images.getAll(dockerMachine).get(name));
+        }
     }
 
     @Test
     public void doEngineImageTask() throws Exception {
-        Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        if (!betsyImage.isPresent()) {
+            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        }
+        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode135"));
+        boolean engineImageWasCreated = false;
+        if (engineImage.isPresent()) {
+            engineImageWasCreated = true;
+            Images.remove(dockerMachine, engineImage.get());
+        }
+
+        int size = Images.getAll(dockerMachine).size();
         Images.buildEngine(dockerMachine, Paths.get("docker/image/engine"), "ode__1_3_5");
-        assertEquals("There should be three engines installed.", 3, Images.getAll(dockerMachine).size());
+        assertEquals("The values should be equal.", ++size, Images.getAll(dockerMachine).size());
+        engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode135"));
+        if (engineImage.isPresent() && !engineImageWasCreated) {
+            Images.remove(dockerMachine, engineImage.get());
+        }
     }
 
     @Test
     public void doDockerCreateRunTask() throws Exception {
-        Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
-        String[] args = {"bpel", "ode__1_3_5", "sequence"};
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasBuild = true;
+        if (!betsyImage.isPresent()) {
+            betsyImageWasBuild = false;
+            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        }
+
+        java.util.Optional<Container> betsyContainer = java.util.Optional.ofNullable(Containers.getAll(dockerMachine).get("betsy"));
+        if (betsyContainer.isPresent()) {
+            Containers.remove(dockerMachine, betsyContainer.get());
+        }
+        int size = Containers.getAll(dockerMachine).size();
+        String[] args = {"sh", "betsy", "bpel", "ode__1_3_5", "sequence"};
         String[] commands = {"create", "betsy", "betsy"};
         String[] cmds = new String[args.length + commands.length];
         System.arraycopy(commands, 0, cmds, 0, commands.length);
         System.arraycopy(args, 0, cmds, commands.length, args.length);
         Tasks.doDockerCreateRunTask(dockerMachine, cmds);
-        assertEquals("", 1, Containers.getAll(dockerMachine).size());
+        WaitTasks.sleep(500);
+        assertEquals("The values have to be equal.", ++size, Containers.getAll(dockerMachine).size());
+
+        if (betsyContainer.isPresent()) {
+            Containers.remove(dockerMachine, betsyContainer.get());
+        }
+        if (betsyImage.isPresent() && !betsyImageWasBuild) {
+            Images.remove(dockerMachine, betsyImage.get());
+        }
     }
 
     @Test
     public void doDockerCreateRunTaskWithConstraints() throws Exception {
-        Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasBuild = true;
+        if (!betsyImage.isPresent()) {
+            betsyImageWasBuild = false;
+            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        }
+
+        java.util.Optional<Container> betsyContainer = java.util.Optional.ofNullable(Containers.getAll(dockerMachine).get("betsy"));
+        if (betsyContainer.isPresent()) {
+            Containers.remove(dockerMachine, betsyContainer.get());
+        }
+
+        int size = Containers.getAll(dockerMachine).size();
         String[] args = {"bpel", "ode__1_3_5", "sequence"};
-        String[] commands = {"create", "betsy", String.valueOf(1260), String.valueOf(100), String.valueOf(2000), "betsy"};
+        String[] commands = {"create", "betsy", String.valueOf(100), String.valueOf(2000), "betsy"};
         String[] cmds = new String[args.length + commands.length];
         System.arraycopy(commands, 0, cmds, 0, commands.length);
         System.arraycopy(args, 0, cmds, commands.length, args.length);
         Tasks.doDockerCreateRunTaskWithConstraints(dockerMachine, cmds);
-        assertEquals("", 1, Containers.getAll(dockerMachine).size());
+        WaitTasks.sleep(500);
+        assertEquals("The values have to be equal.", ++size, Containers.getAll(dockerMachine).size());
+
+        if (betsyContainer.isPresent()) {
+            Containers.remove(dockerMachine, betsyContainer.get());
+        }
+        if (betsyImage.isPresent() && !betsyImageWasBuild) {
+            Images.remove(dockerMachine, betsyImage.get());
+        }
     }
 
 }

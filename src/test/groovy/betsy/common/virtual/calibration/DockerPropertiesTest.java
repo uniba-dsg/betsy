@@ -1,11 +1,17 @@
 package betsy.common.virtual.calibration;
 
+import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.virtual.DockerEngine;
+import betsy.common.virtual.WorkerTemplate;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -13,35 +19,64 @@ import static org.junit.Assert.assertTrue;
  * @version 1.0
  */
 public class DockerPropertiesTest {
-
-    //TODO:
-    /**
     @Test
-    public void read() throws Exception {
+    public void readWorkerTemplates() throws Exception {
         Path path = Paths.get("test.properties");
-        ArrayList<String[]> values = new ArrayList<>();
-        Long time = 1000L;
-        Long memory = 1000L;
-        values.add(new String[] {"ode__1_3_6", time.toString(), memory.toString()});
-        Properties.write(path, values);
+        HashSet<DockerEngine> engines = new HashSet<>();
+        DockerEngine dockerEngine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
+        long time = 100;
+        int memory = 400;
+        dockerEngine.setTime(time);
+        dockerEngine.setMemory(memory);
+        engines.add(dockerEngine);
+        DockerProperties.writeEngines(path, engines);
+        dockerEngine.setTime(200);
+        dockerEngine.setMemory(500);
 
-        WorkerTemplate workerTemplate = new WorkerTemplate(new EngineIndependentProcess(), new Ode136Engine());
+        EngineIndependentProcess process = Mockito.mock(EngineIndependentProcess.class);
+        WorkerTemplate workerTemplate = new WorkerTemplate(process, dockerEngine);
         ArrayList<WorkerTemplate> workerTemplates = new ArrayList<>();
         workerTemplates.add(workerTemplate);
-        workerTemplates = Properties.read(path, workerTemplates);
-        assertEquals("The values should be the same.", time.longValue(), workerTemplates.get(0).getTime());
-        assertEquals("The values should be the same.", 0, memory.doubleValue(), workerTemplates.get(0).getMemory());
-        path.toFile().delete();
+        workerTemplates = DockerProperties.readWorkerTemplates(path, workerTemplates);
+        assertEquals("The time have to be equal", time, workerTemplates.get(0).getDockerEngine().getTime());
+        assertEquals("The memories have to be equal", memory, workerTemplates.get(0).getDockerEngine().getMemory());
     }
-     **/
 
     @Test
-    public void write() throws Exception {
+    public void readEngines() throws Exception {
         Path path = Paths.get("test.properties");
-        ArrayList<String[]> values = new ArrayList<>();
-        values.add(new String[] {"ode136", "1000", "1000"});
-        //DockerProperties.write(path, values);
-        assertTrue("The file have to exist.", path.toFile().exists());
+        HashSet<DockerEngine> engines = new HashSet<>();
+        DockerEngine dockerEngine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
+        long time = 100;
+        int memory = 400;
+        dockerEngine.setTime(time);
+        dockerEngine.setMemory(memory);
+        engines.add(dockerEngine);
+        DockerProperties.writeEngines(path, engines);
+        dockerEngine.setTime(200);
+        dockerEngine.setMemory(300);
+        ArrayList<DockerEngine> engineList = new ArrayList<>(DockerProperties.readEngines(path, engines));
+        assertEquals("The times have to be equal.", time, engineList.get(0).getTime());
+        assertEquals("The memories have to be equal", memory, engineList.get(0).getMemory());
+        path.toFile().delete();
+    }
+
+    @Test
+    public void writeEngines() throws Exception {
+        Path path = Paths.get("test.properties");
+        HashSet<DockerEngine> engines = new HashSet<>();
+        DockerEngine dockerEngine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
+        long time = 100;
+        int memory = 400;
+        dockerEngine.setTime(time);
+        dockerEngine.setMemory(memory);
+        engines.add(dockerEngine);
+        DockerProperties.writeEngines(path, engines);
+        dockerEngine.setTime(200);
+        dockerEngine.setMemory(300);
+        ArrayList<DockerEngine> engineList = new ArrayList<>(DockerProperties.readEngines(path, engines));
+        assertEquals("The times have to be equal.", time, engineList.get(0).getTime());
+        assertEquals("The memories have to be equal", memory, engineList.get(0).getMemory());
         path.toFile().delete();
     }
 }

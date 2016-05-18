@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
  */
 public class ContainerTest {
 
+
     private static DockerMachine dockerMachine;
     private Container container;
 
@@ -40,7 +41,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void testRestart() throws Exception {
+    public void restart() throws Exception {
         container.start(true);
         assertEquals("The container should have the status 'RUNNING'", Container.Status.RUNNING, container.getStatus());
         container.restart();
@@ -48,19 +49,19 @@ public class ContainerTest {
     }
 
     @Test
-    public void testStart() throws Exception {
+    public void start() throws Exception {
         container.start(true);
         assertEquals("The container should have the status 'RUNNING'.", Container.Status.RUNNING, container.getStatus());
     }
 
     @Test
-    public void testStartSilent() throws Exception {
+    public void  startSilent() throws Exception {
         container.start(false);
         assertEquals("The container should have the status 'EXITED'.", Container.Status.EXITED, container.getStatus());
     }
 
     @Test
-    public void testStop() throws Exception {
+    public void stop() throws Exception {
         container.start(true);
         assertEquals("The container should have the status 'EXITED'.", Container.Status.RUNNING, container.getStatus());
         container.stop();
@@ -68,7 +69,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void testExec() throws Exception {
+    public void exec() throws Exception {
         String cmd = "sleep";
         String cmd1 = "1m";
         container.start(true);
@@ -77,27 +78,21 @@ public class ContainerTest {
     }
 
     @Test
-    public void testGetId() throws Exception {
+    public void getId() throws Exception {
         assertNotNull("The container should have an id.", container.getId());
     }
 
     @Test
-    public void testGetName() throws Exception {
+    public void getName() throws Exception {
         String name = "test";
         container = Containers.create(dockerMachine, name, "Ubuntu", "sleep 10m");
         assertEquals("The names should be equal.", name, container.getName());
     }
 
     @Test
-    public void testGetStatus() throws Exception {
+    public void getStatus() throws Exception {
         container = Containers.create(dockerMachine,"test", "ubuntu", "sleep", "6000");
         assertEquals("The container should have the status 'RUNNING'.", Container.Status.CREATED, container.getStatus());
-    }
-
-    @Test
-    public void testGetCmd() throws Exception {
-        container = Containers.create(dockerMachine,"test", "ubuntu", "sleep", "3000");
-        assertEquals("The container should have the cmd 'sleep 180'.", "sleep 180", container.getCmd());
     }
 
     @Test
