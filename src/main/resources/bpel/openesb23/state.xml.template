@@ -35,38 +35,38 @@
   holder.
 -->
 <state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="state-file.xsd">
-<components>
-        <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
-            <properties>
-                <property name="password">adminadmin</property>
-                <property name="installation.location">@INSTALL_PATH@/glassfish</property>
-                <property name="jmx.admin.port">8686</property>
-                <property name="username">admin</property>
-                <property name="vendor.jdk.allowed.pattern">Sun Microsystems.*|Oracle.*</property>
-                <property name="jms.port">7676</property>
-                <property name="maximum.jdk.version">10.0.0.0.0</property>
-                <property name="minimum.jdk.version">1.5.0.0.0</property>
-                <property name="jdk.location">@JDK_LOCATION@</property>
-                <property name="http.port">@HTTP_PORT@</property>
-                <property name="https.port">@HTTPS_PORT@</property>
-                <property name="preferred.jdk.version.macosx">1.6.0.22.0</property>
-                <property name="admin.port">4848</property>
-                <property name="iiop.port">3100</property>
-                <property name="vendor.jdk.allowed.pattern.aix">IBM.*</property>
-                <property name="iiop.mutualauth.port">3920</property>
-                <property name="vendor.jdk.allowed.pattern.macosx">Apple.*|Oracle.*</property>
-                <property name="iiop.ssl.port">3820</property>
-            </properties>
-        </product>
-        <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-core" version="2.3.0.182.20130418184920">
-            <properties>
-                <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
-            </properties>
-        </product>
-        <product platform="windows linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-components" version="2.3.0.182.20130418221809">
-            <properties>
-                <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
-            </properties>
-        </product>
+    <components>
+        <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="glassfish" version="2.1.1.31g.20091027">
+                    <properties>
+                        <property name="password">adminadmin</property>
+                        <property name="installation.location">@INSTALL_PATH@/glassfish</property>
+                        <property name="jmx.admin.port">8686</property>
+                        <property name="username">admin</property>
+                        <property name="vendor.jdk.allowed.pattern">Sun Microsystems.*|Oracle.*</property>
+                        <property name="jms.port">7676</property>
+                        <property name="maximum.jdk.version">10.0.0.0.0</property>
+                        <property name="minimum.jdk.version">1.5.0.0.0</property>
+                        <property name="jdk.location">@JDK_LOCATION@</property>
+                        <property name="http.port">@HTTP_PORT@</property>
+                        <property name="https.port">@HTTPS_PORT@</property>
+                        <property name="preferred.jdk.version.macosx">1.6.0.22.0</property>
+                        <property name="admin.port">4848</property>
+                        <property name="iiop.port">3100</property>
+                        <property name="vendor.jdk.allowed.pattern.aix">IBM.*</property>
+                        <property name="iiop.mutualauth.port">3920</property>
+                        <property name="vendor.jdk.allowed.pattern.macosx">Apple.*|Oracle.*</property>
+                        <property name="iiop.ssl.port">3820</property>
+                    </properties>
+                </product>
+                <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-core" version="2.3.0.182.20130418184920">
+                    <properties>
+                        <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                    </properties>
+                </product>
+                <product platform="linux solaris-sparc solaris-x86 macosx-ppc macosx-x86 aix" status="to-be-installed" uid="openesb-components" version="2.3.0.182.20130418221809">
+                    <properties>
+                        <property name="installation.location">@INSTALL_PATH@/glassfish/addons/jbi-components</property>
+                    </properties>
+                </product>
     </components>
 </state>

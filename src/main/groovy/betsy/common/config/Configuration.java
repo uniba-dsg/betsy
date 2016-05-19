@@ -13,6 +13,10 @@ import java.util.Properties;
 
 public class Configuration {
 
+    private static final Logger log = Logger.getLogger(Configuration.class);
+
+    public static final Properties PROPERTIES;
+
     /**
      * Get the value of the given key.
      *
@@ -58,8 +62,6 @@ public class Configuration {
             throw new RuntimeException("something went wrong", e);
         }
     }
-
-    public static final Properties PROPERTIES;
 
     /**
      * Get the File where VirtualBox is installed in.
@@ -137,7 +139,5 @@ public class Configuration {
 
         return java7home;
     }
-
-    private static final Logger log = Logger.getLogger(Configuration.class);
 
 }

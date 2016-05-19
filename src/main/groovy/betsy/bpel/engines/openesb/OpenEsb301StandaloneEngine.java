@@ -9,8 +9,10 @@ import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.StringUtils;
 import org.apache.log4j.Logger;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -23,10 +25,10 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     private String binariesFileName = "OpenESB-Quickstart-Standalone-v301-server-only.zip";
     private String adminBinariesFile = "openesb-oeadmin-1.0.1.jar";
 
-    public OpenEsb301StandaloneEngine(){
+    public OpenEsb301StandaloneEngine() {
     }
 
-    public OpenEsb301StandaloneEngine(String openEsbFolder, String binariesFileName, String adminBinariesFile){
+    public OpenEsb301StandaloneEngine(String openEsbFolder, String binariesFileName, String adminBinariesFile) {
         this.openEsbFolder = openEsbFolder;
         this.binariesFileName = binariesFileName;
         this.adminBinariesFile = adminBinariesFile;
@@ -151,7 +153,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         }
         FileTasks.copyFileIntoFolder(components.resolve(jarFilename), installFolder);
 
-        WaitTasks.waitFor(10 * 1000, 500, condition);
+        TimeoutRepository.getTimeout("OpenEsb30x.installComponent").waitFor(condition);
     }
 
     @Override
@@ -159,13 +161,13 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         // start openesb.bat
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "start-openesb.bat"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getServerPath(), getServerPath().resolve("start-openesb.sh").toAbsolutePath()));
-        WaitTasks.waitForAvailabilityOfUrl(10 * 1000, 500, WEB_UI);
+        TimeoutRepository.getTimeout("OpenEsb30x.startup.waitForUrl").waitForAvailabilityOfUrl(WEB_UI);
 
         // install bpelse
         Path components = getServerPath().resolve(openEsbFolder).resolve("OE-Components");
         Path installFolder = getInstanceFolder().resolve("server").resolve("jbi").resolve("autoinstall");
 
-        WaitTasks.waitFor(10 * 1000, 500, () -> FileTasks.hasFolder(installFolder));
+        TimeoutRepository.getTimeout("OpenEsb30x.startup.waitForStart").waitFor(() -> FileTasks.hasFolder(installFolder));
 
         installComponent(components, installFolder, "encoderlib.jar");
         installComponent(components, installFolder, "wsdlextlib.jar");
@@ -192,6 +194,6 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1");
+        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1", LocalDate.of(2015, 2, 13), "CDDL-1.0");
     }
 }

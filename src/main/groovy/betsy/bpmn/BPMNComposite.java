@@ -14,8 +14,11 @@ import betsy.common.util.Progress;
 import betsy.tools.JsonMain;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.nio.file.Path;
+
+import static betsy.common.config.Configuration.get;
 
 public class BPMNComposite {
     private static final Logger LOGGER = Logger.getLogger(BPMNComposite.class);
@@ -45,9 +48,7 @@ public class BPMNComposite {
 
             // fail fast
             for (AbstractBPMNEngine engine : testSuite.getEngines()) {
-                if (engine.isRunning()) {
-                    throw new IllegalStateException("Engine " + engine.getName() + " is running");
-                }
+                checkRunning(engine);
             }
 
             for (AbstractBPMNEngine engine : testSuite.getEngines()) {
@@ -57,14 +58,28 @@ public class BPMNComposite {
 
                         progress.next();
                         MDC.put("progress", progress.toString());
-
-                        executeProcess(process);
+                        try{
+                            executeProcess(process);
+                        } catch (Exception e) {
+                            if(get("continue.on.exception").contains("true")){
+                                Throwable cleanedException = StackTraceUtils.deepSanitize(e);
+                                LOGGER.error("something went wrong during execution", cleanedException);
+                            }else{
+                                throw e;
+                            }
+                        }
                     }
                 });
             }
 
             createReports();
         });
+    }
+
+    protected void checkRunning(AbstractBPMNEngine engine) {
+        if (engine.isRunning()) {
+            throw new IllegalStateException("Engine " + engine.getName() + " is running");
+        }
     }
 
     protected void createReports() {

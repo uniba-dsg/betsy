@@ -60,8 +60,9 @@ public class EngineMain {
     private static void usage() {
         System.out.println("betsy engine ENGINE COMMAND");
         System.out.println("");
-        System.out.println("ENGINE: " + getEngines().stream().map(Object::toString).collect(Collectors.joining(", ")));
-        System.out.println("COMMAND: " + String.join(", ", commands.keySet()));
+        System.out.println("ENGINE: \n" + getEngines().stream().map(Object::toString).collect(Collectors.joining("\n")));
+        System.out.println();
+        System.out.println("COMMAND: \n" + String.join("\n", commands.keySet()));
     }
 
 }

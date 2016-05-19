@@ -8,6 +8,7 @@ import betsy.common.model.engine.Engine;
 import betsy.common.tasks.FileTasks;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "orchestra", "4.9");
+        return new Engine(ProcessLanguage.BPEL, "orchestra", "4.9", LocalDate.of(2012,1,23), "LGPL-2.1+");
     }
 
     public Tomcat getTomcat() {

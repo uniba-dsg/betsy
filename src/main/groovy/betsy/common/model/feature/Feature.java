@@ -4,12 +4,15 @@ import betsy.common.HasName;
 import betsy.common.model.HasID;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Feature implements HasID, HasName {
 
     public final Construct construct;
     public final String name;
     public final String description;
+
+    public final Optional<String> upperBound;
 
     public Feature(Construct construct, String name) {
         this(construct, name, "");
@@ -19,6 +22,14 @@ public class Feature implements HasID, HasName {
         this.construct = Objects.requireNonNull(construct);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
+        this.upperBound = Optional.empty();
+    }
+
+    public Feature(Construct construct, String name, String description, String upperBound) {
+        this.construct = Objects.requireNonNull(construct);
+        this.name = Objects.requireNonNull(name);
+        this.description = Objects.requireNonNull(description);
+        this.upperBound = Optional.of(upperBound);
     }
 
     @Override

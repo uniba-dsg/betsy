@@ -9,27 +9,34 @@ import betsy.common.analytics.Analyzer;
 import betsy.common.reporting.TestsEngineDependent;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
 import betsy.tools.JsonMain;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.nio.file.Path;
 
-public class BPELComposite {
-    private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
+import static betsy.common.config.Configuration.get;
 
-    public TestingAPI getTestingAPI() {
-        return testingAPI;
-    }
+public class BPELComposite {
+
+
+
+    private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
 
     private final TestingAPI testingAPI = new TestingAPI();
 
     private BPELTestSuite testSuite;
 
     private LogUtil logUtil;
+
+    public TestingAPI getTestingAPI() {
+        return testingAPI;
+    }
 
     private void log(String name, Runnable closure) {
         logUtil.log(name, LOGGER, closure);
@@ -53,9 +60,7 @@ public class BPELComposite {
 
             // fail fast
             for (AbstractBPELEngine engine : testSuite.getEngines()) {
-                if (engine.isRunning()) {
-                    throw new IllegalStateException("Engine " + engine + " is running");
-                }
+                checkIsRunning(engine);
             }
 
             for (AbstractBPELEngine engine : testSuite.getEngines()) {
@@ -66,17 +71,29 @@ public class BPELComposite {
 
                         progress.next();
                         MDC.put("progress", progress.toString());
-
-                        executeProcess(process);
+                        try {
+                            executeProcess(process);
+                        } catch (Exception e) {
+                            if(get("continue.on.exception").contains("true")){
+                                Throwable cleanedException = StackTraceUtils.deepSanitize(e);
+                                LOGGER.error("something went wrong during execution", cleanedException);
+                            }else{
+                                throw e;
+                            }
+                        }
                     }
 
                 });
             }
-
-
             createReports();
         });
 
+    }
+
+    protected void checkIsRunning(AbstractBPELEngine engine) {
+        if (engine.isRunning()) {
+            throw new IllegalStateException("Engine " + engine + " is running");
+        }
     }
 
     protected void createReports() {
@@ -127,8 +144,8 @@ public class BPELComposite {
                     testingAPI.startup();
                 } catch (Exception ignore) {
                     testingAPI.shutdown();
-                    LOGGER.debug("Address already in use - waiting 2 seconds to get available");
-                    WaitTasks.sleep(2000);
+                    LOGGER.debug("Address already in use - waiting " + TimeoutRepository.getTimeout("BPELCompositetest").getTimeoutInSeconds()+ " seconds to get available");
+                    WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.test").getTimeoutInMs());
                     testingAPI.startup();
                 }
                 testSoapUi(process);
@@ -145,7 +162,7 @@ public class BPELComposite {
     protected void testSoapUi(final BPELProcess process) {
         log(process.getTargetPath() + "/test_soapui", () -> IOCapture.captureIO(() ->
                 testingAPI.executeEngineDependentTest(process.getTargetSoapUIFilePath(), process.getTargetReportsPath())));
-        WaitTasks.sleep(500);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.testSoapUi").getTimeoutInMs());
     }
 
     protected void buildPackageAndTest(final BPELProcess process) {

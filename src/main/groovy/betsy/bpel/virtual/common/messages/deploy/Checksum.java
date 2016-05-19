@@ -14,28 +14,6 @@ import java.util.zip.CRC32;
 public class Checksum implements Serializable {
 
     /**
-     * Create a {@link Checksum} based on the given data.
-     *
-     * @param data used to calculate the checksum
-     * @return the calculated checksum
-     */
-    public static Checksum createChecksum(final byte... data) {
-        return new Checksum(data);
-    }
-
-    /**
-     * Check whether the given data does match the given checksum.
-     *
-     * @param data     will be used to calculate a new checksum
-     * @param checksum comparison reference, data must match this checksum
-     * @return true if data matches checksum, false if checksum belongs to
-     *         different data
-     */
-    public static boolean isValid(final byte[] data, Checksum checksum) {
-        return checksum.equals(new Checksum(data));
-    }
-
-    /**
      * SerialVersionUID.
      */
     private static final long serialVersionUID = 1L;
@@ -55,6 +33,28 @@ public class Checksum implements Serializable {
         CRC32 crc = new CRC32();
         crc.update(data);
         this.data = crc.getValue();
+    }
+
+    /**
+     * Create a {@link Checksum} based on the given data.
+     *
+     * @param data used to calculate the checksum
+     * @return the calculated checksum
+     */
+    public static Checksum createChecksum(final byte... data) {
+        return new Checksum(data);
+    }
+
+    /**
+     * Check whether the given data does match the given checksum.
+     *
+     * @param data     will be used to calculate a new checksum
+     * @param checksum comparison reference, data must match this checksum
+     * @return true if data matches checksum, false if checksum belongs to
+     *         different data
+     */
+    public static boolean isValid(final byte[] data, Checksum checksum) {
+        return checksum.equals(new Checksum(data));
     }
 
     @Override

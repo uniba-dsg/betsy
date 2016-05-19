@@ -7,14 +7,18 @@ import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 import betsy.common.tasks.*;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
+
+    public static final String CHECK_URL = "http://localhost:9763";
 
     @Override
     public Path getXsltPath() {
@@ -23,7 +27,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0");
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0", LocalDate.of(2013, 12, 6), "Apache-2.0");
     }
 
     @Override
@@ -52,10 +56,10 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
-        WaitTasks.sleep(2000);
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2_v3_1_0.startup.sleep").getTimeoutInMs());
 
         Path logFile = getLogsFolder().resolve("wso2carbon.log");
-        WaitTasks.waitFor(120_000, 500, () -> FileTasks.hasFile(logFile) && FileTasks.hasFileSpecificSubstring(logFile, "WSO2 Carbon started in "));
+        TimeoutRepository.getTimeout("Wso2_v3_1_0.startup").waitForSubstringInFile(getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
 
     public Path getLogsFolder() {
@@ -131,5 +135,4 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         return result;
     }
 
-    public static final String CHECK_URL = "http://localhost:9763";
 }

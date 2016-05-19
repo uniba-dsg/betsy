@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class IOCapture {
+    private static final Logger LOGGER = Logger.getLogger(IOCapture.class);
+
     public static void captureIO(Runnable closure) {
         //stdout
         ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
@@ -33,5 +35,4 @@ public class IOCapture {
         LOGGER.trace("System.err Output:\n\n" + bufErr);
     }
 
-    private static final Logger LOGGER = Logger.getLogger(IOCapture.class);
 }

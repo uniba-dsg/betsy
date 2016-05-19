@@ -5,6 +5,7 @@ import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.host.ServiceAddress;
 import betsy.bpel.virtual.host.comm.HostTcpClient;
 import betsy.common.tasks.WaitTasks;
+import betsy.common.timeouts.timeout.Timeout;
 
 import java.util.List;
 
@@ -21,18 +22,17 @@ public class ServiceValidator {
      * Check whether the {@link AbstractBPELEngine} is ready for usage.
      *
      * @param engineServices services to verify
-     * @param secondsToWait  maximum time to wait for the services to become available
+     * @param timeout  maximum time to wait for the services to become available
      * @return true if all services are ready, false if not
      */
     public static boolean isEngineReady(final List<ServiceAddress> engineServices,
-                                        final int secondsToWait) {
-
+                                        Timeout timeout) {
         //TODO how to handle wait if it never was true?
         for (ServiceAddress address : engineServices) {
             if (address.isRequiringHtmlContent()) {
-                WaitTasks.waitForContentInUrl(secondsToWait * 1000, 500, address.getAddress(), address.getRequiredHtmlContent());
+                timeout.waitForContentInUrl(address.getAddress(), address.getRequiredHtmlContent());
             } else {
-                WaitTasks.waitForAvailabilityOfUrl(secondsToWait * 1000, 500, address.getAddress());
+                timeout.waitForAvailabilityOfUrl(address.getAddress());
             }
         }
         return true;

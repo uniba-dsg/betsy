@@ -17,6 +17,8 @@ import java.util.stream.IntStream;
 
 class StaticAnalysisProcesses {
 
+    static List<EngineIndependentProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses();
+
     static List<EngineIndependentProcess> getStaticAnalysisProcesses() {
         Path path = Paths.get("src/main/tests/files/bpel/sa-rules");
         if (!Files.exists(path)) {
@@ -95,5 +97,4 @@ class StaticAnalysisProcesses {
         }
     }
 
-    static List<EngineIndependentProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses();
 }

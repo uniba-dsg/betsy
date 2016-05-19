@@ -13,6 +13,7 @@ public class TomcatInstaller {
     private final Path destinationDir;
     private final String fileName;
     private final String tomcatName;
+    private String additionalVmParam = "";
 
     public TomcatInstaller(Path destinationDir, String fileName, String tomcatName) {
         this.destinationDir = destinationDir;
@@ -27,8 +28,6 @@ public class TomcatInstaller {
     public static TomcatInstaller v5(Path parentFolder) {
         return new TomcatInstaller(parentFolder, "apache-tomcat-5.5.36.zip", "apache-tomcat-5.5.36");
     }
-
-    private String additionalVmParam = "";
 
     public void install() {
         NetworkTasks.downloadFileFromBetsyRepo(fileName);

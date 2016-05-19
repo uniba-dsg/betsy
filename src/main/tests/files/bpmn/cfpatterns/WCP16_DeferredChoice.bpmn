@@ -87,7 +87,7 @@
 
         <bpmn2:intermediateThrowEvent id="IntermediateThrowEvent_Signal_task2">
             <bpmn2:incoming>ExclusiveGateway_to_IntermediateThrowEvent_Signal_task2</bpmn2:incoming>
-            <bpmn2:outgoing>IntermediateThrowEvent_Signal_task2_to_EndEvent_Signal_task2</bpmn2:outgoing>
+            <bpmn2:outgoing>IntermediateThrowEvent_Signal_task2_to_ScriptTask4</bpmn2:outgoing>
             <bpmn2:signalEventDefinition id="SignalEventDefinition_Signal_task2" signalRef="Signal_task2"/>
         </bpmn2:intermediateThrowEvent>
 

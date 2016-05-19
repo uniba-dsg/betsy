@@ -20,6 +20,7 @@ import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
+import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 
 import java.awt.*;
 import java.io.IOException;
@@ -97,6 +98,10 @@ public class BPELMain {
         if (shouldShutdownSoapUi) {
             SoapUIShutdownHelper.shutdownSoapUIForReal();
         }
+
+        if(params.saveTimeouts()){
+            CalibrationTimeoutRepository.writeToCSV();
+        }
     }
 
     public static void shutdownSoapUiAfterCompletion(boolean shouldShutdown) {
@@ -142,12 +147,37 @@ public class BPELMain {
             });
         } else {
 
+
             if (params.keepEngineRunning() && params.useInstalledEngine()) {
                 betsy.setComposite(new BPELComposite() {
 
                     @Override
                     protected void shutdown(BPELProcess process) {
                         // is already installed - use existing installation
+                    }
+
+                    @Override
+                    protected void install(BPELProcess process) {
+                        // is already installed - use existing installation
+                    }
+
+                });
+            } else if (params.keepEngineRunning() && params.useRunningEngine()) {
+                betsy.setComposite(new BPELComposite() {
+
+                    @Override
+                    protected void checkIsRunning(AbstractBPELEngine engine) {
+                        // no checks
+                    }
+
+                    @Override
+                    protected void startup(BPELProcess process) {
+                        // already running
+                    }
+
+                    @Override
+                    protected void shutdown(BPELProcess process) {
+                        // not required
                     }
 
                     @Override
