@@ -98,7 +98,7 @@ public class Timeouts {
 
     private void addTimeouts() {
         timeouts.add(new Timeout("Tomcat.startup", 30_000, 500));
-        timeouts.add(new Timeout("fileTasks.deleteDirectory", 5_000, Timeout.Category.UNMEASURABLE));
+        timeouts.add(new Timeout("FileTasks.deleteDirectory", 5_000, Timeout.Category.UNMEASURABLE));
 
         //Virtual engines
         timeouts.add(new Timeout("active_bpel_v.service", 30_000, 500));
@@ -151,7 +151,7 @@ public class Timeouts {
         timeouts.add(new Timeout("ActiveBpel.deploy", 100_000, 500));
         timeouts.add(new Timeout("Bpelg.deploy", 100_000, 500));
         timeouts.add(new Timeout("Ode.deploy", 30_000, 500));
-        timeouts.add(new Timeout("OpenEsb30x.installComponent", 10_000, 500));
+        timeouts.add(new Timeout("OpenEsb30x.installComponent", 15_000, 500));
         timeouts.add(new Timeout("OpenEsb30x.startup.waitForUrl", 10_000, 500));
         timeouts.add(new Timeout("OpenEsb30x.startup.waitForStart", 10_000, 500));
         timeouts.add(new Timeout("OpenEsb.startup", 15_000, 500));
