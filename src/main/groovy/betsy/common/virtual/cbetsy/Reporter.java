@@ -33,7 +33,7 @@ public class Reporter {
      * @param timeout                 The duration of the timeout calibration.
      * @param execution               The duration of the test execution.
      */
-    public static void createReport(WorkerTemplateGenerator workerTemplateGenerator, long build, long resource, long timeout, long execution) {
+    public static void createReport(WorkerTemplateGenerator workerTemplateGenerator, long build, long betsy, long engines, long resource, long timeout, long execution, long total) {
         HashMap<String, Boolean> results = new HashMap<>();
         ArrayList<String> paths = new ArrayList<>();
         scanForFiles(Paths.get("results"), "results.csv", paths).forEach(e -> {
@@ -49,9 +49,12 @@ public class Reporter {
         FileTasks.copyFileContentsToNewFile(htmlFile, resultFile);
         Map<String, Object> replacements = new HashMap<>();
         replacements.put("@BUILD@", build / 1000);
+        replacements.put("@BETSY@", betsy / 1000);
+        replacements.put("@ENGINES@", engines / 1000);
         replacements.put("@RESOURCE@", resource / 1000);
         replacements.put("@TIMEOUT@", timeout / 1000);
         replacements.put("@EXECUTION@", execution / 1000);
+        replacements.put("@TOTAL@", total / 1000);
         String[] bpel = createTable(workerTemplateGenerator.getBPELEngines(), workerTemplateGenerator.getBPELProcesses(), results);
         replacements.put("@BPEL@", bpel[0]);
         replacements.put("@BPELSUCCESSFUL@", bpel[1]);

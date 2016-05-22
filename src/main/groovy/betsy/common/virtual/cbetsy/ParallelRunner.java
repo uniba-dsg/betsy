@@ -22,6 +22,9 @@ import static betsy.common.config.Configuration.get;
 public class ParallelRunner {
 
     private static final Logger LOGGER = Logger.getLogger(ParallelRunner.class);
+    private static long startBetsy = 0;
+    private static long endBetsy = 0;
+    private static long endEngines = 0;
 
     /**
      * The main method the execute the parallel execution.
@@ -57,7 +60,8 @@ public class ParallelRunner {
             Aggregator aggregator = new Aggregator(dockerMachine, containers);
             aggregator.start();
 
-            Reporter.createReport(workerTemplateGenerator, build-start, resources-build, timeout-resources, execution-timeout);
+            long end = System.currentTimeMillis();
+            Reporter.createReport(workerTemplateGenerator, build-start, endBetsy-startBetsy, endEngines-endBetsy,  resources-build, timeout-resources, execution-timeout, end-start);
         }
     }
 
@@ -80,8 +84,11 @@ public class ParallelRunner {
             LOGGER.info("The dockerMachine " + dockerMachine.getName() + " have to be started.");
             System.exit(0);
         } else {
+            startBetsy = System.currentTimeMillis();
             Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+            endBetsy = System.currentTimeMillis();
             engines.forEach(e -> Images.buildEngine(dockerMachine, Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));
+            endEngines = System.currentTimeMillis();
         }
         return dockerMachine;
     }
