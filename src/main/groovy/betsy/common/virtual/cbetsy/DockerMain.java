@@ -1,7 +1,6 @@
 package betsy.common.virtual.cbetsy;
 
 import betsy.common.virtual.calibration.Calibrator;
-import betsy.common.virtual.swarm.MainSwarm;
 
 /**
  * @author Christoph Broeker
@@ -20,8 +19,6 @@ public class DockerMain {
                 ParallelRunner.main(createArgsWithoutFirstValue(args));
             } else if ("calibrate".equalsIgnoreCase(args[0])) {
                 Calibrator.main(createArgsWithoutFirstValue(args));
-            } else if ("swarm".equalsIgnoreCase(args[0])) {
-                MainSwarm.main(createArgsWithoutFirstValue(args));
             } else if ("teardown".equalsIgnoreCase(args[0])) {
                 Teardown.main(createArgsWithoutFirstValue(args));
             } else {
