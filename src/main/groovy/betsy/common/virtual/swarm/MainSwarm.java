@@ -1,6 +1,7 @@
 package betsy.common.virtual.swarm;
 
-import betsy.common.virtual.cbetsy.Teardown;
+import betsy.common.virtual.swarm.client.Client;
+import betsy.common.virtual.swarm.host.Host;
 
 /**
  * @author Christoph Broeker
@@ -20,7 +21,6 @@ public class MainSwarm {
                 new Host().start(createArgsWithoutFirstValue(args));
             } else if ("client".equalsIgnoreCase(args[0])) {
                 new Client().start(createArgsWithoutFirstValue(args));
-             Teardown.main(createArgsWithoutFirstValue(args));
             } else {
                 printUsage();
             }

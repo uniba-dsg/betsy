@@ -1,6 +1,6 @@
 package betsy.common.virtual.cbetsy;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import java.io.Serializable;
 
 /**
  * @author Christoph Broeker
@@ -9,16 +9,16 @@ import betsy.common.model.input.EngineIndependentProcess;
  * This class represents a WorkerTemplate with the information to start a {@link Worker}.
  *
  */
-public class WorkerTemplate {
+public class WorkerTemplate implements Serializable {
 
-    private final EngineIndependentProcess process;
+    private final String process;
     private final DockerEngine dockerEngine;
 
     /**
      *  @param process The process to execute.
      * @param dockerEngine The engine to test.
      */
-    public WorkerTemplate(EngineIndependentProcess process, DockerEngine dockerEngine){
+    public WorkerTemplate(String process, DockerEngine dockerEngine){
         this.process = process;
         this.dockerEngine = dockerEngine;
     }
@@ -29,7 +29,7 @@ public class WorkerTemplate {
      *
      * @return The {@link Process} to execute.
      */
-    public EngineIndependentProcess getProcess() {
+    public String getProcess() {
         return process;
     }
 
@@ -50,7 +50,7 @@ public class WorkerTemplate {
             cmds[0] = "bpmn";
         }
         cmds[1] = dockerEngine.getName();
-        cmds[2] = process.getName();
+        cmds[2] = process;
         return  cmds;
     }
 
@@ -63,7 +63,7 @@ public class WorkerTemplate {
     public String getID() {
         StringBuilder builder = new StringBuilder();
         builder.append(dockerEngine.getName().replace("_", ""));
-        builder.append(process.getName().replace("_", ""));
+        builder.append(process.replace("_", ""));
         return builder.toString();
     }
 

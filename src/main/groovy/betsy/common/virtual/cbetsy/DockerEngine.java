@@ -1,5 +1,6 @@
 package betsy.common.virtual.cbetsy;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Objects;
  * @version 1.0
  *          This class represents an engine.
  */
-public class DockerEngine {
+public class DockerEngine implements Serializable {
 
     private final String name;
     private final TypeOfEngine typeOfEngine;

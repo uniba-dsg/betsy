@@ -54,7 +54,7 @@ public class WorkerTest {
         when(process.getName()).thenReturn("sequence");
         DockerEngine dockerEngine = new DockerEngine("ode__1_3_5", DockerEngine.TypeOfEngine.BPEL);
 
-        Worker worker = new Worker(dockerMachine, new WorkerTemplate(process, dockerEngine), 2000, 100);
+        Worker worker = new Worker(dockerMachine, new WorkerTemplate(process.getName(), dockerEngine), 2000, 100);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<Container> container = executor.submit(worker);
         Container containerResult = container.get();

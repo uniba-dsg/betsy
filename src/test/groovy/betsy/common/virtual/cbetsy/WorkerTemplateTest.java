@@ -1,8 +1,6 @@
 package betsy.common.virtual.cbetsy;
 
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.virtual.cbetsy.DockerEngine;
-import betsy.common.virtual.cbetsy.WorkerTemplate;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Test;
 
@@ -20,7 +18,7 @@ public class WorkerTemplateTest {
         BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
         List<EngineIndependentProcess> processes = repository.getByName("MINIMAL");
         DockerEngine engine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
-        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engine);
+        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
         assertEquals("The processes should be equal.", processes.get(0), workerTemplate.getProcess());
         assertEquals("The engines should be equal.", engine, workerTemplate.getDockerEngine());
     }
@@ -30,7 +28,7 @@ public class WorkerTemplateTest {
         BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
         List<EngineIndependentProcess> processes = repository.getByName("MINIMAL");
         DockerEngine engine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
-        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engine);
+        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
         assertEquals("The processes should be equal.", processes.get(0), workerTemplate.getProcess());
 
     }
@@ -42,7 +40,7 @@ public class WorkerTemplateTest {
         String name = "test";
         DockerEngine engine = new DockerEngine(name, DockerEngine.TypeOfEngine.BPEL);
 
-        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engine);
+        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
         String cmd = "bpel" + engine.getName() + processes.get(0).getName();
         assertEquals("The commands should be the same.", cmd, workerTemplate.getCmd()[0] + workerTemplate.getCmd()[1] + workerTemplate.getCmd()[2]);
     }
@@ -52,7 +50,7 @@ public class WorkerTemplateTest {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
         List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         DockerEngine engine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPMN);
-        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engine);
+        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
         String cmd = "bpmn" + engine.getName() + processes.get(0).getName();
         assertEquals("The commands should be the same.", cmd, workerTemplate.getCmd()[0] + workerTemplate.getCmd()[1] + workerTemplate.getCmd()[2]);
     }
@@ -62,7 +60,7 @@ public class WorkerTemplateTest {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
         List<EngineIndependentProcess> processes = processRepository.getByName("MINIMAL");
         DockerEngine engine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPMN);
-        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0), engine);
+        WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
         String id = engine.getName().replace("_", "") + processes.get(0).getName().replace("_", "");
         assertEquals("The id should be the same.", id, workerTemplate.getID());
     }

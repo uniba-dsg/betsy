@@ -76,7 +76,7 @@ public class Measurement {
 
                 //Calculate container configuration
                 int number = Measurement.calculateContainerNumber(resourceConfiguration, engine.getMemory());
-                if(number <= 0){
+                if (number <= 0) {
                     LOGGER.info("The system has not enough memory for this engines.");
                     return false;
                 }
@@ -200,8 +200,8 @@ public class Measurement {
      */
     private static int measureHDDSpeed(Path filePath, long size) {
         Objects.requireNonNull(filePath, "The filePath can't be null.");
-        Double writeSpeed = testWriteSpeed(filePath, size) / 10;
-        Double readSpeed = testReadSpeed(filePath, size) / 10;
+        Double writeSpeed = testWriteSpeed(filePath, size);
+        Double readSpeed = testReadSpeed(filePath, size);
         if (writeSpeed > readSpeed) {
             filePath.toFile().delete();
             return readSpeed.intValue();
@@ -288,26 +288,34 @@ public class Measurement {
      * @return The resourceConfiguration of the system.
      */
     public static ResourceConfiguration measureResources() {
-        ProcessBuilder builder = new ProcessBuilder("free");
-        Process process = null;
-        try {
-            process = builder.start();
-        } catch (IOException e) {
-            LOGGER.info("Cant' read free memory.");
-        }
-        Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
-        int freeMemory = 0;
-        while (scanner.hasNextLine()) {
-            String nextLine = scanner.nextLine();
-            if (nextLine.contains("Speicher")) {
-                String[] parts = nextLine.split("\\s+");
-                freeMemory = new Integer(parts[1]) - new Integer(parts[2]);
+        int freeMemory;
+        int hdd;
+
+        if (System.getProperty("os.name").contains("Windows")) {
+            hdd = Measurement.measureHDDSpeed(docker.resolve("hdd_test.txt"), 1000);
+            freeMemory = Integer.valueOf(get("dockermachine.run.ram"));
+        } else {
+            ProcessBuilder builder = new ProcessBuilder("free");
+            Process process = null;
+            try {
+                process = builder.start();
+            } catch (IOException e) {
+                LOGGER.info("Cant' read free memory.");
             }
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
+            freeMemory = 0;
+            while (scanner.hasNextLine()) {
+                String nextLine = scanner.nextLine();
+                if (nextLine.contains("Speicher")) {
+                    String[] parts = nextLine.split("\\s+");
+                    freeMemory = (new Integer(parts[1]) - new Integer(parts[2])) / 1000;
+                }
+            }
+            LOGGER.info("Free memory: " + freeMemory  + "mb");
+            hdd = (Measurement.measureHDDSpeed(docker.resolve("hdd_test.txt"), 1000)) / 10;
+            LOGGER.info("HDD speed: " + hdd + "mb/s");
         }
-        LOGGER.info("Free memory: " + freeMemory / 1000 + "mb");
-        int hdd = Measurement.measureHDDSpeed(docker.resolve("hdd_test.txt"), 1000);
-        LOGGER.info("HDD speed: " + hdd + "mb/s");
-        return new ResourceConfiguration(freeMemory / 1000, hdd);
+        return new ResourceConfiguration(freeMemory , hdd);
     }
 
 

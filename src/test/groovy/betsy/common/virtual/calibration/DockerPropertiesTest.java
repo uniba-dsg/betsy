@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Christoph Broeker
@@ -34,7 +33,7 @@ public class DockerPropertiesTest {
         dockerEngine.setMemory(500);
 
         EngineIndependentProcess process = Mockito.mock(EngineIndependentProcess.class);
-        WorkerTemplate workerTemplate = new WorkerTemplate(process, dockerEngine);
+        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
         ArrayList<WorkerTemplate> workerTemplates = new ArrayList<>();
         workerTemplates.add(workerTemplate);
         workerTemplates = DockerProperties.readWorkerTemplates(path, workerTemplates);

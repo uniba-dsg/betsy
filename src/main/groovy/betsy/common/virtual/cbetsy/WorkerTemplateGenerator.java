@@ -52,7 +52,7 @@ public class WorkerTemplateGenerator {
                     for (EngineIndependentProcess process : bpelParams.getProcesses()) {
                         processes.add(process.getName());
                         bpelProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process, dockerEngine);
+                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }
@@ -65,7 +65,7 @@ public class WorkerTemplateGenerator {
                     for (EngineIndependentProcess process : bpmnParams.getProcesses()) {
                         processes.add(process.getName());
                         bpmnProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process, dockerEngine);
+                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }
@@ -79,7 +79,7 @@ public class WorkerTemplateGenerator {
                     for (EngineIndependentProcess process : params.getProcesses()) {
                         processes.add(process.getName());
                         bpelProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process, dockerEngine);
+                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }
@@ -93,13 +93,16 @@ public class WorkerTemplateGenerator {
                     for (EngineIndependentProcess process : params.getProcesses()) {
                         processes.add(process.getName());
                         bpmnProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process, dockerEngine);
+                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }
+            }else{
+                printUsage();
             }
-        }
+        }else{
             printUsage();
+        }
     }
 
     /**
