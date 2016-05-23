@@ -23,7 +23,7 @@ public class SpawnerTest {
     @Test
     public void start() throws Exception {
         Path docker = Paths.get(get("docker.dir"));
-        Path images = docker.resolve("images");
+        Path images = docker.resolve("image");
 
         DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
         java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));

@@ -22,31 +22,53 @@ import static org.junit.Assert.*;
  * @version 1.0
  */
 public class MeasurementTest {
-    @Test
-    public void calibrateTimeouts() throws Exception {
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-        ResourceConfiguration resourceConfiguration = new ResourceConfiguration(2000, 100);
-        WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
-        assertTrue("The method returns true, if the calibration was successful.", Measurement.calibrateTimeouts(workerTemplateGenerator.getEnginesWithValues(), dockerMachine, resourceConfiguration));
-        DockerMachines.remove(dockerMachine);
-    }
+    private Path docker = Paths.get(get("docker.dir"));
+    private Path images = docker.resolve("image");
 
     @Test
-    public void measureMemoriesAndTimes() throws Exception {
-        Path docker = Paths.get(get("docker.dir"));
-        Path images = docker.resolve("images");
+    public void calibrateTimeouts() throws Exception {
         DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
         java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
         boolean betsyImageWasCreated = true;
         if (!betsyImage.isPresent()) {
             betsyImageWasCreated = false;
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+            betsyImage = java.util.Optional.ofNullable(Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy"));
         }
-        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode135"));
+        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode136"));
         boolean engineImageWasCreated = true;
+
         if (!engineImage.isPresent()) {
             engineImageWasCreated = false;
-            Images.buildEngine(dockerMachine, images.resolve("engine").toAbsolutePath(), "ode__1_3_5");
+            engineImage = java.util.Optional.ofNullable(Images.buildEngine(dockerMachine, images.resolve("engine").toAbsolutePath(), "ode__1_3_6"));
+        }
+        ResourceConfiguration resourceConfiguration = new ResourceConfiguration(2000, 100);
+        WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
+        assertTrue("The method returns true, if the calibration was successful.", Measurement.calibrateTimeouts(workerTemplateGenerator.getEnginesWithValues(), dockerMachine, resourceConfiguration));
+        if (engineImage.isPresent() && !engineImageWasCreated) {
+            Images.remove(dockerMachine, engineImage.get());
+        }
+
+        if (betsyImage.isPresent() && !betsyImageWasCreated) {
+            Images.remove(dockerMachine, betsyImage.get());
+        }
+        DockerMachines.remove(dockerMachine);
+    }
+
+    @Test
+    public void measureMemoriesAndTimes() throws Exception {
+        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasCreated = true;
+        if (!betsyImage.isPresent()) {
+            betsyImageWasCreated = false;
+            betsyImage = java.util.Optional.ofNullable(Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy"));
+        }
+        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode136"));
+        boolean engineImageWasCreated = true;
+
+        if (!engineImage.isPresent()) {
+            engineImageWasCreated = false;
+            engineImage = java.util.Optional.ofNullable(Images.buildEngine(dockerMachine, images.resolve("engine").toAbsolutePath(), "ode__1_3_6"));
         }
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
         Measurement.measureMemoriesAndTimes(dockerMachine, workerTemplateGenerator.getEngines());

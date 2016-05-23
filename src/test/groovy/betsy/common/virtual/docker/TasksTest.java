@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -21,6 +22,9 @@ import static org.junit.Assert.assertTrue;
 public class TasksTest {
 
     private DockerMachine dockerMachine;
+    private Path docker = Paths.get(get("docker.dir"));
+    private Path images = docker.resolve("image");
+
 
     @Before
     public void setUp() throws Exception {
@@ -54,6 +58,7 @@ public class TasksTest {
             Tasks.doDockerMachineTask("create", "--driver", "virtualbox", nameOfTheMachine);
             HashMap<String, DockerMachine> dockerMachines = DockerMachines.getAll();
             assertEquals("The names should be equal.", nameOfTheMachine, dockerMachines.get(nameOfTheMachine).getName());
+
             DockerMachines.remove(DockerMachines.getAll().get(nameOfTheMachine));
         }
     }
@@ -92,17 +97,19 @@ public class TasksTest {
         java.util.Optional<Image> image = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("test"));
         if (!image.isPresent()) {
             int size = Images.getAll(dockerMachine).size();
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), name);
+            Image betsy = Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), name);
             assertEquals("The values have to be equal.", ++size, Images.getAll(dockerMachine).size());
-            Images.remove(dockerMachine, Images.getAll(dockerMachine).get(name));
+            Images.remove(dockerMachine, betsy);
         }
     }
 
     @Test
     public void doEngineImageTask() throws Exception {
         java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasBuild = true;
         if (!betsyImage.isPresent()) {
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+            betsyImageWasBuild = false;
+            Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy");
         }
         java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode135"));
         boolean engineImageWasCreated = false;
@@ -112,11 +119,18 @@ public class TasksTest {
         }
 
         int size = Images.getAll(dockerMachine).size();
-        Images.buildEngine(dockerMachine, Paths.get("docker/image/engine"), "ode__1_3_5");
+        Images.buildEngine(dockerMachine, images.resolve("engine"), "ode__1_3_5");
         assertEquals("The values should be equal.", ++size, Images.getAll(dockerMachine).size());
         engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode135"));
         if (engineImage.isPresent() && !engineImageWasCreated) {
             Images.remove(dockerMachine, engineImage.get());
+        }
+        if (betsyImage.isPresent() && !betsyImageWasBuild) {
+            Images.remove(dockerMachine, betsyImage.get());
+            java.util.Optional<Image> ubuntuImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ubuntu"));
+            if (ubuntuImage.isPresent()) {
+                Images.remove(dockerMachine, ubuntuImage.get());
+            }
         }
     }
 
@@ -126,7 +140,7 @@ public class TasksTest {
         boolean betsyImageWasBuild = true;
         if (!betsyImage.isPresent()) {
             betsyImageWasBuild = false;
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+            Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy");
         }
 
         java.util.Optional<Container> betsyContainer = java.util.Optional.ofNullable(Containers.getAll(dockerMachine).get("betsy"));
@@ -148,6 +162,10 @@ public class TasksTest {
         }
         if (betsyImage.isPresent() && !betsyImageWasBuild) {
             Images.remove(dockerMachine, betsyImage.get());
+            java.util.Optional<Image> ubuntuImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ubuntu"));
+            if (ubuntuImage.isPresent()) {
+                Images.remove(dockerMachine, ubuntuImage.get());
+            }
         }
     }
 
@@ -157,9 +175,8 @@ public class TasksTest {
         boolean betsyImageWasBuild = true;
         if (!betsyImage.isPresent()) {
             betsyImageWasBuild = false;
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+            Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy");
         }
-
         java.util.Optional<Container> betsyContainer = java.util.Optional.ofNullable(Containers.getAll(dockerMachine).get("betsy"));
         if (betsyContainer.isPresent()) {
             Containers.remove(dockerMachine, betsyContainer.get());
@@ -175,11 +192,16 @@ public class TasksTest {
         WaitTasks.sleep(500);
         assertEquals("The values have to be equal.", ++size, Containers.getAll(dockerMachine).size());
 
+        betsyContainer = java.util.Optional.ofNullable(Containers.getAll(dockerMachine).get("betsy"));
         if (betsyContainer.isPresent()) {
             Containers.remove(dockerMachine, betsyContainer.get());
         }
         if (betsyImage.isPresent() && !betsyImageWasBuild) {
             Images.remove(dockerMachine, betsyImage.get());
+            java.util.Optional<Image> ubuntuImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ubuntu"));
+            if (ubuntuImage.isPresent()) {
+                Images.remove(dockerMachine, ubuntuImage.get());
+            }
         }
     }
 

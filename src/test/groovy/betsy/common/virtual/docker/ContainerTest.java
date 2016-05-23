@@ -26,12 +26,16 @@ public class ContainerTest {
 
     @AfterClass
     public static void setUpAfterClass() throws Exception {
+        java.util.Optional<Image> ubuntu = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ubuntu"));
+        if (ubuntu.isPresent()) {
+            Images.remove(dockerMachine, ubuntu.get());
+        }
         DockerMachines.remove(dockerMachine);
     }
 
     @Before
     public void setUp() throws Exception {
-        container = Containers.create(dockerMachine,"test", "ubuntu", "sleep", "180");
+        container = Containers.create(dockerMachine,"test", "ubuntu", "sleep", "60");
     }
 
     @After

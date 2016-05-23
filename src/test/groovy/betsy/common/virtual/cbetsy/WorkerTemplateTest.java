@@ -19,7 +19,7 @@ public class WorkerTemplateTest {
         List<EngineIndependentProcess> processes = repository.getByName("MINIMAL");
         DockerEngine engine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
-        assertEquals("The processes should be equal.", processes.get(0), workerTemplate.getProcess());
+        assertEquals("The processes should be equal.", processes.get(0).getName(), workerTemplate.getProcess());
         assertEquals("The engines should be equal.", engine, workerTemplate.getDockerEngine());
     }
 
@@ -29,7 +29,7 @@ public class WorkerTemplateTest {
         List<EngineIndependentProcess> processes = repository.getByName("MINIMAL");
         DockerEngine engine = new DockerEngine("test", DockerEngine.TypeOfEngine.BPEL);
         WorkerTemplate workerTemplate = new WorkerTemplate(processes.get(0).getName(), engine);
-        assertEquals("The processes should be equal.", processes.get(0), workerTemplate.getProcess());
+        assertEquals("The processes should be equal.", processes.get(0).getName(), workerTemplate.getProcess());
 
     }
 
