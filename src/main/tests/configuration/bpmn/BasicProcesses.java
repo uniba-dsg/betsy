@@ -13,23 +13,25 @@ public class BasicProcesses {
     public static final EngineIndependentProcess LANES = BPMNProcessBuilder.buildBasicProcess(
             "Lanes", "A collaboration with a single participant with two lanes. Lanes have no effect on the " +
                     "execution and should be ignored.",
-            new Feature(new Construct(Groups.BASICS, "Lanes"), "Lanes"),
+            new Feature(new Construct(Groups.BASICS, "Lanes", "A Lane is a sub-partition within a Process to organize and categorize Activities."), "Lanes"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3()
     );
 
     public static final EngineIndependentProcess PARTICIPANT = BPMNProcessBuilder.buildBasicProcess(
             "Participant", "A collaboration with a single participant",
-            new Feature(new Construct(Groups.BASICS, "Participant"), "Participant"),
+            new Feature(new Construct(Groups.BASICS, "Participant", "A Participant, depicted as a Pool in a BPMN diagram, represents a specific PartnerEntity (e.g., a company) "
+                    + "and/or a more general PartnerRole (e.g., a buyer, seller, or manufacturer) that are participating in a Collaboration (see BPMN spec, p.113)."), "Participant"),
             new BPMNTestCase().assertTask1()
     );
 
     public static final EngineIndependentProcess SEQUENCE_FLOW = BPMNProcessBuilder.buildBasicProcess(
             "SequenceFlow", "A process with two scriptTasks connected by a sequenceFlow",
-            new Feature(new Construct(Groups.BASICS, "SequenceFlow"), "SequenceFlow"),
+            new Feature(new Construct(Groups.BASICS, "SequenceFlow", "A SequenceFlow is used to define the order between elements in a Process."), "SequenceFlow"),
             new BPMNTestCase().assertTask1()
     );
 
-    public static final Construct CONSTRUCT_SEQUENCE_FLOW_CONDITIONAL = new Construct(Groups.BASICS, "SequenceFlow_Conditional");
+    public static final Construct CONSTRUCT_SEQUENCE_FLOW_CONDITIONAL = new Construct(Groups.BASICS, "SequenceFlow_Conditional",
+            "A conditional SequenceFlow is a SequenceFlow with an affixed condition.");
     public static final EngineIndependentProcess SEQUENCE_FLOW_CONDITIONAL = BPMNProcessBuilder.buildBasicProcess(
             "SequenceFlow_Conditional", "A process with three scriptTasks connected by sequenceFlows. " +
                     "The first scriptTask points to the other tasks with sequenceFlows. " +
