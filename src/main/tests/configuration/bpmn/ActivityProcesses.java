@@ -80,40 +80,40 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2());
 
     public static final EngineIndependentProcess MULTI_INSTANCE_NONE_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess("MultiInstance_NoneBehavior",
-            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to none." +
+            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to 'none'. " +
                     "The task has a signal boundary event attached that points to another script task. The event should be thrown for every task execution",
             new Feature(CONSTRUCT_MULTI_INSTANCE_TASK, "MultiInstance_NoneBehavior"),
             new BPMNTestCase().assertTask1().assertTask3().assertTask1().assertTask3().assertTask1().assertTask3().assertTask2());
 
     public static final EngineIndependentProcess MULTI_INSTANCE_ONE_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess("MultiInstance_OneBehavior",
-            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to one." +
+            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to 'one'. " +
                     "The task has a signal boundary event attached that points to another script task. The event should be thrown once.",
             new Feature(CONSTRUCT_MULTI_INSTANCE_TASK, "MultiInstance_OneBehavior"),
             new BPMNTestCase().assertTask1().assertTask3().assertTask1().assertTask1().assertTask2());
 
     public static final EngineIndependentProcess MULTI_INSTANCE_ALL_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess("MultiInstance_AllBehavior",
-            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to all." +
+            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to 'all'. " +
                     "The task has a signal boundary event attached that points to another script task. The event should never be thrown.",
             new Feature(CONSTRUCT_MULTI_INSTANCE_TASK, "MultiInstance_AllBehavior"),
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2());
 
     public static final EngineIndependentProcess MULTI_INSTANCE_COMPLEX_BEHAVIOR = BPMNProcessBuilder.buildActivityProcess("MultiInstance_ComplexBehavior",
-            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to 'complex'." +
-                    "The task has a signal boundary event attached that points to another script task which is triggered upon completion of the first instance."
+            "A scriptTask that is marked as a sequential multiInstance task and is enabled three times and its behavior set to 'complex'. " +
+                    "The task has a signal boundary event attached that points to another script task which is triggered upon completion of the first instance. "
                     + "All remaining instances are canceled.",
             new Feature(CONSTRUCT_MULTI_INSTANCE_TASK, "MultiInstance_ComplexBehavior"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
     public static final EngineIndependentProcess MULTI_INSTANCE_PARALLEL = BPMNProcessBuilder.buildActivityProcess("MultiInstance_Parallel",
-            "A scriptTask that is marked as a parallel multiInstance task and is enabled three times",
+            "A scriptTask that is marked as a parallel multiInstance task and is enabled three times.",
             new Feature(CONSTRUCT_MULTI_INSTANCE_TASK, "MultiInstance_Parallel"),
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2());
 
     public static final EngineIndependentProcess LOOP_SUBPROCESS = BPMNProcessBuilder.buildActivityProcess("Loop_SubProcess",
-            "A subProcess with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3."
-                    + "Each time the subProcess is executed a scripttask logs 'INCREMENT'."
+            "A subProcess with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3. "
+                    + "Each time the subProcess is executed a scripttask logs 'INCREMENT'. "
                     + "The default for the attribute 'testBefore' is used, which is 'false', i.e., the loopCondition is "
-                    + "evaluated after the execution (do-while semantics)."
+                    + "evaluated after the execution (do-while semantics). "
                     + "After the looped task 'task2' is executed once.",
             new Feature(CONSTRUCT_LOOP_TASK, "Loop_SubProcess"),
             new BPMNTestCase().setIntegerVariable(3).assertIncrement().assertTask1(), new BPMNTestCase().setIntegerVariable(1).assertIncrement().assertIncrement().assertTask1(), new BPMNTestCase().setIntegerVariable(0).assertIncrement().assertIncrement().assertIncrement().assertTask1());
@@ -122,16 +122,16 @@ class ActivityProcesses {
             "A scriptTask with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3."
                     + "Each time the task is executed 'INCREMENT' is logged. "
                     + "The default for the attribute 'testBefore' is used, which is 'false', i.e., the loopCondition is "
-                    + "evaluated after the execution (do-while semantics)."
+                    + "evaluated after the execution (do-while semantics). "
                     + "After the looped task 'task2' is executed once.",
             new Feature(CONSTRUCT_LOOP_TASK, "Loop_Task"),
             new BPMNTestCase().setIntegerVariable(3).assertIncrement().assertTask2(), new BPMNTestCase().setIntegerVariable(1).assertIncrement().assertIncrement().assertTask2(), new BPMNTestCase().setIntegerVariable(0).assertIncrement().assertIncrement().assertIncrement().assertTask2());
 
     public static final EngineIndependentProcess LOOP_CONDITION_ONLY = BPMNProcessBuilder.buildActivityProcess("Loop_ConditionOnly",
-            "A scriptTask with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3."
+            "A scriptTask with standardLoopCharacteristics which should be looped as long as 'integerVariable' is less than 3. "
                     + "Each time the task is executed 'INCREMENT' is logged. "
                     + "The default for the attribute 'testBefore' is used, which is 'false', i.e., the loopCondition is "
-                    + "evaluated after the execution (do-while semantics)."
+                    + "evaluated after the execution (do-while semantics). "
                     + "After the looped task 'task2' is executed once.",
             new Feature(CONSTRUCT_LOOP_TASK, "Loop_ConditionOnly"),
             new BPMNTestCase().setIntegerVariable(3).assertIncrement().assertTask2(), new BPMNTestCase().setIntegerVariable(1).assertIncrement().assertIncrement().assertTask2(), new BPMNTestCase().setIntegerVariable(0).assertIncrement().assertIncrement().assertIncrement().assertTask2());
@@ -179,40 +179,40 @@ class ActivityProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask3());
 
     public static final EngineIndependentProcess TOKEN_CARDINALITY_DEFAULT = BPMNProcessBuilder.buildActivityProcess("Token_Cardinality_Default",
-            "A process that builds upon TOKEN_CARDINALITY_EXPLICIT, only deferring in leaving the startQuantity and completionQuantity attributes" +
+            "A process that builds upon TOKEN_CARDINALITY_EXPLICIT, only deferring in leaving the startQuantity and completionQuantity attributes " +
                     "of the middle scriptTasks at their default values, i.e. 1 for both of them. Thus, this process must behave exactly like TOKEN_CARDINALITY_EXPLICIT.",
             new Feature(CONSTRUCT_TOKEN_CARDINALITY, "Token_Cardinality_Default"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask3());
 
     public static final EngineIndependentProcess TOKEN_CARDINALITY_SPLIT_DEFAULT = BPMNProcessBuilder.buildActivityProcess("Token_Cardinality_Split_Default",
-            "A process that contains one scriptTask which has two outgoing sequence flows, each leading to one of two forwarding scriptTasks." +
+            "A process that contains one scriptTask which has two outgoing sequence flows, each leading to one of two forwarding scriptTasks. " +
                     "It is expected that each forward task is executed once and therefore the last and receiving scriptTask is executed twice.",
             new Feature(CONSTRUCT_TOKEN_CARDINALITY, "Token_Cardinality_Split_Default"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4());
 
     public static final EngineIndependentProcess TOKEN_CARDINALITY_SPLIT_EXPLICIT = BPMNProcessBuilder.buildActivityProcess("Token_Cardinality_Split_Explicit",
-            "A process that contains one scriptTask which has two outgoing sequence flows, each leading to one of two forwarding scriptTasks." +
+            "A process that contains one scriptTask which has two outgoing sequence flows, each leading to one of two forwarding scriptTasks. " +
                     "It is expected that each forward task is executed once and therefore the last and receiving scriptTask is executed once because of startingQuantity.",
             new Feature(CONSTRUCT_TOKEN_CARDINALITY, "Token_Cardinality_Split_Explicit"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4());
 
     public static final EngineIndependentProcess SEND_TASK = BPMNProcessBuilder.buildActivityProcess("SendTask",
             "A test with two processes, which start in parallel. " +
-                    "The first one sends a message to the second one via a send task." +
+                    "The first one sends a message to the second one via a send task. " +
                     "The message is caught in an intermediate event.",
             new Feature(CONSTRUCT_SEND_TASK, "SendTask"),
             new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists());
 
     public static final EngineIndependentProcess RECEIVE_TASK = BPMNProcessBuilder.buildActivityProcess("ReceiveTask",
             "A test with two processes, which start in parallel. " +
-                    "The first one sends a message to the second one via an intermediate message event." +
+                    "The first one sends a message to the second one via an intermediate message event. " +
                     "The message is caught in a receive task.",
             new Feature(CONSTRUCT_RECEIVE_TASK, "ReceiveTask"),
             new BPMNTestCase().useParallelProcess().assertTask1().assertMarkerExists());
 
     public static final EngineIndependentProcess RECEIVE_TASK_INSTANTIATE = BPMNProcessBuilder.buildActivityProcess("ReceiveTask_Instantiate",
             "A test with two processes. " +
-                    "The first one sends a message to the second one via an intermediate message event." +
+                    "The first one sends a message to the second one via an intermediate message event. " +
                     "The message is caught in a receive task, which instantiates the second process",
             new Feature(CONSTRUCT_RECEIVE_TASK, "ReceiveTask_Instantiate"),
             new BPMNTestCase().assertTask1().assertMarkerExists());

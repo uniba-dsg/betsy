@@ -13,7 +13,7 @@ class GatewayProcesses {
     * GATEWAY CONSTRUCTS
     */
     public static final Construct CONSTRUCT_EXCLUSIVE_GATEWAY = new Construct(Groups.GATEWAYS, "ExclusiveGateway",
-            "A diverging Exclusive Gateway (Decision) is used to create alternative paths within a Process flow."
+            "A diverging Exclusive Gateway (Decision) is used to create alternative paths within a Process flow. "
                     + "A converging Exclusive Gateway is used to merge alternative paths. (see BPMN spec pp.289-291)");
 
     public static final Construct CONSTRUCT_EVENT_BASED_GATEWAY = new Construct(Groups.GATEWAYS, "EventBasedGateway",
@@ -49,7 +49,7 @@ class GatewayProcesses {
 
     public static final EngineIndependentProcess EXCLUSIVE_GATEWAY_DEFAULT = BPMNProcessBuilder.buildGatewayProcess("ExclusiveGateway_Default",
             "A process with five scriptTasks and exclusiveGateways. " +
-                    "The execution of three of the tasks is controlled by the exclusiveGateways based on the input and only one of the tasks is actually executed." +
+                    "The execution of three of the tasks is controlled by the exclusiveGateways based on the input and only one of the tasks is actually executed. " +
                     "Two tasks are triggered through sequenceFlows with conditionExpressions and one is triggered through a sequenceFlow which is marked as default.",
             new Feature(CONSTRUCT_EXCLUSIVE_GATEWAY, "ExclusiveGateway_Default"),
             new BPMNTestCase().inputB().assertTask2().assertTask4(), new BPMNTestCase().inputA().assertTask1().assertTask4(), new BPMNTestCase().inputAB().assertTask1().assertTask4(), new BPMNTestCase().inputC().assertTask3().assertTask4());
@@ -62,8 +62,7 @@ class GatewayProcesses {
             new BPMNTestCase().inputB().assertTask2().assertTask3(), new BPMNTestCase().inputA().assertTask1().assertTask3(), new BPMNTestCase().inputAB().assertTask1().assertTask3());
 
     public static final EngineIndependentProcess PARALLEL_GATEWAY = BPMNProcessBuilder.buildGatewayProcess("ParallelGateway",
-            "A process with four scriptTasks and two parallelGateways. " +
-                    "Two of the scriptTasks are surrounded by the parallelGateways.",
+            "A process with four scriptTasks and two parallelGateways. Two of the scriptTasks are surrounded by the parallelGateways.",
             new Feature(CONSTRUCT_PARALLEL_GATEWAY, "ParallelGateway"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3());
 
@@ -106,8 +105,8 @@ class GatewayProcesses {
             new BPMNTestCase().assertExecutionParallel().optionDelay(22000));
 
     public static final EngineIndependentProcess EXCLUSIVE_GATEWAY_MIXED = BPMNProcessBuilder.buildGatewayProcess("ExclusiveGatewayMixed",
-            "A process with six scriptTasks and three exclusiveGateways." +
-                    "One of the gateways acts as a mixed gateway. Each pair of exclusiveGateways encapsulates two script tasks." +
+            "A process with six scriptTasks and three exclusiveGateways. " +
+                    "One of the gateways acts as a mixed gateway. Each pair of exclusiveGateways encapsulates two script tasks. " +
                     "The enabling of these scriptTasks depends on input data",
             new Feature(CONSTRUCT_EXCLUSIVE_GATEWAY, "ExclusiveGatewayMixed"),
             new BPMNTestCase().inputA().assertTask2().assertTask4().assertTask5(), new BPMNTestCase().inputB().assertTask1().assertTask3().assertTask5(), new BPMNTestCase().inputAB().assertTask1().assertTask3().assertTask5());

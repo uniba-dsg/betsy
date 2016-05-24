@@ -77,7 +77,7 @@ class ErrorProcesses {
     );
 
     public static final EngineIndependentProcess TOKEN_START_QUANTITY_TWO = BPMNProcessBuilder.buildErrorProcess(
-            "Token_StartQuantity_Two", "A process with a scriptTask with completionQuantity=1 and, immediately afterwards," +
+            "Token_StartQuantity_Two", "A process with a scriptTask with completionQuantity=1 and, immediately afterwards, " +
                     "a scriptTask with startQuantity=2. Since there will never two tokens arrive, the scriptTask must not be executed.",
             new Feature(CONSTRUCT_INVALID_TOKEN_QUANTITY, "Token_StartQuantity_Two"),
             new BPMNTestCase().assertTask1()

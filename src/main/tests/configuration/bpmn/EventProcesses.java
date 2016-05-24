@@ -18,31 +18,31 @@ class EventProcesses {
     public static final Construct CONSTRUCT_COMPENSATION = new Construct(Groups.EVENTS, "Compensation_Event",
             "Compensation Events are used in the context of triggering or handling compensation. (see BPMN spec p.262)");
 
-    public static final Construct CONSTRUCT_CONDITIONAL = new Construct(Groups.EVENTS, "Conditional_Event", "Conditional"
+    public static final Construct CONSTRUCT_CONDITIONAL = new Construct(Groups.EVENTS, "Conditional_Event", "Conditional "
             + "Events are used if the event should be triggered by a condition. (see BPMN spec pp.263-264)");
 
     public static final Construct CONSTRUCT_ERROR = new Construct(Groups.EVENTS, "Error_Event", "Error Events are used "
             + "if the event should be triggered by an error. (see BPMN spec pp.264-265)");
 
-    public static final Construct CONSTRUCT_ESCALATION = new Construct(Groups.EVENTS, "Escalation_Event", "Escalation"
+    public static final Construct CONSTRUCT_ESCALATION = new Construct(Groups.EVENTS, "Escalation_Event", "Escalation "
             + "Events are used if the event should be triggered by an Escalation. (see BPMN spec pp.265-266)");
 
     public static final Construct CONSTRUCT_LINK = new Construct(Groups.EVENTS, "Link_Event", "A Link Event is a mechanism "
             + "for connecting two sections of a Process. (see BPMN spec pp.266-269)");
 
-    public static final Construct CONSTRUCT_MESSAGE = new Construct(Groups.EVENTS, "Message_Event", "Message"
+    public static final Construct CONSTRUCT_MESSAGE = new Construct(Groups.EVENTS, "Message_Event", "Message "
             + "Events are used if the event should be triggered by a message. (see BPMN spec pp.269-270)");
 
     public static final Construct CONSTRUCT_SIGNAL = new Construct(Groups.EVENTS, "Signal_Event", "Signal Events are "
             + "used if the event should be triggered by a Signal. (see BPMN spec p.272)");
 
-    public static final Construct CONSTRUCT_TERMINATE = new Construct(Groups.EVENTS, "Terminate_Event", "Terminate Events"
+    public static final Construct CONSTRUCT_TERMINATE = new Construct(Groups.EVENTS, "Terminate_Event", "Terminate Events "
             + "are used to terminate the execution of the whole process. (see BPMN spec pp.272-273)");
 
     public static final Construct CONSTRUCT_TIMER = new Construct(Groups.EVENTS, "Timer_Event", "Timer Events are "
             + "used if the event should be triggered by a Timer. (see BPMN spec p.273)");
 
-    public static final Construct CONSTRUCT_MULTIPLE_EVENTS = new Construct(Groups.EVENTS, "Multiple_Events", "Multiple"
+    public static final Construct CONSTRUCT_MULTIPLE_EVENTS = new Construct(Groups.EVENTS, "Multiple_Events", "Multiple "
             + "Events combine different event definitions. (see BPMN spec pp.270-272)");
 
     public static final Construct CONSTRUCT_EVENT_DEF_REF = new Construct(Groups.EVENTS, "EventDefinitionRef", "Instead "
@@ -61,7 +61,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess COMPENSATION_BOUNDARY_EVENT_SUBPROCESS = BPMNProcessBuilder.buildEventProcess(
-            "Compensation_BoundaryEvent_SubProcess", "Tests whether the compensation boundary event can be attached to a" +
+            "Compensation_BoundaryEvent_SubProcess", "Tests whether the compensation boundary event can be attached to a " +
                     "sub process.",
             new Feature(CONSTRUCT_COMPENSATION, "Compensation_BoundaryEvent_SubProcess"),
             new BPMNTestCase().assertTask1()
@@ -89,7 +89,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess COMPENSATION_START_EVENT_EVENT_SUBPROCESS = BPMNProcessBuilder.buildEventProcess(
-            "Compensation_StartEvent_EventSubProcess", "A test with an event SubProcess, triggered by an Compensation StartEvent." +
+            "Compensation_StartEvent_EventSubProcess", "A test with an event SubProcess, triggered by an Compensation StartEvent. " +
                     "The compensation is triggered by an Intermediate Throw Event placed outside the subprocess.",
             new Feature(CONSTRUCT_COMPENSATION, "Compensation_StartEvent_EventSubProcess"),
             new BPMNTestCase().assertTask1()
@@ -104,7 +104,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Conditional_BoundaryEvent_SubProcess_Interrupting", "A test for an conditional boundary event attached to a" +
+            "Conditional_BoundaryEvent_SubProcess_Interrupting", "A test for an conditional boundary event attached to a " +
                     "sub process which is marked as interrupting.",
             new Feature(CONSTRUCT_CONDITIONAL, "Conditional_BoundaryEvent_SubProcess_Interrupting"),
             new BPMNTestCase().inputA().assertTask3(),
@@ -112,7 +112,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess CONDITIONAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Conditional_BoundaryEvent_SubProcess_NonInterrupting", "A test for an conditional boundary event attached to a" +
+            "Conditional_BoundaryEvent_SubProcess_NonInterrupting", "A test for an conditional boundary event attached to a " +
                     "sub process which is marked as non interrupting.",
             new Feature(CONSTRUCT_CONDITIONAL, "Conditional_BoundaryEvent_SubProcess_NonInterrupting"),
             new BPMNTestCase().inputA().assertTask1().assertTask2().assertTask3(),
@@ -157,7 +157,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess ERROR_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Error_BoundaryEvent_SubProcess_Interrupting", "A test for the error boundary event attached to a sub process." +
+            "Error_BoundaryEvent_SubProcess_Interrupting", "A test for the error boundary event attached to a sub process. " +
                     "The task (task2) following the SequenceFlow originating from the boundary event should be executed. The Task (task3) " +
                     "following the normal outgoing sequence flow after the SubProcess must not be executed.",
             new Feature(CONSTRUCT_ERROR, "Error_BoundaryEvent_SubProcess_Interrupting"),
@@ -165,7 +165,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess ERROR_BOUNDARY_EVENT_TRANSACTION_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Error_BoundaryEvent_Transaction_Interrupting", "A test for the error boundary event attached to a transaction." +
+            "Error_BoundaryEvent_Transaction_Interrupting", "A test for the error boundary event attached to a transaction. " +
                     "The task (task2) following the SequenceFlow originating from the boundary event should be executed. The Task (task3) " +
                     "following the normal outgoing sequence flow after the Transaction must not be executed.",
             new Feature(CONSTRUCT_ERROR, "Error_BoundaryEvent_Transaction_Interrupting"),
@@ -186,7 +186,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess ESCALATION_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Escalation_BoundaryEvent_SubProcess_Interrupting", "A test for an escalation event interrupting a subprocess." +
+            "Escalation_BoundaryEvent_SubProcess_Interrupting", "A test for an escalation event interrupting a subprocess. " +
                     "The task (task2) following the Intermediate EscalationEvent and the Task (task4) following the normal " +
                     "outgoing sequence flow after the SubProcess must not be executed. " +
                     "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
@@ -195,14 +195,14 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess ESCALATION_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Escalation_BoundaryEvent_SubProcess_NonInterrupting", "A test for an escalation event NOT interrupting a subprocess." +
+            "Escalation_BoundaryEvent_SubProcess_NonInterrupting", "A test for an escalation event NOT interrupting a subprocess. " +
                     "All tasks (Task1-4) should be executed.",
             new Feature(CONSTRUCT_ESCALATION, "Escalation_BoundaryEvent_SubProcess_NonInterrupting"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
     );
 
     public static final EngineIndependentProcess ESCALATION_END_EVENT_SUBPROCESS = BPMNProcessBuilder.buildEventProcess(
-            "Escalation_EndEvent_SubProcess", "A test for an escalation end event defined in a SubProcess." +
+            "Escalation_EndEvent_SubProcess", "A test for an escalation end event defined in a SubProcess. " +
                     "Only the task attached to the BoundaryEvent should be executed.",
             new Feature(CONSTRUCT_ESCALATION, "Escalation_EndEvent_SubProcess"),
             new BPMNTestCase().assertTask1()
@@ -262,14 +262,14 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess." +
+            "Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for a signal boundary event NOT interrupting a subprocess. " +
                     "All tasks (Task1-4) should be executed.",
             new Feature(CONSTRUCT_SIGNAL, "Signal_BoundaryEvent_SubProcess_NonInterrupting"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
     );
 
     public static final EngineIndependentProcess SIGNAL_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Signal_BoundaryEvent_SubProcess_Interrupting", "A test for a signal boundary event interrupting a subprocess." +
+            "Signal_BoundaryEvent_SubProcess_Interrupting", "A test for a signal boundary event interrupting a subprocess. " +
                     "The task (task2) following the Intermediate SignalEvent and the Task (task4) following the normal " +
                     "outgoing sequence flow after the SubProcess must not be executed. " +
                     "The SequenceFlow originating from the boundary event is activated and therefore Task3 should be executed.",
@@ -285,7 +285,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess SIGNAL_INTERMEDIATE_EVENT_THROW_AND_CATCH = BPMNProcessBuilder.buildEventProcess(
-            "Signal_IntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one" +
+            "Signal_IntermediateEvent_ThrowAndCatch", "A test for signal intermediate events: After a parallel split one " +
                     "branch of the process awaits a signal which is thrown by the other branch.",
             new Feature(CONSTRUCT_SIGNAL, "Signal_IntermediateEvent_ThrowAndCatch"),
             new BPMNTestCase().assertTask1().optionDelay(10000)
@@ -339,7 +339,7 @@ class EventProcesses {
 
     public static final EngineIndependentProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_NonInterrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
-                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
+                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time. " +
                     "In the meantime, a boundary timer event should fire without interrupting the subProcess.",
             new Feature(CONSTRUCT_TIMER, "Timer_BoundaryEvent_SubProcess_NonInterrupting"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().optionDelay(5000)
@@ -347,7 +347,7 @@ class EventProcesses {
 
     public static final EngineIndependentProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_TIMECYCLE = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_TimeCycle", "A process with multiple scriptTasks and a subProcess with timer events. " +
-                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
+                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time. " +
                     "In the meantime a boundary timer event with the attribute timecycle should fire four times without interrupting "
                     + "the subProcess, which consists of a timer event and a scriptTask.",
             new Feature(CONSTRUCT_TIMER, "Timer_BoundaryEvent_SubProcess_TimeCycle"),
@@ -356,7 +356,7 @@ class EventProcesses {
 
     public static final EngineIndependentProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_Interrupting", "A process with multiple scriptTasks and a subProcess with timer events. " +
-                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time." +
+                    "The execution of the subProcess is delayed by an intermediate timer event for a short amount of time. " +
                     "In the meantime, a boundary timer event should fire and interrupt the subProcess.",
             new Feature(CONSTRUCT_TIMER, "Timer_BoundaryEvent_SubProcess_Interrupting"),
             new BPMNTestCase().assertTask3().optionDelay(5000)
@@ -365,7 +365,7 @@ class EventProcesses {
     public static final EngineIndependentProcess TIMER_BOUNDARY_EVENT_SUBPROCESS_INTERRUPTING_ACTIVITIY = BPMNProcessBuilder.buildEventProcess(
             "Timer_BoundaryEvent_SubProcess_Interrupting_Activity", "A process with multiple scriptTasks and a subProcess with an activity which "
                     + "needs more time for executing than the boundary timer. " +
-                    "The execution of the subProcess is therefore longer than the boundary timer event." +
+                    "The execution of the subProcess is therefore longer than the boundary timer event. " +
                     "It is expected that the boundary timer event fires before the task is completed and interrupts the subProcess.",
             new Feature(CONSTRUCT_TIMER, "Timer_BoundaryEvent_SubProcess_Interrupting_Activity"),
             new BPMNTestCase().assertTask2().optionDelay(12000)
@@ -380,9 +380,9 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess TIMER_START_EVENT_TIMECYCLE_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Timer_StartEvent_TimeCycle_EventSubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess." +
+            "Timer_StartEvent_TimeCycle_EventSubProcess_NonInterrupting", "A process with an ordinary subProcess and an event subProcess. " +
                     "The subProcess encloses the event subProcess and the latter is started by a timer startEvent with the attribute timeCycle. " +
-                    "The event SubProcess should be executed four times." +
+                    "The event SubProcess should be executed four times. " +
                     "All activities should be executed without interruption.",
             new Feature(CONSTRUCT_TIMER, "Timer_StartEvent_TimeCycle_EventSubProcess_NonInterrupting"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask2().assertTask2().assertTask2().assertTask3().optionDelay(35000)
@@ -396,7 +396,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess TIMER_START_EVENT_EVENT_SUBPROCESS_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "Timer_StartEvent_EventSubProcess_Interrupting", "A process with an ordinary subProcess and an event subProcess." +
+            "Timer_StartEvent_EventSubProcess_Interrupting", "A process with an ordinary subProcess and an event subProcess. " +
                     "The subProcess encloses the event subProcess and the latter is started by a timer startEvent. " +
                     "The event subProcess interrupts the activities of its parent subProcess.",
             new Feature(CONSTRUCT_TIMER, "Timer_StartEvent_EventSubProcess_Interrupting"),
@@ -404,7 +404,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_Parallel_IntermediateEvent", "A process with a multiple parallel event." +
+            "Multiple_Parallel_IntermediateEvent", "A process with a multiple parallel event. " +
                     "After a parallel split one branch of the process awaits two signals which are thrown by the other branch. " +
                     "The multiple parallel event is thrown.",
             new Feature(CONSTRUCT_MULTIPLE_EVENTS, "Multiple_Parallel_IntermediateEvent"),
@@ -412,39 +412,39 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess MULTIPLE_INTERMEDIATE_EVENT_THROW_FIRST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_IntermediateEvent_ThrowFirstEventDefinition", "A process with a multiple event." +
-                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+            "Multiple_IntermediateEvent_ThrowFirstEventDefinition", "A process with a multiple event. " +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event. " +
                     "The event thrown by the other branch, is the fist event definition of the multiple event. The multiple event is thrown.",
             new Feature(CONSTRUCT_MULTIPLE_EVENTS, "Multiple_IntermediateEvent_ThrowFirstEventDefinition"),
             new BPMNTestCase().assertTask1()
     );
 
     public static final EngineIndependentProcess MULTIPLE_INTERMEDIATE_EVENT_THROW_LAST_EVENTDEFINITION = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_IntermediateEvent_ThrowLastEventDefinition", "A process with a multiple event." +
-                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+            "Multiple_IntermediateEvent_ThrowLastEventDefinition", "A process with a multiple event. " +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event. " +
                     "The event thrown by the other branch, is the last event definition of the multiple event. The multiple event is thrown.",
             new Feature(CONSTRUCT_MULTIPLE_EVENTS, "Multiple_IntermediateEvent_ThrowLastEventDefinition"),
             new BPMNTestCase().assertTask1()
     );
 
     public static final EngineIndependentProcess MULTIPLE_INTERMEDIATE_THROW_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_IntermediateThrowEvent", "A process with a multiple throw event." +
-                    "After a parallel split into three branches two of the branches await each one event." +
+            "Multiple_IntermediateThrowEvent", "A process with a multiple throw event. " +
+                    "After a parallel split into three branches two of the branches await each one event. " +
                     "Both events are thrown in a multiple event on the third branch.",
             new Feature(CONSTRUCT_MULTIPLE_EVENTS, "Multiple_IntermediateThrowEvent"),
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
     public static final EngineIndependentProcess MULTIPLE_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_IntermediateEvent_MissingEvent", "A process with a multiple event." +
-                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event." +
+            "Multiple_IntermediateEvent_MissingEvent", "A process with a multiple event. " +
+                    "After a parallel split one branch of the process awaits only one of the two events defined in the multiple event. " +
                     "This event is never thrown. The multiple event is never thrown and thus the process is never finished.",
             new Feature(CONSTRUCT_MULTIPLE_EVENTS, "Multiple_IntermediateEvent_MissingEvent"),
             new BPMNTestCase()
     );
 
     public static final EngineIndependentProcess MULTIPLE_PARALLEL_INTERMEDIATE_EVENT_MISSING_EVENT = BPMNProcessBuilder.buildEventProcess(
-            "Multiple_Parallel_IntermediateEvent_MissingEvent", "A process with a multiple parallel event." +
+            "Multiple_Parallel_IntermediateEvent_MissingEvent", "A process with a multiple parallel event. " +
                     "After a parallel split one branch of the process awaits two signals of which only one is thrown by the other branch. " +
                     "The multiple parallel event is never thrown and thus the process is never finished.",
             new Feature(CONSTRUCT_MULTIPLE_EVENTS, "Multiple_Parallel_IntermediateEvent_MissingEvent"),
@@ -465,7 +465,7 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess EVENT_DEFINITION_REF_SIGNAL_BOUNDARY_EVENT_SUBPROCESS_NON_INTERRUPTING = BPMNProcessBuilder.buildEventProcess(
-            "EventDefinitionRef_Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for the usage of eventDefinitionRef with a signal boundary event NOT interrupting a subprocess." +
+            "EventDefinitionRef_Signal_BoundaryEvent_SubProcess_NonInterrupting", "A test for the usage of eventDefinitionRef with a signal boundary event NOT interrupting a subprocess. " +
                     "All tasks (Task1-4) should be executed.",
             new Feature(CONSTRUCT_EVENT_DEF_REF, "EventDefinitionRef_Signal_BoundaryEvent_SubProcess_NonInterrupting"),
             new BPMNTestCase().assertTask1().assertTask2().assertTask3().assertTask4()
