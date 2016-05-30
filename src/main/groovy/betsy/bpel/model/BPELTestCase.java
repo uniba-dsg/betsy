@@ -28,7 +28,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase assertConcurrencyAtPartner() {
         SoapTestStep step = new SoapTestStep();
-        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS_AND_RESET));
+        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS));
         step.setTestPartner(true);
         step.setConcurrencyTest(true);
 
@@ -37,7 +37,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase assertNumberOfPartnerCalls(int value) {
         SoapTestStep step = new SoapTestStep();
-        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES_AND_RESET));
+        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES));
         step.setTestPartner(true);
         step.setPartnerOutput(String.valueOf(value));
 

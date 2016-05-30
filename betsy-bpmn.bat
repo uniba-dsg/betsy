@@ -1,3 +1,3 @@
 @echo off
 echo "Starting with the following parameters: %*"
-gradlew runBPMN -Pargs="%*"
+gradlew run -Pargs="bpmn %*"

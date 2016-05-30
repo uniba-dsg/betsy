@@ -172,18 +172,6 @@ run {
     }
 }
 
-task enginecontrol(type: JavaExec, dependsOn: build) {
-    description = 'Starts Engine Control GUI'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.tools.EngineControl"
-}
-
-task partnerservice(type: JavaExec, dependsOn: build) {
-    description = 'Starts test case partner service only'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpel.tools.PartnerServiceControl"
-}
-
 test {
     testLogging {
         exceptionFormat "full" // default is "short"
@@ -246,25 +234,6 @@ task install(type: JavaExec, dependsOn: jarServer) {
         args project.args.split('\\s+')
     }
 }
-
-task runBPMN(type: JavaExec, dependsOn: classes) {
-    description = 'Starts BPMNMain'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpmn.BPMNMain"
-    if (project.hasProperty('args')) {
-        args project.args.split('\\s+')
-    }
-}
-
-task runBPEL(type: JavaExec, dependsOn: classes) {
-    description = 'Starts BPMNMain'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpel.BPELMain"
-    if (project.hasProperty('args')) {
-        args project.args.split('\\s+')
-    }
-}
-
 
 pmd {
     ignoreFailures = true

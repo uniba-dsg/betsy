@@ -41,8 +41,6 @@ public class TestsEngineDependent {
     public void createJson(BPMNTestSuite testSuite) {
         JSONArray rootArray = new JSONArray();
 
-        // TODO also write other jsons to test folder
-
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();
 
@@ -61,8 +59,6 @@ public class TestsEngineDependent {
 
     public void createJson(BPELTestSuite testSuite) {
         JSONArray rootArray = new JSONArray();
-
-        // TODO also write other jsons to test folder
 
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();

@@ -11,20 +11,20 @@ import javafx.stage.Stage;
 /**
  * GUI to start and stop / start and shutdown the partner service.
  */
-public class PartnerServiceControl extends Application {
+public class PartnerServiceControlGUI extends Application {
+
+    public static void main(String... args) {
+        PartnerServiceControlGUI.launch(args);
+    }
 
     private final TestPartnerService publisher = new DummyAndRegularTestPartnerService();
 
-    public PartnerServiceControl() {
+    public PartnerServiceControlGUI() {
         layoutFrame();
 
         createStartButton();
 
         createStopButton();
-    }
-
-    public static void main(String... args) {
-        PartnerServiceControl.launch(args);
     }
 
     @Override

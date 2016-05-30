@@ -1,4 +1,4 @@
-package betsy.bpel.tools;
+package betsy.tools;
 
 import configuration.bpel.BPELProcessRepository;
 
@@ -12,12 +12,12 @@ import java.util.List;
 public class TestsPerGroup {
 
     public static void main(String... args) {
+        System.out.println("Showing only BPEL groups");
 
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
         List<String> names = processRepository.getNames();
 
         List<String> output = new LinkedList<>();
-
 
         for(String name : names) {
             int size = processRepository.getByName(name).size();
@@ -28,15 +28,11 @@ public class TestsPerGroup {
             } else {
                 output.add(Integer.toString(size) + "\t" + name );
             }
-
         }
 
         Collections.sort(output);
 
-        for(String out : output) {
-            System.out.println(out);
-        }
-
+        output.forEach(System.out::println);
     }
 
 }

@@ -323,7 +323,7 @@ class BasicActivityProcesses {
     public static final EngineIndependentProcess INVOKE_SYNC_FAULT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             new Feature(INVOKE_CONSTRUCT, "Invoke-Sync-Fault"),
-            new BPELTestCase().checkDeployment().sendSync(-5, new SoapFaultTestAssertion("CustomFault"))
+            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, new SoapFaultTestAssertion("CustomFault"))
     );
 
     public static final EngineIndependentProcess INVOKE_TO_PARTS = BPELProcessBuilder.buildBasicProcessWithPartner(
@@ -461,7 +461,7 @@ class BasicActivityProcesses {
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
 
-    public static final EngineIndependentProcess ASSIGN_PARTNERLINK = BPELProcessBuilder.buildBasicProcessWithPartner(
+    public static final EngineIndependentProcess ASSIGN_PARTNERLINK = BPELProcessBuilder.buildBasicProcessWithRegularAndDummyPartner(
             "Assign-PartnerLink", "A receive-reply pair with an intermediate assign that assigns a WS-A EndpointReference to a partnerLink which is used in a subsequent invoke.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-PartnerLink"),
             new BPELTestCase().checkDeployment().sendSync(5, 0)

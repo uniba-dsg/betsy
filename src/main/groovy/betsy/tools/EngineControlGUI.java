@@ -1,5 +1,19 @@
 package betsy.tools;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.repositories.BPELEngineRepository;
@@ -7,12 +21,12 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.feature.Capability;
 import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.Group;
 import betsy.common.model.feature.Language;
+import betsy.common.model.input.EngineIndependentProcess;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -29,24 +43,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 /**
  * The GUI to install, start and stop a local engine or all local engines.
  */
-public class EngineControl extends Application {
+public class EngineControlGUI extends Application {
 
     private static class LogFileUtil {
 
@@ -58,8 +58,9 @@ public class EngineControl extends Application {
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
                 Feature feature = new Feature(new Construct(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "construct"), "feature");
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
                 eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
+
                     @Override
                     public Path getTargetLogsPath() {
                         return tmpFolder;
@@ -68,8 +69,9 @@ public class EngineControl extends Application {
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
                 Feature feature = new Feature(new Construct(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "construct"), "feature");
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature);
+                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
                 eNew.storeLogs(new BPMNProcess(engineIndependentProcess) {
+
                     @Override
                     public Path getTargetLogsPath() {
                         return tmpFolder;
@@ -109,7 +111,7 @@ public class EngineControl extends Application {
         toast("UP AND RUNNING");
     }
 
-    public static void main(String... args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void main(String... args) {
         launch(args);
     }
 
@@ -218,6 +220,7 @@ public class EngineControl extends Application {
 
     private void executeAction(final String name, final Runnable action) {
         new Thread(new Task<Void>() {
+
             public Void call() {
                 Platform.runLater(() -> toast(name));
                 action.run();
@@ -227,7 +230,6 @@ public class EngineControl extends Application {
             }
         }).start();
     }
-
 
     private void toast(String message) {
         String time = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM).format(LocalTime.now());

@@ -1,4 +1,4 @@
-package betsy;
+package betsy.tools;
 
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -6,13 +6,22 @@ import configuration.bpmn.BPMNProcessRepository;
 public class ProcessMain {
 
     public static void main(String... args) {
+        if(args.length != 2) {
+            printUsage();
+            return;
+        }
+
         if ("bpel".equalsIgnoreCase(args[0])) {
             bpel(args[1]);
         } else if ("bpmn".equalsIgnoreCase(args[0])) {
             bpmn(args[1]);
         } else {
-            System.out.println("[bpel|bpmn] [list|count]");
+            printUsage();
         }
+    }
+
+    private static void printUsage() {
+        System.out.println("[bpel|bpmn] [list|count]");
     }
 
     private static void bpel(String arg) {

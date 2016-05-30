@@ -38,7 +38,7 @@ class StaticAnalysisProcesses {
                             FileTasks.getFilenameWithoutExtension(process),
                             Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
                             new Feature(new Construct(Groups.SA, rule), process.getFileName().toString()),
-                            createXSDandWSDLPaths(dir)));
+                            createXSDandWSDLPaths(dir), Collections.emptyList()));
                 }
             });
 

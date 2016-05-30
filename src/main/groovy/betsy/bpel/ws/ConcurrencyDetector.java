@@ -30,10 +30,12 @@ public class ConcurrencyDetector {
     /**
      * resets all counters, as if the instance would have been created anew
      */
-    public void reset() {
+    public int reset() {
         concurrentAccesses.set(0);
         totalConcurrentAccesses.set(0);
         totalAccesses.set(0);
+
+        return 0;
     }
 
     public int access() {

@@ -18,25 +18,31 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
     private final Feature feature;
     private final List<Path> files;
     private final String description;
+    private final List<TestPartner> partners;
 
     public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature) {
-        this(process, description, testCases, feature, Collections.emptyList());
+        this(process, description, testCases, feature, Collections.emptyList(), Collections.emptyList());
     }
 
-    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<Path> files) {
+    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<TestPartner> partners) {
+        this(process, description, testCases, feature, Collections.emptyList(), partners);
+    }
+
+    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<Path> files, List<TestPartner> partners) {
+        this.partners = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(partners)));
         this.process = Objects.requireNonNull(process);
         this.feature = Objects.requireNonNull(feature);
         this.description = Objects.requireNonNull(description);
         this.testCases = Collections.unmodifiableList(uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases))));
-        this.files = Objects.requireNonNull(files);
+        this.files = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(files)));
     }
 
-    public EngineIndependentProcess withNewProcess(Path process) {
-        return new EngineIndependentProcess(process, description, testCases, feature, files);
+    public EngineIndependentProcess withNewProcessAndFeature(Path process, Feature feature) {
+        return new EngineIndependentProcess(process, description, testCases, feature, files, partners);
     }
 
     public EngineIndependentProcess withNewTestCases(List<TestCase> testCases) {
-        return new EngineIndependentProcess(process, description, testCases, feature, files);
+        return new EngineIndependentProcess(process, description, testCases, feature, files, partners);
     }
 
     public List<Path> getFiles() {
@@ -140,5 +146,8 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
         return getFiles().stream().filter(predicate).collect(Collectors.toList());
     }
 
+    public List<TestPartner> getTestPartners() {
+        return partners;
+    }
 }
 
