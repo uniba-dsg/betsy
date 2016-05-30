@@ -85,7 +85,7 @@ public class BPELSystemTest extends AbstractSystemTest{
     }
 
     @Test
-    public void test_B4_BpelWso320Sequence() throws IOException, InterruptedException {
+    public void test_B4_BpelWso351Sequence() throws IOException, InterruptedException {
         testBPELEngine("wso2__3_5_1");
     }
 
