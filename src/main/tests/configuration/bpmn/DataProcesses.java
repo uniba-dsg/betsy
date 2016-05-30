@@ -13,8 +13,10 @@ import java.util.List;
  */
 class DataProcesses {
 
-    private static final Construct DATA_OBJECT = new Construct(Groups.DATA, "DataObject");
-    private static final Construct PROPERTY = new Construct(Groups.DATA, "Property");
+    private static final Construct DATA_OBJECT = new Construct(Groups.DATA, "DataObject", "DataObjects are item-aware "
+            + "elements visually displayed on a Process diagram. (see BPMN spec pp.204-205)");
+    private static final Construct PROPERTY = new Construct(Groups.DATA, "Property", "Properties are item-aware elements "
+            + "not visually displayed on a Process diagram. (see BPMN spec pp.208-209)");
 
     public static final EngineIndependentProcess DATA_OBJECT_READ_WRITE_STRING = BPMNProcessBuilder.buildDataProcess(
             "A process consisting of three scriptTasks, " +
