@@ -10,7 +10,7 @@ public class Wso2Engine_v3_5_1 extends Wso2Engine_v3_1_0 {
 
     @Override
     public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "3.5.1", LocalDate.of(2014, 2, 3), "Apache-2.0");
+        return new Engine(ProcessLanguage.BPEL, "wso2", "3.5.1", LocalDate.of(20146, 2, 29), "Apache-2.0");
     }
 
     public String getZipFileName() {
