@@ -20,7 +20,7 @@ class ScopeProcesses {
     private static final Construct SCOPE_ATTRIBUTES_CONSTRUCT = new Construct(Groups.SCOPES, "Scope-Attributes", "All attributes of <scope> or <process>, being exitOnStandardFault and isolated");
     private static final Construct EVENT_HANDLERS_CONSTRUCT = new Construct(Groups.SCOPES, "EventHandlers", "Each scope, including the process scope, can have a set of event handlers. These event handlers can run concurrently and are invoked when the corresponding event occurs. (p. 137, BPEL)");
     private static final Construct CORRELATION_SETS_CONSTRUCT = new Construct(Groups.SCOPES, "CorrelationSets", "Correlation can be used on every messaging activity and are defined on <scope> or <process>. They ensure that the messages are routed to the process instance where the correlation set matches.");
-    private static final Construct MESSAGE_EXCHANGES_CONSTRUCT = new Construct(Groups.SCOPES, "MessageExchanges", "Manages message exchanges consisting of inbound message activities (IMA) and optional replys.");
+    private static final Construct MESSAGE_EXCHANGES_CONSTRUCT = new Construct(Groups.SCOPES, "MessageExchanges", "Manages message exchanges consisting of inbound message activities (IMA) and optional replies.");
     private static final Construct COMPENSATION_CONSTRUCT = new Construct(Groups.SCOPES, "Compensation", "The ability to declare compensation logic alongside forward-working logic is the underpinning of the application-controlled error-handling framework of WS-BPEL. (p. 118, BPEL)");
 
     public static final EngineIndependentProcess COMPENSATE = BPELProcessBuilder.buildScopeProcess(
