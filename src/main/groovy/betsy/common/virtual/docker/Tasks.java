@@ -118,7 +118,7 @@ public class Tasks {
      * @param dockerMachine The active {@link DockerMachine}. In case of a linux os not needed.
      * @param args The arguments for the task.
      */
-    public static void doDockerTask(DockerMachine dockerMachine, String[] args) {
+    public static void doDockerTask(DockerMachine dockerMachine, String... args) {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         String[] cmds = args;
         if(System.getProperty("os.name").contains("Windows")){
@@ -140,7 +140,7 @@ public class Tasks {
      * @param args The task to execute.
      * @return Returns the scanner to evaluate output.
      */
-    public static Scanner doImageTask(DockerMachine dockerMachine, String[] args) {
+    public static Scanner doImageTask(DockerMachine dockerMachine, String... args) {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Scanner scanner;
         ProcessBuilder builder;
@@ -164,6 +164,8 @@ public class Tasks {
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
         } catch (IOException e) {
+            //TODO:
+            e.printStackTrace();
             throw new DockerException("Couldn't execute the 'build' command for docker.");
         }
         return scanner;
@@ -177,7 +179,7 @@ public class Tasks {
      * @param args The arguments for the task.
      * @return Returns the scanner to evaluate output.
      */
-    public static Scanner doEngineImageTask(DockerMachine dockerMachine, String[] args) {
+    public static Scanner doEngineImageTask(DockerMachine dockerMachine, String... args) {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Scanner scanner;
         ProcessBuilder builder;
@@ -197,7 +199,7 @@ public class Tasks {
             List<String> cmds = builder.command();
             Collections.addAll(cmds, args);
             builder.command(cmds);
-            LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.command()+ ".");
+            LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.directory()+ ".");
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
         } catch (IOException e) {
@@ -214,7 +216,7 @@ public class Tasks {
      * @param args The arguments for the task.
      * @return Returns the scanner to evaluate output.
      */
-    public static Scanner doDockerCreateRunTask(DockerMachine dockerMachine, String[] args) {
+    public static Scanner doDockerCreateRunTask(DockerMachine dockerMachine, String... args) {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Scanner scanner;
         ProcessBuilder builder;

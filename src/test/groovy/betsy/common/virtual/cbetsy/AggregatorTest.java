@@ -23,15 +23,15 @@ public class AggregatorTest {
     private DockerMachine dockerMachine;
     private ArrayList<Container> containers = new ArrayList<>();
     private Path docker = Paths.get(get("docker.dir"));
-    private Path images = docker.resolve("images");
+    private Path images = docker.resolve("image");
     private java.util.Optional<Image> betsyImage;
     private boolean betsyImageWasCreated = true;
 
     @Before
     public void setUp() throws Exception {
         dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-        betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
 
+        betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
         if (!betsyImage.isPresent()) {
             betsyImageWasCreated = false;
             Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy");

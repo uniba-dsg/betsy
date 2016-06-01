@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class ContainersTest {
 
 
     private DockerMachine dockerMachine;
+    private Path docker = Paths.get(get("docker.dir"));
+    private Path images = docker.resolve("image");
 
     @Before
     public void setUp() throws Exception {
@@ -41,12 +44,20 @@ public class ContainersTest {
     }
 
     @Test
-    public void ceateConstraints() throws Exception {
+    public void createConstraints() throws Exception {
         String containerName = "test";
-        Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasCreated = true;
+        if (!betsyImage.isPresent()) {
+            betsyImageWasCreated = false;
+            betsyImage = java.util.Optional.ofNullable(Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy"));
+        }
         Container container = Containers.create(dockerMachine, containerName, "betsy", 4000, 300, "calibrate", "bpel", "ode", "sequence");
         assertEquals("The name of the containers should be the same.", container.getName(), Containers.getAll(dockerMachine).get(containerName).getName());
         Containers.remove(dockerMachine, container);
+        if (betsyImage.isPresent() && !betsyImageWasCreated) {
+            Images.remove(dockerMachine, betsyImage.get());
+        }
     }
 
     @Test
@@ -59,8 +70,13 @@ public class ContainersTest {
 
     @Test
     public void removeAll() throws Exception {
-        Containers.removeAll(dockerMachine, new ArrayList<>(Containers.getAll(dockerMachine).values()));
-        assertEquals("The container should be null.", 0, Containers.getAll(dockerMachine).size());
+        Container container = Containers.create(dockerMachine, "test", "hello-world");
+        int size = Containers.getAll(dockerMachine).size();
+        ArrayList<Container> containers = new ArrayList<>();
+        containers.add(container);
+        Containers.removeAll(dockerMachine, containers);
+        assertEquals("The container should be null.", --size, Containers.getAll(dockerMachine).size());
+
     }
 
     @Test
@@ -83,9 +99,18 @@ public class ContainersTest {
     @Test
     public void runConstraints() throws Exception {
         String containerName = "test";
-        Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        boolean betsyImageWasCreated = true;
+        if (!betsyImage.isPresent()) {
+            betsyImageWasCreated = false;
+            betsyImage = java.util.Optional.ofNullable(Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy"));
+        }
+        Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy");
         Container container = Containers.run(dockerMachine, containerName, "betsy", 4000, 300, "calibrate", "bpel", "ode", "sequence");
         assertEquals("The name of the containers should be the same.", container.getName(), Containers.getAll(dockerMachine).get(containerName).getName());
         Containers.remove(dockerMachine, container);
+        if (betsyImage.isPresent() && !betsyImageWasCreated) {
+            Images.remove(dockerMachine, betsyImage.get());
+        }
     }
 }
