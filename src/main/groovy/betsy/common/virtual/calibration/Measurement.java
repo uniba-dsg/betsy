@@ -62,6 +62,7 @@ public class Measurement {
         FileTasks.mkdirs(timeout);
 
         Path enginePath = timeout.resolve(engine.getName().replace("_", "")).toAbsolutePath();
+        FileTasks.mkdirs(enginePath);
         Path engineFilePath = enginePath.resolve("timeout.properties").toAbsolutePath();
         if (!engineFilePath.toFile().exists()) {
             if (counter < 4) {
@@ -110,7 +111,7 @@ public class Measurement {
 
                 //if the file is not existing, the calibration wasn't successful.
                 if (!engineFilePath.toFile().exists()) {
-                    calibrateTimeout(engine, dockerMachine, resourceConfiguration, ++counter, 1.1);
+                    calibrateTimeout(engine, dockerMachine, resourceConfiguration, ++counter, 1.25);
                 }
                 Containers.remove(dockerMachine, container);
                 return true;
@@ -128,11 +129,16 @@ public class Measurement {
      * @param dockerMachine The dockerMachine to execute on.
      * @param engines       The engines to measure.
      */
-    public static void measureMemoriesAndTimes(DockerMachine dockerMachine, HashSet<DockerEngine> engines) {
+    public static HashSet<DockerEngine> measureMemoriesAndTimes(DockerMachine dockerMachine, HashSet<DockerEngine> engines) {
         Objects.requireNonNull(engines, "The engines can't be null.");
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
-        engines.forEach(k -> measureMemoryAndTime(dockerMachine, k));
+        engines.forEach(k -> {
+            if(k.getMemory() == 0 || k.getTime() == 0){
+                measureMemoryAndTime(dockerMachine, k);
+            }
+        });
         DockerProperties.writeEngines(docker.resolve("worker.properties"), engines);
+        return  engines;
     }
 
 
@@ -160,10 +166,10 @@ public class Measurement {
         long start;
         long end = 0;
         Double memory = 0.0;
-        start = System.currentTimeMillis();
 
         int position = 0;
         Scanner scanner = Tasks.doDockerTaskWithOutput(dockerMachine, "stats");
+        start = System.currentTimeMillis();
         container.start(true);
         int counter = 0;
         while (scanner.hasNextLine() && counter < 10) {

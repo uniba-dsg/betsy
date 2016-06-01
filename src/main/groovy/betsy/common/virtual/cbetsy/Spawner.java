@@ -25,7 +25,7 @@ public class Spawner {
     private List<WorkerTemplate> workerTemplates;
     private DockerMachine dockerMachine;
     private ExecutorService executor;
-   private ResourceConfiguration resourceConfiguration;
+    private ResourceConfiguration resourceConfiguration;
 
     /**
      *

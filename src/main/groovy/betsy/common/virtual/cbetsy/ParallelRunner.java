@@ -43,7 +43,7 @@ public class ParallelRunner {
 
         LOGGER.info("Start to evaluate the number of containers.");
         ResourceConfiguration systemResources = Measurement.measureResources();
-        int number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues()));
+        int number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues(dockerMachine)));
         ResourceConfiguration containerConfiguration = Measurement.calculateResources(systemResources, number);
         long resources = System.currentTimeMillis();
 
@@ -52,7 +52,7 @@ public class ParallelRunner {
             long timeout = System.currentTimeMillis();
 
             LOGGER.info("Start the spawner.");
-            Spawner spawner = new Spawner(dockerMachine, workerTemplateGenerator.getSortedTemplates(), containerConfiguration, number);
+            Spawner spawner = new Spawner(dockerMachine, workerTemplateGenerator.getSortedTemplates(dockerMachine), containerConfiguration, number);
             List<Container> containers = spawner.start();
             long execution = System.currentTimeMillis();
 
@@ -62,6 +62,8 @@ public class ParallelRunner {
 
             long end = System.currentTimeMillis();
             Reporter.createReport(workerTemplateGenerator, build-start, endBetsy-startBetsy, endEngines-endBetsy,  resources-build, timeout-resources, execution-timeout, end-start);
+        }else{
+            //TODO:
         }
     }
 
@@ -85,6 +87,7 @@ public class ParallelRunner {
             System.exit(0);
         } else {
             startBetsy = System.currentTimeMillis();
+            //TODO: path
             Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
             endBetsy = System.currentTimeMillis();
             engines.forEach(e -> Images.buildEngine(dockerMachine, Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));

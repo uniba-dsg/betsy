@@ -1,9 +1,6 @@
 package betsy.common.virtual.cbetsy;
 
 
-import betsy.common.virtual.cbetsy.ResourceConfiguration;
-import betsy.common.virtual.cbetsy.Spawner;
-import betsy.common.virtual.cbetsy.WorkerTemplateGenerator;
 import betsy.common.virtual.docker.*;
 import org.junit.Test;
 
@@ -40,7 +37,7 @@ public class SpawnerTest {
         }
 
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
-        Spawner spawner = new Spawner(dockerMachine, workerTemplateGenerator.getSortedTemplates(), new ResourceConfiguration( 1000, 1000), 4);
+        Spawner spawner = new Spawner(dockerMachine, workerTemplateGenerator.getSortedTemplates(dockerMachine), new ResourceConfiguration( 1000, 1000), 4);
         List<Container> containers = spawner.start();
         assertEquals("One container should exist.", 1, containers.size());
 

@@ -7,12 +7,16 @@ import betsy.bpmn.cli.BPMNCliParameter;
 import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.virtual.calibration.Calibrator;
 import betsy.common.virtual.calibration.DockerProperties;
+import betsy.common.virtual.calibration.Measurement;
+import betsy.common.virtual.docker.DockerMachine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import static betsy.common.config.Configuration.get;
 
@@ -121,14 +125,13 @@ public class WorkerTemplateGenerator {
      *
      * @return Returns the workerTemplates as {@link ArrayList}.
      */
-    public ArrayList<WorkerTemplate> getSortedTemplates(){
+    public ArrayList<WorkerTemplate> getSortedTemplates(DockerMachine dockerMachine){
         workerTemplates = DockerProperties.readWorkerTemplates(docker.resolve("worker.properties"), workerTemplates);
         List<Long> times = new ArrayList<>();
         workerTemplates.forEach(k -> times.add(k.getDockerEngine().getTime()));
         long countTime = times.stream().filter(element -> element == 0).count();
         if(countTime > 0){
-            Calibrator.main(args);
-            DockerProperties.readWorkerTemplates(docker.resolve("worker.properties"), workerTemplates);
+            engines = Measurement.measureMemoriesAndTimes(dockerMachine, engines);
         }
         Collections.sort(workerTemplates, (o1, o2) -> new Double(o1.getDockerEngine().getTime() - o2.getDockerEngine().getTime()).intValue());
         return workerTemplates;
@@ -150,7 +153,7 @@ public class WorkerTemplateGenerator {
      *
      * @return Returns the used engines as {@link HashSet}.
      */
-    public HashSet<DockerEngine> getEnginesWithValues(){
+    public HashSet<DockerEngine> getEnginesWithValues(DockerMachine dockerMachine){
         engines = DockerProperties.readEngines(docker.resolve("worker.properties"), engines);
         List<Integer> memories = new ArrayList<>();
         List<Long> times = new ArrayList<>();
@@ -159,8 +162,7 @@ public class WorkerTemplateGenerator {
         long countMemory = memories.stream().filter(element -> element == 0).count();
         long countTime = times.stream().filter(element -> element == 0).count();
         if(countMemory > 0 && countTime > 0){
-            Calibrator.main(args);
-            DockerProperties.readEngines(docker.resolve("worker.properties"), engines);
+            engines = Measurement.measureMemoriesAndTimes(dockerMachine, engines);
         }
         return engines;
     }

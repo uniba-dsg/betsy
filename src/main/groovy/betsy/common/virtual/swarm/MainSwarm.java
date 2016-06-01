@@ -1,29 +1,26 @@
-package betsy.common.virtual.cbetsy;
+package betsy.common.virtual.swarm;
 
-import betsy.common.virtual.calibration.Calibrator;
-import betsy.common.virtual.swarm.MainSwarm;
+import betsy.common.virtual.swarm.client.Client;
+import betsy.common.virtual.swarm.host.Host;
 
 /**
  * @author Christoph Broeker
  * @version 1.0
+ *          This class starts the client or the host.
  */
-public class DockerMain {
+public class MainSwarm {
 
     /**
-     * The main method of docker.
+     * The main method of swarm.
      *
      * @param args The arguments for the execution.
      */
     public static void main(String[] args) {
         if (args.length > 0) {
-            if ("run".equalsIgnoreCase(args[0])) {
-                ParallelRunner.main(createArgsWithoutFirstValue(args));
-            } else if ("calibrate".equalsIgnoreCase(args[0])) {
-                Calibrator.main(createArgsWithoutFirstValue(args));
-            } else if ("swarm".equalsIgnoreCase(args[0])) {
-                MainSwarm.main(createArgsWithoutFirstValue(args));
-            } else if ("teardown".equalsIgnoreCase(args[0])) {
-                Teardown.main(createArgsWithoutFirstValue(args));
+            if ("host".equalsIgnoreCase(args[0])) {
+                new Host().start(createArgsWithoutFirstValue(args));
+            } else if ("client".equalsIgnoreCase(args[0])) {
+                new Client().start(createArgsWithoutFirstValue(args));
             } else {
                 printUsage();
             }
@@ -49,6 +46,7 @@ public class DockerMain {
      * This method prints the right usage of the arguments.
      */
     private static void printUsage() {
-        System.out.println("The second argument must be calibrate, run, swarm or teardown.");
+        System.out.println("The second argument must be host or client.");
     }
+
 }
