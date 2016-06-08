@@ -43,7 +43,7 @@ public class MeasurementTest {
         }
         ResourceConfiguration resourceConfiguration = new ResourceConfiguration(2000, 100);
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
-        assertTrue("The method returns true, if the calibration was successful.", Measurement.calibrateTimeouts(workerTemplateGenerator.getEnginesWithValues(), dockerMachine, resourceConfiguration));
+        assertTrue("The method returns true, if the calibration was successful.", Measurement.calibrateTimeouts(workerTemplateGenerator.getEnginesWithValues(dockerMachine), dockerMachine, resourceConfiguration));
         if (engineImage.isPresent() && !engineImageWasCreated) {
             Images.remove(dockerMachine, engineImage.get());
         }
@@ -72,7 +72,7 @@ public class MeasurementTest {
         }
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
         Measurement.measureMemoriesAndTimes(dockerMachine, workerTemplateGenerator.getEngines());
-        ArrayList<DockerEngine> engines = new ArrayList<>(workerTemplateGenerator.getEnginesWithValues());
+        ArrayList<DockerEngine> engines = new ArrayList<>(workerTemplateGenerator.getEnginesWithValues(dockerMachine));
         assertTrue("The memory have to be greater than 0.", engines.get(0).getMemory() > 0);
 
         if (engineImage.isPresent() && !engineImageWasCreated) {

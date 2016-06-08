@@ -5,8 +5,11 @@ import betsy.common.virtual.exceptions.DockerException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+
+import static betsy.common.config.Configuration.get;
 
 /**
  * @author Christoph Broeker
@@ -19,7 +22,7 @@ import java.util.*;
 public class Tasks {
 
     private static final Logger LOGGER = Logger.getLogger(Tasks.class);
-    //TODO: config path
+    private static Path docker = Paths.get(get("docker.dir"));
 
     /**
      *
@@ -58,7 +61,7 @@ public class Tasks {
                 List<String> cmds = builder.command();
                 Collections.addAll(cmds, args);
                 builder.command(cmds);
-                builder.directory(Paths.get("docker").toFile());
+                builder.directory(docker.toFile());
                 Process process = builder.start();
                 scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
             }
@@ -102,7 +105,7 @@ public class Tasks {
             List<String> cmds = builder.command();
             Collections.addAll(cmds, args);
             builder.command(cmds);
-            builder.directory(Paths.get("docker").toFile());
+            builder.directory(docker.toFile());
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
         } catch (IOException e) {
@@ -147,7 +150,7 @@ public class Tasks {
         try {
             if(System.getProperty("os.name").contains("Windows")){
                 builder = new ProcessBuilder("cmd", "/c", "docker_image_cmd", dockerMachine.getName());
-                builder.directory(Paths.get("docker").toFile());
+                builder.directory(docker.toFile());
             }else{
                 builder = new ProcessBuilder("docker", "build", "--tag="+args[1], ".");
                 builder.directory(Paths.get(args[0]).toFile());
@@ -164,8 +167,6 @@ public class Tasks {
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
         } catch (IOException e) {
-            //TODO:
-            e.printStackTrace();
             throw new DockerException("Couldn't execute the 'build' command for docker.");
         }
         return scanner;
@@ -186,7 +187,7 @@ public class Tasks {
         try {
             if(System.getProperty("os.name").contains("Windows")){
                 builder = new ProcessBuilder("cmd", "/c", "docker_engine_image_cmd", dockerMachine.getName());
-                builder.directory(Paths.get("docker").toFile());
+                builder.directory(docker.toFile());
             }else{
                 builder = new ProcessBuilder("docker", "build", "--tag="+args[1], "--build-arg", "engine="+args[2], ".");
                 builder.directory(Paths.get(args[0]).toFile());
@@ -233,7 +234,7 @@ public class Tasks {
                 Collections.addAll(cmds, args);
                 builder.command(cmds);
             }
-            builder.directory(Paths.get("docker").toFile());
+            builder.directory(docker.toFile());
             LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.directory()+ ".");
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");
@@ -275,7 +276,7 @@ public class Tasks {
                     builder.command(list);
                 }
             }
-            builder.directory(Paths.get("docker").toFile());
+            builder.directory(docker.toFile());
             LOGGER.info("Execute command: " +builder.command()+ " in directory: " +builder.directory()+ ".");
             Process process = builder.start();
             scanner = new Scanner(process.getInputStream()).useDelimiter("\\Z");

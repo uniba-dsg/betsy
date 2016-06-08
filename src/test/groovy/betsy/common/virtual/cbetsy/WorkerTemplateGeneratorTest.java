@@ -51,7 +51,8 @@ public class WorkerTemplateGeneratorTest {
     public void getEnginesWithValues() throws Exception {
         String[] args = {"bpel", "ode", "sequence"};
         WorkerTemplateGenerator templateGenerator = new WorkerTemplateGenerator(args);
-        ArrayList<DockerEngine> engines = new ArrayList<>(templateGenerator.getEnginesWithValues());
+        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
+        ArrayList<DockerEngine> engines = new ArrayList<>(templateGenerator.getEnginesWithValues(dockerMachine));
         assertTrue("The memory should be greater than 0.", engines.get(0).getMemory() > 0);
     }
 

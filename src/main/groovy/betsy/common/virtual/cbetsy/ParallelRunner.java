@@ -8,6 +8,7 @@ import betsy.common.virtual.docker.Images;
 import betsy.common.virtual.exceptions.DockerException;
 import org.apache.log4j.Logger;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -22,6 +23,7 @@ import static betsy.common.config.Configuration.get;
 public class ParallelRunner {
 
     private static final Logger LOGGER = Logger.getLogger(ParallelRunner.class);
+    private static Path docker = Paths.get(get("docker.dir"));
     private static long startBetsy = 0;
     private static long endBetsy = 0;
     private static long endEngines = 0;
@@ -62,8 +64,6 @@ public class ParallelRunner {
 
             long end = System.currentTimeMillis();
             Reporter.createReport(workerTemplateGenerator, build-start, endBetsy-startBetsy, endEngines-endBetsy,  resources-build, timeout-resources, execution-timeout, end-start);
-        }else{
-            //TODO:
         }
     }
 
@@ -87,10 +87,11 @@ public class ParallelRunner {
             System.exit(0);
         } else {
             startBetsy = System.currentTimeMillis();
-            //TODO: path
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+            Path image = docker.resolve("image");
+
+            Images.build(dockerMachine, image.resolve("betsy").toAbsolutePath(), "betsy");
             endBetsy = System.currentTimeMillis();
-            engines.forEach(e -> Images.buildEngine(dockerMachine, Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));
+            engines.forEach(e -> Images.buildEngine(dockerMachine, image.resolve("engine").toAbsolutePath().toAbsolutePath(), e.getName()));
             endEngines = System.currentTimeMillis();
         }
         return dockerMachine;

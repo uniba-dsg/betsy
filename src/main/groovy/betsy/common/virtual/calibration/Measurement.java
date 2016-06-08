@@ -41,7 +41,7 @@ public class Measurement {
         Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Objects.requireNonNull(resourceConfiguration, "The resourceConfiguration can't be null.");
         long count = engines.stream().filter(k -> !calibrateTimeout(k, dockerMachine, resourceConfiguration, 0, 1)).count();
-        return count <= 0;
+        return count == 0;
     }
 
     /**
