@@ -209,9 +209,9 @@ class EventProcesses {
     );
 
     public static final EngineIndependentProcess ESCALATION_END_EVENT_TOPLEVEL = BPMNProcessBuilder.buildEventProcess(
-            "Escalation_EndEvent_TopLevel", "A test for an escalation end event in a top level process.",
+            "Escalation_EndEvent_TopLevel", "A test for an escalation end event in a top level process which is called by a call activity in another process which has an attached escalation boundary event.",
             new Feature(CONSTRUCT_ESCALATION, "Escalation_EndEvent_TopLevel"),
-            new BPMNTestCase().assertTask1().assertErrorThrownEscalationEvent()
+            new BPMNTestCase().assertTask1()
     );
 
     public static final EngineIndependentProcess ESCALATION_INTERMEDIATE_THROW_EVENT = BPMNProcessBuilder.buildEventProcess(
