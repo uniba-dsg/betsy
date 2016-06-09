@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1357910110936" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.1.17" expressionLanguage="http://www.w3.org/1999/XPath" id="_1357910110936" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1357910110936" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <collaboration id="COLLABORATION_1" isClosed="false">
+    <participant id="_2" name="Participant" processRef="PROCESS_1">
+      <participantMultiplicity maximum="1" minimum="0"/>
+    </participant>
+  </collaboration>
+  <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_3" isInterrupting="true" name="Start Event" parallelMultiple="false">
+      <outgoing>_6</outgoing>
+    </startEvent>
+    <endEvent id="_4" name="End Event">
+      <incoming>_11</incoming>
+    </endEvent>
+    <task completionQuantity="1" id="_5" isForCompensation="false" name="Task" startQuantity="1">
+      <incoming>_6</incoming>
+    </task>
+    <sequenceFlow id="_6" sourceRef="_3" targetRef="_5"/>
+    <boundaryEvent attachedToRef="_2" cancelActivity="true" id="_7" name="Boundary Event" parallelMultiple="false">
+      <extensionElements>
+        <yaoqiang:style align="center" labelPosition="center" verticalAlign="bottom" verticalLabelPosition="top"/>
+      </extensionElements>
+      <outgoing>_10</outgoing>
+      <timerEventDefinition id="_7_ED_1"/>
+    </boundaryEvent>
+    <task completionQuantity="1" id="_9" isForCompensation="false" name="Task" startQuantity="1">
+      <incoming>_10</incoming>
+      <outgoing>_11</outgoing>
+    </task>
+    <sequenceFlow id="_10" sourceRef="_7" targetRef="_9"/>
+    <sequenceFlow id="_11" sourceRef="_9" targetRef="_4"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=597.6;height=842.4;imageableWidth=587.6;imageableHeight=832.4;imageableX=5.0;imageableY=5.0" id="Yaoqiang_Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="COLLABORATION_1">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2" isExpanded="true" isHorizontal="true">
+        <dc:Bounds height="200.0" width="1053.0" x="0.0" y="65.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="200.0" width="1053.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" id="Yaoqiang-_3">
+        <dc:Bounds height="32.0" width="32.0" x="75.0" y="160.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" id="Yaoqiang-_4">
+        <dc:Bounds height="32.0" width="32.0" x="870.0" y="155.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" id="Yaoqiang-_5">
+        <dc:Bounds height="65.0" width="95.0" x="155.0" y="145.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="65.0" width="95.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" id="Yaoqiang-_9">
+        <dc:Bounds height="55.0" width="85.0" x="430.0" y="95.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" id="Yaoqiang-_7">
+        <dc:Bounds height="32.0" width="32.0" x="215.0" y="129.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="60.0" y="-16.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="Yaoqiang-_11" sourceElement="_9" targetElement="_4">
+        <di:waypoint x="515.5" y="122.5"/>
+        <di:waypoint x="870.5" y="171.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="Yaoqiang-_10" sourceElement="_7" targetElement="_9">
+        <di:waypoint x="247.5" y="145.0"/>
+        <di:waypoint x="430.5" y="122.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="Yaoqiang-_6" sourceElement="_3" targetElement="_5">
+        <di:waypoint x="107.5" y="176.0"/>
+        <di:waypoint x="155.5" y="177.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
