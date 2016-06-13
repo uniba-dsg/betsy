@@ -6,7 +6,7 @@
              expressionLanguage="http://www.w3.org/1999/XPath" id="_1431939020902"
              name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1431939020902" typeLanguage="http://www.w3.org/2001/XMLSchema"
              xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
-  <process id="PROCESS_1" isClosed="false" isExecutable="false" processType="None">
+  <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" isInterrupting="true" name="Start Event" parallelMultiple="false">
       <outgoing>_7</outgoing>
     </startEvent>
