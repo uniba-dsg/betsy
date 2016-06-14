@@ -192,13 +192,17 @@ public class JbpmEngine extends AbstractBPMNEngine {
             tester.setDeploymentId(getDeploymentId(process));
             tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
             tester.setProcessHistoryUrl(createProcessHistoryURL(tester.getDeploymentId()));
+            tester.setProcessDeploymentUrl(createProcessDeploymentURL(tester.getDeploymentId()));
             tester.setBpmnTester(bpmnTester);
             tester.setLogDir(getJbpmInstallerPath());
-            tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
             tester.runTest();
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
+    }
+
+    protected String createProcessDeploymentURL(String deploymentId) {
+        return getJbpmnUrl() + "/rest/deployment/" + deploymentId;
     }
 
     private static String getDeploymentId(BPMNProcess process) {

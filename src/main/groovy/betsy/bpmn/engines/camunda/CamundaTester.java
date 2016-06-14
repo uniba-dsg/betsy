@@ -7,6 +7,7 @@ import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -100,12 +101,22 @@ public class CamundaTester {
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
+
+        if(!isProcessDeployed()) {
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
         }
+    }
+
+    private boolean isProcessDeployed() {
+        JSONArray result = JsonHelper.getJsonArray(restURL+"/deployment", 200);
+
+        for(int i=0; i<result.length(); i++) {
+            if(key.equals(result.getJSONObject(i).get("name"))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void addRuntimeErrorsToLogFile(Path logFile) {

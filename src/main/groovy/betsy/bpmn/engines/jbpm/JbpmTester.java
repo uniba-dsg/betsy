@@ -2,7 +2,6 @@ package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.JsonHelper;
 
 import betsy.bpmn.model.BPMNAssertions;
@@ -29,6 +28,8 @@ public class JbpmTester {
 
     private String processHistoryUrl;
 
+    private String processDeploymentUrl;
+
     private String name;
 
     private String deploymentId;
@@ -36,8 +37,6 @@ public class JbpmTester {
     private BPMNTester bpmnTester;
 
     private Path logDir;
-
-    private Path serverLogFile;
 
     private String user = "admin";
 
@@ -49,7 +48,7 @@ public class JbpmTester {
      * Runs a single test
      */
     public void runTest() {
-        addDeploymentErrorsToLogFile(serverLogFile);
+        addDeploymentErrorsToLogFile();
 
         // skip execution if deployment is expected to fail
         if(testCase.getAssertions().contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
@@ -153,15 +152,16 @@ public class JbpmTester {
         }
     }
 
-    private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("Unable to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("ProcessLoadError", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
+    private void addDeploymentErrorsToLogFile() {
+        if(!isProcessDeployed()) {
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
             LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
         }
+    }
+
+    private boolean isProcessDeployed() {
+        String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
+        return result.contains("<deployment-status>DEPLOYED</deployment-status>") || result.contains("<id>"+name+"</id>");
     }
 
     private Path getFileName() {
@@ -184,6 +184,10 @@ public class JbpmTester {
         this.processHistoryUrl = processHistoryUrl;
     }
 
+    public void setProcessDeploymentUrl(String processDeploymentUrl) {
+        this.processDeploymentUrl = processDeploymentUrl;
+    }
+
     public String getName() {
         return name;
     }
@@ -202,10 +206,6 @@ public class JbpmTester {
 
     public void setLogDir(Path logDir) {
         this.logDir = logDir;
-    }
-
-    public void setServerLogFile(Path serverLogFile) {
-        this.serverLogFile = serverLogFile;
     }
 
     public String getUser() {

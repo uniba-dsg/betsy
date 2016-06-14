@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 
-public class JbpmEngine620 extends JbpmEngine {
+public class JbpmEngine620 extends JbpmEngine610 {
 
     @Override
     public Engine getEngineObject() {
@@ -28,11 +28,6 @@ public class JbpmEngine620 extends JbpmEngine {
         jbpmInstaller.setDestinationDir(getServerPath());
         jbpmInstaller.setFileName("jbpm-6.2.0.Final-installer-full.zip");
         jbpmInstaller.install();
-    }
-
-    @Override
-    protected String createProcessHistoryURL(String deploymentId) {
-        return getJbpmnUrl() + "/rest/history/instance/1";
     }
 
 }

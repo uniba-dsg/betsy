@@ -94,11 +94,14 @@ public class ActivitiTester {
     }
 
     private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.activiti.engine.ActivitiException: Errors while parsing:", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
+
+        LOGGER.info("Checking whether deployment was successful.");
+        String checkDeploymentUrl = ActivitiEngine.URL + "/service/repository/deployments?name="+key+".bpmn";
+
+        JSONObject result = JsonHelper.get(checkDeploymentUrl, 200);
+        if(result.getInt("size")!=1) {
+            LOGGER.info("Deployment of process'"+key+"' failed.");
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
         }
     }
 
