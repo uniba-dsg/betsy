@@ -7,7 +7,9 @@
     <intermediateThrowEvent id="_3" name="Intermediate Catch Event">
       <incoming>_4</incoming>
       <outgoing>_6</outgoing>
-      <timerEventDefinition id="timer" />
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
     </intermediateThrowEvent>
     <sequenceFlow id="_4" sourceRef="_2" targetRef="_3"/>
     <endEvent id="_5" name="End Event">

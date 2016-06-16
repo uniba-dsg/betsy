@@ -13,7 +13,9 @@
     <intermediateCatchEvent id="_5" name="Intermediate Catch Event" parallelMultiple="false">
       <incoming>_6</incoming>
       <outgoing>_10</outgoing>
-      <messageEventDefinition id="_5_ED_1"/>
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="_6" sourceRef="_2" targetRef="_5"/>
     <endEvent id="_9" name="End Event">

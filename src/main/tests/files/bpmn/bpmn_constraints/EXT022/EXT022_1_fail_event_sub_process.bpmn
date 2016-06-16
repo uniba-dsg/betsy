@@ -8,7 +8,9 @@
         <outgoing>_4</outgoing>
         <startEvent id="_12" isInterrupting="true" name="Start Event" parallelMultiple="false">
             <outgoing>_13</outgoing>
-            <messageEventDefinition id="_12_ED_1"/>
+            <timerEventDefinition id="_TimerEventDefinition_6">
+                <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+            </timerEventDefinition>
         </startEvent>
         <sequenceFlow id="_13" sourceRef="_12" targetRef="_14"/>
         <endEvent id="_14" name="End Event">

@@ -23,7 +23,9 @@
     <boundaryEvent attachedToRef="_3" cancelActivity="false" id="_7" name="Boundary Event" parallelMultiple="false">
       <incoming>_10</incoming>
       <outgoing>_9</outgoing>
-      <messageEventDefinition id="_7_ED_1"/>
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
     </boundaryEvent>
 
     <sequenceFlow id="_9" sourceRef="_7" targetRef="_8"/>

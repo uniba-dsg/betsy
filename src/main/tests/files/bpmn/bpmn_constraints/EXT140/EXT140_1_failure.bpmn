@@ -13,7 +13,9 @@
     <intermediateCatchEvent id="_5" name="Intermediate Catch Event" parallelMultiple="false">
       <incoming>_6</incoming>
       <outgoing>_10</outgoing>
-      <timerEventDefinition id="_5_ED_1"/>
+      <timerEventDefinition id="_5_ED_1">
+        <timeDuration xsi:type="tFormalExpression">PT3S</timeDuration>
+      </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="_6" sourceRef="_2" targetRef="_5"/>
     <receiveTask completionQuantity="1" id="_7" implementation="##WebService" instantiate="false" isForCompensation="false" name="Receive Task" startQuantity="1">

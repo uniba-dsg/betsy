@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1432278391098" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.2.18 (GPLv3, Non-Commercial)" expressionLanguage="http://www.w3.org/1999/XPath" id="_1432278391098" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1432278391098" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+
+  <message id="message" name="message" />
+
+  <interface id="interface" name="interface">
+    <operation id="opMsgToProcess" name="msgToProcess">
+      <inMessageRef>message</inMessageRef>
+    </operation>
+  </interface>
+
   <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
     <eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Unspecified" id="_2" instantiate="false" name="Event Gateway">
       <incoming>_4</incoming>
@@ -13,13 +22,17 @@
     <intermediateCatchEvent id="_5" name="Intermediate Catch Event" parallelMultiple="false">
       <incoming>_6</incoming>
       <outgoing>_10</outgoing>
-      <messageEventDefinition id="_5_ED_1"/>
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="_6" sourceRef="_2" targetRef="_5"/>
     <intermediateThrowEvent id="_7" name="Intermediate Throw Event">
       <incoming>_8</incoming>
       <outgoing>_11</outgoing>
-      <messageEventDefinition id="_7_ED_1"/>
+      <messageEventDefinition id="_7_ED_1" messageRef="message">
+        <operationRef>opMsgToProcess</operationRef>
+      </messageEventDefinition>
     </intermediateThrowEvent>
     <sequenceFlow id="_8" sourceRef="_2" targetRef="_7"/>
     <endEvent id="_9" name="End Event">

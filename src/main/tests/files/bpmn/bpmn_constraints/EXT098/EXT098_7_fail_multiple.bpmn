@@ -3,7 +3,9 @@
   <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" isInterrupting="true" name="Start Event" parallelMultiple="false">
       <outgoing>_14</outgoing>
-      <timerEventDefinition id="_2_ED_1"/>
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
 	  <escalationEventDefinition id="_2_ED_2"/>
     </startEvent>
     <endEvent id="_6" name="End Event">

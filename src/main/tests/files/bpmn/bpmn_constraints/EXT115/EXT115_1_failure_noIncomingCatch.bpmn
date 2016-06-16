@@ -10,7 +10,9 @@
     </task>
     <intermediateCatchEvent id="_4" name="Intermediate Throw Event">
       <outgoing>_6</outgoing>
-      <messageEventDefinition id="msg" />
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="_5" sourceRef="_2" targetRef="_3"/>
     <sequenceFlow id="_6" sourceRef="_4" targetRef="_3"/>

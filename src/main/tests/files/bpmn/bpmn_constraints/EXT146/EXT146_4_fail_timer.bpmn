@@ -6,7 +6,9 @@
     </startEvent>
     <endEvent id="_3" name="End Event">
       <incoming>_4</incoming>
-			<timerEventDefinition id="_3_ED_1"/>
+      <timerEventDefinition id="_TimerEventDefinition_6">
+        <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+      </timerEventDefinition>
     </endEvent>
     <sequenceFlow id="_4" sourceRef="_2" targetRef="_3"/>
   </process>

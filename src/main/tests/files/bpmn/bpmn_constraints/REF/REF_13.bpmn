@@ -21,7 +21,9 @@
         <yaoqiang:style align="center" labelPosition="center" verticalAlign="bottom" verticalLabelPosition="top"/>
       </extensionElements>
       <outgoing>_10</outgoing>
-      <timerEventDefinition id="_7_ED_1"/>
+      <timerEventDefinition id="_7_ED_1">
+        <timeDuration xsi:type="tFormalExpression">PT3S</timeDuration>
+      </timerEventDefinition>
     </boundaryEvent>
     <task completionQuantity="1" id="_9" isForCompensation="false" name="Task" startQuantity="1">
       <incoming>_10</incoming>

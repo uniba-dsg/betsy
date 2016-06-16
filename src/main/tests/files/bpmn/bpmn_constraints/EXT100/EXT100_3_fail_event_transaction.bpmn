@@ -9,7 +9,9 @@
       <outgoing>_6</outgoing>
       <startEvent id="_7" isInterrupting="true" name="Start Event" parallelMultiple="false">
         <outgoing>_9</outgoing>
-				<messageEventDefinition id="_2_ED_1"/>
+        <timerEventDefinition id="_TimerEventDefinition_6">
+          <timeDuration xsi:type="tFormalExpression">PT1S</timeDuration>
+        </timerEventDefinition>
       </startEvent>
       <endEvent id="_8" name="End Event">
         <incoming>_9</incoming>

@@ -4,10 +4,11 @@
     <startEvent id="_2" isInterrupting="true" name="Start Event" parallelMultiple="false">
       <outgoing>_4</outgoing>
     </startEvent>
-    <sendTask completionQuantity="1" id="_3" isForCompensation="false" name="Task" startQuantity="1">
+    <scriptTask completionQuantity="1" id="_3" isForCompensation="false" name="Task" startQuantity="1">
       <incoming>_4</incoming>
       <outgoing>_6</outgoing>
-    </sendTask>
+      <script>CREATE_LOG_FILE</script>
+    </scriptTask>
     <sequenceFlow id="_4" sourceRef="_2" targetRef="_3"/>
     <task completionQuantity="1" id="_5" isForCompensation="false" name="Task" startQuantity="1">
       <incoming>_6</incoming>
