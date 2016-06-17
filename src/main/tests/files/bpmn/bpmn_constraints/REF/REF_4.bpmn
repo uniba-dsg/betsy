@@ -27,7 +27,7 @@
       <incoming>_15</incoming>
     </endEvent>
     <sequenceFlow id="_6" sourceRef="F2_3" targetRef="_5"/>
-    <exclusiveGateway default="_3" gatewayDirection="Unspecified" id="_11" name="Exclusive Gateway">
+    <exclusiveGateway default="_3" gatewayDirection="Diverging" id="_11" name="Exclusive Gateway">
       <incoming>_12</incoming>
       <outgoing>_13</outgoing>
       <outgoing>_14</outgoing>

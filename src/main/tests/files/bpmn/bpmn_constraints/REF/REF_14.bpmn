@@ -25,7 +25,7 @@
 	  </linkEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="_8" sourceRef="_7" targetRef="_5"/>
-    <exclusiveGateway gatewayDirection="Unspecified" id="_9" name="Exclusive Gateway">
+    <exclusiveGateway gatewayDirection="Diverging" id="_9" name="Exclusive Gateway">
       <incoming>_10</incoming>
       <outgoing>_12</outgoing>
       <outgoing>_15</outgoing>

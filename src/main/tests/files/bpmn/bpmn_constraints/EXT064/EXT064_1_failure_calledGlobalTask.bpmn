@@ -25,7 +25,7 @@
       <ioSpecification>
         <dataInput id="Din_8_19" isCollection="false" itemSubjectRef="ID_1"/>
         <dataOutput id="Dout_8_21" isCollection="false" itemSubjectRef="ID_2"/>
-        <inputSet>
+        <inputSet>,0
           <dataInputRefs>Din_8_19</dataInputRefs>
         </inputSet>
         <outputSet>

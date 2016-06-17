@@ -21,7 +21,7 @@
       <incoming>F2_8</incoming>
       <outgoing>_8</outgoing>
     </task>
-    <parallelGateway gatewayDirection="Unspecified" id="F2_5">
+    <parallelGateway gatewayDirection="Mixed" id="F2_5">
       <incoming>F2_6</incoming>
       <incoming>F2_6</incoming>
       <outgoing>F2_7</outgoing>

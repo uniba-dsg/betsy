@@ -4,7 +4,7 @@
     <startEvent id="_2" isInterrupting="true" name="Start Event" parallelMultiple="false">
       <outgoing>_4</outgoing>
     </startEvent>
-    <complexGateway gatewayDirection="Unspecified" id="_3" name="Parallel Gateway">
+    <complexGateway gatewayDirection="Diverging" id="_3" name="Parallel Gateway">
       <incoming>_4</incoming>
       <outgoing>_6</outgoing>
       <outgoing>_11</outgoing>
@@ -15,7 +15,7 @@
       <outgoing>_8</outgoing>
     </task>
     <sequenceFlow id="_6" sourceRef="_3" targetRef="_5"/>
-    <complexGateway gatewayDirection="Unspecified" id="_7" name="Complex Gateway">
+    <complexGateway gatewayDirection="Converging" id="_7" name="Complex Gateway">
       <incoming>_8</incoming>
       <incoming>_12</incoming>
       <outgoing>_14</outgoing>

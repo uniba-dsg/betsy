@@ -3,6 +3,7 @@
   <itemDefinition id="ID_1" itemKind="Information" structureRef="String"/>
   <itemDefinition id="ID_2" itemKind="Information" structureRef="String"/>
   <itemDefinition id="ID_3" itemKind="Information" structureRef="Integer"/>
+  <signal id="SIG_1" name="Signal" structureRef="ID_3"/>
   <message id="MSG_1" itemRef="ID_1" name="Message"/>
   <interface id="IF_1" name="IF1">
     <operation id="OP_1" name="operation">
@@ -39,7 +40,6 @@
     <dataObject id="DO_PROCESS_1_1" isCollection="false" name="Data Object" itemSubjectRef="ID_1"/>
     <dataObjectReference dataObjectRef="DO_PROCESS_1_1" id="_7"/>
   </process>
-  <signal id="SIG_1" name="Signal" structureRef="ID_3"/>
   <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=597.6;height=842.4;imageableWidth=587.6;imageableHeight=832.4;imageableX=5.0;imageableY=5.0" id="Yaoqiang_Diagram-_1" name="New Diagram" resolution="96.0">
     <bpmndi:BPMNPlane bpmnElement="PROCESS_1">
       <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2">

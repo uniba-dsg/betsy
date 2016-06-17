@@ -9,7 +9,7 @@
   </interface>
 
   <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
-    <eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Unspecified" id="_2" instantiate="false" name="Event Gateway">
+    <eventBasedGateway eventGatewayType="Exclusive" gatewayDirection="Diverging" id="_2" instantiate="false" name="Event Gateway">
       <incoming>_4</incoming>
       <outgoing>_6</outgoing>
       <outgoing>_8</outgoing>
