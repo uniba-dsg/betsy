@@ -108,10 +108,10 @@ public class CamundaTester {
     }
 
     private boolean isProcessDeployed() {
-        JSONArray result = JsonHelper.getJsonArray(restURL+"/deployment", 200);
+        JSONArray result = JsonHelper.getJsonArray(restURL+"/process-definition", 200);
 
         for(int i=0; i<result.length(); i++) {
-            if(key.equals(result.getJSONObject(i).get("name"))) {
+            if((key+".bpmn").equals(result.getJSONObject(i).get("resource"))) {
                 return true;
             }
         }
