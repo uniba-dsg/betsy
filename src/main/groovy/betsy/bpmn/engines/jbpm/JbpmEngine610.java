@@ -35,8 +35,4 @@ public class JbpmEngine610 extends JbpmEngine {
         return getJbpmnUrl() + "/rest/history/instance/1";
     }
 
-    @Override
-    protected String createProcessDeploymentURL(String deploymentId) {
-        return getJbpmnUrl() + "/rest/deployment/" + deploymentId + "/processes";
-    }
 }

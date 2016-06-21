@@ -132,6 +132,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
 
+        FileTasks.replaceTokenInFile(getJbpmInstallerPath().resolve("build.xml"),"<env key=\"JAVA_OPTS\" value=\"-XX:MaxPermSize=256m -Xms256m -Xmx512m\" />", "<env key=\"JAVA_OPTS\" value=\"-XX:MaxPermSize=256m -Xms512m -Xmx2048m -XX:-UseGCOverheadLimit\" />");
+
         ConsoleTasks.setupAnt(getAntPath());
 
         Map<String, String> map = new LinkedHashMap<>(1);

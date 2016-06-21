@@ -29,4 +29,9 @@ public class JbpmEngine640 extends JbpmEngine610 {
         jbpmInstaller.setFileName("jbpm-6.4.0.Final-installer-full.zip");
         jbpmInstaller.install();
     }
+
+    @Override
+    protected String createProcessDeploymentURL(String deploymentId) {
+        return getJbpmnUrl() + "/rest/deployment/" + deploymentId + "/processes";
+    }
 }

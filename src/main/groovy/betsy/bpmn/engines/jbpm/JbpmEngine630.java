@@ -30,4 +30,9 @@ public class JbpmEngine630 extends JbpmEngine610 {
         jbpmInstaller.install();
     }
 
+    @Override
+    protected String createProcessDeploymentURL(String deploymentId) {
+        return getJbpmnUrl() + "/rest/deployment/" + deploymentId + "/processes";
+    }
+
 }

@@ -161,7 +161,9 @@ public class JbpmTester {
 
     private boolean isProcessDeployed() {
         String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
-        return result.contains("<deployment-status>DEPLOYED</deployment-status>") || result.contains("<id>"+name+"</id>");
+        return result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
+                result.contains("<status>DEPLOYED</status>") || 
+                result.contains("<deployment-id>"+deploymentId+"</deployment-id>");
     }
 
     private Path getFileName() {
