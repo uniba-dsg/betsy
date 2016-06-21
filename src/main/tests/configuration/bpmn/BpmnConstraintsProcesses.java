@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class BpmnConstraintsProcesses {
 
@@ -52,8 +53,8 @@ class BpmnConstraintsProcesses {
     }
 
     private static boolean hasFolderBpmnFiles(Path dir) {
-        try {
-            return Files.list(dir).anyMatch(FileTypes::isBpmnFile);
+        try (Stream<Path> paths = Files.list(dir)){
+            return paths.anyMatch(FileTypes::isBpmnFile);
         } catch (IOException e) {
             // no BPMN files if the folder does not exist
             return false;
@@ -61,8 +62,8 @@ class BpmnConstraintsProcesses {
     }
 
     private static List<Path> getBpmnFilesInFolder(Path dir) {
-        try {
-            return Files.list(dir).filter(FileTypes::isBpmnFile).collect(Collectors.toList());
+        try (Stream<Path> paths = Files.list(dir)) {
+            return paths.filter(FileTypes::isBpmnFile).collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("could not find a BPMN file in folder " + dir);
         }
