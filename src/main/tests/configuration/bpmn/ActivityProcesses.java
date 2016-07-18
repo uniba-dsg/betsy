@@ -1,8 +1,8 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 
 import java.util.Arrays;
@@ -14,37 +14,37 @@ class ActivityProcesses {
     * ACTIVITY CONSTRUCTS
     */
 
-    public static final Construct CONSTRUCT_CALL_ACTIVITY = new Construct(Groups.ACTIVITIES, "CallActivity",
+    public static final FeatureSet CONSTRUCT_CALL_ACTIVITY = new FeatureSet(Groups.ACTIVITIES, "CallActivity",
             "A Call Activity identifies a point in the Process where a global Process or a Global Task is used. The Call "
                     + "Activity acts as a ‘wrapper’ for the invocation of a global Process or Global Task within the "
                     + "execution. (see BPMN spec p.182)");
-    public static final Construct CONSTRUCT_MULTI_INSTANCE_TASK = new Construct(Groups.ACTIVITIES, "MultiInstanceTask",
+    public static final FeatureSet CONSTRUCT_MULTI_INSTANCE_TASK = new FeatureSet(Groups.ACTIVITIES, "MultiInstanceTask",
             "MultiInstanceTasks allows for creation of a desired number of Activity instances. The instances can be "
                     + "defined to be executed in parallel or sequential. (see BPMN spec p.190)");
 
-    public static final Construct CONSTRUCT_LOOP_TASK = new Construct(Groups.ACTIVITIES, "LoopTask", "The StandardLoopCharacteristics class defines "
+    public static final FeatureSet CONSTRUCT_LOOP_TASK = new FeatureSet(Groups.ACTIVITIES, "LoopTask", "The StandardLoopCharacteristics class defines "
             + "looping behavior based on a boolean condition. The Activity will loop as long as the boolean "
             + "condition is true. (see BPMN spec p.189)");
 
-    public static final Construct CONSTRUCT_TRANSACTION = new Construct(Groups.ACTIVITIES, "Transaction", "A Transaction is a specialized type of "
+    public static final FeatureSet CONSTRUCT_TRANSACTION = new FeatureSet(Groups.ACTIVITIES, "Transaction", "A Transaction is a specialized type of "
             + "Sub-Process that will have a special behavior that is controlled through a transaction protocol."
             + " (see BPMN spec p.176)");
 
-    public static final Construct CONSTRUCT_SUBPROCESS = new Construct(Groups.ACTIVITIES, "SubProcess", "A Sub-Process is an Activity whose internal "
+    public static final FeatureSet CONSTRUCT_SUBPROCESS = new FeatureSet(Groups.ACTIVITIES, "SubProcess", "A Sub-Process is an Activity whose internal "
             + "details have been modeled using Activities, Gateways, Events, and Sequence Flows. (see BPMN spec p.171)");
 
-    public static final Construct CONSTRUCT_AD_HOC_SUBPROCESS = new Construct(Groups.ACTIVITIES, "AdHocSubProcess", "An Ad-Hoc Sub-Process is a specialized type"
+    public static final FeatureSet CONSTRUCT_AD_HOC_SUBPROCESS = new FeatureSet(Groups.ACTIVITIES, "AdHocSubProcess", "An Ad-Hoc Sub-Process is a specialized type"
             + " of Sub-Process that is a group of Activities that have no required sequence relationships. (see BPMN spec p.179)");
 
-    public static final Construct CONSTRUCT_TOKEN_CARDINALITY = new Construct(Groups.ACTIVITIES, "TokenCardinality",
+    public static final FeatureSet CONSTRUCT_TOKEN_CARDINALITY = new FeatureSet(Groups.ACTIVITIES, "TokenCardinality",
             "All activities can specify how much so called tokens are needed to start the execution/are created upon "
                     + "completion. (see BPMN spec pp.150-151)");
 
-    public static final Construct CONSTRUCT_SEND_TASK = new Construct(Groups.ACTIVITIES, "SendTask", "A Send Task is a "
+    public static final FeatureSet CONSTRUCT_SEND_TASK = new FeatureSet(Groups.ACTIVITIES, "SendTask", "A Send Task is a "
             + "simple Task that is designed to send a Message to an external Participant (relative to the Process). "
             + "Once the Message has been sent, the Task is completed. (see BPMN spec p.157)");
 
-    public static final Construct CONSTRUCT_RECEIVE_TASK = new Construct(Groups.ACTIVITIES, "ReceiveTask", "A Receive "
+    public static final FeatureSet CONSTRUCT_RECEIVE_TASK = new FeatureSet(Groups.ACTIVITIES, "ReceiveTask", "A Receive "
             + "Task is a simple Task that is designed to wait for a Message to arrive from an external Participant "
             + "(relative to the Process). Once the Message has been received, the Task is completed. (see BPMN spec p.159)");
 

@@ -2,8 +2,8 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.util.CollectionsUtil;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 class StructuredActivityProcesses {
 
-    private static final Construct WHILE_CONSTRUCT = new Construct(Groups.STRUCTURED, "While", "The <while> activity provides for repeated execution of a contained activity. The contained activity is executed as long as the Boolean <condition> evaluates to true at the beginning of each iteration. (p. 99, BPEL)");
-    private static final Construct REPEAT_UNTIL_CONSTRUCT = new Construct(Groups.STRUCTURED, "RepeatUntil", "The <repeatUntil> activity provides for repeated execution of a contained activity. The contained activity is executed until the given Boolean <condition> becomes true. (p. 100, BPEL)");
-    private static final Construct PICK_CONSTRUCT = new Construct(Groups.STRUCTURED, "Pick", "The <pick> activity waits for the occurrence of exactly one event from a set of events, then executes the activity associated with that event. After an event has been selected, the other events are no longer accepted by that <pick>. (p. 100, BPEL)");
-    private static final Construct FOR_EACH_CONSTRUCT = new Construct(Groups.STRUCTURED, "ForEach", "The <forEach> activity will execute its contained <scope> activity exactly N+1 times where N equals the <finalCounterValue> minus the <startCounterValue>. (p. 112, BPEL)");
-    private static final Construct SEQUENCE_CONSTRUCT = new Construct(Groups.STRUCTURED, "Sequence", "A <sequence> activity contains one or more activities that are performed sequentially, in the lexical order in which they appear within the <sequence> element. (p. 98, BPEL)");
-    private static final Construct IF_CONSTRUCT = new Construct(Groups.STRUCTURED, "If", "The <if> activity provides conditional behavior. The activity consists of an ordered list of one or more conditional branches defined by the <if> and optional <elseif> elements, followed by an optional <else> element. (p. 99, BPEL)");
-    private static final Construct FLOW_CONSTRUCT = new Construct(Groups.STRUCTURED, "Flow", "The <flow> activity provides concurrency and synchronization. (p. 102, BPEL)");
+    private static final FeatureSet WHILE_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "While", "The <while> activity provides for repeated execution of a contained activity. The contained activity is executed as long as the Boolean <condition> evaluates to true at the beginning of each iteration. (p. 99, BPEL)");
+    private static final FeatureSet REPEAT_UNTIL_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "RepeatUntil", "The <repeatUntil> activity provides for repeated execution of a contained activity. The contained activity is executed until the given Boolean <condition> becomes true. (p. 100, BPEL)");
+    private static final FeatureSet PICK_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "Pick", "The <pick> activity waits for the occurrence of exactly one event from a set of events, then executes the activity associated with that event. After an event has been selected, the other events are no longer accepted by that <pick>. (p. 100, BPEL)");
+    private static final FeatureSet FOR_EACH_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "ForEach", "The <forEach> activity will execute its contained <scope> activity exactly N+1 times where N equals the <finalCounterValue> minus the <startCounterValue>. (p. 112, BPEL)");
+    private static final FeatureSet SEQUENCE_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "Sequence", "A <sequence> activity contains one or more activities that are performed sequentially, in the lexical order in which they appear within the <sequence> element. (p. 98, BPEL)");
+    private static final FeatureSet IF_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "If", "The <if> activity provides conditional behavior. The activity consists of an ordered list of one or more conditional branches defined by the <if> and optional <elseif> elements, followed by an optional <else> element. (p. 99, BPEL)");
+    private static final FeatureSet FLOW_CONSTRUCT = new FeatureSet(Groups.STRUCTURED, "Flow", "The <flow> activity provides concurrency and synchronization. (p. 102, BPEL)");
 
     public static final EngineIndependentProcess SEQUENCE = BPELProcessBuilder.buildStructuredActivityProcess(
             "Sequence", "A receive-reply pair enclosed in a sequence.",

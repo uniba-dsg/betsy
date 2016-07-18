@@ -3,8 +3,8 @@ package configuration.bpel;
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.util.CollectionsUtil;
 
@@ -13,15 +13,15 @@ import java.util.List;
 
 class ScopeProcesses {
 
-    private static final Construct TERMINATION_HANDLERS_CONSTRUCT = new Construct(Groups.SCOPES, "TerminationHandlers", "Termination handlers provide the ability for scopes to control the semantics of forced termination to some degree. (p. 136, BPEL)");
-    private static final Construct VARIABLES_CONSTRUCT = new Construct(Groups.SCOPES, "Variables", "Variables can be attached to <scope> or <process> elements.");
-    private static final Construct PARTNER_LINKS_CONSTRUCT = new Construct(Groups.SCOPES, "PartnerLinks", "The notion of <partnerLinks> is used to directly model peer-to-peer conversational partner relationships. (p. 36, BPEL)");
-    private static final Construct FAULT_HANDLERS_CONSTRUCT = new Construct(Groups.SCOPES, "FaultHandlers", "Fault handling in a business process can be thought of as a mode switch from the normal processing in a scope. Fault handling in WS-BPEL is designed to be treated as \"reverse work,\" in that its aim is to undo the partial and unsuccessful work of a scope in which a fault has occurred. (p. 127, BPEL)");
-    private static final Construct SCOPE_ATTRIBUTES_CONSTRUCT = new Construct(Groups.SCOPES, "Scope-Attributes", "All attributes of <scope> or <process>, being exitOnStandardFault and isolated");
-    private static final Construct EVENT_HANDLERS_CONSTRUCT = new Construct(Groups.SCOPES, "EventHandlers", "Each scope, including the process scope, can have a set of event handlers. These event handlers can run concurrently and are invoked when the corresponding event occurs. (p. 137, BPEL)");
-    private static final Construct CORRELATION_SETS_CONSTRUCT = new Construct(Groups.SCOPES, "CorrelationSets", "Correlation can be used on every messaging activity and are defined on <scope> or <process>. They ensure that the messages are routed to the process instance where the correlation set matches.");
-    private static final Construct MESSAGE_EXCHANGES_CONSTRUCT = new Construct(Groups.SCOPES, "MessageExchanges", "Manages message exchanges consisting of inbound message activities (IMA) and optional replies.");
-    private static final Construct COMPENSATION_CONSTRUCT = new Construct(Groups.SCOPES, "Compensation", "The ability to declare compensation logic alongside forward-working logic is the underpinning of the application-controlled error-handling framework of WS-BPEL. (p. 118, BPEL)");
+    private static final FeatureSet TERMINATION_HANDLERS_CONSTRUCT = new FeatureSet(Groups.SCOPES, "TerminationHandlers", "Termination handlers provide the ability for scopes to control the semantics of forced termination to some degree. (p. 136, BPEL)");
+    private static final FeatureSet VARIABLES_CONSTRUCT = new FeatureSet(Groups.SCOPES, "Variables", "Variables can be attached to <scope> or <process> elements.");
+    private static final FeatureSet PARTNER_LINKS_CONSTRUCT = new FeatureSet(Groups.SCOPES, "PartnerLinks", "The notion of <partnerLinks> is used to directly model peer-to-peer conversational partner relationships. (p. 36, BPEL)");
+    private static final FeatureSet FAULT_HANDLERS_CONSTRUCT = new FeatureSet(Groups.SCOPES, "FaultHandlers", "Fault handling in a business process can be thought of as a mode switch from the normal processing in a scope. Fault handling in WS-BPEL is designed to be treated as \"reverse work,\" in that its aim is to undo the partial and unsuccessful work of a scope in which a fault has occurred. (p. 127, BPEL)");
+    private static final FeatureSet SCOPE_ATTRIBUTES_CONSTRUCT = new FeatureSet(Groups.SCOPES, "Scope-Attributes", "All attributes of <scope> or <process>, being exitOnStandardFault and isolated");
+    private static final FeatureSet EVENT_HANDLERS_CONSTRUCT = new FeatureSet(Groups.SCOPES, "EventHandlers", "Each scope, including the process scope, can have a set of event handlers. These event handlers can run concurrently and are invoked when the corresponding event occurs. (p. 137, BPEL)");
+    private static final FeatureSet CORRELATION_SETS_CONSTRUCT = new FeatureSet(Groups.SCOPES, "CorrelationSets", "Correlation can be used on every messaging activity and are defined on <scope> or <process>. They ensure that the messages are routed to the process instance where the correlation set matches.");
+    private static final FeatureSet MESSAGE_EXCHANGES_CONSTRUCT = new FeatureSet(Groups.SCOPES, "MessageExchanges", "Manages message exchanges consisting of inbound message activities (IMA) and optional replies.");
+    private static final FeatureSet COMPENSATION_CONSTRUCT = new FeatureSet(Groups.SCOPES, "Compensation", "The ability to declare compensation logic alongside forward-working logic is the underpinning of the application-controlled error-handling framework of WS-BPEL. (p. 118, BPEL)");
 
     public static final EngineIndependentProcess COMPENSATE = BPELProcessBuilder.buildScopeProcess(
             "Scope-Compensate", "A scope with a receive-reply pair where the reply is located in a compensationHandler. The scope is followed by a throw and the compensationHandler is invoked from the process-level faultHandler that catches the fault using compensate.",

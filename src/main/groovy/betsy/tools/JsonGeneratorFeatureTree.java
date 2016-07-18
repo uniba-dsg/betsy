@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import betsy.common.model.feature.Capability;
-import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
@@ -57,16 +57,16 @@ class JsonGeneratorFeatureTree {
     }
 
     private static void convertProcess(JSONArray rootArray, List<EngineIndependentProcess> processes) {
-        Map<Capability, Map<Language, Map<Group, Map<Construct, List<EngineIndependentProcess>>>>> entries;
+        Map<Capability, Map<Language, Map<Group, Map<FeatureSet, List<EngineIndependentProcess>>>>> entries;
         entries = processes.stream().
                 collect(Collectors.groupingBy(FeatureDimension::getCapability,
                         Collectors.groupingBy(FeatureDimension::getLanguage,
                         Collectors.groupingBy(FeatureDimension::getGroup,
-                        Collectors.groupingBy(FeatureDimension::getConstruct)))));
+                        Collectors.groupingBy(FeatureDimension::getFeatureSet)))));
 
         JSONArray capabilityArray = rootArray;
 
-        for(Map.Entry<Capability, Map<Language, Map<Group, Map<Construct, List<EngineIndependentProcess>>>>> entryCapability : entries.entrySet()) {
+        for(Map.Entry<Capability, Map<Language, Map<Group, Map<FeatureSet, List<EngineIndependentProcess>>>>> entryCapability : entries.entrySet()) {
             Capability capability = entryCapability.getKey();
             JSONObject capabilityObject = new JSONObject();
             capabilityObject.put("name", capability.getName());
@@ -74,7 +74,7 @@ class JsonGeneratorFeatureTree {
             JSONArray languagesArray = new JSONArray();
             capabilityObject.put("languages", languagesArray);
 
-            for(Map.Entry<Language, Map<Group, Map<Construct, List<EngineIndependentProcess>>>> entryLanguage : entryCapability.getValue().entrySet()) {
+            for(Map.Entry<Language, Map<Group, Map<FeatureSet, List<EngineIndependentProcess>>>> entryLanguage : entryCapability.getValue().entrySet()) {
                 Language language = entryLanguage.getKey();
                 JSONObject languageObject = new JSONObject();
                 languageObject.put("name", language.getName());
@@ -82,7 +82,7 @@ class JsonGeneratorFeatureTree {
                 JSONArray groupsArray = new JSONArray();
                 languageObject.put("groups", groupsArray);
 
-                for(Map.Entry<Group, Map<Construct, List<EngineIndependentProcess>>> entryGroup : entryLanguage.getValue().entrySet()) {
+                for(Map.Entry<Group, Map<FeatureSet, List<EngineIndependentProcess>>> entryGroup : entryLanguage.getValue().entrySet()) {
                     Group group = entryGroup.getKey();
 
                     JSONObject groupObject = new JSONObject();
@@ -92,8 +92,8 @@ class JsonGeneratorFeatureTree {
                     JSONArray constructsArray = new JSONArray();
                     groupObject.put("constructs", constructsArray);
 
-                    for(Map.Entry<Construct, List<EngineIndependentProcess>> entryConstruct : entryGroup.getValue().entrySet()) {
-                        Construct construct = entryConstruct.getKey();
+                    for(Map.Entry<FeatureSet, List<EngineIndependentProcess>> entryConstruct : entryGroup.getValue().entrySet()) {
+                        FeatureSet construct = entryConstruct.getKey();
 
                         JSONObject constructObject = new JSONObject();
                         constructObject.put("name", construct.getName());

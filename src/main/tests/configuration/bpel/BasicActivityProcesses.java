@@ -3,8 +3,8 @@ package configuration.bpel;
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.model.assertions.ExitAssertion;
 import betsy.bpel.model.assertions.SoapFaultTestAssertion;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 import betsy.common.util.CollectionsUtil;
 
@@ -13,17 +13,17 @@ import java.util.List;
 
 class BasicActivityProcesses {
 
-    private static final Construct EMPTY_CONSTRUCT = new Construct(Groups.BASIC, "Empty", "An activity which does nothing.");
-    private static final Construct EXIT_CONSTRUCT = new Construct(Groups.BASIC, "Exit", "The <exit> activity is used to immediately end the business process instance. (p. 96, BPEL)");
-    private static final Construct VALIDATE_CONSTRUCT = new Construct(Groups.BASIC, "Validate", "The <validate> activity can be used to ensure that values of variables are valid against their associated XML data definition, including XML Schema simple type, complex type, element definition and XML definitions of WSDL parts. (p. 48, BPEL)");
-    private static final Construct VARIABLES_CONSTRUCT = new Construct(Groups.BASIC, "Variables", "Groups together several features regarding initialization of variables.");
-    private static final Construct WAIT_CONSTRUCT = new Construct(Groups.BASIC, "Wait", "The <wait> activity specifies a delay for a certain period of time or until a certain deadline is reached (p. 95, BPEL)");
-    private static final Construct THROW_CONSTRUCT = new Construct(Groups.BASIC, "Throw", "The <throw> activity is used when a business process needs to signal an internal fault explicitly. (p. 94, BPEL)");
-    private static final Construct RETHROW_CONSTRUCT = new Construct(Groups.BASIC, "Rethrow", "The <rethrow> activity is used in fault handlers to rethrow the fault they caught, i.e. the fault name and, where present, the fault data of the original fault. (p. 96, BPEL)");
-    private static final Construct RECEIVE_CONSTRUCT = new Construct(Groups.BASIC, "Receive", "A <receive> is a blocking activity in that it will not complete until a matching message is received by the process instance. (p.91, BPEL)");
-    private static final Construct RECEIVE_REPLY_CONSTRUCT = new Construct(Groups.BASIC, "ReceiveReply", "The <reply> activity is used to send a response to a request previously accepted through an inbound message activity such as the <receive> activity. (p. 92, BPEL)");
-    private static final Construct INVOKE_CONSTRUCT = new Construct(Groups.BASIC, "Invoke", "The <invoke> activity is used to call Web Services offered by service providers. (p. 84, BPEL)");
-    private static final Construct ASSIGN_CONSTRUCT = new Construct(Groups.BASIC, "Assign", "Variable update occurs through the <assign> activity. (p. 94, BPEL)");
+    private static final FeatureSet EMPTY_CONSTRUCT = new FeatureSet(Groups.BASIC, "Empty", "An activity which does nothing.");
+    private static final FeatureSet EXIT_CONSTRUCT = new FeatureSet(Groups.BASIC, "Exit", "The <exit> activity is used to immediately end the business process instance. (p. 96, BPEL)");
+    private static final FeatureSet VALIDATE_CONSTRUCT = new FeatureSet(Groups.BASIC, "Validate", "The <validate> activity can be used to ensure that values of variables are valid against their associated XML data definition, including XML Schema simple type, complex type, element definition and XML definitions of WSDL parts. (p. 48, BPEL)");
+    private static final FeatureSet VARIABLES_CONSTRUCT = new FeatureSet(Groups.BASIC, "Variables", "Groups together several features regarding initialization of variables.");
+    private static final FeatureSet WAIT_CONSTRUCT = new FeatureSet(Groups.BASIC, "Wait", "The <wait> activity specifies a delay for a certain period of time or until a certain deadline is reached (p. 95, BPEL)");
+    private static final FeatureSet THROW_CONSTRUCT = new FeatureSet(Groups.BASIC, "Throw", "The <throw> activity is used when a business process needs to signal an internal fault explicitly. (p. 94, BPEL)");
+    private static final FeatureSet RETHROW_CONSTRUCT = new FeatureSet(Groups.BASIC, "Rethrow", "The <rethrow> activity is used in fault handlers to rethrow the fault they caught, i.e. the fault name and, where present, the fault data of the original fault. (p. 96, BPEL)");
+    private static final FeatureSet RECEIVE_CONSTRUCT = new FeatureSet(Groups.BASIC, "Receive", "A <receive> is a blocking activity in that it will not complete until a matching message is received by the process instance. (p.91, BPEL)");
+    private static final FeatureSet RECEIVE_REPLY_CONSTRUCT = new FeatureSet(Groups.BASIC, "ReceiveReply", "The <reply> activity is used to send a response to a request previously accepted through an inbound message activity such as the <receive> activity. (p. 92, BPEL)");
+    private static final FeatureSet INVOKE_CONSTRUCT = new FeatureSet(Groups.BASIC, "Invoke", "The <invoke> activity is used to call Web Services offered by service providers. (p. 84, BPEL)");
+    private static final FeatureSet ASSIGN_CONSTRUCT = new FeatureSet(Groups.BASIC, "Assign", "Variable update occurs through the <assign> activity. (p. 94, BPEL)");
 
     public static final EngineIndependentProcess EMPTY = BPELProcessBuilder.buildBasicActivityProcess(
             "Empty", "A receive-reply pair with an intermediate empty.",

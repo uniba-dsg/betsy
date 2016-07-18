@@ -1,8 +1,8 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 
 import java.util.Arrays;
@@ -12,29 +12,29 @@ class GatewayProcesses {
     /*
     * GATEWAY CONSTRUCTS
     */
-    public static final Construct CONSTRUCT_EXCLUSIVE_GATEWAY = new Construct(Groups.GATEWAYS, "ExclusiveGateway",
+    public static final FeatureSet CONSTRUCT_EXCLUSIVE_GATEWAY = new FeatureSet(Groups.GATEWAYS, "ExclusiveGateway",
             "A diverging Exclusive Gateway (Decision) is used to create alternative paths within a Process flow. "
                     + "A converging Exclusive Gateway is used to merge alternative paths. (see BPMN spec pp.289-291)");
 
-    public static final Construct CONSTRUCT_EVENT_BASED_GATEWAY = new Construct(Groups.GATEWAYS, "EventBasedGateway",
+    public static final FeatureSet CONSTRUCT_EVENT_BASED_GATEWAY = new FeatureSet(Groups.GATEWAYS, "EventBasedGateway",
             "The Event-Based Gateway represents a branching point in the Process where the alternative paths that follow"
                     + " the Gateway are based on Events that occur, rather than the evaluation of Expressions using "
                     + "Process data. (see BPMN spec pp.296-299)");
 
-    public static final Construct CONSTRUCT_PARALLEL_GATEWAY = new Construct(Groups.GATEWAYS, "ParallelGateway",
+    public static final FeatureSet CONSTRUCT_PARALLEL_GATEWAY = new FeatureSet(Groups.GATEWAYS, "ParallelGateway",
             "A Parallel Gateway is used to synchronize (combine) parallel flows and to create parallel flows. (see "
                     + "BPMN spec pp.292-294)");
 
-    public static final Construct CONSTRUCT_INCLUSIVE_GATEWAY = new Construct(Groups.GATEWAYS, "InclusiveGateway",
+    public static final FeatureSet CONSTRUCT_INCLUSIVE_GATEWAY = new FeatureSet(Groups.GATEWAYS, "InclusiveGateway",
             "A diverging Inclusive Gateway (Inclusive Decision) can be used to create alternative but also parallel "
                     + "paths within a Process flow. A converging Inclusive Gateway is used to merge a combination of "
                     + "alternative and parallel paths. (see BPMN spec pp.291-292)");
 
-    public static final Construct CONSTRUCT_COMPLEX_GATEWAY = new Construct(Groups.GATEWAYS, "ComplexGateway", "The "
+    public static final FeatureSet CONSTRUCT_COMPLEX_GATEWAY = new FeatureSet(Groups.GATEWAYS, "ComplexGateway", "The "
             + "Complex Gateway can be used to model complex synchronization behavior not covered by other gateway types"
             + " (see BPMN spec pp.294-296)");
 
-    public static final Construct CONSTRUCT_MIXED_GATEWAY_COMBINATIONS = new Construct(Groups.GATEWAYS, "MixedGatewayCombinations",
+    public static final FeatureSet CONSTRUCT_MIXED_GATEWAY_COMBINATIONS = new FeatureSet(Groups.GATEWAYS, "MixedGatewayCombinations",
             "Testing combinations of different gateway types.");
 
     /*

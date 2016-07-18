@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.input.ExternalWSDLTestPartner;
@@ -85,7 +85,7 @@ public class ErrorProcesses {
         final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + feature.getName();
         Path newPath = errorsDir.resolve(filename + ".bpel");
 
-        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.construct, FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
+        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.featureSet, FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
     }
 
     private static List<EngineIndependentProcess> createTests(Path errorsDir, EngineIndependentProcess baseProcess) {
@@ -97,7 +97,7 @@ public class ErrorProcesses {
 
         for (Error error : getInputToErrorCode()) {
             int number = error.number;
-            Feature feature = new Feature(error.construct, error.name);
+            Feature feature = new Feature(error.featureSet, error.name);
             EngineIndependentProcess process = cloneErrorBetsyProcess(baseProcess, number, feature, errorsDir);
             process = process.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
 
@@ -107,10 +107,10 @@ public class ErrorProcesses {
         return result;
     }
 
-    private static final Construct HTTP_CONSTRUCT = new Construct(Groups.ERROR, "http");
-    private static final Construct SOAP_CONSTRUCT = new Construct(Groups.ERROR, "soap");
-    private static final Construct TCP_CONSTRUCT = new Construct(Groups.ERROR, "tcp");
-    private static final Construct APP_CONSTRUCT = new Construct(Groups.ERROR, "app");
+    private static final FeatureSet HTTP_CONSTRUCT = new FeatureSet(Groups.ERROR, "http");
+    private static final FeatureSet SOAP_CONSTRUCT = new FeatureSet(Groups.ERROR, "soap");
+    private static final FeatureSet TCP_CONSTRUCT = new FeatureSet(Groups.ERROR, "tcp");
+    private static final FeatureSet APP_CONSTRUCT = new FeatureSet(Groups.ERROR, "app");
 
     static TestPartner createErrorTestPartner(String url) {
         List<InternalWSDLTestPartner.OperationInputOutputRule> tcpActions = new ArrayList<>();
@@ -181,20 +181,20 @@ public class ErrorProcesses {
     private static class Error {
         public final int number;
         public final String name;
-        public final Construct construct;
+        public final FeatureSet featureSet;
         public final TestPartner testPartner;
 
-        private Error(int number, String name, Construct construct) {
+        private Error(int number, String name, FeatureSet featureSet) {
             this.number = number;
             this.name = name;
-            this.construct = construct;
+            this.featureSet = featureSet;
             this.testPartner = ErrorProcesses.createErrorTestPartner("http://localhost:2000/bpel-testpartner");
         }
 
-        public Error(int number, String name, Construct construct, TestPartner testPartner) {
+        public Error(int number, String name, FeatureSet featureSet, TestPartner testPartner) {
             this.number = number;
             this.name = name;
-            this.construct = construct;
+            this.featureSet = featureSet;
             this.testPartner = testPartner;
         }
     }
