@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.tasks.FileTasks;
@@ -42,7 +42,7 @@ class StaticAnalysisProcesses {
                     result.add(new EngineIndependentProcess(process,
                             FileTasks.getFilenameWithoutExtension(process),
                             Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
-                            new Feature(new Construct(Groups.SA, rule), process.getFileName().toString()),
+                            new Feature(new FeatureSet(Groups.SA, rule), process.getFileName().toString()),
                             createXSDandWSDLPaths(dir), Collections.emptyList()));
                 }
             });

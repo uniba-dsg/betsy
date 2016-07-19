@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.input.InternalWSDLTestPartner;
@@ -65,7 +65,7 @@ public class BPELProcessBuilder {
         return new EngineIndependentProcess(PATH_PREFIX.resolve("errorsbase").resolve(name + FileTypes.BPEL),
                 description,
                 Arrays.asList(testCases),
-                new Feature(new Construct(Groups.ERROR, constructName), name),
+                new Feature(new FeatureSet(Groups.ERROR, constructName), name),
                 Arrays.asList(testInterface, partnerInterface), Arrays.asList(ErrorProcesses.ERROR_TEST_PARTNER));
     }
 

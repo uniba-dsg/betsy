@@ -1,8 +1,8 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 
 import java.util.Arrays;
@@ -12,40 +12,40 @@ class EventProcesses {
     /*
      * EVENT CONSTRUCTS
      */
-    public static final Construct CONSTRUCT_CANCEL = new Construct(Groups.EVENTS, "Cancel_Event", "Cancel Events are "
+    public static final FeatureSet CONSTRUCT_CANCEL = new FeatureSet(Groups.EVENTS, "Cancel_Event", "Cancel Events are "
             + "used in the context of modeling Transaction Sub-Processes. (see BPMN spec pp.261-262)");
     
-    public static final Construct CONSTRUCT_COMPENSATION = new Construct(Groups.EVENTS, "Compensation_Event",
+    public static final FeatureSet CONSTRUCT_COMPENSATION = new FeatureSet(Groups.EVENTS, "Compensation_Event",
             "Compensation Events are used in the context of triggering or handling compensation. (see BPMN spec p.262)");
 
-    public static final Construct CONSTRUCT_CONDITIONAL = new Construct(Groups.EVENTS, "Conditional_Event", "Conditional "
+    public static final FeatureSet CONSTRUCT_CONDITIONAL = new FeatureSet(Groups.EVENTS, "Conditional_Event", "Conditional "
             + "Events are used if the event should be triggered by a condition. (see BPMN spec pp.263-264)");
 
-    public static final Construct CONSTRUCT_ERROR = new Construct(Groups.EVENTS, "Error_Event", "Error Events are used "
+    public static final FeatureSet CONSTRUCT_ERROR = new FeatureSet(Groups.EVENTS, "Error_Event", "Error Events are used "
             + "if the event should be triggered by an error. (see BPMN spec pp.264-265)");
 
-    public static final Construct CONSTRUCT_ESCALATION = new Construct(Groups.EVENTS, "Escalation_Event", "Escalation "
+    public static final FeatureSet CONSTRUCT_ESCALATION = new FeatureSet(Groups.EVENTS, "Escalation_Event", "Escalation "
             + "Events are used if the event should be triggered by an Escalation. (see BPMN spec pp.265-266)");
 
-    public static final Construct CONSTRUCT_LINK = new Construct(Groups.EVENTS, "Link_Event", "A Link Event is a mechanism "
+    public static final FeatureSet CONSTRUCT_LINK = new FeatureSet(Groups.EVENTS, "Link_Event", "A Link Event is a mechanism "
             + "for connecting two sections of a Process. (see BPMN spec pp.266-269)");
 
-    public static final Construct CONSTRUCT_MESSAGE = new Construct(Groups.EVENTS, "Message_Event", "Message "
+    public static final FeatureSet CONSTRUCT_MESSAGE = new FeatureSet(Groups.EVENTS, "Message_Event", "Message "
             + "Events are used if the event should be triggered by a message. (see BPMN spec pp.269-270)");
 
-    public static final Construct CONSTRUCT_SIGNAL = new Construct(Groups.EVENTS, "Signal_Event", "Signal Events are "
+    public static final FeatureSet CONSTRUCT_SIGNAL = new FeatureSet(Groups.EVENTS, "Signal_Event", "Signal Events are "
             + "used if the event should be triggered by a Signal. (see BPMN spec p.272)");
 
-    public static final Construct CONSTRUCT_TERMINATE = new Construct(Groups.EVENTS, "Terminate_Event", "Terminate Events "
+    public static final FeatureSet CONSTRUCT_TERMINATE = new FeatureSet(Groups.EVENTS, "Terminate_Event", "Terminate Events "
             + "are used to terminate the execution of the whole process. (see BPMN spec pp.272-273)");
 
-    public static final Construct CONSTRUCT_TIMER = new Construct(Groups.EVENTS, "Timer_Event", "Timer Events are "
+    public static final FeatureSet CONSTRUCT_TIMER = new FeatureSet(Groups.EVENTS, "Timer_Event", "Timer Events are "
             + "used if the event should be triggered by a Timer. (see BPMN spec p.273)");
 
-    public static final Construct CONSTRUCT_MULTIPLE_EVENTS = new Construct(Groups.EVENTS, "Multiple_Events", "Multiple "
+    public static final FeatureSet CONSTRUCT_MULTIPLE_EVENTS = new FeatureSet(Groups.EVENTS, "Multiple_Events", "Multiple "
             + "Events combine different event definitions. (see BPMN spec pp.270-272)");
 
-    public static final Construct CONSTRUCT_EVENT_DEF_REF = new Construct(Groups.EVENTS, "EventDefinitionRef", "Instead "
+    public static final FeatureSet CONSTRUCT_EVENT_DEF_REF = new FeatureSet(Groups.EVENTS, "EventDefinitionRef", "Instead "
             + "of defining EventDefinitions directly at the event element it is also possible to reference an "
             + "EventDefinition defined elsewhere. (see BPMN spec p.235 and p.262)");
 
