@@ -126,7 +126,7 @@ public class SnapshotCreator {
         return EngineNamingConstants.VIRTUAL_NAME_PREFIX + engineName + "_import-snapshot";
     }
 
-    private String createSnapshotDescription() {
+    private static String createSnapshotDescription() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
         return "Machine is in 'saved' state. Snapshot created during import on " + sdf.format(date);

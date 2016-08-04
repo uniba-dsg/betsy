@@ -145,7 +145,7 @@ public class BPMNTestcaseMerger {
         createAggregatedTestSuite(doc);
     }
 
-    private Document parseFile(Path file, DocumentBuilder dBuilder) throws IOException {
+    private static Document parseFile(Path file, DocumentBuilder dBuilder) throws IOException {
         try {
             return dBuilder.parse(file.toFile());
         } catch (SAXException e) {
@@ -153,7 +153,7 @@ public class BPMNTestcaseMerger {
         }
     }
 
-    private DocumentBuilder createDocumentBuilder() {
+    private static DocumentBuilder createDocumentBuilder() {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             return dbFactory.newDocumentBuilder();
@@ -177,7 +177,7 @@ public class BPMNTestcaseMerger {
     /**
      * // remove "Test-" from the file names
      */
-    private void removePrefixOfTestResults(Path path) {
+    private static void removePrefixOfTestResults(Path path) {
         try {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override

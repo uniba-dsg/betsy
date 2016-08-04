@@ -120,7 +120,7 @@ public class TestCaseToLatexSerializer {
         println("\\end{center}");
     }
 
-    private void println(String line) {
+    private static void println(String line) {
         System.out.println(line);
     }
 }
