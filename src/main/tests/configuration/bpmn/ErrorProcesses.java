@@ -1,8 +1,8 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
 
 import java.util.Arrays;
@@ -16,16 +16,16 @@ class ErrorProcesses {
     /*
     * ERROR CONSTRUCTS
     */
-    public static final Construct CONSTRUCT_PARALLEL_GATEWAY_COND = new Construct(Groups.ERRORS, "ParallelGateway_Conditions",
+    public static final FeatureSet CONSTRUCT_PARALLEL_GATEWAY_COND = new FeatureSet(Groups.ERRORS, "ParallelGateway_Conditions",
             "Checking the detection of invalid conditions attached to parallel gateways.");
 
-    public static final Construct CONSTRUCT_INVALID_GATEWAY_COMBINATIONS = new Construct(Groups.ERRORS, "InvalidGatewayCombinations",
+    public static final FeatureSet CONSTRUCT_INVALID_GATEWAY_COMBINATIONS = new FeatureSet(Groups.ERRORS, "InvalidGatewayCombinations",
             "Checking the detection of invalid combinations of gateway types resulting, e.g., resulting in deadlocks.");
 
-    public static final Construct CONSTRUCT_INVALID_LOOP_COND = new Construct(Groups.ERRORS, "InvalidLoopConditions",
+    public static final FeatureSet CONSTRUCT_INVALID_LOOP_COND = new FeatureSet(Groups.ERRORS, "InvalidLoopConditions",
             "Checking the detection of invalid loop conditions.");
 
-    public static final Construct CONSTRUCT_INVALID_TOKEN_QUANTITY = new Construct(Groups.ERRORS, "InvalidTokenQuantity",
+    public static final FeatureSet CONSTRUCT_INVALID_TOKEN_QUANTITY = new FeatureSet(Groups.ERRORS, "InvalidTokenQuantity",
             "Checking the detection of invalid token quantities.");
 
 

@@ -22,7 +22,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.feature.Capability;
-import betsy.common.model.feature.Construct;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.Group;
 import betsy.common.model.feature.Language;
@@ -57,7 +57,7 @@ public class EngineControlGUI extends Application {
             final Path tmpFolder = createTempFolder(e.toString());
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
-                Feature feature = new Feature(new Construct(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "construct"), "feature");
+                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
                 EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
                 eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
 
@@ -68,7 +68,7 @@ public class EngineControlGUI extends Application {
                 });
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
-                Feature feature = new Feature(new Construct(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "construct"), "feature");
+                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
                 EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
                 eNew.storeLogs(new BPMNProcess(engineIndependentProcess) {
 

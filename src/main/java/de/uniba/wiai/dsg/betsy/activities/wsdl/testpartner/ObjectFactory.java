@@ -12,7 +12,7 @@ import javax.xml.namespace.QName;
  * Java content interface and Java element interface 
  * generated in the de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner package. 
  * <p>An ObjectFactory allows you to programatically 
- * construct new instances of the Java representation 
+ * construct new instances of the Java representation
  * for XML content. The Java representation of XML 
  * content can consist of schema derived interfaces 
  * and classes representing the binding of schema 

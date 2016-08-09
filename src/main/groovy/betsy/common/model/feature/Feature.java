@@ -8,25 +8,25 @@ import java.util.Optional;
 
 public class Feature implements HasID, HasName {
 
-    public final Construct construct;
+    public final FeatureSet featureSet;
     public final String name;
     public final String description;
 
     public final Optional<String> upperBound;
 
-    public Feature(Construct construct, String name) {
-        this(construct, name, "");
+    public Feature(FeatureSet featureSet, String name) {
+        this(featureSet, name, "");
     }
 
-    public Feature(Construct construct, String name, String description) {
-        this.construct = Objects.requireNonNull(construct);
+    public Feature(FeatureSet featureSet, String name, String description) {
+        this.featureSet = Objects.requireNonNull(featureSet);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.upperBound = Optional.empty();
     }
 
-    public Feature(Construct construct, String name, String description, String upperBound) {
-        this.construct = Objects.requireNonNull(construct);
+    public Feature(FeatureSet featureSet, String name, String description, String upperBound) {
+        this.featureSet = Objects.requireNonNull(featureSet);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.upperBound = Optional.of(upperBound);
@@ -34,7 +34,7 @@ public class Feature implements HasID, HasName {
 
     @Override
     public String getID() {
-        return String.join(SEPARATOR, construct.getID(), name);
+        return String.join(SEPARATOR, featureSet.getID(), name);
     }
 
     @Override
