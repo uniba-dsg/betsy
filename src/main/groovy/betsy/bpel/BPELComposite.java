@@ -13,6 +13,7 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
+import betsy.tools.JsonMain;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.codehaus.groovy.runtime.StackTraceUtils;
@@ -100,6 +101,7 @@ public class BPELComposite {
             new Reporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPELCsvReport());
             new TestsEngineDependent().createJson(testSuite);
+            JsonMain.writeIntoSpecificFolder(testSuite.getPath());
         });
     }
 

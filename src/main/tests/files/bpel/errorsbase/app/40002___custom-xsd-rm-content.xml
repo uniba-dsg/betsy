@@ -1,0 +1,5 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Body>
+    <aetgt:testElementSyncResponse xmlns:aetgt="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"></aetgt:testElementSyncResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

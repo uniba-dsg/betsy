@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
+import betsy.common.tasks.FileTasks;
 
 public class Camunda740Engine extends Camunda710Engine {
 
@@ -24,5 +25,12 @@ public class Camunda740Engine extends Camunda710Engine {
         camundaInstaller.setFileName("camunda-bpm-tomcat-7.4.0.zip");
         camundaInstaller.setTomcatName(getTomcatName());
         camundaInstaller.install();
+
+        // Modify preferences
+        FileTasks.replaceTokenInFile(camundaInstaller.getTomcatDestinationDir().resolve("conf").resolve("bpm-platform.xml"),
+                "    <job-acquisition name=\"default\" />",
+                "    <job-acquisition name=\"default\">\n" + "      <properties>\n"
+                        + "        <property name=\"maxWait\">3000</property>\n" + "      </properties>\n"
+                        + "    </job-acquisition>");
     }
 }

@@ -138,6 +138,7 @@ public class JbpmTester {
         LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
         analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
         analyzer.addSubstring("Unable to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
+        analyzer.addSubstring("ProcessLoadError", BPMNAssertions.ERROR_DEPLOYMENT);
         for (BPMNAssertions deploymentError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), deploymentError);
             LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");

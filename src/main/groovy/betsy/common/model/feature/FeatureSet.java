@@ -5,17 +5,17 @@ import betsy.common.model.HasID;
 
 import java.util.Objects;
 
-public class Construct implements HasID, HasName {
+public class FeatureSet implements HasID, HasName {
 
     public final Group group;
     public final String name;
     public final String description;
 
-    public Construct(Group group, String name) {
+    public FeatureSet(Group group, String name) {
         this(group, name, "");
     }
 
-    public Construct(Group group, String name, String description) {
+    public FeatureSet(Group group, String name, String description) {
         this.group = Objects.requireNonNull(group);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
@@ -37,8 +37,8 @@ public class Construct implements HasID, HasName {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        Construct construct = (Construct) o;
-        return Objects.equals(getID(), construct.getID());
+        FeatureSet featureSet = (FeatureSet) o;
+        return Objects.equals(getID(), featureSet.getID());
     }
 
     @Override

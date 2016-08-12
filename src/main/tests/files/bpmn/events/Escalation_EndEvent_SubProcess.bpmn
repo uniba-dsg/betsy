@@ -36,7 +36,7 @@
             </bpmn2:endEvent>
         </bpmn2:subProcess>
 
-        <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="SubProcess_1" cancelActivity="false">
+        <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="SubProcess_1" cancelActivity="true">
             <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
             <bpmn2:escalationEventDefinition escalationRef="ESC_1" id="EscBoundaryDef"/>
         </bpmn2:boundaryEvent>

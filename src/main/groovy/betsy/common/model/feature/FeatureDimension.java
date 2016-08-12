@@ -1,8 +1,5 @@
 package betsy.common.model.feature;
 
-import betsy.common.model.HasID;
-import betsy.common.model.ProcessLanguage;
-
 public interface FeatureDimension {
 
     default Capability getCapability() {
@@ -14,11 +11,11 @@ public interface FeatureDimension {
     }
 
     default Group getGroup() {
-        return getConstruct().group;
+        return getFeatureSet().group;
     }
 
-    default Construct getConstruct() {
-        return getFeature().construct;
+    default FeatureSet getFeatureSet() {
+        return getFeature().featureSet;
     }
 
     /**

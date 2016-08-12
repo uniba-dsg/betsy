@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,8 +42,6 @@ public class TestsEngineDependent {
     public void createJson(BPMNTestSuite testSuite) {
         JSONArray rootArray = new JSONArray();
 
-        // TODO also write other jsons to test folder
-
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();
 
@@ -61,8 +60,6 @@ public class TestsEngineDependent {
 
     public void createJson(BPELTestSuite testSuite) {
         JSONArray rootArray = new JSONArray();
-
-        // TODO also write other jsons to test folder
 
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();
@@ -88,8 +85,8 @@ public class TestsEngineDependent {
         jsonObject.put("tool", createToolJsonObject(Tool.BETSY));
 
         List<String> logFiles = new LinkedList<>();
-        try {
-            logFiles.addAll(Files.list(process.getTargetLogsPath())
+        try (Stream<Path> list = Files.list(process.getTargetLogsPath())) {
+            logFiles.addAll(list
                     .map(Object::toString)
                     .collect(Collectors.toList()));
         } catch (IOException e) {
@@ -97,18 +94,19 @@ public class TestsEngineDependent {
         jsonObject.put("logFiles", new JSONArray(logFiles));
 
         List<String> engineDependentFiles = new LinkedList<>();
-        try {
-            engineDependentFiles.addAll(Files.list(process.getTargetProcessPath())
+        try (Stream<Path> list = Files.list(process.getTargetProcessPath())) {
+            engineDependentFiles.addAll(list
                     .map(Object::toString)
                     .collect(Collectors.toList()));
         } catch (IOException e) {
         }
 
         if (Files.exists(process.getTargetPackagePath())) {
-            try {
-                engineDependentFiles.addAll(Files.list(process.getTargetPackagePath())
+            try (Stream<Path> list = Files.list(process.getTargetPackagePath())) {
+                engineDependentFiles.addAll(list
                         .map(Object::toString)
                         .collect(Collectors.toList()));
+
             } catch (IOException e) {
             }
         }

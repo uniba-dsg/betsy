@@ -16,6 +16,7 @@ import betsy.bpel.engines.wso2.Wso2Engine_v2_1_2;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_0_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_1_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_2_0;
+import betsy.bpel.engines.wso2.Wso2Engine_v3_5_1;
 import betsy.bpel.virtual.host.engines.*;
 import betsy.common.repositories.Repository;
 
@@ -42,7 +43,7 @@ public class BPELEngineRepository {
                 new ActiveBpelEngine(),
                 new PetalsEsbEngine(), new PetalsEsb41Engine(),
                 new BpelgEngine(), new BpelgInMemoryEngine(),
-                new Wso2Engine_v3_2_0(), new Wso2Engine_v3_1_0(), new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
+                new Wso2Engine_v3_5_1(), new Wso2Engine_v3_2_0(), new Wso2Engine_v3_1_0(), new Wso2Engine_v3_0_0(), new Wso2Engine_v2_1_2());
         List<AbstractBPELEngine> recent = Arrays.asList(
                 new BpelgEngine(),
                 new OrchestraEngine(),
@@ -74,7 +75,7 @@ public class BPELEngineRepository {
 
         repo.put("ode", repo.getByName("ode__1_3_6"));
         repo.put("bpelg", repo.getByName("bpelg__5_3"));
-        repo.put("wso2", repo.getByName("wso2__3_2_0"));
+        repo.put("wso2", repo.getByName("wso2__3_5_1"));
         repo.put("petalsesb", repo.getByName("petalsesb__4_1"));
         repo.put("active_bpel", repo.getByName("activebpel__5_0_2"));
         repo.put("orchestra", repo.getByName("orchestra__4_9"));

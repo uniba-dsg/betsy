@@ -41,7 +41,7 @@ configurations {
 }
 
 dependencies {
-    internal 'org.codehaus.groovy:groovy-all:2.4.6'
+    internal 'org.codehaus.groovy:groovy-all:2.4.7'
 
     internal 'org.apache.ant:ant:1.9.7'
     internal 'org.apache.ant:ant-junit:1.9.7'
@@ -50,7 +50,7 @@ dependencies {
     internal 'log4j:log4j:1.2.17'
     internal 'org.virtualbox:vboxjws:4.2.8'
     internal 'commons-daemon:commons-daemon:1.0.15'
-    internal 'commons-io:commons-io:2.4'
+    internal 'commons-io:commons-io:2.5'
     internal 'commons-lang:commons-lang:2.6'
     internal 'org.json:json:5.0.5'
 
@@ -63,7 +63,7 @@ dependencies {
 
     internal 'commons-cli:commons-cli:1.3.1' // for the CLI tools
 
-    internal 'org.apache.santuario:xmlsec:2.0.6' // for canonical XML form
+    internal 'org.apache.santuario:xmlsec:2.0.7' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
@@ -173,18 +173,6 @@ run {
     }
 }
 
-task enginecontrol(type: JavaExec, dependsOn: build) {
-    description = 'Starts Engine Control GUI'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.tools.EngineControl"
-}
-
-task partnerservice(type: JavaExec, dependsOn: build) {
-    description = 'Starts test case partner service only'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpel.tools.PartnerServiceControl"
-}
-
 test {
     testLogging {
         exceptionFormat "full" // default is "short"
@@ -247,25 +235,6 @@ task install(type: JavaExec, dependsOn: jarServer) {
         args project.args.split('\\s+')
     }
 }
-
-task runBPMN(type: JavaExec, dependsOn: classes) {
-    description = 'Starts BPMNMain'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpmn.BPMNMain"
-    if (project.hasProperty('args')) {
-        args project.args.split('\\s+')
-    }
-}
-
-task runBPEL(type: JavaExec, dependsOn: classes) {
-    description = 'Starts BPMNMain'
-    classpath = sourceSets.main.runtimeClasspath
-    main = "betsy.bpel.BPELMain"
-    if (project.hasProperty('args')) {
-        args project.args.split('\\s+')
-    }
-}
-
 
 pmd {
     ignoreFailures = true
