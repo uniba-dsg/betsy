@@ -84,16 +84,6 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void buildTest(BPMNProcess process) {
-        BPMNTestBuilder builder = new BPMNTestBuilder();
-        builder.setPackageString(process.getPackageID());
-        builder.setLogDir(getTomcat().getTomcatBinDir());
-        builder.setProcess(process);
-
-        builder.buildTests();
-    }
-
-    @Override
     public String getEndpointUrl(BPMNProcess process) {
         return URL + "/service/repository/";
     }

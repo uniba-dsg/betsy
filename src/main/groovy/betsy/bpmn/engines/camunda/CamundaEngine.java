@@ -89,15 +89,6 @@ public class CamundaEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void buildTest(final BPMNProcess process) {
-        BPMNTestBuilder builder = new BPMNTestBuilder();
-        builder.setPackageString(process.getPackageID());
-        builder.setLogDir(getTomcatDir().resolve("bin"));
-        builder.setProcess(process);
-        builder.buildTests();
-    }
-
-    @Override
     public String getEndpointUrl(BPMNProcess process) {
         return "http://localhost:8080/engine-rest/engine/default";
     }

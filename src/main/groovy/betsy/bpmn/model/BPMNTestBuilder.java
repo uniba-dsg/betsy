@@ -6,23 +6,36 @@ import betsy.common.util.ClasspathHelper;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class BPMNTestBuilder {
 
     public static final String ESCAPED_DOUBLE_QUOTATION_MARK = "\"";
 
-    private String packageString;
+    private final String packageString;
 
-    private Path logDir;
+    private final List<Path> logs;
 
-    private BPMNProcess process;
+    private final BPMNProcess process;
+
+    public BPMNTestBuilder(String packageString, List<Path> logs, BPMNProcess process) {
+        this.packageString = Objects.requireNonNull(packageString);
+        this.logs = Objects.requireNonNull(logs);
+        this.process = Objects.requireNonNull(process);
+    }
 
     public void buildTests() {
         //Build test for each Test Case
         for (BPMNTestCase testCase : process.getTestCases()) {
 
-            String logFilePath = logDir.resolve("log" + testCase.getNumber() + ".txt").toAbsolutePath().toString().replaceAll("\\\\","/");
+            String logFilePath = logs.stream()
+                    .filter(path -> Objects.equals(path.getFileName().toString(), "log" + testCase.getNumber() + ".txt"))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("log not found"))
+                    .toAbsolutePath()
+                    .toString()
+                    .replaceAll("\\\\","/");
 
             //assemble array of assertion for unitTestString
             String expectedProcessTrace = getAssertionString(testCase.getAssertions());
@@ -52,22 +65,6 @@ public class BPMNTestBuilder {
 
 
         return joiner.toString();
-    }
-
-    public void setPackageString(String packageString) {
-        this.packageString = packageString;
-    }
-
-    public void setLogDir(Path logDir) {
-        this.logDir = logDir;
-    }
-
-    public BPMNProcess getProcess() {
-        return process;
-    }
-
-    public void setProcess(BPMNProcess process) {
-        this.process = process;
     }
 
 }
