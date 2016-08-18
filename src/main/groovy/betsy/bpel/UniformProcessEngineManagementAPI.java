@@ -33,8 +33,8 @@ public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess>
     }
 
     @Override
-    public void storeLogs(BPELProcess process) {
-        engine.storeLogs(process);
+    public void storeLogs(Path targetLogsPath) {
+        engine.storeLogs(targetLogsPath);
     }
 
     @Override

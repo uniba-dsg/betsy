@@ -60,15 +60,6 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     public Path getPetalsCliBinFolder() {return getServerPath().resolve("petals-cli-1.0.0/bin");}
 
     @Override
-    public void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
-    }
-
-    @Override
     public List<Path> getLogs() {
         List<Path> result = new LinkedList<>();
 

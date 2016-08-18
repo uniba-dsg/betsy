@@ -185,7 +185,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
         } catch (Exception exception) {
             LOGGER.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
             try {
-                storeLogs(process);
+                storeLogs(process.getTargetLogsPath());
                 throw new RuntimeException(exception);
             } catch (Exception exception2) {
                 throw new RuntimeException("Could not store logfiles of the failed deployment.", exception2);
@@ -194,7 +194,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     }
 
     @Override
-    public void storeLogs(BPELProcess process) {
+    public void storeLogs(Path targetLogPath) {
         LOGGER.debug("Storing logs for engine " + getName());
 
         LogFilesRequest request = buildLogFilesRequest();
@@ -203,13 +203,13 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
             LogFilesResponse response = comm.collectLogFilesOperation(request);
 
             // create log folders
-            Files.createDirectories(process.getTargetLogsPath());
+            Files.createDirectories(targetLogPath);
 
             // save to disk...
             for (LogFiles logFiles : response.getLogFiles()) {
 
                 String normalizedFolderPath = logFiles.getFolder().replaceAll("/", "_");
-                Path folder = process.getTargetLogsPath().resolve(normalizedFolderPath);
+                Path folder = targetLogPath.resolve(normalizedFolderPath);
                 Files.createDirectories(folder);
 
                 for (LogFile logFile : logFiles.getLogFiles()) {

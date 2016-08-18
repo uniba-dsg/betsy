@@ -102,15 +102,6 @@ public class JbpmEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void storeLogs(BPMNProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
-    }
-
-    @Override
     public List<Path> getLogs() {
         List<Path> result = new LinkedList<>();
 

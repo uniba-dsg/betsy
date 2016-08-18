@@ -156,7 +156,7 @@ public class BPELComposite {
     }
 
     protected void collect(final BPELProcess process) {
-        log(process.getTargetPath() + "/collect", () -> new UniformProcessEngineManagementAPI(process.getEngine()).storeLogs(process));
+        log(process.getTargetPath() + "/collect", () -> new UniformProcessEngineManagementAPI(process.getEngine()).storeLogs(process.getTargetLogsPath()));
     }
 
     protected void testSoapUi(final BPELProcess process) {

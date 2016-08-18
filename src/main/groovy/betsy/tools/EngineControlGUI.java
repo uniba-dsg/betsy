@@ -59,24 +59,12 @@ public class EngineControlGUI extends Application {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
                 Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
                 EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
-                eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
-
-                    @Override
-                    public Path getTargetLogsPath() {
-                        return tmpFolder;
-                    }
-                });
+                eNew.storeLogs(tmpFolder);
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
                 Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
                 EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
-                eNew.storeLogs(new BPMNProcess(engineIndependentProcess) {
-
-                    @Override
-                    public Path getTargetLogsPath() {
-                        return tmpFolder;
-                    }
-                });
+                eNew.storeLogs(tmpFolder);
             }
             return tmpFolder;
         }

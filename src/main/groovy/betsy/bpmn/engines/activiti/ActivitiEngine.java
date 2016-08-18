@@ -99,16 +99,6 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void storeLogs(BPMNProcess process) {
-        Path targetLogsPath = process.getTargetLogsPath();
-        FileTasks.mkdirs(targetLogsPath);
-
-        for(Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
-    }
-
-    @Override
     public void install() {
         ActivitiInstaller installer = new ActivitiInstaller();
         installer.setFileName("activiti-5.16.3.zip");

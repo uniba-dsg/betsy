@@ -102,16 +102,6 @@ public class CamundaEngine extends AbstractBPMNEngine {
         return "http://localhost:8080/engine-rest/engine/default";
     }
 
-
-    @Override
-    public void storeLogs(BPMNProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for(Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
-    }
-
     @Override
     public List<Path> getLogs() {
         List<Path> result = new LinkedList<>();

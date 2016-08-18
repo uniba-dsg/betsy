@@ -135,7 +135,7 @@ public class BPMNComposite {
     }
 
     protected void collect(final BPMNProcess process) {
-        log(process.getTargetPath().resolve("collect"), () -> process.getEngine().storeLogs(process));
+        log(process.getTargetPath().resolve("collect"), () -> process.getEngine().storeLogs(process.getTargetLogsPath()));
     }
 
     protected void buildPackageAndTest(final BPMNProcess process) {
