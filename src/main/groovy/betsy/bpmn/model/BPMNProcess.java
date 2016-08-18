@@ -105,4 +105,8 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
     public String getGroupName() {
         return getFeatureDimension().getGroup().getName();
     }
+
+    public String getPackageID() {
+        return String.join(".", getEngineID(), getGroup().getName());
+    }
 }
