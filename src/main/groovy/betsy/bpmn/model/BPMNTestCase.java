@@ -157,12 +157,12 @@ public class BPMNTestCase extends TestCase {
         return sb.toString();
     }
 
-    public List<BPMNTestVariable> getVariables() {
-        List<BPMNTestVariable> result = new ArrayList<>();
+    public List<Variable> getVariables() {
+        List<Variable> result = new ArrayList<>();
 
         getTestStep().getVariable().ifPresent(result::add);
-        result.add(new BPMNTestVariable("testCaseNumber", "Integer", getNumber()));
-        result.add(new BPMNTestVariable("integerVariable", "Integer", integerVariable));
+        result.add(new Variable("testCaseNumber", "Integer", getNumber()));
+        result.add(new Variable("integerVariable", "Integer", integerVariable));
 
         return result;
     }

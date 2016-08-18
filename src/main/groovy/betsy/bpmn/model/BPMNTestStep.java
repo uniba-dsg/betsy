@@ -29,7 +29,7 @@ public class BPMNTestStep extends AssertableTestStep {
         return delay;
     }
 
-    public Optional<BPMNTestVariable> getVariable() {
+    public Optional<Variable> getVariable() {
         if (input.isPresent()) {
             return Optional.of(input.get().getVariable());
         } else {

@@ -7,7 +7,7 @@ import betsy.bpmn.engines.JsonHelper;
 
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestVariable;
+import betsy.bpmn.model.Variable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -15,9 +15,6 @@ import org.json.JSONObject;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
 
 public class JbpmTester {
 
@@ -56,18 +53,7 @@ public class JbpmTester {
             startProcess(parallelProcessUrl);
         }
 
-        //setup variables and start process
-        Map<String, Object> variables = new HashMap<>();
-        for (BPMNTestVariable variable : testCase.getVariables()) {
-            variables.put(variable.getName(), variable.getValue());
-        }
-
-        StringJoiner joiner = new StringJoiner("&", "?", "");
-        for (Map.Entry<String, Object> entry : variables.entrySet()) {
-            joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
-        }
-
-        String requestUrl = processStartUrl + joiner.toString();
+        String requestUrl = processStartUrl + Variable.toQueryParameter(testCase.getVariables());
         startProcess(requestUrl);
 
         //delay for timer intermediate event

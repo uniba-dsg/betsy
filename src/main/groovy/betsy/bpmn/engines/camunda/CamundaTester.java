@@ -3,14 +3,13 @@ package betsy.bpmn.engines.camunda;
 import betsy.bpmn.engines.*;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestVariable;
+import betsy.bpmn.model.Variable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.util.*;
 
 public class CamundaTester {
 
@@ -73,7 +72,7 @@ public class CamundaTester {
 
         //assembling JSONObject for second request
         JSONObject requestBody = new JSONObject();
-        requestBody.put("variables", mapToArrayWithMaps(testCase.getVariables()));
+        requestBody.put("variables", Variable.toMap(testCase.getVariables()));
         requestBody.put("businessKey", "key-" + key);
 
         //second request to start process using id and Json to get the process instance id
@@ -101,19 +100,6 @@ public class CamundaTester {
         for (BPMNAssertions runtimeError : analyzer.getErrors()) {
             BPMNAssertions.appendToFile(getFileName(), runtimeError);
         }
-    }
-
-    public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {
-        Map<String, Object> map = new HashMap<>();
-
-        for (BPMNTestVariable entry : variables) {
-            Map<String, Object> submap = new HashMap<>();
-            submap.put("value", entry.getValue());
-            submap.put("type", entry.getType());
-            map.put(entry.getName(), submap);
-        }
-
-        return map;
     }
 
     private Path getFileName() {

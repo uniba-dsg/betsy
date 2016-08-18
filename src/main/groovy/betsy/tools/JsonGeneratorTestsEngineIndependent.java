@@ -16,7 +16,7 @@ import betsy.bpel.model.steps.NotDeployableCheckTestStep;
 import betsy.bpel.model.steps.SoapTestStep;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.BPMNTestStep;
-import betsy.bpmn.model.BPMNTestVariable;
+import betsy.bpmn.model.Variable;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.input.ExternalWSDLTestPartner;
 import betsy.common.model.input.NoTestPartner;
@@ -261,7 +261,7 @@ class JsonGeneratorTestsEngineIndependent {
         testStep.getDelay().ifPresent(delay -> testStepObject.put("delay", delay));
         JSONArray inputArray = new JSONArray();
         testStepObject.put("inputs", inputArray);
-        for (BPMNTestVariable var : bpmnTestCase.getVariables()) {
+        for (Variable var : bpmnTestCase.getVariables()) {
             JSONObject varObject = new JSONObject();
             varObject.put("name", var.getName());
             varObject.put("value", var.getValue());

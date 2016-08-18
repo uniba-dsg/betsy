@@ -6,7 +6,7 @@ import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestVariable;
+import betsy.bpmn.model.Variable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -51,7 +51,7 @@ public class ActivitiTester {
                 startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
             }
 
-            startProcess(key, BPMNTestVariable.mapToArrayWithMaps(testCase.getVariables()));
+            startProcess(key, Variable.toArray(testCase.getVariables()));
 
             // Wait and check for errors only if process instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
