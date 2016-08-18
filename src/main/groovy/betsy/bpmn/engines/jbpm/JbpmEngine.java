@@ -196,6 +196,15 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return process.getGroupId() + ":" + process.getName() + ":" + process.getVersion();
     }
 
+    @Override
+    public void buildTest(final BPMNProcess process) {
+        BPMNTestBuilder builder = new BPMNTestBuilder();
+        builder.setPackageString(process.getPackageID());
+        builder.setLogDir(getJbpmInstallerPath());
+        builder.setProcess(process);
+        builder.buildTests();
+    }
+
     protected String createProcessHistoryURL(String deploymentId) {
         return getJbpmnUrl() + "/rest/runtime/" + deploymentId + "/history/instance/1";
     }

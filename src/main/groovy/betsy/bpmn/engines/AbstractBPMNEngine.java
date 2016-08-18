@@ -1,7 +1,6 @@
 package betsy.bpmn.engines;
 
 import betsy.bpmn.model.BPMNProcess;
-import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
@@ -77,9 +76,7 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
      *
      * @param process
      */
-    public void buildTest(BPMNProcess process) {
-        new BPMNTestBuilder(process.getPackageID(), getLogs(), process).buildTests();
-    }
+    public abstract void buildTest(BPMNProcess process);
 
     /**
      * performs test for the BPMN Process
