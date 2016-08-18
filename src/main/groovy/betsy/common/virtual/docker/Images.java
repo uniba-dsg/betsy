@@ -14,22 +14,21 @@ import java.util.*;
 public class Images {
 
     private static final Logger LOGGER = Logger.getLogger(Images.class);
+    private static  HashMap<String, Image> images = new HashMap<>();
 
     /**
      * This method creates a {@link Image} from a dockerfile for an engine.
      *
-     * @param dockerMachine The active {@link DockerMachine}. In case of a linux os not needed.
      * @param imagePath     The path of the dockerfile.
      * @param engineName    The name of the {@link Engine}.
      * @return Returns the created {@link Image}.
      */
-    public static Image buildEngine(DockerMachine dockerMachine, Path imagePath, String engineName) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static Image buildEngine(Path imagePath, String engineName) {
         Objects.requireNonNull(imagePath, "The imagePath can't be null.");
         Objects.requireNonNull(engineName, "The engineName can't be null.");
         Image image = null;
         String[] cmds = {imagePath.toString(), engineName.replace("_", ""), engineName};
-        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doEngineImageTask(dockerMachine, cmds));
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doEngineImageTask(cmds));
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 String nextLine = scanner.get().nextLine();
@@ -37,7 +36,7 @@ public class Images {
                 if (nextLine.contains("Successfully built")) {
                     String id = nextLine.substring(nextLine.lastIndexOf(" "));
                     image = new Image(id, engineName.replace("_", ""));
-                    dockerMachine.addImage(image);
+                    images.put(image.getName(), image);
                 }
             }
         } else {
@@ -49,18 +48,16 @@ public class Images {
     /**
      * This method creates a {@link Image} from a dockerfile.
      *
-     * @param dockerMachine The active {@link DockerMachine}. In case of a linux os not needed.
      * @param imagePath     The path of the dockerfile.
      * @param name          the name of the image.
      * @return Returns the created {@link Image}.
      */
-    public static Image build(DockerMachine dockerMachine, Path imagePath, String name) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static Image build(Path imagePath, String name) {
         Objects.requireNonNull(imagePath, "The imagePath can't be null.");
         Objects.requireNonNull(name, "The name can't be null.");
         Image image = null;
-        String[] cmds = {imagePath.toString(), name};
-        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doImageTask(dockerMachine, cmds));
+        String[] cmds = {"build", "--tag", name, imagePath.toString()};
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(cmds));
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 String nextLine = scanner.get().nextLine();
@@ -68,7 +65,7 @@ public class Images {
                 if (nextLine.contains("Successfully built")) {
                     String id = nextLine.substring(nextLine.lastIndexOf(" "));
                     image = new Image(id, name);
-                    dockerMachine.addImage(image);
+                    images.put(image.getName(), image);
                 }
             }
         } else {
@@ -80,45 +77,33 @@ public class Images {
     /**
      * This method removes the given {@link Image}.
      *
-     * @param dockerMachine The active {@link DockerMachine}. In case of a linux os not needed.
      * @param image         The {@link Image} to remove.
      */
-    public static void remove(DockerMachine dockerMachine, Image image) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static void remove(Image image) {
         Objects.requireNonNull(image, "The image can't be null.");
-        String[] cmds = {"rmi", image.getName()};
-        dockerMachine.removeImage(image);
-        Tasks.doDockerTask(dockerMachine, cmds);
+        String[] cmds = {"rmi", "-f", image.getName()};
+        Tasks.doDockerTask(cmds);
+        images.remove(image.getName());
     }
 
     /**
      * This method removes the given {@link Image}.
      *
-     * @param dockerMachine The active {@link DockerMachine}. In case of a linux os not needed.
      * @param images         The images to remove.
      */
-    public static void removeAll(DockerMachine dockerMachine, List<Image> images) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static void removeAll(List<Image> images) {
         Objects.requireNonNull(images, "The images can't be null.");
-        images.forEach(e -> {
-            String[] cmds = {"rmi", e.getName()};
-            Tasks.doDockerTask(dockerMachine, cmds);
-            dockerMachine.removeImage(e);
-        });
+        images.forEach(Images::remove);
 
     }
 
     /**
      * This method returns all images.
      *
-     * @param dockerMachine The do
      * @return A {@link HashMap} with the name of the image and the image.
      */
-    public static HashMap<String, Image> getAll(DockerMachine dockerMachine) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
-        HashMap<String, Image> images = dockerMachine.getImages();
-        String[] cmds = {"images"};
-        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(dockerMachine, cmds));
+    public static HashMap<String, Image> getAll() {
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput("images"));
         boolean containsRepository = false;
         int beginName = 0;
         int beginID = 0;
@@ -135,7 +120,10 @@ public class Images {
                     String name = nextLine.substring(beginName);
                     name = name.substring(0, name.indexOf(" "));
                     Image image = new Image(id, name);
-                    images.putIfAbsent(image.getName(), image);
+                    Optional<Image> oldImage = Optional.ofNullable(images.get(name));
+                    if(!oldImage.isPresent()){
+                        images.put(image.getName(), image);
+                    }
                 }
             }
         } else {

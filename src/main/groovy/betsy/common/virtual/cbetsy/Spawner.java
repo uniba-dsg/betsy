@@ -1,7 +1,6 @@
 package betsy.common.virtual.cbetsy;
 
 import betsy.common.virtual.docker.Container;
-import betsy.common.virtual.docker.DockerMachine;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -23,19 +22,16 @@ public class Spawner {
     private static final Logger LOGGER = Logger.getLogger(Spawner.class);
 
     private List<WorkerTemplate> workerTemplates;
-    private DockerMachine dockerMachine;
     private ExecutorService executor;
     private ResourceConfiguration resourceConfiguration;
 
     /**
      *
-     * @param dockerMachine The dockerMachine to execute on.
      * @param workerTemplates The workerTemplates to execute.
      * @param resourceConfiguration The configurations for memory, hdd and cpu for this worker.
      * @param number The number of parallel executed containers.
      */
-    public Spawner(DockerMachine dockerMachine, List<WorkerTemplate> workerTemplates, ResourceConfiguration resourceConfiguration, int number) {
-        this.dockerMachine = dockerMachine;
+    public Spawner(List<WorkerTemplate> workerTemplates, ResourceConfiguration resourceConfiguration, int number) {
         this.workerTemplates = workerTemplates;
         this.resourceConfiguration = resourceConfiguration;
         this.executor = Executors.newFixedThreadPool(number);
@@ -53,7 +49,7 @@ public class Spawner {
         ArrayList<Container> containers = new ArrayList<>();
 
         for(WorkerTemplate workerTemplate : workerTemplates){
-            Future<Container> container = executor.submit(new Worker(dockerMachine, workerTemplate, resourceConfiguration.getMemory(), resourceConfiguration.getHddSpeed()));
+            Future<Container> container = executor.submit(new Worker(workerTemplate, resourceConfiguration.getMemory(), resourceConfiguration.getHddSpeed()));
             futures.add(container);
         }
 

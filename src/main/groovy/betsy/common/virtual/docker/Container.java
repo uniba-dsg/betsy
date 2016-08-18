@@ -18,19 +18,16 @@ public class Container {
 
     private String id;
     private String name;
-    private DockerMachine dockerMachine;
 
     private static final Logger LOGGER = Logger.getLogger(Container.class);
 
     /**
      * @param id            The id of the {@link Container}.
      * @param name          The name of the {@link Container}.
-     * @param dockerMachine The dockerMachine, where the {@link Container} is located.
      */
-    public Container(String id, String name, DockerMachine dockerMachine) {
+    public Container(String id, String name) {
         this.id = id;
         this.name = name;
-        this.dockerMachine = dockerMachine;
     }
 
     /**
@@ -38,7 +35,7 @@ public class Container {
      */
     public void restart() {
         String[] cmds = {"restart", name};
-        Tasks.doDockerTask(dockerMachine, cmds);
+        Tasks.doDockerTask(cmds);
     }
 
     /**
@@ -49,10 +46,10 @@ public class Container {
     public void start(boolean startSilent) {
         if (startSilent) {
             String[] cmds = {"start", name};
-            Tasks.doDockerTask(dockerMachine, cmds);
+            Tasks.doDockerTask(cmds);
         } else {
             String[] cmds = {"start", "-i", name};
-            Scanner scanner = Tasks.doDockerTaskWithOutput(dockerMachine, cmds);
+            Scanner scanner = Tasks.doDockerTaskWithOutput(cmds);
             while (scanner.hasNextLine()) {
                 LOGGER.info(scanner.nextLine());
             }
@@ -64,7 +61,7 @@ public class Container {
      */
     public void stop() {
         String[] cmds = {"stop", name};
-        Tasks.doDockerTask(dockerMachine, cmds);
+        Tasks.doDockerTask(cmds);
     }
 
     /**
@@ -77,7 +74,7 @@ public class Container {
         String[] cmds = new String[args.length + commands.length];
         System.arraycopy(commands, 0, cmds, 0, commands.length);
         System.arraycopy(args, 0, cmds, commands.length, args.length);
-        Tasks.doDockerTask(dockerMachine, cmds);
+        Tasks.doDockerTask(cmds);
     }
 
     /**
@@ -99,7 +96,7 @@ public class Container {
      */
     public Status getStatus() {
         String[] cmds = {"ps", "--all", "--filter", "name=" + name};
-        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(dockerMachine, cmds));
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(cmds));
         String outPut = "";
         int begin = 0;
         boolean contains = false;
@@ -143,7 +140,7 @@ public class Container {
     public void copyFromContainer(Path filePath, Path path) {
         String[] cmds = {"cp", name + ":" + filePath, path.toAbsolutePath().toString()};
         try {
-            Tasks.doDockerTask(dockerMachine, cmds);
+            Tasks.doDockerTask(cmds);
         } catch (BuildException e) {
             LOGGER.info("Can't copy file.");
         }
@@ -158,7 +155,7 @@ public class Container {
     public void copyToContainer(Path filePath, Path path) {
         String[] cmds = {"cp", filePath.toString(), name + ":" + path.toString()};
         try {
-            Tasks.doDockerTask(dockerMachine, cmds);
+            Tasks.doDockerTask(cmds);
         } catch (BuildException e) {
             LOGGER.info("Can't copy file.");
         }

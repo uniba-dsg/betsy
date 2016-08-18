@@ -3,7 +3,6 @@ package betsy.common.virtual.cbetsy;
 import betsy.common.tasks.FileTasks;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.Containers;
-import betsy.common.virtual.docker.DockerMachine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,14 +16,12 @@ import java.util.List;
 public class Aggregator {
 
     private final List<Container> containers;
-    private final DockerMachine dockerMachine;
 
     /**
      * @param containers The list with the container to aggregate.
      */
-    public Aggregator(DockerMachine dockerMachine, List<Container> containers) {
+    public Aggregator(List<Container> containers) {
         this.containers = containers;
-        this.dockerMachine = dockerMachine;
     }
 
     /**
@@ -40,7 +37,7 @@ public class Aggregator {
             container.copyFromContainer(Paths.get("/betsy/betsy.log"), containerResults.toAbsolutePath());
             container.copyFromContainer(Paths.get("/betsy/betsy_time.log"), containerResults.toAbsolutePath());
             container.copyFromContainer(Paths.get("/betsy/betsy_console.log"), containerResults.toAbsolutePath());
-            Containers.remove(dockerMachine, container);
+            Containers.remove(container);
         }
     }
 }

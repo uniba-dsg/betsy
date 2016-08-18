@@ -1,12 +1,9 @@
 package betsy.common.virtual.cbetsy;
 
-import betsy.common.virtual.docker.DockerMachine;
-import betsy.common.virtual.docker.DockerMachines;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static betsy.common.config.Configuration.get;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -43,16 +40,14 @@ public class WorkerTemplateGeneratorTest {
     public void getSortedTemplates() throws Exception {
         String[] args = {"bpel", "ode", "sequence"};
         WorkerTemplateGenerator templateGenerator = new WorkerTemplateGenerator(args);
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-        assertTrue("The memory should be greater than 0.", templateGenerator.getSortedTemplates(dockerMachine).get(0).getDockerEngine().getMemory() > 0);
+        assertTrue("The memory should be greater than 0.", templateGenerator.getSortedTemplates().get(0).getDockerEngine().getMemory() > 0);
     }
 
     @Test
     public void getEnginesWithValues() throws Exception {
         String[] args = {"bpel", "ode", "sequence"};
         WorkerTemplateGenerator templateGenerator = new WorkerTemplateGenerator(args);
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-        ArrayList<DockerEngine> engines = new ArrayList<>(templateGenerator.getEnginesWithValues(dockerMachine));
+        ArrayList<DockerEngine> engines = new ArrayList<>(templateGenerator.getEnginesWithValues());
         assertTrue("The memory should be greater than 0.", engines.get(0).getMemory() > 0);
     }
 

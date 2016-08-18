@@ -1,3 +1,1 @@
-call environment.bat %1
-cd %2
-docker build --tag="%3" --build-arg engine=%4 .
+docker build --tag="%2" --build-arg engine=%3 %1

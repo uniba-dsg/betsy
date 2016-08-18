@@ -2,15 +2,13 @@ package betsy.common.virtual.cbetsy;
 
 import betsy.common.virtual.calibration.Measurement;
 import betsy.common.virtual.docker.Container;
-import betsy.common.virtual.docker.DockerMachine;
-import betsy.common.virtual.docker.DockerMachines;
 import betsy.common.virtual.docker.Images;
-import betsy.common.virtual.exceptions.DockerException;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
 
 import static betsy.common.config.Configuration.get;
 
@@ -40,60 +38,46 @@ public class ParallelRunner {
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator(args);
 
         LOGGER.info("Start the dockerMachine and create the images.");
-        DockerMachine dockerMachine = build(workerTemplateGenerator.getEngines());
+        build(workerTemplateGenerator.getEngines());
         long build = System.currentTimeMillis();
 
         LOGGER.info("Start to evaluate the number of containers.");
         ResourceConfiguration systemResources = Measurement.measureResources();
-        int number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues(dockerMachine)));
+        int number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues()));
         ResourceConfiguration containerConfiguration = Measurement.calculateResources(systemResources, number);
         long resources = System.currentTimeMillis();
 
         LOGGER.info("Start to calibrate the timeouts.");
-        if(Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), dockerMachine, systemResources)){
+        if (Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), systemResources)) {
             long timeout = System.currentTimeMillis();
 
             LOGGER.info("Start the spawner.");
-            Spawner spawner = new Spawner(dockerMachine, workerTemplateGenerator.getSortedTemplates(dockerMachine), containerConfiguration, number);
+            Spawner spawner = new Spawner(workerTemplateGenerator.getSortedTemplates(), containerConfiguration, number);
             List<Container> containers = spawner.start();
             long execution = System.currentTimeMillis();
 
             LOGGER.info("Aggregation of the results.");
-            Aggregator aggregator = new Aggregator(dockerMachine, containers);
+            Aggregator aggregator = new Aggregator(containers);
             aggregator.start();
 
             long end = System.currentTimeMillis();
-            Reporter.createReport(workerTemplateGenerator, build-start, endBetsy-startBetsy, endEngines-endBetsy,  resources-build, timeout-resources, execution-timeout, end-start);
+            Reporter.createReport(workerTemplateGenerator, build - start, endBetsy - startBetsy, endEngines - endBetsy, resources - build, timeout - resources, execution - timeout, end - start);
         }
     }
 
     /**
-     * This method creates the dockerMachine, the betsy image and the images for the engines.
+     * This method creates the  betsy image and the images for the engines.
      *
      * @param engines The used engines.
-     * @return Returns the created dockerMachine.
      */
-    private static DockerMachine build(HashSet<DockerEngine> engines) {
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.run.name"), get("dockermachine.run.ram"), get("dockermachine.run.cpu"));
-        dockerMachine.start();
-        DockerMachine.Status status = DockerMachine.Status.STOPPED;
-        try {
-            status = dockerMachine.getStatus();
-        } catch (DockerException e) {
-            LOGGER.info("Can't evaluate the status of the dockerMachine: " + dockerMachine.getName());
-        }
-        if (status == DockerMachine.Status.STOPPED) {
-            LOGGER.info("The dockerMachine " + dockerMachine.getName() + " have to be started.");
-            System.exit(0);
-        } else {
-            startBetsy = System.currentTimeMillis();
-            Path image = docker.resolve("image");
+    private static void build(HashSet<DockerEngine> engines) {
 
-            Images.build(dockerMachine, image.resolve("betsy").toAbsolutePath(), "betsy");
-            endBetsy = System.currentTimeMillis();
-            engines.forEach(e -> Images.buildEngine(dockerMachine, image.resolve("engine").toAbsolutePath().toAbsolutePath(), e.getName()));
-            endEngines = System.currentTimeMillis();
-        }
-        return dockerMachine;
+        startBetsy = System.currentTimeMillis();
+        Path image = docker.resolve("image");
+
+        Images.build(image.resolve("betsy").toAbsolutePath(), "betsy");
+        endBetsy = System.currentTimeMillis();
+        engines.forEach(e -> Images.buildEngine(image.resolve("engine").toAbsolutePath().toAbsolutePath(), e.getName()));
+        endEngines = System.currentTimeMillis();
     }
 }

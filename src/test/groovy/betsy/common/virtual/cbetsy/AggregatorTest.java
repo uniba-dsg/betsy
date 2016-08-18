@@ -1,7 +1,9 @@
 package betsy.common.virtual.cbetsy;
 
-import betsy.common.virtual.cbetsy.Aggregator;
-import betsy.common.virtual.docker.*;
+import betsy.common.virtual.docker.Container;
+import betsy.common.virtual.docker.Containers;
+import betsy.common.virtual.docker.Image;
+import betsy.common.virtual.docker.Images;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +22,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class AggregatorTest {
 
-    private DockerMachine dockerMachine;
-    private ArrayList<Container> containers = new ArrayList<>();
+        private ArrayList<Container> containers = new ArrayList<>();
     private Path docker = Paths.get(get("docker.dir"));
     private Path images = docker.resolve("image");
     private java.util.Optional<Image> betsyImage;
@@ -29,27 +30,25 @@ public class AggregatorTest {
 
     @Before
     public void setUp() throws Exception {
-        dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
 
-        betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        betsyImage = java.util.Optional.ofNullable(Images.getAll().get("betsy"));
         if (!betsyImage.isPresent()) {
             betsyImageWasCreated = false;
-            Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy");
+            Images.build(images.resolve("betsy").toAbsolutePath(), "betsy");
         }
-        containers.add(Containers.run(dockerMachine, "test", "betsy", "sh", "betsy", "bpel", "ode", "sequence"));
+        containers.add(Containers.run("test", "betsy", "sh", "betsy", "bpel", "ode", "sequence"));
     }
 
     @After
     public void tearDown() throws Exception {
         if (betsyImage.isPresent() && !betsyImageWasCreated) {
-            Images.remove(dockerMachine, betsyImage.get());
+            Images.remove(betsyImage.get());
         }
-        DockerMachines.remove(dockerMachine);
-    }
+            }
 
     @Test
     public void start() throws Exception {
-        Aggregator aggregator = new Aggregator(dockerMachine, containers);
+        Aggregator aggregator = new Aggregator(containers);
         aggregator.start();
         File file1 = new File("results/" + containers.get(0).getName() + "/betsy.log");
         File file2 = new File("results/" + containers.get(0).getName() + "/betsy_time.log");

@@ -3,10 +3,7 @@ package betsy.common.virtual.swarm.client;
 import betsy.common.virtual.calibration.Measurement;
 import betsy.common.virtual.cbetsy.*;
 import betsy.common.virtual.docker.Container;
-import betsy.common.virtual.docker.DockerMachine;
-import betsy.common.virtual.docker.DockerMachines;
 import betsy.common.virtual.docker.Images;
-import betsy.common.virtual.exceptions.DockerException;
 import betsy.common.virtual.exceptions.NetworkException;
 import betsy.common.virtual.swarm.common.ConnectionService;
 import betsy.common.virtual.swarm.messages.DataMessage;
@@ -21,8 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static betsy.common.config.Configuration.get;
-
 /**
  * @author Christoph Broeker
  * @version 1.0
@@ -31,7 +26,6 @@ import static betsy.common.config.Configuration.get;
 public class Client {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class);
-    private DockerMachine dockerMachine;
     private TcpReceiver tcpReceiver;
     private int number;
     private ResourceConfiguration containerConfiguration;
@@ -47,7 +41,7 @@ public class Client {
      */
     public void start(String args[]) {
         if (args.length > 0) {
-            try(Socket socket = new Socket(args[0], 9090)){
+            try (Socket socket = new Socket(args[0], 9090)) {
                 ConnectionService connectionService = new ConnectionService(socket);
                 tcpReceiver = new TcpReceiver(connectionService, this);
                 tcpReceiver.start();
@@ -87,16 +81,15 @@ public class Client {
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator(arguments.get());
 
         LOGGER.info("Start the dockerMachine and create the images.");
-        dockerMachine = build(workerTemplateGenerator.getEngines());
+        build(workerTemplateGenerator.getEngines());
 
         LOGGER.info("Start to evaluate the number of containers.");
         ResourceConfiguration systemResources = Measurement.measureResources();
 
 
-        number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues(dockerMachine)));
         containerConfiguration = Measurement.calculateResources(systemResources, number);
 
-        if (Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), dockerMachine, systemResources)) {
+        if (Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), systemResources)) {
             try {
                 connectionService.send(new NumberMessage(number));
             } catch (NetworkException e) {
@@ -127,11 +120,11 @@ public class Client {
         isWaiting = true;
 
         LOGGER.info("Start the spawner.");
-        Spawner spawner = new Spawner(dockerMachine, templates.get(), containerConfiguration, number);
+        Spawner spawner = new Spawner(templates.get(), containerConfiguration, number);
         List<Container> containers = spawner.start();
 
         LOGGER.info("Aggregation of the results.");
-        Aggregator aggregator = new Aggregator(dockerMachine, containers);
+        Aggregator aggregator = new Aggregator(containers);
         aggregator.start();
 
         LOGGER.info("Waiting for host.");
@@ -163,28 +156,13 @@ public class Client {
     }
 
     /**
-     * This method creates the dockerMachine, the betsy image and the images for the engines.
+     * This method creates the betsy image and the images for the engines.
      *
      * @param engines The used engines.
-     * @return Returns the created dockerMachine.
      */
-    private static DockerMachine build(HashSet<DockerEngine> engines) {
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.run.name"), get("dockermachine.run.ram"), get("dockermachine.run.cpu"));
-        dockerMachine.start();
-        DockerMachine.Status status = DockerMachine.Status.STOPPED;
-        try {
-            status = dockerMachine.getStatus();
-        } catch (DockerException e) {
-            LOGGER.info("Can't evaluate the status of the dockerMachine: " + dockerMachine.getName());
-        }
-        if (status == DockerMachine.Status.STOPPED) {
-            LOGGER.info("The dockerMachine " + dockerMachine.getName() + " have to be started.");
-            System.exit(0);
-        } else {
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
-            engines.forEach(e -> Images.buildEngine(dockerMachine, Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));
-        }
-        return dockerMachine;
+    private static void build(HashSet<DockerEngine> engines) {
+        Images.build(Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        engines.forEach(e -> Images.buildEngine(Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));
     }
 
     /**

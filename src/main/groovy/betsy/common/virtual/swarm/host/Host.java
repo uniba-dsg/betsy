@@ -3,10 +3,7 @@ package betsy.common.virtual.swarm.host;
 import betsy.common.virtual.calibration.Measurement;
 import betsy.common.virtual.cbetsy.*;
 import betsy.common.virtual.docker.Container;
-import betsy.common.virtual.docker.DockerMachine;
-import betsy.common.virtual.docker.DockerMachines;
 import betsy.common.virtual.docker.Images;
-import betsy.common.virtual.exceptions.DockerException;
 import betsy.common.virtual.swarm.common.ConnectionService;
 import org.apache.log4j.Logger;
 
@@ -29,7 +26,6 @@ public class Host {
 
     private static final Logger LOGGER = Logger.getLogger(Host.class);
     private TcpMessageService tcpMessageService;
-    private static DockerMachine dockerMachine;
     private static ResourceConfiguration containerConfiguration;
     private static int number;
     private static long build = 0;
@@ -41,7 +37,6 @@ public class Host {
     private long execution = 0;
 
     /**
-     *
      * This method starts the host.
      *
      * @param args The arguments for starting the host.
@@ -90,7 +85,7 @@ public class Host {
             }
             long end = System.currentTimeMillis();
             LOGGER.info("Create reports.");
-            Reporter.createReport(workerTemplateGenerator, build-start, endBetsy-startBetsy, endEngines-endBetsy,  resources-build, timeout-resources, execution-timeout, end-start);
+            Reporter.createReport(workerTemplateGenerator, build - start, endBetsy - startBetsy, endEngines - endBetsy, resources - build, timeout - resources, execution - timeout, end - start);
         } catch (IOException e) {
             LOGGER.info("Starting the host failed.");
         }
@@ -98,11 +93,10 @@ public class Host {
     }
 
     /**
-     *
      * This method manages the calibration.
      *
      * @param workerTemplateGenerator The workerTemplates for the calibration.
-     * @param args The arguments for the clients.
+     * @param args                    The arguments for the clients.
      */
     private void calibrate(WorkerTemplateGenerator workerTemplateGenerator, String... args) {
         LOGGER.info("Send arguments to clients.");
@@ -110,24 +104,23 @@ public class Host {
 
         LOGGER.info("Start the dockerMachine and create the images.");
         long startBuild = System.currentTimeMillis();
-        dockerMachine = build(workerTemplateGenerator.getEngines());
+        build(workerTemplateGenerator.getEngines());
         build = build + System.currentTimeMillis() - startBuild;
 
         LOGGER.info("Start to evaluate the number of containers.");
         long startResources = System.currentTimeMillis();
         ResourceConfiguration systemResources = Measurement.measureResources();
-        number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues(dockerMachine)));
+        number = Measurement.calculateContainerNumber(systemResources, Measurement.evaluateMaxMemory(workerTemplateGenerator.getEnginesWithValues()));
         containerConfiguration = Measurement.calculateResources(systemResources, number);
         resources = resources + System.currentTimeMillis() - startResources;
 
         LOGGER.info("Start to calibrate the timeouts.");
         long startTimeout = System.currentTimeMillis();
-        Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), dockerMachine, systemResources);
+        Measurement.calibrateTimeouts(workerTemplateGenerator.getEngines(), systemResources);
         timeout = timeout + System.currentTimeMillis() - startTimeout;
     }
 
     /**
-     *
      * The method processes the the workerTemplates.
      *
      * @param workerTemplates The workerTemplates to process.
@@ -138,12 +131,12 @@ public class Host {
 
         LOGGER.info("Start the spawner.");
         long startExecution = System.currentTimeMillis();
-        Spawner spawner = new Spawner(dockerMachine, ownTemplates, containerConfiguration, number);
+        Spawner spawner = new Spawner(ownTemplates, containerConfiguration, number);
         List<Container> containers = spawner.start();
         execution = execution + System.currentTimeMillis() - startExecution;
 
         LOGGER.info("Aggregation of the results.");
-        Aggregator aggregator = new Aggregator(dockerMachine, containers);
+        Aggregator aggregator = new Aggregator(containers);
         aggregator.start();
 
         tcpMessageService.sendReadyMessage(true);
@@ -158,11 +151,10 @@ public class Host {
 
 
     /**
-     *
      * The method splits the workerTemplates.
      *
      * @param workerTemplates The workerTemplates to split.
-     * @param numbers The number of containers, which can run parallel on this system.
+     * @param numbers         The number of containers, which can run parallel on this system.
      * @return The workerTemplates for this system.
      */
     private List<WorkerTemplate> splitTemplates(ArrayList<WorkerTemplate> workerTemplates, HashMap<ConnectionService, Integer> numbers) {
@@ -194,30 +186,16 @@ public class Host {
     }
 
     /**
-     * This method creates the dockerMachine, the betsy image and the images for the engines.
+     * This method creates the betsy image and the images for the engines.
      *
      * @param engines The used engines.
      * @return Returns the created dockerMachine.
      */
-    private static DockerMachine build(HashSet<DockerEngine> engines) {
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.run.name"), get("dockermachine.run.ram"), get("dockermachine.run.cpu"));
-        dockerMachine.start();
-        DockerMachine.Status status = DockerMachine.Status.STOPPED;
-        try {
-            status = dockerMachine.getStatus();
-        } catch (DockerException e) {
-            LOGGER.info("Can't evaluate the status of the dockerMachine: " + dockerMachine.getName());
-        }
-        if (status == DockerMachine.Status.STOPPED) {
-            LOGGER.info("The dockerMachine " + dockerMachine.getName() + " have to be started.");
-            System.exit(0);
-        } else {
-            startBetsy = System.currentTimeMillis();
-            Images.build(dockerMachine, Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
-            endBetsy = System.currentTimeMillis();
-            engines.forEach(e -> Images.buildEngine(dockerMachine, Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));
-            endEngines = System.currentTimeMillis();
-        }
-        return dockerMachine;
+    private static void build(HashSet<DockerEngine> engines) {
+        startBetsy = System.currentTimeMillis();
+        Images.build(Paths.get("docker/image/betsy").toAbsolutePath(), "betsy");
+        endBetsy = System.currentTimeMillis();
+        engines.forEach(e -> Images.buildEngine(Paths.get("docker/image/engine").toAbsolutePath(), e.getName()));
+        endEngines = System.currentTimeMillis();
     }
 }

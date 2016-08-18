@@ -9,7 +9,6 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.virtual.calibration.DockerProperties;
 import betsy.common.virtual.calibration.Measurement;
-import betsy.common.virtual.docker.DockerMachine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -125,13 +124,13 @@ public class WorkerTemplateGenerator {
      *
      * @return Returns the workerTemplates as {@link ArrayList}.
      */
-    public ArrayList<WorkerTemplate> getSortedTemplates(DockerMachine dockerMachine){
+    public ArrayList<WorkerTemplate> getSortedTemplates(){
         workerTemplates = DockerProperties.readWorkerTemplates(docker.resolve("worker.properties"), workerTemplates);
         List<Long> times = new ArrayList<>();
         workerTemplates.forEach(k -> times.add(k.getDockerEngine().getTime()));
         long countTime = times.stream().filter(element -> element == 0).count();
         if(countTime > 0){
-            engines = Measurement.measureMemoriesAndTimes(dockerMachine, engines);
+            engines = Measurement.measureMemoriesAndTimes(engines);
         }
         Collections.sort(workerTemplates, (o1, o2) -> new Double(o1.getDockerEngine().getTime() - o2.getDockerEngine().getTime()).intValue());
         return workerTemplates;
@@ -153,7 +152,7 @@ public class WorkerTemplateGenerator {
      *
      * @return Returns the used engines as {@link HashSet}.
      */
-    public HashSet<DockerEngine> getEnginesWithValues(DockerMachine dockerMachine){
+    public HashSet<DockerEngine> getEnginesWithValues(){
         engines = DockerProperties.readEngines(docker.resolve("worker.properties"), engines);
         List<Integer> memories = new ArrayList<>();
         List<Long> times = new ArrayList<>();
@@ -162,7 +161,7 @@ public class WorkerTemplateGenerator {
         long countMemory = memories.stream().filter(element -> element == 0).count();
         long countTime = times.stream().filter(element -> element == 0).count();
         if(countMemory > 0 && countTime > 0){
-            engines = Measurement.measureMemoriesAndTimes(dockerMachine, engines);
+            engines = Measurement.measureMemoriesAndTimes(engines);
         }
         return engines;
     }

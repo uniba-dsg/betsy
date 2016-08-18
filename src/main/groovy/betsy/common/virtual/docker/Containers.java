@@ -1,13 +1,9 @@
 package betsy.common.virtual.docker;
 
 import betsy.common.virtual.exceptions.DockerException;
-import com.google.common.base.Optional;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Christoph Broeker
@@ -20,33 +16,32 @@ import java.util.Scanner;
 public class Containers {
 
     private static final Logger LOGGER = Logger.getLogger(Containers.class);
+    private static HashMap<String, Container> containers = new HashMap<>();
 
     /**
      * This method creates a {@link Container}.
      *
-     * @param dockerMachine The active {@link DockerMachine}.
      * @param containerName The name of the {@link Container}
      * @param imageName     The name of the image
      * @param args          Optional arguments for the creation.
      * @return Returns the created {@link Container}.
      */
-    public static Container create(DockerMachine dockerMachine, String containerName, String imageName, String... args) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static Container create(String containerName, String imageName, String... args) {
         Objects.requireNonNull(containerName, "The containerName can't be null.");
         Objects.requireNonNull(imageName, "The imageName can't be null.");
-        String[] commands = {"create", containerName, imageName};
+        String[] commands = {"create", "--name", containerName, imageName};
         String[] cmds = new String[args.length + commands.length];
         System.arraycopy(commands, 0, cmds, 0, commands.length);
         System.arraycopy(args, 0, cmds, commands.length, args.length);
         String id = null;
         Container container;
-        Optional<Scanner> scanner = Optional.fromNullable(Tasks.doDockerCreateRunTask(dockerMachine, cmds));
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(cmds));
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 id = scanner.get().nextLine();
             }
-            container = new Container(id, containerName, dockerMachine);
-            dockerMachine.addContainer(container);
+            container = new Container(id, containerName);
+            containers.put(containerName, container);
         } else {
             throw new DockerException("Executing the task 'create' failed.");
         }
@@ -56,7 +51,6 @@ public class Containers {
     /**
      * This method creates a {@link Container} with constraints.
      *
-     * @param dockerMachine The active {@link DockerMachine}.
      * @param containerName The name of the {@link Container}
      * @param imageName     The name of the image
      * @param memory        The value of the memory.
@@ -64,8 +58,7 @@ public class Containers {
      * @param args          Optional arguments for the creation.
      * @return Returns the created {@link Container}.
      */
-    public static Container create(DockerMachine dockerMachine, String containerName, String imageName, int memory, int hddSpeed, String... args) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static Container create(String containerName, String imageName, int memory, int hddSpeed, String... args) {
         Objects.requireNonNull(containerName, "The containerName can't be null.");
         Objects.requireNonNull(imageName, "The imageName can't be null.");
         String[] commands = {"create", containerName, String.valueOf(hddSpeed), String.valueOf(memory), imageName};
@@ -74,13 +67,13 @@ public class Containers {
         System.arraycopy(args, 0, cmds, commands.length, args.length);
         String id = null;
         Container container;
-        Optional<Scanner> scanner = Optional.fromNullable(Tasks.doDockerCreateRunTaskWithConstraints(dockerMachine, cmds));
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerCreateRunTaskWithConstraints(cmds));
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 id = scanner.get().nextLine();
             }
-            container = new Container(id, containerName, dockerMachine);
-            dockerMachine.addContainer(container);
+            container = new Container(id, containerName);
+            containers.put(containerName, container);
         } else {
             throw new DockerException("Executing the task 'create' failed.");
         }
@@ -90,30 +83,27 @@ public class Containers {
     /**
      * This method removes a {@link Container}.
      *
-     * @param dockerMachine The active {@link DockerMachine}.
      * @param container     The {@link Container}, which sould be removed.
      */
-    public static void remove(DockerMachine dockerMachine, Container container) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static void remove(Container container) {
         Objects.requireNonNull(container, "The container can't be null.");
         String[] cmds = {"rm", container.getName()};
-        dockerMachine.removeContainer(container);
-        Tasks.doDockerTask(dockerMachine, cmds);
+        Tasks.doDockerTask(cmds);
+        containers.remove(container.getName());
+
     }
 
     /**
      * This method removes a {@link Container}.
      *
-     * @param dockerMachine The active {@link DockerMachine}.
-     * @param containers    The containers to remove.
+     * @param containerList    The containers to remove.
      */
-    public static void removeAll(DockerMachine dockerMachine, List<Container> containers) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
-        Objects.requireNonNull(containers, "The container can't be null.");
-        containers.forEach(e -> {
-            String[] cmds = {"rm", e.getName()};
-            dockerMachine.removeContainer(e);
-            Tasks.doDockerTask(dockerMachine, cmds);
+    public static void removeAll(List<Container> containerList) {
+        Objects.requireNonNull(containerList, "The container can't be null.");
+        containerList.forEach(container -> {
+            String[] cmds = {"rm", container.getName()};
+            Tasks.doDockerTask(cmds);
+            Containers.remove(container);
         });
     }
 
@@ -122,11 +112,9 @@ public class Containers {
      *
      * @return A {@link HashMap} with all {@link Container}.
      */
-    public static HashMap<String, Container> getAll(DockerMachine dockerMachine) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
-        HashMap<String, Container> containers = dockerMachine.getContainers();
+    public static HashMap<String, Container> getAll() {
         String[] cmds = {"ps", "--all"};
-        Optional<Scanner> scanner = Optional.fromNullable(Tasks.doDockerTaskWithOutput(dockerMachine, cmds));
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(cmds));
         boolean containsContainer = false;
         int beginName = 0;
         if (scanner.isPresent()) {
@@ -138,7 +126,10 @@ public class Containers {
                 }else if (containsContainer) {
                     String id = nextLine.substring(0, nextLine.indexOf(" "));
                     String name = nextLine.substring(beginName);
-                    containers.putIfAbsent(name, new Container(id, name, dockerMachine));
+                    Optional<Container> container = Optional.ofNullable(containers.get(name));
+                    if(!container.isPresent()){
+                        containers.put(name, new Container(id, name));
+                    }
                 }
             }
         } else {
@@ -150,30 +141,28 @@ public class Containers {
     /**
      * This method creates and runs a {@link Container}.
      *
-     * @param dockerMachine The active {@link DockerMachine}.
      * @param containerName The name of the {@link Container}.
      * @param imageName     The name of the {@link Image}.
      * @param args          Optional arguments for the creation of the container.
      * @return Returns the created {@link Container}.
      */
-    public static Container run(DockerMachine dockerMachine, String containerName, String imageName, String... args) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static Container run(String containerName, String imageName, String... args) {
         Objects.requireNonNull(containerName, "The containerName can't be null.");
         Objects.requireNonNull(imageName, "The imageName can't be null.");
-        String[] commands = {"run", containerName, imageName};
+        String[] commands = {"run", "--name", containerName, imageName};
         String[] cmds = new String[args.length + commands.length];
         System.arraycopy(commands, 0, cmds, 0, commands.length);
         System.arraycopy(args, 0, cmds, commands.length, args.length);
         String nextLine = null;
         Container container;
-        Optional<Scanner> scanner = Optional.fromNullable(Tasks.doDockerCreateRunTask(dockerMachine, cmds));
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerTaskWithOutput(cmds));
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 nextLine = scanner.get().nextLine();
                 LOGGER.info(nextLine);
             }
-            container = new Container(nextLine, containerName, dockerMachine);
-            dockerMachine.addContainer(container);
+            container = new Container(nextLine, containerName);
+            containers.put(container.getName(), container);
         } else {
             throw new DockerException("Executing the task 'run' failed.");
         }
@@ -183,7 +172,6 @@ public class Containers {
     /**
      * This method runs a {@link Container} with constraints.
      *
-     * @param dockerMachine The active {@link DockerMachine}.
      * @param containerName The name of the {@link Container}
      * @param imageName     The name of the image
      * @param memory        The value of the memory.
@@ -191,17 +179,16 @@ public class Containers {
      * @param args          Optional arguments for the creation.
      * @return Returns the created {@link Container}.
      */
-    public static Container run(DockerMachine dockerMachine, String containerName, String imageName, int memory, int hddSpeed, String... args) {
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+    public static Container run(String containerName, String imageName, int memory, int hddSpeed, String... args) {
         Objects.requireNonNull(containerName, "The containerName can't be null.");
         Objects.requireNonNull(imageName, "The imageName can't be null.");
         String[] commands = {"run", containerName, String.valueOf(hddSpeed), String.valueOf(memory), imageName};
         String[] cmds = new String[args.length + commands.length];
         System.arraycopy(commands, 0, cmds, 0, commands.length);
         System.arraycopy(args, 0, cmds, commands.length, args.length);
-        String nextLine = null;
-        Container container;
-        Optional<Scanner> scanner = Optional.fromNullable(Tasks.doDockerCreateRunTaskWithConstraints(dockerMachine, cmds));
+        String nextLine;
+        Container container = null;
+        Optional<Scanner> scanner = Optional.ofNullable(Tasks.doDockerCreateRunTaskWithConstraints(cmds));
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 nextLine = scanner.get().nextLine();
@@ -212,18 +199,17 @@ public class Containers {
         }
 
         String[] idCommands= {"ps", "-aqf", "name="+containerName};
-        Optional<Scanner> scannerId = Optional.fromNullable(Tasks.doDockerTaskWithOutput(dockerMachine, idCommands));
-        String id = "";
+        Optional<Scanner> scannerId = Optional.ofNullable(Tasks.doDockerTaskWithOutput(idCommands));
+        String id;
         if (scannerId.isPresent()) {
             while (scannerId.get().hasNextLine()) {
                 id = scannerId.get().nextLine();
+                container = new Container(id, containerName);
+                containers.put(container.getName(), container);
             }
         } else {
             throw new DockerException("Executing the task 'run' failed.");
         }
-        container = new Container(id, containerName, dockerMachine);
-        dockerMachine.addContainer(container);
-
         return container;
     }
 }

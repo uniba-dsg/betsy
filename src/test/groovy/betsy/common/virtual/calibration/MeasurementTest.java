@@ -3,8 +3,6 @@ package betsy.common.virtual.calibration;
 import betsy.common.virtual.cbetsy.DockerEngine;
 import betsy.common.virtual.cbetsy.ResourceConfiguration;
 import betsy.common.virtual.cbetsy.WorkerTemplateGenerator;
-import betsy.common.virtual.docker.DockerMachine;
-import betsy.common.virtual.docker.DockerMachines;
 import betsy.common.virtual.docker.Image;
 import betsy.common.virtual.docker.Images;
 import org.junit.Test;
@@ -27,62 +25,58 @@ public class MeasurementTest {
 
     @Test
     public void calibrateTimeouts() throws Exception {
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll().get("betsy"));
         boolean betsyImageWasCreated = true;
         if (!betsyImage.isPresent()) {
             betsyImageWasCreated = false;
-            betsyImage = java.util.Optional.ofNullable(Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy"));
+            betsyImage = java.util.Optional.ofNullable(Images.build(images.resolve("betsy").toAbsolutePath(), "betsy"));
         }
-        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode136"));
+        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll().get("ode136"));
         boolean engineImageWasCreated = true;
 
         if (!engineImage.isPresent()) {
             engineImageWasCreated = false;
-            engineImage = java.util.Optional.ofNullable(Images.buildEngine(dockerMachine, images.resolve("engine").toAbsolutePath(), "ode__1_3_6"));
+            engineImage = java.util.Optional.ofNullable(Images.buildEngine(images.resolve("engine").toAbsolutePath(), "ode__1_3_6"));
         }
         ResourceConfiguration resourceConfiguration = new ResourceConfiguration(2000, 100);
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
-        assertTrue("The method returns true, if the calibration was successful.", Measurement.calibrateTimeouts(workerTemplateGenerator.getEnginesWithValues(dockerMachine), dockerMachine, resourceConfiguration));
+        assertTrue("The method returns true, if the calibration was successful.", Measurement.calibrateTimeouts(workerTemplateGenerator.getEnginesWithValues(), resourceConfiguration));
         if (engineImage.isPresent() && !engineImageWasCreated) {
-            Images.remove(dockerMachine, engineImage.get());
+            Images.remove(engineImage.get());
         }
 
         if (betsyImage.isPresent() && !betsyImageWasCreated) {
-            Images.remove(dockerMachine, betsyImage.get());
+            Images.remove(betsyImage.get());
         }
-        DockerMachines.remove(dockerMachine);
     }
 
     @Test
     public void measureMemoriesAndTimes() throws Exception {
-        DockerMachine dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("betsy"));
+        java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll().get("betsy"));
         boolean betsyImageWasCreated = true;
         if (!betsyImage.isPresent()) {
             betsyImageWasCreated = false;
-            betsyImage = java.util.Optional.ofNullable(Images.build(dockerMachine, images.resolve("betsy").toAbsolutePath(), "betsy"));
+            betsyImage = java.util.Optional.ofNullable(Images.build(images.resolve("betsy").toAbsolutePath(), "betsy"));
         }
-        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ode136"));
+        java.util.Optional<Image> engineImage = java.util.Optional.ofNullable(Images.getAll().get("ode136"));
         boolean engineImageWasCreated = true;
 
         if (!engineImage.isPresent()) {
             engineImageWasCreated = false;
-            engineImage = java.util.Optional.ofNullable(Images.buildEngine(dockerMachine, images.resolve("engine").toAbsolutePath(), "ode__1_3_6"));
+            engineImage = java.util.Optional.ofNullable(Images.buildEngine(images.resolve("engine").toAbsolutePath(), "ode__1_3_6"));
         }
         WorkerTemplateGenerator workerTemplateGenerator = new WorkerTemplateGenerator("bpel", "ode", "sequence");
-        Measurement.measureMemoriesAndTimes(dockerMachine, workerTemplateGenerator.getEngines());
-        ArrayList<DockerEngine> engines = new ArrayList<>(workerTemplateGenerator.getEnginesWithValues(dockerMachine));
+        Measurement.measureMemoriesAndTimes(workerTemplateGenerator.getEngines());
+        ArrayList<DockerEngine> engines = new ArrayList<>(workerTemplateGenerator.getEnginesWithValues());
         assertTrue("The memory have to be greater than 0.", engines.get(0).getMemory() > 0);
 
         if (engineImage.isPresent() && !engineImageWasCreated) {
-            Images.remove(dockerMachine, engineImage.get());
+            Images.remove(engineImage.get());
         }
 
         if (betsyImage.isPresent() && !betsyImageWasCreated) {
-            Images.remove(dockerMachine, betsyImage.get());
+            Images.remove(betsyImage.get());
         }
-        DockerMachines.remove(dockerMachine);
     }
 
     @Test

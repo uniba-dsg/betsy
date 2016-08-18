@@ -8,7 +8,6 @@ import betsy.common.virtual.cbetsy.DockerEngine;
 import betsy.common.virtual.cbetsy.ResourceConfiguration;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.Containers;
-import betsy.common.virtual.docker.DockerMachine;
 import betsy.common.virtual.docker.Tasks;
 import org.apache.log4j.Logger;
 
@@ -32,15 +31,13 @@ public class Measurement {
      * Ths method calibrate the the timeouts for the given engines.
      *
      * @param engines               The engines to calibrate.
-     * @param dockerMachine         The dockerMachine to execute on.
      * @param resourceConfiguration The resourceConfiguration of the system.
      * @return Returns false, if some timeout calibration fails for four time.
      */
-    public static boolean calibrateTimeouts(HashSet<DockerEngine> engines, DockerMachine dockerMachine, ResourceConfiguration resourceConfiguration) {
+    public static boolean calibrateTimeouts(HashSet<DockerEngine> engines, ResourceConfiguration resourceConfiguration) {
         Objects.requireNonNull(engines, "The engines can't be null.");
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Objects.requireNonNull(resourceConfiguration, "The resourceConfiguration can't be null.");
-        long count = engines.stream().filter(k -> !calibrateTimeout(k, dockerMachine, resourceConfiguration, 0, 1)).count();
+        long count = engines.stream().filter(k -> !calibrateTimeout(k, resourceConfiguration, 0, 1)).count();
         return count == 0;
     }
 
@@ -48,15 +45,13 @@ public class Measurement {
      * Ths method calibrate the the timeouts for the given engine.
      *
      * @param engine                The engine to calibrate.
-     * @param dockerMachine         The dockerMachine to execute on.
      * @param resourceConfiguration The resourceConfiguration of the system.
      * @param counter               The counter of the attempts.
      * @param multiplier            The multiplier, which increases the timeouts.
      * @return Returns false, if the calibration failed.
      */
-    private static boolean calibrateTimeout(DockerEngine engine, DockerMachine dockerMachine, ResourceConfiguration resourceConfiguration, int counter, double multiplier) {
+    private static boolean calibrateTimeout(DockerEngine engine, ResourceConfiguration resourceConfiguration, int counter, double multiplier) {
         Objects.requireNonNull(engine, "The engine can't be null.");
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
         Objects.requireNonNull(resourceConfiguration, "The resourceConfiguration can't be null.");
         Path timeout = docker.resolve("timeouts");
         FileTasks.mkdirs(timeout);
@@ -70,9 +65,9 @@ public class Measurement {
                 Container container;
 
                 //Remove existing container
-                Optional<Container> existingContainer = Optional.ofNullable(Containers.getAll(dockerMachine).get("timeoutCalibration_" + engine.getName().replace("_", "")));
+                Optional<Container> existingContainer = Optional.ofNullable(Containers.getAll().get("timeoutCalibration_" + engine.getName().replace("_", "")));
                 if (existingContainer.isPresent()) {
-                    Containers.remove(dockerMachine, existingContainer.get());
+                    Containers.remove(existingContainer.get());
                 }
 
                 //Calculate container configuration
@@ -85,9 +80,9 @@ public class Measurement {
 
                 //Create Container
                 if (engine.getTypeOfEngine() == DockerEngine.TypeOfEngine.BPEL) {
-                    container = Containers.create(dockerMachine, "timeoutCalibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", ""), containerConfiguration.getMemory(), containerConfiguration.getHddSpeed(), "calibrate", "bpel", engine.getName(), "sequence");
+                    container = Containers.create("timeoutCalibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", ""), containerConfiguration.getMemory(), containerConfiguration.getHddSpeed(), "calibrate", "bpel", engine.getName(), "sequence");
                 } else {
-                    container = Containers.create(dockerMachine, "timeoutCalibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", ""), containerConfiguration.getMemory(), containerConfiguration.getHddSpeed(), "calibrate", "bpmn", engine.getName(), "sequenceFlow");
+                    container = Containers.create("timeoutCalibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", ""), containerConfiguration.getMemory(), containerConfiguration.getHddSpeed(), "calibrate", "bpmn", engine.getName(), "sequenceFlow");
                 }
                 //Create timeout.properties and copy to container
                 Path properties = timeout.resolve("timeout.properties");
@@ -111,9 +106,9 @@ public class Measurement {
 
                 //if the file is not existing, the calibration wasn't successful.
                 if (!engineFilePath.toFile().exists()) {
-                    calibrateTimeout(engine, dockerMachine, resourceConfiguration, ++counter, 1.25);
+                    calibrateTimeout(engine, resourceConfiguration, ++counter, 1.25);
                 }
-                Containers.remove(dockerMachine, container);
+                Containers.remove(container);
                 return true;
             } else {
                 LOGGER.info("The timeout for the engine " + engine + " couldn't be calibrated.");
@@ -126,15 +121,14 @@ public class Measurement {
     }
 
     /**
-     * @param dockerMachine The dockerMachine to execute on.
      * @param engines       The engines to measure.
      */
-    public static HashSet<DockerEngine> measureMemoriesAndTimes(DockerMachine dockerMachine, HashSet<DockerEngine> engines) {
+    public static HashSet<DockerEngine> measureMemoriesAndTimes(HashSet<DockerEngine> engines) {
         Objects.requireNonNull(engines, "The engines can't be null.");
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
+        Objects.requireNonNull("The dockerMachine can't be null.");
         engines.forEach(k -> {
             if(k.getMemory() == 0 || k.getTime() == 0){
-                measureMemoryAndTime(dockerMachine, k);
+                measureMemoryAndTime(k);
             }
         });
         DockerProperties.writeEngines(docker.resolve("worker.properties"), engines);
@@ -146,29 +140,27 @@ public class Measurement {
      * Measures the duration and the peak memory usage during the execution of the sequence process in case of a BPELEngine
      * or the sequenceFLow process in case of a BPMNEngine on an engine.
      *
-     * @param dockerMachine The dockerMachine for the measurement.
      * @param engine        The engine for the measurement.
      * @return Returns the dockerEngine.
      */
-    private static DockerEngine measureMemoryAndTime(DockerMachine dockerMachine, DockerEngine engine) {
+    private static DockerEngine measureMemoryAndTime(DockerEngine engine) {
         Objects.requireNonNull(engine, "The engine can't be null.");
-        Objects.requireNonNull(dockerMachine, "The dockerMachine can't be null.");
-        Optional<Container> existingContainer = Optional.ofNullable(Containers.getAll(dockerMachine).get("calibration_" + engine.getName().replace("_", "")));
+        Optional<Container> existingContainer = Optional.ofNullable(Containers.getAll().get("calibration_" + engine.getName().replace("_", "")));
         if (existingContainer.isPresent()) {
-            Containers.remove(dockerMachine, existingContainer.get());
+            Containers.remove(existingContainer.get());
         }
         Container container;
         if (engine.getTypeOfEngine() == DockerEngine.TypeOfEngine.BPEL) {
-            container = Containers.create(dockerMachine, "calibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", ""), "sh", "betsy", "bpel", engine.getName(), "sequence");
+            container = Containers.create("calibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", ""), "sh", "betsy", "bpel", engine.getName(), "sequence");
         } else {
-            container = Containers.create(dockerMachine, "calibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", "").replace("_", ""), "sh", "betsy", "bpmn", engine.getName(), "sequenceFlow");
+            container = Containers.create("calibration_" + engine.getName().replace("_", ""), engine.getName().replace("_", "").replace("_", ""), "sh", "betsy", "bpmn", engine.getName(), "sequenceFlow");
         }
         long start;
         long end = 0;
         Double memory = 0.0;
 
         int position = 0;
-        Scanner scanner = Tasks.doDockerTaskWithOutput(dockerMachine, "stats");
+        Scanner scanner = Tasks.doDockerTaskWithOutput("stats");
         start = System.currentTimeMillis();
         container.start(true);
         int counter = 0;
@@ -190,7 +182,7 @@ public class Measurement {
                 counter++;
             }
         }
-        Containers.remove(dockerMachine, container);
+        Containers.remove(container);
         engine.setMemory(memory.intValue());
         engine.setTime(end - start);
         return engine;

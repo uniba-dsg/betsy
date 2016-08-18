@@ -5,7 +5,6 @@ import org.junit.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static betsy.common.config.Configuration.get;
 import static org.junit.Assert.*;
 
 /**
@@ -15,33 +14,24 @@ import static org.junit.Assert.*;
 public class ContainerTest {
 
 
-    private static DockerMachine dockerMachine;
     private Container container;
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        dockerMachine = DockerMachines.create(get("dockermachine.test.name"), get("dockermachine.test.ram"), get("dockermachine.test.cpu"));
-
-    }
-
     @AfterClass
     public static void setUpAfterClass() throws Exception {
-        java.util.Optional<Image> ubuntu = java.util.Optional.ofNullable(Images.getAll(dockerMachine).get("ubuntu"));
+        java.util.Optional<Image> ubuntu = java.util.Optional.ofNullable(Images.getAll().get("ubuntu"));
         if (ubuntu.isPresent()) {
-            Images.remove(dockerMachine, ubuntu.get());
+            Images.remove(ubuntu.get());
         }
-        DockerMachines.remove(dockerMachine);
     }
 
     @Before
     public void setUp() throws Exception {
-        container = Containers.create(dockerMachine,"test", "ubuntu", "sleep", "60");
+        container = Containers.create("test", "ubuntu", "sleep", "60");
     }
 
     @After
     public void tearDown() throws Exception {
         container.stop();
-        Containers.remove(dockerMachine,container);
+        Containers.remove(container);
     }
 
     @Test
@@ -89,13 +79,13 @@ public class ContainerTest {
     @Test
     public void getName() throws Exception {
         String name = "test";
-        container = Containers.create(dockerMachine, name, "Ubuntu", "sleep 10m");
+        container = Containers.create(name, "Ubuntu", "sleep 10m");
         assertEquals("The names should be equal.", name, container.getName());
     }
 
     @Test
     public void getStatus() throws Exception {
-        container = Containers.create(dockerMachine,"test", "ubuntu", "sleep", "6000");
+        container = Containers.create("test", "ubuntu", "sleep", "6000");
         assertEquals("The container should have the status 'RUNNING'.", Container.Status.CREATED, container.getStatus());
     }
 
