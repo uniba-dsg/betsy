@@ -19,7 +19,7 @@ public class JbpmLogBasedProcessOutcomeChecker implements BPMNProcessOutcomeChec
 
     @Override
     public ProcessOutcome checkProcessOutcome(String name) {
-        List<String> lines = getLines();
+        List<String> lines = BPMNProcessOutcomeChecker.getLines(logFile);
         for (String line : lines) {
             if (line.contains("failed to deploy")) {
                 return ProcessOutcome.UNDEPLOYED;
@@ -31,18 +31,6 @@ public class JbpmLogBasedProcessOutcomeChecker implements BPMNProcessOutcomeChec
         }
 
         return ProcessOutcome.UNKNOWN;
-    }
-
-    private List<String> getLines() {
-        try {
-            return Files.readAllLines(logFile, Charsets.ISO_8859_1);
-        } catch (IOException e) {
-            try {
-                return Files.readAllLines(logFile, Charsets.UTF_8);
-            } catch (IOException e1) {
-                throw new RuntimeException("could not read file with either ISO 8859 1 or UTF 8" + logFile, e1);
-            }
-        }
     }
 
 }

@@ -3,7 +3,6 @@ package betsy.bpmn.engines.jbpm;
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNProcessOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.JsonHelper;
 
 import betsy.bpmn.model.BPMNAssertions;
