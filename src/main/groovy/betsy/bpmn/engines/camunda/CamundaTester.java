@@ -30,7 +30,10 @@ public class CamundaTester {
 
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
-        addDeploymentErrorsToLogFile(logFile);
+        BPMNProcessOutcomeChecker.ProcessOutcome outcomeBeforeTest = new CamundaLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
+        if(outcomeBeforeTest == BPMNProcessOutcomeChecker.ProcessOutcome.UNDEPLOYED) {
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
+        }
 
         try {
             if(testCase.hasParallelProcess()){
@@ -41,7 +44,13 @@ public class CamundaTester {
 
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
-            addRuntimeErrorsToLogFile(logFile);
+
+            BPMNProcessOutcomeChecker.ProcessOutcome outcomeAfterTest = new CamundaLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.RUNTIME) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            } else if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+            }
 
             // Check on parallel execution
             BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
@@ -65,25 +74,6 @@ public class CamundaTester {
 
     public void setBpmnTester(BPMNTester bpmnTester) {
         this.bpmnTester = bpmnTester;
-    }
-
-    private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
-        }
-    }
-
-    private void addRuntimeErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_RUNTIME);
-        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        analyzer.addSubstring("'EndEvent_2' throws an error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        for (BPMNAssertions runtimeError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), runtimeError);
-        }
     }
 
     private Path getFileName() {

@@ -1,9 +1,11 @@
 package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
+import betsy.bpmn.engines.BPMNProcessOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.LogFileAnalyzer;
 import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.engines.camunda.CamundaLogBasedProcessOutcomeChecker;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.bpmn.model.Variable;
@@ -29,7 +31,10 @@ public class ActivitiTester {
     public void runTest() {
         Path logFile = logDir.resolve("activiti.log");
 
-        addDeploymentErrorsToLogFile(logFile);
+        BPMNProcessOutcomeChecker.ProcessOutcome outcomeBeforeTest = new ActivitiLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
+        if(outcomeBeforeTest == BPMNProcessOutcomeChecker.ProcessOutcome.UNDEPLOYED) {
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
+        }
 
         try {
             if(testCase.hasParallelProcess()) {
@@ -40,7 +45,13 @@ public class ActivitiTester {
 
             // Wait and check for errors only if process instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
-            addRuntimeErrorsToLogFile(logFile);
+
+            BPMNProcessOutcomeChecker.ProcessOutcome outcomeAfterTest = new ActivitiLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.RUNTIME) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            } else if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+            }
 
             // Check on parallel execution
             BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
@@ -52,7 +63,13 @@ public class ActivitiTester {
             BPMNEnginesUtil.checkDataLog(testCase, getFileName());
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
-            addRuntimeErrorsToLogFile(logFile);
+
+            BPMNProcessOutcomeChecker.ProcessOutcome outcomeAfterTest = new ActivitiLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.RUNTIME) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            } else if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+            }
         }
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
@@ -62,24 +79,7 @@ public class ActivitiTester {
         bpmnTester.test();
     }
 
-    private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.activiti.engine.ActivitiException: Errors while parsing:", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
-        }
-    }
 
-    private void addRuntimeErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("org.activiti.engine.ActivitiException", BPMNAssertions.ERROR_RUNTIME);
-        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        analyzer.addSubstring("No catching boundary event found for error with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        for (BPMNAssertions runtimeError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), runtimeError);
-        }
-    }
 
     private Path getFileName() {
         return logDir.resolve("..").normalize().resolve("bin").resolve("log" + testCase.getNumber() + ".txt");

@@ -39,7 +39,10 @@ public class JbpmTester {
      * Runs a single test
      */
     public void runTest() {
-        addDeploymentErrorsToLogFile(serverLogFile);
+        BPMNProcessOutcomeChecker.ProcessOutcome outcomeBeforeTest = new JbpmLogBasedProcessOutcomeChecker(serverLogFile).checkProcessOutcome(name);
+        if(outcomeBeforeTest == BPMNProcessOutcomeChecker.ProcessOutcome.UNDEPLOYED) {
+            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
+        }
 
         if (testCase.hasParallelProcess()) {
             try {
@@ -82,17 +85,6 @@ public class JbpmTester {
         LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
 
         bpmnTester.test();
-    }
-
-    private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("failed to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("Unable to deploy", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("ProcessLoadError", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
-            LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
-        }
     }
 
     private Path getFileName() {

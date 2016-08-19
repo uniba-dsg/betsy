@@ -16,6 +16,11 @@ public interface BPMNProcessStarter {
      */
     public void start(String processID, List<Variable> variables) throws RuntimeException;
 
+    /**
+     * Starts a new process instance but without any variables.
+     *
+     * @param processID
+     */
     public default void start(String processID) {
         start(processID, Collections.emptyList());
     }
