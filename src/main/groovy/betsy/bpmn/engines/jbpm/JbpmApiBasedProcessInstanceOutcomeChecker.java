@@ -6,24 +6,24 @@ import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.JsonHelper;
 import org.apache.log4j.Logger;
 
-public class JbpmProcessInstanceOutcomeChecker implements BPMNProcessInstanceOutcomeChecker {
+public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessInstanceOutcomeChecker {
 
-    private static final Logger LOGGER = Logger.getLogger(JbpmProcessInstanceOutcomeChecker.class);
+    private static final Logger LOGGER = Logger.getLogger(JbpmApiBasedProcessInstanceOutcomeChecker.class);
 
     private final String user;
     private final String password;
     private final String requestUrl;
 
 
-    public static JbpmProcessInstanceOutcomeChecker build(String deploymentID) {
-        return new JbpmProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/runtime/" + deploymentID + "/history/instance/1");
+    public static JbpmApiBasedProcessInstanceOutcomeChecker build(String deploymentID) {
+        return new JbpmApiBasedProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/runtime/" + deploymentID + "/history/instance/1");
     }
 
-    public static JbpmProcessInstanceOutcomeChecker build() {
-        return new JbpmProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/history/instance/1");
+    public static JbpmApiBasedProcessInstanceOutcomeChecker build() {
+        return new JbpmApiBasedProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/history/instance/1");
     }
 
-    public JbpmProcessInstanceOutcomeChecker(String requestUrl) {
+    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl) {
         this.user = "admin";
         this.password = "admin";
         this.requestUrl = Objects.requireNonNull(requestUrl);

@@ -31,7 +31,7 @@ public class JbpmEngine610 extends JbpmEngine {
     }
 
     @Override
-    protected JbpmProcessInstanceOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
-        return JbpmProcessInstanceOutcomeChecker.build();
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
+        return JbpmApiBasedProcessInstanceOutcomeChecker.build();
     }
 }

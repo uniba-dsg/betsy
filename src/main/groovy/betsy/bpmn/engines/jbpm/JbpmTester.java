@@ -67,7 +67,7 @@ public class JbpmTester {
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
 
-        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = new JbpmProcessInstanceOutcomeChecker(getDeploymentId())
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = new JbpmApiBasedProcessInstanceOutcomeChecker(getDeploymentId())
                 .checkProcessOutcome(getName());
         if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
