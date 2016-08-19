@@ -31,8 +31,8 @@ public class JbpmEngine620 extends JbpmEngine {
     }
 
     @Override
-    protected String createProcessHistoryURL(String deploymentId) {
-        return getJbpmnUrl() + "/rest/history/instance/1";
+    protected JbpmProcessOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
+        return JbpmProcessOutcomeChecker.build();
     }
 
 }

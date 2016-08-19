@@ -17,8 +17,6 @@ public class CamundaTester {
 
     private BPMNTestCase testCase;
 
-    private String restURL;
-
     private String key;
 
     private Path logDir;
@@ -36,10 +34,10 @@ public class CamundaTester {
 
         try {
             if(testCase.hasParallelProcess()){
-                startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
+                new CamundaProcessStarter().start(BPMNTestCase.PARALLEL_PROCESS_KEY);
             }
 
-            startProcess(key);
+            new CamundaProcessStarter().start(key, testCase.getVariables());
 
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
@@ -63,20 +61,6 @@ public class CamundaTester {
         LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
 
         bpmnTester.test();
-    }
-
-    private void startProcess(String key) {
-        //first request to get id
-        JSONObject response = JsonHelper.get(restURL + "/process-definition?key=" + key, 200);
-        final String id = String.valueOf(response.get("id"));
-
-        //assembling JSONObject for second request
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("variables", Variable.toMap(testCase.getVariables()));
-        requestBody.put("businessKey", "key-" + key);
-
-        //second request to start process using id and Json to get the process instance id
-        JsonHelper.post(restURL + "/process-definition/" + id + "/start?key=" + key, requestBody, 200);
     }
 
     public void setBpmnTester(BPMNTester bpmnTester) {
@@ -112,10 +96,6 @@ public class CamundaTester {
 
     public void setTestCase(BPMNTestCase testCase) {
         this.testCase = testCase;
-    }
-
-    public void setRestURL(String restURL) {
-        this.restURL = restURL;
     }
 
     public String getKey() {

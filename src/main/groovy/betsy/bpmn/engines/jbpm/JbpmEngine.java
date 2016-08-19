@@ -181,10 +181,9 @@ public class JbpmEngine extends AbstractBPMNEngine {
             tester.setTestCase(testCase);
             tester.setName(process.getName());
             tester.setDeploymentId(getDeploymentId(process));
-            tester.setProcessStartUrl(getJbpmnUrl() + "/rest/runtime/" + tester.getDeploymentId() + "/process/" + process.getName() + "/start");
-            tester.setProcessHistoryUrl(createProcessHistoryURL(tester.getDeploymentId()));
             tester.setBpmnTester(bpmnTester);
             tester.setLogDir(getJbpmInstallerPath());
+            tester.setProcessOutcomeChecker(createProcessOutcomeChecker(tester.getDeploymentId()));
             tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
             tester.runTest();
         }
@@ -205,8 +204,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
         builder.buildTests();
     }
 
-    protected String createProcessHistoryURL(String deploymentId) {
-        return getJbpmnUrl() + "/rest/runtime/" + deploymentId + "/history/instance/1";
+    protected JbpmProcessOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
+        return JbpmProcessOutcomeChecker.build(deploymentId);
     }
 
 }

@@ -23,21 +23,6 @@ public class ActivitiTester {
     private Path logDir;
     private BPMNTester bpmnTester;
 
-    public static void startProcess(String id, Object... variables) {
-        LOGGER.info("Start process instance for " + id);
-        String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
-
-        Map<String, Object> request = new HashMap<>();
-        request.put("processDefinitionKey", id);
-        request.put("variables", variables);
-        request.put("businessKey", "key-" + id);
-
-        JSONObject jsonRequest = new JSONObject(request);
-        LOGGER.info("With json message: " + jsonRequest.toString());
-
-        JsonHelper.post(deploymentUrl, jsonRequest, 201);
-    }
-
     /**
      * runs a single test
      */
@@ -48,10 +33,10 @@ public class ActivitiTester {
 
         try {
             if(testCase.hasParallelProcess()) {
-                startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
+                new ActivitiProcessStarter().start(BPMNTestCase.PARALLEL_PROCESS_KEY);
             }
 
-            startProcess(key, Variable.toArray(testCase.getVariables()));
+            new ActivitiProcessStarter().start(key, testCase.getVariables());
 
             // Wait and check for errors only if process instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));

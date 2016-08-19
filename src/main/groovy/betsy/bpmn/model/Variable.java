@@ -31,6 +31,10 @@ public class Variable {
     }
 
     public static String toQueryParameter(List<Variable> vars) {
+        if(vars.isEmpty()) {
+            return "";
+        }
+
         Map<String, Object> variables = new HashMap<>();
         for (Variable variable : vars) {
             variables.put(variable.getName(), variable.getValue());

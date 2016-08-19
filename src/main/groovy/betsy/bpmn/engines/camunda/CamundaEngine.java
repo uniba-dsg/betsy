@@ -164,7 +164,6 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
             CamundaTester tester = new CamundaTester();
             tester.setTestCase(testCase);
-            tester.setRestURL(getEndpointUrl(process));
             tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
             tester.setLogDir(getTomcatLogsDir());

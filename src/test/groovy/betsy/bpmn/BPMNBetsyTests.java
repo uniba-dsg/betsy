@@ -67,6 +67,11 @@ public class BPMNBetsyTests {
         }
 
         @Override
+        public void buildTest(BPMNProcess process) {
+
+        }
+
+        @Override
         public void testProcess(BPMNProcess process) {
 
         }
