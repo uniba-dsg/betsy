@@ -1,18 +1,14 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
-import betsy.bpmn.engines.BPMNProcessOutcomeChecker;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.JsonHelper;
 
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.Variable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-import betsy.common.timeouts.timeout.TimeoutRepository;
 
 import java.nio.file.Path;
 
@@ -30,7 +26,7 @@ public class JbpmTester {
 
     private Path serverLogFile;
 
-    private BPMNProcessOutcomeChecker processOutcomeChecker;
+    private BPMNProcessInstanceOutcomeChecker processOutcomeChecker;
 
     private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
 
@@ -38,8 +34,8 @@ public class JbpmTester {
      * Runs a single test
      */
     public void runTest() {
-        BPMNProcessOutcomeChecker.ProcessOutcome outcomeBeforeTest = new JbpmLogBasedProcessOutcomeChecker(serverLogFile).checkProcessOutcome(name);
-        if(outcomeBeforeTest == BPMNProcessOutcomeChecker.ProcessOutcome.UNDEPLOYED) {
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new JbpmLogBasedProcessInstanceOutcomeChecker(serverLogFile).checkProcessOutcome(name);
+        if(outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
         }
 
@@ -71,13 +67,13 @@ public class JbpmTester {
 
         BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
 
-        BPMNProcessOutcomeChecker.ProcessOutcome outcome = new JbpmProcessOutcomeChecker(getDeploymentId())
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = new JbpmProcessInstanceOutcomeChecker(getDeploymentId())
                 .checkProcessOutcome(getName());
-        if(outcome == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED) {
+        if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
-        } else if(outcome == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+        } else if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        } else if(outcome == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN) {
+        } else if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
         }
 
@@ -126,7 +122,7 @@ public class JbpmTester {
         this.bpmnTester = bpmnTester;
     }
 
-    public void setProcessOutcomeChecker(BPMNProcessOutcomeChecker processOutcomeChecker) {
+    public void setProcessOutcomeChecker(BPMNProcessInstanceOutcomeChecker processOutcomeChecker) {
         this.processOutcomeChecker = processOutcomeChecker;
     }
 }

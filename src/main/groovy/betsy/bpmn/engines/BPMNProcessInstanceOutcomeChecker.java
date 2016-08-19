@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
-import betsy.bpmn.model.BPMNAssertions;
 import com.google.common.base.Charsets;
 
-public interface BPMNProcessOutcomeChecker {
+public interface BPMNProcessInstanceOutcomeChecker {
 
     static List<String> getLines(Path file) {
         try {
@@ -23,14 +21,14 @@ public interface BPMNProcessOutcomeChecker {
         }
     }
 
-    enum ProcessOutcome {
-        PROCESS_ABORTED,
-        PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN,
-        PROCESS_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN,
-        COULD_NOT_CHECK_PROCESS_STATUS,
+    enum ProcessInstanceOutcome {
+        PROCESS_INSTANCE_ABORTED,
+        PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN,
+        PROCESS_INSTANCE_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN,
+        COULD_NOT_CHECK_PROCESS_INSTANCE_STATUS,
         OK,
         UNKNOWN,
-        UNDEPLOYED,
+        UNDEPLOYED_PROCESS,
         RUNTIME
     }
 
@@ -40,6 +38,6 @@ public interface BPMNProcessOutcomeChecker {
      * @param name the name of the process
      * @return
      */
-    public ProcessOutcome checkProcessOutcome(String name);
+    public ProcessInstanceOutcome checkProcessOutcome(String name);
 
 }

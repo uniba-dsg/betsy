@@ -204,8 +204,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
         builder.buildTests();
     }
 
-    protected JbpmProcessOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
-        return JbpmProcessOutcomeChecker.build(deploymentId);
+    protected JbpmProcessInstanceOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
+        return JbpmProcessInstanceOutcomeChecker.build(deploymentId);
     }
 
 }

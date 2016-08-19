@@ -3,11 +3,9 @@ package betsy.bpmn.engines.camunda;
 import betsy.bpmn.engines.*;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.Variable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import java.nio.file.Path;
 
@@ -30,8 +28,8 @@ public class CamundaTester {
 
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
-        BPMNProcessOutcomeChecker.ProcessOutcome outcomeBeforeTest = new CamundaLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
-        if(outcomeBeforeTest == BPMNProcessOutcomeChecker.ProcessOutcome.UNDEPLOYED) {
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new CamundaLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+        if(outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
         }
 
@@ -45,10 +43,10 @@ public class CamundaTester {
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
 
-            BPMNProcessOutcomeChecker.ProcessOutcome outcomeAfterTest = new CamundaLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
-            if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.RUNTIME) {
+            BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new CamundaLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-            } else if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+            } else if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             }
 

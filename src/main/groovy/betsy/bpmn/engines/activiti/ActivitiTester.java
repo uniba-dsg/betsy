@@ -1,21 +1,15 @@
 package betsy.bpmn.engines.activiti;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
-import betsy.bpmn.engines.BPMNProcessOutcomeChecker;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.engines.camunda.CamundaLogBasedProcessOutcomeChecker;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.Variable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ActivitiTester {
     private static final Logger LOGGER = Logger.getLogger(ActivitiTester.class);
@@ -30,8 +24,8 @@ public class ActivitiTester {
     public void runTest() {
         Path logFile = logDir.resolve("activiti.log");
 
-        BPMNProcessOutcomeChecker.ProcessOutcome outcomeBeforeTest = new ActivitiLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
-        if(outcomeBeforeTest == BPMNProcessOutcomeChecker.ProcessOutcome.UNDEPLOYED) {
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+        if(outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
             BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
         }
 
@@ -45,10 +39,10 @@ public class ActivitiTester {
             // Wait and check for errors only if process instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
 
-            BPMNProcessOutcomeChecker.ProcessOutcome outcomeAfterTest = new ActivitiLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
-            if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.RUNTIME) {
+            BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-            } else if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+            } else if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             }
 
@@ -63,10 +57,10 @@ public class ActivitiTester {
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
 
-            BPMNProcessOutcomeChecker.ProcessOutcome outcomeAfterTest = new ActivitiLogBasedProcessOutcomeChecker(logFile).checkProcessOutcome(key);
-            if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.RUNTIME) {
+            BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
-            } else if(outcomeAfterTest == BPMNProcessOutcomeChecker.ProcessOutcome.PROCESS_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+            } else if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
                 BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
             }
         }
