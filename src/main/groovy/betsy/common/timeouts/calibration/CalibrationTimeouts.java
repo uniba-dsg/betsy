@@ -3,7 +3,6 @@ package betsy.common.timeouts.calibration;
 import betsy.common.timeouts.CSV;
 import betsy.common.timeouts.Properties;
 import betsy.common.timeouts.timeout.Timeout;
-import flex.messaging.io.ArrayCollection;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -128,7 +127,7 @@ public class CalibrationTimeouts {
      * This method writes all given {@link CalibrationTimeout} to the properties.
      */
     public void writeAllCalibrationTimeoutsToProperties() {
-        List<CalibrationTimeout> timeouts = new ArrayCollection(getAllNonRedundantTimeoutsProperties().values());
+        List<CalibrationTimeout> timeouts = new ArrayList<>(getAllNonRedundantTimeoutsProperties().values());
         Properties.write(properties, convertCalibrationTimeoutListToTimeoutList(timeouts));
     }
 

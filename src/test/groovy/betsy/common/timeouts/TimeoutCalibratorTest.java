@@ -1,5 +1,6 @@
 package betsy.common.timeouts;
 
+import betsy.tools.TimeoutCalibrator;
 import betsy.common.tasks.FileTasks;
 import betsy.common.timeouts.calibration.CalibrationTimeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;

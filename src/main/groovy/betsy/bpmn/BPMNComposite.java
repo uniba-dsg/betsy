@@ -6,7 +6,7 @@ import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.reporting.BPMNCsvReport;
 import betsy.bpmn.reporting.BPMNReporter;
 import betsy.common.analytics.Analyzer;
-import betsy.common.reporting.TestsEngineDependent;
+import betsy.tools.TestsEngineDependent;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;

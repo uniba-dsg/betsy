@@ -1,6 +1,5 @@
 package betsy.common.timeouts.calibration;
 
-import betsy.common.timeouts.TimeoutCalibrator;
 import betsy.common.timeouts.timeout.Timeout;
 
 import java.util.Objects;
@@ -148,7 +147,7 @@ public class CalibrationTimeout extends Timeout {
     }
 
     /**
-     * The actual {@link Status} of the {@link CalibrationTimeout} during the calibration_timeout via the {@link TimeoutCalibrator}.
+     * The actual {@link Status} of the {@link CalibrationTimeout} during the calibration_timeout.
      */
     public enum Status {
         KEPT, EXCEEDED

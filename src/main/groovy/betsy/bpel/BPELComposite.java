@@ -6,7 +6,7 @@ import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.common.analytics.Analyzer;
-import betsy.common.reporting.TestsEngineDependent;
+import betsy.tools.TestsEngineDependent;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;

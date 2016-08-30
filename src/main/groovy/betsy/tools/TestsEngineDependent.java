@@ -1,4 +1,4 @@
-package betsy.common.reporting;
+package betsy.tools;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,6 +26,8 @@ import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.Tool;
 import betsy.common.model.engine.EngineDimension;
 import betsy.common.model.feature.FeatureDimension;
+import betsy.common.reporting.CsvRow;
+import betsy.common.reporting.JUnitXmlResultReader;
 import betsy.common.util.DurationCsv;
 import org.json.JSONArray;
 import org.json.JSONObject;
