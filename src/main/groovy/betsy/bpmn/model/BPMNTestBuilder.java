@@ -1,12 +1,12 @@
 package betsy.bpmn.model;
 
-import betsy.common.tasks.FileTasks;
-import betsy.common.util.ClasspathHelper;
-
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
+
+import betsy.common.tasks.FileTasks;
+import betsy.common.util.ClasspathHelper;
 
 public class BPMNTestBuilder {
 

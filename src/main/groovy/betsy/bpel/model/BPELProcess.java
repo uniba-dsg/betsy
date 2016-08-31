@@ -19,6 +19,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
 
     private EngineIndependentProcess engineIndependentProcess;
     private AbstractBPELEngine engine;
+    private Path deploymentPackagePath;
 
     public BPELProcess(EngineIndependentProcess engineIndependentProcess) {
         this.engineIndependentProcess = Objects.requireNonNull(engineIndependentProcess);
@@ -28,8 +29,24 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
         return new BPELProcess(engineIndependentProcess);
     }
 
+    public EngineIndependentProcess getEngineIndependentProcess() {
+        return engineIndependentProcess;
+    }
+
+    public void setEngineIndependentProcess(EngineIndependentProcess engineIndependentProcess) {
+        this.engineIndependentProcess = engineIndependentProcess;
+    }
+
+    public Path getDeploymentPackagePath() {
+        return deploymentPackagePath;
+    }
+
+    public void setDeploymentPackagePath(Path deploymentPackagePath) {
+        this.deploymentPackagePath = deploymentPackagePath;
+    }
+
     public String getEndpoint() {
-        return getEngine().getEndpointUrl(this);
+        return getEngine().getEndpointUrl(this.getName());
     }
 
     public String getWsdlEndpoint() {

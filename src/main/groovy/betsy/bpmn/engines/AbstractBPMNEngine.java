@@ -1,5 +1,12 @@
 package betsy.bpmn.engines;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
@@ -7,16 +14,12 @@ import betsy.common.engines.LocalEngineAPI;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.tasks.FileTasks;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasPath {
 
     private Path parentFolder;
 
     private final List<BPMNProcess> processes = new ArrayList<>();
+    private BPMNProcessStarter processStarter;
 
     public abstract Path getXsltPath();
 
@@ -93,4 +96,17 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
         return processes;
     }
 
+    @Override
+    public boolean isDeployed(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    public abstract BPMNProcessStarter getProcessStarter();
+
+    public abstract Path getLogForInstance(String processName);
 }

@@ -126,7 +126,7 @@ public class BPELComposite {
     }
 
     protected void deploy(final BPELProcess process) {
-        log(process.getTargetPath() + "/deploy", () -> new UniformProcessEngineManagementAPI(process.getEngine()).deploy(process));
+        log(process.getTargetPath() + "/deploy", () -> new UniformProcessEngineManagementAPI(process.getEngine()).deploy(process.getName(), process.getDeploymentPackagePath()));
     }
 
     protected void install(final BPELProcess process) {
@@ -180,7 +180,10 @@ public class BPELComposite {
     protected void buildPackage(final BPELProcess process) {
         log(process.getTargetPath() + "/build_package",
                 () -> IOCapture.captureIO(
-                        () -> new UniformProcessEngineManagementAPI(process.getEngine()).buildArchives(process)));
+                        () -> {
+                            Path path = new UniformProcessEngineManagementAPI(process.getEngine()).buildArchives(process);
+                            process.setDeploymentPackagePath(path);
+                        }));
     }
 
     public void setTestSuite(BPELTestSuite testSuite) {

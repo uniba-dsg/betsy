@@ -1,8 +1,8 @@
 package betsy.bpmn.model;
 
-import betsy.common.model.input.AssertableTestStep;
-
 import java.util.Optional;
+
+import betsy.common.model.input.AssertableTestStep;
 
 public class BPMNTestStep extends AssertableTestStep {
 

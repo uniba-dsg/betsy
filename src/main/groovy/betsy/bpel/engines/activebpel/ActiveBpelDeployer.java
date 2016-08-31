@@ -1,13 +1,15 @@
 package betsy.bpel.engines.activebpel;
 
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.Objects;
+
+import javax.xml.namespace.QName;
+
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
-
-import java.net.URL;
-import java.nio.file.Path;
-import java.util.Objects;
 
 public class ActiveBpelDeployer {
 
@@ -35,13 +37,12 @@ public class ActiveBpelDeployer {
     }
 
 
-    public void undeploy(Path packageFilePath) {
-        FileTasks.deleteFile(deploymentFolder.resolve(packageFilePath.getFileName()));
+    public void undeploy(QName name) {
+        FileTasks.deleteFile(deploymentFolder.resolve(name.getLocalPart() + ".bpr"));
     }
 
-    public boolean isDeployed(Path packageFilePath) {
-        return FileTasks.hasFile(deploymentFolder.resolve(packageFilePath.getFileName()));
+    public boolean isDeployed(QName name) {
+        return FileTasks.hasFile(deploymentFolder.resolve(name.getLocalPart() + ".bpr"));
     }
-
 
 }

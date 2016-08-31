@@ -1,18 +1,18 @@
 package betsy.bpmn.engines.camunda;
 
-import betsy.common.tasks.AntUtil;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+
 import betsy.bpmn.engines.BPMNTester;
 import betsy.common.config.Configuration;
+import betsy.common.tasks.AntUtil;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.tools.ant.taskdefs.Javac;
 import org.apache.tools.ant.taskdefs.War;
 import org.apache.tools.ant.types.FileSet;
-
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CamundaResourcesGenerator {
 
@@ -24,7 +24,7 @@ public class CamundaResourcesGenerator {
 
     private String version;
 
-    public void generateWar() {
+    public Path generateWar() {
         //directory structure
         Path pomDir = destDir.resolve("META-INF/maven").resolve(groupId).resolve(processName);
         Path classesDir = destDir.resolve("WEB-INF/classes");
@@ -52,12 +52,13 @@ public class CamundaResourcesGenerator {
         generateServletProcessApplication(srcDestDir);
         compileServletProcessApplication(srcDestDir, classesDir);
 
-        createWar();
+        return createWar();
     }
 
-    private void createWar() {
+    private Path createWar() {
         War war = new War();
-        war.setDestFile(destDir.resolve(processName + ".war").toFile());
+        Path warFile = destDir.resolve(processName + ".war");
+        war.setDestFile(warFile.toFile());
         war.setNeedxmlfile(false);
 
         FileSet set = new FileSet();
@@ -68,6 +69,8 @@ public class CamundaResourcesGenerator {
         war.setProject(AntUtil.builder().getProject());
 
         war.execute();
+
+        return warFile;
     }
 
     private void compileServletProcessApplication(Path srcDestDir, Path classesDir) {

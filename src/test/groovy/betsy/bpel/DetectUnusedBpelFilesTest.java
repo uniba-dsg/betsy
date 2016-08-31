@@ -11,22 +11,33 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DetectUnusedBpelFilesTest {
 
     @Test
     public void detectUnusedBpelFiles() throws IOException {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<EngineIndependentProcess> processed = processRepository.getByName("ALL");
+        List<EngineIndependentProcess> processed = new LinkedList<>(processRepository.getByName("ALL"));
+        processed.addAll(processRepository.getByName("STATIC_ANALYSIS"));
+        List<EngineIndependentProcess> errors = processRepository.getByName("ERRORS");
+        processed.addAll(errors);
 
-        List<Path> bpelFiles = getBetsyProcessesPaths(processed);
-        List<Path> bpelFilesInSrcTestDir = getBpelFiles(Paths.get("src/test"));
+        List<Path> referencedBpelFiles = getBetsyProcessesPaths(processed);
+        List<Path> actualBpelFiles = getBpelFiles(Paths.get("src/main/tests"));
 
-        bpelFilesInSrcTestDir.removeAll(bpelFiles);
+        List<Path> actualBpelFilesThatAreUnreferenced = new LinkedList<>(actualBpelFiles);
+        actualBpelFilesThatAreUnreferenced.removeAll(referencedBpelFiles);
 
-        Assert.assertEquals("all bpel files should be referenced", "[]", bpelFilesInSrcTestDir.toString());
+        String unreferencedFiles = actualBpelFilesThatAreUnreferenced
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
+        Assert.assertEquals("all bpel files should be referenced", "src\\main\\tests\\files\\bpel\\errorsbase\\BackdoorRobustness.bpel\n"
+                + "src\\main\\tests\\files\\bpel\\errorsbase\\ImprovedBackdoorRobustness.bpel", unreferencedFiles);
     }
 
     private List<Path> getBetsyProcessesPaths(List<EngineIndependentProcess> processed) {

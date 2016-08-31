@@ -1,9 +1,9 @@
 package betsy.bpel.engines.openesb;
 
-import betsy.common.tasks.FileTasks;
-
 import java.nio.file.Path;
 import java.util.Objects;
+
+import betsy.common.tasks.FileTasks;
 
 public class OpenEsbDeployer {
     private final OpenEsbCLI cli;

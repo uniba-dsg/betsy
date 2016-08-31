@@ -1,10 +1,13 @@
 package betsy.bpmn.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import betsy.common.model.input.TestAssertion;
 import betsy.common.model.input.TestCase;
 import betsy.common.util.StringUtils;
-
-import java.util.*;
 
 public class BPMNTestCase extends TestCase {
 

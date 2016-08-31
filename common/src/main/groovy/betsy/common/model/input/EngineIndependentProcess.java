@@ -23,15 +23,27 @@ public class EngineIndependentProcess implements Comparable<EngineIndependentPro
     private final String description;
     private final List<TestPartner> partners;
 
-    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature) {
+    public EngineIndependentProcess(Path process,
+            String description,
+            List<? extends TestCase> testCases,
+            Feature feature) {
         this(process, description, testCases, feature, Collections.emptyList(), Collections.emptyList());
     }
 
-    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<TestPartner> partners) {
+    public EngineIndependentProcess(Path process,
+            String description,
+            List<? extends TestCase> testCases,
+            Feature feature,
+            List<TestPartner> partners) {
         this(process, description, testCases, feature, Collections.emptyList(), partners);
     }
 
-    public EngineIndependentProcess(Path process, String description, List<? extends TestCase> testCases, Feature feature, List<Path> files, List<TestPartner> partners) {
+    public EngineIndependentProcess(Path process,
+            String description,
+            List<? extends TestCase> testCases,
+            Feature feature,
+            List<Path> files,
+            List<TestPartner> partners) {
         this.partners = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(partners)));
         this.process = Objects.requireNonNull(process);
         this.feature = Objects.requireNonNull(feature);

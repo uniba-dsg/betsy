@@ -41,14 +41,14 @@ public class VirtualOrchestraEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(BPELProcess process) {
-        return "http://localhost:" + HTTP_PORT + "/orchestra/" + process.getName() + "TestInterface";
+    public String getEndpointUrl(String name) {
+        return "http://localhost:" + HTTP_PORT + "/orchestra/" + name + "TestInterface";
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
+    public Path buildArchives(BPELProcess process) {
         // use default engine's operations
-        defaultEngine.buildArchives(process);
+        return defaultEngine.buildArchives(process);
     }
 
     @Override
@@ -57,11 +57,11 @@ public class VirtualOrchestraEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public DeployRequest buildDeployRequest(BPELProcess process) throws IOException {
+    public DeployRequest buildDeployRequest(String name, Path path) throws IOException {
         DeployRequest operation = new DeployRequest();
-        operation.setFileMessage(FileMessage.build(process.getTargetPackageFilePath("zip")));
+        operation.setFileMessage(FileMessage.build(path));
         operation.setEngineName(getName());
-        operation.setProcessName(process.getName());
+        operation.setProcessName(name);
         operation.setDeploymentLogFilePath(get("virtual.engines.orchestra_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.orchestra_v.deploymentDir"));
         operation.setDeployTimeout(TimeoutRepository.getTimeout("orchestra_v.deployment"));

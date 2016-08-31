@@ -42,6 +42,7 @@ configurations {
 
 dependencies {
     internal project(':common')
+    internal project(':peal')
     internal 'org.codehaus.groovy:groovy-all:2.4.7'
 
     internal 'org.apache.ant:ant:1.9.7'

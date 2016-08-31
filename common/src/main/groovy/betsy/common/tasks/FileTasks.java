@@ -438,6 +438,16 @@ public class FileTasks {
         return joiner.toString();
     }
 
+    public static String getFileExtension(Path filename) {
+        String[] elements = filename.toString().split("\\.");
+
+        if (elements.length == 1) {
+            return ""; // no . in filename
+        }
+
+        return elements[elements.length - 1];
+    }
+
     public static void copyMatchingFilesIntoFolder(Path from, Path to, String globPattern) {
         assertDirectory(from);
         mkdirs(to);

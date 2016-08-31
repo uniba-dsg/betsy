@@ -1,22 +1,30 @@
 package betsy.bpmn.engines.camunda;
 
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.BPMNProcessStarter;
+import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.reporting.BPMNTestcaseMerger;
 import betsy.common.config.Configuration;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
-import betsy.common.tasks.*;
+import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.*;
 
 public class CamundaEngine extends AbstractBPMNEngine {
 
@@ -43,8 +51,8 @@ public class CamundaEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void deploy(final BPMNProcess process) {
-        FileTasks.copyFileIntoFolder(process.getTargetPath().resolve("war").resolve(process.getName() + ".war"), getTomcatDir().resolve("webapps"));
+    public void deploy(String name, Path path) {
+        FileTasks.copyFileIntoFolder(path, getTomcatDir().resolve("webapps"));
 
         //wait until it is deployed
         final Path logFile = FileTasks.findFirstMatchInFolder(getTomcatLogsDir(), "catalina*");
@@ -53,13 +61,13 @@ public class CamundaEngine extends AbstractBPMNEngine {
         }
 
         TimeoutRepository.getTimeout("Camunda.deploy").waitFor(() ->
-                FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + process.getName() + " Application successfully deployed.") ||
-                        FileTasks.hasFileSpecificSubstring(logFile, "Process application " + process.getName() + " Application successfully deployed") ||
-                        FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + process.getName() + "] startup failed due to previous errors"));
+                FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + name + " Application successfully deployed.") ||
+                        FileTasks.hasFileSpecificSubstring(logFile, "Process application " + name + " Application successfully deployed") ||
+                        FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + name + "] startup failed due to previous errors"));
     }
 
     @Override
-    public void buildArchives(final BPMNProcess process) {
+    public Path buildArchives(final BPMNProcess process) {
         Path targetProcessPath = process.getTargetProcessPath();
         FileTasks.mkdirs(targetProcessPath);
         FileTasks.copyFileIntoFolder(process.getProcess(), targetProcessPath);
@@ -81,11 +89,12 @@ public class CamundaEngine extends AbstractBPMNEngine {
         FileTasks.copyFileIntoFolder(targetProcessFilePath, targetWarWebinfClassesPath);
 
         CamundaResourcesGenerator generator = new CamundaResourcesGenerator();
-        generator.setGroupId(process.getGroupId());
+        generator.setGroupId("de.uniba.dsg");
         generator.setProcessName(process.getName());
-        generator.setDestDir(process.getTargetPath().resolve("war"));
-        generator.setVersion(process.getVersion());
-        generator.generateWar();
+        Path warFile = process.getTargetPath().resolve("war");
+        generator.setDestDir(warFile);
+        generator.setVersion("1.0");
+        return generator.generateWar();
     }
 
     @Override
@@ -98,7 +107,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public String getEndpointUrl(BPMNProcess process) {
+    public String getEndpointUrl(String name) {
         return "http://localhost:8080/engine-rest/engine/default";
     }
 
@@ -158,19 +167,35 @@ public class CamundaEngine extends AbstractBPMNEngine {
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
             BPMNTester bpmnTester = new BPMNTester();
-            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
-            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCase.getNumber()));
-            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+            int testCaseNumber = testCase.getNumber();
+            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCaseNumber));
+            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
+            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
             CamundaTester tester = new CamundaTester();
             tester.setTestCase(testCase);
             tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
             tester.setLogDir(getTomcatLogsDir());
+            tester.setInstanceLogFile(getInstanceLogFile(testCaseNumber));
             tester.runTest();
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
+    }
+
+    private Path getInstanceLogFile(int testCaseNumber) {
+        return getTomcatDir().resolve("bin").resolve("log" + testCaseNumber + ".txt");
+    }
+
+    @Override
+    public BPMNProcessStarter getProcessStarter() {
+        return new CamundaProcessStarter();
+    }
+
+    @Override
+    public Path getLogForInstance(String processName) {
+        return getInstanceLogFile(Integer.parseInt(processName));
     }
 
 }

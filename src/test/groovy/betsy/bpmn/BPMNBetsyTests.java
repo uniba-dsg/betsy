@@ -1,6 +1,7 @@
 package betsy.bpmn;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.engine.Engine;
 import betsy.common.model.input.EngineIndependentProcess;
@@ -49,11 +50,21 @@ public class BPMNBetsyTests {
         public void storeLogs(BPMNProcess process) {
         }
 
-        public void buildArchives(BPMNProcess process) {
+        @Override
+        public void deploy(String name, Path path) {
 
         }
 
-        public String getEndpointUrl(BPMNProcess process) {
+        public Path buildArchives(BPMNProcess process) {
+            return process.getTargetProcessFilePath();
+        }
+
+        @Override
+        public String getEndpointUrl(String name) {
+            return null;
+        }
+
+        public String getEndpointUrl(String name, Path path) {
             return "myendpoint";
         }
 
@@ -76,9 +87,17 @@ public class BPMNBetsyTests {
 
         }
 
+        @Override public BPMNProcessStarter getProcessStarter() {
+            return null;
+        }
+
+        @Override public Path getLogForInstance(String processName) {
+            return null;
+        }
+
         @Override
         public List<Path> getLogs() {
-            return null;
+            return Collections.emptyList();
         }
     }
 }

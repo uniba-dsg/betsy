@@ -1,8 +1,8 @@
 package betsy.bpmn.model;
 
-import betsy.common.model.input.TestAssertion;
-
 import java.util.Objects;
+
+import betsy.common.model.input.TestAssertion;
 
 public class BPMNTestAssertion extends TestAssertion{
 

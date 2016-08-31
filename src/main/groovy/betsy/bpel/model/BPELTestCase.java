@@ -1,6 +1,5 @@
 package betsy.bpel.model;
 
-import betsy.bpel.ws.TestPartnerPortTypeRegular;
 import betsy.common.model.input.TestAssertion;
 import betsy.common.model.input.TestCase;
 import betsy.common.model.input.TestStep;
@@ -20,7 +19,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase buildPartnerConcurrencySetup() {
         SoapTestStep step = new SoapTestStep();
-        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___RESET_COUNTERS));
+        step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___RESET_COUNTERS));
         step.setTestPartner(true);
 
         return addStep(step);
@@ -28,7 +27,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase assertConcurrencyAtPartner() {
         SoapTestStep step = new SoapTestStep();
-        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS));
+        step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS));
         step.setTestPartner(true);
         step.setConcurrencyTest(true);
 
@@ -37,7 +36,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase assertNumberOfPartnerCalls(int value) {
         SoapTestStep step = new SoapTestStep();
-        step.setInput(String.valueOf(TestPartnerPortTypeRegular.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES));
+        step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES));
         step.setTestPartner(true);
         step.setPartnerOutput(String.valueOf(value));
 

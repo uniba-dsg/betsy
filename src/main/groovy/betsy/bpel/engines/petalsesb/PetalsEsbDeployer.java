@@ -1,12 +1,13 @@
 package betsy.bpel.engines.petalsesb;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+
 import betsy.common.tasks.FileTasks;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class PetalsEsbDeployer {
 
@@ -50,6 +51,8 @@ public class PetalsEsbDeployer {
             long foundFolders = Files.find(deploymentDirPath.getParent().resolve("repository").resolve("service-assemblies"), 1,
                     (p, a) -> Files.isDirectory(p) && (p).getFileName().toString().startsWith(processName + "Application-")).count();
             return foundFolders == 1;
+        } catch (NoSuchFileException e) {
+            return false;
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

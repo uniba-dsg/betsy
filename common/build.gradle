@@ -4,6 +4,17 @@ repositories {
     jcenter()
 }
 
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy']
+        }
+        resources {
+            srcDirs = ['src/main/groovy', 'src/main/resources']
+        }
+    }
+}
+
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.7'
 

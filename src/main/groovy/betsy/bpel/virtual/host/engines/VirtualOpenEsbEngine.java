@@ -48,13 +48,13 @@ public class VirtualOpenEsbEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(BPELProcess process) {
-        return defaultEngine.getEndpointUrl(process);
+    public String getEndpointUrl(String name) {
+        return defaultEngine.getEndpointUrl(name);
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
-        defaultEngine.buildArchives(process);
+    public Path buildArchives(BPELProcess process) {
+        return defaultEngine.buildArchives(process);
     }
 
     @Override
@@ -63,12 +63,12 @@ public class VirtualOpenEsbEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public DeployRequest buildDeployRequest(BPELProcess process) throws IOException {
+    public DeployRequest buildDeployRequest(String name, Path path) throws IOException {
         DeployRequest operation = new DeployRequest();
 
-        operation.setFileMessage(FileMessage.build(process.getTargetPackageCompositeFilePath()));
+        operation.setFileMessage(FileMessage.build(path));
         operation.setEngineName(getName());
-        operation.setProcessName(process.getName());
+        operation.setProcessName(name);
         operation.setDeploymentLogFilePath(get("virtual.engines.openesb_v.deploymentFile"));
         operation.setDeploymentDir(get("virtual.engines.openesb_v.deploymentDir"));
         operation.setDeployTimeout(TimeoutRepository.getTimeout("openesb_v.deployment"));

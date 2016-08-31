@@ -1,18 +1,20 @@
 package betsy.bpel.engines.ode;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.XSLTTasks;
-import betsy.common.util.ClasspathHelper;
-
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.Engine;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
 
 public class OdeEngine extends AbstractLocalBPELEngine {
 
@@ -29,8 +31,8 @@ public class OdeEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BPELProcess process) {
-        return getTomcat().getTomcatUrl() + "/ode/processes/" + process.getName() + "TestInterface";
+    public String getEndpointUrl(String name) {
+        return getTomcat().getTomcatUrl() + "/ode/processes/" + name + "TestInterface";
     }
 
     public Path getDeploymentDir() {
@@ -66,13 +68,25 @@ public class OdeEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
+    public void deploy(String name, Path path) {
         OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"));
-        deployer.deploy(process.getTargetPackageFilePath(), process.getName());
+        deployer.deploy(path, name);
     }
 
     @Override
-    public void buildArchives(final BPELProcess process) {
+    public boolean isDeployed(QName process) {
+        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"));
+        return deployer.isDeployed(process.getLocalPart());
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        OdeDeployer deployer = new OdeDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("ode.log"));
+        deployer.undeploy(process.getLocalPart());
+    }
+
+    @Override
+    public Path buildArchives(final BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
@@ -85,6 +99,8 @@ public class OdeEngine extends AbstractLocalBPELEngine {
         getPackageBuilder().replacePartnerTokenWithValue(process);
 
         getPackageBuilder().bpelFolderToZipFile(process);
+
+        return process.getTargetPackageFilePath();
     }
 
     @Override

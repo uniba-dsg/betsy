@@ -1,16 +1,18 @@
 package betsy.bpel.engines.orchestra;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.FileTasks;
-
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.Engine;
+import betsy.common.tasks.FileTasks;
 
 public class OrchestraEngine extends AbstractLocalBPELEngine {
 
@@ -48,8 +50,8 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BPELProcess process) {
-        return getTomcat().getTomcatUrl() + "/orchestra/" + process.getName() + "TestInterface";
+    public String getEndpointUrl(String name) {
+        return getTomcat().getTomcatUrl() + "/orchestra/" + name + "TestInterface";
     }
 
     @Override
@@ -62,18 +64,30 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
+    public void deploy(String name, Path path) {
         OrchestraDeployer deployer = new OrchestraDeployer(getServerPath().resolve("orchestra-cxf-tomcat-4.9.0"));
-        deployer.deploy(process.getTargetPackageFilePath(), process.getName());
+        deployer.deploy(path, name);
     }
 
-    public void buildArchives(BPELProcess process) {
+    @Override public boolean isDeployed(QName process) {
+        OrchestraDeployer deployer = new OrchestraDeployer(getServerPath().resolve("orchestra-cxf-tomcat-4.9.0"));
+        return deployer.isDeployed(process.getLocalPart());
+    }
+
+    @Override public void undeploy(QName process) {
+        OrchestraDeployer deployer = new OrchestraDeployer(getServerPath().resolve("orchestra-cxf-tomcat-4.9.0"));
+        deployer.undeploy(process);
+    }
+
+    public Path buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
         getPackageBuilder().replaceEndpointTokenWithValue(process);
         getPackageBuilder().replacePartnerTokenWithValue(process);
         getPackageBuilder().bpelFolderToZipFile(process);
+
+        return process.getTargetPackageFilePath();
     }
 
 }

@@ -1,13 +1,12 @@
 package betsy.bpel.engines.petalsesb;
 
+import java.nio.file.Path;
+
 import betsy.common.config.Configuration;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class PetalsEsbInstaller {
 

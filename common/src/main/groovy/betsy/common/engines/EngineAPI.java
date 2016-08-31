@@ -2,6 +2,8 @@ package betsy.common.engines;
 
 import java.nio.file.Path;
 
+import javax.xml.namespace.QName;
+
 import betsy.common.HasLogs;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.IsEngine;
@@ -15,14 +17,18 @@ public interface EngineAPI<P> extends EngineLifecycle, IsEngine, HasLogs {
      *
      * @param process to be deployed
      */
-    void deploy(P process);
+    void deploy(String name, Path path);
+
+    boolean isDeployed(QName process);
+
+    void undeploy(QName process);
 
     /**
      * Build archives required for deployment.
      *
      * @param process the process for which the archives are being built
      */
-    void buildArchives(P process);
+    Path buildArchives(P process);
 
     /**
      * Gets endpoint url of requested endpoint url. This url is used for testing the process later on.
@@ -30,7 +36,7 @@ public interface EngineAPI<P> extends EngineLifecycle, IsEngine, HasLogs {
      * @param process the process
      * @return the url of the endpoint
      */
-    String getEndpointUrl(P process);
+    String getEndpointUrl(String name);
 
     /**
      * Store logs used for a specific process. This is required for analysis in case of error.

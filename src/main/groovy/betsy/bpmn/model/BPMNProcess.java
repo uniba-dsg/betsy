@@ -1,23 +1,40 @@
 package betsy.bpmn.model;
 
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.engine.Engine;
 import betsy.common.model.engine.EngineDimension;
 import betsy.common.model.feature.Feature;
 import betsy.common.model.feature.FeatureDimension;
 import betsy.common.model.feature.Group;
-
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import betsy.common.model.input.EngineIndependentProcess;
 
 public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess>, FeatureDimension, EngineDimension {
 
     private EngineIndependentProcess engineIndependentProcess;
     private AbstractBPMNEngine engine;
+    private Path deploymentPackagePath;
+
+    public EngineIndependentProcess getEngineIndependentProcess() {
+        return engineIndependentProcess;
+    }
+
+    public void setEngineIndependentProcess(EngineIndependentProcess engineIndependentProcess) {
+        this.engineIndependentProcess = engineIndependentProcess;
+    }
+
+    public Path getDeploymentPackagePath() {
+        return deploymentPackagePath;
+    }
+
+    public void setDeploymentPackagePath(Path deploymentPackagePath) {
+        this.deploymentPackagePath = deploymentPackagePath;
+    }
 
     public BPMNProcess(EngineIndependentProcess engineIndependentProcess) {
         this.engineIndependentProcess = Objects.requireNonNull(engineIndependentProcess);
@@ -29,14 +46,6 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
 
     public void setEngine(AbstractBPMNEngine engine) {
         this.engine = engine;
-    }
-
-    public String getGroupId() {
-        return "de.uniba.dsg";
-    }
-
-    public String getVersion() {
-        return "1.0";
     }
 
     public Path getTargetReportsPathWithCase(int testCaseNumber) {

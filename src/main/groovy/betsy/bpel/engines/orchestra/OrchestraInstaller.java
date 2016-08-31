@@ -1,10 +1,14 @@
 package betsy.bpel.engines.orchestra;
 
+import java.nio.file.Path;
+
 import betsy.common.config.Configuration;
 import betsy.common.engines.tomcat.TomcatInstaller;
-import betsy.common.tasks.*;
-
-import java.nio.file.Path;
+import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.NetworkTasks;
+import betsy.common.tasks.PropertyTasks;
+import betsy.common.tasks.ZipTasks;
 
 public class OrchestraInstaller {
 

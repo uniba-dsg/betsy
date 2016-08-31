@@ -33,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 /**
  * A {@link AbstractVirtualBPELEngine} does not install and use an engine server on the
  * current host, but does use an engine installed in a virtualized environment.
@@ -175,22 +177,26 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     }
 
     @Override
-    public void deploy(BPELProcess process) {
+    public void deploy(String name, Path path) {
         try {
-            LOGGER.info("Deploying virtualized engine " + getName() + ", process: " + process.toString());
+            LOGGER.info("Deploying virtualized engine " + getName() + ", process: " + name);
 
-            DeployRequest container = buildDeployRequest(process);
+            DeployRequest container = buildDeployRequest(name, path);
             comm.deployOperation(container);
             LOGGER.info("deploy done!");
         } catch (Exception exception) {
-            LOGGER.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
-            try {
-                storeLogs(process.getTargetLogsPath());
-                throw new RuntimeException(exception);
-            } catch (Exception exception2) {
-                throw new RuntimeException("Could not store logfiles of the failed deployment.", exception2);
-            }
+            LOGGER.error("error during deployment", StackTraceUtils.deepSanitize(exception));
         }
+    }
+
+    @Override
+    public boolean isDeployed(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

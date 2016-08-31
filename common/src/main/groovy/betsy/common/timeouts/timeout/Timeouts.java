@@ -140,8 +140,8 @@ public class Timeouts {
         timeouts.add(new Timeout("Camunda.startup", 30_000, 500));
         timeouts.add(new Timeout("Camunda710.startup", 30_000, 500));
         timeouts.add(new Timeout("Jbpm.deploy.maven", 1500));
-        timeouts.add(new Timeout("Jbpm.deploy.result", 30_000, 1000));
-        timeouts.add(new Timeout("Jbpm.deploy.availability", 5000));
+        timeouts.add(new Timeout("Jbpm.deploy", 30_000, 1000));
+        timeouts.add(new Timeout("Jbpm.undeploy", 30_000, 1000));
         timeouts.add(new Timeout("Jbpm.startup", 24_0000, 5000));
         timeouts.add(new Timeout("Jbpm.shutdown", 24_0000, 5000));
         timeouts.add(new Timeout("JbpmTester.runTest", 10_000));

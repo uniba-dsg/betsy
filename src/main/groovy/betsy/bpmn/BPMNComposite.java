@@ -119,7 +119,7 @@ public class BPMNComposite {
     }
 
     protected void deploy(final BPMNProcess process) {
-        log(process.getTargetPath().resolve("deploy"), () -> process.getEngine().deploy(process));
+        log(process.getTargetPath().resolve("deploy"), () -> process.getEngine().deploy(process.getName(), process.getDeploymentPackagePath()));
     }
 
     protected void start(final BPMNProcess process) {
@@ -152,7 +152,10 @@ public class BPMNComposite {
 
     protected void buildPackage(final BPMNProcess process) {
         log(process.getTargetPath().resolve("build_package"),
-                () -> IOCapture.captureIO(() -> process.getEngine().buildArchives(process)));
+                () -> IOCapture.captureIO(() -> {
+                    Path path = process.getEngine().buildArchives(process);
+                    process.setDeploymentPackagePath(path);
+                }));
     }
 
     public BPMNTestSuite getTestSuite() {

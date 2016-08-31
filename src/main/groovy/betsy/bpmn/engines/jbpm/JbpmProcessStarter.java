@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.jbpm;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
@@ -9,6 +10,7 @@ import betsy.bpmn.model.Variable;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class JbpmProcessStarter implements BPMNProcessStarter {
@@ -19,17 +21,19 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
     private final String password;
     private final String requestUrl;
 
-    public JbpmProcessStarter(String deploymentID) {
+    public JbpmProcessStarter() {
         user = "admin";
         password = "admin";
-        requestUrl = "http://localhost:8080/jbpm-console" + "/rest/runtime/" + deploymentID + "/process/";
+        requestUrl = "http://localhost:8080/jbpm-console";
     }
 
     @Override
     public void start(String processName, List<Variable> variables) throws RuntimeException {
-        String queryParameter = Variable.toQueryParameter(variables);
+        // determine deployment
+        String deploymentID = getDeploymentID();
 
-        String processStartEquestURL = requestUrl + processName + "/start" + queryParameter;
+        String queryParameter = Variable.toQueryParameter(variables);
+        String processStartEquestURL = requestUrl + "/rest/runtime/" + deploymentID + "/process/" + processName + "/start" + queryParameter;
         try {
             LOGGER.info("Trying to start process \"" + processName + "\".");
             JsonHelper.postStringWithAuth(processStartEquestURL, new JSONObject(), 200, user, password);
@@ -49,6 +53,29 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    private String getDeploymentID() {
+        JSONArray json = JsonHelper.getJSONWithAuthAsArray(requestUrl + "/rest/deployment/", 200, user, password);
+        if(json.length() == 0) {
+            return "";
+        }
+        JSONObject jsonObject = json.optJSONObject(0);
+        if(jsonObject.has("deploymentUnitList")) {
+            JSONObject firstElement = jsonObject.optJSONArray("deploymentUnitList").getJSONObject(0);
+            if(firstElement.has("deployment-unit")) {
+                JSONObject deploymentUnit = firstElement.optJSONObject("deployment-unit");
+                return getDeploymentID(deploymentUnit);
+            } else {
+                return getDeploymentID(firstElement);
+            }
+        } else {
+            return getDeploymentID(jsonObject);
+        }
+    }
+
+    private String getDeploymentID(JSONObject deploymentUnit) {
+        return deploymentUnit.optString("groupId") + ":" + deploymentUnit.optString("artifactId") + ":" + deploymentUnit.optString("version");
     }
 
 }
