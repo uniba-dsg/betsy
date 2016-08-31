@@ -139,7 +139,8 @@ public class EngineServiceImplBpmnEnginesWithoutUndeployTest {
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
-                // full: camunda activiti jBPM
+                // full: camunda activiti
+                .filter(p -> !p.toString().startsWith("jbpm"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }

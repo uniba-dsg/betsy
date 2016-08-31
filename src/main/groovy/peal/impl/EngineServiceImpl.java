@@ -52,10 +52,10 @@ import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.engine.EngineDimension;
 import peal.EngineService;
 import peal.ProcessLanguage;
+import peal.helper.ZipFileHelper;
 import peal.identifier.EngineId;
 import peal.observer.EngineState;
 import peal.packages.LogPackage;
-import peal.helper.ZipFileHelper;
 
 public class EngineServiceImpl implements EngineService {
 
@@ -118,9 +118,9 @@ public class EngineServiceImpl implements EngineService {
     public EngineServiceImpl() {
         // required so that each engine has its correct folder
         for (EngineAPI<?> engine : engineIds) {
-            if(engine instanceof AbstractLocalBPELEngine) {
+            if (engine instanceof AbstractLocalBPELEngine) {
                 ((AbstractLocalBPELEngine) engine).setParentFolder(Paths.get("test"));
-            } else if(engine instanceof AbstractBPMNEngine) {
+            } else if (engine instanceof AbstractBPMNEngine) {
                 ((AbstractBPMNEngine) engine).setParentFolder(Paths.get("test"));
             }
         }
@@ -144,7 +144,7 @@ public class EngineServiceImpl implements EngineService {
 
     public EngineAPI<?> getEngineByID(EngineId engineId) {
         int index = engines.indexOf(engineId);
-        if(index == -1) {
+        if (index == -1) {
             throw new IllegalArgumentException("Engine id " + engineId + " not found");
         }
         return engineIds.get(index);
@@ -171,7 +171,11 @@ public class EngineServiceImpl implements EngineService {
 
     @Override
     public void stop(EngineId engineId) {
-        getEngineByID(engineId).shutdown();
+        try {
+            getEngineByID(engineId).shutdown();
+        } catch (IllegalArgumentException ignored) {
+            ignored.printStackTrace();
+        }
     }
 
     @Override

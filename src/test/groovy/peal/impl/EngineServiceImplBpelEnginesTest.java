@@ -144,8 +144,8 @@ public class EngineServiceImplBpelEnginesTest {
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
                 // full: ode bpelg orchestra active_bpel wso2
-                // unknown: openesb__2
-                // no: openesb__3
+                // TODO: openesb__2
+                // see without undeploy: openesb__3
                 .filter(p -> !p.toString().startsWith("openesb"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());

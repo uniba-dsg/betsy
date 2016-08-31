@@ -13,12 +13,12 @@ public class OpenEsbCLI {
     private final Path glassfishHome;
 
     public OpenEsbCLI(Path glassfishHome) {
-        FileTasks.assertDirectory(glassfishHome);
-
         this.glassfishHome = glassfishHome;
     }
 
     public void stopDomain() {
+        FileTasks.assertDirectory(glassfishHome);
+
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).values("stop-domain", "domain1"));
 
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
@@ -27,6 +27,8 @@ public class OpenEsbCLI {
     }
 
     public void startDomain() {
+        FileTasks.assertDirectory(glassfishHome);
+
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).values("start-domain", "domain1"));
 
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
@@ -47,6 +49,8 @@ public class OpenEsbCLI {
     }
 
     public void forceRedeploy(String processName, Path packageFilePath, Path tmpFolder) {
+        FileTasks.assertDirectory(glassfishHome);
+
         LOGGER.info("Deploying " + processName + " from " + packageFilePath);
 
         Path deployCommands = tmpFolder.resolve("deploy_commands.txt");

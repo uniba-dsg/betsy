@@ -159,7 +159,7 @@ public class EngineServiceImplBpmnEnginesTest {
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
                 // full: jbpm
-                // no: activiti camunda
+                // see without undeploy: activiti camunda
                 .filter(p -> p.toString().startsWith("jbpm"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
