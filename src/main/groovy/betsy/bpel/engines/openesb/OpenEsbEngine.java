@@ -13,6 +13,7 @@ import betsy.bpel.model.BPELProcess;
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
 import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.URLTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
@@ -21,6 +22,7 @@ import betsy.common.util.OperatingSystem;
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     private static final String CHECK_URL = "http://localhost:18181";
+    private static final String CHECK_WHETHER_RUNNING_URL = "http://localhost:8383";
 
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
@@ -56,7 +58,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        TimeoutRepository.getTimeout("OpenEsb.startup").waitForAvailabilityOfUrl("http://localhost:8383");
+        TimeoutRepository.getTimeout("OpenEsb.startup").waitForAvailabilityOfUrl(CHECK_WHETHER_RUNNING_URL);
     }
 
     @Override
@@ -80,7 +82,9 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void deploy(String name, Path path) {
         OpenEsbDeployer deployer = new OpenEsbDeployer(getCli());
-        deployer.deploy(name, path, path.getParent().resolve("TMPFOLDER"));
+        Path tmpfolder = path.getParent().resolve("TMPFOLDER");
+        FileTasks.mkdirs(tmpfolder);
+        deployer.deploy(name, path, tmpfolder);
     }
 
     @Override
@@ -122,11 +126,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public boolean isRunning() {
-        return false;
-    }
-
-    public static String getCHECK_URL() {
-        return CHECK_URL;
+        return URLTasks.isUrlAvailable(CHECK_WHETHER_RUNNING_URL);
     }
 
 }

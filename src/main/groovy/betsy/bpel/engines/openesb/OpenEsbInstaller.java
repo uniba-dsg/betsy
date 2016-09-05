@@ -36,7 +36,7 @@ public class OpenEsbInstaller {
         FileTasks.copyFileContentsToNewFile(stateXmlTemplate, stateXmlPath);
         Map<String, Object> replacements = new HashMap<>();
         replacements.put("@INSTALL_PATH@", path.toAbsolutePath());
-        replacements.put("@JDK_LOCATION@", System.getenv().get("JAVA7_HOME"));
+        replacements.put("@JDK_LOCATION@", System.getenv().get("JAVA6_HOME"));
         replacements.put("@HTTP_PORT@", 8383);
         replacements.put("@HTTPS_PORT@", 8384);
         FileTasks.replaceTokensInFile(stateXmlPath, replacements);

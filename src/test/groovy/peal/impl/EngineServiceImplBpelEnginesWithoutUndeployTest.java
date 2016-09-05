@@ -85,31 +85,25 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest {
             return;
         }
 
-        assertState(ProcessModelState.NOT_DEPLOYED);
         assertState(EngineState.NOT_INSTALLED);
 
         engineService.install(engineId);
-        assertState(ProcessModelState.NOT_DEPLOYED);
         assertState(EngineState.INSTALLED);
 
         engineService.start(engineId);
-        assertState(ProcessModelState.NOT_DEPLOYED);
         assertState(EngineState.STARTED);
 
         DeploymentPackage deployableBpelPackage = processModelService.makeDeployable(engineId,
                 ZipFileHelper.zipToProcessModelPackage(ZipFileHelper.buildFromFolder(SEQUENCE_FOLDER)));
         System.out.println("FILE EXTENSION: " + deployableBpelPackage.fileExtension);
-        assertState(ProcessModelState.NOT_DEPLOYED);
         assertState(EngineState.STARTED);
 
         ProcessModelId processModelId = processModelService.deploy(engineId, deployableBpelPackage);
-        assertState(ProcessModelState.DEPLOYED);
         assertState(EngineState.STARTED);
 
         WaitTasks.sleep(2000);
 
         WSTester.assertCorrectWorkingProcess(getUrlForProcessId(processModelId));
-        assertState(ProcessModelState.DEPLOYED);
         assertState(EngineState.STARTED);
 
         engineService.stop(engineId);
@@ -134,9 +128,9 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest {
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
-                // full: openesb__3
-                // TODO: openesb__2
-                .filter(p -> p.toString().startsWith("openesb__3"))
+                // full: openesb__3 openesb__2
+                // unknown: openesb__2_2
+                .filter(p -> p.toString().startsWith("openesb__3") || p.toString().startsWith("openesb__2_3"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }
