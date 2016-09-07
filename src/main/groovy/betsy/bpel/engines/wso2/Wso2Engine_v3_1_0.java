@@ -1,24 +1,33 @@
 package betsy.bpel.engines.wso2;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.*;
-import betsy.common.util.ClasspathHelper;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.config.Configuration;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.Engine;
+import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.NetworkTasks;
+import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.WaitTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.tasks.ZipTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
+import betsy.common.util.ClasspathHelper;
+
 public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
 
     public static final String TEST_INTERFACE_SERVICE = "TestInterfaceService";
 
-    public static final String CHECK_URL = "http://localhost:9763";
+    public static final String CHECK_URL = "https://localhost:9443/carbon";
 
     @Override
     public Path getXsltPath() {
@@ -77,8 +86,9 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     @Override
     public void shutdown() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
-
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
+        if(Files.exists(getBinDir())) {
+            ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
+        }
     }
 
     @Override
@@ -87,8 +97,19 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
-        new Wso2Deployer(getDeploymentDir(), getLogsFolder()).deploy(process.getTargetPackageFilePath());
+    public void deploy(String name, Path path) {
+        new Wso2Deployer(getDeploymentDir(), getLogsFolder())
+                .deploy(path);
+    }
+
+    @Override public boolean isDeployed(QName process) {
+        return new Wso2Deployer(getDeploymentDir(), getLogsFolder())
+                .isDeployed(process.getLocalPart());
+    }
+
+    @Override public void undeploy(QName process) {
+        new Wso2Deployer(getDeploymentDir(), getLogsFolder())
+                .undeploy(process);
     }
 
     public Path getDeploymentDir() {
@@ -96,7 +117,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
+    public Path buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
@@ -110,20 +131,13 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         getPackageBuilder().replacePartnerTokenWithValue(process);
 
         getPackageBuilder().bpelFolderToZipFile(process);
+
+        return process.getTargetPackageFilePath();
     }
 
     @Override
-    public String getEndpointUrl(final BPELProcess process) {
-        return CHECK_URL + "/services/" + process.getName() + TEST_INTERFACE_SERVICE;
-    }
-
-    @Override
-    public void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
+    public String getEndpointUrl(String name) {
+        return "http://localhost:9763" + "/services/" + name + TEST_INTERFACE_SERVICE;
     }
 
     @Override

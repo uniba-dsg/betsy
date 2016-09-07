@@ -14,7 +14,7 @@ public enum BPMNTestInput {
         return value;
     }
 
-    public BPMNTestVariable getVariable() {
-        return new BPMNTestVariable("test", "String", getValue());
+    public Variable getVariable() {
+        return new Variable("test", "String", getValue());
     }
 }

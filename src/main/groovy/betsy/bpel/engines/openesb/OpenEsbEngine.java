@@ -1,23 +1,28 @@
 package betsy.bpel.engines.openesb;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.XSLTTasks;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-import betsy.common.util.ClasspathHelper;
-import betsy.common.util.OperatingSystem;
-
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.Engine;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
+import betsy.common.util.ClasspathHelper;
+import betsy.common.util.OperatingSystem;
+
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     private static final String CHECK_URL = "http://localhost:18181";
+    private static final String CHECK_WHETHER_RUNNING_URL = "http://localhost:8383";
 
     public Path getXsltPath() {
         return ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb");
@@ -29,17 +34,8 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BPELProcess process) {
-        return CHECK_URL + "/" + process.getName() + "TestInterface";
-    }
-
-    @Override
-    public void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
+    public String getEndpointUrl(String name) {
+        return CHECK_URL + "/" + name + "TestInterface";
     }
 
     @Override
@@ -62,7 +58,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     @Override
     public void startup() {
         getCli().startDomain();
-        TimeoutRepository.getTimeout("OpenEsb.startup").waitForAvailabilityOfUrl("http://localhost:8383");
+        TimeoutRepository.getTimeout("OpenEsb.startup").waitForAvailabilityOfUrl(CHECK_WHETHER_RUNNING_URL);
     }
 
     @Override
@@ -84,13 +80,25 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
+    public void deploy(String name, Path path) {
         OpenEsbDeployer deployer = new OpenEsbDeployer(getCli());
-        deployer.deploy(process.getName(), process.getTargetPackageCompositeFilePath(), process.getTargetPath());
+        Path tmpfolder = path.getParent().resolve("TMPFOLDER");
+        FileTasks.mkdirs(tmpfolder);
+        deployer.deploy(name, path, tmpfolder);
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
+    public boolean isDeployed(QName process) {
+        return false;
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public Path buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
@@ -103,6 +111,8 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
         getPackageBuilder().bpelFolderToZipFile(process);
 
         new OpenEsbCompositePackager(process).build();
+
+        return process.getTargetPackageCompositeFilePath();
     }
 
     public void buildDeploymentDescriptor(BPELProcess process) {
@@ -116,11 +126,7 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public boolean isRunning() {
-        return false;
-    }
-
-    public static String getCHECK_URL() {
-        return CHECK_URL;
+        return URLTasks.isUrlAvailable(CHECK_WHETHER_RUNNING_URL);
     }
 
 }

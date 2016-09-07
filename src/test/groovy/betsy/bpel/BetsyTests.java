@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 public class BetsyTests {
     @Test
     public void simulateATestRun() throws Exception {
@@ -54,17 +56,26 @@ public class BetsyTests {
             return false;
         }
 
-        public void deploy(BPELProcess process) {
+        public void deploy(String name, Path path) {
+        }
+
+        @Override public boolean isDeployed(QName process) {
+            return false;
+        }
+
+        @Override public void undeploy(QName process) {
+
         }
 
         public void storeLogs(BPELProcess process) {
         }
 
-        public void buildArchives(BPELProcess process) {
+        public Path buildArchives(BPELProcess process) {
             new BPELEnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
+            return process.getTargetPackageFilePath();
         }
 
-        public String getEndpointUrl(BPELProcess process) {
+        public String getEndpointUrl(String name) {
             return "myendpoint";
         }
 
@@ -79,7 +90,7 @@ public class BetsyTests {
 
         @Override
         public List<Path> getLogs() {
-            return null;
+            return Collections.emptyList();
         }
     }
 

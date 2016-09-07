@@ -302,6 +302,13 @@ class ScopeProcesses {
             new Feature(FAULT_HANDLERS_CONSTRUCT, "Scope-FaultHandlers"),
             new BPELTestCase().checkDeployment().sendSync(5, 5)
     );
+
+    public static final EngineIndependentProcess SCOPE_FAULT_HANDLER_INVOKE = BPELProcessBuilder.buildScopeProcess(
+            "Scope-FaultHandlers-Invoke",   "A scope with a receive followed by a intermediate invoke of a service which replies with a fault. The fault that is returned from the invocation is caught by the scope-level faultHandler by its faultName. Inside this faultHandler is the reply to the initial receive.",
+            new Feature(FAULT_HANDLERS_CONSTRUCT, "Scope-FaultHandlers-Invoke"),
+            new BPELTestCase().checkDeployment().sendSync(-5, -5)
+    );
+
     public static final EngineIndependentProcess SCOPE_FAULT_HANDLER_OUTBOUND_LINK = BPELProcessBuilder.buildScopeProcess(
             "Scope-FaultHandlers-OutboundLink", "A scope in a flow with a receive followed by a intermediate throw. The fault that is thrown is caught by the scope-level faultHandler by its faultName.  Inside this faultHandler is a assign that is linked outbound to the reply to the initial receive.",
             new Feature(FAULT_HANDLERS_CONSTRUCT, "Scope-FaultHandlers-OutboundLink"),
@@ -322,6 +329,7 @@ class ScopeProcesses {
             SCOPE_EXIT_ON_STANDARD_FAULT_JOIN_FAILURE,
             PROCESS_FAULT_HANDLERS_CATCH_ORDER,
             SCOPE_FAULT_HANDLERS_CATCH_ORDER,
+            SCOPE_FAULT_HANDLER_INVOKE,
             SCOPE_FAULT_HANDLERS_FAULT_VARIABLE_DATA
     );
     public static final EngineIndependentProcess SCOPE_PARTNER_LINKS = BPELProcessBuilder.buildScopeProcessWithPartner(

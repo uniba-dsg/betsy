@@ -1,25 +1,26 @@
 package betsy.bpmn.engines.activiti;
 
-import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.model.BPMNProcess;
-import betsy.bpmn.model.BPMNTestBuilder;
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.reporting.BPMNTestcaseMerger;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.XSLTTasks;
-import betsy.common.util.ClasspathHelper;
-import org.apache.log4j.Logger;
-
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.BPMNProcessStarter;
+import betsy.bpmn.engines.BPMNTestcaseMerger;
+import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.model.BPMNProcess;
+import betsy.bpmn.model.BPMNTestBuilder;
+import betsy.bpmn.model.BPMNTestCase;
+import betsy.common.engines.tomcat.Tomcat;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.Engine;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
+import org.apache.log4j.Logger;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
 
@@ -31,19 +32,34 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     public void testProcess(BPMNProcess process) {
         for (BPMNTestCase testCase : process.getTestCases()) {
             BPMNTester bpmnTester = new BPMNTester();
-            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCase.getNumber()));
-            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCase.getNumber()));
-            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCase.getNumber()));
+            int testCaseNumber = testCase.getNumber();
+            bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCaseNumber));
+            bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
+            bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
             ActivitiTester tester = new ActivitiTester();
             tester.setTestCase(testCase);
             tester.setBpmnTester(bpmnTester);
             tester.setKey(process.getName());
+            tester.setInstanceLogFile(getInstanceLogFile(testCaseNumber));
             tester.setLogDir(getTomcat().getTomcatLogsDir());
 
             tester.runTest();
         }
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
+    }
+
+    private Path getInstanceLogFile(int testCaseNumber) {
+        return getTomcat().getTomcatBinDir().resolve("log" + testCaseNumber + ".txt");
+    }
+
+    @Override
+    public BPMNProcessStarter getProcessStarter() {
+        return new ActivitiProcessStarter();
+    }
+
+    @Override public Path getLogForInstance(String processName) {
+        return getInstanceLogFile(Integer.parseInt(processName));
     }
 
     @Override
@@ -52,8 +68,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void deploy(BPMNProcess process) {
-        deployBpmnProcess(process.getTargetProcessFilePath());
+    public void deploy(String name, Path path) {
+        deployBpmnProcess(path);
     }
 
     public static void deployBpmnProcess(Path bpmnFile) {
@@ -71,7 +87,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public void buildArchives(BPMNProcess process) {
+    public Path buildArchives(BPMNProcess process) {
         XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
                 process.getProcess(),
                 process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"));
@@ -81,12 +97,14 @@ public class ActivitiEngine extends AbstractBPMNEngine {
                 process.getTargetProcessFilePath());
 
         FileTasks.deleteFile(process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"));
+
+        return process.getTargetProcessFilePath();
     }
 
     @Override
     public void buildTest(BPMNProcess process) {
         BPMNTestBuilder builder = new BPMNTestBuilder();
-        builder.setPackageString(String.join(".", process.getEngineID() + "." + process.getGroup().getName()));
+        builder.setPackageString(process.getPackageID());
         builder.setLogDir(getTomcat().getTomcatBinDir());
         builder.setProcess(process);
 
@@ -94,18 +112,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public String getEndpointUrl(BPMNProcess process) {
+    public String getEndpointUrl(String name) {
         return URL + "/service/repository/";
-    }
-
-    @Override
-    public void storeLogs(BPMNProcess process) {
-        Path targetLogsPath = process.getTargetLogsPath();
-        FileTasks.mkdirs(targetLogsPath);
-
-        for(Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
     }
 
     @Override
@@ -118,7 +126,9 @@ public class ActivitiEngine extends AbstractBPMNEngine {
         installer.install();
 
         // Modify preferences
-        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-context.xml"), "\t\t<property name=\"jobExecutorActivate\" value=\"false\" />", "\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
+        FileTasks.replaceTokenInFile(installer.getClassesPath().resolve("activiti-context.xml"),
+                "\t\t<property name=\"jobExecutorActivate\" value=\"false\" />",
+                "\t\t<property name=\"jobExecutorActivate\" value=\"true\" />");
     }
 
     public Tomcat getTomcat() {

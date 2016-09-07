@@ -1,13 +1,14 @@
 package betsy.bpel.engines.wso2;
 
+import java.nio.file.Path;
+import java.util.Objects;
+
+import javax.xml.namespace.QName;
+
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
-
-import javax.xml.namespace.QName;
-import java.nio.file.Path;
-import java.util.Objects;
 
 public class Wso2Deployer {
 

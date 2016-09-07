@@ -9,6 +9,8 @@ import betsy.common.model.engine.Engine;
 import java.nio.file.Path;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess> {
 
     private final AbstractBPELEngine engine;
@@ -18,23 +20,33 @@ public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess>
     }
 
     @Override
-    public void deploy(BPELProcess process) {
-        engine.deploy(process);
+    public void deploy(String name, Path path) {
+        engine.deploy(name, path);
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
-        engine.buildArchives(process);
+    public boolean isDeployed(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    public String getEndpointUrl(BPELProcess process) {
-        return engine.getEndpointUrl(process);
+    public void undeploy(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    public void storeLogs(BPELProcess process) {
-        engine.storeLogs(process);
+    public Path buildArchives(BPELProcess process) {
+        return engine.buildArchives(process);
+    }
+
+    @Override
+    public String getEndpointUrl(String name) {
+        return engine.getEndpointUrl(name);
+    }
+
+    @Override
+    public void storeLogs(Path targetLogsPath) {
+        engine.storeLogs(targetLogsPath);
     }
 
     @Override

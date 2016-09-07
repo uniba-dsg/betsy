@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption
  * In order to install a VM for a virtual engine you need to provide the basic image (either the UUID or the unique name) and specify some more options, 
  * for instance if you would like to overwrite existing VMs in case of name conflicts. The machines do not automatically create a snapshot as this is also done by the betsy tests itself.<br>
  * <br>
- * Usually the two projects, 'betsy' and 'betsy-engines' are in directories side-by-side. Otherwise you have to specify the location of both projects! 
+ * Usually the two projects, 'betsy' and 'betsy-engines' are in directories side-by-side. Otherwise you have to specify the location of both projects!
  * <br>
  * <b>Most common pitfalls:</b><br>
  * <ul>

@@ -1,13 +1,17 @@
 package betsy.bpel.engines.bpelg;
 
-import betsy.bpel.model.BPELProcess;
-import betsy.bpel.model.steps.WsdlOperation;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import betsy.bpel.model.BPELProcess;
+import betsy.bpel.model.steps.WsdlOperation;
 
 public class Util {
 

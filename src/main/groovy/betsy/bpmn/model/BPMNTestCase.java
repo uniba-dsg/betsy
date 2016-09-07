@@ -1,10 +1,13 @@
 package betsy.bpmn.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import betsy.common.model.input.TestAssertion;
 import betsy.common.model.input.TestCase;
 import betsy.common.util.StringUtils;
-
-import java.util.*;
 
 public class BPMNTestCase extends TestCase {
 
@@ -157,12 +160,12 @@ public class BPMNTestCase extends TestCase {
         return sb.toString();
     }
 
-    public List<BPMNTestVariable> getVariables() {
-        List<BPMNTestVariable> result = new ArrayList<>();
+    public List<Variable> getVariables() {
+        List<Variable> result = new ArrayList<>();
 
         getTestStep().getVariable().ifPresent(result::add);
-        result.add(new BPMNTestVariable("testCaseNumber", "Integer", getNumber()));
-        result.add(new BPMNTestVariable("integerVariable", "Integer", integerVariable));
+        result.add(new Variable("testCaseNumber", "Integer", getNumber()));
+        result.add(new Variable("integerVariable", "Integer", integerVariable));
 
         return result;
     }

@@ -84,7 +84,7 @@ public class TestCaseToLatexSerializer {
         BPMNTestCase bpmnTestCase = (BPMNTestCase) testCase;
         BPMNTestStep testStep = bpmnTestCase.getTestStep();
 
-        Optional<BPMNTestVariable> variable = testStep.getVariable();
+        Optional<Variable> variable = testStep.getVariable();
         if (variable.isPresent()) {
             result.append(variable.get().getValue());
         }

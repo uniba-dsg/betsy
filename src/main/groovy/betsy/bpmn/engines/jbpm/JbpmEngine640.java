@@ -1,9 +1,9 @@
 package betsy.bpmn.engines.jbpm;
 
+import java.time.LocalDate;
+
 import betsy.common.model.ProcessLanguage;
 import betsy.common.model.engine.Engine;
-
-import java.time.LocalDate;
 
 public class JbpmEngine640 extends JbpmEngine {
 
@@ -31,8 +31,8 @@ public class JbpmEngine640 extends JbpmEngine {
     }
 
     @Override
-    protected String createProcessHistoryURL(String deploymentId) {
-        return getJbpmnUrl() + "/rest/history/instance/1";
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
+        return JbpmApiBasedProcessInstanceOutcomeChecker.build();
     }
 
 }

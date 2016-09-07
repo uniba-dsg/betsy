@@ -1,0 +1,35 @@
+apply plugin: "groovy"
+
+repositories {
+    jcenter()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy']
+        }
+        resources {
+            srcDirs = ['src/main/groovy', 'src/main/resources']
+        }
+    }
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+
+    compile 'org.apache.ant:ant:1.9.7'
+    compile 'org.apache.ant:ant-apache-log4j:1.9.7'
+
+    compile 'log4j:log4j:1.2.17'
+    compile 'commons-io:commons-io:2.5'
+    compile 'commons-lang:commons-lang:2.6'
+
+    compile 'org.apache.santuario:xmlsec:2.0.7' // for canonical XML form
+
+    testCompile 'junit:junit:4.12'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0'
+}

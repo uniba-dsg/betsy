@@ -1,15 +1,5 @@
 package betsy.bpel.engines.petalsesb;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.*;
-import betsy.common.util.ClasspathHelper;
-import org.apache.log4j.Logger;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -17,6 +7,21 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.config.Configuration;
+import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.Engine;
+import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
+import betsy.common.util.ClasspathHelper;
+import org.apache.log4j.Logger;
 
 public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
@@ -33,8 +38,8 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BPELProcess process) {
-        return CHECK_URL + "/petals/services/" + process.getName() + "TestInterfaceService";
+    public String getEndpointUrl(String name) {
+        return CHECK_URL + "/petals/services/" + name + "TestInterfaceService";
     }
 
     public Path getPetalsFolder() {
@@ -58,15 +63,6 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     }
 
     public Path getPetalsCliBinFolder() {return getServerPath().resolve("petals-cli-1.0.0/bin");}
-
-    @Override
-    public void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
-    }
 
     @Override
     public List<Path> getLogs() {
@@ -133,8 +129,21 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
-        new PetalsEsbDeployer(getInstallationDir(), getPetalsLogFile()).deploy(process.getTargetPackageCompositeFilePath(), process.getName());
+    public void deploy(String name, Path path) {
+        new PetalsEsbDeployer(getInstallationDir(), getPetalsLogFile())
+                .deploy(path, name);
+    }
+
+    @Override
+    public boolean isDeployed(QName process) {
+        return new PetalsEsbDeployer(getInstallationDir(), getPetalsLogFile())
+                .isDeployed(process.getLocalPart());
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        new PetalsEsbDeployer(getInstallationDir(), getPetalsLogFile())
+                .undeploy(process.getLocalPart());
     }
 
     public Path getInstallationDir() {
@@ -142,7 +151,7 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
+    public Path buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
@@ -164,6 +173,8 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
         getPackageBuilder().bpelFolderToZipFile(process);
 
         new PetalsEsbCompositePackager(process).build();
+
+        return process.getTargetPackageCompositeFilePath();
     }
 
     @Override

@@ -43,7 +43,7 @@
                         <property name="username">admin</property>
                         <property name="vendor.jdk.allowed.pattern">Sun Microsystems.*</property>
                         <property name="jms.port">7676</property>
-                        <property name="maximum.jdk.version">1.6.99</property>
+                        <property name="maximum.jdk.version">10.0.0.0.0</property>
                         <property name="minimum.jdk.version">1.5.0</property>
                         <property name="jdk.location">@JDK_LOCATION@</property>
                         <property name="installation.location">@INSTALL_PATH@/glassfish</property>

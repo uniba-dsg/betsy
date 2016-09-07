@@ -1,8 +1,8 @@
 package betsy.bpmn.model;
 
-import betsy.common.model.input.AssertableTestStep;
-
 import java.util.Optional;
+
+import betsy.common.model.input.AssertableTestStep;
 
 public class BPMNTestStep extends AssertableTestStep {
 
@@ -29,7 +29,7 @@ public class BPMNTestStep extends AssertableTestStep {
         return delay;
     }
 
-    public Optional<BPMNTestVariable> getVariable() {
+    public Optional<Variable> getVariable() {
         if (input.isPresent()) {
             return Optional.of(input.get().getVariable());
         } else {

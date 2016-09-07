@@ -1,6 +1,7 @@
 package betsy.bpmn.engines.jbpm;
 
 import betsy.bpmn.engines.JsonHelper;
+import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -40,13 +41,11 @@ public class JbpmDeployer {
         LOGGER.info("Trying to check the deployment status of process \"" + deploymentId + "\".");
 
         try {
-
             JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, USER, PASSWORD);
-            String status = object.getString("status");
-            return status != null && "DEPLOYED".equals(status);
-
+            String status = object.optString("status");
+            return "DEPLOYED".equalsIgnoreCase(status);
         } catch (Exception e) {
-            LOGGER.error("error: " + e.getMessage(), e);
+            LOGGER.error("error: " + e.getMessage());
             return false;
         }
     }

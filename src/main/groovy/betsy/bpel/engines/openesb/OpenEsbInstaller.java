@@ -1,15 +1,15 @@
 package betsy.bpel.engines.openesb;
 
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import betsy.common.config.Configuration;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.util.ClasspathHelper;
-
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class OpenEsbInstaller {
 
@@ -36,14 +36,15 @@ public class OpenEsbInstaller {
         FileTasks.copyFileContentsToNewFile(stateXmlTemplate, stateXmlPath);
         Map<String, Object> replacements = new HashMap<>();
         replacements.put("@INSTALL_PATH@", path.toAbsolutePath());
-        replacements.put("@JDK_LOCATION@", System.getenv().get("JAVA_HOME"));
+        replacements.put("@JDK_LOCATION@", System.getenv().get("JAVA6_HOME"));
         replacements.put("@HTTP_PORT@", 8383);
         replacements.put("@HTTPS_PORT@", 8384);
         FileTasks.replaceTokensInFile(stateXmlPath, replacements);
 
         Path reinstallGlassFishBatPath = path.resolve("reinstallGlassFish.bat");
-        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/reinstallGlassFish.bat"), reinstallGlassFishBatPath);
-        Path installationScript = Configuration.getDownloadsDir().resolve(fileName);
+        FileTasks.copyFileContentsToNewFile(ClasspathHelper.getFilesystemPathFromClasspathPath("/bpel/openesb/reinstallGlassFish.bat"),
+                reinstallGlassFishBatPath);
+        Path installationScript = Configuration.getDownloadsDir().resolve(fileName).toAbsolutePath();
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(reinstallGlassFishBatPath).
                 values(installationScript.toString(), stateXmlPath.toString()));
 

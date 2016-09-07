@@ -1,16 +1,15 @@
 package betsy.bpel.engines.activebpel;
 
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+
 import betsy.common.config.Configuration;
 import betsy.common.engines.tomcat.TomcatInstaller;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ActiveBpelInstaller {
 

@@ -1,16 +1,15 @@
 package betsy.bpmn.engines.camunda;
 
-import betsy.bpmn.engines.*;
+import java.nio.file.Path;
+
+import betsy.bpmn.engines.BPMNEnginesUtil;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
+import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
-import java.nio.file.Path;
-import java.util.*;
 
 public class CamundaTester {
 
@@ -18,11 +17,11 @@ public class CamundaTester {
 
     private BPMNTestCase testCase;
 
-    private String restURL;
-
     private String key;
 
     private Path logDir;
+
+    private Path instanceLogFile;
 
     private BPMNTester bpmnTester;
 
@@ -33,91 +32,50 @@ public class CamundaTester {
 
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
-        addDeploymentErrorsToLogFile(logFile);
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new CamundaLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+        if(outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
+            BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
+        }
 
         try {
             if(testCase.hasParallelProcess()){
-                startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
+                new CamundaProcessStarter().start(BPMNTestCase.PARALLEL_PROCESS_KEY);
             }
 
-            startProcess(key);
+            new CamundaProcessStarter().start(key, testCase.getVariables());
 
             // Wait and check for Errors only if instantiation was successful
             WaitTasks.sleep(testCase.getDelay().orElse(0));
-            addRuntimeErrorsToLogFile(logFile);
+
+            BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new CamundaLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+            if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
+                BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
+            } else if(outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+            }
 
             // Check on parallel execution
-            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+            BPMNEnginesUtil.checkParallelExecution(testCase, instanceLogFile);
 
             // Check whether MARKER file exists
-            BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
+            BPMNEnginesUtil.checkMarkerFileExists(testCase, instanceLogFile);
 
             // Check data type
-            BPMNEnginesUtil.checkDataLog(testCase, getFileName());
+            BPMNEnginesUtil.checkDataLog(testCase, instanceLogFile);
         } catch (Exception e) {
             LOGGER.info("Could not start process", e);
-            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+            BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
         }
 
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
+        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, instanceLogFile);
 
-        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
+        LOGGER.info("contents of log file " + instanceLogFile + ": " + FileTasks.readAllLines(instanceLogFile));
 
         bpmnTester.test();
     }
 
-    private void startProcess(String key) {
-        //first request to get id
-        JSONObject response = JsonHelper.get(restURL + "/process-definition?key=" + key, 200);
-        final String id = String.valueOf(response.get("id"));
-
-        //assembling JSONObject for second request
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("variables", mapToArrayWithMaps(testCase.getVariables()));
-        requestBody.put("businessKey", "key-" + key);
-
-        //second request to start process using id and Json to get the process instance id
-        JsonHelper.post(restURL + "/process-definition/" + id + "/start?key=" + key, requestBody, 200);
-    }
-
     public void setBpmnTester(BPMNTester bpmnTester) {
         this.bpmnTester = bpmnTester;
-    }
-
-    private void addDeploymentErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("Ignoring unsupported activity type", BPMNAssertions.ERROR_DEPLOYMENT);
-        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_DEPLOYMENT);
-        for (BPMNAssertions deploymentError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), deploymentError);
-        }
-    }
-
-    private void addRuntimeErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("org.camunda.bpm.engine.ProcessEngineException", BPMNAssertions.ERROR_RUNTIME);
-        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        analyzer.addSubstring("'EndEvent_2' throws an error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        for (BPMNAssertions runtimeError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), runtimeError);
-        }
-    }
-
-    public static Map<String, Object> mapToArrayWithMaps(List<BPMNTestVariable> variables) {
-        Map<String, Object> map = new HashMap<>();
-
-        for (BPMNTestVariable entry : variables) {
-            Map<String, Object> submap = new HashMap<>();
-            submap.put("value", entry.getValue());
-            submap.put("type", entry.getType());
-            map.put(entry.getName(), submap);
-        }
-
-        return map;
-    }
-
-    private Path getFileName() {
-        return logDir.resolve("..").normalize().resolve("bin").resolve("log" + testCase.getNumber() + ".txt");
     }
 
     public BPMNTestCase getTestCase() {
@@ -126,10 +84,6 @@ public class CamundaTester {
 
     public void setTestCase(BPMNTestCase testCase) {
         this.testCase = testCase;
-    }
-
-    public void setRestURL(String restURL) {
-        this.restURL = restURL;
     }
 
     public String getKey() {
@@ -144,4 +98,7 @@ public class CamundaTester {
         this.logDir = logDir;
     }
 
+    public void setInstanceLogFile(Path instanceLogFile) {
+        this.instanceLogFile = instanceLogFile;
+    }
 }
