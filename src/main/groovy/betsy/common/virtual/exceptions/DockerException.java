@@ -7,10 +7,14 @@ package betsy.common.virtual.exceptions;
  *
  */
 public class DockerException extends RuntimeException {
-    static final long serialVersionUID = -1848914673093119416L;
 
+    /**
+     * SerialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
     public DockerException() {
+        super();
     }
 
     /**
