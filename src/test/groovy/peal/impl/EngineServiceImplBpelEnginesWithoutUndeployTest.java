@@ -128,9 +128,8 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest {
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
-                // full: openesb__3 openesb__2
-                // unknown: openesb__2_2
-                .filter(p -> p.toString().startsWith("openesb__3") || p.toString().startsWith("openesb__2_3"))
+                // full: openesb__*
+                .filter(p -> p.toString().startsWith("openesb"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }
