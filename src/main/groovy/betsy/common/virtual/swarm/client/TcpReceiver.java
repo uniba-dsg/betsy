@@ -41,7 +41,7 @@ public class TcpReceiver extends Thread {
                 LOGGER.info(e.getMessage());
                 isRunning = false;
             }
-            if (!(object == null)) {
+            if (object != null) {
                 if(object instanceof ArgumentsMessage){
                     ArgumentsMessage argumentsMessage = (ArgumentsMessage) object;
                     client.setArguments(argumentsMessage.getArgs());

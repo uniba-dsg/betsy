@@ -41,7 +41,7 @@ public class TcpReceiver extends Thread {
                 System.out.println(e);
                 isRunning = false;
             }
-            if (!(object == null)) {
+            if (object != null) {
                 if(object instanceof NumberMessage){
                     NumberMessage numberMessage = (NumberMessage) object;
                     tcpMessageService.addNumber(connectionService, numberMessage.getNumber());

@@ -36,7 +36,6 @@ public class WorkerTemplateGenerator {
     private HashSet<String> bpmnProcesses = new HashSet<>();
     private ArrayList<WorkerTemplate> workerTemplates = new ArrayList<>();
     private static Path docker = Paths.get(get("docker.dir")).toAbsolutePath();
-    private String[] args;
 
     /**
      *
@@ -44,7 +43,6 @@ public class WorkerTemplateGenerator {
      */
     public WorkerTemplateGenerator(String... args) {
         if(args.length > 0){
-            this.args = args;
             if ("all".equalsIgnoreCase(args[0])) {
                 BPELCliParser bpelParser = new BPELCliParser("locals", "all");
                 BPELCliParameter bpelParams = bpelParser.parse();
