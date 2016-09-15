@@ -34,7 +34,7 @@ public class JsonHelper {
             logResponse(response.getBody());
 
             if (response.getBody().isArray()) {
-                return response.getBody().getArray().getJSONObject(0);
+                return response.getBody().getArray().optJSONObject(0);
             } else {
                 return response.getBody().getObject();
             }
