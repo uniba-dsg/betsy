@@ -16,8 +16,8 @@ import pebl.test.TestCase;
 import pebl.test.TestStep;
 import pebl.test.steps.DelayTestStep;
 import pebl.test.steps.GatherAndAssertTracesTestStep;
-import pebl.test.steps.Variable;
-import pebl.test.steps.ProcessStartWithVariablesTestStep;
+import pebl.test.steps.vars.Variable;
+import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class CamundaTester {
 

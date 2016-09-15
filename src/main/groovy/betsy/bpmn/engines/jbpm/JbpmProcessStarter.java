@@ -6,7 +6,7 @@ import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.Variables;
 import betsy.bpmn.model.BPMNAssertions;
-import pebl.test.steps.Variable;
+import pebl.test.steps.vars.Variable;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;

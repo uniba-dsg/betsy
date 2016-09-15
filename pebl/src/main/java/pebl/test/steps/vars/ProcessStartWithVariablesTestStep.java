@@ -1,4 +1,4 @@
-package pebl.test.steps;
+package pebl.test.steps.vars;
 
 import java.util.Collections;
 import java.util.LinkedList;

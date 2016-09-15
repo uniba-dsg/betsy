@@ -7,8 +7,8 @@ import pebl.test.TestCase;
 import pebl.test.assertions.Trace;
 import pebl.test.steps.DelayTestStep;
 import pebl.test.steps.GatherAndAssertTracesTestStep;
-import pebl.test.steps.ProcessStartWithVariablesTestStep;
-import pebl.test.steps.Variable;
+import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.test.steps.vars.Variable;
 
 public class BPMNTestCaseBuilder {
 

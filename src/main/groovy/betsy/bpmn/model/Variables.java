@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import pebl.test.steps.Variable;
+import pebl.test.steps.vars.Variable;
 
 public class Variables {
 

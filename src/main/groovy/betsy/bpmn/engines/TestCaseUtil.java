@@ -10,7 +10,7 @@ import pebl.test.assertions.Trace;
 import pebl.test.assertions.TraceTestAssertion;
 import pebl.test.steps.AssertableTestStep;
 import pebl.test.steps.GatherAndAssertTracesTestStep;
-import pebl.test.steps.ProcessStartWithVariablesTestStep;
+import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class TestCaseUtil {
     public static String getKey(TestCase testCase) {

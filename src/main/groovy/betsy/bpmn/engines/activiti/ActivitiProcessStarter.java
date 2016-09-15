@@ -7,7 +7,7 @@ import java.util.Map;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.Variables;
-import pebl.test.steps.Variable;
+import pebl.test.steps.vars.Variable;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
