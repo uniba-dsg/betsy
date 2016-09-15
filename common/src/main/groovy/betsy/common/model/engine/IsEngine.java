@@ -1,8 +1,6 @@
 package betsy.common.model.engine;
 
-import betsy.common.HasName;
-
-public interface IsEngine extends HasName, EngineDimension {
+public interface IsEngine extends EngineDimension, pebl.HasName {
 
     default String getName() {
         return getEngineID();

@@ -16,8 +16,8 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
@@ -29,8 +29,8 @@ import betsy.common.util.FileTypes;
 public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "camunda", "7.0.0", LocalDate.of(2013, 8, 31), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPMN, "camunda", "7.0.0", LocalDate.of(2013, 8, 31), "Apache-2.0");
     }
 
     public String getCamundaUrl() {

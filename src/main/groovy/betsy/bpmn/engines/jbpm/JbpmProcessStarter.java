@@ -1,12 +1,12 @@
 package betsy.bpmn.engines.jbpm;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.model.Variables;
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.Variable;
+import pebl.test.steps.Variable;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
@@ -32,7 +32,7 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
         // determine deployment
         String deploymentID = getDeploymentID();
 
-        String queryParameter = Variable.toQueryParameter(variables);
+        String queryParameter = new Variables(variables).toQueryParameter();
         String processStartEquestURL = requestUrl + "/rest/runtime/" + deploymentID + "/process/" + processName + "/start" + queryParameter;
         try {
             LOGGER.info("Trying to start process \"" + processName + "\".");

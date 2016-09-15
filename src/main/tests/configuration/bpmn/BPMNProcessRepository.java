@@ -1,16 +1,16 @@
 package configuration.bpmn;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class BPMNProcessRepository {
-    private final Repository<EngineIndependentProcess> repo = new Repository<>();
+    private final Repository<Test> repo = new Repository<>();
 
     public BPMNProcessRepository() {
-        List<EngineIndependentProcess> all = new LinkedList<>();
+        List<Test> all = new LinkedList<>();
         all.addAll(GatewayProcesses.GATEWAYS);
         all.addAll(ActivityProcesses.ACTIVITIES);
         all.addAll(EventProcesses.EVENTS);
@@ -34,7 +34,7 @@ public class BPMNProcessRepository {
                 // f.get(null) returns the value of the field. the null parameter is ignored as the field is static.
                 try {
                     Object value = f.get(null);
-                    repo.put(f.getName(), (List<EngineIndependentProcess>) value);
+                    repo.put(f.getName(), (List<Test>) value);
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException("Could not retrieve field value", e);
                 }
@@ -44,17 +44,17 @@ public class BPMNProcessRepository {
         repo.put("MINIMAL", Collections.singletonList(BasicProcesses.SEQUENCE_FLOW));
 
         // insert every process into the map
-        for (EngineIndependentProcess process : repo.getByName("ALL")) {
+        for (Test process : repo.getByName("ALL")) {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
 
     }
 
-    public List<EngineIndependentProcess> getByName(String name) {
+    public List<Test> getByName(String name) {
         return repo.getByName(name);
     }
 
-    public List<EngineIndependentProcess> getByNames(String... names) {
+    public List<Test> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

@@ -1,9 +1,9 @@
 package configuration.bpmn;
 
+import pebl.test.Test;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.feature.Feature;
+import pebl.featuretree.FeatureSet;
+import pebl.featuretree.Feature;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PatternProcesses {
 
-    public static final EngineIndependentProcess WCP01_SEQUENCE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP01_SEQUENCE = BPMNProcessBuilder.buildPatternProcess(
             "Test Process for WCP01 Sequence: Containing a Start Event, two ScriptTasks (for logging purposes) and an "
                     + "EndEvent. All connected by only basic SequenceFlows."
                     + "Test passed successfully if the trace confirms the execution of 'Task1'.",
@@ -22,7 +22,7 @@ public class PatternProcesses {
     );
 
 
-    public static final EngineIndependentProcess WCP02_PARALLEL_SPLIT = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP02_PARALLEL_SPLIT = BPMNProcessBuilder.buildPatternProcess(
             "WCP02 ParallelSplit: Checking the ability to create two parallel branches by a ParallelGateway followed by "
                     + "a ScriptTask in each branch."
                     + "Test passed successfully if both Tasks are executed.",
@@ -31,7 +31,7 @@ public class PatternProcesses {
     );
 
 
-    public static final EngineIndependentProcess WCP03_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP03_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess(
             "WCP03 Synchronization: Checking the ability to synchronize two parallel branches. The ScriptTask after the "
                     + "merging ParallelGateway has to be executed only once.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP03_Synchronization"), "WCP03_Synchronization", "", "+"),
@@ -39,7 +39,7 @@ public class PatternProcesses {
     );
 
 
-    public static final EngineIndependentProcess WCP04_EXCLUSIVE_CHOICE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP04_EXCLUSIVE_CHOICE = BPMNProcessBuilder.buildPatternProcess(
             "WCP04 Exclusive Choice: Checking the ability to create exclusive branches based on an input. "
                     + "If the input contains 'a' it should execute task1, if it contains 'b' it should execute task2, "
                     + "in any other cases, the default task (task3) should be executed."
@@ -51,7 +51,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputC().assertTask3()
     );
 
-    public static final EngineIndependentProcess WCP05_SIMPLE_MERGE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP05_SIMPLE_MERGE = BPMNProcessBuilder.buildPatternProcess(
             "WCP05 Simple Merge: Checking the ability to merge multiple branches into a single branch with using a "
                     + "converging XOR gateway. The ScriptTask after the merging gateway must be triggered each time a "
                     + "token arrives.",
@@ -65,7 +65,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
-    public static final EngineIndependentProcess WCP06_MULTI_CHOICE_INCLUSIVE_GATEWAY = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP06_MULTI_CHOICE_INCLUSIVE_GATEWAY = BPMNProcessBuilder.buildPatternProcess(
             "WCP06 Multi Choice: Checking the ability to perform an OR-Split using an inclusive gateway. One or more branches should be created "
                     + "depending on the input. The third branch is only executed if no other condition is evaluated to true.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP06_MultiChoice"), "WCP06_MultiChoice_InclusiveGateway", "", "+"),
@@ -78,7 +78,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP06_MULTI_CHOICE_IMPLICIT = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP06_MULTI_CHOICE_IMPLICIT = BPMNProcessBuilder.buildPatternProcess(
             "WCP06 Multi Choice: Checking the ability to perform an OR-Split using conditional sequence flows without a preceding gateway. " +
                     "One or more branches should be created depending on the input. " +
                     "The third branch is only executed if no other condition is evaluated to true.",
@@ -92,7 +92,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP06_MULTI_CHOICE_COMPLEX_GATEWAY = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP06_MULTI_CHOICE_COMPLEX_GATEWAY = BPMNProcessBuilder.buildPatternProcess(
             "WCP06 Multi Choice: Checking the ability to perform an OR-Split using a complex gateway. One or more branches should be created "
                     + "depending on the input. The third branch is only executed if no other condition is evaluated to true.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP06_MultiChoice"), "WCP06_MultiChoice_ComplexGateway", "", "+"),
@@ -105,7 +105,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP07_STRUCTURED_SYNCHRONIZING_MERGE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP07_STRUCTURED_SYNCHRONIZING_MERGE = BPMNProcessBuilder.buildPatternProcess(
             "WCP07 StructuredSynchronizingMerge: Checks the ability to synchronize the merging of branches created "
                     + "earlier using a multiple choice (see WCP06).",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP07_StructuredSynchronizingMerge"), "WCP07_StructuredSynchronizingMerge", "", "+/-"),
@@ -115,7 +115,7 @@ public class PatternProcesses {
     );
 
 
-    public static final EngineIndependentProcess WCP08_MULTI_MERGE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP08_MULTI_MERGE = BPMNProcessBuilder.buildPatternProcess(
             "WCP08 MultiMerge: Tests the convergence of two or more branches into a single path without synchronization."
                     + "The test is equivalent to WCP05 for BPMN.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP08_MultiMerge"), "WCP08_MultiMerge", "", "+"),
@@ -128,7 +128,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputABC().assertTask1().assertTask2().assertTask3().assertTask4().assertTask4().assertTask4()
     );
 
-    public static final EngineIndependentProcess WCP09_STRUCTURED_DISCRIMINATOR_COMPLEXGATEWAY = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP09_STRUCTURED_DISCRIMINATOR_COMPLEXGATEWAY = BPMNProcessBuilder.buildPatternProcess(
             "WCP09 Structured Discriminator: Implementation of WCP09 using a merging"
                     + "ComplexGateway with activationCount>=1. I.e, the gateway fires upon completion of the first "
                     + "incoming token and is then disabled.",
@@ -136,7 +136,7 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3()
     );
 
-    public static final EngineIndependentProcess WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP09_STRUCTURED_DISCRIMINATOR_MULTI_INSTANCE = BPMNProcessBuilder.buildPatternProcess(
             "WCP09 partial workaround using MultiInstance: The flow after a MultiInstance Activity should continue after"
                     + "the first instance has completed."
                     + "This covers only a special case for WCP09 Discriminator where one of various EQUAL activities are used.",
@@ -144,7 +144,7 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3()
     );
 
-    public static final EngineIndependentProcess WCP_10_ARBITRARY_CYCLES = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP_10_ARBITRARY_CYCLES = BPMNProcessBuilder.buildPatternProcess(
             "WCP10 arbitrary cycle: Structure is based on the example on workflowpatterns.com: The test consists of a "
                     + "series of scripttasks and exclusive gateways. After the creation of the log, task1 is logged, "
                     + "afterwards a counter integerVariable is incremented and task1 is repeated if the integerVariable "
@@ -155,27 +155,27 @@ public class PatternProcesses {
             new BPMNTestCase().setIntegerVariable(0).assertTask1().assertTask1().assertTask2().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP11_IMPLICIT_TERMINATION = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP11_IMPLICIT_TERMINATION = BPMNProcessBuilder.buildPatternProcess(
             "A process that terminates when all contained activity instances have completed",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP11_ImplicitTermination"), "WCP11_ImplicitTermination", "", "+"),
             new BPMNTestCase().assertTask1()
     );
 
-    public static final EngineIndependentProcess WCP12_MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP12_MULTIPLE_INSTANCES_WITHOUT_SYNCHRONIZATION = BPMNProcessBuilder.buildPatternProcess(
             "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
                     "The behavior of the multi instance activity is set to None. Hence, a signal should be fired for every complete multi instance activity.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP12_MultipleInstancesWithoutSynchronization"), "WCP12_MultipleInstancesWithoutSynchronization", "", "+"),
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2().assertTask3().assertTask3().assertTask3()
     );
 
-    public static final EngineIndependentProcess WCP13_MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP13_MULTIPLE_INSTANCES_WITH_A_PRIORI_DESIGN_TIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess(
             "A process which creates three instances of one script task using multiInstanceLoopCharacteristics, followed by a second activity. " +
                     "The number of instances is hard-coded into the process. The behavior of the multi instance activity is set to 'All'.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge"), "WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge", "", "+"),
             new BPMNTestCase().assertTask1().assertTask1().assertTask1().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP14_MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP14_MULTIPLE_INSTANCES_WITH_A_PRIORI_RUNTIME_KNOWLEDGE = BPMNProcessBuilder.buildPatternProcess(
             "A process with a multiple instances activity, where the loop cardinality is read from a variable at run-time. " +
                     "The behavior of the multi instance activity is set to 'All'.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge"), "WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge", "", "+"),
@@ -183,7 +183,7 @@ public class PatternProcesses {
     );
 
 
-    public static final EngineIndependentProcess WCP16_DEFERRED_CHOICE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP16_DEFERRED_CHOICE = BPMNProcessBuilder.buildPatternProcess(
             "An event-based exclusive gateway with two possible branches wait for one out of two signals which are signaled depending on the input. "
                     + "Using a timer, it is ensured that the signals are signaled when the event-based gateway is already waiting for them. "
                     + "Based on EventBasedGateway_Signals",
@@ -192,7 +192,7 @@ public class PatternProcesses {
             new BPMNTestCase().inputB().assertTask2().assertTask4().optionDelay(8000)
     );
 
-    public static final EngineIndependentProcess WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP17_INTERLEAVED_PARALLEL_ROUTING = BPMNProcessBuilder.buildPatternProcess(
             "A set of activity instances is executed sequentially in an " +
                     "order that is decided at run time. No two activity instances of this set are " +
                     "active at the same point in time",
@@ -200,33 +200,33 @@ public class PatternProcesses {
             new BPMNTestCase().assertTask1().assertTask2().assertTask3()
     );
 
-    public static final EngineIndependentProcess WCP19_CANCEL_TASK = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP19_CANCEL_TASK = BPMNProcessBuilder.buildPatternProcess(
             "An activity can be canceled when it emits an error event.",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP19_CancelTask"), "WCP19_CancelTask", "", "+"),
             new BPMNTestCase().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP20_CANCEL_CASE_ERROR = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP20_CANCEL_CASE_ERROR = BPMNProcessBuilder.buildPatternProcess(
             "Cancels a sub-process by emitting an error event inside the sub-process which is handled through a boundary event. "
                     + "See Error_BoundaryEvent_SubProcess_Interrupting",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP20_CancelCase"), "WCP20_CancelCaseError", "", "+"),
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP20_CANCEL_CASE_CANCEL = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP20_CANCEL_CASE_CANCEL = BPMNProcessBuilder.buildPatternProcess(
             "Cancels a sub-process by emitting a cancel event inside the sub-process which is handled through a boundary event. "
                     + "See Cancel_Event",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP20_CancelCase"), "WCP20_CancelCaseCancel", "", "+"),
             new BPMNTestCase().assertTask1().assertTask2()
     );
 
-    public static final EngineIndependentProcess WCP20_CANCEL_CASE_TERMINATE = BPMNProcessBuilder.buildPatternProcess(
+    public static final Test WCP20_CANCEL_CASE_TERMINATE = BPMNProcessBuilder.buildPatternProcess(
             "Cancels a process immediately by emitting a terminate event. See Terminate_Event",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP20_CancelCase"), "WCP20_CancelCaseTerminate", "", "+"),
             new BPMNTestCase()
     );
 
-    public static final List<EngineIndependentProcess> PATTERNS = Arrays.asList(
+    public static final List<Test> PATTERNS = Arrays.asList(
             WCP01_SEQUENCE,
 
             WCP02_PARALLEL_SPLIT,

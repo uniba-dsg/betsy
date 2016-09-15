@@ -15,7 +15,7 @@ public class Engine implements Comparable<Engine> {
 
     @Override
     public String toString() {
-        return "Engine{" + "name='" + name + "\'" + "}";
+        return "EngineExtended{" + "name='" + name + "\'" + "}";
     }
 
     public String getName() {

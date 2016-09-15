@@ -16,12 +16,12 @@ import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.engines.EngineAPI;
-import betsy.common.model.feature.Capability;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.feature.Group;
-import betsy.common.model.feature.Language;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.featuretree.Capability;
+import pebl.featuretree.Feature;
+import pebl.featuretree.FeatureSet;
+import pebl.featuretree.Group;
+import pebl.featuretree.Language;
+import pebl.test.Test;
 import betsy.common.tasks.FileTasks;
 import org.xml.sax.SAXException;
 import peal.DeploymentException;
@@ -65,8 +65,8 @@ public class ProcessModelServiceImpl implements ProcessModelService {
                 files.addAll(wsdlFilesInPath);
                 files.addAll(otherFilesInPath);
 
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(bpelFile, "", Collections.emptyList(), feature, files, Collections.emptyList());
-                BPELProcess process = new BPELProcess(engineIndependentProcess);
+                Test test = new Test(bpelFile, "", Collections.emptyList(), feature, files, Collections.emptyList());
+                BPELProcess process = new BPELProcess(test);
                 process.setEngine(bpelEngine);
 
                 Path deployableArchivePath = bpelEngine.buildArchives(process);
@@ -89,8 +89,8 @@ public class ProcessModelServiceImpl implements ProcessModelService {
                 files.addAll(wsdlFilesInPath);
                 files.addAll(otherFilesInPath);
 
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(bpmnFile, "", Collections.emptyList(), feature, files, Collections.emptyList());
-                BPMNProcess process = new BPMNProcess(engineIndependentProcess);
+                Test test = new Test(bpmnFile, "", Collections.emptyList(), feature, files, Collections.emptyList());
+                BPMNProcess process = new BPMNProcess(test);
                 process.setEngine(bpmnEngine);
 
                 Path deployableArchivePath = bpmnEngine.buildArchives(process);

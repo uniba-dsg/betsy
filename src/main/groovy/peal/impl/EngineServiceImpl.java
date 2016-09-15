@@ -145,19 +145,19 @@ public class EngineServiceImpl implements EngineService {
     public EngineAPI<?> getEngineByID(EngineId engineId) {
         int index = engines.indexOf(engineId);
         if (index == -1) {
-            throw new IllegalArgumentException("Engine id " + engineId + " not found");
+            throw new IllegalArgumentException("EngineExtended id " + engineId + " not found");
         }
         return engineIds.get(index);
     }
 
     @Override
     public ProcessLanguage getSupportedLanguage(EngineId engineId) {
-        betsy.common.model.ProcessLanguage language = getEngineByID(engineId).getEngineObject().getLanguage();
+        pebl.ProcessLanguage language = getEngineByID(engineId).getEngineObject().getLanguage();
         return convertProcessLanguage(language);
     }
 
-    private static ProcessLanguage convertProcessLanguage(betsy.common.model.ProcessLanguage language) {
-        if (language == betsy.common.model.ProcessLanguage.BPEL) {
+    private static ProcessLanguage convertProcessLanguage(pebl.ProcessLanguage language) {
+        if (language == pebl.ProcessLanguage.BPEL) {
             return ProcessLanguage.BPEL;
         } else {
             return ProcessLanguage.BPMN;

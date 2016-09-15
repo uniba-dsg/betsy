@@ -4,7 +4,8 @@ import java.util.List;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.model.Variable;
+import betsy.bpmn.model.Variables;
+import pebl.test.steps.Variable;
 import org.json.JSONObject;
 
 public class CamundaProcessStarter implements BPMNProcessStarter {
@@ -23,7 +24,7 @@ public class CamundaProcessStarter implements BPMNProcessStarter {
 
         //assembling JSONObject for second request
         JSONObject requestBody = new JSONObject();
-        requestBody.put("variables", Variable.toMap(variables));
+        requestBody.put("variables", new Variables(variables).toMap());
         requestBody.put("businessKey", "key-" + processID);
 
         //second request to start process using id and Json to get the process instance id

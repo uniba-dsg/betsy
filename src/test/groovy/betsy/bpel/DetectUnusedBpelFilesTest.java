@@ -1,29 +1,27 @@
 package betsy.bpel;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
 import betsy.common.util.FileTypes;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DetectUnusedBpelFilesTest {
 
-    @Test
+    @org.junit.Test
     public void detectUnusedBpelFiles() throws IOException {
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<EngineIndependentProcess> processed = new LinkedList<>(processRepository.getByName("ALL"));
+        List<Test> processed = new LinkedList<>(processRepository.getByName("ALL"));
         processed.addAll(processRepository.getByName("STATIC_ANALYSIS"));
-        List<EngineIndependentProcess> errors = processRepository.getByName("ERRORS");
+        List<Test> errors = processRepository.getByName("ERRORS");
         processed.addAll(errors);
 
         List<Path> referencedBpelFiles = getBetsyProcessesPaths(processed);
@@ -40,9 +38,9 @@ public class DetectUnusedBpelFilesTest {
                 + "src\\main\\tests\\files\\bpel\\errorsbase\\ImprovedBackdoorRobustness.bpel", unreferencedFiles);
     }
 
-    private List<Path> getBetsyProcessesPaths(List<EngineIndependentProcess> processed) {
+    private List<Path> getBetsyProcessesPaths(List<Test> processed) {
         List<Path> bpelFiles = new LinkedList<>();
-        for(EngineIndependentProcess process : processed) {
+        for(Test process : processed) {
             bpelFiles.add(process.getProcess());
         }
         return bpelFiles;

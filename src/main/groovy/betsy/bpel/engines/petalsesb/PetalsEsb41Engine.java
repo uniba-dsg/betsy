@@ -3,8 +3,8 @@ package betsy.bpel.engines.petalsesb;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
@@ -14,8 +14,8 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
     private static final Logger LOGGER = Logger.getLogger(PetalsEsb41Engine.class);
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "petalsesb", "4.1", LocalDate.of(2012, 7, 6), "LGPL 2.1+");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "petalsesb", "4.1", LocalDate.of(2012, 7, 6), "LGPL 2.1+");
     }
 
     public String getPetalsFolderName() {

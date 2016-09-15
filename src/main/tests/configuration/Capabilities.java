@@ -1,6 +1,6 @@
 package configuration;
 
-import betsy.common.model.feature.Capability;
+import pebl.featuretree.Capability;
 
 public class Capabilities {
 

@@ -13,7 +13,7 @@
                 <xsl:text disable-output-escaping="yes">
                     &lt;bpmn2:script&gt;&lt;![CDATA[
 // set variable "data" to value "String"
-org.activiti.engine.RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
+org.activiti.engineExtended.RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
 String newValue = "String";
 String executionId = execution.getId();
 runtimeService.setVariable(executionId, 'data', newValue);
@@ -37,7 +37,7 @@ try {
     );
 
     // get service
-    org.activiti.engine.RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
+    org.activiti.engineExtended.RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
 
     // get variable
     String executionId = execution.getId();
@@ -95,7 +95,7 @@ try {
             <xsl:when test="text() = 'THROW_ERROR'">
                 <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;
                     &lt;![CDATA[
-throw new org.activiti.engine.delegate.BpmnError("ERR_CODE");
+throw new org.activiti.engineExtended.delegate.BpmnError("ERR_CODE");
                     ]]&gt;&lt;/bpmn2:script&gt;
                  </xsl:text>
             </xsl:when>

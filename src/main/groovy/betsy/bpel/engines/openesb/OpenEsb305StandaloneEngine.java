@@ -2,8 +2,8 @@ package betsy.bpel.engines.openesb;
 
 import java.time.LocalDate;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 
 public class OpenEsb305StandaloneEngine extends OpenEsb301StandaloneEngine {
 
@@ -12,8 +12,8 @@ public class OpenEsb305StandaloneEngine extends OpenEsb301StandaloneEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.5", LocalDate.of(2015, 6, 24), "CDDL-1.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "openesb", "3.0.5", LocalDate.of(2015, 6, 24), "CDDL-1.0");
     }
 
 }

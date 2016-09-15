@@ -92,7 +92,7 @@ public class BPELComposite {
 
     protected void checkIsRunning(AbstractBPELEngine engine) {
         if (engine.isRunning()) {
-            throw new IllegalStateException("Engine " + engine + " is running");
+            throw new IllegalStateException("EngineExtended " + engine + " is running");
         }
     }
 

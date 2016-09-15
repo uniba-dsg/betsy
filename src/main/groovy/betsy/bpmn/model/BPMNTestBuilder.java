@@ -50,7 +50,6 @@ public class BPMNTestBuilder {
             joiner.add(ESCAPED_DOUBLE_QUOTATION_MARK + string + ESCAPED_DOUBLE_QUOTATION_MARK);
         }
 
-
         return joiner.toString();
     }
 

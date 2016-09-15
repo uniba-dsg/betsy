@@ -8,34 +8,35 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
 
-import betsy.bpel.model.assertions.SoapFaultTestAssertion;
-import betsy.bpel.model.assertions.XpathTestAssertion;
-import betsy.bpel.model.steps.DelayTestStep;
-import betsy.bpel.model.steps.DeployableCheckTestStep;
-import betsy.bpel.model.steps.NotDeployableCheckTestStep;
-import betsy.bpel.model.steps.SoapTestStep;
+import pebl.test.Test;
+import pebl.test.assertions.SoapFaultTestAssertion;
+import pebl.test.assertions.XpathTestAssertion;
+import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.DeployableCheckTestStep;
+import pebl.test.steps.NotDeployableCheckTestStep;
+import pebl.test.steps.soap.SoapTestStep;
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestStep;
-import betsy.bpmn.model.Variable;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.input.ExternalWSDLTestPartner;
-import betsy.common.model.input.NoTestPartner;
-import betsy.common.model.input.TestAssertion;
-import betsy.common.model.input.TestCase;
-import betsy.common.model.input.TestPartner;
-import betsy.common.model.input.TestStep;
-import betsy.common.model.input.InternalWSDLTestPartner;
+import pebl.test.steps.VariableBasedTestStep;
+import pebl.test.steps.Variable;
+import pebl.test.partner.ExternalWSDLTestPartner;
+import pebl.test.partner.NoTestPartner;
+import pebl.test.TestAssertion;
+import pebl.test.TestCase;
+import pebl.test.TestPartner;
+import pebl.test.TestStep;
+import pebl.test.partner.InternalWSDLTestPartner;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import pebl.test.steps.soap.WsdlService;
 
 class JsonGeneratorTestsEngineIndependent {
 
     public static void generateTestsEngineIndependentJson(Path folder) {
         JSONArray array = new JSONArray();
 
-        List<EngineIndependentProcess> processes = new LinkedList<>();
+        List<Test> processes = new LinkedList<>();
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
         processes.addAll(new BPMNProcessRepository().getByName("ALL"));
         convertProcess(array, processes);
@@ -50,7 +51,7 @@ class JsonGeneratorTestsEngineIndependent {
     public static void generateTestsEngineIndependentJsonWithReallyAllProcesses(Path folder) {
         JSONArray array = new JSONArray();
 
-        List<EngineIndependentProcess> processes = new LinkedList<>();
+        List<Test> processes = new LinkedList<>();
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
@@ -64,13 +65,13 @@ class JsonGeneratorTestsEngineIndependent {
         }
     }
 
-    private static void convertProcess(JSONArray array, List<EngineIndependentProcess> processes) {
-        for (EngineIndependentProcess p : processes) {
+    private static void convertProcess(JSONArray array, List<Test> processes) {
+        for (Test p : processes) {
             array.put(createTestObject(p));
         }
     }
 
-    private static JSONObject createTestObject(EngineIndependentProcess p) {
+    private static JSONObject createTestObject(Test p) {
         JSONObject testObject = new JSONObject();
         testObject.put("name", p.getName());
         testObject.put("description", p.getDescription());
@@ -228,9 +229,8 @@ class JsonGeneratorTestsEngineIndependent {
                     testStepObject.put("operation", ((SoapTestStep) testStep).getOperation().getName());
                 }
 
-                testStepObject.put("concurrencyTest", ((SoapTestStep) testStep).isConcurrencyTest());
-                testStepObject.put("testPartner", ((SoapTestStep) testStep).isTestPartner());
-                testStepObject.put("oneWay", ((SoapTestStep) testStep).isOneWay());
+                testStepObject.put("testPartner", ((SoapTestStep) testStep).getService().equals(new WsdlService("testInterface")));
+                testStepObject.put("oneWay", ((SoapTestStep) testStep).getOperation().isOneWay());
 
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("assertions", assertionsArray);
@@ -254,7 +254,7 @@ class JsonGeneratorTestsEngineIndependent {
 
     private static JSONArray createBPMNTestStepArray(BPMNTestCase testCase) {
         BPMNTestCase bpmnTestCase = testCase;
-        BPMNTestStep testStep = bpmnTestCase.getTestStep();
+        VariableBasedTestStep testStep = bpmnTestCase.getTestStep();
         JSONObject testStepObject = new JSONObject();
         testStepObject.put("type", testStep.getClass().getSimpleName());
         testStepObject.put("description", testStep.getDescription());
@@ -273,7 +273,7 @@ class JsonGeneratorTestsEngineIndependent {
         testStepObject.put("assertions", assertionsArray);
         for (String assertion : bpmnTestCase.getAssertions()) {
             JSONObject varObject = new JSONObject();
-            varObject.put("type", "BPMNTestAssertion");
+            varObject.put("type", "TraceTestAssertion");
             varObject.put("trace", assertion);
             assertionsArray.put(varObject);
         }
@@ -283,7 +283,7 @@ class JsonGeneratorTestsEngineIndependent {
         return testStepArray;
     }
 
-    private static JSONArray createEngineIndependentFilesArray(EngineIndependentProcess p) {
+    private static JSONArray createEngineIndependentFilesArray(Test p) {
         JSONArray engineIndependentFiles = new JSONArray();
         engineIndependentFiles.put(p.getProcess().toString());
         for (Path path : p.getFiles()) {

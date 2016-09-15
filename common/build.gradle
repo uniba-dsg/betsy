@@ -16,6 +16,8 @@ sourceSets {
 }
 
 dependencies {
+    compile project(":pebl")
+
     compile 'org.codehaus.groovy:groovy-all:2.4.7'
 
     compile 'org.apache.ant:ant:1.9.7'

@@ -1,6 +1,6 @@
 package betsy.bpel.cli;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
 import configuration.bpel.BPELProcessRepository;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class ProcessParser {
         this.args = args;
     }
 
-    public List<EngineIndependentProcess> parse() {
+    public List<Test> parse() {
         BPELProcessRepository repository = BPELProcessRepository.INSTANCE;
         if (args.length <= 1) {
             return repository.getByName("ALL");

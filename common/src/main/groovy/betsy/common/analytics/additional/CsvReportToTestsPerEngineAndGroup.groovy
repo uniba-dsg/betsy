@@ -32,7 +32,7 @@ class CsvReportToTestsPerEngineAndGroup {
             writer.println "$totalSuccessful\t${totalPartial == 0 ? '' : totalPartial}\t$totalFailed"
         }
 
-        writer.println "Engine in %"
+        writer.println "EngineExtended in %"
         int total = report.tests.size()
         report.getEngines().each { engine ->
             int totalSuccessful = 0

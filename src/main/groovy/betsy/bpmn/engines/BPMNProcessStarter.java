@@ -3,7 +3,7 @@ package betsy.bpmn.engines;
 import java.util.Collections;
 import java.util.List;
 
-import betsy.bpmn.model.Variable;
+import pebl.test.steps.Variable;
 
 public interface BPMNProcessStarter {
 

@@ -15,7 +15,7 @@
                             <thead>
                                 <tr>
                                     <th class='col-md-4'></th>
-                                <% report.nameToEngine.each { name, engine -> %>
+                                <% report.nameToEngine.each { name, engineExtended -> %>
                                    <th class='text-center'><%= name %> </th>
                                 <% } %>
                                 </tr>
@@ -23,9 +23,9 @@
                             <tbody>
                                 <tr>
                                     <td col-md-4'>Number of successful tests:</td>
-                                    <% report.nameToEngine.each { name, engine -> %>
+                                    <% report.nameToEngine.each { name, engineExtended -> %>
                                     <td class='text-center' style="vertical-align: middle">
-                                        <%= report.getNumberOfSuccessfulTestsPer(engine) %> of <%= report.tests.size() %> tests (<%= Math.round(report.getNumberOfSuccessfulTestsPer(engine)/report.tests.size()*100) %>%)
+                                        <%= report.getNumberOfSuccessfulTestsPer(engineExtended) %> of <%= report.tests.size() %> tests (<%= Math.round(report.getNumberOfSuccessfulTestsPer(engineExtended)/report.tests.size()*100) %>%)
                                     </td>
                                 <% } %>
                                 </tr>
@@ -46,8 +46,8 @@
                             <thead>
                                 <tr>
                                     <th class='col-md-4'></th>
-                                <% report.nameToEngine.each { name, engine -> %>
-                                   <th class='text-center'><%= name %> (<%= report.getNumberOfSuccessfulTestsPerEngineAndGroup(engine, group) %> / <%= group.tests.size() %>)</th>
+                                <% report.nameToEngine.each { name, engineExtended -> %>
+                                   <th class='text-center'><%= name %> (<%= report.getNumberOfSuccessfulTestsPerEngineAndGroup(engineExtended, group) %> / <%= group.tests.size() %>)</th>
                                 <% } %>
                                 </tr>
                             </thead>
@@ -55,9 +55,9 @@
                             <% group.tests.each { test -> %>
                                 <tr>
                                     <td class='${test.support.isTotal() ? "success" : test.support.isNone() ? "danger" : "warning"} col-md-4'>${test.fullName}</td>
-                                <% test.engineToResult.each {engine, result -> %>
+                                <% test.engineToResult.each {engineExtended, result -> %>
                                     <td class='${result.support.isTotal() ? "success" : result.support.isNone() ? "danger" : "warning"} text-center' style="vertical-align: middle">
-                                        <a href='${report.getRelativePath(group,engine,test)}'>${result.deployable ? result.support.getSign() : "<span class='label label-danger'>undeployable</span>"}</a>
+                                        <a href='${report.getRelativePath(group,engineExtended,test)}'>${result.deployable ? result.support.getSign() : "<span class='label label-danger'>undeployable</span>"}</a>
                                     </td>
                                 <% } %>
                                 </tr>

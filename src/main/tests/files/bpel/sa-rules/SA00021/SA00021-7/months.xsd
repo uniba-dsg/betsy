@@ -1,6 +1,6 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months">
+        targetNamespace="http://dsg.wiai.uniba.de/bpel-engineExtended-comparison/xsd/months">
 
     <xs:simpleType name="monthInteger">
         <xs:restriction base="xs:integer">

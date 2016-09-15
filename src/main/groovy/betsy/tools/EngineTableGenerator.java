@@ -17,7 +17,7 @@ import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpel.virtual.host.VirtualEngineAPI;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.IsEngine;
 
 public class EngineTableGenerator {
@@ -31,17 +31,17 @@ public class EngineTableGenerator {
             writer.write("Language & Name & Version & License & Developed in & Released at & Configurations\\\\");
             writer.newLine();
 
-            List<Engine> engines = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
-            Collections.sort(engines, Comparator.comparing(Engine::getLanguage).thenComparing(Engine::getName).thenComparing(Engine::getVersion));
-            for (Engine engine : engines) {
+            List<EngineExtended> engineExtendeds = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
+            Collections.sort(engineExtendeds, Comparator.comparing(EngineExtended::getLanguage).thenComparing(EngineExtended::getName).thenComparing(EngineExtended::getVersion));
+            for (EngineExtended engineExtended : engineExtendeds) {
                 String line = String.join(" & ", Arrays.asList(
-                        engine.getLanguage().name(),
-                        engine.getName(),
-                        engine.getVersion(),
-                        engine.getLicense(),
-                        engine.getProgrammingLanguage(),
-                        DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()),
-                        String.join(", ", engine.getConfiguration()))) + "\\\\";
+                        engineExtended.getLanguage().name(),
+                        engineExtended.getName(),
+                        engineExtended.getVersion(),
+                        engineExtended.getLicense(),
+                        engineExtended.getProgrammingLanguage(),
+                        DateTimeFormatter.ISO_LOCAL_DATE.format(engineExtended.getReleaseDate()),
+                        String.join(", ", engineExtended.getConfiguration()))) + "\\\\";
 
                 writer.write(line);
                 writer.newLine();

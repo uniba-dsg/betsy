@@ -1,10 +1,13 @@
 package betsy.bpmn.reporting;
 
-import betsy.bpmn.model.*;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.input.TestAssertion;
-import betsy.common.model.input.TestCase;
+import pebl.test.Test;
+import pebl.test.TestAssertion;
+import pebl.test.TestCase;
 import configuration.bpmn.BPMNProcessRepository;
+import pebl.test.assertions.TraceTestAssertion;
+import betsy.bpmn.model.BPMNTestCase;
+import pebl.test.steps.VariableBasedTestStep;
+import pebl.test.steps.Variable;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +27,7 @@ public class TestCaseToLatexSerializer {
         new TestCaseToLatexSerializer().buildTableFromProcesses(new BPMNProcessRepository().getByName("ALL"));
     }
 
-    private void buildTableFromProcesses(List<EngineIndependentProcess> processes) {
+    private void buildTableFromProcesses(List<Test> processes) {
         buildTableHeader();
         buildTableBody(processes);
         buildTableFooter();
@@ -49,7 +52,7 @@ public class TestCaseToLatexSerializer {
         println("\\endlastfoot");
     }
 
-    private void buildTableBody(List<EngineIndependentProcess> processes) {
+    private void buildTableBody(List<Test> processes) {
         for (int i = 0; i < processes.size(); i++) {
             buildTestCases(processes.get(i));
 
@@ -60,7 +63,7 @@ public class TestCaseToLatexSerializer {
         }
     }
 
-    private void buildTestCases(EngineIndependentProcess process) {
+    private void buildTestCases(Test process) {
         println("Name & " + process.getName().replace("_", "-") + COLOUR_NEXT_ROW);
         println("Description & " + process.getDescription() + TABLE_NEWLINE);
 
@@ -82,7 +85,7 @@ public class TestCaseToLatexSerializer {
         result.append("input & trace " + TABLE_NEWLINE + "\\midrule ");
 
         BPMNTestCase bpmnTestCase = (BPMNTestCase) testCase;
-        BPMNTestStep testStep = bpmnTestCase.getTestStep();
+        VariableBasedTestStep testStep = bpmnTestCase.getTestStep();
 
         Optional<Variable> variable = testStep.getVariable();
         if (variable.isPresent()) {
@@ -105,9 +108,9 @@ public class TestCaseToLatexSerializer {
             }
 
             TestAssertion testAssertion = assertions.get(i);
-            if (testAssertion instanceof BPMNTestAssertion) {
-                BPMNTestAssertion bpmnAssertion = (BPMNTestAssertion) testAssertion;
-                result.append(bpmnAssertion.getAssertion().toString().replace("SCRIPT_", "").replace("_", "-"));
+            if (testAssertion instanceof TraceTestAssertion) {
+                TraceTestAssertion bpmnAssertion = (TraceTestAssertion) testAssertion;
+                result.append(bpmnAssertion.getTrace().toString().replace("SCRIPT_", "").replace("_", "-"));
             }
         }
 

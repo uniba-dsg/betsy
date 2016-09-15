@@ -14,13 +14,13 @@ import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.input.ExternalWSDLTestPartner;
-import betsy.common.model.input.NoTestPartner;
-import betsy.common.model.input.TestPartner;
-import betsy.common.model.input.InternalWSDLTestPartner;
+import pebl.featuretree.FeatureSet;
+import pebl.featuretree.Feature;
+import pebl.test.Test;
+import pebl.test.partner.ExternalWSDLTestPartner;
+import pebl.test.partner.NoTestPartner;
+import pebl.test.TestPartner;
+import pebl.test.partner.InternalWSDLTestPartner;
 import betsy.common.tasks.FileTasks;
 
 public class ErrorProcesses {
@@ -32,24 +32,24 @@ public class ErrorProcesses {
 
     private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
 
-    private static final EngineIndependentProcess BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+    private static final Test BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
             "BackdoorRobustness",
             "BackdoorRobustness",
             "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
-    private static final EngineIndependentProcess IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+    private static final Test IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
             "ImprovedBackdoorRobustness",
             "ImprovedBackdoorRobustness",
             "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
 
-    private static List<EngineIndependentProcess> createProcesses() {
+    private static List<Test> createProcesses() {
         FileTasks.deleteDirectory(ERRORS_DIR);
         FileTasks.mkdirs(ERRORS_DIR);
 
-        List<EngineIndependentProcess> result = getProcesses();
+        List<Test> result = getProcesses();
 
-        for (EngineIndependentProcess process : result) {
+        for (Test process : result) {
             // update fileName
             String processFileName = process.getName();
             if (processFileName.startsWith("IBR_")) {
@@ -66,10 +66,10 @@ public class ErrorProcesses {
         createProcesses(); // this is to recreate the error processes
     }
 
-    public static List<EngineIndependentProcess> getProcesses() {
+    public static List<Test> getProcesses() {
         Path errorsDir = Paths.get("src/main/tests/files/bpel/errors");
 
-        List<EngineIndependentProcess> result = new LinkedList<>();
+        List<Test> result = new LinkedList<>();
 
         result.addAll(createTests(errorsDir, BACKDOOR_ROBUSTNESS));
         result.addAll(createTests(errorsDir, IMPROVED_BACKDOOR_ROBUSTNESS));
@@ -79,7 +79,7 @@ public class ErrorProcesses {
         return result;// make sure the happy path is the first test
     }
 
-    private static EngineIndependentProcess cloneErrorBetsyProcess(final EngineIndependentProcess baseProcess, final int number, final Feature feature, Path errorsDir) {
+    private static Test cloneErrorBetsyProcess(final Test baseProcess, final int number, final Feature feature, Path errorsDir) {
         // copy file
         String shortenedId = new BPELIdShortener(baseProcess.getName()).getShortenedId();
         final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + feature.getName();
@@ -88,17 +88,17 @@ public class ErrorProcesses {
         return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.featureSet, FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
     }
 
-    private static List<EngineIndependentProcess> createTests(Path errorsDir, EngineIndependentProcess baseProcess) {
-        List<EngineIndependentProcess> result = new LinkedList<>();
+    private static List<Test> createTests(Path errorsDir, Test baseProcess) {
+        List<Test> result = new LinkedList<>();
 
-        EngineIndependentProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, new Feature(APP_CONSTRUCT, "happy-path"), errorsDir);
+        Test happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, new Feature(APP_CONSTRUCT, "happy-path"), errorsDir);
         happyPathProcess = happyPathProcess.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
         result.add(happyPathProcess);
 
         for (Error error : getInputToErrorCode()) {
             int number = error.number;
             Feature feature = new Feature(error.featureSet, error.name);
-            EngineIndependentProcess process = cloneErrorBetsyProcess(baseProcess, number, feature, errorsDir);
+            Test process = cloneErrorBetsyProcess(baseProcess, number, feature, errorsDir);
             process = process.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
 
             result.add(process);

@@ -11,7 +11,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
-import betsy.common.model.ProcessLanguage;
+import pebl.ProcessLanguage;
 import betsy.common.tasks.FileTasks;
 
 public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasPath {

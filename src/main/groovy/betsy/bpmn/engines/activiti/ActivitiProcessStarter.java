@@ -6,7 +6,8 @@ import java.util.Map;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.model.Variable;
+import betsy.bpmn.model.Variables;
+import pebl.test.steps.Variable;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -16,7 +17,7 @@ public class ActivitiProcessStarter implements BPMNProcessStarter {
 
     @Override
     public void start(String processID, List<Variable> variables) throws RuntimeException {
-        startProcess(processID, Variable.toArray(variables));
+        startProcess(processID, new Variables(variables).toArray());
     }
 
     public static void startProcess(String id, Object... variables) {

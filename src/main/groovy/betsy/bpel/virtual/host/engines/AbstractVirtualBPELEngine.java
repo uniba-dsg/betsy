@@ -1,7 +1,6 @@
 package betsy.bpel.virtual.host.engines;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFile;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFiles;
@@ -20,8 +19,8 @@ import betsy.bpel.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import betsy.bpel.virtual.host.virtualbox.SnapshotCreator;
 import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
@@ -56,12 +55,12 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     private VirtualBoxMachine vm;
 
     @Override
-    public Engine getEngineObject() {
-        Engine engineId = defaultEngine.getEngineObject();
+    public EngineExtended getEngineObject() {
+        EngineExtended engineExtendedId = defaultEngine.getEngineObject();
         List<String> configuration = new LinkedList<>();
-        configuration.addAll(engineId.getConfiguration());
+        configuration.addAll(engineExtendedId.getConfiguration());
         configuration.add("virtual");
-        return new Engine(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), engineId.getReleaseDate(), configuration, engineId.getLicense());
+        return new EngineExtended(ProcessLanguage.BPEL, engineExtendedId.getName(), engineExtendedId.getVersion(), engineExtendedId.getReleaseDate(), configuration, engineExtendedId.getLicense());
     }
 
     public void setVirtualBox(VirtualBox virtualBox) {

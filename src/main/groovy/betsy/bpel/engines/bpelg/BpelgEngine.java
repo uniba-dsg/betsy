@@ -10,8 +10,8 @@ import javax.xml.namespace.QName;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
@@ -23,9 +23,9 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
+    public EngineExtended getEngineObject() {
         // TODO this is the snapshot release, the real 5.3 was released on 2012-12-26
-        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3", LocalDate.of(2012, 4, 27), "GPL-2.0+");
+        return new EngineExtended(ProcessLanguage.BPEL, "bpelg", "5.3", LocalDate.of(2012, 4, 27), "GPL-2.0+");
     }
 
     public Path getDeploymentDir() {

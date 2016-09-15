@@ -1,5 +1,7 @@
 package betsy.bpmn.model;
 
+import pebl.test.steps.Variable;
+
 public enum BPMNTestInput {
 
     INPUT_A("a"), INPUT_B("b"), INPUT_C("c"), INPUT_AB("ab"), INPUT_AC("ac"), INPUT_BC("bc"), INPUT_ABC("abc");

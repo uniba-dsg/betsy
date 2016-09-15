@@ -12,8 +12,8 @@ import javax.xml.namespace.QName;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
@@ -24,8 +24,8 @@ public class ActiveBpelEngine extends AbstractLocalBPELEngine {
     private static final Logger log = Logger.getLogger(ActiveBpelEngine.class);
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "activebpel", "5.0.2", LocalDate.of(2008, 5, 9), "GPL-2.0+");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "activebpel", "5.0.2", LocalDate.of(2008, 5, 9), "GPL-2.0+");
     }
 
     public Path getXsltPath() {

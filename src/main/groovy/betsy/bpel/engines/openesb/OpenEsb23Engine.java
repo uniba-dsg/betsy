@@ -2,16 +2,16 @@ package betsy.bpel.engines.openesb;
 
 import java.time.LocalDate;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
 
 public class OpenEsb23Engine extends OpenEsbEngine {
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "2.3", LocalDate.of(2011, 2, 1), "CDDL-1.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "openesb", "2.3", LocalDate.of(2011, 2, 1), "CDDL-1.0");
     }
 
     @Override

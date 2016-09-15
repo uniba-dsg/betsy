@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import betsy.common.model.input.TestAssertion;
-import betsy.common.model.input.TestCase;
-import betsy.common.util.StringUtils;
+import pebl.test.TestAssertion;
+import pebl.test.TestCase;
+import pebl.test.assertions.Trace;
+import pebl.test.assertions.TraceTestAssertion;
+import pebl.test.steps.Variable;
+import pebl.test.steps.VariableBasedTestStep;
 
 public class BPMNTestCase extends TestCase {
 
@@ -18,11 +21,11 @@ public class BPMNTestCase extends TestCase {
     public static final String PARALLEL_PROCESS_KEY = "ParallelProcess";
 
     public BPMNTestCase() {
-        this.getTestSteps().add(new BPMNTestStep());
+        this.getTestSteps().add(new VariableBasedTestStep());
     }
 
     private BPMNTestCase addInputTestString(BPMNTestInput value) {
-        getTestStep().setInput(value);
+        getTestStep().setVariable(value.getVariable());
         return this;
     }
 
@@ -59,7 +62,7 @@ public class BPMNTestCase extends TestCase {
     }
 
     private BPMNTestCase addAssertion(BPMNAssertions script_task1) {
-        getTestStep().addAssertions(script_task1);
+        getTestStep().addAssertions(new Trace(script_task1.toString()));
 
         return this;
     }
@@ -91,10 +94,6 @@ public class BPMNTestCase extends TestCase {
     public BPMNTestCase useParallelProcess() {
         this.hasParallelProcess = true;
         return this;
-    }
-
-    public boolean hasParallelProcess() {
-        return hasParallelProcess;
     }
 
     public BPMNTestCase setIntegerVariable(int value) {
@@ -136,8 +135,12 @@ public class BPMNTestCase extends TestCase {
         return getTestStep().getDelay();
     }
 
-    public BPMNTestStep getTestStep() {
-        return (BPMNTestStep) Objects.requireNonNull(getTestSteps().get(0), "call input methods before!");
+    public boolean hasParallelProcess() {
+        return hasParallelProcess;
+    }
+
+    public VariableBasedTestStep getTestStep() {
+        return (VariableBasedTestStep) Objects.requireNonNull(getTestSteps().get(0), "call input methods before!");
     }
 
     public List<String> getAssertions() {
@@ -145,8 +148,8 @@ public class BPMNTestCase extends TestCase {
 
         List<String> result = new ArrayList<>();
         for (TestAssertion assertion : assertions) {
-            BPMNTestAssertion bpmnTestAssertion = (BPMNTestAssertion) assertion;
-            result.add(bpmnTestAssertion.getAssertion().toString());
+            TraceTestAssertion traceTestAssertion = (TraceTestAssertion) assertion;
+            result.add(traceTestAssertion.getTrace().toString());
         }
         return result;
     }
@@ -155,7 +158,7 @@ public class BPMNTestCase extends TestCase {
         StringBuilder sb = new StringBuilder();
         sb.append("test").append(getNumber()).append("Assert");
         for (String assertion : getAssertions()) {
-            sb.append(StringUtils.capitalize(assertion));
+            sb.append(capitalize(assertion));
         }
         return sb.toString();
     }
@@ -168,6 +171,13 @@ public class BPMNTestCase extends TestCase {
         result.add(new Variable("integerVariable", "Integer", integerVariable));
 
         return result;
+    }
+
+    private static String capitalize(String self) {
+        if (self == null || self.length() == 0) {
+            return self;
+        }
+        return Character.toUpperCase(self.charAt(0)) + self.substring(1);
     }
 
 }

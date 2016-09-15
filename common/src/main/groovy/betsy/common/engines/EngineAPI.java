@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import javax.xml.namespace.QName;
 
 import betsy.common.HasLogs;
-import betsy.common.model.ProcessLanguage;
+import pebl.ProcessLanguage;
 import betsy.common.model.engine.IsEngine;
 import betsy.common.tasks.FileTasks;
 

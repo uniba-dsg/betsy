@@ -18,8 +18,8 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
@@ -40,8 +40,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.0.1", LocalDate.of(2014, 5, 14), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPMN, "jbpm", "6.0.1", LocalDate.of(2014, 5, 14), "Apache-2.0");
     }
 
     public Path getJbpmInstallerPath() {
