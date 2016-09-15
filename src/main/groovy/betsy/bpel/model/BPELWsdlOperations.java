@@ -17,4 +17,6 @@ public class BPELWsdlOperations {
      */
     public static final WsdlOperation SYNC_STRING = new WsdlOperation("startProcessSyncString", true);
 
+
+
 }

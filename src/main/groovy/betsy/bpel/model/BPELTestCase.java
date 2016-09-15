@@ -24,6 +24,7 @@ public class BPELTestCase extends TestCase {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___RESET_COUNTERS));
         step.setService(new WsdlService("testPartner"));
+        step.setOperation(BPELWsdlOperations.SYNC);
 
         return addStep(step);
     }
@@ -32,6 +33,7 @@ public class BPELTestCase extends TestCase {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS));
         step.setService(new WsdlService("testPartner"));
+        step.setOperation(BPELWsdlOperations.SYNC);
 
         XpathTestAssertion assertion = new XpathTestAssertion();
         assertion.setExpectedOutput("true");
@@ -46,6 +48,7 @@ public class BPELTestCase extends TestCase {
         step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES));
         step.setService(new WsdlService("testPartner"));
         setPartnerOutput(step, String.valueOf(value));
+        step.setOperation(BPELWsdlOperations.SYNC);
 
         return addStep(step);
     }

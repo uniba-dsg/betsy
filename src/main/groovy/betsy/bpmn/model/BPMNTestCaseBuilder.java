@@ -51,7 +51,7 @@ public class BPMNTestCaseBuilder {
     private List<Trace> traces = new LinkedList<>();
     private boolean isParallel = false;
     private int delay = 0;
-    private Integer integerVariable = null;
+    private Integer integerVariable = 0;
     private Variable input = null;
 
     private BPMNTestCaseBuilder addInputTestString(BPMNTestInput value) {
