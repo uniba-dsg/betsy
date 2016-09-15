@@ -7,22 +7,15 @@ import java.util.Optional;
 
 import pebl.test.TestAssertion;
 import pebl.test.TestCase;
+import pebl.test.VariableBasedTestCase;
 import pebl.test.assertions.Trace;
 import pebl.test.assertions.TraceTestAssertion;
 import pebl.test.steps.Variable;
 import pebl.test.steps.VariableBasedTestStep;
 
-public class BPMNTestCase extends TestCase {
-
-    private Integer integerVariable = new Integer(0);
-
-    private boolean hasParallelProcess = false;
+public class BPMNTestCase extends VariableBasedTestCase {
 
     public static final String PARALLEL_PROCESS_KEY = "ParallelProcess";
-
-    public BPMNTestCase() {
-        this.getTestSteps().add(new VariableBasedTestStep());
-    }
 
     private BPMNTestCase addInputTestString(BPMNTestInput value) {
         getTestStep().setVariable(value.getVariable());
@@ -92,12 +85,14 @@ public class BPMNTestCase extends TestCase {
     }
 
     public BPMNTestCase useParallelProcess() {
-        this.hasParallelProcess = true;
+        setParallelProcess(true);
+
         return this;
     }
 
     public BPMNTestCase setIntegerVariable(int value) {
-        integerVariable = new Integer(value);
+        setIntegerVariable(value);
+
         return this;
     }
 
@@ -129,55 +124,6 @@ public class BPMNTestCase extends TestCase {
 
     public BPMNTestCase assertDataCorrect() {
         return addAssertion(BPMNAssertions.DATA_CORRECT);
-    }
-
-    public Optional<Integer> getDelay() {
-        return getTestStep().getDelay();
-    }
-
-    public boolean hasParallelProcess() {
-        return hasParallelProcess;
-    }
-
-    public VariableBasedTestStep getTestStep() {
-        return (VariableBasedTestStep) Objects.requireNonNull(getTestSteps().get(0), "call input methods before!");
-    }
-
-    public List<String> getAssertions() {
-        List<TestAssertion> assertions = getTestStep().getAssertions();
-
-        List<String> result = new ArrayList<>();
-        for (TestAssertion assertion : assertions) {
-            TraceTestAssertion traceTestAssertion = (TraceTestAssertion) assertion;
-            result.add(traceTestAssertion.getTrace().toString());
-        }
-        return result;
-    }
-
-    public String getNormalizedTestCaseName() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("test").append(getNumber()).append("Assert");
-        for (String assertion : getAssertions()) {
-            sb.append(capitalize(assertion));
-        }
-        return sb.toString();
-    }
-
-    public List<Variable> getVariables() {
-        List<Variable> result = new ArrayList<>();
-
-        getTestStep().getVariable().ifPresent(result::add);
-        result.add(new Variable("testCaseNumber", "Integer", getNumber()));
-        result.add(new Variable("integerVariable", "Integer", integerVariable));
-
-        return result;
-    }
-
-    private static String capitalize(String self) {
-        if (self == null || self.length() == 0) {
-            return self;
-        }
-        return Character.toUpperCase(self.charAt(0)) + self.substring(1);
     }
 
 }
