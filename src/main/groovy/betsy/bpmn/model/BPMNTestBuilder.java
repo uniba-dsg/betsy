@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
 
+import betsy.bpmn.engines.TestCaseUtil;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
+import pebl.test.TestCase;
 
 public class BPMNTestBuilder {
 
@@ -20,12 +22,12 @@ public class BPMNTestBuilder {
 
     public void buildTests() {
         //Build test for each Test Case
-        for (BPMNTestCase testCase : process.getTestCases()) {
+        for (TestCase testCase : process.getTestCases()) {
 
             String logFilePath = logDir.resolve("log" + testCase.getNumber() + ".txt").toAbsolutePath().toString().replaceAll("\\\\","/");
 
             //assemble array of assertion for unitTestString
-            String expectedProcessTrace = getAssertionString(testCase.getAssertions());
+            String expectedProcessTrace = getAssertionString(TestCaseUtil.getTraceAssertions(testCase));
 
             Path testClass = process.getTargetTestSrcPathWithCase(testCase.getNumber()).resolve(packageString.replace(".", "/")).resolve(process.getName() + ".java");
 
@@ -34,7 +36,7 @@ public class BPMNTestBuilder {
             HashMap<String, String> replacements = new HashMap<>();
             replacements.put("PROCESS_NAME", process.getName());
             replacements.put("PACKAGE_STRING", packageString);
-            replacements.put("TEST_CASE", testCase.getNormalizedTestCaseName());
+            replacements.put("TEST_CASE", TestCaseUtil.getNormalizedTestCaseName(testCase));
             replacements.put("ASSERTION_LIST_STRING", expectedProcessTrace);
             replacements.put("LOGFILE_PATH", logFilePath);
 

@@ -1,124 +1,93 @@
 package betsy.bpmn.engines.jbpm;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.TestCaseUtil;
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
+import pebl.test.TestCase;
+import pebl.test.TestStep;
+import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.GatherAndAssertTracesTestStep;
+import pebl.test.steps.Variable;
+import pebl.test.steps.ProcessStartWithVariablesTestStep;
 
 public class JbpmTester {
 
-    private BPMNTestCase testCase;
-
-    private String name;
-
-    private String deploymentId;
-
-    private BPMNTester bpmnTester;
-
-    private Path logDir;
-
-    private Path serverLogFile;
-
-    private BPMNProcessInstanceOutcomeChecker processOutcomeChecker;
+    private final TestCase testCase;
+    private final BPMNTester bpmnTester;
+    private final JbpmApiBasedProcessInstanceOutcomeChecker processInstanceOutcomeChecker;
+    private final Path logDir;
+    private final Path serverLogFile;
 
     private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
+
+    public JbpmTester(TestCase testCase, BPMNTester bpmnTester,
+                      JbpmApiBasedProcessInstanceOutcomeChecker processInstanceOutcomeChecker,
+                      Path logDir, Path serverLogFile) {
+        this.testCase = testCase;
+        this.bpmnTester = bpmnTester;
+        this.processInstanceOutcomeChecker = processInstanceOutcomeChecker;
+        this.logDir = logDir;
+        this.serverLogFile = serverLogFile;
+    }
 
     /**
      * Runs a single test
      */
     public void runTest() {
+        String key = TestCaseUtil.getKey(testCase);
+
         BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest =
-                new JbpmLogBasedProcessInstanceOutcomeChecker(serverLogFile).checkProcessOutcome(name);
-        if(outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
+                new JbpmLogBasedProcessInstanceOutcomeChecker(serverLogFile).checkProcessOutcome(key);
+        if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
             BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_DEPLOYMENT);
         }
 
-        if (testCase.hasParallelProcess()) {
-            try {
-                new JbpmProcessStarter().start(BPMNTestCase.PARALLEL_PROCESS_KEY);
-            } catch (RuntimeException e) {
-                BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_RUNTIME);
+        for (TestStep testStep : testCase.getTestSteps()) {
+            if (testStep instanceof ProcessStartWithVariablesTestStep) {
+                try {
+                    ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = (ProcessStartWithVariablesTestStep) testStep;
+                    List<Variable> variables = processStartWithVariablesTestStep.getVariables();
+                    new JbpmProcessStarter().start(processStartWithVariablesTestStep.getProcess(), variables);
+                } catch (Exception e) {
+                    LOGGER.info("Could not start process", e);
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_RUNTIME);
+                }
+            } else if (testStep instanceof DelayTestStep) {
+                WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
+            } else if (testStep instanceof GatherAndAssertTracesTestStep) {
+                // Check on parallel execution
+                BPMNEnginesUtil.checkParallelExecution(testCase, logDir);
+
+                // Check whether MARKER file exists
+                BPMNEnginesUtil.checkMarkerFileExists(testCase, logDir);
+
+                // Check data type
+                BPMNEnginesUtil.checkDataLog(testCase, logDir);
+
+                BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, logDir);
+
+                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = processInstanceOutcomeChecker.checkProcessOutcome(key);
+                if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED) {
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_PROCESS_ABORTED);
+                } else if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+                } else if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN) {
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
+                }
+
+                LOGGER.info("contents of log file " + logDir + ": " + FileTasks.readAllLines(logDir));
+
+                bpmnTester.test();
             }
         }
-
-        try {
-            new JbpmProcessStarter().start(name, testCase.getVariables());
-        } catch (RuntimeException e) {
-            BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_RUNTIME);
-        }
-
-        //delay for timer intermediate event
-        WaitTasks.sleep(testCase.getDelay().orElse(0));
-
-        // Check on parallel execution
-        BPMNEnginesUtil.checkParallelExecution(testCase, logDir);
-
-        // Check whether MARKER file exists
-        BPMNEnginesUtil.checkMarkerFileExists(testCase, logDir);
-
-        // Check data type
-        BPMNEnginesUtil.checkDataLog(testCase, logDir);
-
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, logDir);
-
-        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = new JbpmApiBasedProcessInstanceOutcomeChecker(getDeploymentId())
-                .checkProcessOutcome(getName());
-        if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED) {
-            BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_PROCESS_ABORTED);
-        } else if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
-            BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        } else if(outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN) {
-            BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
-        }
-
-        LOGGER.info("contents of log file " + logDir + ": " + FileTasks.readAllLines(logDir));
-
-        bpmnTester.test();
     }
 
-    public BPMNTestCase getTestCase() {
-        return testCase;
-    }
-
-    public void setTestCase(BPMNTestCase testCase) {
-        this.testCase = testCase;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDeploymentId() {
-        return deploymentId;
-    }
-
-    public void setDeploymentId(String deploymentId) {
-        this.deploymentId = deploymentId;
-    }
-
-    public void setLogDir(Path logDir) {
-        this.logDir = logDir;
-    }
-
-    public void setServerLogFile(Path serverLogFile) {
-        this.serverLogFile = serverLogFile;
-    }
-
-    public void setBpmnTester(BPMNTester bpmnTester) {
-        this.bpmnTester = bpmnTester;
-    }
-
-    public void setProcessOutcomeChecker(BPMNProcessInstanceOutcomeChecker processOutcomeChecker) {
-        this.processOutcomeChecker = processOutcomeChecker;
-    }
 }

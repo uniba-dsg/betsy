@@ -16,7 +16,6 @@ import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
-import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.config.Configuration;
 import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
@@ -29,6 +28,7 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import pebl.test.TestCase;
 
 public class JbpmEngine extends AbstractBPMNEngine {
 
@@ -106,7 +106,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         generator.generateProject();
 
         Path zipFile = process.getTargetPackagePath().resolve(process.getName() + ".zip");
-        ZipTasks.zipFolder(zipFile,process.getTargetPath().resolve("project"));
+        ZipTasks.zipFolder(zipFile, process.getTargetPath().resolve("project"));
         return zipFile;
     }
 
@@ -157,7 +157,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void shutdown() {
         Path jbpmInstallerPath = getJbpmInstallerPath();
-        if(!Files.exists(jbpmInstallerPath)) {
+        if (!Files.exists(jbpmInstallerPath)) {
             // if it is not installed, we cannot shutdown
             return;
         }
@@ -191,22 +191,20 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public void testProcess(final BPMNProcess process) {
-        for (BPMNTestCase testCase : process.getTestCases()) {
+        for (TestCase testCase : process.getTestCases()) {
             BPMNTester bpmnTester = new BPMNTester();
             int testCaseNumber = testCase.getNumber();
             bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCaseNumber));
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            JbpmTester tester = new JbpmTester();
-            tester.setTestCase(testCase);
-            tester.setName(process.getName());
-            tester.setDeploymentId(getDeploymentId(process.getName()));
-            tester.setBpmnTester(bpmnTester);
-            tester.setLogDir(getInstanceLogFile(testCaseNumber));
-            tester.setProcessOutcomeChecker(createProcessOutcomeChecker(tester.getDeploymentId()));
-            tester.setServerLogFile(getJbossLogDir().resolve("server.log"));
-            tester.runTest();
+            new JbpmTester(
+                    testCase,
+                    bpmnTester,
+                    createProcessOutcomeChecker(),
+                    getInstanceLogFile(testCaseNumber),
+                    getJbossLogDir().resolve("server.log")
+            ).runTest();
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
@@ -232,7 +230,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public boolean isDeployed(QName process) {
-        return new JbpmDeployer(getJbpmnUrl(),getDeploymentId(process.getLocalPart())).isDeployed();
+        return new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process.getLocalPart())).isDeployed();
     }
 
     @Override
@@ -253,8 +251,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
         builder.buildTests();
     }
 
-    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
-        return JbpmApiBasedProcessInstanceOutcomeChecker.build(deploymentId);
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker() {
+        return JbpmApiBasedProcessInstanceOutcomeChecker.buildWithDeploymentId();
     }
 
 }

@@ -1,7 +1,7 @@
 package configuration.bpmn;
 
+import betsy.bpmn.model.BPMNTestCaseBuilder;
 import pebl.test.Test;
-import betsy.bpmn.model.BPMNTestCase;
 import pebl.featuretree.FeatureSet;
 import pebl.featuretree.Feature;
 
@@ -38,10 +38,10 @@ class ErrorProcesses {
                     "Two of the scriptTasks are surrounded by the parallelGateways and the sequenceFlows pointing to the mergine gateway have conditions. " +
                     "These conditions should be ignored by an engine.",
             new Feature(CONSTRUCT_PARALLEL_GATEWAY_COND, "ParallelGateway_Conditions"),
-            new BPMNTestCase().inputA().assertTask1().assertTask2().assertTask3(),
-            new BPMNTestCase().inputB().assertTask1().assertTask2().assertTask3(),
-            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3(),
-            new BPMNTestCase().inputC().assertTask1().assertTask2().assertTask3()
+            new BPMNTestCaseBuilder().inputA().assertTask1().assertTask2().assertTask3(),
+            new BPMNTestCaseBuilder().inputB().assertTask1().assertTask2().assertTask3(),
+            new BPMNTestCaseBuilder().inputAB().assertTask1().assertTask2().assertTask3(),
+            new BPMNTestCaseBuilder().inputC().assertTask1().assertTask2().assertTask3()
     );
 
     public static final Test EXCLUSIVE_DIVERGING_PARALLEL_CONVERGING = BPMNProcessBuilder.buildErrorProcess(
@@ -49,9 +49,9 @@ class ErrorProcesses {
             "Two scriptTasks are enclosed by the gateways and the execution should deadlock, because only one incoming branch of the parallelGateway " +
             "should ever be executed. Hence, the scriptTask following the parallelGateway should never be executed.",
             new Feature(CONSTRUCT_INVALID_GATEWAY_COMBINATIONS, "ExclusiveDiverging_ParallelConverging"),
-            new BPMNTestCase().inputA().assertTask1(),
-            new BPMNTestCase().inputB().assertTask2(),
-            new BPMNTestCase().inputAB().assertTask1()
+            new BPMNTestCaseBuilder().inputA().assertTask1(),
+            new BPMNTestCaseBuilder().inputB().assertTask2(),
+            new BPMNTestCaseBuilder().inputAB().assertTask1()
     );
 
     public static final Test INCLUSIVE_DIVERGING_PARALLEL_CONVERGING = BPMNProcessBuilder.buildErrorProcess(
@@ -59,42 +59,42 @@ class ErrorProcesses {
             "Two scriptTasks are enclosed by the gateways and the execution should deadlock if only one incoming branch of the parallelGateway " +
             "is enabled. Hence, the scriptTask following the parallelGateway should only be executed in a single case.",
             new Feature(CONSTRUCT_INVALID_GATEWAY_COMBINATIONS, "InclusiveDiverging_ParallelConverging"),
-            new BPMNTestCase().inputA().assertTask1(),
-            new BPMNTestCase().inputB().assertTask2(),
-            new BPMNTestCase().inputAB().assertTask1().assertTask2().assertTask3()
+            new BPMNTestCaseBuilder().inputA().assertTask1(),
+            new BPMNTestCaseBuilder().inputB().assertTask2(),
+            new BPMNTestCaseBuilder().inputAB().assertTask1().assertTask2().assertTask3()
     );
 
     public static final Test LOOP_TASK_NEGATIVE_LOOP_MAXIMUM = BPMNProcessBuilder.buildErrorProcess(
             "LoopTask_NegativeLoopMaximum", "A scriptTask with standardLoopCharacteristics and a condition that always evaluates to true. Additionally a loopMaximum is set to minus one.",
             new Feature(CONSTRUCT_INVALID_LOOP_COND, "LoopTask_NegativeLoopMaximum"),
-            new BPMNTestCase().assertGenericError()
+            new BPMNTestCaseBuilder().assertGenericError()
     );
 
     public static final Test MULTI_INSTANCE_TASK_NEGATIVE_LOOP_CARDINALITY = BPMNProcessBuilder.buildErrorProcess(
             "MultiInstanceTask_NegativeLoopCardinality", "A scriptTask that is marked as a sequential multiInstance task and is enabled minus one times.",
             new Feature(CONSTRUCT_INVALID_LOOP_COND, "MultiInstanceTask_NegativeLoopCardinality"),
-            new BPMNTestCase().assertGenericError()
+            new BPMNTestCaseBuilder().assertGenericError()
     );
 
     public static final Test TOKEN_START_QUANTITY_TWO = BPMNProcessBuilder.buildErrorProcess(
             "Token_StartQuantity_Two", "A process with a scriptTask with completionQuantity=1 and, immediately afterwards, " +
                     "a scriptTask with startQuantity=2. Since there will never two tokens arrive, the scriptTask must not be executed.",
             new Feature(CONSTRUCT_INVALID_TOKEN_QUANTITY, "Token_StartQuantity_Two"),
-            new BPMNTestCase().assertTask1()
+            new BPMNTestCaseBuilder().assertTask1()
     );
 
     public static final Test TOKEN_START_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
             "Token_StartQuantity_Zero", "A process with a scriptTask with startQuantity=0. " +
                     "Since startQuantity must not be zero, the process must not be executed.",
             new Feature(CONSTRUCT_INVALID_TOKEN_QUANTITY, "Token_StartQuantity_Zero"),
-            new BPMNTestCase().assertGenericError()
+            new BPMNTestCaseBuilder().assertGenericError()
     );
 
     public static final Test TOKEN_COMPLETION_QUANTITY_ZERO = BPMNProcessBuilder.buildErrorProcess(
             "Token_CompletionQuantity_Zero", "A process with a scriptTask with completionQuantity=0. " +
             "Since completionQuantity must not be zero, the process must not be executed.",
             new Feature(CONSTRUCT_INVALID_TOKEN_QUANTITY, "Token_CompletionQuantity_Zero"),
-            new BPMNTestCase().assertGenericError()
+            new BPMNTestCaseBuilder().assertGenericError()
     );
 
 

@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
+import pebl.test.TestCase;
 
 public class BPMNEnginesUtil {
 
     private static final Logger LOGGER = Logger.getLogger(BPMNEnginesUtil.class);
 
-    public static void substituteSpecificErrorsForGenericError(BPMNTestCase testCase, Path logDir) {
-        if (testCase.getAssertions().contains(BPMNAssertions.ERROR_GENERIC.toString())) {
+    public static void substituteSpecificErrorsForGenericError(TestCase testCase, Path logDir) {
+        if (TestCaseUtil.getTraceAssertions(testCase).contains(BPMNAssertions.ERROR_GENERIC.toString())){
             List<String> toReplace = new ArrayList<>();
             toReplace.add(BPMNAssertions.ERROR_DEPLOYMENT.toString());
             toReplace.add(BPMNAssertions.ERROR_RUNTIME.toString());
@@ -24,9 +24,9 @@ public class BPMNEnginesUtil {
         }
     }
 
-    public static void checkParallelExecution(BPMNTestCase testCase, Path logFile) {
+    public static void checkParallelExecution(TestCase testCase, Path logFile) {
         // Only check on parallelism when asked for a parallel assertion
-        if (!testCase.getAssertions().contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
+        if (!TestCaseUtil.getTraceAssertions(testCase).contains(BPMNAssertions.EXECUTION_PARALLEL.toString())) {
             return;
         }
 
@@ -43,8 +43,8 @@ public class BPMNEnginesUtil {
 
     }
 
-    public static void checkMarkerFileExists(BPMNTestCase testCase, Path logFile) {
-        if(!testCase.getAssertions().contains(BPMNAssertions.MARKER_EXISTS.toString())) {
+    public static void checkMarkerFileExists(TestCase testCase, Path logFile) {
+        if (!TestCaseUtil.getTraceAssertions(testCase).contains(BPMNAssertions.MARKER_EXISTS.toString())) {
             return;
         }
         if (Files.exists(logFile.getParent().resolve("MARKER"))) {
@@ -52,9 +52,9 @@ public class BPMNEnginesUtil {
         }
     }
 
-    public static void checkDataLog(BPMNTestCase testCase, Path logFile) {
+    public static void checkDataLog(TestCase testCase, Path logFile) {
         // Only check when asked for a data type assertion
-        if (!testCase.getAssertions().contains(BPMNAssertions.DATA_CORRECT.toString())) {
+        if (!TestCaseUtil.getTraceAssertions(testCase).contains(BPMNAssertions.DATA_CORRECT.toString())) {
             return;
         }
 

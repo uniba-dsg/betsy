@@ -1,6 +1,6 @@
 package configuration.bpmn;
 
-import betsy.bpmn.model.BPMNTestCase;
+import betsy.bpmn.model.BPMNTestCaseBuilder;
 import pebl.featuretree.FeatureSet;
 import pebl.test.Test;
 import pebl.featuretree.Feature;
@@ -23,14 +23,14 @@ class DataProcesses {
                     "the second of which writes a string data object, and the third of which reads the string " +
                     "data object and writes an assertion token into the final log if successful.",
             new Feature(DATA_OBJECT, "DataObject_ReadWrite_String"),
-            new BPMNTestCase().assertDataCorrect()
+            new BPMNTestCaseBuilder().assertDataCorrect()
     );
     public static final Test PROPERTY_READ_WRITE_STRING = BPMNProcessBuilder.buildDataProcess(
             "A process consisting of three scriptTasks, " +
                     "the second of which writes a string property, and the third of which reads the string " +
                     "property and writes an assertion token into the final log if successful.",
             new Feature(PROPERTY, "Property_ReadWrite_String"),
-            new BPMNTestCase().assertDataCorrect()
+            new BPMNTestCaseBuilder().assertDataCorrect()
     );
 
     public static final List<Test> DATA = Arrays.asList(

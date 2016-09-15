@@ -5,12 +5,8 @@ import pebl.test.TestAssertion;
 import pebl.test.TestCase;
 import configuration.bpmn.BPMNProcessRepository;
 import pebl.test.assertions.TraceTestAssertion;
-import betsy.bpmn.model.BPMNTestCase;
-import pebl.test.steps.VariableBasedTestStep;
-import pebl.test.steps.Variable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Creates a LaTeX table from a list of processes and writes it to standard output
@@ -84,8 +80,8 @@ public class TestCaseToLatexSerializer {
         StringBuilder result = new StringBuilder("\\begin{tabular}{cc}");
         result.append("input & trace " + TABLE_NEWLINE + "\\midrule ");
 
-        BPMNTestCase bpmnTestCase = (BPMNTestCase) testCase;
-        VariableBasedTestStep testStep = bpmnTestCase.getTestStep();
+        /*
+        ProcessStartWithVariablesTestStep testStep = testCase.getTestStep();
 
         Optional<Variable> variable = testStep.getVariable();
         if (variable.isPresent()) {
@@ -93,7 +89,7 @@ public class TestCaseToLatexSerializer {
         }
 
         result.append(" & " + getAssertionsString(testStep.getAssertions()) + TABLE_NEWLINE);
-
+*/
         result.append("\\end{tabular}" + TABLE_NEWLINE);
         return result.toString();
     }

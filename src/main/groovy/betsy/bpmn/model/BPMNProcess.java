@@ -13,6 +13,7 @@ import pebl.featuretree.Feature;
 import pebl.featuretree.FeatureDimension;
 import pebl.featuretree.Group;
 import pebl.test.Test;
+import pebl.test.TestCase;
 
 public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess>, FeatureDimension, EngineDimension {
 
@@ -88,8 +89,8 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
         return test.getFeature();
     }
 
-    public List<BPMNTestCase> getTestCases() {
-        return test.getTestCases().stream().map(p -> (BPMNTestCase) p).collect(Collectors.toList());
+    public List<TestCase> getTestCases() {
+        return test.getTestCases().stream().map(p -> (TestCase) p).collect(Collectors.toList());
     }
 
     @Override

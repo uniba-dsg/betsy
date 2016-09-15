@@ -13,14 +13,14 @@ import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
-import betsy.bpmn.model.BPMNTestCase;
 import betsy.common.engines.tomcat.Tomcat;
-import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import pebl.ProcessLanguage;
+import pebl.test.TestCase;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
 
@@ -30,21 +30,19 @@ public class ActivitiEngine extends AbstractBPMNEngine {
 
     @Override
     public void testProcess(BPMNProcess process) {
-        for (BPMNTestCase testCase : process.getTestCases()) {
+        for (TestCase testCase : process.getTestCases()) {
             BPMNTester bpmnTester = new BPMNTester();
             int testCaseNumber = testCase.getNumber();
             bpmnTester.setSource(process.getTargetTestSrcPathWithCase(testCaseNumber));
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            ActivitiTester tester = new ActivitiTester();
-            tester.setTestCase(testCase);
-            tester.setBpmnTester(bpmnTester);
-            tester.setKey(process.getName());
-            tester.setInstanceLogFile(getInstanceLogFile(testCaseNumber));
-            tester.setLogDir(getTomcat().getTomcatLogsDir());
-
-            tester.runTest();
+            new ActivitiTester(
+                    testCase,
+                    getTomcat().getTomcatLogsDir(),
+                    getInstanceLogFile(testCaseNumber),
+                    bpmnTester
+            ).runTest();
         }
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }

@@ -4,11 +4,9 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -19,12 +17,6 @@ import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import pebl.featuretree.Capability;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
-import pebl.featuretree.Group;
-import pebl.featuretree.Language;
-import pebl.test.Test;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -55,13 +47,9 @@ public class EngineControlGUI extends Application {
             final Path tmpFolder = createTempFolder(e.toString());
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
-                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
-                Test test = new Test(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
                 eNew.storeLogs(tmpFolder);
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
-                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
-                Test test = new Test(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
                 eNew.storeLogs(tmpFolder);
             }
             return tmpFolder;

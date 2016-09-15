@@ -10,13 +10,14 @@ import java.util.List;
 
 import pebl.test.Test;
 import pebl.test.assertions.SoapFaultTestAssertion;
+import pebl.test.assertions.TraceTestAssertion;
 import pebl.test.assertions.XpathTestAssertion;
 import pebl.test.steps.DelayTestStep;
 import pebl.test.steps.DeployableCheckTestStep;
 import pebl.test.steps.NotDeployableCheckTestStep;
+import pebl.test.steps.GatherAndAssertTracesTestStep;
+import pebl.test.steps.ProcessStartWithVariablesTestStep;
 import pebl.test.steps.soap.SoapTestStep;
-import betsy.bpmn.model.BPMNTestCase;
-import pebl.test.steps.VariableBasedTestStep;
 import pebl.test.steps.Variable;
 import pebl.test.partner.ExternalWSDLTestPartner;
 import pebl.test.partner.NoTestPartner;
@@ -172,14 +173,14 @@ class JsonGeneratorTestsEngineIndependent {
             }
             testPartnerObject.put("rules", rulesArray);
 
-        } else if(testPartner instanceof ExternalWSDLTestPartner){
+        } else if (testPartner instanceof ExternalWSDLTestPartner) {
             testPartnerObject.put("type", "WSDL");
             testPartnerObject.put("external", true);
 
             testPartnerObject.put("interfaceDescription", ((ExternalWSDLTestPartner) testPartner).wsdl);
             testPartnerObject.put("publishedUrl", ((ExternalWSDLTestPartner) testPartner).url);
             testPartnerObject.put("wsdlUrl", ((ExternalWSDLTestPartner) testPartner).getWSDLUrl());
-        } else if(testPartner instanceof NoTestPartner) {
+        } else if (testPartner instanceof NoTestPartner) {
             testPartnerObject.put("type", "NONE");
         }
 
@@ -192,11 +193,8 @@ class JsonGeneratorTestsEngineIndependent {
         testCaseObject.put("number", testCase.getNumber());
         testCaseObject.put("name", testCase.getName());
 
-        if (testCase instanceof BPMNTestCase) {
-            testCaseObject.put("testSteps", createBPMNTestStepArray((BPMNTestCase) testCase));
-        } else {
-            testCaseObject.put("testSteps", createBPELTestStepArray(testCase));
-        }
+        testCaseObject.put("testSteps", createBPELTestStepArray(testCase));
+
         return testCaseObject;
     }
 
@@ -246,40 +244,37 @@ class JsonGeneratorTestsEngineIndependent {
                     assertionsArray.put(assertionObject);
                 }
 
+            } else if (testStep instanceof GatherAndAssertTracesTestStep) {
+                testStepObject.put("type", testStep.getClass().getSimpleName());
+                JSONArray assertionsArray = new JSONArray();
+                testStepObject.put("assertions", assertionsArray);
+                for (TestAssertion assertion : ((GatherAndAssertTracesTestStep) testStep).getAssertions()) {
+                    JSONObject assertionObject = new JSONObject();
+                    assertionObject.put("type", assertion.getClass().getSimpleName());
+                    if (assertion instanceof TraceTestAssertion) {
+                        assertionObject.put("trace", ((TraceTestAssertion) assertion).getTrace().getValue());
+                    }
+                    assertionsArray.put(assertionObject);
+                }
+
+            } else if (testStep instanceof ProcessStartWithVariablesTestStep) {
+                testStepObject.put("type", testStep.getClass().getSimpleName());
+                testStepObject.put("process", ((ProcessStartWithVariablesTestStep) testStep).getProcess());
+                JSONArray assertionsArray = new JSONArray();
+                testStepObject.put("variables", assertionsArray);
+                for (Variable variable : ((ProcessStartWithVariablesTestStep) testStep).getVariables()) {
+                    JSONObject assertionObject = new JSONObject();
+                    testStepObject.put("value", variable.getValue());
+                    testStepObject.put("name", variable.getName());
+                    testStepObject.put("type", variable.getType());
+
+                    assertionsArray.put(assertionObject);
+
+                }
+
             }
             testStepArray.put(testStepObject);
         }
-        return testStepArray;
-    }
-
-    private static JSONArray createBPMNTestStepArray(BPMNTestCase testCase) {
-        BPMNTestCase bpmnTestCase = testCase;
-        VariableBasedTestStep testStep = bpmnTestCase.getTestStep();
-        JSONObject testStepObject = new JSONObject();
-        testStepObject.put("type", testStep.getClass().getSimpleName());
-        testStepObject.put("description", testStep.getDescription());
-        testStep.getDelay().ifPresent(delay -> testStepObject.put("delay", delay));
-        JSONArray inputArray = new JSONArray();
-        testStepObject.put("inputs", inputArray);
-        for (Variable var : bpmnTestCase.getVariables()) {
-            JSONObject varObject = new JSONObject();
-            varObject.put("name", var.getName());
-            varObject.put("value", var.getValue());
-            varObject.put("type", var.getType());
-            inputArray.put(varObject);
-        }
-
-        JSONArray assertionsArray = new JSONArray();
-        testStepObject.put("assertions", assertionsArray);
-        for (String assertion : bpmnTestCase.getAssertions()) {
-            JSONObject varObject = new JSONObject();
-            varObject.put("type", "TraceTestAssertion");
-            varObject.put("trace", assertion);
-            assertionsArray.put(varObject);
-        }
-
-        JSONArray testStepArray = new JSONArray();
-        testStepArray.put(testStepObject);
         return testStepArray;
     }
 

@@ -27,10 +27,6 @@ public class TestCase {
         return testSteps;
     }
 
-    public void setTestSteps(List<TestStep> testSteps) {
-        this.testSteps = testSteps;
-    }
-
     public String getName() {
         return name;
     }
