@@ -6,6 +6,10 @@ public class WsdlService {
 
     private final String name;
 
+    WsdlService() {
+        this("");
+    }
+
     public WsdlService(String name) {
         this.name = Objects.requireNonNull(name);
     }
@@ -14,7 +18,8 @@ public class WsdlService {
         return name;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -23,7 +28,8 @@ public class WsdlService {
         return Objects.equals(name, that.name);
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(name);
     }
 }

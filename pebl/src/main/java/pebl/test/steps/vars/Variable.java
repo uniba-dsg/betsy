@@ -12,6 +12,10 @@ public class Variable {
     private final String type;
     private final Object value;
 
+    Variable() {
+        this("","",new Object());
+    }
+
     public Variable(String name, String type, Object value) {
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type);

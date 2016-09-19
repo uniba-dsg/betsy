@@ -1,5 +1,7 @@
 package pebl.test.steps;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import pebl.test.TestStep;
 
 public class DelayTestStep extends TestStep {
@@ -13,6 +15,7 @@ public class DelayTestStep extends TestStep {
         return "DelayTestStep{description=" + getDescription() + ", timeToWaitAfterwards=" + timeToWaitAfterwards + "}";
     }
 
+    @XmlElement(required = true)
     public Integer getTimeToWaitAfterwards() {
         return timeToWaitAfterwards;
     }

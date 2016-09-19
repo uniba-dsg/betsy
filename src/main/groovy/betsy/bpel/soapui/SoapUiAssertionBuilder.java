@@ -1,10 +1,10 @@
 package betsy.bpel.soapui;
 
+import pebl.test.TestStep;
 import pebl.test.assertions.ExitAssertion;
 import pebl.test.assertions.SoapFaultTestAssertion;
 import pebl.test.assertions.XpathTestAssertion;
 import pebl.test.steps.soap.SoapTestStep;
-import pebl.test.steps.AssertableTestStep;
 import pebl.test.TestAssertion;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep;
@@ -38,7 +38,7 @@ public class SoapUiAssertionBuilder {
 
     }
 
-    private static void createNotSoapFaultAssertion(AssertableTestStep testStep, WsdlTestRequestStep soapUiRequest) {
+    private static void createNotSoapFaultAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
         if (!testStep.getAssertions().stream().anyMatch((it) -> it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion)) {
             Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create Not Soap Fault Assertion");
         }
@@ -91,7 +91,7 @@ public class SoapUiAssertionBuilder {
         groovyScriptAssertion.setScriptText("assert 202 == messageExchange.responseStatusCode");
     }
 
-    public static void addTestPartnerAssertion(AssertableTestStep testStep, WsdlTestRequestStep soapUiRequest) {
+    public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
         for (TestAssertion assertion : testStep.getAssertions()) {
             if (assertion instanceof XpathTestAssertion) {
                 addXpathTestAssertion(soapUiRequest, (XpathTestAssertion) assertion);

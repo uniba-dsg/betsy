@@ -6,10 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import pebl.test.TestCase;
+import pebl.test.TestStep;
 import pebl.test.assertions.Trace;
 import pebl.test.assertions.TraceTestAssertion;
-import pebl.test.steps.AssertableTestStep;
-import pebl.test.steps.GatherAndAssertTracesTestStep;
+import pebl.test.steps.GatherTracesTestStep;
 import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class TestCaseUtil {
@@ -26,9 +26,9 @@ public class TestCaseUtil {
         return Optional.of(testCase)
                     .map(tc -> tc.getTestSteps()
                             .stream()
-                            .filter(ts -> ts instanceof GatherAndAssertTracesTestStep)
-                            .map(ts -> (GatherAndAssertTracesTestStep) ts)
-                            .map(AssertableTestStep::getAssertions)
+                            .filter(ts -> ts instanceof GatherTracesTestStep)
+                            .map(ts -> (GatherTracesTestStep) ts)
+                            .map(TestStep::getAssertions)
                             .flatMap(ta -> ta.stream()
                                     .filter(ts -> ts instanceof TraceTestAssertion)
                                     .map(ts -> (TraceTestAssertion) ts)

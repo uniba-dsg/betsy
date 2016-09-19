@@ -42,11 +42,7 @@ class JsonGeneratorFeatureTree {
     public static void generatesConstructsJsonWithReallyAllProcesses(Path folder) {
         JSONArray featureTree = new JSONArray();
 
-        List<Test> processes = new LinkedList<>();
-        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
-        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
-        processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
-        processes.addAll(new BPMNProcessRepository().getByName("ALL"));
+        List<Test> processes = getTests();
         convertProcess(featureTree, processes);
 
         try(BufferedWriter writer = Files.newBufferedWriter(folder.resolve("feature-tree.json"), StandardOpenOption.CREATE)) {
@@ -54,6 +50,15 @@ class JsonGeneratorFeatureTree {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static List<Test> getTests() {
+        List<Test> processes = new LinkedList<>();
+        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
+        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
+        processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
+        processes.addAll(new BPMNProcessRepository().getByName("ALL"));
+        return processes;
     }
 
     private static void convertProcess(JSONArray rootArray, List<Test> processes) {
@@ -123,7 +128,9 @@ class JsonGeneratorFeatureTree {
         featureObject.put("id", feature.getID());
         featureObject.put("name", feature.getName());
         featureObject.put("description", feature.getDescription());
-        feature.getUpperBound().ifPresent(upperBound -> featureObject.put("upperBound", upperBound));
+        if(!feature.getUpperBound().isEmpty()) {
+            featureObject.put("upperBound", feature.getUpperBound());
+        }
         return featureObject;
     }
 }

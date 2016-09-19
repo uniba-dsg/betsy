@@ -1,5 +1,5 @@
 package pebl.result;
 
-public interface Metric {
+public class Metric {
 
 }

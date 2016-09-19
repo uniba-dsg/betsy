@@ -1,13 +1,17 @@
 package pebl.test.partner;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import pebl.test.TestPartner;
 
-public interface WSDLTestPartner extends TestPartner {
+public abstract class WSDLTestPartner extends TestPartner {
 
-    default String getWSDLUrl() {
+    @XmlElement(required = true)
+    public String getWSDLUrl() {
         return getPublishedURL() + "?wsdl";
     }
 
-    String getPublishedURL();
+    @XmlElement(required = true)
+    public abstract String getPublishedURL();
 
 }

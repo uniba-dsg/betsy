@@ -1,9 +1,10 @@
 package pebl.test.steps.soap;
 
-import pebl.test.assertions.XpathTestAssertion;
-import pebl.test.steps.AssertableTestStep;
+import javax.xml.bind.annotation.XmlElement;
 
-public class SoapTestStep extends AssertableTestStep {
+import pebl.test.TestStep;
+
+public class SoapTestStep extends TestStep {
 
     /**
      * The input value which is send using the <code>operation</code> to the system under test.
@@ -15,7 +16,7 @@ public class SoapTestStep extends AssertableTestStep {
      */
     private WsdlOperation operation;
 
-    private WsdlService service = new WsdlService("testInterface");
+    private WsdlService service;
 
     @Override
     public String toString() {
@@ -26,6 +27,7 @@ public class SoapTestStep extends AssertableTestStep {
                 "} " + super.toString();
     }
 
+    @XmlElement(required = true)
     public String getInput() {
         return input;
     }
@@ -34,6 +36,7 @@ public class SoapTestStep extends AssertableTestStep {
         this.input = input;
     }
 
+    @XmlElement(required = true)
     public WsdlOperation getOperation() {
         return operation;
     }
@@ -46,6 +49,7 @@ public class SoapTestStep extends AssertableTestStep {
         this.service = service;
     }
 
+    @XmlElement(required = true)
     public WsdlService getService() {
         return service;
     }

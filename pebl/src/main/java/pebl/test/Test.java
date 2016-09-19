@@ -1,6 +1,7 @@
 package pebl.test;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,12 +10,25 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+
+import pebl.HasID;
 import pebl.HasName;
 import pebl.ProcessLanguage;
 import pebl.feature.Feature;
 import pebl.feature.FeatureDimension;
+import pebl.xsd.PathAdapter;
 
-public class Test implements Comparable<Test>, HasName, FeatureDimension {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension {
 
     private final Feature feature;
 
@@ -24,6 +38,10 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
     private final String description;
     private final List<TestPartner> partners;
     private final Map<String, String> additionalData;
+
+    public Test() {
+        this(Paths.get(""), "", Collections.emptyList(), new Feature());
+    }
 
     public Test(Path process,
             String description,
@@ -78,6 +96,7 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
         return new Test(process, description, testCases, feature, files, partners);
     }
 
+    @XmlElement
     public List<Path> getFiles() {
         return files;
     }
@@ -111,6 +130,7 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
      *
      * @return the process language used by the given process.
      */
+    @XmlElement
     public ProcessLanguage getProcessLanguage() {
         String lowerCasePath = getProcess().toString().toLowerCase();
         if (lowerCasePath.endsWith(".bpmn")) {
@@ -150,14 +170,17 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
         return process.compareTo(o.process);
     }
 
+    @XmlElement(required = true)
     public Path getProcess() {
         return this.process;
     }
 
+    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }
 
+    @XmlElement
     public List<TestCase> getTestCases() {
         return testCases;
     }
@@ -169,10 +192,13 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
     }
 
     @Override
+    @XmlElement(required = true)
     public String getName() {
         return getFeature().getName();
     }
 
+    @XmlIDREF
+    @XmlElement(required = true)
     public Feature getFeature() {
         return feature;
     }
@@ -181,8 +207,25 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
         return getFiles().stream().filter(predicate).collect(Collectors.toList());
     }
 
+    @XmlElement(required = true)
     public List<TestPartner> getTestPartners() {
         return partners;
+    }
+
+    public List<TestPartner> getPartners() {
+        return partners;
+    }
+
+    @XmlElement(required = true)
+    public Map<String, String> getAdditionalData() {
+        return additionalData;
+    }
+
+    @Override
+    @XmlID
+    @XmlElement(required = true)
+    public String getID() {
+        return String.join(HasID.SEPARATOR,getFeature().getID(), getName());
     }
 }
 

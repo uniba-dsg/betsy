@@ -5,8 +5,9 @@ import java.util.List;
 
 import pebl.test.TestCase;
 import pebl.test.assertions.Trace;
+import pebl.test.assertions.TraceTestAssertion;
 import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.GatherAndAssertTracesTestStep;
+import pebl.test.steps.GatherTracesTestStep;
 import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 import pebl.test.steps.vars.Variable;
 
@@ -41,9 +42,9 @@ public class BPMNTestCaseBuilder {
         // add trace gathering step
 
         // add trace evaluation step
-        GatherAndAssertTracesTestStep gatherAndAssertTracesTestStep = new GatherAndAssertTracesTestStep();
-        traces.forEach(gatherAndAssertTracesTestStep::addTrace);
-        result.addStep(gatherAndAssertTracesTestStep);
+        GatherTracesTestStep gatherTracesTestStep = new GatherTracesTestStep();
+        traces.forEach(trace -> gatherTracesTestStep.addAssertion(new TraceTestAssertion(trace)));
+        result.addStep(gatherTracesTestStep);
 
         return result;
     }

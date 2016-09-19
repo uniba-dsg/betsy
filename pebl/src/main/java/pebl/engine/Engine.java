@@ -6,20 +6,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import pebl.ProcessLanguage;
 import pebl.HasID;
 import pebl.HasName;
 
 import static java.util.Objects.requireNonNull;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public final class Engine implements HasID, HasName {
 
     public static final String DELIMITER = "--";
 
     private final String name;
+
     private final String version;
+
     private final List<String> configuration;
+
     private final ProcessLanguage language;
+
+    public Engine() {
+        this(ProcessLanguage.UNKNOWN, "", "");
+    }
 
     public Engine(ProcessLanguage language, String name, String version) {
         this(language, name, version, Collections.emptyList());
@@ -57,6 +71,7 @@ public final class Engine implements HasID, HasName {
         return Objects.equals(toString(), engine.toString());
     }
 
+    @XmlElement(required = true)
     public ProcessLanguage getLanguage() {
         return language;
     }
@@ -75,19 +90,24 @@ public final class Engine implements HasID, HasName {
         return String.join(DELIMITER, values);
     }
 
+    @XmlElement(required = true)
     public String getName() {
         return name;
     }
 
+    @XmlElement(required = true)
     public String getVersion() {
         return version;
     }
 
+    @XmlElement(required = true)
     public List<String> getConfiguration() {
         return configuration;
     }
 
     @Override
+    @XmlElement(required = true)
+    @XmlID
     public String getID() {
         return getNormalizedId();
     }

@@ -13,6 +13,10 @@ public class WsdlOperation {
     private final String name;
     private final boolean isOneWay;
 
+    WsdlOperation() {
+        this("", false);
+    }
+
     public WsdlOperation(String name, boolean isOneWay) {
         this.name = Objects.requireNonNull(name);
         this.isOneWay = isOneWay;

@@ -3,6 +3,8 @@ package pebl.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * TestCase implements the builder pattern using a fluent interface.
  */
@@ -23,10 +25,12 @@ public class TestCase {
         return this;
     }
 
+    @XmlElement
     public List<TestStep> getTestSteps() {
         return testSteps;
     }
 
+    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -35,6 +39,7 @@ public class TestCase {
         this.name = name;
     }
 
+    @XmlElement(required = true)
     public int getNumber() {
         return number;
     }

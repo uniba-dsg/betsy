@@ -149,7 +149,7 @@ public class TestsEngineDependent {
     private static JSONObject createToolJsonObject(Tool tool) {
         JSONObject toolObject = new JSONObject();
         toolObject.put("name", tool.getName());
-        toolObject.put("version", tool.version);
+        toolObject.put("version", tool.getVersion());
         toolObject.put("toolID", tool.getID());
         return toolObject;
     }

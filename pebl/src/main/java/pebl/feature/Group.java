@@ -5,15 +5,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+
 import pebl.HasName;
 import pebl.HasID;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class Group implements HasID, HasName {
 
     private final String name;
     private final Language language;
     private final String description;
     private final List<FeatureSet> featureSets = new LinkedList<>();
+
+    public Group() {
+        this("", new Language(), "");
+    }
 
     public Group(String name, Language language, String description) {
         this.name = Objects.requireNonNull(name);
@@ -23,6 +34,7 @@ public class Group implements HasID, HasName {
         this.language.addGroup(this);
     }
 
+    @XmlID
     public String getID() {
         return String.join(HasID.SEPARATOR, language.getID(), name);
     }
@@ -33,6 +45,7 @@ public class Group implements HasID, HasName {
     }
 
     @Override
+    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -56,14 +69,18 @@ public class Group implements HasID, HasName {
         this.featureSets.add(featureSet);
     }
 
+    @XmlIDREF
     public List<FeatureSet> getFeatureSets() {
         return Collections.unmodifiableList(featureSets);
     }
 
+    @XmlIDREF
+    @XmlElement(required = true)
     public Language getLanguage() {
         return language;
     }
 
+    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }

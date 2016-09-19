@@ -67,6 +67,7 @@ public class BPELTestCase extends TestCase {
     public BPELTestCase sendAsync(int input) {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
+        step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.ASYNC);
 
         return addStep(step);
@@ -75,6 +76,7 @@ public class BPELTestCase extends TestCase {
     public BPELTestCase buildSyncOperationOutputAsLeast(int input, int output) {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
+        step.setService(new WsdlService("testInterface"));
         setOutputAsLeast(step, String.valueOf(output));
         step.setOperation(BPELWsdlOperations.SYNC);
 
@@ -84,6 +86,7 @@ public class BPELTestCase extends TestCase {
     public BPELTestCase sendSync(int input) {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
+        step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC);
 
         return addStep(step);
@@ -93,6 +96,7 @@ public class BPELTestCase extends TestCase {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
         setStringOperationOutput(step, output);
+        step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
 
         return addStep(step);
@@ -101,6 +105,7 @@ public class BPELTestCase extends TestCase {
     public BPELTestCase sendSyncString(int input) {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
+        step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
 
         return addStep(step);
@@ -110,6 +115,7 @@ public class BPELTestCase extends TestCase {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
+        step.setService(new WsdlService("testInterface"));
         step.getAssertions().add(assertion);
 
         return addStep(step);
@@ -120,6 +126,7 @@ public class BPELTestCase extends TestCase {
         step.setInput(String.valueOf(input));
         setOutput(step, String.valueOf(output));
         step.setOperation(BPELWsdlOperations.SYNC);
+        step.setService(new WsdlService("testInterface"));
         step.getAssertions().add(assertion);
 
         return addStep(step);
@@ -129,6 +136,7 @@ public class BPELTestCase extends TestCase {
         SoapTestStep step = new SoapTestStep();
         step.setInput(String.valueOf(input));
         setOutput(step, String.valueOf(output));
+        step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC);
 
         return addStep(step);
@@ -146,6 +154,7 @@ public class BPELTestCase extends TestCase {
         step.setInput(String.valueOf(input));
         step.setOperation(BPELWsdlOperations.SYNC);
         step.getAssertions().add(assertion);
+        step.setService(new WsdlService("testInterface"));
 
         return addStep(step);
     }

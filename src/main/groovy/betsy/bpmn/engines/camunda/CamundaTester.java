@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import pebl.test.TestCase;
 import pebl.test.TestStep;
 import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.GatherAndAssertTracesTestStep;
+import pebl.test.steps.GatherTracesTestStep;
 import pebl.test.steps.vars.Variable;
 import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 
@@ -62,7 +62,7 @@ public class CamundaTester {
                 }
             } else if (testStep instanceof DelayTestStep) {
                 WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
-            } else if (testStep instanceof GatherAndAssertTracesTestStep) {
+            } else if (testStep instanceof GatherTracesTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest =
                         new CamundaLogBasedProcessInstanceOutcomeChecker(logFile)
                                 .checkProcessOutcome(key);

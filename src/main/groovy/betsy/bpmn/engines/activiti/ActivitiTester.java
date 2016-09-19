@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import pebl.test.TestCase;
 import pebl.test.TestStep;
 import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.GatherAndAssertTracesTestStep;
+import pebl.test.steps.GatherTracesTestStep;
 import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 import pebl.test.steps.vars.Variable;
 
@@ -66,7 +66,7 @@ public class ActivitiTester {
                 }
             } else if (testStep instanceof DelayTestStep) {
                 WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
-            } else if (testStep instanceof GatherAndAssertTracesTestStep) {
+            } else if (testStep instanceof GatherTracesTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest =
                         new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
                 if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {

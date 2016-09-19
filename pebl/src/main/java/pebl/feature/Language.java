@@ -5,14 +5,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+
 import pebl.HasName;
 import pebl.HasID;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class Language implements HasID, HasName {
 
     private final Capability capability;
     private final String name;
     private final List<Group> groups = new LinkedList<>();
+
+    Language() {
+        this(new Capability(), "");
+    }
 
     public Language(Capability capability, String name) {
         this.capability = Objects.requireNonNull(capability);
@@ -22,11 +33,14 @@ public class Language implements HasID, HasName {
     }
 
     @Override
+    @XmlID
+    @XmlElement(required = true)
     public String getID() {
         return String.join(HasID.SEPARATOR, capability.getID(), name);
     }
 
     @Override
+    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -50,10 +64,13 @@ public class Language implements HasID, HasName {
         this.groups.add(group);
     }
 
+    @XmlIDREF
     public List<Group> getGroups() {
         return Collections.unmodifiableList(groups);
     }
 
+    @XmlIDREF
+    @XmlElement(required = true)
     public Capability getCapability() {
         return capability;
     }

@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import pebl.test.TestStep;
 
 public class ProcessStartWithVariablesTestStep extends TestStep {
@@ -21,6 +23,7 @@ public class ProcessStartWithVariablesTestStep extends TestStep {
         return Collections.unmodifiableList(variables);
     }
 
+    @XmlElement(required = true)
     public String getProcess() {
         return process;
     }

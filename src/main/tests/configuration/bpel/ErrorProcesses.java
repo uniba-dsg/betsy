@@ -17,11 +17,18 @@ import betsy.bpel.model.BPELTestCase;
 import pebl.feature.FeatureSet;
 import pebl.feature.Feature;
 import pebl.test.Test;
+import pebl.test.partner.rules.AnyInput;
+import pebl.test.partner.rules.EchoInputAsOutput;
 import pebl.test.partner.ExternalWSDLTestPartner;
+import pebl.test.partner.rules.IntegerInput;
+import pebl.test.partner.rules.IntegerOutputWithStatusCode;
 import pebl.test.partner.NoTestPartner;
 import pebl.test.TestPartner;
 import pebl.test.partner.InternalWSDLTestPartner;
 import betsy.common.tasks.FileTasks;
+import pebl.test.partner.rules.OperationInputOutputRule;
+import pebl.test.partner.rules.RawOutput;
+import pebl.test.partner.rules.TimeoutInsteadOfOutput;
 
 public class ErrorProcesses {
 
@@ -113,25 +120,25 @@ public class ErrorProcesses {
     private static final FeatureSet APP_CONSTRUCT = new FeatureSet(Groups.ERROR, "app");
 
     static TestPartner createErrorTestPartner(String url) {
-        List<InternalWSDLTestPartner.OperationInputOutputRule> tcpActions = new ArrayList<>();
-        tcpActions.add(new InternalWSDLTestPartner.OperationInputOutputRule(
+        List<OperationInputOutputRule> tcpActions = new ArrayList<>();
+        tcpActions.add(new OperationInputOutputRule(
                         "startProcessSync",
-                        new InternalWSDLTestPartner.IntegerInput(50_001),
-                        new InternalWSDLTestPartner.TimeoutInsteadOfOutput()));
+                        new IntegerInput(50_001),
+                        new TimeoutInsteadOfOutput()));
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> httpActions = IntStream.of(
+        List<OperationInputOutputRule> httpActions = IntStream.of(
                 100, 101,
                 201, 202, 203, 204, 205, 206,
                 300, 301, 302, 303, 304, 305, 306, 307,
                 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417,
-                500, 501, 502, 503, 504, 505).mapToObj(i -> new InternalWSDLTestPartner.OperationInputOutputRule(
+                500, 501, 502, 503, 504, 505).mapToObj(i -> new OperationInputOutputRule(
                         "startProcessSync",
-                        new InternalWSDLTestPartner.IntegerInput(i + 22_000),
-                        new InternalWSDLTestPartner.IntegerOutputWithStatusCode(0, i)
+                        new IntegerInput(i + 22_000),
+                        new IntegerOutputWithStatusCode(0, i)
                 )
         ).collect(Collectors.toList());
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
+        List<OperationInputOutputRule> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
             String rawOutput = "";
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/soap");
@@ -142,13 +149,13 @@ public class ErrorProcesses {
             } catch (IOException e) {
             }
 
-            return new InternalWSDLTestPartner.OperationInputOutputRule(
+            return new OperationInputOutputRule(
                     "startProcessSync",
-                    new InternalWSDLTestPartner.IntegerInput(i),
-                    new InternalWSDLTestPartner.RawOutput(rawOutput));
+                    new IntegerInput(i),
+                    new RawOutput(rawOutput));
         }).collect(Collectors.toList());
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
+        List<OperationInputOutputRule> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
             String rawOutput = "";
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/app");
@@ -159,22 +166,22 @@ public class ErrorProcesses {
             } catch (IOException e) {
             }
 
-            return new InternalWSDLTestPartner.OperationInputOutputRule(
+            return new OperationInputOutputRule(
                     "startProcessSync",
-                    new InternalWSDLTestPartner.IntegerInput(i),
-                    new InternalWSDLTestPartner.RawOutput(rawOutput));
+                    new IntegerInput(i),
+                    new RawOutput(rawOutput));
         }).collect(Collectors.toList());
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> actions = new ArrayList<>();
+        List<OperationInputOutputRule> actions = new ArrayList<>();
         actions.addAll(httpActions);
         actions.addAll(soapActions);
         actions.addAll(appActions);
-        actions.add(new InternalWSDLTestPartner.OperationInputOutputRule("startProcessSync", new InternalWSDLTestPartner.AnyInput(), new InternalWSDLTestPartner.EchoInputAsOutput()));
+        actions.add(new OperationInputOutputRule("startProcessSync", new AnyInput(), new EchoInputAsOutput()));
 
         return new InternalWSDLTestPartner(
                 Paths.get("TestPartner.wsdl"),
                 url,
-                actions.toArray(new InternalWSDLTestPartner.OperationInputOutputRule[] {})
+                actions.toArray(new OperationInputOutputRule[] {})
         );
     }
 
@@ -280,7 +287,7 @@ public class ErrorProcesses {
         result.add(new Error(50002, "tcp-host-unreachable", TCP_CONSTRUCT, new NoTestPartner()));
         result.add(new Error(50003, "tcp-timeout", TCP_CONSTRUCT, new InternalWSDLTestPartner(Paths.get("TestPartner.wsdl"),
                 "http://localhost:2000/bpel-testpartner",
-                new InternalWSDLTestPartner.OperationInputOutputRule("startProcessSync", new InternalWSDLTestPartner.AnyInput(), new InternalWSDLTestPartner.TimeoutInsteadOfOutput()))));
+                new OperationInputOutputRule("startProcessSync", new AnyInput(), new TimeoutInsteadOfOutput()))));
 
         return result;
     }

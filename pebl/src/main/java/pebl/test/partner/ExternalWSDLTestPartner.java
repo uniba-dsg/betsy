@@ -1,11 +1,18 @@
 package pebl.test.partner;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public class ExternalWSDLTestPartner implements WSDLTestPartner {
+import javax.xml.bind.annotation.XmlElement;
 
-    public final String url;
-    public final Path wsdl;
+public class ExternalWSDLTestPartner extends WSDLTestPartner {
+
+    private final String url;
+    private final Path wsdl;
+
+    ExternalWSDLTestPartner() {
+        this("", Paths.get(""));
+    }
 
     public ExternalWSDLTestPartner(String url, Path wsdl) {
         this.url = url;
@@ -15,5 +22,15 @@ public class ExternalWSDLTestPartner implements WSDLTestPartner {
     @Override
     public String getPublishedURL() {
         return url;
+    }
+
+    @XmlElement(required = true)
+    public String getUrl() {
+        return url;
+    }
+
+    @XmlElement(required = true)
+    public Path getWsdl() {
+        return wsdl;
     }
 }

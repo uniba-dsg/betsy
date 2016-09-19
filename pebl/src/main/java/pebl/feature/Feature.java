@@ -3,16 +3,27 @@ package pebl.feature;
 import java.util.Objects;
 import java.util.Optional;
 
-import pebl.HasName;
-import pebl.HasID;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 
+import pebl.HasID;
+import pebl.HasName;
+
+@XmlAccessorType(XmlAccessType.NONE)
 public class Feature implements HasID, HasName {
 
     private final FeatureSet featureSet;
     private final String name;
     private final String description;
 
-    private final Optional<String> upperBound;
+    private final String upperBound;
+
+    public Feature() {
+        this(new FeatureSet(), "");
+    }
 
     public Feature(FeatureSet featureSet, String name) {
         this(featureSet, name, "");
@@ -22,7 +33,7 @@ public class Feature implements HasID, HasName {
         this.featureSet = Objects.requireNonNull(featureSet);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
-        this.upperBound = Optional.empty();
+        this.upperBound = "";
 
         this.featureSet.addFeature(this);
     }
@@ -31,17 +42,20 @@ public class Feature implements HasID, HasName {
         this.featureSet = Objects.requireNonNull(featureSet);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
-        this.upperBound = Optional.of(upperBound);
+        this.upperBound = Objects.requireNonNull(upperBound);
 
         this.featureSet.addFeature(this);
     }
 
     @Override
+    @XmlID
+    @XmlElement(required = true)
     public String getID() {
         return String.join(HasID.SEPARATOR, featureSet.getID(), name);
     }
 
     @Override
+    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -61,15 +75,18 @@ public class Feature implements HasID, HasName {
         return Objects.hash(getID());
     }
 
+    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }
 
+    @XmlIDREF
     public FeatureSet getFeatureSet() {
         return featureSet;
     }
 
-    public Optional<String> getUpperBound() {
+    @XmlElement
+    public String getUpperBound() {
         return upperBound;
     }
 }
