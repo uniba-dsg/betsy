@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -26,7 +27,6 @@ import pebl.feature.Feature;
 import pebl.feature.FeatureDimension;
 import pebl.xsd.PathAdapter;
 
-@XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
 public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension {
 
@@ -130,7 +130,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
      *
      * @return the process language used by the given process.
      */
-    @XmlElement
+    @XmlElement(required = true)
     public ProcessLanguage getProcessLanguage() {
         String lowerCasePath = getProcess().toString().toLowerCase();
         if (lowerCasePath.endsWith(".bpmn")) {
@@ -223,7 +223,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
 
     @Override
     @XmlID
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     public String getID() {
         return String.join(HasID.SEPARATOR,getFeature().getID(), getName());
     }

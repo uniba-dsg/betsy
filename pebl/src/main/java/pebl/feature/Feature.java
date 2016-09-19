@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlTransient;
 
 import pebl.HasID;
 import pebl.HasName;
@@ -49,7 +51,7 @@ public class Feature implements HasID, HasName {
 
     @Override
     @XmlID
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     public String getID() {
         return String.join(HasID.SEPARATOR, featureSet.getID(), name);
     }
@@ -80,7 +82,7 @@ public class Feature implements HasID, HasName {
         return description;
     }
 
-    @XmlIDREF
+    @XmlTransient
     public FeatureSet getFeatureSet() {
         return featureSet;
     }

@@ -7,9 +7,11 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlTransient;
 
 import pebl.HasName;
 import pebl.HasID;
@@ -38,7 +40,7 @@ public class FeatureSet implements HasID, HasName {
         this.group.addFeatureSet(this);
     }
 
-    @XmlIDREF
+    @XmlElement(name="feature")
     public List<Feature> getFeatures() {
         return Collections.unmodifiableList(features);
     }
@@ -49,7 +51,7 @@ public class FeatureSet implements HasID, HasName {
 
     @Override
     @XmlID
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     public String getID() {
         return String.join(HasID.SEPARATOR, group.getID(), name);
     }
@@ -75,8 +77,7 @@ public class FeatureSet implements HasID, HasName {
         return Objects.hash(getID());
     }
 
-    @XmlIDREF
-    @XmlElement(required = true)
+    @XmlTransient
     public Group getGroup() {
         return group;
     }

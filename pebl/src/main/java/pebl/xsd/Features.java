@@ -16,14 +16,6 @@ import pebl.feature.Language;
 @XmlRootElement
 public class Features {
 
-    @XmlElement(name="feature")
-    public List<Feature> features = new LinkedList<>();
-    @XmlElement(name="featureSet")
-    public List<FeatureSet> featureSets = new LinkedList<>();
-    @XmlElement(name="group")
-    public List<Group> groups = new LinkedList<>();
-    @XmlElement(name="language")
-    public List<Language> languages = new LinkedList<>();
     @XmlElement(name="capability")
     public List<Capability> capabilities = new LinkedList<>();
 
@@ -32,10 +24,12 @@ public class Features {
     }
 
     public Features(List<Feature> features) {
-        this.features.addAll(features);
-        this.featureSets.addAll(features.stream().map(Feature::getFeatureSet).distinct().collect(Collectors.toList()));
-        this.groups.addAll(featureSets.stream().map(FeatureSet::getGroup).distinct().collect(Collectors.toList()));
-        this.languages.addAll(groups.stream().map(Group::getLanguage).distinct().collect(Collectors.toList()));
-        this.capabilities.addAll(languages.stream().map(Language::getCapability).distinct().collect(Collectors.toList()));
+        this.capabilities.addAll(features.stream()
+                .map(f -> f.getFeatureSet())
+                .map(f -> f.getGroup())
+                .map(f -> f.getLanguage())
+                .map(f -> f.getCapability())
+                .distinct()
+                .collect(Collectors.toList()));
     }
 }

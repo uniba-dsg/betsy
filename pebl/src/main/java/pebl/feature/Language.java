@@ -7,9 +7,11 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlTransient;
 
 import pebl.HasName;
 import pebl.HasID;
@@ -34,7 +36,7 @@ public class Language implements HasID, HasName {
 
     @Override
     @XmlID
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     public String getID() {
         return String.join(HasID.SEPARATOR, capability.getID(), name);
     }
@@ -64,13 +66,12 @@ public class Language implements HasID, HasName {
         this.groups.add(group);
     }
 
-    @XmlIDREF
+    @XmlElement(name="group")
     public List<Group> getGroups() {
         return Collections.unmodifiableList(groups);
     }
 
-    @XmlIDREF
-    @XmlElement(required = true)
+    @XmlTransient
     public Capability getCapability() {
         return capability;
     }

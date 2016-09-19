@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,7 +40,7 @@ public class Tool implements HasID, HasName {
     }
 
     @Override
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     @XmlID
     public String getID() {
         return String.join(SEPARATOR, name, version);

@@ -1,60 +1,37 @@
 package pebl.xsd;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import pebl.engine.Engine;
+import pebl.feature.Capability;
+import pebl.feature.Feature;
+import pebl.feature.FeatureSet;
+import pebl.feature.Group;
+import pebl.feature.Language;
+import pebl.result.TestResult;
+import pebl.test.Test;
 import pebl.tool.Tool;
 
 @XmlRootElement
 public class PEBL {
 
-    private Engines engines;
+    @XmlElement(name="engine")
+    public List<Engine> engines = new LinkedList<>();
 
-    private Tools tools;
+    @XmlElement(name = "tool")
+    public List<Tool> tools = new LinkedList<>();
 
-    private Tests tests;
+    @XmlElement(name = "test")
+    public List<Test> tests = new LinkedList<>();
 
-    private TestResults testResults;
+    @XmlElement(name = "testResult")
+    public List<TestResult> testResults = new LinkedList<>();
 
-    private Features features;
+    @XmlElement(name="capability")
+    public List<Capability> capabilities = new LinkedList<>();
 
-    public Engines getEngines() {
-        return engines;
-    }
-
-    public void setEngines(Engines engines) {
-        this.engines = engines;
-    }
-
-    public Tools getTools() {
-        return tools;
-    }
-
-    public void setTools(Tools tools) {
-        this.tools = tools;
-    }
-
-    public Tests getTests() {
-        return tests;
-    }
-
-    public void setTests(Tests tests) {
-        this.tests = tests;
-    }
-
-    public TestResults getTestResults() {
-        return testResults;
-    }
-
-    public void setTestResults(TestResults testResults) {
-        this.testResults = testResults;
-    }
-
-    public Features getFeatures() {
-        return features;
-    }
-
-    public void setFeatures(Features features) {
-        this.features = features;
-    }
 }
