@@ -1,7 +1,7 @@
 package configuration.bpmn;
 
-import pebl.featuretree.Group;
-import pebl.featuretree.Language;
+import pebl.feature.Group;
+import pebl.feature.Language;
 import configuration.Capabilities;
 
 public class Groups {

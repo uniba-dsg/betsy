@@ -20,6 +20,10 @@ public class Tool implements HasID, HasName {
         return name;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
     @Override
     public String getID() {
         return String.join(SEPARATOR, name, version);

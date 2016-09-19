@@ -1,9 +1,9 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCaseBuilder;
-import pebl.featuretree.FeatureSet;
+import pebl.feature.FeatureSet;
 import pebl.test.Test;
-import pebl.featuretree.Feature;
+import pebl.feature.Feature;
 
 import java.util.Arrays;
 import java.util.List;

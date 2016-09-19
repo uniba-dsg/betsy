@@ -1,10 +1,18 @@
 package pebl.test.assertions;
 
+import java.util.Objects;
+
 import pebl.test.TestAssertion;
 
 public class XpathTestAssertion extends TestAssertion {
-    private String xpathExpression;
-    private String expectedOutput;
+
+    private final String xpathExpression;
+    private final String expectedOutput;
+
+    public XpathTestAssertion(String xpathExpression, String expectedOutput) {
+        this.xpathExpression = Objects.requireNonNull(xpathExpression);
+        this.expectedOutput = Objects.requireNonNull(expectedOutput);
+    }
 
     @Override
     public String toString() {
@@ -15,16 +23,8 @@ public class XpathTestAssertion extends TestAssertion {
         return xpathExpression;
     }
 
-    public void setXpathExpression(String xpathExpression) {
-        this.xpathExpression = xpathExpression;
-    }
-
     public String getExpectedOutput() {
         return expectedOutput;
-    }
-
-    public void setExpectedOutput(String expectedOutput) {
-        this.expectedOutput = expectedOutput;
     }
 
 }

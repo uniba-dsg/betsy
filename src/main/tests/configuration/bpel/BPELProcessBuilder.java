@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import betsy.bpel.model.BPELTestCase;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
 import pebl.test.Test;
 import pebl.test.partner.InternalWSDLTestPartner;
 import betsy.common.util.FileTypes;

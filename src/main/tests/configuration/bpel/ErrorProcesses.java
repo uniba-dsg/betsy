@@ -14,8 +14,8 @@ import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
 import pebl.test.Test;
 import pebl.test.partner.ExternalWSDLTestPartner;
 import pebl.test.partner.NoTestPartner;
@@ -85,7 +85,7 @@ public class ErrorProcesses {
         final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + feature.getName();
         Path newPath = errorsDir.resolve(filename + ".bpel");
 
-        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.featureSet, FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
+        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.getFeatureSet(), FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
     }
 
     private static List<Test> createTests(Path errorsDir, Test baseProcess) {

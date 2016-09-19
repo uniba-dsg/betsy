@@ -11,14 +11,15 @@ import java.util.stream.Collectors;
 
 import pebl.HasName;
 import pebl.ProcessLanguage;
-import pebl.featuretree.Feature;
-import pebl.featuretree.FeatureDimension;
+import pebl.feature.Feature;
+import pebl.feature.FeatureDimension;
 
 public class Test implements Comparable<Test>, HasName, FeatureDimension {
 
+    private final Feature feature;
+
     private final Path process;
     private final List<TestCase> testCases;
-    private final Feature feature;
     private final List<Path> files;
     private final String description;
     private final List<TestPartner> partners;
@@ -172,7 +173,6 @@ public class Test implements Comparable<Test>, HasName, FeatureDimension {
         return getFeature().getName();
     }
 
-    @Override
     public Feature getFeature() {
         return feature;
     }

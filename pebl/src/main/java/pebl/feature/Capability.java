@@ -1,5 +1,8 @@
-package pebl.featuretree;
+package pebl.feature;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import pebl.HasName;
@@ -8,9 +11,12 @@ import pebl.HasID;
 public class Capability implements HasID, HasName {
 
     private final String name;
+    private final ResultFormat resultFormat;
+    private final List<Language> languages = new LinkedList<>();
 
-    public Capability(String name) {
+    public Capability(String name, ResultFormat resultFormat) {
         this.name = Objects.requireNonNull(name);
+        this.resultFormat = Objects.requireNonNull(resultFormat);
     }
 
     @Override
@@ -21,6 +27,10 @@ public class Capability implements HasID, HasName {
     @Override
     public String getName() {
         return name;
+    }
+
+    public ResultFormat getResultFormat() {
+        return resultFormat;
     }
 
     @Override
@@ -36,5 +46,13 @@ public class Capability implements HasID, HasName {
     @Override
     public int hashCode() {
         return Objects.hash(getID());
+    }
+
+    void addLanguage(Language language) {
+        this.languages.add(language);
+    }
+
+    public List<Language> getLanguages() {
+        return Collections.unmodifiableList(languages);
     }
 }

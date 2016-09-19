@@ -1,5 +1,8 @@
-package pebl.featuretree;
+package pebl.feature;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import pebl.HasName;
@@ -7,14 +10,17 @@ import pebl.HasID;
 
 public class Group implements HasID, HasName {
 
-    public final String name;
-    public final Language language;
-    public final String description;
+    private final String name;
+    private final Language language;
+    private final String description;
+    private final List<FeatureSet> featureSets = new LinkedList<>();
 
     public Group(String name, Language language, String description) {
         this.name = Objects.requireNonNull(name);
         this.language = Objects.requireNonNull(language);
         this.description = Objects.requireNonNull(description);
+
+        this.language.addGroup(this);
     }
 
     public String getID() {
@@ -44,5 +50,21 @@ public class Group implements HasID, HasName {
     @Override
     public int hashCode() {
         return Objects.hash(getID());
+    }
+
+    void addFeatureSet(FeatureSet featureSet) {
+        this.featureSets.add(featureSet);
+    }
+
+    public List<FeatureSet> getFeatureSets() {
+        return Collections.unmodifiableList(featureSets);
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

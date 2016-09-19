@@ -1,4 +1,4 @@
-package pebl.featuretree;
+package pebl.feature;
 
 import java.util.List;
 import java.util.Objects;

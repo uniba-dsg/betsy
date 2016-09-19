@@ -1,21 +1,21 @@
-package pebl.featuretree;
+package pebl.feature;
 
 public interface FeatureDimension {
 
     default Capability getCapability() {
-        return getLanguage().capability;
+        return getLanguage().getCapability();
     }
 
     default Language getLanguage() {
-        return getGroup().language;
+        return getGroup().getLanguage();
     }
 
     default Group getGroup() {
-        return getFeatureSet().group;
+        return getFeatureSet().getGroup();
     }
 
     default FeatureSet getFeatureSet() {
-        return getFeature().featureSet;
+        return getFeature().getFeatureSet();
     }
 
     /**

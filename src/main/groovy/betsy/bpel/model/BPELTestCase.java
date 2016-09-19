@@ -1,14 +1,16 @@
 package betsy.bpel.model;
 
+import java.util.Objects;
+
 import pebl.test.TestAssertion;
 import pebl.test.TestCase;
 import pebl.test.TestStep;
 import pebl.test.assertions.XpathTestAssertion;
-import pebl.test.steps.*;
+import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.DeployableCheckTestStep;
+import pebl.test.steps.NotDeployableCheckTestStep;
 import pebl.test.steps.soap.SoapTestStep;
 import pebl.test.steps.soap.WsdlService;
-
-import java.util.Objects;
 
 public class BPELTestCase extends TestCase {
 
@@ -35,9 +37,10 @@ public class BPELTestCase extends TestCase {
         step.setService(new WsdlService("testPartner"));
         step.setOperation(BPELWsdlOperations.SYNC);
 
-        XpathTestAssertion assertion = new XpathTestAssertion();
-        assertion.setExpectedOutput("true");
-        assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse > 0");
+        XpathTestAssertion assertion = new XpathTestAssertion(
+                "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse > 0",
+                "true"
+        );
         step.getAssertions().add(assertion);
 
         return addStep(step);
@@ -154,30 +157,34 @@ public class BPELTestCase extends TestCase {
     }
 
     public void setOutput(SoapTestStep step, String output) {
-        XpathTestAssertion assertion = new XpathTestAssertion();
-        assertion.setExpectedOutput(output);
-        assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer");
+        XpathTestAssertion assertion = new XpathTestAssertion(
+                "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer",
+                output
+        );
         step.getAssertions().add(assertion);
     }
 
     public void setPartnerOutput(SoapTestStep step, String output) {
-        XpathTestAssertion assertion = new XpathTestAssertion();
-        assertion.setExpectedOutput(output);
-        assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';number(//test:testElementSyncResponse) cast as xs:integer");
+        XpathTestAssertion assertion = new XpathTestAssertion(
+                "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';number(//test:testElementSyncResponse) cast as xs:integer",
+                output
+        );
         step.getAssertions().add(assertion);
     }
 
     public void setStringOperationOutput(SoapTestStep step, String output) {
-        XpathTestAssertion assertion = new XpathTestAssertion();
-        assertion.setExpectedOutput(output);
-        assertion.setXpathExpression("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncStringResponse");
+        XpathTestAssertion assertion = new XpathTestAssertion(
+                "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncStringResponse",
+                output
+        );
         step.getAssertions().add(assertion);
     }
 
     public void setOutputAsLeast(SoapTestStep step, final String output) {
-        XpathTestAssertion assertion = new XpathTestAssertion();
-        assertion.setExpectedOutput("true");
-        assertion.setXpathExpression("declare namespace test=\'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface\';//test:testElementSyncResponse >= " + output);
+        XpathTestAssertion assertion = new XpathTestAssertion(
+                "declare namespace test=\'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface\';//test:testElementSyncResponse >= ",
+                "true"
+        );
         step.getAssertions().add(assertion);
     }
 

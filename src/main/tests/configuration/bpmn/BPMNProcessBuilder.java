@@ -2,7 +2,7 @@ package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCaseBuilder;
 import pebl.test.Test;
-import pebl.featuretree.Feature;
+import pebl.feature.Feature;
 import betsy.common.util.FileTypes;
 import pebl.test.TestCase;
 

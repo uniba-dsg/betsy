@@ -24,7 +24,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.engine.EngineDimension;
-import pebl.featuretree.FeatureDimension;
+import pebl.feature.FeatureDimension;
 import betsy.common.reporting.CsvRow;
 import betsy.common.reporting.JUnitXmlResultReader;
 import betsy.common.util.DurationCsv;

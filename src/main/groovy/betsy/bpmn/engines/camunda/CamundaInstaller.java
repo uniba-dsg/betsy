@@ -31,11 +31,9 @@ public class CamundaInstaller {
             FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile.get()), getTomcatDestinationDir().resolve("lib"));
         }
 
-        //TODO use templates for creating these files
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), cdToTomcatBinFolder() + " && call startup.bat");
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), cdToTomcatBinFolder() + " && call shutdown.bat");
 
-        //TODO use templates for creating these files
         FileTasks.createFile(destinationDir.resolve("camunda_startup.sh"), cdToTomcatBinFolder() + " && ./startup.sh");
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.sh"), cdToTomcatBinFolder() + " && ./shutdown.sh");
 

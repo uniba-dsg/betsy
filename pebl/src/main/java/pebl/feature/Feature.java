@@ -1,4 +1,4 @@
-package pebl.featuretree;
+package pebl.feature;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -8,11 +8,11 @@ import pebl.HasID;
 
 public class Feature implements HasID, HasName {
 
-    public final FeatureSet featureSet;
-    public final String name;
-    public final String description;
+    private final FeatureSet featureSet;
+    private final String name;
+    private final String description;
 
-    public final Optional<String> upperBound;
+    private final Optional<String> upperBound;
 
     public Feature(FeatureSet featureSet, String name) {
         this(featureSet, name, "");
@@ -23,6 +23,8 @@ public class Feature implements HasID, HasName {
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.upperBound = Optional.empty();
+
+        this.featureSet.addFeature(this);
     }
 
     public Feature(FeatureSet featureSet, String name, String description, String upperBound) {
@@ -30,6 +32,8 @@ public class Feature implements HasID, HasName {
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.upperBound = Optional.of(upperBound);
+
+        this.featureSet.addFeature(this);
     }
 
     @Override
@@ -55,5 +59,17 @@ public class Feature implements HasID, HasName {
     @Override
     public int hashCode() {
         return Objects.hash(getID());
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public FeatureSet getFeatureSet() {
+        return featureSet;
+    }
+
+    public Optional<String> getUpperBound() {
+        return upperBound;
     }
 }

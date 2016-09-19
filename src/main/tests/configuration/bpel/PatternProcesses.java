@@ -3,8 +3,8 @@ package configuration.bpel;
 import betsy.bpel.model.BPELTestCase;
 import pebl.test.Test;
 import pebl.test.assertions.ExitAssertion;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
 
 import java.util.Arrays;
 import java.util.List;

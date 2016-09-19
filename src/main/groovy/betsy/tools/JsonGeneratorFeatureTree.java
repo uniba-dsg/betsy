@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import pebl.featuretree.Capability;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
-import pebl.featuretree.FeatureDimension;
-import pebl.featuretree.Group;
-import pebl.featuretree.Language;
+import pebl.feature.Capability;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
+import pebl.feature.FeatureDimension;
+import pebl.feature.Group;
+import pebl.feature.Language;
 import pebl.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -87,7 +87,7 @@ class JsonGeneratorFeatureTree {
 
                     JSONObject groupObject = new JSONObject();
                     groupObject.put("name", group.getName());
-                    groupObject.put("description", group.description);
+                    groupObject.put("description", group.getDescription());
                     groupObject.put("id", group.getID());
                     JSONArray constructsArray = new JSONArray();
                     groupObject.put("constructs", constructsArray);
@@ -98,12 +98,12 @@ class JsonGeneratorFeatureTree {
                         JSONObject constructObject = new JSONObject();
                         constructObject.put("name", construct.getName());
                         constructObject.put("id", construct.getID());
-                        constructObject.put("description", construct.description);
+                        constructObject.put("description", construct.getDescription());
                         JSONArray featuresArray = new JSONArray();
                         constructObject.put("features", featuresArray);
 
                         for(Test process : entryConstruct.getValue()) {
-                            groupObject.put("description", process.getGroup().description);
+                            groupObject.put("description", process.getGroup().getDescription());
 
                             featuresArray.put(createFeatureObject(process));
                         }
@@ -122,8 +122,8 @@ class JsonGeneratorFeatureTree {
         JSONObject featureObject = new JSONObject();
         featureObject.put("id", feature.getID());
         featureObject.put("name", feature.getName());
-        featureObject.put("description", feature.description);
-        feature.upperBound.ifPresent(upperBound -> featureObject.put("upperBound", upperBound));
+        featureObject.put("description", feature.getDescription());
+        feature.getUpperBound().ifPresent(upperBound -> featureObject.put("upperBound", upperBound));
         return featureObject;
     }
 }

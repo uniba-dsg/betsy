@@ -14,8 +14,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import betsy.bpel.model.BPELTestCase;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
 import pebl.test.Test;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.FileTypes;

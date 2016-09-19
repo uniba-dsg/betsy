@@ -4,8 +4,8 @@ import betsy.bpel.model.BPELTestCase;
 import pebl.test.Test;
 import pebl.test.assertions.ExitAssertion;
 import pebl.test.assertions.SoapFaultTestAssertion;
-import pebl.featuretree.FeatureSet;
-import pebl.featuretree.Feature;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
 import betsy.common.util.CollectionsUtil;
 
 import java.util.Arrays;

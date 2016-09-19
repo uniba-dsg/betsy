@@ -9,9 +9,9 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.EngineDimension;
-import pebl.featuretree.Feature;
-import pebl.featuretree.FeatureDimension;
-import pebl.featuretree.Group;
+import pebl.feature.Feature;
+import pebl.feature.FeatureDimension;
+import pebl.feature.Group;
 import pebl.test.Test;
 import pebl.test.TestCase;
 

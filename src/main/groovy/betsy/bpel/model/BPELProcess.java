@@ -6,9 +6,9 @@ import betsy.common.model.engine.EngineDimension;
 import pebl.test.Test;
 import betsy.common.model.ProcessFolderStructure;
 import pebl.test.TestCase;
-import pebl.featuretree.Feature;
-import pebl.featuretree.FeatureDimension;
-import pebl.featuretree.Group;
+import pebl.feature.Feature;
+import pebl.feature.FeatureDimension;
+import pebl.feature.Group;
 
 import java.nio.file.Path;
 import java.util.List;

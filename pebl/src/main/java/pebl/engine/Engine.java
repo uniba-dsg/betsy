@@ -43,7 +43,7 @@ public final class Engine implements HasID, HasName {
         return getNormalizedId();
     }
 
-    public String getNormalizedId() {
+    private String getNormalizedId() {
         return getId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
     }
 
