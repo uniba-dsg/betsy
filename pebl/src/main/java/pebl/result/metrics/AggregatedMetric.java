@@ -3,17 +3,30 @@ package pebl.result.metrics;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import pebl.result.Metric;
 
+@XmlAccessorType(XmlAccessType.NONE)
 class AggregatedMetric extends Metric {
 
     private static final BigDecimal MIN = BigDecimal.valueOf(Double.MIN_VALUE);
+
+    @XmlElement(required = true)
     private final BigDecimal min;
+
+    @XmlElement(required = true)
     private final BigDecimal max;
+
+    @XmlElement(required = true)
     private final BigDecimal standardDeviation;
+
+    @XmlElement(required = true)
     private final BigDecimal average;
+
+    @XmlElement(required = true)
     private final BigDecimal relativeStandardDeviation;
 
     AggregatedMetric() {
@@ -32,27 +45,23 @@ class AggregatedMetric extends Metric {
         this.relativeStandardDeviation = Objects.requireNonNull(relativeStandardDeviation);
     }
 
-    @XmlElement(required = true)
+
     public BigDecimal getMin() {
         return min;
     }
 
-    @XmlElement(required = true)
     public BigDecimal getMax() {
         return max;
     }
 
-    @XmlElement(required = true)
     public BigDecimal getStandardDeviation() {
         return standardDeviation;
     }
 
-    @XmlElement(required = true)
     public BigDecimal getAverage() {
         return average;
     }
 
-    @XmlElement(required = true)
     public BigDecimal getRelativeStandardDeviation() {
         return relativeStandardDeviation;
     }

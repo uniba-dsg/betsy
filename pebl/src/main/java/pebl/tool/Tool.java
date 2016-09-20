@@ -15,7 +15,10 @@ import pebl.HasName;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Tool implements HasID, HasName {
 
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(required = true)
 
     private final String version;
 
@@ -29,12 +32,10 @@ public class Tool implements HasID, HasName {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
 
-    @XmlElement(required = true)
     public String getVersion() {
         return version;
     }

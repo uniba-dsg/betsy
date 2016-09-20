@@ -1,11 +1,15 @@
 package pebl.test.assertions;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import pebl.test.TestAssertion;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class SoapFaultTestAssertion extends TestAssertion {
 
+    @XmlElement(required = true)
     private final String faultString;
 
     SoapFaultTestAssertion() {
@@ -16,7 +20,6 @@ public class SoapFaultTestAssertion extends TestAssertion {
         this.faultString = faultString;
     }
 
-    @XmlElement(required = true)
     public String getFaultString() {
         return faultString;
     }

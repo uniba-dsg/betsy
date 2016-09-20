@@ -2,15 +2,23 @@ package pebl.test.steps.soap;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * A WSDL operation of the TestInterface.wsdl file.
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class WsdlOperation {
 
     /**
      * The name of the WSDL operation.
      */
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(required = true)
     private final boolean isOneWay;
 
     WsdlOperation() {

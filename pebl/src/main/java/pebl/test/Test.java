@@ -30,13 +30,26 @@ import pebl.xsd.PathAdapter;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension {
 
+    @XmlIDREF
+    @XmlElement(required = true)
     private final Feature feature;
 
+    @XmlElement(required = true)
     private final Path process;
-    private final List<TestCase> testCases;
-    private final List<Path> files;
+
+    @XmlElement(required = true)
     private final String description;
+
+    @XmlElement
+    private final List<TestCase> testCases;
+
+    @XmlElement
+    private final List<Path> files;
+
+    @XmlElement(required = true)
     private final List<TestPartner> partners;
+
+    @XmlElement
     private final Map<String, String> additionalData;
 
     public Test() {
@@ -64,12 +77,12 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
             Feature feature,
             List<Path> files,
             List<TestPartner> partners) {
-        this.partners = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(partners)));
+        this.partners = new ArrayList<>(Objects.requireNonNull(partners));
         this.process = Objects.requireNonNull(process);
         this.feature = Objects.requireNonNull(feature);
         this.description = Objects.requireNonNull(description);
-        this.testCases = Collections.unmodifiableList(uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases))));
-        this.files = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(files)));
+        this.testCases = uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases)));
+        this.files = new ArrayList<>(Objects.requireNonNull(files));
         this.additionalData = Collections.emptyMap();
     }
 
@@ -96,9 +109,8 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         return new Test(process, description, testCases, feature, files, partners);
     }
 
-    @XmlElement
     public List<Path> getFiles() {
-        return files;
+        return Collections.unmodifiableList(files);
     }
 
     private List<TestCase> uniqueifyTestCaseNames(List<TestCase> testCases) {
@@ -170,19 +182,16 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         return process.compareTo(o.process);
     }
 
-    @XmlElement(required = true)
     public Path getProcess() {
         return this.process;
     }
 
-    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }
 
-    @XmlElement
     public List<TestCase> getTestCases() {
-        return testCases;
+        return Collections.unmodifiableList(testCases);
     }
 
     private void setTestCases(List<TestCase> testCases) {
@@ -192,13 +201,10 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     }
 
     @Override
-    @XmlElement(required = true)
     public String getName() {
         return getFeature().getName();
     }
 
-    @XmlIDREF
-    @XmlElement(required = true)
     public Feature getFeature() {
         return feature;
     }
@@ -207,16 +213,10 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         return getFiles().stream().filter(predicate).collect(Collectors.toList());
     }
 
-    @XmlElement(required = true)
     public List<TestPartner> getTestPartners() {
-        return partners;
+        return Collections.unmodifiableList(partners);
     }
 
-    public List<TestPartner> getPartners() {
-        return partners;
-    }
-
-    @XmlElement(required = true)
     public Map<String, String> getAdditionalData() {
         return additionalData;
     }
@@ -225,7 +225,9 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     @XmlID
     @XmlAttribute(required = true)
     public String getID() {
-        return String.join(HasID.SEPARATOR,getFeature().getID(), getName());
+        String fileName = getProcess().getFileName().toString();
+        fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+        return String.join(HasID.SEPARATOR,getFeature().getID(), fileName);
     }
 }
 

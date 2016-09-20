@@ -4,13 +4,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import pebl.test.TestStep;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class ProcessStartWithVariablesTestStep extends TestStep {
 
+    @XmlElement
     private List<Variable> variables = new LinkedList<>();
+
+    @XmlElement(required = true)
     private String process;
 
     public ProcessStartWithVariablesTestStep addVariable(Variable variable) {
@@ -23,7 +29,6 @@ public class ProcessStartWithVariablesTestStep extends TestStep {
         return Collections.unmodifiableList(variables);
     }
 
-    @XmlElement(required = true)
     public String getProcess() {
         return process;
     }

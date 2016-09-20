@@ -28,6 +28,7 @@ import pebl.test.Test;
 import pebl.tool.Tool;
 import pebl.xsd.Engines;
 import pebl.xsd.Features;
+import pebl.xsd.PEBL;
 import pebl.xsd.Tests;
 import pebl.xsd.Tools;
 
@@ -41,6 +42,20 @@ public class XmlMain {
         generateFeaturesXml(workingDirectory);
         generateTestsXml(workingDirectory);
         generateToolsXml(workingDirectory);
+        generatePeblXml(workingDirectory);
+    }
+
+    public static void generatePeblXml(Path workingDirectory) throws IOException {
+        PEBL pebl = new PEBL();
+        pebl.tools.addAll(getTools());
+        pebl.engines.addAll(getEngines());
+        pebl.tests.addAll(getTests());
+        pebl.capabilities.addAll(new Features(getFeatures()).capabilities);
+
+        Path targetFile = workingDirectory.resolve("pebl.xml");
+        JAXB.marshal(pebl, targetFile.toFile());
+
+        JSON_MAPPER.writeValue(workingDirectory.resolve("pebl.json").toFile(), pebl);
     }
 
     private static void generateToolsXml(Path workingDirectory) throws IOException {
@@ -53,12 +68,16 @@ public class XmlMain {
     }
 
     private static void generateFeaturesXml(Path workingDirectory) throws IOException {
-        Features features = new Features(getTests().stream().map(Test::getFeature).distinct().collect(Collectors.toList()));
+        Features features = new Features(getFeatures());
 
         Path targetFile = workingDirectory.resolve("features.xml");
         JAXB.marshal(features, targetFile.toFile());
 
         JSON_MAPPER.writeValue(workingDirectory.resolve("features.json").toFile(), features);
+    }
+
+    private static List<Feature> getFeatures() {
+        return getTests().stream().map(Test::getFeature).distinct().collect(Collectors.toList());
     }
 
     private static void generateTestsXml(Path workingDirectory) throws IOException {
@@ -69,20 +88,24 @@ public class XmlMain {
         JSON_MAPPER.writeValue(workingDirectory.resolve("tests.json").toFile(), tests.tests);
     }
 
-    public static void generateEnginesXml(Path workingDirectory) throws IOException {
-        Engines engines = new Engines(getEngines().stream()
-                .filter(e -> !(e instanceof VirtualEngineAPI))
-                .map(e -> (IsEngine) e)
-                .map(IsEngine::getEngineObject)
-                .map(EngineExtended::getEngine)
-                .collect(Collectors.toList()));
+    private static void generateEnginesXml(Path workingDirectory) throws IOException {
+        Engines engines = new Engines(getEngines());
 
         Path targetFile = workingDirectory.resolve("engines.xml");
         JAXB.marshal(engines, targetFile.toFile());
         JSON_MAPPER.writeValue(workingDirectory.resolve("engines.json").toFile(), engines.engines);
     }
 
-    private static List<EngineLifecycle> getEngines() {
+    private static List<Engine> getEngines() {
+        return getEngineLifecycles().stream()
+                .filter(e -> !(e instanceof VirtualEngineAPI))
+                .map(e -> (IsEngine) e)
+                .map(IsEngine::getEngineObject)
+                .map(EngineExtended::getEngine)
+                .collect(Collectors.toList());
+    }
+
+    private static List<EngineLifecycle> getEngineLifecycles() {
         final List<EngineLifecycle> bpelEngines = new BPELEngineRepository().getByName("ALL").stream().collect(Collectors.toList());
         final List<EngineLifecycle> bpmnEngines = new BPMNEngineRepository().getByName("ALL").stream().collect(Collectors.toList());
         final List<EngineLifecycle> engines = new LinkedList<>();

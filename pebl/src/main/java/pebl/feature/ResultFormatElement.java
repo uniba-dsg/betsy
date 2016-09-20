@@ -8,13 +8,21 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class ResultFormatElement {
+
+    @XmlElement(required = true)
     private final ResultFormatMetric type;
+
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(required = true)
     private final String description;
+
+    @XmlElement(required = true)
     private final String unit;
 
     ResultFormatElement() {
-        this(null, "", "", "");
+        this(new ResultFormatMetric(), "", "", "");
     }
 
     public ResultFormatElement(ResultFormatMetric type, String name, String description, String unit) {
@@ -24,22 +32,18 @@ public class ResultFormatElement {
         this.unit = Objects.requireNonNull(unit);
     }
 
-    @XmlElement(required = true)
     public ResultFormatMetric getType() {
         return type;
     }
 
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
 
-    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }
 
-    @XmlElement(required = true)
     public String getUnit() {
         return unit;
     }

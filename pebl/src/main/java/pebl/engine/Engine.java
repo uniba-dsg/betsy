@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -24,12 +25,16 @@ public final class Engine implements HasID, HasName {
 
     public static final String DELIMITER = "--";
 
+    @XmlElement(required = true)
     private final String name;
 
+    @XmlElement(required = true)
     private final String version;
 
+    @XmlElement(required = true)
     private final List<String> configuration;
 
+    @XmlElement(required = true)
     private final ProcessLanguage language;
 
     public Engine() {
@@ -51,7 +56,7 @@ public final class Engine implements HasID, HasName {
 
         List<String> values = new LinkedList<>();
         values.addAll(configuration);
-        this.configuration = requireNonNull(Collections.unmodifiableList(values));
+        this.configuration = requireNonNull(values);
     }
 
     public String toString() {
@@ -72,7 +77,6 @@ public final class Engine implements HasID, HasName {
         return Objects.equals(toString(), engine.toString());
     }
 
-    @XmlElement(required = true)
     public ProcessLanguage getLanguage() {
         return language;
     }
@@ -91,19 +95,16 @@ public final class Engine implements HasID, HasName {
         return String.join(DELIMITER, values);
     }
 
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
 
-    @XmlElement(required = true)
     public String getVersion() {
         return version;
     }
 
-    @XmlElement(required = true)
     public List<String> getConfiguration() {
-        return configuration;
+        return Collections.unmodifiableList(configuration);
     }
 
     @Override

@@ -2,12 +2,20 @@ package pebl.test.partner.rules;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public final class OperationInputOutputRule {
 
+    @XmlElement(required = true)
     private final String operation;
+
+    @XmlElement(required = true)
     private final Input input;
+
+    @XmlElement(required = true)
     private final Output output;
 
     OperationInputOutputRule() {
@@ -24,17 +32,15 @@ public final class OperationInputOutputRule {
         this.input = Objects.requireNonNull(input);
     }
 
-    @XmlElement(required = true)
+
     public String getOperation() {
         return operation;
     }
 
-    @XmlElement(required = true)
     public Input getInput() {
         return input;
     }
 
-    @XmlElement(required = true)
     public Output getOutput() {
         return output;
     }

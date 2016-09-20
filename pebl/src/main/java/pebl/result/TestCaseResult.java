@@ -2,12 +2,20 @@ package pebl.result;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class TestCaseResult {
 
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(required = true)
     private final int number;
+
+    @XmlElement(required = true)
     private final String message;
 
     TestCaseResult() {
@@ -20,17 +28,15 @@ public class TestCaseResult {
         this.message = Objects.requireNonNull(message);
     }
 
-    @XmlElement(required = true)
+
     public String getName() {
         return name;
     }
 
-    @XmlElement(required = true)
     public int getNumber() {
         return number;
     }
 
-    @XmlElement(required = true)
     public String getMessage() {
         return message;
     }

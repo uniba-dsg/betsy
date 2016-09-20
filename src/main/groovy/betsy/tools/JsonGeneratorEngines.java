@@ -45,7 +45,7 @@ class JsonGeneratorEngines {
         object.put("name", engineExtended.getName());
         object.put("version", engineExtended.getVersion());
         object.put("configuration", engineExtended.getConfiguration());
-        object.put("language", engineExtended.getLanguage().name());
+        object.put("language", engineExtended.getLanguage().getID());
         object.put("programmingLanguage", engineExtended.getProgrammingLanguage());
         object.put("license", engineExtended.getLicense());
         object.put("licenseURL", engineExtended.getLicenseURL());

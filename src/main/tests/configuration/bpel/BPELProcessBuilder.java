@@ -6,13 +6,14 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import betsy.bpel.model.BPELTestCase;
+import betsy.bpel.ws.TestPartnerPortTypeRegular;
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
 import pebl.feature.FeatureSet;
 import pebl.feature.Feature;
 import pebl.test.Test;
 import pebl.test.partner.rules.AnyInput;
 import pebl.test.partner.rules.EchoInputAsOutput;
 import pebl.test.partner.rules.FaultOutput;
-import pebl.test.partner.rules.FaultVariant;
 import pebl.test.partner.rules.IntegerInput;
 import pebl.test.partner.rules.IntegerOutputBasedOnScriptResult;
 import pebl.test.partner.InternalWSDLTestPartner;
@@ -33,8 +34,8 @@ public class BPELProcessBuilder {
             "http://localhost:2000/bpel-testpartner",
             new OperationInputOutputRule("startProcessAsync", new AnyInput()),
             new OperationInputOutputRule("startProcessWithEmptyMessage", new AnyInput()),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(-5), new FaultOutput(FaultVariant.UNDECLARED)),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(-6), new FaultOutput(FaultVariant.DECLARED)),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(-5), new FaultOutput(TestPartnerPortTypeRegular.createSoapFault())),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(-6), new FaultOutput(new FaultMessage("expected Error", -6))),
             new OperationInputOutputRule("startProcessSync", new IntegerInput(100), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.access()")),
             new OperationInputOutputRule("startProcessSync", new IntegerInput(101), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
             new OperationInputOutputRule("startProcessSync", new IntegerInput(102), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfCalls()")),

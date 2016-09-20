@@ -1,6 +1,7 @@
 package pebl.feature;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public class ResultFormat {
 
+    @XmlElement(required = true)
     private final List<ResultFormatElement> elements;
 
     public ResultFormat() {
@@ -18,10 +20,9 @@ public class ResultFormat {
     }
 
     public ResultFormat(List<ResultFormatElement> elements) {
-        this.elements = Objects.requireNonNull(elements);
+        this.elements = new LinkedList<>(Objects.requireNonNull(elements));
     }
 
-    @XmlElement(required = true)
     public List<ResultFormatElement> getElements() {
         return Collections.unmodifiableList(elements);
     }

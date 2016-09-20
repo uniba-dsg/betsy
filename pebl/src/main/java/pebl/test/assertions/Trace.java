@@ -2,10 +2,14 @@ package pebl.test.assertions;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class Trace {
 
+    @XmlElement(required = true)
     private final String value;
 
     Trace() {
@@ -16,7 +20,6 @@ public class Trace {
         this.value = Objects.requireNonNull(value);
     }
 
-    @XmlElement(required = true)
     public String getValue() {
         return value;
     }

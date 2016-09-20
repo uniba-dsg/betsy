@@ -18,8 +18,13 @@ import pebl.HasID;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Capability implements HasID, HasName {
 
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(required = true)
     private final ResultFormat resultFormat;
+
+    @XmlElement(name="language")
     private final List<Language> languages = new LinkedList<>();
 
     Capability() {
@@ -39,12 +44,10 @@ public class Capability implements HasID, HasName {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
 
-    @XmlElement(required = true)
     public ResultFormat getResultFormat() {
         return resultFormat;
     }
@@ -68,7 +71,6 @@ public class Capability implements HasID, HasName {
         this.languages.add(language);
     }
 
-    @XmlElement(name="language")
     public List<Language> getLanguages() {
         return Collections.unmodifiableList(languages);
     }

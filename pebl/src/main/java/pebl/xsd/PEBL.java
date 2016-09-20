@@ -25,13 +25,13 @@ public class PEBL {
     @XmlElement(name = "tool")
     public List<Tool> tools = new LinkedList<>();
 
+    @XmlElement(name="capability")
+    public List<Capability> capabilities = new LinkedList<>();
+
     @XmlElement(name = "test")
     public List<Test> tests = new LinkedList<>();
 
     @XmlElement(name = "testResult")
     public List<TestResult> testResults = new LinkedList<>();
-
-    @XmlElement(name="capability")
-    public List<Capability> capabilities = new LinkedList<>();
 
 }

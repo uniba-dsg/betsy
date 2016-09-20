@@ -2,10 +2,13 @@ package pebl.result;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -13,21 +16,43 @@ import pebl.engine.Engine;
 import pebl.test.Test;
 import pebl.tool.Tool;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class TestResult {
 
+    @XmlElement(required = true)
+    @XmlIDREF
     private final Test test;
+
+    @XmlElement(required = true)
+    @XmlIDREF
     private final Engine engine;
+
+    @XmlElement(required = true)
+    @XmlIDREF
     private final Tool tool;
 
+    @XmlElement(required = true)
     private final long executionTimestamp;
 
+    @XmlElement
     private final List<Path> logFiles;
+
+    @XmlElement(required = true)
     private final Path deploymentPackage;
+
+    @XmlElement
     private final List<Path> files;
 
+    @XmlElement(required = true)
     private final long executionDuration;
+
+    @XmlElement(required = true)
     private final NamedMetrics metrics;
+
+    @XmlElement
     private final Map<String, String> additionalInformation;
+
+    @XmlElement
     private final List<TestCaseResult> testCaseResults;
 
     TestResult() {
@@ -53,70 +78,56 @@ public class TestResult {
         this.engine = engine;
         this.tool = tool;
         this.executionTimestamp = executionTimestamp;
-        this.logFiles = logFiles;
+        this.logFiles = new ArrayList<>(logFiles);
         this.deploymentPackage = deploymentPackage;
-        this.files = files;
+        this.files = new ArrayList<>(files);
         this.executionDuration = executionDuration;
         this.metrics = metrics;
         this.additionalInformation = additionalInformation;
-        this.testCaseResults = testCaseResults;
+        this.testCaseResults = new ArrayList<>(testCaseResults);
     }
 
-    @XmlElement(required = true)
-    @XmlIDREF
     public Test getTest() {
         return test;
     }
 
-    @XmlElement(required = true)
-    @XmlIDREF
     public Engine getEngine() {
         return engine;
     }
 
-    @XmlElement(required = true)
-    @XmlIDREF
     public Tool getTool() {
         return tool;
     }
 
-    @XmlElement(required = true)
     public long getExecutionTimestamp() {
         return executionTimestamp;
     }
 
-    @XmlElement
     public List<Path> getLogFiles() {
-        return logFiles;
+        return Collections.unmodifiableList(logFiles);
     }
 
-    @XmlElement(required = true)
     public Path getDeploymentPackage() {
         return deploymentPackage;
     }
 
-    @XmlElement
     public List<Path> getFiles() {
-        return files;
+        return Collections.unmodifiableList(files);
     }
 
-    @XmlElement(required = true)
     public long getExecutionDuration() {
         return executionDuration;
     }
 
-    @XmlElement(required = true)
     public NamedMetrics getMetrics() {
         return metrics;
     }
 
-    @XmlElement
     public Map<String, String> getAdditionalInformation() {
         return additionalInformation;
     }
 
-    @XmlElement
     public List<TestCaseResult> getTestCaseResults() {
-        return testCaseResults;
+        return Collections.unmodifiableList(testCaseResults);
     }
 }

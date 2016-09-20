@@ -3,11 +3,17 @@ package pebl.test.partner;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class ExternalWSDLTestPartner extends WSDLTestPartner {
 
+    @XmlElement(required = true)
     private final String url;
+
+    @XmlElement(required = true)
     private final Path wsdl;
 
     ExternalWSDLTestPartner() {
@@ -24,12 +30,10 @@ public class ExternalWSDLTestPartner extends WSDLTestPartner {
         return url;
     }
 
-    @XmlElement(required = true)
     public String getUrl() {
         return url;
     }
 
-    @XmlElement(required = true)
     public Path getWsdl() {
         return wsdl;
     }

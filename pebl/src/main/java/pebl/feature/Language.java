@@ -13,14 +13,20 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasName;
 import pebl.HasID;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class Language implements HasID, HasName {
 
+    @XmlInverseReference(mappedBy="languages")
     private final Capability capability;
+
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(name="group")
     private final List<Group> groups = new LinkedList<>();
 
     Language() {
@@ -42,7 +48,6 @@ public class Language implements HasID, HasName {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -66,12 +71,10 @@ public class Language implements HasID, HasName {
         this.groups.add(group);
     }
 
-    @XmlElement(name="group")
     public List<Group> getGroups() {
         return Collections.unmodifiableList(groups);
     }
 
-    @XmlTransient
     public Capability getCapability() {
         return capability;
     }

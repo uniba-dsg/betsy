@@ -2,13 +2,19 @@ package pebl.test.assertions;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import pebl.test.TestAssertion;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class XpathTestAssertion extends TestAssertion {
 
+    @XmlElement(required = true)
     private final String xpathExpression;
+
+    @XmlElement(required = true)
     private final String expectedOutput;
 
     XpathTestAssertion() {
@@ -25,12 +31,10 @@ public class XpathTestAssertion extends TestAssertion {
         return "XpathTestAssertion{" + "xpathExpression='" + xpathExpression + "\'" + ", expectedOutput='" + expectedOutput + "\'" + "}";
     }
 
-    @XmlElement(required = true)
     public String getXpathExpression() {
         return xpathExpression;
     }
 
-    @XmlElement(required = true)
     public String getExpectedOutput() {
         return expectedOutput;
     }

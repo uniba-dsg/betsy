@@ -1,21 +1,27 @@
 package pebl.test.steps.soap;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import pebl.test.TestStep;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class SoapTestStep extends TestStep {
 
     /**
      * The input value which is send using the <code>operation</code> to the system under test.
      */
+    @XmlElement(required = true)
     private String input;
 
     /**
      * The WSDL operation which is invoked in this test step
      */
+    @XmlElement(required = true)
     private WsdlOperation operation;
 
+    @XmlElement(required = true)
     private WsdlService service;
 
     @Override
@@ -27,7 +33,6 @@ public class SoapTestStep extends TestStep {
                 "} " + super.toString();
     }
 
-    @XmlElement(required = true)
     public String getInput() {
         return input;
     }
@@ -36,7 +41,6 @@ public class SoapTestStep extends TestStep {
         this.input = input;
     }
 
-    @XmlElement(required = true)
     public WsdlOperation getOperation() {
         return operation;
     }
@@ -49,7 +53,6 @@ public class SoapTestStep extends TestStep {
         this.service = service;
     }
 
-    @XmlElement(required = true)
     public WsdlService getService() {
         return service;
     }

@@ -11,16 +11,23 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasID;
 import pebl.HasName;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class Feature implements HasID, HasName {
 
+    @XmlInverseReference(mappedBy="features")
     private final FeatureSet featureSet;
+
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlElement(required = true)
     private final String description;
 
+    @XmlElement
     private final String upperBound;
 
     public Feature() {
@@ -57,7 +64,6 @@ public class Feature implements HasID, HasName {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -77,17 +83,14 @@ public class Feature implements HasID, HasName {
         return Objects.hash(getID());
     }
 
-    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }
 
-    @XmlTransient
     public FeatureSet getFeatureSet() {
         return featureSet;
     }
 
-    @XmlElement
     public String getUpperBound() {
         return upperBound;
     }

@@ -1,9 +1,13 @@
 package pebl.test.partner.rules;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class IntegerOutputWithStatusCode extends IntegerOutput {
 
+    @XmlElement(required = true)
     private final int statusCode;
 
     IntegerOutputWithStatusCode() {
@@ -15,7 +19,6 @@ public class IntegerOutputWithStatusCode extends IntegerOutput {
         this.statusCode = statusCode;
     }
 
-    @XmlElement(required = true)
     public int getStatusCode() {
         return statusCode;
     }

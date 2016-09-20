@@ -32,10 +32,12 @@ public class EngineTableGenerator {
             writer.newLine();
 
             List<EngineExtended> engineExtendeds = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
-            Collections.sort(engineExtendeds, Comparator.comparing(EngineExtended::getLanguage).thenComparing(EngineExtended::getName).thenComparing(EngineExtended::getVersion));
+            Collections.sort(engineExtendeds, Comparator.comparing(EngineExtended::getLanguage)
+                    .thenComparing(EngineExtended::getName)
+                    .thenComparing(EngineExtended::getVersion));
             for (EngineExtended engineExtended : engineExtendeds) {
                 String line = String.join(" & ", Arrays.asList(
-                        engineExtended.getLanguage().name(),
+                        engineExtended.getLanguage().getID(),
                         engineExtended.getName(),
                         engineExtended.getVersion(),
                         engineExtended.getLicense(),

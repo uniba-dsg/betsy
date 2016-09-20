@@ -1,9 +1,13 @@
 package pebl.test.partner.rules;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class IntegerOutput extends Output {
 
+    @XmlElement(required = true)
     private final int value;
 
     IntegerOutput() {
@@ -14,7 +18,6 @@ public class IntegerOutput extends Output {
         this.value = value;
     }
 
-    @XmlElement(required = true)
     public int getValue() {
         return value;
     }

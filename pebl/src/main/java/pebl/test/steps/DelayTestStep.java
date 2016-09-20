@@ -1,13 +1,17 @@
 package pebl.test.steps;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import pebl.test.TestStep;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class DelayTestStep extends TestStep {
     /**
      * Time to wait/delay further test execution after processing this step in milliseconds.
      */
+    @XmlElement(required = true)
     private Integer timeToWaitAfterwards;
 
     @Override
@@ -15,7 +19,6 @@ public class DelayTestStep extends TestStep {
         return "DelayTestStep{description=" + getDescription() + ", timeToWaitAfterwards=" + timeToWaitAfterwards + "}";
     }
 
-    @XmlElement(required = true)
     public Integer getTimeToWaitAfterwards() {
         return timeToWaitAfterwards;
     }

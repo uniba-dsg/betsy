@@ -13,15 +13,23 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasName;
 import pebl.HasID;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class Group implements HasID, HasName {
 
+    @XmlElement(required = true)
     private final String name;
+
+    @XmlInverseReference(mappedBy="groups")
     private final Language language;
+
+    @XmlElement(required = true)
     private final String description;
+
+    @XmlElement(name = "featureSet")
     private final List<FeatureSet> featureSets = new LinkedList<>();
 
     public Group() {
@@ -37,6 +45,7 @@ public class Group implements HasID, HasName {
     }
 
     @XmlAttribute(required = true)
+    @XmlID
     public String getID() {
         return String.join(HasID.SEPARATOR, language.getID(), name);
     }
@@ -47,7 +56,6 @@ public class Group implements HasID, HasName {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -71,17 +79,14 @@ public class Group implements HasID, HasName {
         this.featureSets.add(featureSet);
     }
 
-    @XmlElement(name="featureSet")
     public List<FeatureSet> getFeatureSets() {
         return Collections.unmodifiableList(featureSets);
     }
 
-    @XmlTransient
     public Language getLanguage() {
         return language;
     }
 
-    @XmlElement(required = true)
     public String getDescription() {
         return description;
     }
