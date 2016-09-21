@@ -30,7 +30,7 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
     @Override
     public void start(String processName, List<Variable> variables) throws RuntimeException {
         // determine deployment
-        String deploymentID = getDeploymentID();
+        String deploymentID = getDeploymentID(requestUrl, user, password);
         LOGGER.info("Determined deploymentID=" + deploymentID);
 
         String queryParameter = new Variables(variables).toQueryParameter();
@@ -56,14 +56,20 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
         }
     }
 
-    private String getDeploymentID() {
+    public static String getDeploymentID(String requestUrl, String user, String password) {
         JSONArray json = JsonHelper.getJSONWithAuthAsArray(requestUrl + "/rest/deployment/", 200, user, password);
         if (json.length() == 0) {
             return "";
         }
         JSONObject jsonObject = json.optJSONObject(0);
         if (jsonObject.has("deploymentUnitList")) {
-            JSONObject firstElement = jsonObject.optJSONArray("deploymentUnitList").getJSONObject(0);
+            JSONArray deploymentUnitList = jsonObject.optJSONArray("deploymentUnitList");
+            if(deploymentUnitList.length() == 0) {
+                LOGGER.error("Could not retrieve deployment ID");
+                return "";
+            }
+
+            JSONObject firstElement = deploymentUnitList.getJSONObject(0);
             if (firstElement.has("deployment-unit")) {
                 JSONObject deploymentUnit = firstElement.optJSONObject("deployment-unit");
                 return getDeploymentID(deploymentUnit);
@@ -75,7 +81,7 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
         }
     }
 
-    private String getDeploymentID(JSONObject deploymentUnit) {
+    public static String getDeploymentID(JSONObject deploymentUnit) {
         return deploymentUnit.optString("groupId") + ":" + deploymentUnit.optString("artifactId") + ":" + deploymentUnit.optString("version");
     }
 

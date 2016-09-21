@@ -18,30 +18,9 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
 
 
     public static JbpmApiBasedProcessInstanceOutcomeChecker buildWithDeploymentId() {
-        return new JbpmApiBasedProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/runtime/" + getDeploymentID() + "/history/instance/1");
-    }
-
-    public static String getDeploymentID() {
-        JSONArray json = JsonHelper.getJSONWithAuthAsArray("http://localhost:8080/jbpm-console" + "/rest/deployment/", 200, "admin", "admin");
-        if(json.length() == 0) {
-            return "";
-        }
-        JSONObject jsonObject = json.optJSONObject(0);
-        if(jsonObject.has("deploymentUnitList")) {
-            JSONObject firstElement = jsonObject.optJSONArray("deploymentUnitList").getJSONObject(0);
-            if(firstElement.has("deployment-unit")) {
-                JSONObject deploymentUnit = firstElement.optJSONObject("deployment-unit");
-                return getDeploymentID(deploymentUnit);
-            } else {
-                return getDeploymentID(firstElement);
-            }
-        } else {
-            return getDeploymentID(jsonObject);
-        }
-    }
-
-    private static String getDeploymentID(JSONObject deploymentUnit) {
-        return deploymentUnit.optString("groupId") + ":" + deploymentUnit.optString("artifactId") + ":" + deploymentUnit.optString("version");
+        String deploymentID = JbpmProcessStarter.getDeploymentID("http://localhost:8080/jbpm-console", "admin", "admin");
+        String url = "http://localhost:8080/jbpm-console" + "/rest/runtime/" + deploymentID + "/history/instance/1";
+        return new JbpmApiBasedProcessInstanceOutcomeChecker(url);
     }
 
     public static JbpmApiBasedProcessInstanceOutcomeChecker build() {
