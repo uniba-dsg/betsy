@@ -56,7 +56,7 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
 
     @Override
     public EngineExtended getEngineObject() {
-        EngineExtended engineExtendedId = defaultEngine.getEngineObject();
+        EngineExtended engineId = defaultEngine.getEngineObject();
         List<String> configuration = new LinkedList<>();
         configuration.addAll(engineId.getConfiguration());
         configuration.add("virtual");
