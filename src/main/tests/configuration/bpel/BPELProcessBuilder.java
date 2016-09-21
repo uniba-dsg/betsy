@@ -1,25 +1,12 @@
 package configuration.bpel;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 
-import javax.xml.bind.JAXB;
-import javax.xml.soap.SOAPFault;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import betsy.bpel.model.BPELTestCase;
-import betsy.bpel.ws.TestPartnerPortTypeRegular;
 import betsy.common.util.FileTypes;
-import com.sun.xml.internal.ws.api.SOAPVersion;
-import com.sun.xml.internal.ws.api.message.Message;
-import com.sun.xml.internal.ws.fault.SOAPFaultBuilder;
-import com.sun.xml.internal.ws.model.CheckedExceptionImpl;
-import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
 import pebl.feature.Feature;
 import pebl.feature.FeatureSet;
 import pebl.test.Test;
@@ -47,25 +34,13 @@ public class BPELProcessBuilder {
     }
 
     public static String getSoapFault() {
-        /*
-        "<S:Fault xmlns:ns4=\"http://www.w3.org/2003/05/soap-envelope\">\n"
+        return "<S:Fault xmlns:ns4=\"http://www.w3.org/2003/05/soap-envelope\">\n"
                 + "            <faultcode>S:Server</faultcode>\n"
                 + "            <faultstring>expected Error</faultstring>\n"
                 + "            <detail>\n"
                 + "                <Error xmlns=\"http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"/>\n"
                 + "            </detail>\n"
-                + "        </S:Fault>"
-        */
-        try {
-            SOAPFault soapFault = TestPartnerPortTypeRegular.createSoapFault();
-            Message soapFaultMessage = SOAPFaultBuilder.createSOAPFaultMessage(SOAPVersion.SOAP_11, soapFault);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(out);
-            soapFaultMessage.writeTo(writer);
-            return out.toString();
-        } catch (XMLStreamException e) {
-            return "";
-        }
+                + "        </S:Fault>";
     }
 
     public static final Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel");
