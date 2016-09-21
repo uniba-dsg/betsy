@@ -21,7 +21,7 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
         return new JbpmApiBasedProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/runtime/" + getDeploymentID() + "/history/instance/1");
     }
 
-    private static String getDeploymentID() {
+    public static String getDeploymentID() {
         JSONArray json = JsonHelper.getJSONWithAuthAsArray("http://localhost:8080/jbpm-console" + "/rest/deployment/", 200, "admin", "admin");
         if(json.length() == 0) {
             return "";
