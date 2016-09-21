@@ -54,7 +54,7 @@ try {
             <xsl:when test="text() = 'THROW_ERROR'">
                 <xsl:text disable-output-escaping="yes">
                     &lt;bpmn2:script&gt;&lt;![CDATA[
-throw new org.camunda.bpm.engineExtended.delegate.BpmnError("ERR_CODE");
+throw new org.camunda.bpm.engine.delegate.BpmnError("ERR_CODE");
                     ]]&gt;&lt;/bpmn2:script&gt;
                  </xsl:text>
             </xsl:when>

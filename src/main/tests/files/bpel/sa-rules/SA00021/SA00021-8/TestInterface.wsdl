@@ -6,7 +6,7 @@
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
              xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
              xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
-             xmlns:mon="http://dsg.wiai.uniba.de/bpel-engineExtended-comparison/xsd/months"
+             xmlns:mon="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months"
              xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">
 
     <plink:partnerLinkType name="TestInterfacePartnerLinkType">
@@ -19,7 +19,7 @@
     <vprop:propertyAlias messageType="tns:executeProcessSyncResponse" part="alienAliasPart" propertyName="tns:correlationId"/>
     <vprop:propertyAlias messageType="tns:executeProcessAsyncRequest" part="inputPart" propertyName="tns:correlationId"/>
 
-    <import namespace="http://dsg.wiai.uniba.de/bpel-engineExtended-comparison/xsd/months" location="months.xsd"/>
+    <import namespace="http://dsg.wiai.uniba.de/bpel-engine-comparison/xsd/months" location="months.xsd"/>
 
     <types>
         <xsd:schema targetNamespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface" xmlns:tns="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface">

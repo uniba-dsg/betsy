@@ -31,19 +31,19 @@ public class EngineTableGenerator {
             writer.write("Language & Name & Version & License & Developed in & Released at & Configurations\\\\");
             writer.newLine();
 
-            List<EngineExtended> engineExtendeds = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
-            Collections.sort(engineExtendeds, Comparator.comparing(EngineExtended::getLanguage)
+            List<EngineExtended> engines = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
+            Collections.sort(engines, Comparator.comparing(EngineExtended::getLanguage)
                     .thenComparing(EngineExtended::getName)
                     .thenComparing(EngineExtended::getVersion));
-            for (EngineExtended engineExtended : engineExtendeds) {
+            for (EngineExtended engine : engines) {
                 String line = String.join(" & ", Arrays.asList(
-                        engineExtended.getLanguage().getID(),
-                        engineExtended.getName(),
-                        engineExtended.getVersion(),
-                        engineExtended.getLicense(),
-                        engineExtended.getProgrammingLanguage(),
-                        DateTimeFormatter.ISO_LOCAL_DATE.format(engineExtended.getReleaseDate()),
-                        String.join(", ", engineExtended.getConfiguration()))) + "\\\\";
+                        engine.getLanguage().getID(),
+                        engine.getName(),
+                        engine.getVersion(),
+                        engine.getLicense(),
+                        engine.getProgrammingLanguage(),
+                        DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()),
+                        String.join(", ", engine.getConfiguration()))) + "\\\\";
 
                 writer.write(line);
                 writer.newLine();

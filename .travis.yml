@@ -5,7 +5,7 @@ language: java
 jdk:
   - oraclejdk8
 
-# some engineExtendeds need java 7
+# some engines need java 7
 addons:
   apt:
     packages:
@@ -27,7 +27,7 @@ env:
     - TESTS=peal.impl.*BpmnEnginesTest*  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=peal.impl.*BpmnEnginesWithoutUndeploy*  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=peal.helper.*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
-    - TESTS=betsy.*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
+    - TESTS=betsy.*Test*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=configuration.bpel.*        JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=corebpel.*                  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
 

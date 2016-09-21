@@ -44,4 +44,7 @@ public class Variable {
         return value;
     }
 
+    @Override public String toString() {
+        return type + " " + name + " = " + value;
+    }
 }

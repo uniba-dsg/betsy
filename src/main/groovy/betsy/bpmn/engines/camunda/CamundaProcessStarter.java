@@ -1,14 +1,18 @@
 package betsy.bpmn.engines.camunda;
 
+import java.util.Arrays;
 import java.util.List;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.Variables;
+import org.apache.log4j.Logger;
 import pebl.test.steps.vars.Variable;
 import org.json.JSONObject;
 
 public class CamundaProcessStarter implements BPMNProcessStarter {
+
+    private static final Logger LOGGER = Logger.getLogger(CamundaProcessStarter.class);
 
     private final String restURL;
 
@@ -18,6 +22,8 @@ public class CamundaProcessStarter implements BPMNProcessStarter {
 
     @Override
     public void start(String processID, List<Variable> variables) throws RuntimeException {
+        LOGGER.info("Start process with processID=" + processID + " and the variables: " + variables);
+
         //first request to get id
         JSONObject response = JsonHelper.get(restURL + "/process-definition?key=" + processID, 200);
         final String id = String.valueOf(response.get("id"));

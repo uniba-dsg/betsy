@@ -11,7 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>org.bpmn.camunda.bpm</groupId>
-            <artifactId>camunda-engineExtended</artifactId>
+            <artifactId>camunda-engine</artifactId>
             <version>7.0.0-Final</version>
             <scope>provided</scope>
         </dependency>

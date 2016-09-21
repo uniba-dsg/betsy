@@ -20,7 +20,7 @@
 
         <jbi xmlns="http://java.sun.com/xml/ns/jbi"
              xmlns:cdk5="http://petals.ow2.org/components/extensions/version-5"
-             xmlns:bpel-engineExtended="http://petals.ow2.org/components/petals-bpel-engineExtended/version-1"
+             xmlns:bpel-engine="http://petals.ow2.org/components/petals-bpel-engine/version-1"
              xmlns:soap="http://petals.ow2.org/components/soap/version-4"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              version="1.0">
@@ -41,8 +41,8 @@
                     <cdk5:forward-message-properties>false</cdk5:forward-message-properties>
                     <cdk5:forward-attachments>false</cdk5:forward-attachments>
                     <cdk5:wsdl>TestInterface.wsdl</cdk5:wsdl>
-                    <bpel-engineExtended:bpel><xsl:value-of select="$bpelName"/>.bpel</bpel-engineExtended:bpel>
-                    <bpel-engineExtended:poolsize>1</bpel-engineExtended:poolsize>
+                    <bpel-engine:bpel><xsl:value-of select="$bpelName"/>.bpel</bpel-engine:bpel>
+                    <bpel-engine:poolsize>1</bpel-engine:poolsize>
 
                 </provides>
                 

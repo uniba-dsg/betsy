@@ -35,7 +35,7 @@
                     </identification>
                     <target>
                         <artifacts-zip><xsl:value-of select="$bpelName"/>.jar</artifacts-zip>
-                        <component-name>sun-bpel-engineExtended</component-name>
+                        <component-name>sun-bpel-engine</component-name>
                     </target>
                 </service-unit>
                 <service-unit>
