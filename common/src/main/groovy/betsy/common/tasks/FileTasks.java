@@ -2,7 +2,9 @@ package betsy.common.tasks;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -204,6 +206,19 @@ public class FileTasks {
             Files.copy(file, targetFolder.resolve(file.getFileName()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new IllegalStateException("Could not copy file " + file + " into folder " + targetFolder, e);
+        }
+    }
+
+    public static void copyFileIntoFolderAndOverwrite(URL url, String filename, Path targetFolder) {
+        assertDirectory(targetFolder);
+
+        try {
+            LOGGER.info("Copying file " + url + " of " + filename + " into folder " + targetFolder.toAbsolutePath());
+            try(InputStream in = url.openStream()) {
+                Files.copy(in, targetFolder.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not copy file " + url + " of " + filename + " into folder " + targetFolder, e);
         }
     }
 
