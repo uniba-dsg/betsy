@@ -14,7 +14,7 @@ import pebl.test.assertions.TraceTestAssertion;
 import pebl.test.assertions.XpathTestAssertion;
 import pebl.test.partner.rules.AnyInput;
 import pebl.test.partner.rules.EchoInputAsOutput;
-import pebl.test.partner.rules.FaultOutput;
+import pebl.test.partner.rules.SoapFaultOutput;
 import pebl.test.partner.rules.Input;
 import pebl.test.partner.rules.IntegerInput;
 import pebl.test.partner.rules.IntegerOutput;
@@ -158,10 +158,10 @@ class JsonGeneratorTestsEngineIndependent {
                     object.put("type", "raw");
                     object.put("value", ((RawOutput) output).getValue());
                     ruleObject.put("output", object);
-                } else if (output instanceof FaultOutput) {
+                } else if (output instanceof SoapFaultOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "fault");
-                    object.put("value", ((FaultOutput) output).getVariant());
+                    object.put("value", ((SoapFaultOutput) output).getVariant());
                     ruleObject.put("output", object);
                 } else if (output instanceof TimeoutInsteadOfOutput) {
                     JSONObject object = new JSONObject();

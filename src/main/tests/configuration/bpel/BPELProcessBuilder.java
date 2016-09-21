@@ -1,26 +1,72 @@
 package configuration.bpel;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 
+import javax.xml.bind.JAXB;
+import javax.xml.soap.SOAPFault;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.ws.TestPartnerPortTypeRegular;
+import betsy.common.util.FileTypes;
+import com.sun.xml.internal.ws.api.SOAPVersion;
+import com.sun.xml.internal.ws.api.message.Message;
+import com.sun.xml.internal.ws.fault.SOAPFaultBuilder;
+import com.sun.xml.internal.ws.model.CheckedExceptionImpl;
 import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
-import pebl.feature.FeatureSet;
 import pebl.feature.Feature;
+import pebl.feature.FeatureSet;
 import pebl.test.Test;
+import pebl.test.partner.InternalWSDLTestPartner;
 import pebl.test.partner.rules.AnyInput;
 import pebl.test.partner.rules.EchoInputAsOutput;
-import pebl.test.partner.rules.FaultOutput;
 import pebl.test.partner.rules.IntegerInput;
 import pebl.test.partner.rules.IntegerOutputBasedOnScriptResult;
-import pebl.test.partner.InternalWSDLTestPartner;
-import betsy.common.util.FileTypes;
 import pebl.test.partner.rules.OperationInputOutputRule;
+import pebl.test.partner.rules.SoapFaultOutput;
 
 public class BPELProcessBuilder {
+
+    public static String getExpectedSoapFault() {
+        return "<S:Fault xmlns:ns4=\"http://www.w3.org/2003/05/soap-envelope\">\n"
+                + "            <faultcode>S:Server</faultcode>\n"
+                + "            <faultstring>expected Error</faultstring>\n"
+                + "            <detail>\n"
+                + "                <testElementFault xmlns=\"http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner\">-6</testElementFault>\n"
+                + "            </detail>\n"
+                + "        </S:Fault>";
+        /*
+            FaultMessage jaxbObject = new FaultMessage("expected Error", -6);
+        */
+    }
+
+    public static String getSoapFault() {
+        /*
+        "<S:Fault xmlns:ns4=\"http://www.w3.org/2003/05/soap-envelope\">\n"
+                + "            <faultcode>S:Server</faultcode>\n"
+                + "            <faultstring>expected Error</faultstring>\n"
+                + "            <detail>\n"
+                + "                <Error xmlns=\"http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"/>\n"
+                + "            </detail>\n"
+                + "        </S:Fault>"
+        */
+        try {
+            SOAPFault soapFault = TestPartnerPortTypeRegular.createSoapFault();
+            Message soapFaultMessage = SOAPFaultBuilder.createSOAPFaultMessage(SOAPVersion.SOAP_11, soapFault);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(out);
+            soapFaultMessage.writeTo(writer);
+            return out.toString();
+        } catch (XMLStreamException e) {
+            return "";
+        }
+    }
 
     public static final Path PATH_PREFIX = Paths.get("src/main/tests/files/bpel");
     public static final Path testInterface = PATH_PREFIX.resolve("TestInterface.wsdl");
@@ -34,8 +80,8 @@ public class BPELProcessBuilder {
             "http://localhost:2000/bpel-testpartner",
             new OperationInputOutputRule("startProcessAsync", new AnyInput()),
             new OperationInputOutputRule("startProcessWithEmptyMessage", new AnyInput()),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(-5), new FaultOutput(TestPartnerPortTypeRegular.createSoapFault())),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(-6), new FaultOutput(new FaultMessage("expected Error", -6))),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(-5), new SoapFaultOutput(getSoapFault())),
+            new OperationInputOutputRule("startProcessSync", new IntegerInput(-6), new SoapFaultOutput(getExpectedSoapFault())),
             new OperationInputOutputRule("startProcessSync", new IntegerInput(100), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.access()")),
             new OperationInputOutputRule("startProcessSync", new IntegerInput(101), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
             new OperationInputOutputRule("startProcessSync", new IntegerInput(102), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfCalls()")),

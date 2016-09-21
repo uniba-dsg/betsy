@@ -27,6 +27,10 @@ public class Capability implements HasID, HasName {
     @XmlElement(name="language")
     private final List<Language> languages = new LinkedList<>();
 
+    @XmlID
+    @XmlAttribute(required = true)
+    private final String id;
+
     Capability() {
         this("", new ResultFormat());
     }
@@ -34,13 +38,13 @@ public class Capability implements HasID, HasName {
     public Capability(String name, ResultFormat resultFormat) {
         this.name = Objects.requireNonNull(name);
         this.resultFormat = Objects.requireNonNull(resultFormat);
+
+        this.id = name;
     }
 
     @Override
-    @XmlID
-    @XmlAttribute(required = true)
     public String getID() {
-        return name;
+        return id;
     }
 
     @Override

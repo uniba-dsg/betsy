@@ -29,6 +29,10 @@ public class Language implements HasID, HasName {
     @XmlElement(name="group")
     private final List<Group> groups = new LinkedList<>();
 
+    @XmlID
+    @XmlAttribute(required = true)
+    private final String id;
+
     Language() {
         this(new Capability(), "");
     }
@@ -37,14 +41,14 @@ public class Language implements HasID, HasName {
         this.capability = Objects.requireNonNull(capability);
         this.name = Objects.requireNonNull(name);
 
+        this.id = String.join(HasID.SEPARATOR, capability.getID(), name);
+
         this.capability.addLanguage(this);
     }
 
     @Override
-    @XmlID
-    @XmlAttribute(required = true)
     public String getID() {
-        return String.join(HasID.SEPARATOR, capability.getID(), name);
+        return id;
     }
 
     @Override

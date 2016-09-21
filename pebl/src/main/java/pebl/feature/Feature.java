@@ -30,6 +30,10 @@ public class Feature implements HasID, HasName {
     @XmlElement
     private final String upperBound;
 
+    @XmlID
+    @XmlAttribute(required = true)
+    private final String id;
+
     public Feature() {
         this(new FeatureSet(), "");
     }
@@ -44,6 +48,8 @@ public class Feature implements HasID, HasName {
         this.description = Objects.requireNonNull(description);
         this.upperBound = "";
 
+        this.id = String.join(HasID.SEPARATOR, featureSet.getID(), name);
+
         this.featureSet.addFeature(this);
     }
 
@@ -53,14 +59,14 @@ public class Feature implements HasID, HasName {
         this.description = Objects.requireNonNull(description);
         this.upperBound = Objects.requireNonNull(upperBound);
 
+        this.id = String.join(HasID.SEPARATOR, featureSet.getID(), name);
+
         this.featureSet.addFeature(this);
     }
 
     @Override
-    @XmlID
-    @XmlAttribute(required = true)
     public String getID() {
-        return String.join(HasID.SEPARATOR, featureSet.getID(), name);
+        return id;
     }
 
     @Override

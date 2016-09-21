@@ -32,6 +32,10 @@ public class FeatureSet implements HasID, HasName {
     @XmlElement(name = "feature")
     private final List<Feature> features = new LinkedList<>();
 
+    @XmlID
+    @XmlAttribute(required = true)
+    private final String id;
+
     FeatureSet() {
         this(new Group(), "");
     }
@@ -46,6 +50,8 @@ public class FeatureSet implements HasID, HasName {
         this.description = Objects.requireNonNull(description);
 
         this.group.addFeatureSet(this);
+
+        this.id = String.join(HasID.SEPARATOR, group.getID(), name);
     }
 
     public List<Feature> getFeatures() {
@@ -57,10 +63,8 @@ public class FeatureSet implements HasID, HasName {
     }
 
     @Override
-    @XmlID
-    @XmlAttribute(required = true)
     public String getID() {
-        return String.join(HasID.SEPARATOR, group.getID(), name);
+        return id;
     }
 
     @Override

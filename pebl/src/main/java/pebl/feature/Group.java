@@ -32,6 +32,10 @@ public class Group implements HasID, HasName {
     @XmlElement(name = "featureSet")
     private final List<FeatureSet> featureSets = new LinkedList<>();
 
+    @XmlID
+    @XmlAttribute(required = true)
+    private final String id;
+
     public Group() {
         this("", new Language(), "");
     }
@@ -41,13 +45,13 @@ public class Group implements HasID, HasName {
         this.language = Objects.requireNonNull(language);
         this.description = Objects.requireNonNull(description);
 
+        this.id = String.join(HasID.SEPARATOR, language.getID(), name);
+
         this.language.addGroup(this);
     }
 
-    @XmlAttribute(required = true)
-    @XmlID
     public String getID() {
-        return String.join(HasID.SEPARATOR, language.getID(), name);
+        return id;
     }
 
     @Override

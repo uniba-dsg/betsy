@@ -34,8 +34,6 @@ import pebl.xsd.Tools;
 
 public class XmlMain {
 
-    private static final ObjectWriter JSON_MAPPER = new ObjectMapper().registerModule(new JaxbAnnotationModule()).writerWithDefaultPrettyPrinter();
-
     public static void main(String[] args) throws IOException {
         Path workingDirectory = Paths.get(".");
         generateEnginesXml(workingDirectory);
@@ -46,16 +44,19 @@ public class XmlMain {
     }
 
     public static void generatePeblXml(Path workingDirectory) throws IOException {
-        PEBL pebl = new PEBL();
-        pebl.tools.addAll(getTools());
-        pebl.engines.addAll(getEngines());
-        pebl.tests.addAll(getTests());
-        pebl.capabilities.addAll(new Features(getFeatures()).capabilities);
+        PEBL pebl = getPebl();
 
         Path targetFile = workingDirectory.resolve("pebl.xml");
         JAXB.marshal(pebl, targetFile.toFile());
+    }
 
-        JSON_MAPPER.writeValue(workingDirectory.resolve("pebl.json").toFile(), pebl);
+    public static PEBL getPebl() {
+        PEBL pebl = new PEBL();
+        pebl.tools.addAll(getTools());
+        pebl.engines.addAll(getEngines());
+        pebl.tests.addAll(getTests().stream().collect(Collectors.toList()));
+        pebl.capabilities.addAll(new Features(getFeatures()).capabilities);
+        return pebl;
     }
 
     private static void generateToolsXml(Path workingDirectory) throws IOException {
@@ -63,8 +64,6 @@ public class XmlMain {
 
         Path targetFile = workingDirectory.resolve("tools.xml");
         JAXB.marshal(tools, targetFile.toFile());
-
-        JSON_MAPPER.writeValue(workingDirectory.resolve("tools.json").toFile(), tools.tools);
     }
 
     private static void generateFeaturesXml(Path workingDirectory) throws IOException {
@@ -72,8 +71,6 @@ public class XmlMain {
 
         Path targetFile = workingDirectory.resolve("features.xml");
         JAXB.marshal(features, targetFile.toFile());
-
-        JSON_MAPPER.writeValue(workingDirectory.resolve("features.json").toFile(), features);
     }
 
     private static List<Feature> getFeatures() {
@@ -85,7 +82,6 @@ public class XmlMain {
 
         Path targetFile = workingDirectory.resolve("tests.xml");
         JAXB.marshal(tests, targetFile.toFile());
-        JSON_MAPPER.writeValue(workingDirectory.resolve("tests.json").toFile(), tests.tests);
     }
 
     private static void generateEnginesXml(Path workingDirectory) throws IOException {
@@ -93,7 +89,6 @@ public class XmlMain {
 
         Path targetFile = workingDirectory.resolve("engines.xml");
         JAXB.marshal(engines, targetFile.toFile());
-        JSON_MAPPER.writeValue(workingDirectory.resolve("engines.json").toFile(), engines.engines);
     }
 
     private static List<Engine> getEngines() {

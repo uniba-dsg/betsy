@@ -52,6 +52,10 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     @XmlElement
     private final Map<String, String> additionalData;
 
+    @XmlID
+    @XmlAttribute(required = true)
+    private final String id;
+
     public Test() {
         this(Paths.get(""), "", Collections.emptyList(), new Feature());
     }
@@ -84,6 +88,8 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         this.testCases = uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases)));
         this.files = new ArrayList<>(Objects.requireNonNull(files));
         this.additionalData = Collections.emptyMap();
+
+        this.id = String.join(HasID.SEPARATOR,getFeature().getID(), "test");
     }
 
     public Test(Path process, List<TestCase> testCases,
@@ -99,6 +105,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         this.description = description;
         this.partners = partners;
         this.additionalData = additionalData;
+        this.id = "";
     }
 
     public Test withNewProcessAndFeature(Path process, Feature feature) {
@@ -222,12 +229,8 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     }
 
     @Override
-    @XmlID
-    @XmlAttribute(required = true)
     public String getID() {
-        String fileName = getProcess().getFileName().toString();
-        fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-        return String.join(HasID.SEPARATOR,getFeature().getID(), fileName);
+        return id;
     }
 }
 
