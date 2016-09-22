@@ -19,7 +19,6 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
     private Path parentFolder;
 
     private final List<BPMNProcess> processes = new ArrayList<>();
-    private BPMNProcessStarter processStarter;
 
     public abstract Path getXsltPath();
 
