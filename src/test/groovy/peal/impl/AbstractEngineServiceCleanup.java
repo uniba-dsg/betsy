@@ -23,10 +23,22 @@ public abstract class AbstractEngineServiceCleanup {
     public void truncateServerPathFolder() {
         IOCapture.captureIO(
                 () -> {
-                    FileTasks.deleteDirectory(Paths.get("test"));
+                    try {
+                        FileTasks.deleteDirectory(Paths.get("test"));
+                    } catch (Exception ignored) {
+                    }
+                    new EngineServiceImpl().getSupportedEngines().forEach((e) -> {
+                        try {
+                            FileTasks.deleteDirectory(Paths.get("test-" + e.getEngineId()));
+                        } catch (Exception ignored) {
+                        }
+                    });
 
                     Path serverPath = Paths.get("server");
-                    FileTasks.deleteDirectory(serverPath);
+                    try {
+                        FileTasks.deleteDirectory(serverPath);
+                    } catch (Exception ignored) {
+                    }
                     assertFalse(Files.isDirectory(serverPath));
                     FileTasks.mkdirs(serverPath);
                     assertTrue(Files.isDirectory(serverPath));
