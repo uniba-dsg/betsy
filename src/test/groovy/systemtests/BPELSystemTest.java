@@ -94,7 +94,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb__3_0_5");
     }
 
-    @Test @Ignore("outdated revision")
+    @Test
     public void test_B5_B2_BpelOpenesb23Sequence() throws IOException, InterruptedException {
         testBPELEngine("openesb__2_3");
     }
@@ -104,7 +104,7 @@ public class BPELSystemTest extends AbstractSystemTest{
         testBPELEngine("openesb__2_3_1");
     }
 
-    @Test @Ignore("unstable")
+    @Test
     public void test_B5__B1_BpelOpenesbSequence() throws IOException, InterruptedException {
         testBPELEngine("openesb__2_2");
     }
