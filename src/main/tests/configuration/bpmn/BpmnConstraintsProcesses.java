@@ -1,8 +1,8 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCase;
-import betsy.common.model.feature.Construct;
 import betsy.common.model.feature.Feature;
+import betsy.common.model.feature.FeatureSet;
 import betsy.common.model.input.EngineIndependentProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.FileTypes;
@@ -39,7 +39,7 @@ class BpmnConstraintsProcesses {
                         String constraint = getConstraint(process);
                         result.add(new EngineIndependentProcess(process, FileTasks.getFilenameWithoutExtension(process),
                                 Collections.singletonList(new BPMNTestCase().assertDeploymentFailed()),
-                                new Feature(new Construct(Groups.BPMN_CONSTRAINTS, constraint),
+                                new Feature(new FeatureSet(Groups.BPMN_CONSTRAINTS, constraint),
                                         FileTasks.getFilenameWithoutExtension(process))));
                     });
                 }

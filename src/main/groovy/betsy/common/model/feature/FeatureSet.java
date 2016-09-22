@@ -5,7 +5,7 @@ import betsy.common.model.HasID;
 
 import java.util.Objects;
 
-public class FeatureSet implements HasID, HasName {
+public class FeatureSet implements HasID, HasName, Comparable<FeatureSet> {
 
     public final Group group;
     public final String name;
@@ -44,5 +44,10 @@ public class FeatureSet implements HasID, HasName {
     @Override
     public int hashCode() {
         return Objects.hash(getID());
+    }
+
+    @Override
+    public int compareTo(FeatureSet o) {
+        return this.getName().compareTo(o.getName());
     }
 }
