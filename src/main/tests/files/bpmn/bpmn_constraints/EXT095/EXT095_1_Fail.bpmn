@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1394991681437" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.2.18 (GPLv3, Non-Commercial)" expressionLanguage="http://www.w3.org/1999/XPath" id="_1394991681437" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1394991681437" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <itemDefinition id="ID_1" itemKind="Information" structureRef="String"/>
+  <message id="message" name="message" itemRef="ID_1"/>
+
+  <interface id="interface" name="interface">
+    <operation id="opMsgToProcess" name="msgToProcess">
+      <inMessageRef>message</inMessageRef>
+    </operation>
+  </interface>
+
+  <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_2" isInterrupting="true" name="Start Event" parallelMultiple="false">
+      <outgoing>_5</outgoing>
+      <eventDefinitionRef>_2_ED_1</eventDefinitionRef>
+    </startEvent>
+    <endEvent id="_8" name="End Event">
+      <incoming>_6</incoming>
+    </endEvent>
+    <intermediateThrowEvent id="_13" name="Intermediate Throw Event">
+      <incoming>_5</incoming>
+      <outgoing>_6</outgoing>
+      <messageEventDefinition id="_2_ED_1" messageRef="message">
+        <operationRef>opMsgToProcess</operationRef>
+      </messageEventDefinition>
+    </intermediateThrowEvent>
+    <sequenceFlow id="_5" sourceRef="_2" targetRef="_13"/>
+    <sequenceFlow id="_6" sourceRef="_13" targetRef="_8"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=597.6;height=842.4;imageableWidth=587.6;imageableHeight=832.4;imageableX=5.0;imageableY=5.0" id="Yaoqiang_Diagram-_1" name="Untitled Diagram" resolution="96.0">
+    <bpmndi:BPMNPlane bpmnElement="PROCESS_1">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2">
+        <dc:Bounds height="32.0" width="32.0" x="96.07894736842107" y="170.34210526315786"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="59.0" x="82.57894736842107" y="210.42413651315786"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" id="Yaoqiang-_8">
+        <dc:Bounds height="32.0" width="32.0" x="413.2894736842105" y="174.078947368421"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="54.0" x="402.2894736842105" y="214.160978618421"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" id="Yaoqiang-_13">
+        <dc:Bounds height="32.0" width="32.0" x="248.5789473684211" y="169.84210526315792"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="129.0" x="200.0789473684211" y="209.92413651315792"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="Yaoqiang-_6" sourceElement="_13" targetElement="_8">
+        <di:waypoint x="280.8042683549033" y="185.84210526315792"/>
+        <di:waypoint x="412.980604706391" y="190.078947368421"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="6.0" x="343.93421052631584" y="178.32689435688494"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5" id="Yaoqiang-_5" sourceElement="_2" targetElement="_13">
+        <di:waypoint x="127.76086180578042" y="186.34210526315786"/>
+        <di:waypoint x="248.63051425379228" y="185.84210526315792"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="6.0" x="185.3289473684211" y="176.28900956416305"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

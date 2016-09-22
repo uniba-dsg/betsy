@@ -71,4 +71,10 @@ public class BPMNProcessBuilder {
                 feature, Collections.emptyList());
     }
 
+    public static Test buildConstraintProcess (String description, Feature feature, BPMNTestCaseBuilder... testCases){
+        return new Test(ROOT_FOLDER.resolve("cfpatterns").resolve(feature.getName() + FileTypes.BPMN), description,
+                convert(testCases, feature.getName()),
+                feature, Collections.emptyList());
+    }
+
 }

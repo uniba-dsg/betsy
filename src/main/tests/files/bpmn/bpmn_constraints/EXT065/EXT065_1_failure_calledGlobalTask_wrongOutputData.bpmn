@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1433838363358" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.2.18 (GPLv3, Non-Commercial)" expressionLanguage="http://www.w3.org/1999/XPath" id="_1433838363358" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1433838363358" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <itemDefinition id="ID_1" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="ID_2" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="ID_3" isCollection="false" itemKind="Information" structureRef="xsd:int"/>
+  <message id="MSG_1" itemRef="ID_1" name="inMessage"/>
+  <message id="MSG_2" itemRef="ID_2" name="outMessage"/>
+  <interface id="IF_1" name="Interface">
+    <operation id="OP_1" name="Operation">
+      <inMessageRef>MSG_1</inMessageRef>
+      <outMessageRef>MSG_2</outMessageRef>
+    </operation>
+  </interface>
+  <globalTask id="GT_1" name="GlobalTask">
+    <supportedInterfaceRef>IF_1</supportedInterfaceRef>
+    <ioSpecification>
+      <dataInput id="Din_1" isCollection="false" itemSubjectRef="ID_1"/>
+      <dataOutput id="Dout_1" isCollection="false" itemSubjectRef="ID_3"/>
+      <inputSet>
+        <dataInputRefs>Din_1</dataInputRefs>
+      </inputSet>
+      <outputSet>
+        <dataOutputRefs>Dout_1</dataOutputRefs>
+      </outputSet>
+    </ioSpecification>
+    <ioBinding inputDataRef="Din_1" operationRef="OP_1" outputDataRef="Dout_1"/>
+  </globalTask>
+</definitions>

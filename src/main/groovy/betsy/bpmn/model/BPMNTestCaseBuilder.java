@@ -165,4 +165,8 @@ public class BPMNTestCaseBuilder {
         return addAssertion(BPMNAssertions.DATA_CORRECT);
     }
 
+    public BPMNTestCaseBuilder assertDeploymentFailed() {
+        return addAssertion(BPMNAssertions.ERROR_DEPLOYMENT);
+    }
+
 }

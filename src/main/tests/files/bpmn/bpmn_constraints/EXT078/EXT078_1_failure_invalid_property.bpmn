@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				 xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+				 xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd"
+				 id="Property_ReadWrite_StringTest"
+				 targetNamespace="http://dsg.wiai.uniba.de/betsy/bpmn/property_ReadWrite_String">
+	<bpmn2:itemDefinition id="def_String" structureRef="String"/>
+
+	<!-- property must not be placed here -->
+	<bpmn2:property id="data" itemSubjectRef="def_String" />
+
+    <bpmn2:process id="Property_ReadWrite_String" isExecutable="true">
+
+		<bpmn2:task id="start" name="Start">
+			<bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+		</bpmn2:task>
+		
+		<bpmn2:task id="set" name="Set Data">
+			<bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_2a</bpmn2:outgoing>
+		</bpmn2:task>
+
+		<bpmn2:task id="end" name="End">
+			<bpmn2:incoming>SequenceFlow_2a</bpmn2:incoming>
+			<bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+		</bpmn2:task>
+		
+		<bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="StartEvent" targetRef="start"/>
+		<bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="start" targetRef="set"/>
+		<bpmn2:sequenceFlow id="SequenceFlow_2a" sourceRef="set" targetRef="end"/>
+		<bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="end" targetRef="EndEvent"/>
+		
+		<bpmn2:startEvent id="StartEvent" name="Start Event">
+			<bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+		</bpmn2:startEvent>
+		
+		<bpmn2:endEvent id="EndEvent" name="End Event">
+			<bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+		</bpmn2:endEvent>
+
+	</bpmn2:process>
+</bpmn2:definitions>
