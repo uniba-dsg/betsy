@@ -1,5 +1,6 @@
 package peal.impl;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -118,10 +119,11 @@ public class EngineServiceImpl implements EngineService {
     public EngineServiceImpl() {
         // required so that each engine has its correct folder
         for (EngineAPI<?> engine : engineIds) {
+            Path parentFolder = Paths.get("test-" + engine.getName());
             if (engine instanceof AbstractLocalBPELEngine) {
-                ((AbstractLocalBPELEngine) engine).setParentFolder(Paths.get("test"));
+                ((AbstractLocalBPELEngine) engine).setParentFolder(parentFolder);
             } else if (engine instanceof AbstractBPMNEngine) {
-                ((AbstractBPMNEngine) engine).setParentFolder(Paths.get("test"));
+                ((AbstractBPMNEngine) engine).setParentFolder(parentFolder);
             }
         }
     }
