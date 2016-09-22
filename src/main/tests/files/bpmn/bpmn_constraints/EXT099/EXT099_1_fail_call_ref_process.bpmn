@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ns1="http://sourceforge.net/bpmn/definitions/_1395763098947" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1395763123057" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.2.22 (GPLv3, Non-Commercial)" expressionLanguage="http://www.w3.org/1999/XPath" id="_1395763123057" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1395763123057" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+
+  <itemDefinition id="ID_1" itemKind="Information" structureRef="String"/>
+
+  <message id="MSG_1" itemRef="ID_1" name="Message"/>
+  <interface id="IF_1" name="IF1">
+    <operation id="OP_1" name="operation">
+      <inMessageRef>MSG_1</inMessageRef>
+    </operation>
+  </interface>
+
+  <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
+    <callActivity calledElement="PROCESS_2" completionQuantity="1" id="_2" isForCompensation="false" name="Call Activity" startQuantity="1"/>
+  </process>
+  <process id="PROCESS_2" isClosed="false" isExecutable="true" processType="None">
+    <startEvent id="_2x" isInterrupting="true" name="Start Event" parallelMultiple="false">
+      <outgoing>_4</outgoing>
+      <messageEventDefinition id="_2_ED_1" messageRef="MSG_1">
+        <operationRef>OP_1</operationRef>
+      </messageEventDefinition>
+    </startEvent>
+    <endEvent id="_3" name="End Event">
+      <incoming>_4</incoming>
+    </endEvent>
+    <sequenceFlow id="_4" sourceRef="_2x" targetRef="_3"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=597.6;height=842.4;imageableWidth=587.6;imageableHeight=832.4;imageableX=5.0;imageableY=5.0" id="Yaoqiang_Diagram-_1" name="Untitled Diagram" resolution="96.0">
+    <bpmndi:BPMNPlane bpmnElement="PROCESS_1">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2" isExpanded="false">
+        <dc:Bounds height="55.0" width="85.0" x="110.13157894736844" y="117.28947368421049"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="62.0" x="121.63157894736844" y="136.8715049342105"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
