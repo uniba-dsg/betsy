@@ -46,7 +46,7 @@ public class SoapUiTestStepBuilder {
         } else if (testStep instanceof DelayTestStep) {
             addDelayTime(soapUiTestCase, (DelayTestStep) testStep, testStepNumber);
         } else if (testStep instanceof SoapTestStep) {
-            if (((SoapTestStep) testStep).getService().equals(new WsdlService("testInterface"))) {
+            if (((SoapTestStep) testStep).getService().equals(new WsdlService("testPartner"))) {
                 addStepForTestPartner((SoapTestStep) testStep, testStepNumber);
             } else {
                 addStepForTestInterface((SoapTestStep) testStep, testStepNumber);
