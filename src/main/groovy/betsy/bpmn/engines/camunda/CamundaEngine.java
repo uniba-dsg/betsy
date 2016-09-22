@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.camunda;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
@@ -23,10 +24,14 @@ import betsy.common.tasks.XSLTTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
+import org.apache.log4j.Logger;
 import pebl.ProcessLanguage;
 import pebl.test.TestCase;
 
 public class CamundaEngine extends AbstractBPMNEngine {
+
+    private static final Logger LOGGER = Logger.getLogger(CamundaEngine.class);
+
 
     @Override
     public EngineExtended getEngineObject() {
@@ -149,6 +154,16 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
     public void shutdown() {
+        if (!Files.exists(getServerPath())) {
+            LOGGER.info("Shutdown of " + getName() + " not possible as " + getServerPath() + " does not exist.");
+            return;
+        }
+
+        Path shutdownShellScript = getServerPath().resolve("camunda_shutdown.sh");
+        if (!Files.exists(shutdownShellScript)) {
+            LOGGER.info("Shutdown shell script " + shutdownShellScript + " does not exist");
+        }
+
         Path pathToJava7 = Configuration.getJava7Home();
         Map<String, String> map = new LinkedHashMap<>(2);
         map.put("JAVA_HOME", pathToJava7.toString());
@@ -157,7 +172,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.bat")), map);
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"));
 
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.sh")), map);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(shutdownShellScript), map);
     }
 
     @Override

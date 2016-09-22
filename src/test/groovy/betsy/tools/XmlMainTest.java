@@ -3,8 +3,6 @@ package betsy.tools;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -12,14 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import org.eclipse.persistence.jaxb.IDResolver;
-import org.eclipse.persistence.jaxb.UnmarshallerProperties;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 import pebl.xsd.PEBL;
 
 import static org.junit.Assert.assertEquals;
