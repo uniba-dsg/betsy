@@ -137,25 +137,27 @@ public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
-
         Map<String, String> map = new LinkedHashMap<>(2);
         map.put("JAVA_HOME", pathToJava7.toString());
         map.put("JRE_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"), map);
 
-        Map<String, String> map1 = new LinkedHashMap<>(2);
-        map1.put("JAVA_HOME", pathToJava7.toString());
-        map1.put("JRE_HOME", pathToJava7.toString());
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")), map1);
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath(), "camunda_startup.bat"), map);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_startup.sh")), map);
 
         TimeoutRepository.getTimeout("Camunda.startup").waitForAvailabilityOfUrl(getCamundaUrl());
     }
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.bat")));
+        Path pathToJava7 = Configuration.getJava7Home();
+        Map<String, String> map = new LinkedHashMap<>(2);
+        map.put("JAVA_HOME", pathToJava7.toString());
+        map.put("JRE_HOME", pathToJava7.toString());
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.bat")), map);
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"));
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.sh")));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.sh")), map);
     }
 
     @Override
