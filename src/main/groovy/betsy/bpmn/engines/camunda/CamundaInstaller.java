@@ -35,9 +35,11 @@ public class CamundaInstaller {
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), cdToTomcatBinFolder() + " && call shutdown.bat");
 
         FileTasks.createFile(destinationDir.resolve("camunda_startup.sh"), cdToTomcatBinFolder() + " && ./startup.sh");
-        FileTasks.createFile(destinationDir.resolve("camunda_shutdown.sh"), cdToTomcatBinFolder() + " && ./shutdown.sh");
+        Path shutdown = destinationDir.resolve("camunda_shutdown.sh");
+        FileTasks.createFile(shutdown, cdToTomcatBinFolder() + " && ./shutdown.sh");
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777", destinationDir.toAbsolutePath().toString()));
+        FileTasks.assertExecutableFile(shutdown);
     }
 
     private String cdToTomcatBinFolder() {
