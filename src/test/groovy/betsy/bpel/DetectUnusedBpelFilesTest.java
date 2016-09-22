@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DetectUnusedBpelFilesTest {
 
@@ -34,8 +35,11 @@ public class DetectUnusedBpelFilesTest {
                 .stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\n"));
-        Assert.assertEquals("all bpel files should be referenced", "src\\main\\tests\\files\\bpel\\errorsbase\\BackdoorRobustness.bpel\n"
-                + "src\\main\\tests\\files\\bpel\\errorsbase\\ImprovedBackdoorRobustness.bpel", unreferencedFiles);
+        String expectedUnreferencedFiles = Stream.of(Paths.get("src/main/tests/files/bpel/errorsbase/BackdoorRobustness.bpel"),
+                Paths.get("src/main/tests/files/bpel/errorsbase/ImprovedBackdoorRobustness.bpel"))
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
+        Assert.assertEquals(expectedUnreferencedFiles, unreferencedFiles);
     }
 
     private List<Path> getBetsyProcessesPaths(List<Test> processed) {
