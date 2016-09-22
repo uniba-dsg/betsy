@@ -35,7 +35,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class EngineServiceImplBpelEnginesWithoutUndeployTest {
+public class EngineServiceImplBpelEnginesWithoutUndeployTest extends AbstractEngineServiceCleanup {
 
     public static final Path SEQUENCE_FOLDER = Paths.get("src/test/resources/Sequence");
 
@@ -49,47 +49,6 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest {
         this.engineId = Objects.requireNonNull(engineId);
         this.processModelId = new ProcessModelId(engineId.getEngineId(),
                 new QName("http://dsg.wiai.uniba.de/betsy/activities/bpel/sequence", "Sequence"));
-    }
-
-    @Before
-    public void truncateServerPathFolder() {
-        IOCapture.captureIO(
-                () -> {
-                    FileTasks.deleteDirectory(Paths.get("test"));
-
-                    Path serverPath = Paths.get("server");
-                    FileTasks.deleteDirectory(serverPath);
-                    assertFalse(Files.isDirectory(serverPath));
-                    FileTasks.mkdirs(serverPath);
-                    assertTrue(Files.isDirectory(serverPath));
-                    System.out.println("\n\nPREPARATION DONE\n");
-                }
-        );
-    }
-
-    @BeforeClass
-    public static void ensureEnginesAreShutdown() {
-        IOCapture.captureIO(
-                () -> {
-                    new EngineServiceImpl().getSupportedEngines().forEach((e) -> {
-                        try {
-                            new EngineServiceImpl().stop(e);
-                        } catch (Exception ignored) {
-                            // ignore
-                        }
-                    });
-                }
-        );
-    }
-
-    @After
-    public void ensureEngineIsShutdown() {
-        IOCapture.captureIO(
-                () -> {
-                    System.out.println("\n\nSHUTTING DOWN AFTER TEST\n");
-                    engineService.stop(engineId);
-                }
-        );
     }
 
     @Test
@@ -141,10 +100,14 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest {
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
+                .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPEL))
                 // full: openesb__*
                 .filter(p -> p.toString().startsWith("openesb"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }
 
+    @Override public EngineId getEngineId() {
+        return engineId;
+    }
 }

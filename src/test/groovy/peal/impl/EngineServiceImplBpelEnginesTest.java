@@ -3,7 +3,6 @@ package peal.impl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -11,12 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.namespace.QName;
 
-import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
-import betsy.common.util.IOCapture;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -31,11 +25,9 @@ import peal.observer.ProcessModelState;
 import peal.packages.DeploymentPackage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class EngineServiceImplBpelEnginesTest {
+public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceCleanup {
 
     public static final Path SEQUENCE_FOLDER = Paths.get("src/test/resources/Sequence");
 
@@ -49,47 +41,6 @@ public class EngineServiceImplBpelEnginesTest {
         this.engineId = Objects.requireNonNull(engineId);
         this.processModelId = new ProcessModelId(engineId.getEngineId(),
                 new QName("http://dsg.wiai.uniba.de/betsy/activities/bpel/sequence", "Sequence"));
-    }
-
-    @Before
-    public void truncateServerPathFolder() {
-        IOCapture.captureIO(
-                () -> {
-                    FileTasks.deleteDirectory(Paths.get("test"));
-
-                    Path serverPath = Paths.get("server");
-                    FileTasks.deleteDirectory(serverPath);
-                    assertFalse(Files.isDirectory(serverPath));
-                    FileTasks.mkdirs(serverPath);
-                    assertTrue(Files.isDirectory(serverPath));
-                    System.out.println("\n\nPREPARATION DONE\n");
-                }
-        );
-    }
-
-    @BeforeClass
-    public static void ensureEnginesAreShutdown() {
-        IOCapture.captureIO(
-                () -> {
-                    new EngineServiceImpl().getSupportedEngines().forEach((e) -> {
-                        try {
-                            new EngineServiceImpl().stop(e);
-                        } catch (Exception ignored) {
-                            // ignore
-                        }
-                    });
-                }
-        );
-    }
-
-    @After
-    public void ensureEngineIsShutdown() {
-        IOCapture.captureIO(
-                () -> {
-                    System.out.println("\n\nSHUTTING DOWN AFTER TEST\n");
-                    engineService.stop(engineId);
-                }
-        );
     }
 
     @Test
@@ -156,6 +107,7 @@ public class EngineServiceImplBpelEnginesTest {
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
+                .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPEL))
                 // full: ode bpelg orchestra active_bpel wso2
                 // TODO: openesb__2
                 // see without undeploy: openesb__3
@@ -164,4 +116,7 @@ public class EngineServiceImplBpelEnginesTest {
                 .collect(Collectors.toList());
     }
 
+    @Override public EngineId getEngineId() {
+        return engineId;
+    }
 }
