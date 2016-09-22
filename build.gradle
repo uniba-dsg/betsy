@@ -180,6 +180,10 @@ run {
 test {
     testLogging {
         exceptionFormat "full" // default is "short"
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showCauses true
+        showExceptions true
+        showStackTraces true
     }
 }
 
