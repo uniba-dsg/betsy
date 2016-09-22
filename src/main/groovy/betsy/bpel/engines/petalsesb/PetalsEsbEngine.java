@@ -103,6 +103,11 @@ public class PetalsEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
+        if(!Files.exists(getPetalsCliBinFolder())) {
+            LOGGER.info("Engine " + getName() + " cannot be stopped as installation folder does not exist");
+            return;
+        }
+
         try {
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getPetalsCliBinFolder(), getPetalsCliBinFolder().resolve("petals-cli.bat")).values("shutdown"));
 
