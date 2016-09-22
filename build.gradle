@@ -57,8 +57,6 @@ dependencies {
     internal 'commons-lang:commons-lang:2.6'
     internal 'org.json:json:5.0.5'
 
-    internal 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.2'
-
     // requires 'net.sf.saxon:Saxon-HE' - we use the one that is shipped with soapUI
 
     internal 'com.mashape.unirest:unirest-java:1.4.9' // for http requests and responses
