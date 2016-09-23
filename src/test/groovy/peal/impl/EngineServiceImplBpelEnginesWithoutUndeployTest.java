@@ -79,6 +79,7 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest extends AbstractEng
         assertState(EngineState.STARTED);
 
         engineService.stop(engineId);
+        WaitTasks.sleep(5000);
         assertState(EngineState.INSTALLED);
 
         engineService.uninstall(engineId);
