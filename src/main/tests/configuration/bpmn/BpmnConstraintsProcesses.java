@@ -1,12 +1,5 @@
 package configuration.bpmn;
 
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.tasks.FileTasks;
-import betsy.common.util.FileTypes;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,17 +10,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import betsy.bpmn.model.BPMNTestCaseBuilder;
+import betsy.common.tasks.FileTasks;
+import betsy.common.util.FileTypes;
+import pebl.feature.Feature;
+import pebl.feature.FeatureSet;
+import pebl.test.Test;
+import pebl.test.TestCase;
+
 class BpmnConstraintsProcesses {
 
-    static List<EngineIndependentProcess> BPMN_CONSTRAINTS = getBpmnConstraintProcesses();
+    static List<Test> BPMN_CONSTRAINTS = getBpmnConstraintProcesses();
 
-    private static List<EngineIndependentProcess> getBpmnConstraintProcesses() {
+    private static List<Test> getBpmnConstraintProcesses() {
         Path path = Paths.get("src/main/tests/files/bpmn/bpmn_constraints");
         if (!Files.exists(path)) {
             return Collections.emptyList();
         }
 
-        List<EngineIndependentProcess> result = new LinkedList<>();
+        List<Test> result = new LinkedList<>();
 
         try {
             Files.walk(path, Integer.MAX_VALUE).forEach(dir -> {
@@ -35,10 +36,10 @@ class BpmnConstraintsProcesses {
                 boolean isTestDirectory = hasFolderBpmnFiles(dir);
                 if (isTestDirectory) {
                     List<Path> processes = getBpmnFilesInFolder(dir);
-                    processes.stream().forEach(process -> {
+                    processes.forEach(process -> {
                         String constraint = getConstraint(process);
-                        result.add(new EngineIndependentProcess(process, FileTasks.getFilenameWithoutExtension(process),
-                                Collections.singletonList(new BPMNTestCase().assertDeploymentFailed()),
+                        result.add(new Test(process, FileTasks.getFilenameWithoutExtension(process),
+                                Collections.singletonList(new BPMNTestCaseBuilder().assertDeploymentFailed().getTestCase(1, FileTasks.getFilenameWithoutExtension(process))),
                                 new Feature(new FeatureSet(Groups.BPMN_CONSTRAINTS, constraint),
                                         FileTasks.getFilenameWithoutExtension(process))));
                     });

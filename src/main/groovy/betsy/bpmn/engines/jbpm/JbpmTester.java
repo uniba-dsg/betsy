@@ -1,233 +1,93 @@
 package betsy.bpmn.engines.jbpm;
 
-import betsy.bpmn.engines.BPMNEnginesUtil;
-import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.JsonHelper;
+import java.nio.file.Path;
+import java.util.List;
 
+import betsy.bpmn.engines.BPMNEnginesUtil;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
+import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.TestCaseUtil;
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import pebl.test.TestCase;
+import pebl.test.TestStep;
+import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.GatherTracesTestStep;
+import pebl.test.steps.vars.Variable;
+import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class JbpmTester {
 
-    private BPMNTestCase testCase;
-
-    private String processStartUrl;
-
-    private String processHistoryUrl;
-
-    private String processDeploymentUrl;
-
-    private String name;
-
-    private String deploymentId;
-
-    private BPMNTester bpmnTester;
-
-    private Path logDir;
-
-    private String user = "admin";
-
-    private String password = "admin";
+    private final TestCase testCase;
+    private final BPMNTester bpmnTester;
+    private final JbpmApiBasedProcessInstanceOutcomeChecker processInstanceOutcomeChecker;
+    private final Path logDir;
+    private final Path serverLogFile;
 
     private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
+
+    public JbpmTester(TestCase testCase, BPMNTester bpmnTester,
+                      JbpmApiBasedProcessInstanceOutcomeChecker processInstanceOutcomeChecker,
+                      Path logDir, Path serverLogFile) {
+        this.testCase = testCase;
+        this.bpmnTester = bpmnTester;
+        this.processInstanceOutcomeChecker = processInstanceOutcomeChecker;
+        this.logDir = logDir;
+        this.serverLogFile = serverLogFile;
+    }
 
     /**
      * Runs a single test
      */
     public void runTest() {
-        addDeploymentErrorsToLogFile();
+        String key = TestCaseUtil.getKey(testCase);
 
-        // skip execution if deployment is expected to fail
-        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
-            LOGGER.info("Skipping execution of process as deployment is expected to have failed.");
-            // if deployment has not failed the logX.txt file has to be generated for further test processing
-            if(!Files.exists(getFileName())) {
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest =
+                new JbpmLogBasedProcessInstanceOutcomeChecker(serverLogFile).checkProcessOutcome(key);
+        if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
+            BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_DEPLOYMENT);
+        }
+
+        for (TestStep testStep : testCase.getTestSteps()) {
+            if (testStep instanceof ProcessStartWithVariablesTestStep) {
                 try {
-                    Files.createFile(getFileName());
-                } catch (IOException e) {
-                    LOGGER.warn("Creation of file "+getFileName()+" failed.", e);
+                    ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = (ProcessStartWithVariablesTestStep) testStep;
+                    List<Variable> variables = processStartWithVariablesTestStep.getVariables();
+                    new JbpmProcessStarter().start(processStartWithVariablesTestStep.getProcess(), variables);
+                } catch (Exception e) {
+                    LOGGER.info("Could not start process", e);
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_RUNTIME);
                 }
-            }
-        } else {
-            // try execution of deployed process
+            } else if (testStep instanceof DelayTestStep) {
+                WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
+            } else if (testStep instanceof GatherTracesTestStep) {
+                // Check on parallel execution
+                BPMNEnginesUtil.checkParallelExecution(testCase, logDir);
 
-            if (testCase.hasParallelProcess()) {
-                // replace processId (".../process/ProcessId/start") with BPMNTestCase.PARALLEL_PROCESS_KEY
-                // deployment id must not be changed
-                String parallelProcessUrl = processStartUrl
-                        .replace(name + "/start", BPMNTestCase.PARALLEL_PROCESS_KEY + "/start");
-                startProcess(parallelProcessUrl);
-            }
+                // Check whether MARKER file exists
+                BPMNEnginesUtil.checkMarkerFileExists(testCase, logDir);
 
-            //setup variables and start process
-            Map<String, Object> variables = new HashMap<>();
-            for (BPMNTestVariable variable : testCase.getVariables()) {
-                variables.put(variable.getName(), variable.getValue());
-            }
+                // Check data type
+                BPMNEnginesUtil.checkDataLog(testCase, logDir);
 
-            StringJoiner joiner = new StringJoiner("&", "?", "");
-            for (Map.Entry<String, Object> entry : variables.entrySet()) {
-                joiner.add("map_" + entry.getKey() + "=" + entry.getValue());
-            }
+                BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, logDir);
 
-            String requestUrl = processStartUrl + joiner.toString();
-            startProcess(requestUrl);
-
-            //delay for timer intermediate event
-            WaitTasks.sleep(testCase.getDelay().orElse(0));
-
-            // Check on parallel execution
-            BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
-
-            // Check whether MARKER file exists
-            BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
-
-            // Check data type
-            BPMNEnginesUtil.checkDataLog(testCase, getFileName());
-
-            BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
-            checkProcessOutcome();
-
-        }
-
-        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
-
-        bpmnTester.test();
-    }
-
-    private void startProcess(String requestUrl) {
-        try {
-            LOGGER.info("Trying to start process \"" + name + "\".");
-            JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-        } catch (RuntimeException ex) {
-            if (ex.getMessage() != null && ex.getMessage().contains("No runtime manager could be found")) {
-                LOGGER.info("Instantiation failed as no runtime manager could be found. Retrying in "+ TimeoutRepository.getTimeout("JbpmTester.runTest").getTimeoutInMs() +"ms.");
-                //retry after delay
-                WaitTasks.sleep(TimeoutRepository.getTimeout("JbpmTester.runTest").getTimeoutInMs());
-                try {
-                    JsonHelper.postStringWithAuth(requestUrl, new JSONObject(), 200, user, password);
-                } catch (RuntimeException innerEx) {
-                    LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
-                    BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = processInstanceOutcomeChecker.checkProcessOutcome(key);
+                if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED) {
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_PROCESS_ABORTED);
+                } else if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+                } else if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ESCALATION_EVENT_THROWN) {
+                    BPMNAssertions.appendToFile(logDir, BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
                 }
-            } else {
-                LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_RUNTIME);
+
+                LOGGER.info("contents of log file " + logDir + ": " + FileTasks.readAllLines(logDir));
+
+                bpmnTester.test();
             }
         }
-    }
-
-    private void checkProcessOutcome() {
-        try {
-            LOGGER.info("Trying to check process result status for " + name);
-            String result = JsonHelper.getStringWithAuth(processHistoryUrl, 200, user, password);
-            if (result.contains("ERR-1")) {
-                LOGGER.info("Process has been aborted. Error with id ERR-1 detected.");
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-            } else if (result.contains("ESC_1")) {
-                LOGGER.info("Process has been aborted. Escalation with id ESC_1 detected.");
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
-            } else if (result.contains("<status>3</status>")) {
-                LOGGER.info("Process has been aborted with unknown error.");
-                BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_PROCESS_ABORTED);
-            } else if (result.contains("<status>1</status>")) {
-                LOGGER.info("Process completed normally.");
-            }
-
-        } catch (RuntimeException innerEx) {
-            LOGGER.info("Checking process result status failed.", innerEx);
-        }
-    }
-
-    private void addDeploymentErrorsToLogFile() {
-        if(!isProcessDeployed()) {
-            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
-            LOGGER.info(BPMNAssertions.ERROR_DEPLOYMENT + ": " + deploymentId + ", " + name + ": Deployment error detected.");
-        }
-    }
-
-    private boolean isProcessDeployed() {
-        String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
-        return result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
-                result.contains("<status>DEPLOYED</status>") || 
-                result.contains("<deployment-id>"+deploymentId+"</deployment-id>");
-    }
-
-    private Path getFileName() {
-        return logDir.resolve("log" + testCase.getNumber() + ".txt");
-    }
-
-    public BPMNTestCase getTestCase() {
-        return testCase;
-    }
-
-    public void setTestCase(BPMNTestCase testCase) {
-        this.testCase = testCase;
-    }
-
-    public void setProcessStartUrl(String processStartUrl) {
-        this.processStartUrl = processStartUrl;
-    }
-
-    public void setProcessHistoryUrl(String processHistoryUrl) {
-        this.processHistoryUrl = processHistoryUrl;
-    }
-
-    public void setProcessDeploymentUrl(String processDeploymentUrl) {
-        this.processDeploymentUrl = processDeploymentUrl;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDeploymentId() {
-        return deploymentId;
-    }
-
-    public void setDeploymentId(String deploymentId) {
-        this.deploymentId = deploymentId;
-    }
-
-    public void setLogDir(Path logDir) {
-        this.logDir = logDir;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setBpmnTester(BPMNTester bpmnTester) {
-        this.bpmnTester = bpmnTester;
     }
 
 }

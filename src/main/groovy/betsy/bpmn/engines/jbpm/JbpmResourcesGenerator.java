@@ -1,11 +1,11 @@
 package betsy.bpmn.engines.jbpm;
 
-import betsy.common.tasks.FileTasks;
-import betsy.common.util.ClasspathHelper;
-
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+
+import betsy.common.tasks.FileTasks;
+import betsy.common.util.ClasspathHelper;
 
 public class JbpmResourcesGenerator {
 

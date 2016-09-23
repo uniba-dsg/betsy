@@ -1,13 +1,18 @@
 package betsy.bpel.engines.bpelg;
 
-import betsy.bpel.model.BPELProcess;
-import betsy.bpel.model.steps.WsdlOperation;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import betsy.bpel.model.BPELProcess;
+import betsy.bpel.model.BPELWsdlOperations;
+import pebl.test.steps.soap.WsdlOperation;
 
 public class Util {
 
@@ -17,7 +22,7 @@ public class Util {
         String canonicalText = betsy.common.engines.Util.canonicalizeXML(text);
 
         Set<WsdlOperation> operations = new HashSet<>();
-        operations.addAll(Arrays.asList(WsdlOperation.SYNC_STRING, WsdlOperation.SYNC, WsdlOperation.ASYNC));
+        operations.addAll(Arrays.asList(BPELWsdlOperations.SYNC_STRING, BPELWsdlOperations.SYNC, BPELWsdlOperations.ASYNC));
 
         Set<WsdlOperation> implementedOperations = new HashSet<>();
 

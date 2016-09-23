@@ -1,5 +1,7 @@
 package betsy.bpmn.engines;
 
+import java.nio.file.Path;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -10,8 +12,6 @@ import com.mashape.unirest.http.utils.SyncIdleConnectionMonitorThread;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.nio.file.Path;
 
 public class JsonHelper {
 
@@ -34,7 +34,7 @@ public class JsonHelper {
             logResponse(response.getBody());
 
             if (response.getBody().isArray()) {
-                return response.getBody().getArray().getJSONObject(0);
+                return response.getBody().getArray().optJSONObject(0);
             } else {
                 return response.getBody().getObject();
             }
@@ -84,6 +84,20 @@ public class JsonHelper {
             logResponse(response.getBody());
 
             return response.getBody().getObject();
+        } catch (UnirestException e) {
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
+        }
+    }
+
+    public static JSONArray getJSONWithAuthAsArray(String url, int expectedCode, String username, String password) {
+        log.info("HTTP GET " + url);
+
+        try {
+            HttpResponse<JsonNode> response = Unirest.get(url).basicAuth(username, password).header("Accept", "application/json").asJson();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+
+            return response.getBody().getArray();
         } catch (UnirestException e) {
             throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }

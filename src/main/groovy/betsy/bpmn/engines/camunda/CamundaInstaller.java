@@ -1,13 +1,13 @@
 package betsy.bpmn.engines.camunda;
 
+import java.nio.file.Path;
+import java.util.Optional;
+
 import betsy.common.config.Configuration;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import betsy.common.tasks.ZipTasks;
-
-import java.nio.file.Path;
-import java.util.Optional;
 
 public class CamundaInstaller {
 
@@ -31,11 +31,9 @@ public class CamundaInstaller {
             FileTasks.copyFileIntoFolder(Configuration.getDownloadsDir().resolve(groovyFile.get()), getTomcatDestinationDir().resolve("lib"));
         }
 
-        //TODO use templates for creating these files
         FileTasks.createFile(destinationDir.resolve("camunda_startup.bat"), cdToTomcatBinFolder() + " && call startup.bat");
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.bat"), cdToTomcatBinFolder() + " && call shutdown.bat");
 
-        //TODO use templates for creating these files
         FileTasks.createFile(destinationDir.resolve("camunda_startup.sh"), cdToTomcatBinFolder() + " && ./startup.sh");
         FileTasks.createFile(destinationDir.resolve("camunda_shutdown.sh"), cdToTomcatBinFolder() + " && ./shutdown.sh");
 

@@ -3,11 +3,13 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.EngineAPI;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 
 import java.nio.file.Path;
 import java.util.List;
+
+import javax.xml.namespace.QName;
 
 public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess> {
 
@@ -18,23 +20,33 @@ public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess>
     }
 
     @Override
-    public void deploy(BPELProcess process) {
-        engine.deploy(process);
+    public void deploy(String name, Path path) {
+        engine.deploy(name, path);
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
-        engine.buildArchives(process);
+    public boolean isDeployed(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    public String getEndpointUrl(BPELProcess process) {
-        return engine.getEndpointUrl(process);
+    public void undeploy(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    public void storeLogs(BPELProcess process) {
-        engine.storeLogs(process);
+    public Path buildArchives(BPELProcess process) {
+        return engine.buildArchives(process);
+    }
+
+    @Override
+    public String getEndpointUrl(String name) {
+        return engine.getEndpointUrl(name);
+    }
+
+    @Override
+    public void storeLogs(Path targetLogsPath) {
+        engine.storeLogs(targetLogsPath);
     }
 
     @Override
@@ -77,7 +89,7 @@ public class UniformProcessEngineManagementAPI implements EngineAPI<BPELProcess>
         return engine.getLogs();
     }
 
-    @Override public Engine getEngineObject() {
+    @Override public EngineExtended getEngineObject() {
         return engine.getEngineObject();
     }
 }

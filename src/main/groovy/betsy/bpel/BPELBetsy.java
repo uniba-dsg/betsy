@@ -4,7 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.validation.BPELValidator;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,12 +40,12 @@ public class BPELBetsy {
         return processes;
     }
 
-    public void setProcesses(List<EngineIndependentProcess> processes) {
+    public void setProcesses(List<Test> processes) {
         new BPELValidator(Objects.requireNonNull(processes)).validate();
 
         List<BPELProcess> processList = new ArrayList<>();
-        for(EngineIndependentProcess engineIndependentProcess : processes) {
-            processList.add(new BPELProcess(engineIndependentProcess));
+        for(Test test : processes) {
+            processList.add(new BPELProcess(test));
         }
         this.processes = processList;
     }

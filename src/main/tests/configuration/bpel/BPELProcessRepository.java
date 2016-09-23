@@ -1,9 +1,9 @@
 package configuration.bpel;
 
-import betsy.bpel.model.assertions.ExitAssertion;
-import betsy.bpel.model.assertions.SoapFaultTestAssertion;
-import betsy.bpel.model.steps.SoapTestStep;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
+import pebl.test.assertions.ExitAssertion;
+import pebl.test.assertions.SoapFaultTestAssertion;
+import pebl.test.steps.soap.SoapTestStep;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;
@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 public class BPELProcessRepository {
 
-    private final Repository<EngineIndependentProcess> repo = new Repository<>();
+    private final Repository<Test> repo = new Repository<>();
 
     public static final BPELProcessRepository INSTANCE = new BPELProcessRepository();
 
     private BPELProcessRepository() {
-        List<EngineIndependentProcess> all = new LinkedList<>();
+        List<Test> all = new LinkedList<>();
         all.addAll(BasicActivityProcesses.BASIC_ACTIVITIES);
         all.addAll(ScopeProcesses.SCOPES);
         all.addAll(StructuredActivityProcesses.STRUCTURED_ACTIVITIES);
@@ -35,7 +35,7 @@ public class BPELProcessRepository {
                 // f.get(null) returns the value of the field. the null parameter is ignored as the field is static.
                 try {
                     Object value = f.get(null);
-                    repo.put(f.getName(), (List<EngineIndependentProcess>) value);
+                    repo.put(f.getName(), (List<Test>) value);
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException("Could not retrieve field value " + f.getName(), e);
                 }
@@ -44,8 +44,8 @@ public class BPELProcessRepository {
 
         repo.put("STATIC_ANALYSIS", StaticAnalysisProcesses.STATIC_ANALYSIS);
 
-        Map<String, List<EngineIndependentProcess>> ruleGroups = StaticAnalysisProcesses.getGroupsPerRuleForSAProcesses(StaticAnalysisProcesses.STATIC_ANALYSIS);
-        for (Map.Entry<String, List<EngineIndependentProcess>> entry : ruleGroups.entrySet()) {
+        Map<String, List<Test>> ruleGroups = StaticAnalysisProcesses.getGroupsPerRuleForSAProcesses(StaticAnalysisProcesses.STATIC_ANALYSIS);
+        for (Map.Entry<String, List<Test>> entry : ruleGroups.entrySet()) {
             repo.put(entry.getKey(), entry.getValue());
         }
 
@@ -70,24 +70,24 @@ public class BPELProcessRepository {
                                         a instanceof ExitAssertion)))).collect(Collectors.toList()));
 
         // insert every process into the map
-        for (EngineIndependentProcess process : repo.getByName("ALL")) {
+        for (Test process : repo.getByName("ALL")) {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
 
-        for (EngineIndependentProcess process : repo.getByName("STATIC_ANALYSIS")) {
+        for (Test process : repo.getByName("STATIC_ANALYSIS")) {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
 
-        for (EngineIndependentProcess process : repo.getByName("ERRORS")) {
+        for (Test process : repo.getByName("ERRORS")) {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
     }
 
-    public List<EngineIndependentProcess> getByName(String name) {
+    public List<Test> getByName(String name) {
         return repo.getByName(name);
     }
 
-    public List<EngineIndependentProcess> getByNames(String... names) {
+    public List<Test> getByNames(String... names) {
         return repo.getByNames(names);
     }
 

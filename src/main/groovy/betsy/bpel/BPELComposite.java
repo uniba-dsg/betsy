@@ -6,7 +6,7 @@ import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.common.analytics.Analyzer;
-import betsy.common.reporting.TestsEngineDependent;
+import betsy.tools.TestsEngineDependent;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
@@ -92,7 +92,7 @@ public class BPELComposite {
 
     protected void checkIsRunning(AbstractBPELEngine engine) {
         if (engine.isRunning()) {
-            throw new IllegalStateException("Engine " + engine + " is running");
+            throw new IllegalStateException("EngineExtended " + engine + " is running");
         }
     }
 
@@ -126,7 +126,7 @@ public class BPELComposite {
     }
 
     protected void deploy(final BPELProcess process) {
-        log(process.getTargetPath() + "/deploy", () -> new UniformProcessEngineManagementAPI(process.getEngine()).deploy(process));
+        log(process.getTargetPath() + "/deploy", () -> new UniformProcessEngineManagementAPI(process.getEngine()).deploy(process.getName(), process.getDeploymentPackagePath()));
     }
 
     protected void install(final BPELProcess process) {
@@ -156,7 +156,7 @@ public class BPELComposite {
     }
 
     protected void collect(final BPELProcess process) {
-        log(process.getTargetPath() + "/collect", () -> new UniformProcessEngineManagementAPI(process.getEngine()).storeLogs(process));
+        log(process.getTargetPath() + "/collect", () -> new UniformProcessEngineManagementAPI(process.getEngine()).storeLogs(process.getTargetLogsPath()));
     }
 
     protected void testSoapUi(final BPELProcess process) {
@@ -180,7 +180,10 @@ public class BPELComposite {
     protected void buildPackage(final BPELProcess process) {
         log(process.getTargetPath() + "/build_package",
                 () -> IOCapture.captureIO(
-                        () -> new UniformProcessEngineManagementAPI(process.getEngine()).buildArchives(process)));
+                        () -> {
+                            Path path = new UniformProcessEngineManagementAPI(process.getEngine()).buildArchives(process);
+                            process.setDeploymentPackagePath(path);
+                        }));
     }
 
     public void setTestSuite(BPELTestSuite testSuite) {

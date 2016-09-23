@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * A {@link DeployRequest} contains all relevant information for the
- * deployment of an Engine's {@link Process}.<br>
+ * deployment of an EngineExtended's {@link Process}.<br>
  * The binaries are included as a {@link FileMessage}. Everything else, such as
  * where to deploy, which executable to use and where the logs are located, can
  * be set according to the engine the {@link Process} belongs to and the

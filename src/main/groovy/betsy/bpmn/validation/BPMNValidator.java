@@ -1,7 +1,7 @@
 package betsy.bpmn.validation;
 
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Assert;
 import org.w3c.dom.Document;
@@ -17,7 +17,7 @@ import java.util.*;
 
 public class BPMNValidator {
 
-    private List<EngineIndependentProcess> processes;
+    private List<Test> processes;
 
     private DocumentBuilder builder;
 
@@ -34,7 +34,7 @@ public class BPMNValidator {
     }
 
     private void assertNamingConventionsCorrect() {
-        for (EngineIndependentProcess process : processes) {
+        for (Test process : processes) {
             try {
                 Document doc = builder.parse(process.getProcess().toString());
 
@@ -66,7 +66,7 @@ public class BPMNValidator {
     private void assertLogMessagesCorrect() {
         Set<String> messages = new HashSet<>();
 
-        for (EngineIndependentProcess process : processes) {
+        for (Test process : processes) {
             try {
                 Document doc = builder.parse(process.getProcess().toString());
 
@@ -99,7 +99,7 @@ public class BPMNValidator {
         Assert.assertArrayEquals(ALLOWED_LOG_MESSAGES, actualMessages);
     }
 
-    private void addMessage(Set<String> assertions, EngineIndependentProcess process, String x) {
+    private void addMessage(Set<String> assertions, Test process, String x) {
         if (!Arrays.asList(ALLOWED_LOG_MESSAGES).contains(x)) {
             System.out.println(x + " in " + process.getProcess());
         }

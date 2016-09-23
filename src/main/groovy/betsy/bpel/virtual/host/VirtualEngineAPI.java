@@ -5,6 +5,7 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public interface VirtualEngineAPI {
      */
     Set<Integer> getRequiredPorts();
 
-    DeployRequest buildDeployRequest(BPELProcess process) throws IOException;
+    DeployRequest buildDeployRequest(String name, Path path) throws IOException;
 
     LogFilesRequest buildLogFilesRequest();
 

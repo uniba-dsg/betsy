@@ -1,12 +1,12 @@
 package betsy.bpmn.model;
 
-import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.common.model.AbstractTestSuite;
-
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.common.model.AbstractTestSuite;
 
 public class BPMNTestSuite extends AbstractTestSuite<AbstractBPMNEngine, BPMNProcess> {
 

@@ -41,7 +41,7 @@ public class VBoxController {
     }
 
     /**
-     * Import the Engine's virtualMachine from the given file.
+     * Import the EngineExtended's virtualMachine from the given file.
      *
      * @param vmName     desired name of the virtualMachine
      * @param engineName name of the engine the new VM belongs to

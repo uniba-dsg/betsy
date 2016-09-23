@@ -1,42 +1,52 @@
 package betsy.bpmn.model;
 
-import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.ProcessFolderStructure;
-import betsy.common.model.engine.Engine;
-import betsy.common.model.engine.EngineDimension;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.feature.FeatureDimension;
-import betsy.common.model.feature.Group;
-
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.common.model.ProcessFolderStructure;
+import betsy.common.model.engine.EngineExtended;
+import betsy.common.model.engine.EngineDimension;
+import pebl.feature.Feature;
+import pebl.feature.FeatureDimension;
+import pebl.feature.Group;
+import pebl.test.Test;
+import pebl.test.TestCase;
+
 public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess>, FeatureDimension, EngineDimension {
 
-    private EngineIndependentProcess engineIndependentProcess;
+    private Test test;
     private AbstractBPMNEngine engine;
+    private Path deploymentPackagePath;
 
-    public BPMNProcess(EngineIndependentProcess engineIndependentProcess) {
-        this.engineIndependentProcess = Objects.requireNonNull(engineIndependentProcess);
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
+    public Path getDeploymentPackagePath() {
+        return deploymentPackagePath;
+    }
+
+    public void setDeploymentPackagePath(Path deploymentPackagePath) {
+        this.deploymentPackagePath = deploymentPackagePath;
+    }
+
+    public BPMNProcess(Test test) {
+        this.test = Objects.requireNonNull(test);
     }
 
     public BPMNProcess createCopyWithoutEngine() {
-        return new BPMNProcess(engineIndependentProcess);
+        return new BPMNProcess(test);
     }
 
     public void setEngine(AbstractBPMNEngine engine) {
         this.engine = engine;
-    }
-
-    public String getGroupId() {
-        return "de.uniba.dsg";
-    }
-
-    public String getVersion() {
-        return "1.0";
     }
 
     public Path getTargetReportsPathWithCase(int testCaseNumber) {
@@ -66,43 +76,47 @@ public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProce
 
     @Override
     public Path getProcess() {
-        return engineIndependentProcess.getProcess();
+        return test.getProcess();
     }
 
     @Override
     public Group getGroup() {
-        return this.engineIndependentProcess.getGroup();
+        return this.test.getGroup();
     }
 
     @Override
     public Feature getFeature() {
-        return engineIndependentProcess.getFeature();
+        return test.getFeature();
     }
 
-    public List<BPMNTestCase> getTestCases() {
-        return engineIndependentProcess.getTestCases().stream().map(p -> (BPMNTestCase) p).collect(Collectors.toList());
+    public List<TestCase> getTestCases() {
+        return test.getTestCases().stream().map(p -> (TestCase) p).collect(Collectors.toList());
     }
 
     @Override
     public int compareTo(BPMNProcess o) {
-        return engineIndependentProcess.compareTo(o.engineIndependentProcess);
+        return test.compareTo(o.test);
     }
 
     public String getDescription() {
-        return engineIndependentProcess.getDescription();
+        return test.getDescription();
     }
 
     @Override
-    public Engine getEngineObject() {
+    public EngineExtended getEngineObject() {
         return getEngine().getEngineObject();
     }
 
     public FeatureDimension getFeatureDimension() {
-        return engineIndependentProcess;
+        return test;
     }
 
     @Override
     public String getGroupName() {
         return getFeatureDimension().getGroup().getName();
+    }
+
+    public String getPackageID() {
+        return String.join(".", getEngineID(), getGroup().getName());
     }
 }

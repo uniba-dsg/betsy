@@ -35,9 +35,9 @@ public class VirtualActiveBpelEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(BPELProcess process) {
+    public String getEndpointUrl(String name) {
         // is not delegated because of the dependency to the local Tomcat
-        return "http://localhost:" + HTTP_PORT + "/active-bpel/services/" + process.getName() + "TestInterfaceService";
+        return "http://localhost:" + HTTP_PORT + "/active-bpel/services/" + name + "TestInterfaceService";
     }
 
     @Override
@@ -48,9 +48,9 @@ public class VirtualActiveBpelEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
+    public Path buildArchives(BPELProcess process) {
         // use default engine's operations
-        defaultEngine.buildArchives(process);
+        return defaultEngine.buildArchives(process);
     }
 
     @Override
@@ -59,11 +59,11 @@ public class VirtualActiveBpelEngine extends AbstractVirtualBPELEngine {
     }
 
     @Override
-    public DeployRequest buildDeployRequest(BPELProcess process) throws IOException {
+    public DeployRequest buildDeployRequest(String name, Path path) throws IOException {
         DeployRequest operation = new DeployRequest();
-        operation.setFileMessage(FileMessage.build(process.getTargetPackageFilePath("bpr")));
+        operation.setFileMessage(FileMessage.build(path));
         operation.setEngineName(getName());
-        operation.setProcessName(process.getName());
+        operation.setProcessName(name);
         operation.setDeploymentLogFilePath(get("virtual.engines.active_bpel_v.deploymentLogFile"));
         operation.setDeploymentDir(get("virtual.engines.active_bpel_v.deploymentDir"));
         operation.setDeployTimeout(TimeoutRepository.getTimeout("active_bpel_v.deployment"));

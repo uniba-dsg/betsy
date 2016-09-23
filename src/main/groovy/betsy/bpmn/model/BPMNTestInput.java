@@ -1,5 +1,7 @@
 package betsy.bpmn.model;
 
+import pebl.test.steps.vars.Variable;
+
 public enum BPMNTestInput {
 
     INPUT_A("a"), INPUT_B("b"), INPUT_C("c"), INPUT_AB("ab"), INPUT_AC("ac"), INPUT_BC("bc"), INPUT_ABC("abc");
@@ -14,7 +16,7 @@ public enum BPMNTestInput {
         return value;
     }
 
-    public BPMNTestVariable getVariable() {
-        return new BPMNTestVariable("test", "String", getValue());
+    public Variable getVariable() {
+        return new Variable("test", "String", getValue());
     }
 }

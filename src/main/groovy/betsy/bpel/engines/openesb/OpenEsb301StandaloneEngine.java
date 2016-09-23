@@ -1,21 +1,30 @@
 package betsy.bpel.engines.openesb;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.*;
-import betsy.common.util.ClasspathHelper;
-import betsy.common.util.StringUtils;
-import org.apache.log4j.Logger;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.config.Configuration;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
+import betsy.common.tasks.ConsoleTasks;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.NetworkTasks;
+import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.WaitTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.tasks.ZipTasks;
+import betsy.common.timeouts.timeout.TimeoutRepository;
+import betsy.common.util.ClasspathHelper;
+import betsy.common.util.StringUtils;
+import org.apache.log4j.Logger;
 
 public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
@@ -39,10 +48,10 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
+    public void deploy(String name, Path path) {
 
-        String processName = process.getName();
-        Path packageFilePath = process.getTargetPackageCompositeFilePath();
+        String processName = name;
+        Path packageFilePath = path;
 
         LOGGER.info("Deploying " + processName + " from " + packageFilePath);
 
@@ -68,6 +77,42 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
     }
 
+    @Override
+    public boolean isDeployed(QName process) {
+        return Files.exists(getInstanceFolder().resolve("server").resolve("jbi").resolve("service-assemblies").resolve(process.getLocalPart()+ "Application"));
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        String processName = process.getLocalPart();
+
+        LOGGER.info("Undeploying " + processName);
+
+        // QUIRK path must always be in unix style, otherwise it is not correctly deployed
+
+        Path passwordFilePath = getServerPath().resolve("password.txt");
+        FileTasks.createFile(passwordFilePath, "OE_ADMIN_PASSWORD=admin");
+
+        String[] deployParams = {"-jar", adminBinariesFile, "stop-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                processName + "Application"};
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
+
+        WaitTasks.sleep(5_000);
+
+        String[] startParams = {"-jar", adminBinariesFile, "undeploy-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                "--force",
+                processName + "Application"};
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
+    }
+
     public void buildDeploymentDescriptor(BPELProcess process) {
         Path metaDir = process.getTargetProcessPath().resolve("META-INF");
         Path catalogFile = metaDir.resolve("catalog.xml");
@@ -78,7 +123,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void buildArchives(BPELProcess process) {
+    public Path buildArchives(BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // engine specific steps
@@ -91,20 +136,13 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         getPackageBuilder().bpelFolderToZipFile(process);
 
         new OpenEsbCompositePackager(process).build();
+
+        return process.getTargetPackageCompositeFilePath();
     }
 
     @Override
-    public String getEndpointUrl(BPELProcess process) {
-        return "http://localhost:18181" + "/" + process.getName() + "TestInterface";
-    }
-
-    @Override
-    public void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
+    public String getEndpointUrl(String name) {
+        return "http://localhost:18181" + "/" + name + "TestInterface";
     }
 
     @Override
@@ -181,10 +219,16 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
 
     @Override
     public void shutdown() {
-        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), "openesb.bat").values("stop"));
+        Path instanceBinFolder = getInstanceBinFolder();
+        if(!Files.exists(instanceBinFolder)) {
+            // cannot shutdown if not installed
+            return;
+        }
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(instanceBinFolder, "openesb.bat").values("stop"));
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
 
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceBinFolder(), getInstanceBinFolder().resolve("openesb.sh")).values("stop"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(instanceBinFolder, instanceBinFolder.resolve("openesb.sh")).values("stop"));
     }
 
     @Override
@@ -193,7 +237,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1", LocalDate.of(2015, 2, 13), "CDDL-1.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "openesb", "3.0.1", LocalDate.of(2015, 2, 13), "CDDL-1.0");
     }
 }

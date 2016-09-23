@@ -1,8 +1,6 @@
 package betsy.bpel.ws;
 
-import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
-import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType;
-import org.apache.log4j.Logger;
+import java.util.Date;
 
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
@@ -11,7 +9,11 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFactory;
 import javax.xml.soap.SOAPFault;
 import javax.xml.ws.soap.SOAPFaultException;
-import java.util.Date;
+
+import betsy.bpel.model.ConcurrencyDetectionCodes;
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType;
+import org.apache.log4j.Logger;
 
 @WebService(name = "TestPartnerPortType", serviceName = "TestService", portName = "TestPort", targetNamespace = "http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", endpointInterface = "de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType", wsdlLocation = "TestPartner.wsdl")
 public class TestPartnerPortTypeRegular implements TestPartnerPortType {
@@ -20,11 +22,6 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
 
     public static final int CODE_THROW_CUSTOM_FAULT = -5;
     public static final int CODE_THROW_FAULT = -6;
-
-    public static final int CODE_CONCURRENCY_DETECTION___OPERATION_UNDER_TEST = 100;
-    public static final int CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS = 101;
-    public static final int CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES = 102;
-    public static final int CODE_CONCURRENCY_DETECTION___RESET_COUNTERS = 103;
 
     private final ConcurrencyDetector detector = new ConcurrencyDetector();
 
@@ -44,19 +41,10 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
         String logHeader = "Partner: startProcessSync with input " + inputPart;
         logInfo(logHeader);
 
-
         if (inputPart == CODE_THROW_CUSTOM_FAULT) {
             logInfo(logHeader + " - Throwing CustomFault");
-            try {
-                SOAPFactory fac = SOAPFactory.newInstance();
-                SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"));
-                Detail detail = sf.addDetail();
-                detail.addDetailEntry(new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "Error"));
-                throw new SOAPFaultException(sf);
-            } catch (SOAPException e) {
-                logInfo("Exception occurred during building the response message", e);
-                throw new RuntimeException("could not create response", e);
-            }
+            SOAPFault sf = createSoapFault();
+            throw new SOAPFaultException(sf);
         } else if (inputPart == CODE_THROW_FAULT) {
             logInfo(logHeader + " - Throwing Fault");
             throw new FaultMessage("expected Error", inputPart);
@@ -67,21 +55,31 @@ public class TestPartnerPortTypeRegular implements TestPartnerPortType {
         }
     }
 
+    public static SOAPFault createSoapFault() {
+        try {
+            SOAPFactory fac = SOAPFactory.newInstance();
+            SOAPFault sf = fac.createFault("expected Error", new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"));
+            Detail detail = sf.addDetail();
+            detail.addDetailEntry(new QName("http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner", "Error"));
+            return sf;
+        } catch (SOAPException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private int detectConcurrency(final int inputPart) {
-        if (inputPart == CODE_CONCURRENCY_DETECTION___OPERATION_UNDER_TEST) {
+        if (inputPart == ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___OPERATION_UNDER_TEST) {
             return detector.access();
-        } else if (inputPart == CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS) {
+        } else if (inputPart == ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS) {
             return detector.getNumberOfConcurrentCalls();
-        } else if (inputPart == CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES) {
+        } else if (inputPart == ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES) {
             return detector.getNumberOfCalls();
-        } else if (inputPart == CODE_CONCURRENCY_DETECTION___RESET_COUNTERS) {
+        } else if (inputPart == ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___RESET_COUNTERS) {
             return detector.reset();
         } else {
             return inputPart;
         }
     }
-
-
 
     public void startProcessWithEmptyMessage() {
         logInfo("Partner: startProcessWithEmptyMessage");

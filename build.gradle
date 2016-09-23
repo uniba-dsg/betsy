@@ -41,6 +41,9 @@ configurations {
 }
 
 dependencies {
+    internal project(':common')
+    internal project(':peal')
+    internal project(':pebl')
     internal 'org.codehaus.groovy:groovy-all:2.4.7'
 
     internal 'org.apache.ant:ant:1.9.7'
@@ -53,6 +56,8 @@ dependencies {
     internal 'commons-io:commons-io:2.5'
     internal 'commons-lang:commons-lang:2.6'
     internal 'org.json:json:5.0.5'
+
+    internal 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.2'
 
     // requires 'net.sf.saxon:Saxon-HE' - we use the one that is shipped with soapUI
 
@@ -78,7 +83,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+    gradleVersion = '3.1'
 }
 
 task downloadMaven {
@@ -175,6 +180,10 @@ run {
 test {
     testLogging {
         exceptionFormat "full" // default is "short"
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showCauses true
+        showExceptions true
+        showStackTraces true
     }
 }
 

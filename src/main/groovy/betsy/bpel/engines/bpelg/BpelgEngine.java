@@ -1,18 +1,20 @@
 package betsy.bpel.engines.bpelg;
 
-import betsy.bpel.engines.AbstractLocalBPELEngine;
-import betsy.bpel.model.BPELProcess;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.FileTasks;
-import betsy.common.tasks.XSLTTasks;
-import betsy.common.util.ClasspathHelper;
-
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import betsy.bpel.engines.AbstractLocalBPELEngine;
+import betsy.bpel.model.BPELProcess;
+import betsy.common.engines.tomcat.Tomcat;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
+import betsy.common.tasks.FileTasks;
+import betsy.common.tasks.XSLTTasks;
+import betsy.common.util.ClasspathHelper;
 
 public class BpelgEngine extends AbstractLocalBPELEngine {
 
@@ -21,22 +23,13 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
+    public EngineExtended getEngineObject() {
         // TODO this is the snapshot release, the real 5.3 was released on 2012-12-26
-        return new Engine(ProcessLanguage.BPEL, "bpelg", "5.3", LocalDate.of(2012, 4, 27), "GPL-2.0+");
+        return new EngineExtended(ProcessLanguage.BPEL, "bpelg", "5.3", LocalDate.of(2012, 4, 27), "GPL-2.0+");
     }
 
     public Path getDeploymentDir() {
         return getTomcat().getTomcatDir().resolve("bpr");
-    }
-
-    @Override
-    public void storeLogs(BPELProcess process) {
-        FileTasks.mkdirs(process.getTargetLogsPath());
-
-        for (Path p : getLogs()) {
-            FileTasks.copyFileIntoFolder(p, process.getTargetLogsPath());
-        }
     }
 
     @Override
@@ -54,8 +47,8 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public String getEndpointUrl(final BPELProcess process) {
-        return getTomcat().getTomcatUrl() + "/bpel-g/services/" + process.getName() + "TestInterfaceService";
+    public String getEndpointUrl(String name) {
+        return getTomcat().getTomcatUrl() + "/bpel-g/services/" + name + "TestInterfaceService";
     }
 
     public Tomcat getTomcat() {
@@ -78,12 +71,23 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public void deploy(BPELProcess process) {
-        new BpelgDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("bpelg.log")).deploy(process.getTargetPackageFilePath(), process.getName());
+    public void deploy(String name, Path path) {
+        new BpelgDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("bpelg.log"))
+                .deploy(path, name);
+    }
+
+    @Override public boolean isDeployed(QName process) {
+        return new BpelgDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("bpelg.log"))
+                .isDeployed(process.getLocalPart());
+    }
+
+    @Override public void undeploy(QName process) {
+        new BpelgDeployer(getDeploymentDir(), getTomcat().getTomcatLogsDir().resolve("bpelg.log"))
+                .undeploy(process.getLocalPart());
     }
 
     @Override
-    public void buildArchives(final BPELProcess process) {
+    public Path buildArchives(final BPELProcess process) {
         getPackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
 
         // deployment descriptor
@@ -110,6 +114,8 @@ public class BpelgEngine extends AbstractLocalBPELEngine {
         getPackageBuilder().replaceEndpointTokenWithValue(process);
         getPackageBuilder().replacePartnerTokenWithValue(process);
         getPackageBuilder().bpelFolderToZipFile(process);
+
+        return process.getTargetPackageFilePath();
     }
 
 }

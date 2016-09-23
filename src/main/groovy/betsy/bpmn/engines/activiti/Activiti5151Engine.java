@@ -1,17 +1,17 @@
 package betsy.bpmn.engines.activiti;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
-import betsy.common.tasks.FileTasks;
-
 import java.time.LocalDate;
 import java.util.Optional;
+
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
+import betsy.common.tasks.FileTasks;
 
 public class Activiti5151Engine extends ActivitiEngine {
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "activiti", "5.15.1", LocalDate.of(2014, 4,1), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPMN, "activiti", "5.15.1", LocalDate.of(2014, 4,1), "Apache-2.0");
     }
 
     @Override

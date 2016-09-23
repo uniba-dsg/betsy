@@ -2,14 +2,14 @@ package betsy.bpel.cli;
 
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.common.cli.CliParameter;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.test.Test;
 
 import java.util.List;
 
 public interface BPELCliParameter extends CliParameter {
 
     List<AbstractBPELEngine> getEngines();
-    List<EngineIndependentProcess> getProcesses();
+    List<Test> getProcesses();
 
     boolean checkDeployment();
     boolean hasCustomPartnerAddress();

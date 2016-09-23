@@ -1,11 +1,12 @@
 package betsy.bpel.soapui;
 
-import betsy.bpel.model.steps.DelayTestStep;
-import betsy.bpel.model.steps.DeployableCheckTestStep;
-import betsy.bpel.model.steps.NotDeployableCheckTestStep;
-import betsy.bpel.model.steps.SoapTestStep;
-import betsy.common.model.input.TestCase;
-import betsy.common.model.input.TestStep;
+import betsy.bpel.model.BPELWsdlOperations;
+import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.DeployableCheckTestStep;
+import pebl.test.steps.NotDeployableCheckTestStep;
+import pebl.test.steps.soap.SoapTestStep;
+import pebl.test.TestCase;
+import pebl.test.TestStep;
 import com.eviware.soapui.config.TestStepConfig;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlOperation;
@@ -15,6 +16,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.*;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.WsdlTestRequestStepFactory;
+import pebl.test.steps.soap.WsdlService;
 
 import java.util.Objects;
 
@@ -44,7 +46,7 @@ public class SoapUiTestStepBuilder {
         } else if (testStep instanceof DelayTestStep) {
             addDelayTime(soapUiTestCase, (DelayTestStep) testStep, testStepNumber);
         } else if (testStep instanceof SoapTestStep) {
-            if (((SoapTestStep) testStep).isTestPartner()) {
+            if (((SoapTestStep) testStep).getService().equals(new WsdlService("testPartner"))) {
                 addStepForTestPartner((SoapTestStep) testStep, testStepNumber);
             } else {
                 addStepForTestInterface((SoapTestStep) testStep, testStepNumber);
@@ -53,7 +55,6 @@ public class SoapUiTestStepBuilder {
         } else {
             throw new IllegalArgumentException("Given test step not recognized. Got " + testStep);
         }
-
     }
 
     public static void addDelayTime(WsdlTestCase soapUITestCase, DelayTestStep testStep, int testStepNumber) {
@@ -87,11 +88,11 @@ public class SoapUiTestStepBuilder {
 
     private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, SoapTestStep testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.getTestRequest();
-        if (betsy.bpel.model.steps.WsdlOperation.SYNC.equals(testStep.getOperation())) {
+        if (BPELWsdlOperations.SYNC.equals(testStep.getOperation())) {
             soapUiRequest.setRequestContent(TestMessages.createSyncInputMessage(testStep.getInput()));
-        } else if (betsy.bpel.model.steps.WsdlOperation.ASYNC.equals(testStep.getOperation())) {
+        } else if (BPELWsdlOperations.ASYNC.equals(testStep.getOperation())) {
             soapUiRequest.setRequestContent(TestMessages.createAsyncInputMessage(testStep.getInput()));
-        } else if (testStep.isTestPartner()) {
+        } else if (testStep.getService().equals(new WsdlService("testInterface"))) {
             soapUiRequest.setRequestContent(TestMessages.createSyncTestPartnerInputMessage(testStep.getInput()));
         } else {
             soapUiRequest.setRequestContent(TestMessages.createSyncStringInputMessage(testStep.getInput()));
@@ -105,7 +106,7 @@ public class SoapUiTestStepBuilder {
         WsdlTestRequestStep soapUiRequestStep = createTestStepConfig(soapUiTestCase, testStepNumber, "TestInterfacePortTypeBinding", testStep.getOperation().getName());
         WsdlTestRequest soapUiRequest = createSoapUiRequest(soapUiRequestStep, testStep);
 
-        if (!testStep.isOneWay()) {
+        if (!testStep.getOperation().isOneWay()) {
             SoapUiAssertionBuilder.addSynchronousAssertion(testStep, soapUiRequestStep, soapUiTestCase, testStepNumber);
         } else {
             SoapUiAssertionBuilder.addOneWayAssertion(soapUiRequest);

@@ -1,7 +1,7 @@
 package configuration.bpel;
 
-import betsy.common.model.feature.Group;
-import betsy.common.model.feature.Language;
+import pebl.feature.Group;
+import pebl.feature.Language;
 import configuration.Capabilities;
 
 public class Groups {

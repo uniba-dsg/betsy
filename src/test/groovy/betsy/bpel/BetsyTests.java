@@ -3,11 +3,10 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.model.engine.Engine;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
+import pebl.test.Test;
+import pebl.ProcessLanguage;
 import configuration.bpel.BPELProcessRepository;
-import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,11 +14,13 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 public class BetsyTests {
-    @Test
+    @org.junit.Test
     public void simulateATestRun() throws Exception {
         AbstractBPELEngine engine = new MockEngine();
-        List<EngineIndependentProcess> processes = BPELProcessRepository.INSTANCE.getByName("ALL");
+        List<Test> processes = BPELProcessRepository.INSTANCE.getByName("ALL");
         BPELBetsy betsy = new BPELBetsy();
 
 
@@ -54,23 +55,32 @@ public class BetsyTests {
             return false;
         }
 
-        public void deploy(BPELProcess process) {
+        public void deploy(String name, Path path) {
+        }
+
+        @Override public boolean isDeployed(QName process) {
+            return false;
+        }
+
+        @Override public void undeploy(QName process) {
+
         }
 
         public void storeLogs(BPELProcess process) {
         }
 
-        public void buildArchives(BPELProcess process) {
+        public Path buildArchives(BPELProcess process) {
             new BPELEnginePackageBuilder().createFolderAndCopyProcessFilesToTarget(process);
+            return process.getTargetPackageFilePath();
         }
 
-        public String getEndpointUrl(BPELProcess process) {
+        public String getEndpointUrl(String name) {
             return "myendpoint";
         }
 
         @Override
-        public Engine getEngineObject() {
-            return new Engine(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
+        public EngineExtended getEngineObject() {
+            return new EngineExtended(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
         }
 
         public Path getXsltPath() {
@@ -79,7 +89,7 @@ public class BetsyTests {
 
         @Override
         public List<Path> getLogs() {
-            return null;
+            return Collections.emptyList();
         }
     }
 

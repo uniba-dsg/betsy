@@ -3,13 +3,13 @@ package betsy;
 import betsy.bpel.BPELMain;
 import betsy.bpel.tools.PartnerServiceControlGUI;
 import betsy.bpmn.BPMNMain;
-import betsy.common.timeouts.TimeoutCalibrator;
 import betsy.tools.AnalyticsMain;
 import betsy.tools.EngineControlGUI;
 import betsy.tools.EngineMain;
 import betsy.tools.JsonMain;
 import betsy.tools.ProcessMain;
 import betsy.tools.TestsPerGroup;
+import betsy.tools.TimeoutCalibrator;
 
 public class Main {
 

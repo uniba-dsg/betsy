@@ -2,14 +2,14 @@ package betsy.bpmn.engines.camunda;
 
 import java.time.LocalDate;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 
 public class Camunda720Engine extends Camunda710Engine {
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "camunda", "7.2.0", LocalDate.of(2014, 11, 28), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPMN, "camunda", "7.2.0", LocalDate.of(2014, 11, 28), "Apache-2.0");
     }
 
     @Override

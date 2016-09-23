@@ -1,0 +1,73 @@
+<html>
+	<head>
+	      <title>Results</title>
+	      <link href="bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+	    <div class="container-fluid">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Overall Results</h3>
+                    </div>
+                    <div class="panel-body">
+                         <table class="table table-condensed table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class='col-md-4'></th>
+                                <% report.nameToEngine.each { name, engineExtended -> %>
+                                   <th class='text-center'><%= name %> </th>
+                                <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td col-md-4'>Number of successful tests:</td>
+                                    <% report.nameToEngine.each { name, engineExtended -> %>
+                                    <td class='text-center' style="vertical-align: middle">
+                                        <%= report.getNumberOfSuccessfulTestsPer(engineExtended) %> of <%= report.tests.size() %> tests (<%= Math.round(report.getNumberOfSuccessfulTestsPer(engineExtended)/report.tests.size()*100) %>%)
+                                    </td>
+                                <% } %>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+		<% report.nameToGroup.each { groupName, group -> %>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Tests for Group <em>${group.name}</em></h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="table table-condensed table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class='col-md-4'></th>
+                                <% report.nameToEngine.each { name, engineExtended -> %>
+                                   <th class='text-center'><%= name %> (<%= report.getNumberOfSuccessfulTestsPerEngineAndGroup(engineExtended, group) %> / <%= group.tests.size() %>)</th>
+                                <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% group.tests.each { test -> %>
+                                <tr>
+                                    <td class='${test.support.isTotal() ? "success" : test.support.isNone() ? "danger" : "warning"} col-md-4'>${test.fullName}</td>
+                                <% test.engineToResult.each {engineExtended, result -> %>
+                                    <td class='${result.support.isTotal() ? "success" : result.support.isNone() ? "danger" : "warning"} text-center' style="vertical-align: middle">
+                                        <a href='${report.getRelativePath(group,engineExtended,test)}'>${result.deployable ? result.support.getSign() : "<span class='label label-danger'>undeployable</span>"}</a>
+                                    </td>
+                                <% } %>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+	    <% } %>
+	    </div>
+	</body>
+</html>

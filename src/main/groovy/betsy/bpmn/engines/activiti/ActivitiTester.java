@@ -1,145 +1,97 @@
 package betsy.bpmn.engines.activiti;
 
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Objects;
+
 import betsy.bpmn.engines.BPMNEnginesUtil;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.LogFileAnalyzer;
-import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.engines.TestCaseUtil;
 import betsy.bpmn.model.BPMNAssertions;
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestVariable;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import pebl.test.TestCase;
+import pebl.test.TestStep;
+import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.GatherTracesTestStep;
+import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.test.steps.vars.Variable;
 
 public class ActivitiTester {
     private static final Logger LOGGER = Logger.getLogger(ActivitiTester.class);
-    private BPMNTestCase testCase;
-    private String key;
-    private Path logDir;
-    private BPMNTester bpmnTester;
 
-    public static void startProcess(String id, Object... variables) {
-        LOGGER.info("Start process instance for " + id);
-        String deploymentUrl = ActivitiEngine.URL + "/service/runtime/process-instances";
+    private final TestCase testCase;
+    private final Path logDir;
+    private final Path instanceLogFile;
+    private final BPMNTester bpmnTester;
 
-        Map<String, Object> request = new HashMap<>();
-        request.put("processDefinitionKey", id);
-        request.put("variables", variables);
-        request.put("businessKey", "key-" + id);
-
-        JSONObject jsonRequest = new JSONObject(request);
-        LOGGER.info("With json message: " + jsonRequest.toString());
-
-        JsonHelper.post(deploymentUrl, jsonRequest, 201);
+    public ActivitiTester(TestCase testCase, Path logDir, Path instanceLogFile, BPMNTester bpmnTester) {
+        this.testCase = Objects.requireNonNull(testCase);
+        this.logDir = Objects.requireNonNull(logDir);
+        this.instanceLogFile = Objects.requireNonNull(instanceLogFile);
+        this.bpmnTester = Objects.requireNonNull(bpmnTester);
     }
 
     /**
      * runs a single test
      */
     public void runTest() {
+        String key = TestCaseUtil.getKey(testCase);
+
         Path logFile = logDir.resolve("activiti.log");
 
-        addDeploymentErrorsToLogFile(logFile);
+        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+        if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
+            BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
+        }
 
-        // skip execution if deployment is expected to fail
-        if(testCase.getAssertions().contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
-            LOGGER.info("Skipping execution of process as deployment is expected to have failed.");
-            // if deployment has not failed the logX.txt file has to be generated for further test processing
-            if(!Files.exists(getFileName())) {
+        for (TestStep testStep : testCase.getTestSteps()) {
+            if (testStep instanceof ProcessStartWithVariablesTestStep) {
                 try {
-                    Files.createFile(getFileName());
-                } catch (IOException e) {
-                    LOGGER.warn("Creation of file "+getFileName()+" failed.", e);
-                }
-            }
-        } else {
-            // try execution of deployed process
-            try {
-                if (testCase.hasParallelProcess()) {
-                    startProcess(BPMNTestCase.PARALLEL_PROCESS_KEY);
-                }
+                    ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = (ProcessStartWithVariablesTestStep) testStep;
+                    List<Variable> variables = processStartWithVariablesTestStep.getVariables();
+                    new ActivitiProcessStarter().start(processStartWithVariablesTestStep.getProcess(), variables);
+                } catch (Exception e) {
+                    LOGGER.info("Could not start process", e);
 
-                startProcess(key, BPMNTestVariable.mapToArrayWithMaps(testCase.getVariables()));
-
-                // Wait and check for errors only if process instantiation was successful
-                WaitTasks.sleep(testCase.getDelay().orElse(0));
-                addRuntimeErrorsToLogFile(logFile);
+                    BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest =
+                            new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+                    if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
+                        BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
+                    } else if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                        BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+                    }
+                }
+            } else if (testStep instanceof DelayTestStep) {
+                WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
+            } else if (testStep instanceof GatherTracesTestStep) {
+                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest =
+                        new ActivitiLogBasedProcessInstanceOutcomeChecker(logFile).checkProcessOutcome(key);
+                if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
+                    BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
+                } else if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                    BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
+                }
 
                 // Check on parallel execution
-                BPMNEnginesUtil.checkParallelExecution(testCase, getFileName());
+                BPMNEnginesUtil.checkParallelExecution(testCase, instanceLogFile);
 
                 // Check whether MARKER file exists
-                BPMNEnginesUtil.checkMarkerFileExists(testCase, getFileName());
+                BPMNEnginesUtil.checkMarkerFileExists(testCase, instanceLogFile);
 
                 // Check data type
-                BPMNEnginesUtil.checkDataLog(testCase, getFileName());
-            } catch (Exception e) {
-                LOGGER.info("Could not start process", e);
-                addRuntimeErrorsToLogFile(logFile);
+                BPMNEnginesUtil.checkDataLog(testCase, instanceLogFile);
+
+                BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, instanceLogFile);
+
+                LOGGER.info("contents of log file " + instanceLogFile + ": " + FileTasks.readAllLines(instanceLogFile));
+
+                bpmnTester.test();
             }
 
         }
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, getFileName());
-
-        LOGGER.info("contents of log file " + getFileName() + ": " + FileTasks.readAllLines(getFileName()));
-
-        bpmnTester.test();
     }
 
-    private void addDeploymentErrorsToLogFile(Path logFile) {
-
-        LOGGER.info("Checking whether deployment was successful.");
-        String checkDeploymentUrl = ActivitiEngine.URL + "/service/repository/deployments?name="+key+".bpmn";
-
-        JSONObject result = JsonHelper.get(checkDeploymentUrl, 200);
-        if(result.getInt("size")!=1) {
-            LOGGER.info("Deployment of process'"+key+"' failed.");
-            BPMNAssertions.appendToFile(getFileName(), BPMNAssertions.ERROR_DEPLOYMENT);
-        }
-    }
-
-    private void addRuntimeErrorsToLogFile(Path logFile) {
-        LogFileAnalyzer analyzer = new LogFileAnalyzer(logFile);
-        analyzer.addSubstring("org.activiti.engine.ActivitiException", BPMNAssertions.ERROR_RUNTIME);
-        analyzer.addSubstring("EndEvent_2 throws error event with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        analyzer.addSubstring("No catching boundary event found for error with errorCode 'ERR-1'", BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-        for (BPMNAssertions runtimeError : analyzer.getErrors()) {
-            BPMNAssertions.appendToFile(getFileName(), runtimeError);
-        }
-    }
-
-    private Path getFileName() {
-        return logDir.resolve("..").normalize().resolve("bin").resolve("log" + testCase.getNumber() + ".txt");
-    }
-
-    public BPMNTestCase getTestCase() {
-        return testCase;
-    }
-
-    public void setTestCase(BPMNTestCase testCase) {
-        this.testCase = testCase;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public void setLogDir(Path logDir) {
-        this.logDir = logDir;
-    }
-
-    public void setBpmnTester(BPMNTester bpmnTester) {
-        this.bpmnTester = bpmnTester;
-    }
 }

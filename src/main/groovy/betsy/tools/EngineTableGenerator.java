@@ -17,7 +17,7 @@ import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpel.virtual.host.VirtualEngineAPI;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.IsEngine;
 
 public class EngineTableGenerator {
@@ -31,11 +31,13 @@ public class EngineTableGenerator {
             writer.write("Language & Name & Version & License & Developed in & Released at & Configurations\\\\");
             writer.newLine();
 
-            List<Engine> engines = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
-            Collections.sort(engines, Comparator.comparing(Engine::getLanguage).thenComparing(Engine::getName).thenComparing(Engine::getVersion));
-            for (Engine engine : engines) {
+            List<EngineExtended> engines = getEngines().stream().filter(e -> !(e instanceof VirtualEngineAPI)).map(e -> ((IsEngine) e).getEngineObject()).collect(Collectors.toList());
+            Collections.sort(engines, Comparator.comparing(EngineExtended::getLanguage)
+                    .thenComparing(EngineExtended::getName)
+                    .thenComparing(EngineExtended::getVersion));
+            for (EngineExtended engine : engines) {
                 String line = String.join(" & ", Arrays.asList(
-                        engine.getLanguage().name(),
+                        engine.getLanguage().getID(),
                         engine.getName(),
                         engine.getVersion(),
                         engine.getLicense(),

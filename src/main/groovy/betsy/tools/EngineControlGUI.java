@@ -4,29 +4,19 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.model.feature.Capability;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.feature.Group;
-import betsy.common.model.feature.Language;
-import betsy.common.model.input.EngineIndependentProcess;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -51,32 +41,16 @@ public class EngineControlGUI extends Application {
     private static class LogFileUtil {
 
         /**
-         * Requires BPEL or BPMN Engine to be passed!
+         * Requires BPEL or BPMN EngineExtended to be passed!
          */
         public static Path copyLogsToTempFolder(Object e) {
             final Path tmpFolder = createTempFolder(e.toString());
             if (e instanceof AbstractBPELEngine) {
                 AbstractBPELEngine eNew = (AbstractBPELEngine) e;
-                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
-                eNew.storeLogs(new BPELProcess(engineIndependentProcess) {
-
-                    @Override
-                    public Path getTargetLogsPath() {
-                        return tmpFolder;
-                    }
-                });
+                eNew.storeLogs(tmpFolder);
             } else if (e instanceof AbstractBPMNEngine) {
                 AbstractBPMNEngine eNew = (AbstractBPMNEngine) e;
-                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("cap"), "lang"), "description"), "featureSet"), "feature");
-                EngineIndependentProcess engineIndependentProcess = new EngineIndependentProcess(Paths.get("."), "asdf", Collections.emptyList(), feature, Collections.emptyList());
-                eNew.storeLogs(new BPMNProcess(engineIndependentProcess) {
-
-                    @Override
-                    public Path getTargetLogsPath() {
-                        return tmpFolder;
-                    }
-                });
+                eNew.storeLogs(tmpFolder);
             }
             return tmpFolder;
         }
@@ -102,7 +76,7 @@ public class EngineControlGUI extends Application {
         listView.setPrefWidth(750);
         pane.setTop(new ScrollPane(listView));
 
-        primaryStage.setTitle("ECC - Engine Control Center");
+        primaryStage.setTitle("ECC - EngineExtended Control Center");
 
         Scene scene = new Scene(pane, 800, 1000);
         primaryStage.setScene(scene);

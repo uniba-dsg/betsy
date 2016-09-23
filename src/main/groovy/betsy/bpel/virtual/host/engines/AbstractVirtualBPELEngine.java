@@ -1,7 +1,6 @@
 package betsy.bpel.virtual.host.engines;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.model.BPELProcess;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFile;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFiles;
@@ -20,8 +19,8 @@ import betsy.bpel.virtual.host.exceptions.vm.PortRedirectException;
 import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
 import betsy.bpel.virtual.host.virtualbox.SnapshotCreator;
 import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
@@ -32,6 +31,8 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
 
 /**
  * A {@link AbstractVirtualBPELEngine} does not install and use an engine server on the
@@ -54,12 +55,12 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     private VirtualBoxMachine vm;
 
     @Override
-    public Engine getEngineObject() {
-        Engine engineId = defaultEngine.getEngineObject();
+    public EngineExtended getEngineObject() {
+        EngineExtended engineId = defaultEngine.getEngineObject();
         List<String> configuration = new LinkedList<>();
         configuration.addAll(engineId.getConfiguration());
         configuration.add("virtual");
-        return new Engine(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), engineId.getReleaseDate(), configuration, engineId.getLicense());
+        return new EngineExtended(ProcessLanguage.BPEL, engineId.getName(), engineId.getVersion(), engineId.getReleaseDate(), configuration, engineId.getLicense());
     }
 
     public void setVirtualBox(VirtualBox virtualBox) {
@@ -175,26 +176,30 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
     }
 
     @Override
-    public void deploy(BPELProcess process) {
+    public void deploy(String name, Path path) {
         try {
-            LOGGER.info("Deploying virtualized engine " + getName() + ", process: " + process.toString());
+            LOGGER.info("Deploying virtualized engine " + getName() + ", process: " + name);
 
-            DeployRequest container = buildDeployRequest(process);
+            DeployRequest container = buildDeployRequest(name, path);
             comm.deployOperation(container);
             LOGGER.info("deploy done!");
         } catch (Exception exception) {
-            LOGGER.error("error during deployment - collecting logs", StackTraceUtils.deepSanitize(exception));
-            try {
-                storeLogs(process);
-                throw new RuntimeException(exception);
-            } catch (Exception exception2) {
-                throw new RuntimeException("Could not store logfiles of the failed deployment.", exception2);
-            }
+            LOGGER.error("error during deployment", StackTraceUtils.deepSanitize(exception));
         }
     }
 
     @Override
-    public void storeLogs(BPELProcess process) {
+    public boolean isDeployed(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public void storeLogs(Path targetLogPath) {
         LOGGER.debug("Storing logs for engine " + getName());
 
         LogFilesRequest request = buildLogFilesRequest();
@@ -203,13 +208,13 @@ public abstract class AbstractVirtualBPELEngine extends AbstractBPELEngine imple
             LogFilesResponse response = comm.collectLogFilesOperation(request);
 
             // create log folders
-            Files.createDirectories(process.getTargetLogsPath());
+            Files.createDirectories(targetLogPath);
 
             // save to disk...
             for (LogFiles logFiles : response.getLogFiles()) {
 
                 String normalizedFolderPath = logFiles.getFolder().replaceAll("/", "_");
-                Path folder = process.getTargetLogsPath().resolve(normalizedFolderPath);
+                Path folder = targetLogPath.resolve(normalizedFolderPath);
                 Files.createDirectories(folder);
 
                 for (LogFile logFile : logFiles.getLogFiles()) {

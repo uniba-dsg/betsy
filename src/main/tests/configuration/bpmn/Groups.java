@@ -1,7 +1,7 @@
 package configuration.bpmn;
 
-import betsy.common.model.feature.Group;
-import betsy.common.model.feature.Language;
+import pebl.feature.Group;
+import pebl.feature.Language;
 import configuration.Capabilities;
 
 public class Groups {
@@ -17,6 +17,5 @@ public class Groups {
     public static Group DATA = new Group("data", CONFORMANCE_BPMN, "Model data flow within a process.");
     public static Group BPMN_CONSTRAINTS = new Group("bpmn_constraints", CONFORMANCE_BPMN, "Processes violating constraints stated in the specification.");
     public static Group CFPATTERNS = new Group("cfpatterns", EXPRESSIVENESS_BPMN, "The original 20 Workflow Control-Flow patterns from van der Aalst et al.");
-
 
 }

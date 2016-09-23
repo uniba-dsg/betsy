@@ -14,14 +14,21 @@ import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.input.ExternalWSDLTestPartner;
-import betsy.common.model.input.NoTestPartner;
-import betsy.common.model.input.TestPartner;
-import betsy.common.model.input.InternalWSDLTestPartner;
+import pebl.feature.FeatureSet;
+import pebl.feature.Feature;
+import pebl.test.Test;
+import pebl.test.partner.rules.AnyInput;
+import pebl.test.partner.rules.EchoInputAsOutput;
+import pebl.test.partner.ExternalWSDLTestPartner;
+import pebl.test.partner.rules.IntegerInput;
+import pebl.test.partner.rules.IntegerOutputWithStatusCode;
+import pebl.test.partner.NoTestPartner;
+import pebl.test.TestPartner;
+import pebl.test.partner.InternalWSDLTestPartner;
 import betsy.common.tasks.FileTasks;
+import pebl.test.partner.rules.OperationInputOutputRule;
+import pebl.test.partner.rules.RawOutput;
+import pebl.test.partner.rules.TimeoutInsteadOfOutput;
 
 public class ErrorProcesses {
 
@@ -32,24 +39,24 @@ public class ErrorProcesses {
 
     private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
 
-    private static final EngineIndependentProcess BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+    private static final Test BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
             "BackdoorRobustness",
-            "errorsbase/BackdoorRobustness",
+            "BackdoorRobustness",
             "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
-    private static final EngineIndependentProcess IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
+    private static final Test IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
             "ImprovedBackdoorRobustness",
-            "errorsbase/ImprovedBackdoorRobustness",
+            "ImprovedBackdoorRobustness",
             "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
             new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
 
-    private static List<EngineIndependentProcess> createProcesses() {
+    private static List<Test> createProcesses() {
         FileTasks.deleteDirectory(ERRORS_DIR);
         FileTasks.mkdirs(ERRORS_DIR);
 
-        List<EngineIndependentProcess> result = getProcesses();
+        List<Test> result = getProcesses();
 
-        for (EngineIndependentProcess process : result) {
+        for (Test process : result) {
             // update fileName
             String processFileName = process.getName();
             if (processFileName.startsWith("IBR_")) {
@@ -66,10 +73,10 @@ public class ErrorProcesses {
         createProcesses(); // this is to recreate the error processes
     }
 
-    public static List<EngineIndependentProcess> getProcesses() {
+    public static List<Test> getProcesses() {
         Path errorsDir = Paths.get("src/main/tests/files/bpel/errors");
 
-        List<EngineIndependentProcess> result = new LinkedList<>();
+        List<Test> result = new LinkedList<>();
 
         result.addAll(createTests(errorsDir, BACKDOOR_ROBUSTNESS));
         result.addAll(createTests(errorsDir, IMPROVED_BACKDOOR_ROBUSTNESS));
@@ -79,26 +86,26 @@ public class ErrorProcesses {
         return result;// make sure the happy path is the first test
     }
 
-    private static EngineIndependentProcess cloneErrorBetsyProcess(final EngineIndependentProcess baseProcess, final int number, final Feature feature, Path errorsDir) {
+    private static Test cloneErrorBetsyProcess(final Test baseProcess, final int number, final Feature feature, Path errorsDir) {
         // copy file
         String shortenedId = new BPELIdShortener(baseProcess.getName()).getShortenedId();
         final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + feature.getName();
         Path newPath = errorsDir.resolve(filename + ".bpel");
 
-        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.featureSet, FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
+        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.getFeatureSet(), FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
     }
 
-    private static List<EngineIndependentProcess> createTests(Path errorsDir, EngineIndependentProcess baseProcess) {
-        List<EngineIndependentProcess> result = new LinkedList<>();
+    private static List<Test> createTests(Path errorsDir, Test baseProcess) {
+        List<Test> result = new LinkedList<>();
 
-        EngineIndependentProcess happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, new Feature(APP_CONSTRUCT, "happy-path"), errorsDir);
+        Test happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, new Feature(APP_CONSTRUCT, "happy-path"), errorsDir);
         happyPathProcess = happyPathProcess.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
         result.add(happyPathProcess);
 
         for (Error error : getInputToErrorCode()) {
             int number = error.number;
             Feature feature = new Feature(error.featureSet, error.name);
-            EngineIndependentProcess process = cloneErrorBetsyProcess(baseProcess, number, feature, errorsDir);
+            Test process = cloneErrorBetsyProcess(baseProcess, number, feature, errorsDir);
             process = process.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
 
             result.add(process);
@@ -113,25 +120,25 @@ public class ErrorProcesses {
     private static final FeatureSet APP_CONSTRUCT = new FeatureSet(Groups.ERROR, "app");
 
     static TestPartner createErrorTestPartner(String url) {
-        List<InternalWSDLTestPartner.OperationInputOutputRule> tcpActions = new ArrayList<>();
-        tcpActions.add(new InternalWSDLTestPartner.OperationInputOutputRule(
+        List<OperationInputOutputRule> tcpActions = new ArrayList<>();
+        tcpActions.add(new OperationInputOutputRule(
                         "startProcessSync",
-                        new InternalWSDLTestPartner.IntegerInput(50_001),
-                        new InternalWSDLTestPartner.TimeoutInsteadOfOutput()));
+                        new IntegerInput(50_001),
+                        new TimeoutInsteadOfOutput()));
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> httpActions = IntStream.of(
+        List<OperationInputOutputRule> httpActions = IntStream.of(
                 100, 101,
                 201, 202, 203, 204, 205, 206,
                 300, 301, 302, 303, 304, 305, 306, 307,
                 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417,
-                500, 501, 502, 503, 504, 505).mapToObj(i -> new InternalWSDLTestPartner.OperationInputOutputRule(
+                500, 501, 502, 503, 504, 505).mapToObj(i -> new OperationInputOutputRule(
                         "startProcessSync",
-                        new InternalWSDLTestPartner.IntegerInput(i + 22_000),
-                        new InternalWSDLTestPartner.IntegerOutputWithStatusCode(0, i)
+                        new IntegerInput(i + 22_000),
+                        new IntegerOutputWithStatusCode(0, i)
                 )
         ).collect(Collectors.toList());
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
+        List<OperationInputOutputRule> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
             String rawOutput = "";
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/soap");
@@ -142,13 +149,13 @@ public class ErrorProcesses {
             } catch (IOException e) {
             }
 
-            return new InternalWSDLTestPartner.OperationInputOutputRule(
+            return new OperationInputOutputRule(
                     "startProcessSync",
-                    new InternalWSDLTestPartner.IntegerInput(i),
-                    new InternalWSDLTestPartner.RawOutput(rawOutput));
+                    new IntegerInput(i),
+                    new RawOutput(rawOutput));
         }).collect(Collectors.toList());
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
+        List<OperationInputOutputRule> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
             String rawOutput = "";
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/app");
@@ -159,22 +166,22 @@ public class ErrorProcesses {
             } catch (IOException e) {
             }
 
-            return new InternalWSDLTestPartner.OperationInputOutputRule(
+            return new OperationInputOutputRule(
                     "startProcessSync",
-                    new InternalWSDLTestPartner.IntegerInput(i),
-                    new InternalWSDLTestPartner.RawOutput(rawOutput));
+                    new IntegerInput(i),
+                    new RawOutput(rawOutput));
         }).collect(Collectors.toList());
 
-        List<InternalWSDLTestPartner.OperationInputOutputRule> actions = new ArrayList<>();
+        List<OperationInputOutputRule> actions = new ArrayList<>();
         actions.addAll(httpActions);
         actions.addAll(soapActions);
         actions.addAll(appActions);
-        actions.add(new InternalWSDLTestPartner.OperationInputOutputRule("startProcessSync", new InternalWSDLTestPartner.AnyInput(), new InternalWSDLTestPartner.EchoInputAsOutput()));
+        actions.add(new OperationInputOutputRule("startProcessSync", new AnyInput(), new EchoInputAsOutput()));
 
         return new InternalWSDLTestPartner(
                 Paths.get("TestPartner.wsdl"),
                 url,
-                actions.toArray(new InternalWSDLTestPartner.OperationInputOutputRule[] {})
+                actions.toArray(new OperationInputOutputRule[] {})
         );
     }
 
@@ -280,7 +287,7 @@ public class ErrorProcesses {
         result.add(new Error(50002, "tcp-host-unreachable", TCP_CONSTRUCT, new NoTestPartner()));
         result.add(new Error(50003, "tcp-timeout", TCP_CONSTRUCT, new InternalWSDLTestPartner(Paths.get("TestPartner.wsdl"),
                 "http://localhost:2000/bpel-testpartner",
-                new InternalWSDLTestPartner.OperationInputOutputRule("startProcessSync", new InternalWSDLTestPartner.AnyInput(), new InternalWSDLTestPartner.TimeoutInsteadOfOutput()))));
+                new OperationInputOutputRule("startProcessSync", new AnyInput(), new TimeoutInsteadOfOutput()))));
 
         return result;
     }
