@@ -160,7 +160,7 @@ public class Timeouts {
         timeouts.add(new Timeout("OpenEsb30x.startup.waitForStart", 10_000, 500));
         timeouts.add(new Timeout("OpenEsb.startup", 15_000, 500));
         timeouts.add(new Timeout("PetalsEsb.deploy", 20_000, 500));
-        timeouts.add(new Timeout("PetalsEsb.startup", 30_000, 500));
+        timeouts.add(new Timeout("PetalsEsb.startup", 60_000, 500));
         timeouts.add(new Timeout("Wso2.deploy", 120_000, 500));
         timeouts.add(new Timeout("Wso2.deploy.sleep", 2_000, Timeout.Category.UNMEASURABLE));
         timeouts.add(new Timeout("Wso2.undeploy", 120_000, 500));

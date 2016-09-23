@@ -37,7 +37,7 @@ public class PetalsEsbDeployer {
     }
 
     private String getFileName(String processName) {
-        return processName + "Application.zip";
+        return processName + ".zip";
     }
 
     public void undeploy(String processName) {
