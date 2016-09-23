@@ -94,6 +94,7 @@ public class EngineServiceImplBpmnEnginesWithoutUndeployTest extends AbstractEng
         assertEquals(Collections.singletonList("SCRIPT_task1"), Files.readAllLines(instanceLogFile));
 
         engineService.stop(engineId);
+        WaitTasks.sleep(5000);
         assertState(EngineState.INSTALLED);
 
         engineService.uninstall(engineId);
