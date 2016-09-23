@@ -17,16 +17,15 @@ import betsy.common.analytics.CsvReportLoader;
 import betsy.common.analytics.model.CsvReport;
 import betsy.common.analytics.model.Engine;
 import betsy.common.analytics.model.Test;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.input.EngineIndependentProcess;
 import com.google.common.base.Charsets;
 import configuration.bpmn.BPMNProcessRepository;
+import pebl.feature.FeatureSet;
 
 public class ResultsPerFeatureSetGenerator {
 
     private final CsvReport csvReport;
 
-    private final List<EngineIndependentProcess> processes;
+    private final List<pebl.test.Test> processes;
 
     public ResultsPerFeatureSetGenerator(Path csvPath, String processes) {
         CsvReportLoader loader = new CsvReportLoader(csvPath, new BPMNCsvReport());
@@ -45,15 +44,15 @@ public class ResultsPerFeatureSetGenerator {
         List<AggregatedCsvRow> rows = new ArrayList<>();
 
         // Find all Feature Sets
-        List<FeatureSet> featureSets = processes.stream().map(process -> process.getFeature().featureSet).distinct().collect(
+        List<FeatureSet> featureSets = processes.stream().map(process -> process.getFeature().getFeatureSet()).distinct().collect(
                 Collectors.toList());
 
         Map<FeatureSet, List<String>> featureSetMap = new TreeMap<>();
 
         featureSets.forEach(fs -> featureSetMap.put(fs, new ArrayList<>()));
 
-        for(EngineIndependentProcess p : processes) {
-            FeatureSet fs = p.getFeature().featureSet;
+        for(pebl.test.Test p : processes) {
+            FeatureSet fs = p.getFeature().getFeatureSet();
             if(featureSetMap.containsKey(fs)) {
                 featureSetMap.get(fs).add(p.getName());
             }
@@ -68,7 +67,7 @@ public class ResultsPerFeatureSetGenerator {
         // For each feature set:
             for(FeatureSet featureSet : featureSetMap.keySet()) {
 
-                AggregatedCsvRow row = new AggregatedCsvRow(featureSet.getName(), engine.getName(), featureSet.group.getName());
+                AggregatedCsvRow row = new AggregatedCsvRow(featureSet.getName(), engine.getName(), featureSet.getGroup().getName());
 
                 allTests.stream().filter(test -> featureSetMap.get(featureSet).contains(test.getName())).
                         forEach(t -> row.append(t.getEngineToResult().get(engine).getFailed(), t.getEngineToResult().get(engine).getTotal()));
