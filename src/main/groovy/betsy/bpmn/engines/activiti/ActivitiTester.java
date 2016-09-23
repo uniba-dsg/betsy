@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import pebl.test.TestCase;
 import pebl.test.TestStep;
 import pebl.test.steps.DelayTestStep;
+import pebl.test.steps.DeployableCheckTestStep;
 import pebl.test.steps.GatherTracesTestStep;
 import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 import pebl.test.steps.vars.Variable;
@@ -44,65 +45,55 @@ public class ActivitiTester {
 
         Path logFile = logDir.resolve("activiti.log");
 
-        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new ActivitiApiBasedProcessOutcomeChecker().checkProcessOutcome(key);
-        if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
-            BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
-        }
-
-        // skip execution if deployment is expected to fail
-        if (TestCaseUtil.getTraceAssertions(testCase).contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
-            LOGGER.info("Skipping execution of process as deployment is expected to have failed.");
-            // if deployment has not failed the logX.txt file has to be generated for further test processing
-            if(!Files.exists(instanceLogFile)) {
-                try {
-                    Files.createFile(instanceLogFile);
-                } catch (IOException e) {
-                    LOGGER.warn("Creation of file "+instanceLogFile+" failed.", e);
+        for (TestStep testStep : testCase.getTestSteps()) {
+            if (testStep instanceof DeployableCheckTestStep) {
+                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new ActivitiApiBasedProcessOutcomeChecker()
+                        .checkProcessOutcome(key);
+                if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
+                    BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
                 }
-            }
-        } else {
-            for (TestStep testStep : testCase.getTestSteps()) {
-                if (testStep instanceof ProcessStartWithVariablesTestStep) {
-                    try {
-                        ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = (ProcessStartWithVariablesTestStep) testStep;
-                        List<Variable> variables = processStartWithVariablesTestStep.getVariables();
-                        new ActivitiProcessStarter().start(processStartWithVariablesTestStep.getProcess(), variables);
-                    } catch (Exception e) {
-                        LOGGER.info("Could not start process", e);
+            } else if (testStep instanceof ProcessStartWithVariablesTestStep) {
+                try {
+                    ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = (ProcessStartWithVariablesTestStep) testStep;
+                    List<Variable> variables = processStartWithVariablesTestStep.getVariables();
+                    new ActivitiProcessStarter().start(processStartWithVariablesTestStep.getProcess(), variables);
+                } catch (Exception e) {
+                    LOGGER.info("Could not start process", e);
 
-                        BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(
-                                logFile).checkProcessOutcome(key);
-                        if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
-                            BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
-                        } else if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
-                            BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
-                        }
-                    }
-                } else if (testStep instanceof DelayTestStep) {
-                    WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
-                } else if (testStep instanceof GatherTracesTestStep) {
                     BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(
                             logFile).checkProcessOutcome(key);
                     if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                         BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
-                    } else if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                    } else if (outcomeAfterTest
+                            == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
                         BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
                     }
-
-                    // Check on parallel execution
-                    BPMNEnginesUtil.checkParallelExecution(testCase, instanceLogFile);
-
-                    // Check whether MARKER file exists
-                    BPMNEnginesUtil.checkMarkerFileExists(testCase, instanceLogFile);
-
-                    // Check data type
-                    BPMNEnginesUtil.checkDataLog(testCase, instanceLogFile);
+                }
+            } else if (testStep instanceof DelayTestStep) {
+                WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
+            } else if (testStep instanceof GatherTracesTestStep) {
+                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(
+                        logFile).checkProcessOutcome(key);
+                if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
+                    BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
+                } else if (outcomeAfterTest
+                        == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {
+                    BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
                 }
 
-            }
-        }
+                // Check on parallel execution
+                BPMNEnginesUtil.checkParallelExecution(testCase, instanceLogFile);
 
-        BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, instanceLogFile);
+                // Check whether MARKER file exists
+                BPMNEnginesUtil.checkMarkerFileExists(testCase, instanceLogFile);
+
+                // Check data type
+                BPMNEnginesUtil.checkDataLog(testCase, instanceLogFile);
+
+                BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, instanceLogFile);
+            }
+
+        }
 
         LOGGER.info("contents of log file " + instanceLogFile + ": " + FileTasks.readAllLines(instanceLogFile));
 
