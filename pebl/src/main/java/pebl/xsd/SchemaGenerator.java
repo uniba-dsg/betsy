@@ -9,6 +9,8 @@ import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.persistence.internal.jaxb.json.schema.JsonSchemaGenerator;
+
 /**
  * Generates the XSD of PEBL
  */
@@ -28,6 +30,19 @@ public class SchemaGenerator {
 
         };
         jc.generateSchema(sor);
+
+        org.eclipse.persistence.jaxb.JAXBContext c = (org.eclipse.persistence.jaxb.JAXBContext) jc;
+        c.generateJsonSchema(new SchemaOutputResolver() {
+
+            public Result createOutput(String uri, String suggestedFileName) throws IOException {
+                System.out.println(uri);
+                File file = new File("pebl/src/main/resources/schema/pebl.json");
+                StreamResult result = new StreamResult(file);
+                result.setSystemId(file.toURI().toURL().toString());
+                return result;
+            }
+
+        }, PEBL.class);
     }
 
 }
