@@ -110,8 +110,7 @@ public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceClean
         return new EngineServiceImpl().getSupportedEngines().stream()
                 .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPEL))
                 // full: ode bpelg orchestra active_bpel wso2
-                // TODO: openesb__2
-                // see without undeploy: openesb__3
+                // see without undeploy: openesb__3, openesb__2
                 .filter(p -> !p.toString().startsWith("openesb"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());

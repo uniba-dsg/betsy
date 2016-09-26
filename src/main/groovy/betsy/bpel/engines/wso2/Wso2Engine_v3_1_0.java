@@ -88,6 +88,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
         if(Files.exists(getBinDir())) {
             ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
+            WaitTasks.sleep(5000); // wait some time until it is shut down
         }
     }
 

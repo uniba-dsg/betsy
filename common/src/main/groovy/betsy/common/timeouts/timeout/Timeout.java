@@ -669,5 +669,10 @@ public class Timeout {
     public enum PlaceOfUse {
         INTERN, EXTERN
     }
+
+    @Override
+    public String toString() {
+        return String.format("timeout %s for %d/%d (%s,%s)", getKey(), value, timeToRepetition.orElse(0), category, placeOfUse);
+    }
 }
 
