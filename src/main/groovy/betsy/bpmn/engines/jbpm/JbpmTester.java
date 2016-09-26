@@ -6,8 +6,8 @@ import java.util.List;
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.TestCaseUtil;
 import betsy.bpmn.model.BPMNAssertions;
+import betsy.bpmn.model.BPMNProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -21,6 +21,7 @@ import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class JbpmTester {
 
+    private final BPMNProcess bpmnProcess;
     private final TestCase testCase;
     private final BPMNTester bpmnTester;
     private final JbpmApiBasedProcessInstanceOutcomeChecker processInstanceOutcomeChecker;
@@ -29,9 +30,10 @@ public class JbpmTester {
 
     private static final Logger LOGGER = Logger.getLogger(JbpmTester.class);
 
-    public JbpmTester(TestCase testCase, BPMNTester bpmnTester,
+    public JbpmTester(BPMNProcess bpmnProcess, TestCase testCase, BPMNTester bpmnTester,
                       JbpmApiBasedProcessInstanceOutcomeChecker processInstanceOutcomeChecker,
                       Path logFile, Path serverLogFile) {
+        this.bpmnProcess = bpmnProcess;
         this.testCase = testCase;
         this.bpmnTester = bpmnTester;
         this.processInstanceOutcomeChecker = processInstanceOutcomeChecker;
@@ -43,12 +45,11 @@ public class JbpmTester {
      * Runs a single test
      */
     public void runTest() {
-        String key = TestCaseUtil.getKey(testCase);
 
         for (TestStep testStep : testCase.getTestSteps()) {
             if (testStep instanceof DeployableCheckTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest =
-                        new JbpmLogBasedProcessInstanceOutcomeChecker(serverLogFile).checkProcessOutcome(key);
+                        processInstanceOutcomeChecker.checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
                     BPMNAssertions.appendToFile(logFile, BPMNAssertions.ERROR_DEPLOYMENT);
                 }
@@ -76,7 +77,8 @@ public class JbpmTester {
 
                 BPMNEnginesUtil.substituteSpecificErrorsForGenericError(testCase, logFile);
 
-                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = processInstanceOutcomeChecker.checkProcessOutcome(key);
+                BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcome = processInstanceOutcomeChecker.checkProcessOutcome(
+                        bpmnProcess.getName());
                 if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED) {
                     BPMNAssertions.appendToFile(logFile, BPMNAssertions.ERROR_PROCESS_ABORTED);
                 } else if (outcome == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.PROCESS_INSTANCE_ABORTED_BECAUSE_ERROR_EVENT_THROWN) {

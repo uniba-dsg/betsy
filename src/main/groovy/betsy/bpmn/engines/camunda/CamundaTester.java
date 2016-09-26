@@ -9,8 +9,8 @@ import java.util.Objects;
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.TestCaseUtil;
 import betsy.bpmn.model.BPMNAssertions;
+import betsy.bpmn.model.BPMNProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -26,12 +26,14 @@ public class CamundaTester {
 
     private static final Logger LOGGER = Logger.getLogger(CamundaTester.class);
 
+    private final BPMNProcess bpmnProcess;
     private final TestCase testCase;
     private final Path logDir;
     private final Path instanceLogFile;
     private final BPMNTester bpmnTester;
 
-    public CamundaTester(TestCase testCase, Path logDir, Path instanceLogFile, BPMNTester bpmnTester) {
+    public CamundaTester(BPMNProcess bpmnProcess, TestCase testCase, Path logDir, Path instanceLogFile, BPMNTester bpmnTester) {
+        this.bpmnProcess = bpmnProcess;
         this.testCase = Objects.requireNonNull(testCase);
         this.logDir = Objects.requireNonNull(logDir);
         this.instanceLogFile = Objects.requireNonNull(instanceLogFile);
@@ -42,14 +44,13 @@ public class CamundaTester {
      * runs a single test
      */
     public void runTest() {
-        String key = TestCaseUtil.getKey(testCase);
 
         Path logFile = FileTasks.findFirstMatchInFolder(logDir, "catalina*");
 
         for (TestStep testStep : testCase.getTestSteps()) {
             if (testStep instanceof DeployableCheckTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new CamundaApiBasedProcessInstanceOutcomeChecker()
-                        .checkProcessOutcome(key);
+                        .checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
                     BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
                 }
@@ -66,7 +67,7 @@ public class CamundaTester {
                 WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
             } else if (testStep instanceof GatherTracesTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new CamundaLogBasedProcessInstanceOutcomeChecker(
-                        logFile).checkProcessOutcome(key);
+                        logFile).checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                     BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
                 } else if (outcomeAfterTest

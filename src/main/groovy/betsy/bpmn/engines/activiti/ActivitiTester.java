@@ -9,8 +9,8 @@ import java.util.Objects;
 import betsy.bpmn.engines.BPMNEnginesUtil;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNTester;
-import betsy.bpmn.engines.TestCaseUtil;
 import betsy.bpmn.model.BPMNAssertions;
+import betsy.bpmn.model.BPMNProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
@@ -25,12 +25,14 @@ import pebl.test.steps.vars.Variable;
 public class ActivitiTester {
     private static final Logger LOGGER = Logger.getLogger(ActivitiTester.class);
 
+    private final BPMNProcess bpmnProcess;
     private final TestCase testCase;
     private final Path logDir;
     private final Path instanceLogFile;
     private final BPMNTester bpmnTester;
 
-    public ActivitiTester(TestCase testCase, Path logDir, Path instanceLogFile, BPMNTester bpmnTester) {
+    public ActivitiTester(BPMNProcess bpmnProcess, TestCase testCase, Path logDir, Path instanceLogFile, BPMNTester bpmnTester) {
+        this.bpmnProcess = bpmnProcess;
         this.testCase = Objects.requireNonNull(testCase);
         this.logDir = Objects.requireNonNull(logDir);
         this.instanceLogFile = Objects.requireNonNull(instanceLogFile);
@@ -41,14 +43,13 @@ public class ActivitiTester {
      * runs a single test
      */
     public void runTest() {
-        String key = TestCaseUtil.getKey(testCase);
 
         Path logFile = logDir.resolve("activiti.log");
 
         for (TestStep testStep : testCase.getTestSteps()) {
             if (testStep instanceof DeployableCheckTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = new ActivitiApiBasedProcessOutcomeChecker()
-                        .checkProcessOutcome(key);
+                        .checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
                     BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
                 }
@@ -61,7 +62,7 @@ public class ActivitiTester {
                     LOGGER.info("Could not start process", e);
 
                     BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(
-                            logFile).checkProcessOutcome(key);
+                            logFile).checkProcessOutcome(bpmnProcess.getName());
                     if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                         BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
                     } else if (outcomeAfterTest
@@ -73,7 +74,7 @@ public class ActivitiTester {
                 WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
             } else if (testStep instanceof GatherTracesTestStep) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(
-                        logFile).checkProcessOutcome(key);
+                        logFile).checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
                     BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
                 } else if (outcomeAfterTest
