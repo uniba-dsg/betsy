@@ -92,7 +92,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public Path buildArchives(final BPMNProcess process) {
-        XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"), process.getProcess(), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"));
+        XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
+                process.getProcess(),
+                process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"),
+                "processName", process.getName());
         XSLTTasks.transform(getXsltPath().resolve("jbpm.xsl"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2"));
         FileTasks.deleteFile(process.getTargetPath().resolve("war/WEB-INF/classes/" + process.getName() + ".bpmn2-temp"));
 
@@ -201,10 +204,11 @@ public class JbpmEngine extends AbstractBPMNEngine {
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
             new JbpmTester(
+                    process,
                     testCase,
                     bpmnTester,
-                    createProcessOutcomeChecker(),
-                    getInstanceLogFile(testCaseNumber),
+                    createProcessOutcomeChecker(process.getName()),
+                    getInstanceLogFile(process.getName(), testCaseNumber),
                     getJbossLogDir().resolve("server.log")
             ).runTest();
         }
@@ -212,8 +216,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }
 
-    private Path getInstanceLogFile(int testCaseNumber) {
-        return getJbpmInstallerPath().resolve("log" + testCaseNumber + ".txt");
+    private Path getInstanceLogFile(String processName, int testCaseNumber) {
+        return getJbpmInstallerPath().resolve("log-" + processName + "-" + testCaseNumber + ".txt");
     }
 
     @Override
@@ -222,8 +226,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public Path getLogForInstance(String processName) {
-        return getInstanceLogFile(Integer.parseInt(processName));
+    public Path getLogForInstance(String processName, String instanceId) {
+        return getInstanceLogFile(processName, Integer.parseInt(instanceId));
     }
 
     private static String getDeploymentId(String name) {
