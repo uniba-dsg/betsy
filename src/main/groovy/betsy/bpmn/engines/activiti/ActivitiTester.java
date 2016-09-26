@@ -16,6 +16,8 @@ import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import pebl.test.TestCase;
 import pebl.test.TestStep;
+import pebl.test.assertions.Trace;
+import pebl.test.assertions.TraceTestAssertion;
 import pebl.test.steps.DelayTestStep;
 import pebl.test.steps.DeployableCheckTestStep;
 import pebl.test.steps.GatherTracesTestStep;
@@ -73,6 +75,19 @@ public class ActivitiTester {
             } else if (testStep instanceof DelayTestStep) {
                 WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
             } else if (testStep instanceof GatherTracesTestStep) {
+                // Skip further processing if process is expected to be undeployed
+                if(testStep.getAssertions().stream().filter(a -> a instanceof TraceTestAssertion && ((TraceTestAssertion) a).getTrace().equals(new Trace(BPMNAssertions.ERROR_DEPLOYMENT.toString())))
+                        .findFirst().isPresent()) {
+                    if(!Files.exists(instanceLogFile)) {
+                        try {
+                            Files.createFile(instanceLogFile);
+                        } catch (IOException e) {
+                            LOGGER.warn("Creation of log file failed.", e);
+                        }
+                    }
+                    break;
+                }
+
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = new ActivitiLogBasedProcessInstanceOutcomeChecker(
                         logFile).checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeAfterTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.RUNTIME) {
