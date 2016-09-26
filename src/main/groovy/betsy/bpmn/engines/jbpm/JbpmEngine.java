@@ -230,7 +230,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return getInstanceLogFile(processName, Integer.parseInt(instanceId));
     }
 
-    private static String getDeploymentId(String name) {
+    protected static String getDeploymentId(String name) {
         return "de.uniba.dsg" + ":" + name + ":" + "1.0";
     }
 
@@ -257,8 +257,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         builder.buildTests();
     }
 
-    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker() {
-        return JbpmApiBasedProcessInstanceOutcomeChecker.buildWithDeploymentId();
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
+        String url = getJbpmnUrl() + "/rest/runtime/" + getDeploymentId(name) + "/history/instance/1";
+        String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name);
+        return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl, getDeploymentId(name));
     }
 
 }

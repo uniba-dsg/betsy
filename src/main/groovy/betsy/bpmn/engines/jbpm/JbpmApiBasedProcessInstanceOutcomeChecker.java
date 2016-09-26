@@ -16,25 +16,25 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
     private final String password;
     private final String requestUrl;
 
+    private final String processDeploymentUrl;
+    private final String deploymentId;
 
-    public static JbpmApiBasedProcessInstanceOutcomeChecker buildWithDeploymentId() {
-        String deploymentID = JbpmProcessStarter.getDeploymentID("http://localhost:8080/jbpm-console", "admin", "admin");
-        String url = "http://localhost:8080/jbpm-console" + "/rest/runtime/" + deploymentID + "/history/instance/1";
-        return new JbpmApiBasedProcessInstanceOutcomeChecker(url);
-    }
-
-    public static JbpmApiBasedProcessInstanceOutcomeChecker build() {
-        return new JbpmApiBasedProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/history/instance/1");
-    }
-
-    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl) {
+    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl, String deploymentId) {
         this.user = "admin";
         this.password = "admin";
         this.requestUrl = Objects.requireNonNull(requestUrl);
+        this.processDeploymentUrl = deploymentUrl;
+        this.deploymentId = deploymentId;
     }
 
+    @Override
     public ProcessInstanceOutcome checkProcessOutcome(String name) {
         try {
+            // Check deployment status first
+            if (!isProcessDeployed()) {
+                return ProcessInstanceOutcome.UNDEPLOYED_PROCESS;
+            }
+
             LOGGER.info("Trying to check process result status for " + name);
             String result = JsonHelper.getStringWithAuth(requestUrl, 200, user, password);
             if (result.contains("ERR-1")) {
@@ -50,13 +50,19 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
                 LOGGER.info("Process completed normally.");
                 return ProcessInstanceOutcome.OK;
             }
-
         } catch (RuntimeException innerEx) {
             LOGGER.info("Checking process result status failed.", innerEx);
             return ProcessInstanceOutcome.COULD_NOT_CHECK_PROCESS_INSTANCE_STATUS;
         }
 
         return ProcessInstanceOutcome.UNKNOWN;
+    }
+
+    private boolean isProcessDeployed() {
+        String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
+        return result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
+                result.contains("<status>DEPLOYED</status>") ||
+                result.contains("<deployment-id>"+deploymentId+"</deployment-id>");
     }
 
 }

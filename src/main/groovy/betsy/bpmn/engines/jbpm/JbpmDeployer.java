@@ -43,7 +43,7 @@ public class JbpmDeployer {
         try {
             JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, USER, PASSWORD);
             String status = object.optString("status");
-            return "DEPLOYED".equalsIgnoreCase(status);
+            return "DEPLOYED".equalsIgnoreCase(status) || "DEPLOY_FAILED".equalsIgnoreCase(status);
         } catch (Exception e) {
             LOGGER.error("error: " + e.getMessage());
             return false;
