@@ -58,7 +58,7 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
         return ProcessInstanceOutcome.UNKNOWN;
     }
 
-    private boolean isProcessDeployed() {
+    public boolean isProcessDeployed() {
         String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
         return result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
                 result.contains("<status>DEPLOYED</status>") ||

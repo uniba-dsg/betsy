@@ -37,7 +37,7 @@ public class JbpmDeployer {
         }
     }
 
-    public boolean isDeployed() {
+    public boolean isDeploymentFinished() {
         LOGGER.info("Trying to check the deployment status of process \"" + deploymentId + "\".");
 
         try {

@@ -87,7 +87,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         JbpmDeployer deployer = new JbpmDeployer(getJbpmnUrl(), deploymentId);
         deployer.deploy();
 
-        TimeoutRepository.getTimeout("Jbpm.deploy").waitFor(deployer::isDeployed);
+        TimeoutRepository.getTimeout("Jbpm.deploy").waitFor(deployer::isDeploymentFinished);
     }
 
     @Override
@@ -236,7 +236,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public boolean isDeployed(QName process) {
-        return new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process.getLocalPart())).isDeployed();
+        JbpmApiBasedProcessInstanceOutcomeChecker checker = createProcessOutcomeChecker(process.getLocalPart());
+        return checker.isProcessDeployed();
     }
 
     @Override
@@ -245,7 +246,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         JbpmDeployer deployer = new JbpmDeployer(getJbpmnUrl(), deploymentId);
         deployer.undeploy();
 
-        TimeoutRepository.getTimeout("Jbpm.undeploy").waitFor(() -> !deployer.isDeployed());
+        TimeoutRepository.getTimeout("Jbpm.undeploy").waitFor(() -> !deployer.isDeploymentFinished());
     }
 
     @Override
