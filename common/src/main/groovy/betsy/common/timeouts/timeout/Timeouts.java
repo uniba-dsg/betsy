@@ -165,8 +165,8 @@ public class Timeouts {
         timeouts.add(new Timeout("Wso2.deploy.sleep", 2_000, Timeout.Category.UNMEASURABLE));
         timeouts.add(new Timeout("Wso2.undeploy", 120_000, 500));
         timeouts.add(new Timeout("Wso2.undeploy.sleep", 1_000, Timeout.Category.UNMEASURABLE));
-        timeouts.add(new Timeout("Wso2_v3_1_0.startup", 120_000, 500));
-        timeouts.add(new Timeout("Wso2_v3_1_0.startup.sleep", 2_000, Timeout.Category.UNMEASURABLE));
+        timeouts.add(new Timeout("Wso2.startup", 160_000, 500));
+        timeouts.add(new Timeout("Wso2.startup.sleep", 2_000, Timeout.Category.UNMEASURABLE));
     }
 }
 
