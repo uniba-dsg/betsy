@@ -24,7 +24,7 @@ public class BPMNTestCaseBuilder {
         result.addStep(deployable);
 
         // skip process start and delays if a deployment failure is expected
-        if(!traces.contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
+        if(!traces.contains(new Trace(BPMNAssertions.ERROR_DEPLOYMENT.toString()))) {
 
             if (isParallel) {
                 // add step that starts the parallel process
