@@ -1,5 +1,7 @@
 package pebl.feature;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +35,15 @@ public class Feature implements HasID, HasName {
     @XmlID
     @XmlAttribute(required = true)
     private final String id;
+
+    @XmlElement
+    private final List<ComputedMetric> computedMetrics = new LinkedList<>();
+
+    public Feature addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
+        computedMetrics.add(new ComputedMetric(type, name, description, unit, getID(), groovyScript));
+
+        return this;
+    }
 
     public Feature() {
         this(new FeatureSet(), "");

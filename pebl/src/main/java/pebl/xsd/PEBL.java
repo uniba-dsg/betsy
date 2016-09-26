@@ -12,6 +12,8 @@ import pebl.feature.Feature;
 import pebl.feature.FeatureSet;
 import pebl.feature.Group;
 import pebl.feature.Language;
+import pebl.feature.Metric;
+import pebl.result.Measurement;
 import pebl.result.TestResult;
 import pebl.test.Test;
 import pebl.tool.Tool;
@@ -33,5 +35,11 @@ public class PEBL {
 
     @XmlElement(name = "testResult")
     public List<TestResult> testResults = new LinkedList<>();
+
+    @XmlElement(name = "computableMetric")
+    public List<Metric> computableMetrics = new LinkedList<>();
+
+    @XmlElement(name = "computedMetric")
+    public List<Measurement> computedMetrics = new LinkedList<>();
 
 }

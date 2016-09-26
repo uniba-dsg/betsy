@@ -28,7 +28,6 @@ public class TestCaseResult {
         this.message = Objects.requireNonNull(message);
     }
 
-
     public String getName() {
         return name;
     }

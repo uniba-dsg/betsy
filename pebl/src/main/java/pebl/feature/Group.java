@@ -36,6 +36,15 @@ public class Group implements HasID, HasName {
     @XmlAttribute(required = true)
     private final String id;
 
+    @XmlElement
+    private final List<ComputedMetric> computedMetrics = new LinkedList<>();
+
+    public Group addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
+        computedMetrics.add(new ComputedMetric(type, name, description, unit, getID(), groovyScript));
+
+        return this;
+    }
+
     public Group() {
         this("", new Language(), "");
     }

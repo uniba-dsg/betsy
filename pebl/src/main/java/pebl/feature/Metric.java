@@ -4,13 +4,19 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ResultFormatElement {
+public class Metric {
+
+    @XmlAttribute(required = true)
+    @XmlID
+    private final String id;
 
     @XmlElement(required = true)
-    private final ResultFormatMetric type;
+    private final ValueType type;
 
     @XmlElement(required = true)
     private final String name;
@@ -21,18 +27,19 @@ public class ResultFormatElement {
     @XmlElement(required = true)
     private final String unit;
 
-    ResultFormatElement() {
-        this(new ResultFormatMetric(), "", "", "");
+    public Metric() {
+        this(new ValueType(), "", "", "", "");
     }
 
-    public ResultFormatElement(ResultFormatMetric type, String name, String description, String unit) {
+    public Metric(ValueType type, String name, String description, String unit, String idPrefix) {
         this.type = Objects.requireNonNull(type);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.unit = Objects.requireNonNull(unit);
+        this.id = idPrefix + "-" + type + "-" + name;
     }
 
-    public ResultFormatMetric getType() {
+    public ValueType getType() {
         return type;
     }
 

@@ -4,23 +4,23 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-import pebl.result.Metric;
+import pebl.result.Value;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class BooleanMetric extends Metric {
+public class LongValue extends Value {
     @XmlElement(required = true)
-    private final boolean value;
+    private final long value;
 
-    BooleanMetric() {
-        this(false);
+    LongValue() {
+        this(Long.MIN_VALUE);
     }
 
-    public BooleanMetric(boolean value) {
+    public LongValue(long value) {
         this.value = value;
     }
 
 
-    public boolean isValue() {
+    public long getValue() {
         return value;
     }
 }

@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
 
 import pebl.HasName;
 import pebl.HasID;
@@ -22,22 +21,31 @@ public class Capability implements HasID, HasName {
     private final String name;
 
     @XmlElement(required = true)
-    private final ResultFormat resultFormat;
+    private final List<Metric> atomicMetrics;
 
     @XmlElement(name="language")
     private final List<Language> languages = new LinkedList<>();
+
+    @XmlElement
+    private final List<ComputedMetric> computedMetrics = new LinkedList<>();
+
+    public Capability addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
+        computedMetrics.add(new ComputedMetric(type, name, description, unit, getID(), groovyScript));
+
+        return this;
+    }
 
     @XmlID
     @XmlAttribute(required = true)
     private final String id;
 
     Capability() {
-        this("", new ResultFormat());
+        this("", Collections.emptyList());
     }
 
-    public Capability(String name, ResultFormat resultFormat) {
+    public Capability(String name, List<Metric> atomicMetrics) {
         this.name = Objects.requireNonNull(name);
-        this.resultFormat = Objects.requireNonNull(resultFormat);
+        this.atomicMetrics = Objects.requireNonNull(new LinkedList<>(atomicMetrics));
 
         this.id = name;
     }
@@ -52,8 +60,8 @@ public class Capability implements HasID, HasName {
         return name;
     }
 
-    public ResultFormat getResultFormat() {
-        return resultFormat;
+    public List<Metric> getAtomicMetrics() {
+        return atomicMetrics;
     }
 
     @Override

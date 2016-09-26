@@ -31,9 +31,6 @@ public class TestResult {
     @XmlIDREF
     private final Tool tool;
 
-    @XmlElement(required = true)
-    private final long executionTimestamp;
-
     @XmlElement
     private final List<Path> logFiles;
 
@@ -43,11 +40,8 @@ public class TestResult {
     @XmlElement
     private final List<Path> files;
 
-    @XmlElement(required = true)
-    private final long executionDuration;
-
-    @XmlElement(required = true)
-    private final NamedMetrics metrics;
+    @XmlElement
+    private final List<Measurement> measurements;
 
     @XmlElement
     private final Map<String, String> additionalInformation;
@@ -57,32 +51,28 @@ public class TestResult {
 
     TestResult() {
         this(new Test(), new Engine(), new Tool(),
-                Long.MIN_VALUE, Collections.emptyList(),
+                Collections.emptyList(),
                 Paths.get(""),
-                Collections.emptyList(),Long.MIN_VALUE, new NamedMetrics(),
+                Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyMap(), Collections.emptyList());
     }
 
     public TestResult(Test test,
             Engine engine,
             Tool tool,
-            long executionTimestamp,
             List<Path> logFiles,
             Path deploymentPackage,
             List<Path> files,
-            long executionDuration,
-            NamedMetrics metrics,
+            List<Measurement> measurements,
             Map<String, String> additionalInformation,
             List<TestCaseResult> testCaseResults) {
         this.test = test;
         this.engine = engine;
         this.tool = tool;
-        this.executionTimestamp = executionTimestamp;
         this.logFiles = new ArrayList<>(logFiles);
         this.deploymentPackage = deploymentPackage;
         this.files = new ArrayList<>(files);
-        this.executionDuration = executionDuration;
-        this.metrics = metrics;
+        this.measurements = measurements;
         this.additionalInformation = additionalInformation;
         this.testCaseResults = new ArrayList<>(testCaseResults);
     }
@@ -99,10 +89,6 @@ public class TestResult {
         return tool;
     }
 
-    public long getExecutionTimestamp() {
-        return executionTimestamp;
-    }
-
     public List<Path> getLogFiles() {
         return Collections.unmodifiableList(logFiles);
     }
@@ -115,12 +101,8 @@ public class TestResult {
         return Collections.unmodifiableList(files);
     }
 
-    public long getExecutionDuration() {
-        return executionDuration;
-    }
-
-    public NamedMetrics getMetrics() {
-        return metrics;
+    public List<Measurement> getMeasurements() {
+        return measurements;
     }
 
     public Map<String, String> getAdditionalInformation() {

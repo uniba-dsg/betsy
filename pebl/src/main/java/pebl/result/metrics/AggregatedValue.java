@@ -7,37 +7,37 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-import pebl.result.Metric;
+import pebl.result.Value;
 
 @XmlAccessorType(XmlAccessType.NONE)
-class AggregatedMetric extends Metric {
+public class AggregatedValue extends Value {
 
-    private static final BigDecimal MIN = BigDecimal.valueOf(Double.MIN_VALUE);
-
-    @XmlElement(required = true)
-    private final BigDecimal min;
+    private static final double MIN = Double.MIN_VALUE;
 
     @XmlElement(required = true)
-    private final BigDecimal max;
+    private final double min;
 
     @XmlElement(required = true)
-    private final BigDecimal standardDeviation;
+    private final double max;
 
     @XmlElement(required = true)
-    private final BigDecimal average;
+    private final double standardDeviation;
 
     @XmlElement(required = true)
-    private final BigDecimal relativeStandardDeviation;
+    private final double average;
 
-    AggregatedMetric() {
+    @XmlElement(required = true)
+    private final double relativeStandardDeviation;
+
+    AggregatedValue() {
         this(MIN, MIN, MIN, MIN, MIN);
     }
 
-    public AggregatedMetric(BigDecimal min,
-            BigDecimal max,
-            BigDecimal standardDeviation,
-            BigDecimal average,
-            BigDecimal relativeStandardDeviation) {
+    public AggregatedValue(double min,
+            double max,
+            double standardDeviation,
+            double average,
+            double relativeStandardDeviation) {
         this.min = Objects.requireNonNull(min);
         this.max = Objects.requireNonNull(max);
         this.standardDeviation = Objects.requireNonNull(standardDeviation);
@@ -46,23 +46,23 @@ class AggregatedMetric extends Metric {
     }
 
 
-    public BigDecimal getMin() {
+    public double getMin() {
         return min;
     }
 
-    public BigDecimal getMax() {
+    public double getMax() {
         return max;
     }
 
-    public BigDecimal getStandardDeviation() {
+    public double getStandardDeviation() {
         return standardDeviation;
     }
 
-    public BigDecimal getAverage() {
+    public double getAverage() {
         return average;
     }
 
-    public BigDecimal getRelativeStandardDeviation() {
+    public double getRelativeStandardDeviation() {
         return relativeStandardDeviation;
     }
 }

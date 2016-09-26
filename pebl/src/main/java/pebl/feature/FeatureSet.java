@@ -36,6 +36,15 @@ public class FeatureSet implements HasID, HasName {
     @XmlAttribute(required = true)
     private final String id;
 
+    @XmlElement
+    private final List<ComputedMetric> computedMetrics = new LinkedList<>();
+
+    public FeatureSet addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
+        computedMetrics.add(new ComputedMetric(type, name, description, unit, getID(), groovyScript));
+
+        return this;
+    }
+
     FeatureSet() {
         this(new Group(), "");
     }
