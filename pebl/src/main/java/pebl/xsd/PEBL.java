@@ -16,7 +16,7 @@ import pebl.result.tool.Tool;
 @XmlRootElement
 public class PEBL {
 
-    static class Benchmark {
+    public static class Benchmark {
 
         @XmlElement(name="capability")
         public List<Capability> capabilities = new LinkedList<>();
@@ -26,7 +26,7 @@ public class PEBL {
 
     }
 
-    static class Result {
+    public static class Result {
 
         @XmlElement(name="engine")
         public List<Engine> engines = new LinkedList<>();

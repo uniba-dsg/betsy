@@ -49,10 +49,10 @@ public class XmlMain {
 
     public static PEBL getPebl() {
         PEBL pebl = new PEBL();
-        pebl.tools.addAll(getTools());
-        pebl.engines.addAll(getEngines());
-        pebl.tests.addAll(getTests().stream().collect(Collectors.toList()));
-        pebl.capabilities.addAll(new Features(getFeatures()).capabilities);
+        pebl.result.tools.addAll(getTools());
+        pebl.result.engines.addAll(getEngines());
+        pebl.benchmark.tests.addAll(getTests().stream().collect(Collectors.toList()));
+        pebl.benchmark.capabilities.addAll(new Features(getFeatures()).capabilities);
         return pebl;
     }
 
