@@ -73,7 +73,7 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest extends AbstractEng
         ProcessModelId processModelId = processModelService.deploy(engineId, deployableBpelPackage);
         assertState(EngineState.STARTED);
 
-        WaitTasks.sleep(2000);
+        WaitTasks.sleep(5000);
 
         WSTester.assertCorrectWorkingProcess(getUrlForProcessId(processModelId));
         assertState(EngineState.STARTED);
