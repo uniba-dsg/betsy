@@ -16,22 +16,36 @@ import pebl.result.tool.Tool;
 @XmlRootElement
 public class PEBL {
 
-    @XmlElement(name="engine")
-    public List<Engine> engines = new LinkedList<>();
+    static class Benchmark {
 
-    @XmlElement(name = "tool")
-    public List<Tool> tools = new LinkedList<>();
+        @XmlElement(name="capability")
+        public List<Capability> capabilities = new LinkedList<>();
 
-    @XmlElement(name="capability")
-    public List<Capability> capabilities = new LinkedList<>();
+        @XmlElement(name = "test")
+        public List<Test> tests = new LinkedList<>();
 
-    @XmlElement(name = "test")
-    public List<Test> tests = new LinkedList<>();
+    }
 
-    @XmlElement(name = "testResult")
-    public List<TestResult> testResults = new LinkedList<>();
+    static class Result {
 
-    @XmlElement(name = "capabilityResult")
-    public List<CapabilityResult> capabilityResults = new LinkedList<>();
+        @XmlElement(name="engine")
+        public List<Engine> engines = new LinkedList<>();
+
+        @XmlElement(name = "tool")
+        public List<Tool> tools = new LinkedList<>();
+
+        @XmlElement(name = "testResult")
+        public List<TestResult> testResults = new LinkedList<>();
+
+        @XmlElement(name = "capabilityResult")
+        public List<CapabilityResult> capabilityResults = new LinkedList<>();
+
+    }
+
+    @XmlElement
+    public Benchmark benchmark = new Benchmark();
+
+    @XmlElement
+    public Result result = new Result();
 
 }
