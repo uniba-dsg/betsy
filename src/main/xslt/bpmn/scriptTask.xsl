@@ -9,7 +9,7 @@
                 <xsl:text disable-output-escaping="yes">
                 &lt;bpmn2:script&gt;&lt;![CDATA[
 try {
-    java.io.File f = new java.io.File("log-</xsl:text><xsl:value-of select="$processName" /><xsl:text disable-output-escaping="yes">" + testCaseNumber + ".txt");
+    java.io.File f = new java.io.File("log-</xsl:text><xsl:value-of select="$processName" /><xsl:text disable-output-escaping="yes">-" + testCaseNumber + ".txt");
     f.createNewFile();
 } catch (java.io.IOException ignore) {}
 ]]&gt;&lt;/bpmn2:script&gt;
