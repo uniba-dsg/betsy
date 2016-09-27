@@ -3,7 +3,7 @@ package betsy.bpel.cli;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.common.config.Configuration;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import org.apache.commons.cli.*;
 

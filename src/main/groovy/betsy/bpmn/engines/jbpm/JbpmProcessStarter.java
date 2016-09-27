@@ -11,7 +11,7 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pebl.test.steps.vars.Variable;
+import pebl.benchmark.test.steps.vars.Variable;
 
 public class JbpmProcessStarter implements BPMNProcessStarter {
 

@@ -7,11 +7,8 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import pebl.feature.Capability;
-import pebl.feature.Feature;
-import pebl.feature.FeatureSet;
-import pebl.feature.Group;
-import pebl.feature.Language;
+import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.Feature;
 
 @XmlRootElement
 public class Features {

@@ -13,10 +13,9 @@ import java.util.stream.Stream;
 import betsy.bpmn.model.BPMNTestCaseBuilder;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.FileTypes;
-import pebl.feature.Feature;
-import pebl.feature.FeatureSet;
-import pebl.test.Test;
-import pebl.test.TestCase;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.test.Test;
 
 class BpmnConstraintsProcesses {
 

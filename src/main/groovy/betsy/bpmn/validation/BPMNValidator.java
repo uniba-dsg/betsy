@@ -1,7 +1,7 @@
 package betsy.bpmn.validation;
 
 import betsy.bpmn.model.BPMNAssertions;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpmn.BPMNProcessRepository;
 import org.junit.Assert;
 import org.w3c.dom.Document;

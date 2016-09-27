@@ -1,6 +1,6 @@
 package betsy.bpel.cli;
 
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 
 import java.util.List;

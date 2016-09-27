@@ -6,17 +6,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import pebl.engine.Engine;
-import pebl.feature.Capability;
-import pebl.feature.Feature;
-import pebl.feature.FeatureSet;
-import pebl.feature.Group;
-import pebl.feature.Language;
-import pebl.feature.Metric;
-import pebl.result.Measurement;
-import pebl.result.TestResult;
-import pebl.test.Test;
-import pebl.tool.Tool;
+import pebl.result.engine.Engine;
+import pebl.benchmark.feature.Capability;
+import pebl.result.test.TestResult;
+import pebl.result.feature.CapabilityResult;
+import pebl.benchmark.test.Test;
+import pebl.result.tool.Tool;
 
 @XmlRootElement
 public class PEBL {
@@ -36,10 +31,7 @@ public class PEBL {
     @XmlElement(name = "testResult")
     public List<TestResult> testResults = new LinkedList<>();
 
-    @XmlElement(name = "computableMetric")
-    public List<Metric> computableMetrics = new LinkedList<>();
-
-    @XmlElement(name = "computedMetric")
-    public List<Measurement> computedMetrics = new LinkedList<>();
+    @XmlElement(name = "capabilityResult")
+    public List<CapabilityResult> capabilityResults = new LinkedList<>();
 
 }

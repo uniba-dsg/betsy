@@ -2,7 +2,7 @@ package betsy.bpel.cli;
 
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.common.cli.CliParameter;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 
 import java.util.List;
 

@@ -12,12 +12,12 @@ import betsy.bpmn.model.BPMNAssertions;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import pebl.test.TestCase;
-import pebl.test.TestStep;
-import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.GatherTracesTestStep;
-import pebl.test.steps.vars.Variable;
-import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.GatherTracesTestStep;
+import pebl.benchmark.test.steps.vars.Variable;
+import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class CamundaTester {
 

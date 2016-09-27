@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import pebl.test.TestCase;
-import pebl.test.TestStep;
-import pebl.test.assertions.Trace;
-import pebl.test.assertions.TraceTestAssertion;
-import pebl.test.steps.GatherTracesTestStep;
-import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.Trace;
+import pebl.benchmark.test.assertions.TraceTestAssertion;
+import pebl.benchmark.test.steps.GatherTracesTestStep;
+import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
 
 public class TestCaseUtil {
     public static String getKey(TestCase testCase) {

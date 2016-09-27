@@ -1,6 +1,6 @@
 package betsy.bpel.validation
 
-import pebl.test.Test
+import pebl.benchmark.test.Test
 
 import java.nio.file.Files
 import java.nio.file.Path

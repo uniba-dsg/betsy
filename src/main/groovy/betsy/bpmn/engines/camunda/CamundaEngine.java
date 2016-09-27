@@ -26,7 +26,7 @@ import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
 import org.apache.log4j.Logger;
 import pebl.ProcessLanguage;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
 
 public class CamundaEngine extends AbstractBPMNEngine {
 

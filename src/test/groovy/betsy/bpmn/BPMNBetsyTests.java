@@ -4,7 +4,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.engine.EngineExtended;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import pebl.ProcessLanguage;
 import configuration.bpmn.BPMNProcessRepository;
 

@@ -3,13 +3,13 @@ package betsy.bpmn.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import pebl.test.TestCase;
-import pebl.test.assertions.Trace;
-import pebl.test.assertions.TraceTestAssertion;
-import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.GatherTracesTestStep;
-import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
-import pebl.test.steps.vars.Variable;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.assertions.Trace;
+import pebl.benchmark.test.assertions.TraceTestAssertion;
+import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.GatherTracesTestStep;
+import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.steps.vars.Variable;
 
 public class BPMNTestCaseBuilder {
 

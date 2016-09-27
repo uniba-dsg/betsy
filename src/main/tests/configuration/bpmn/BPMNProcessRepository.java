@@ -1,6 +1,6 @@
 package configuration.bpmn;
 
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;

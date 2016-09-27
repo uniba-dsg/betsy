@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import pebl.feature.Metric;
+import pebl.benchmark.feature.Metric;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class Measurement {

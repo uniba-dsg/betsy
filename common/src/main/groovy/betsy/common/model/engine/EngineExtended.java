@@ -9,7 +9,7 @@ import java.util.Objects;
 import pebl.HasName;
 import pebl.HasID;
 import pebl.ProcessLanguage;
-import pebl.engine.Engine;
+import pebl.result.engine.Engine;
 
 import static java.util.Objects.requireNonNull;
 

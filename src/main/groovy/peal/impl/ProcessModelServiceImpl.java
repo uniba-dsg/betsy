@@ -16,12 +16,12 @@ import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.engines.EngineAPI;
-import pebl.feature.Capability;
-import pebl.feature.Feature;
-import pebl.feature.FeatureSet;
-import pebl.feature.Group;
-import pebl.feature.Language;
-import pebl.test.Test;
+import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.feature.Language;
+import pebl.benchmark.test.Test;
 import betsy.common.tasks.FileTasks;
 import org.xml.sax.SAXException;
 import peal.DeploymentException;
@@ -58,7 +58,7 @@ public class ProcessModelServiceImpl implements ProcessModelService {
                 Path bpelFile = ZipFileHelper.findBpelFileInPath(folder);
 
                 String language = processLanguage.toString();
-                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("capability", Collections.emptyList()), language), ""), "featureset"), "feature");
+                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("capability"), language), ""), "featureset"), "feature");
                 List<Path> wsdlFilesInPath = ZipFileHelper.findWsdlFilesInPath(folder);
                 List<Path> otherFilesInPath = ZipFileHelper.findOtherFilesInPath(folder);
                 List<Path> files = new LinkedList<>();
@@ -82,7 +82,7 @@ public class ProcessModelServiceImpl implements ProcessModelService {
                 Path bpmnFile = ZipFileHelper.findBpmnFileInPath(folder);
 
                 String language = processLanguage.toString();
-                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("capability", Collections.emptyList()), language), ""), "featureset"), FileTasks.getFilenameWithoutExtension(bpmnFile));
+                Feature feature = new Feature(new FeatureSet(new Group("group", new Language(new Capability("capability"), language), ""), "featureset"), FileTasks.getFilenameWithoutExtension(bpmnFile));
                 List<Path> wsdlFilesInPath = ZipFileHelper.findWsdlFilesInPath(folder);
                 List<Path> otherFilesInPath = ZipFileHelper.findOtherFilesInPath(folder);
                 List<Path> files = new LinkedList<>();

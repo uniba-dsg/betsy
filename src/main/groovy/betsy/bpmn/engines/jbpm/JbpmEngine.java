@@ -28,7 +28,7 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
 
 public class JbpmEngine extends AbstractBPMNEngine {
 

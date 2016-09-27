@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import pebl.tool.Tool;
+import pebl.result.tool.Tool;
 
 @XmlRootElement
 public class Tools {

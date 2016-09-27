@@ -2,7 +2,7 @@ package betsy.bpmn.cli;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.repositories.BPMNEngineRepository;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpmn.BPMNProcessRepository;
 import org.apache.commons.cli.*;
 

@@ -1,9 +1,9 @@
 package configuration.bpel;
 
-import pebl.test.Test;
-import pebl.test.assertions.ExitAssertion;
-import pebl.test.assertions.SoapFaultTestAssertion;
-import pebl.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.assertions.ExitAssertion;
+import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.steps.soap.SoapTestStep;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;

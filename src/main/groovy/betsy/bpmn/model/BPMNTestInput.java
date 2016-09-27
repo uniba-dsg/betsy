@@ -1,6 +1,6 @@
 package betsy.bpmn.model;
 
-import pebl.test.steps.vars.Variable;
+import pebl.benchmark.test.steps.vars.Variable;
 
 public enum BPMNTestInput {
 

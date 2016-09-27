@@ -1,7 +1,7 @@
 package betsy.bpel;
 
 import betsy.bpel.model.BPELIdShortener;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
 

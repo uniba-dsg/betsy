@@ -24,7 +24,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.engine.EngineDimension;
-import pebl.feature.FeatureDimension;
+import pebl.benchmark.feature.FeatureDimension;
 import betsy.common.reporting.CsvRow;
 import betsy.common.reporting.JUnitXmlResultReader;
 import betsy.common.util.DurationCsv;
@@ -36,7 +36,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import pebl.tool.Tool;
+import pebl.result.tool.Tool;
 
 public class TestsEngineDependent {
 

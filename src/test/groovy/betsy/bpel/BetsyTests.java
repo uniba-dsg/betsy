@@ -4,7 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.model.engine.EngineExtended;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import pebl.ProcessLanguage;
 import configuration.bpel.BPELProcessRepository;
 
