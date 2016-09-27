@@ -42,10 +42,10 @@ public class PEBL {
 
     }
 
-    @XmlElement
+    @XmlElement(required = true)
     public Benchmark benchmark = new Benchmark();
 
-    @XmlElement
+    @XmlElement(required = true)
     public Result result = new Result();
 
 }

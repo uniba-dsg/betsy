@@ -1,0 +1,67 @@
+@startuml
+package "feature" {
+
+	class ValueType {
+	  type : String
+	}
+
+	class AggregatedMetric {
+	  groovyScript : String
+	}
+
+	class Metric {
+	  id : String
+	  name : String
+	  description : String
+	  unit : String
+	}
+
+	class Capability {
+	  id : String
+	  name : String
+	}
+
+	class Language {
+	  id : String
+	  name : String
+	}
+
+	class Group {
+	  id : String
+	  name : String
+	}
+
+	class FeatureSet {
+	  id : String
+	  name : String
+	}
+
+	class Feature {
+	  id : String
+	  name : String
+	}
+
+}
+
+Feature "*" -right- "1" FeatureSet
+FeatureSet "*" -right- "1" Group
+Group "*" -right- "1" Language
+Language "*" -right- "1" Capability
+
+Metric "*" -left- "1" ValueType
+AggregatedMetric -left-|> Metric
+
+Capability "1" --> "*" AggregatedMetric
+Language "1" --> "*" AggregatedMetric
+Group "1" --> "*" AggregatedMetric
+FeatureSet "1" --> "*" AggregatedMetric
+Feature "1" --> "*" AggregatedMetric
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

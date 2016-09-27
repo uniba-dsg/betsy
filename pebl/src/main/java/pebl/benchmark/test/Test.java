@@ -154,21 +154,8 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         return testCases.stream().map(TestCase::getName).distinct().count() == testCases.size();
     }
 
-    /**
-     * Returns the process language used by the given process.
-     *
-     * @return the process language used by the given process.
-     */
-    @XmlElement(required = true)
-    public ProcessLanguage getProcessLanguage() {
-        String lowerCasePath = getProcess().toString().toLowerCase();
-        if (lowerCasePath.endsWith(".bpmn")) {
-            return ProcessLanguage.BPMN;
-        } else if (lowerCasePath.endsWith(".bpel")) {
-            return ProcessLanguage.BPEL;
-        } else {
-            return ProcessLanguage.UNKNOWN;
-        }
+    public String getProcessLanguage() {
+        return getLanguage().getName();
     }
 
     @Override

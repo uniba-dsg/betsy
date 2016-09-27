@@ -91,7 +91,7 @@ class JsonGeneratorTestsEngineIndependent {
 
         testObject.put("engineIndependentFiles", createEngineIndependentFilesArray(p));
 
-        testObject.put("language", p.getProcessLanguage().getID());
+        testObject.put("language", p.getProcessLanguage());
         testObject.put("featureID", p.getFeature().getID());
 
         JSONArray testCasesArray = new JSONArray();
