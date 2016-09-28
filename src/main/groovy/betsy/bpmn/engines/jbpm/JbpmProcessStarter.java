@@ -30,7 +30,7 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
     @Override
     public void start(String processName, List<Variable> variables) throws RuntimeException {
         // determine deployment
-        String deploymentID = "de.uniba.dsg:"+processName+":1.0";
+        String deploymentID = getDeploymentID(requestUrl,user,password);
 
         String queryParameter = new Variables(variables).toQueryParameter();
         String processStartRequestURL = requestUrl + "/rest/runtime/" + deploymentID + "/process/" + processName + "/start" + queryParameter;
@@ -55,7 +55,6 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
         }
     }
 
-    // TODO remove?
     public static String getDeploymentID(String requestUrl, String user, String password) {
         JSONArray json = JsonHelper.getJSONWithAuthAsArray(requestUrl + "/rest/deployment/", 200, user, password);
         if (json.length() == 0) {
