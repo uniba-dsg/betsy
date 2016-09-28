@@ -25,6 +25,7 @@ import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
+import betsy.common.tasks.WaitTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
@@ -92,13 +93,8 @@ public class CamundaEngine extends AbstractBPMNEngine {
     @Override
     public void undeploy(QName process) {
         LOGGER.info("Undeploying process " + process);
-        try {
-            JSONArray result = JsonHelper.getJsonArray("http://localhost:8080/engine-rest/engine/default" + "/process-definition", 200);
-            String id = result.optJSONObject(0).optString("deploymentId");
-            JsonHelper.delete("http://localhost:8080/engine-rest/engine/default" + "/deployment/" + id, 204);
-        } catch (Exception e) {
-            LOGGER.info("undeployment failed", e);
-        }
+        FileTasks.deleteFile(getTomcatDir().resolve("webapps").resolve(process.getLocalPart() + ".war"));
+        WaitTasks.sleep(5000);
     }
 
     @Override

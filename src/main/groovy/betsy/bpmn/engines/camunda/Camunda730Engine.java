@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
 
-public class Camunda730Engine extends Camunda710Engine {
+public class Camunda730Engine extends Camunda720Engine {
 
     @Override
     public EngineExtended getEngineObject() {

@@ -6,7 +6,7 @@ import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 
-public class Camunda750Engine extends Camunda710Engine {
+public class Camunda750Engine extends Camunda720Engine {
 
     @Override
     public EngineExtended getEngineObject() {
