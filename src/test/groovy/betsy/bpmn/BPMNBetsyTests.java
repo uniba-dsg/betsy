@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 public class BPMNBetsyTests {
     @org.junit.Test
     public void simulateATestRun() throws Exception {
@@ -51,6 +53,14 @@ public class BPMNBetsyTests {
 
         @Override
         public void deploy(String name, Path path) {
+
+        }
+
+        @Override public boolean isDeployed(QName process) {
+            return false;
+        }
+
+        @Override public void undeploy(QName process) {
 
         }
 

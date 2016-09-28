@@ -95,7 +95,7 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
 
         WaitTasks.sleep(2000);
         LogPackage instanceLogs = instanceService.getLogs(instanceId);
-        Path instanceLogFile = ZipFileHelper.extractIntoTemporaryFolder(instanceLogs).resolve("log1.txt");
+        Path instanceLogFile = ZipFileHelper.extractIntoTemporaryFolder(instanceLogs).resolve("log-" + processModelId.getProcessId().getLocalPart() + "-1.txt");
         assertEquals(Collections.singletonList("SCRIPT_task1"), Files.readAllLines(instanceLogFile));
         assertState(InstanceState.STOPPED, instanceId);
 
@@ -130,8 +130,6 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
         return new EngineServiceImpl().getSupportedEngines().stream()
                 .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPMN))
                 // full: jbpm
-                // see without undeploy: activiti camunda
-                .filter(p -> p.toString().startsWith("jbpm"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }

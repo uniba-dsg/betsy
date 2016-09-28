@@ -6,12 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.namespace.QName;
+
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.engines.tomcat.Tomcat;
@@ -20,8 +23,11 @@ import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import pebl.ProcessLanguage;
 import pebl.benchmark.test.TestCase;
+
+import static betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS;
 
 public class ActivitiEngine extends AbstractBPMNEngine {
 
@@ -60,7 +66,7 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     }
 
     @Override public Path getLogForInstance(String processName, String instanceId) {
-        return getInstanceLogFile(processName, Integer.parseInt(processName));
+        return getInstanceLogFile(processName, Integer.parseInt(instanceId));
     }
 
     @Override
@@ -79,6 +85,27 @@ public class ActivitiEngine extends AbstractBPMNEngine {
             JsonHelper.post(URL + "/service/repository/deployments", bpmnFile, 201);
         } catch (Exception e) {
             LOGGER.info("deployment failed", e);
+        }
+    }
+
+    @Override
+    public boolean isDeployed(QName process) {
+        try {
+            return !UNDEPLOYED_PROCESS.equals(new ActivitiApiBasedProcessOutcomeChecker().checkProcessOutcome(process.getLocalPart()));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        LOGGER.info("Undeploying process " + process);
+        try {
+            JSONObject result = JsonHelper.get(URL + "/service/repository/deployments?name="+process.getLocalPart() +".bpmn", 200);
+            String id = result.optJSONArray("data").optJSONObject(0).optString("id");
+            JsonHelper.delete(URL + "/service/repository/deployments/" + id, 204);
+        } catch (Exception e) {
+            LOGGER.info("undeployment failed", e);
         }
     }
 

@@ -17,6 +17,5 @@ public class ActivitiApiBasedProcessOutcomeChecker implements BPMNProcessInstanc
 
         JSONObject result = JsonHelper.get(checkDeploymentUrl, 200);
         return result.getInt("size") == 1;
-
     }
 }

@@ -117,6 +117,19 @@ public class JsonHelper {
         }
     }
 
+    public static JSONObject delete(String url, int expectedCode) {
+        log.info("HTTP DELETE " + url);
+
+        try {
+            HttpResponse<JsonNode> response = Unirest.delete(url).header("Content-Type", "application/json").asJson();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+            return response.getBody().getObject();
+        } catch (UnirestException e) {
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
+        }
+    }
+
     public static String postStringWithAuth(String url, JSONObject requestBody, int expectedCode, String username, String password) {
         log.info("HTTP POST " + url);
         log.info("CONTENT: " + requestBody.toString(2));
@@ -198,6 +211,11 @@ public class JsonHelper {
     }
 
     private static void logResponse(JsonNode response) {
+        if(response == null) {
+            log.info("RESPONSE IS EMPTY");
+            return;
+        }
+
         if (response.isArray()) {
             logResponse(response.getArray());
         } else {

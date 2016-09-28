@@ -9,11 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.namespace.QName;
+
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.GenericBPMNTester;
+import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.engines.activiti.ActivitiApiBasedProcessOutcomeChecker;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
@@ -26,8 +30,12 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import pebl.ProcessLanguage;
 import pebl.benchmark.test.TestCase;
+
+import static betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS;
 
 public class CamundaEngine extends AbstractBPMNEngine {
 
@@ -70,6 +78,27 @@ public class CamundaEngine extends AbstractBPMNEngine {
                 FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + name + " Application successfully deployed.") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Process application " + name + " Application successfully deployed") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + name + "] startup failed due to previous errors"));
+    }
+
+    @Override
+    public boolean isDeployed(QName process) {
+        try {
+            return !UNDEPLOYED_PROCESS.equals(new CamundaApiBasedProcessInstanceOutcomeChecker().checkProcessOutcome(process.getLocalPart()));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        LOGGER.info("Undeploying process " + process);
+        try {
+            JSONArray result = JsonHelper.getJsonArray("http://localhost:8080/engine-rest/engine/default" + "/process-definition", 200);
+            String id = result.optJSONObject(0).optString("deploymentId");
+            JsonHelper.delete("http://localhost:8080/engine-rest/engine/default" + "/deployment/" + id, 204);
+        } catch (Exception e) {
+            LOGGER.info("undeployment failed", e);
+        }
     }
 
     @Override
