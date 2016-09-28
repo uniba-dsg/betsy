@@ -5,19 +5,17 @@ import java.util.Objects;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.JsonHelper;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessInstanceOutcomeChecker {
 
     private static final Logger LOGGER = Logger.getLogger(JbpmApiBasedProcessInstanceOutcomeChecker.class);
 
-    private final String user;
-    private final String password;
+    protected final String user;
+    protected final String password;
     private final String requestUrl;
 
-    private final String processDeploymentUrl;
-    private final String deploymentId;
+    protected final String processDeploymentUrl;
+    protected final String deploymentId;
 
     public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl, String deploymentId) {
         this.user = "admin";
@@ -61,8 +59,6 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
     public boolean isProcessDeployed() {
         String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
         return result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
-                result.contains("<status>DEPLOYED</status>") ||
-                result.contains("<deployment-id>"+deploymentId+"</deployment-id>");
+                result.contains("<status>DEPLOYED</status>");
     }
-
 }
