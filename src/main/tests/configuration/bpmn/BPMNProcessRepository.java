@@ -41,6 +41,8 @@ public class BPMNProcessRepository {
             }
         }
 
+        repo.put("BPMN_CONSTRAINTS", BpmnConstraintsProcesses.BPMN_CONSTRAINTS);
+
         repo.put("MINIMAL", Collections.singletonList(BasicProcesses.SEQUENCE_FLOW));
 
         // insert every process into the map

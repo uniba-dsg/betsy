@@ -5,36 +5,33 @@ import java.util.Objects;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.JsonHelper;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessInstanceOutcomeChecker {
 
     private static final Logger LOGGER = Logger.getLogger(JbpmApiBasedProcessInstanceOutcomeChecker.class);
 
-    private final String user;
-    private final String password;
+    protected final String user;
+    protected final String password;
     private final String requestUrl;
 
+    protected final String processDeploymentUrl;
 
-    public static JbpmApiBasedProcessInstanceOutcomeChecker buildWithDeploymentId() {
-        String deploymentID = JbpmProcessStarter.getDeploymentID("http://localhost:8080/jbpm-console", "admin", "admin");
-        String url = "http://localhost:8080/jbpm-console" + "/rest/runtime/" + deploymentID + "/history/instance/1";
-        return new JbpmApiBasedProcessInstanceOutcomeChecker(url);
-    }
 
-    public static JbpmApiBasedProcessInstanceOutcomeChecker build() {
-        return new JbpmApiBasedProcessInstanceOutcomeChecker("http://localhost:8080/jbpm-console" + "/rest/history/instance/1");
-    }
-
-    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl) {
+    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl) {
         this.user = "admin";
         this.password = "admin";
         this.requestUrl = Objects.requireNonNull(requestUrl);
+        this.processDeploymentUrl = deploymentUrl;
     }
 
+    @Override
     public ProcessInstanceOutcome checkProcessOutcome(String name) {
         try {
+            // Check deployment status first
+            if (!isProcessDeployed()) {
+                return ProcessInstanceOutcome.UNDEPLOYED_PROCESS;
+            }
+
             LOGGER.info("Trying to check process result status for " + name);
             String result = JsonHelper.getStringWithAuth(requestUrl, 200, user, password);
             if (result.contains("ERR-1")) {
@@ -50,7 +47,6 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
                 LOGGER.info("Process completed normally.");
                 return ProcessInstanceOutcome.OK;
             }
-
         } catch (RuntimeException innerEx) {
             LOGGER.info("Checking process result status failed.", innerEx);
             return ProcessInstanceOutcome.COULD_NOT_CHECK_PROCESS_INSTANCE_STATUS;
@@ -59,4 +55,9 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
         return ProcessInstanceOutcome.UNKNOWN;
     }
 
+    public boolean isProcessDeployed() {
+        String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
+        return result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
+                result.contains("<status>DEPLOYED</status>");
+    }
 }

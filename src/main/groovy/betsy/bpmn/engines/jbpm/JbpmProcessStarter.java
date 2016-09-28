@@ -30,8 +30,7 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
     @Override
     public void start(String processName, List<Variable> variables) throws RuntimeException {
         // determine deployment
-        String deploymentID = getDeploymentID(requestUrl, user, password);
-        LOGGER.info("Determined deploymentID=" + deploymentID);
+        String deploymentID = getDeploymentID(requestUrl,user,password);
 
         String queryParameter = new Variables(variables).toQueryParameter();
         String processStartRequestURL = requestUrl + "/rest/runtime/" + deploymentID + "/process/" + processName + "/start" + queryParameter;

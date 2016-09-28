@@ -31,8 +31,10 @@ public class JbpmEngine640 extends JbpmEngine {
     }
 
     @Override
-    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker() {
-        return JbpmApiBasedProcessInstanceOutcomeChecker.build();
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
+        String url = getJbpmnUrl() + "/rest/history/instance/1";
+        String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name) + "/processes";
+        return new Jbpm640MixedProcessInstanceOutcomeChecker(url, deployCheckUrl, getJbossStandaloneDir().resolve("log").resolve("server.log"));
     }
 
 }

@@ -10,6 +10,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
@@ -37,18 +38,20 @@ public class ActivitiEngine extends AbstractBPMNEngine {
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            new ActivitiTester(
+            new GenericBPMNTester(process,
                     testCase,
-                    getTomcat().getTomcatLogsDir(),
-                    getInstanceLogFile(testCaseNumber),
-                    bpmnTester
+                    getInstanceLogFile(process.getName(), testCaseNumber),
+                    bpmnTester,
+                    new ActivitiApiBasedProcessOutcomeChecker(),
+                    new ActivitiLogBasedProcessInstanceOutcomeChecker(getTomcat().getTomcatLogsDir().resolve("activiti.log")),
+                    new ActivitiProcessStarter()
             ).runTest();
         }
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }
 
-    private Path getInstanceLogFile(int testCaseNumber) {
-        return getTomcat().getTomcatBinDir().resolve("log" + testCaseNumber + ".txt");
+    private Path getInstanceLogFile(String processName, int testCaseNumber) {
+        return getTomcat().getTomcatBinDir().resolve("log-"+processName + "-" + testCaseNumber + ".txt");
     }
 
     @Override
@@ -56,8 +59,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
         return new ActivitiProcessStarter();
     }
 
-    @Override public Path getLogForInstance(String processName) {
-        return getInstanceLogFile(Integer.parseInt(processName));
+    @Override public Path getLogForInstance(String processName, String instanceId) {
+        return getInstanceLogFile(processName, Integer.parseInt(processName));
     }
 
     @Override
@@ -88,7 +91,8 @@ public class ActivitiEngine extends AbstractBPMNEngine {
     public Path buildArchives(BPMNProcess process) {
         XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
                 process.getProcess(),
-                process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"));
+                process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"),
+                "processName", process.getName());
 
         XSLTTasks.transform(getXsltPath().resolve("activiti.xsl"),
                 process.getTargetProcessPath().resolve(process.getName() + ".bpmn-temp"),

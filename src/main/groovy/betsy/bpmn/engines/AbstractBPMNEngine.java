@@ -107,5 +107,5 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
 
     public abstract BPMNProcessStarter getProcessStarter();
 
-    public abstract Path getLogForInstance(String processName);
+    public abstract Path getLogForInstance(String processName, String instanceId);
 }

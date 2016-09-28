@@ -12,6 +12,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
@@ -75,8 +76,8 @@ public class CamundaEngine extends AbstractBPMNEngine {
         Path targetProcessFilePath = targetProcessPath.resolve(process.getProcessFileName());
         XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
                 targetProcessFilePath,
-                targetProcessPath.resolve(process.getName() + ".bpmn-temp"));
-
+                targetProcessPath.resolve(process.getName() + ".bpmn-temp"),
+                "processName", process.getName());
         XSLTTasks.transform(getXsltPath().resolve("camunda.xsl"),
                 targetProcessPath.resolve(process.getName() + ".bpmn-temp"),
                 targetProcessPath.resolve(process.getName() + FileTypes.BPMN));
@@ -174,19 +175,21 @@ public class CamundaEngine extends AbstractBPMNEngine {
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            new CamundaTester(
+            new GenericBPMNTester(process,
                     testCase,
-                    getTomcatLogsDir(),
-                    getInstanceLogFile(testCaseNumber),
-                    bpmnTester
+                    getInstanceLogFile(process.getName(), testCaseNumber),
+                    bpmnTester,
+                    new CamundaApiBasedProcessInstanceOutcomeChecker(),
+                    new CamundaLogBasedProcessInstanceOutcomeChecker(FileTasks.findFirstMatchInFolder(getTomcatLogsDir(), "catalina*")),
+                    new CamundaProcessStarter()
             ).runTest();
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }
 
-    private Path getInstanceLogFile(int testCaseNumber) {
-        return getTomcatDir().resolve("bin").resolve("log" + testCaseNumber + ".txt");
+    private Path getInstanceLogFile(String processName, int testCaseNumber) {
+        return getTomcatDir().resolve("bin").resolve("log-" + processName + "-" + testCaseNumber + ".txt");
     }
 
     @Override
@@ -195,8 +198,8 @@ public class CamundaEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public Path getLogForInstance(String processName) {
-        return getInstanceLogFile(Integer.parseInt(processName));
+    public Path getLogForInstance(String processName, String instanceId) {
+        return getInstanceLogFile(processName, Integer.parseInt(instanceId));
     }
 
 }
