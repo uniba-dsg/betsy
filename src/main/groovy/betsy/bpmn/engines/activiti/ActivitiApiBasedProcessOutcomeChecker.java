@@ -16,10 +16,7 @@ public class ActivitiApiBasedProcessOutcomeChecker implements BPMNProcessInstanc
         String checkDeploymentUrl = ActivitiEngine.URL + "/service/repository/deployments?name="+key+".bpmn";
 
         JSONObject result = JsonHelper.get(checkDeploymentUrl, 200);
-        if(result.getInt("size")!=1) {
-            return false;
-        }
+        return result.getInt("size") == 1;
 
-        return true;
     }
 }

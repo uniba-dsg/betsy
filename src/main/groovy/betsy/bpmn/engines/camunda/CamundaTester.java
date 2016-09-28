@@ -14,8 +14,6 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-import pebl.test.Test;
-import pebl.test.TestAssertion;
 import pebl.test.TestCase;
 import pebl.test.TestStep;
 import pebl.test.assertions.Trace;
