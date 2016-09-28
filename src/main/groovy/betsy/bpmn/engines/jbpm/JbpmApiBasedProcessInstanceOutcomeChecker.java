@@ -15,14 +15,13 @@ public class JbpmApiBasedProcessInstanceOutcomeChecker implements BPMNProcessIns
     private final String requestUrl;
 
     protected final String processDeploymentUrl;
-    protected final String deploymentId;
 
-    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl, String deploymentId) {
+
+    public JbpmApiBasedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl) {
         this.user = "admin";
         this.password = "admin";
         this.requestUrl = Objects.requireNonNull(requestUrl);
         this.processDeploymentUrl = deploymentUrl;
-        this.deploymentId = deploymentId;
     }
 
     @Override

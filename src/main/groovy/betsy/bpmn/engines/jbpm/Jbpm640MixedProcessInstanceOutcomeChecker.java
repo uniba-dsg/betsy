@@ -10,8 +10,8 @@ public class Jbpm640MixedProcessInstanceOutcomeChecker extends JbpmApiBasedProce
 
     private final Path logFile;
 
-    public Jbpm640MixedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl, String deploymentId, Path logFile) {
-        super(requestUrl, deploymentUrl, deploymentId);
+    public Jbpm640MixedProcessInstanceOutcomeChecker(String requestUrl, String deploymentUrl, Path logFile) {
+        super(requestUrl, deploymentUrl);
         this.logFile = logFile;
     }
 

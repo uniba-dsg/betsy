@@ -34,7 +34,7 @@ public class JbpmEngine630 extends JbpmEngine {
     protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
         String url = getJbpmnUrl() + "/rest/history/instance/1";
         String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name);
-        return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl, getDeploymentId(name));
+        return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl);
     }
 
 }
