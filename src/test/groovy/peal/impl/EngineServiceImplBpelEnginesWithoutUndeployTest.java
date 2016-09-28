@@ -103,7 +103,7 @@ public class EngineServiceImplBpelEnginesWithoutUndeployTest extends AbstractEng
         return new EngineServiceImpl().getSupportedEngines().stream()
                 .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPEL))
                 // full: openesb__*
-                .filter(p -> p.toString().startsWith("openesb"))
+                .filter(p -> p.toString().startsWith("openesb__2"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }

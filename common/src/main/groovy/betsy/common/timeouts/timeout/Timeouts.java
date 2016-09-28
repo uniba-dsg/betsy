@@ -156,8 +156,8 @@ public class Timeouts {
         timeouts.add(new Timeout("Bpelg.deploy", 100_000, 500));
         timeouts.add(new Timeout("Ode.deploy", 30_000, 500));
         timeouts.add(new Timeout("OpenEsb30x.installComponent", 15_000, 500));
-        timeouts.add(new Timeout("OpenEsb30x.startup.waitForUrl", 10_000, 500));
-        timeouts.add(new Timeout("OpenEsb30x.startup.waitForStart", 10_000, 500));
+        timeouts.add(new Timeout("OpenEsb30x.startup.waitForUrl", 15_000, 500));
+        timeouts.add(new Timeout("OpenEsb30x.startup.waitForStart", 15_000, 500));
         timeouts.add(new Timeout("OpenEsb.startup", 15_000, 500));
         timeouts.add(new Timeout("PetalsEsb.deploy", 20_000, 500));
         timeouts.add(new Timeout("PetalsEsb.startup", 60_000, 500));

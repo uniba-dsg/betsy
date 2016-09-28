@@ -101,12 +101,21 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
 
-        WaitTasks.sleep(5_000);
+        WaitTasks.sleep(10_000);
+
+        String[] shutdownParams = {"-jar", adminBinariesFile, "shut-down-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                processName + "Application"};
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(shutdownParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(shutdownParams));
+
+        WaitTasks.sleep(10_000);
 
         String[] startParams = {"-jar", adminBinariesFile, "undeploy-jbi-service-assembly",
                 "--user", "admin",
                 "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
-                "--force",
                 processName + "Application"};
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
