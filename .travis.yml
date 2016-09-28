@@ -25,7 +25,6 @@ env:
     - TESTS=systemtests.BPELSystemTest  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=peal.impl.*BpelEnginesTest*  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=peal.impl.*BpmnEnginesTest*  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
-    - TESTS=peal.impl.*BpmnEnginesWithoutUndeploy*  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=peal.helper.*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=betsy.*Test*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=configuration.bpel.*        JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
