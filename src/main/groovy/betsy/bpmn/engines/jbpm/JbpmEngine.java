@@ -11,13 +11,14 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
-import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
@@ -28,6 +29,7 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import pebl.ProcessLanguage;
 import pebl.test.TestCase;
 
 public class JbpmEngine extends AbstractBPMNEngine {
@@ -87,7 +89,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         JbpmDeployer deployer = new JbpmDeployer(getJbpmnUrl(), deploymentId);
         deployer.deploy();
 
-        TimeoutRepository.getTimeout("Jbpm.deploy").waitFor(() -> isDeployed(new QName(name)));
+        TimeoutRepository.getTimeout("Jbpm.deploy").waitFor(deployer::isDeploymentFinished);
     }
 
     @Override
@@ -203,13 +205,15 @@ public class JbpmEngine extends AbstractBPMNEngine {
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            new JbpmTester(
-                    process,
+            BPMNProcessInstanceOutcomeChecker checker = createProcessOutcomeChecker(process.getName());
+
+            new GenericBPMNTester(process,
                     testCase,
-                    bpmnTester,
-                    createProcessOutcomeChecker(process.getName()),
                     getInstanceLogFile(process.getName(), testCaseNumber),
-                    getJbossLogDir().resolve("server.log")
+                    bpmnTester,
+                    checker,
+                    checker,
+                    new JbpmProcessStarter()
             ).runTest();
         }
 

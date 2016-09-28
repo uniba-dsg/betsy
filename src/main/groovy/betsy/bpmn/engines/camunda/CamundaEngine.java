@@ -12,6 +12,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
@@ -174,12 +175,13 @@ public class CamundaEngine extends AbstractBPMNEngine {
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            new CamundaTester(
-                    process,
+            new GenericBPMNTester(process,
                     testCase,
-                    getTomcatLogsDir(),
                     getInstanceLogFile(process.getName(), testCaseNumber),
-                    bpmnTester
+                    bpmnTester,
+                    new CamundaApiBasedProcessInstanceOutcomeChecker(),
+                    new CamundaLogBasedProcessInstanceOutcomeChecker(FileTasks.findFirstMatchInFolder(getTomcatLogsDir(), "catalina*")),
+                    new CamundaProcessStarter()
             ).runTest();
         }
 
