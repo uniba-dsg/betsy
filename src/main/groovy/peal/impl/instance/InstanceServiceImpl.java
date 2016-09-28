@@ -1,4 +1,4 @@
-package peal.impl;
+package peal.impl.instance;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.jws.WebService;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
@@ -16,9 +18,11 @@ import peal.Variable;
 import peal.helper.ZipFileHelper;
 import peal.identifier.InstanceId;
 import peal.identifier.ProcessModelId;
+import peal.impl.engine.EngineServiceImpl;
 import peal.observer.InstanceState;
 import peal.packages.LogPackage;
 
+@WebService
 public class InstanceServiceImpl implements InstanceService {
 
     private final EngineServiceImpl engineService;

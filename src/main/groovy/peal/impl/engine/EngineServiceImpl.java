@@ -1,4 +1,4 @@
-package peal.impl;
+package peal.impl.engine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.engines.activebpel.ActiveBpelEngine;
@@ -58,6 +61,7 @@ import peal.identifier.EngineId;
 import peal.observer.EngineState;
 import peal.packages.LogPackage;
 
+@WebService
 public class EngineServiceImpl implements EngineService {
 
     private final List<EngineAPI<?>> engineIds = Arrays.asList(
@@ -144,6 +148,7 @@ public class EngineServiceImpl implements EngineService {
         getEngineByID(engineId).uninstall();
     }
 
+    @WebMethod(exclude = true)
     public EngineAPI<?> getEngineByID(EngineId engineId) {
         int index = engines.indexOf(engineId);
         if (index == -1) {

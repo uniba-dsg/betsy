@@ -20,6 +20,8 @@ import peal.ProcessModelService;
 import peal.helper.ZipFileHelper;
 import peal.identifier.EngineId;
 import peal.identifier.ProcessModelId;
+import peal.impl.engine.EngineServiceImpl;
+import peal.impl.processmodel.ProcessModelServiceImpl;
 import peal.observer.EngineState;
 import peal.observer.ProcessModelState;
 import peal.packages.DeploymentPackage;

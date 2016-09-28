@@ -1,4 +1,4 @@
-package peal.impl;
+package peal.impl.processmodel;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -16,6 +17,7 @@ import betsy.bpel.model.BPELProcess;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.engines.EngineAPI;
+import peal.impl.engine.EngineServiceImpl;
 import pebl.benchmark.feature.Capability;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
@@ -34,6 +36,7 @@ import peal.packages.DeploymentPackage;
 import peal.packages.ProcessModelPackage;
 import peal.helper.ZipFileHelper;
 
+@WebService
 public class ProcessModelServiceImpl implements ProcessModelService {
 
     private final EngineServiceImpl engineService;
