@@ -90,7 +90,7 @@ public class BPMNBetsyTests {
             return null;
         }
 
-        @Override public Path getLogForInstance(String processName) {
+        @Override public Path getLogForInstance(String processName, String instanceId) {
             return null;
         }
 

@@ -7,6 +7,7 @@ import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.assertions.Trace;
 import pebl.benchmark.test.assertions.TraceTestAssertion;
 import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.DeployableCheckTestStep;
 import pebl.benchmark.test.steps.GatherTracesTestStep;
 import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
 import pebl.benchmark.test.steps.vars.Variable;
@@ -17,27 +18,36 @@ public class BPMNTestCaseBuilder {
 
     public TestCase getTestCase(int number, String key) {
         TestCase result = new TestCase();
-        if(isParallel) {
-            // add step that starts the parallel process
-            ProcessStartWithVariablesTestStep parallelStart = new ProcessStartWithVariablesTestStep();
-            parallelStart.setProcess(PARALLEL_PROCESS_KEY);
-            result.addStep(parallelStart);
-        }
 
-        // add step that starts the real process
-        ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = new ProcessStartWithVariablesTestStep();
-        processStartWithVariablesTestStep.setProcess(key);
-        if(input != null) {
-            processStartWithVariablesTestStep.addVariable(input);
-        }
-        processStartWithVariablesTestStep.addVariable(new Variable("integerVariable", "Integer", integerVariable));
-        processStartWithVariablesTestStep.addVariable(new Variable("testCaseNumber", "Integer", number));
-        result.addStep(processStartWithVariablesTestStep);
+        // add step to check deployability
+        DeployableCheckTestStep deployable = new DeployableCheckTestStep();
+        result.addStep(deployable);
 
-        // add delay
-        DelayTestStep delayTestStep = new DelayTestStep();
-        delayTestStep.setTimeToWaitAfterwards(delay);
-        result.addStep(delayTestStep);
+        // skip process start and delays if a deployment failure is expected
+        if(!traces.contains(new Trace(BPMNAssertions.ERROR_DEPLOYMENT.toString()))) {
+
+            if (isParallel) {
+                // add step that starts the parallel process
+                ProcessStartWithVariablesTestStep parallelStart = new ProcessStartWithVariablesTestStep();
+                parallelStart.setProcess(PARALLEL_PROCESS_KEY);
+                result.addStep(parallelStart);
+            }
+
+            // add step that starts the real process
+            ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = new ProcessStartWithVariablesTestStep();
+            processStartWithVariablesTestStep.setProcess(key);
+            if (input != null) {
+                processStartWithVariablesTestStep.addVariable(input);
+            }
+            processStartWithVariablesTestStep.addVariable(new Variable("integerVariable", "Integer", integerVariable));
+            processStartWithVariablesTestStep.addVariable(new Variable("testCaseNumber", "Integer", number));
+            result.addStep(processStartWithVariablesTestStep);
+
+            // add delay
+            DelayTestStep delayTestStep = new DelayTestStep();
+            delayTestStep.setTimeToWaitAfterwards(delay);
+            result.addStep(delayTestStep);
+        }
 
         // add trace gathering step
 

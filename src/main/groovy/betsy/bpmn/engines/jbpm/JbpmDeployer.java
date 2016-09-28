@@ -37,13 +37,13 @@ public class JbpmDeployer {
         }
     }
 
-    public boolean isDeployed() {
+    public boolean isDeploymentFinished() {
         LOGGER.info("Trying to check the deployment status of process \"" + deploymentId + "\".");
 
         try {
             JSONObject object = JsonHelper.getJSONWithAuth(baseUrl + "/rest/deployment/" + deploymentId, 200, USER, PASSWORD);
             String status = object.optString("status");
-            return "DEPLOYED".equalsIgnoreCase(status);
+            return "DEPLOYED".equalsIgnoreCase(status) || "DEPLOY_FAILED".equalsIgnoreCase(status);
         } catch (Exception e) {
             LOGGER.error("error: " + e.getMessage());
             return false;

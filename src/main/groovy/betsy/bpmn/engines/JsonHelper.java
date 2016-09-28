@@ -43,6 +43,24 @@ public class JsonHelper {
         }
     }
 
+    public static JSONArray getJsonArray(String url, int expectedCode) {
+        log.info("HTTP GET " + url);
+
+        try {
+            HttpResponse<JsonNode> response = Unirest.get(url).asJson();
+            assertHttpCode(expectedCode, response);
+            logResponse(response.getBody());
+
+            if (response.getBody().isArray()) {
+                return response.getBody().getArray();
+            } else {
+                throw new RuntimeException("Unexpected response: Expected an array which was not present.");
+            }
+        } catch (UnirestException e) {
+            throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
+        }
+    }
+
     public static String getStringWithAuth(String url, int expectedCode, String username, String password) {
         log.info("HTTP GET " + url);
 

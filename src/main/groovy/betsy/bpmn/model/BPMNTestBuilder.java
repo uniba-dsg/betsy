@@ -24,7 +24,7 @@ public class BPMNTestBuilder {
         //Build test for each Test Case
         for (TestCase testCase : process.getTestCases()) {
 
-            String logFilePath = logDir.resolve("log" + testCase.getNumber() + ".txt").toAbsolutePath().toString().replaceAll("\\\\","/");
+            String logFilePath = logDir.resolve("log-"+ process.getName()+ "-" + testCase.getNumber() + ".txt").toAbsolutePath().toString().replaceAll("\\\\","/");
 
             //assemble array of assertion for unitTestString
             String expectedProcessTrace = getAssertionString(TestCaseUtil.getTraceAssertions(testCase));

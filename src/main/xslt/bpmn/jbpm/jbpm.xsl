@@ -64,6 +64,14 @@
         </bpmn2:condition>
     </xsl:template>
 
+    <!-- For bpmn constraints: convert task elements to scriptTasks -->
+    <xsl:template match="bpmn2:task">
+        <bpmn2:scriptTask scriptFormat="http://www.java.com/java">
+            <xsl:apply-templates select="@*|node()" />
+            <bpmn2:script>return;</bpmn2:script>
+        </bpmn2:scriptTask>
+    </xsl:template>
+
 
     <xsl:template match="node()|@*">
         <xsl:copy>

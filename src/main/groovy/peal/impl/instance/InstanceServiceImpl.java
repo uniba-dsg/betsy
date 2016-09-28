@@ -106,7 +106,7 @@ public class InstanceServiceImpl implements InstanceService {
     private Path getInstanceLog(InstanceId instanceId) {
         EngineAPI<?> engine = engineService.getEngineByID(instanceId.toEngineId());
         AbstractBPMNEngine bpmnEngine = (AbstractBPMNEngine) engine;
-        return bpmnEngine.getLogForInstance(instanceId.getInstanceID());
+        return bpmnEngine.getLogForInstance(instanceId.getProcessId().getLocalPart(), instanceId.getInstanceID());
     }
 
 }

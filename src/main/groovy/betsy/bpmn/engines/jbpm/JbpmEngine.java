@@ -11,13 +11,14 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
+import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
-import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
@@ -28,6 +29,7 @@ import betsy.common.tasks.ZipTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import org.apache.log4j.Logger;
+import pebl.ProcessLanguage;
 import pebl.benchmark.test.TestCase;
 
 public class JbpmEngine extends AbstractBPMNEngine {
@@ -87,12 +89,15 @@ public class JbpmEngine extends AbstractBPMNEngine {
         JbpmDeployer deployer = new JbpmDeployer(getJbpmnUrl(), deploymentId);
         deployer.deploy();
 
-        TimeoutRepository.getTimeout("Jbpm.deploy").waitFor(deployer::isDeployed);
+        TimeoutRepository.getTimeout("Jbpm.deploy").waitFor(deployer::isDeploymentFinished);
     }
 
     @Override
     public Path buildArchives(final BPMNProcess process) {
-        XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"), process.getProcess(), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"));
+        XSLTTasks.transform(getXsltPath().resolve("../scriptTask.xsl"),
+                process.getProcess(),
+                process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"),
+                "processName", process.getName());
         XSLTTasks.transform(getXsltPath().resolve("jbpm.xsl"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2-temp"), process.getTargetPath().resolve("project/src/main/resources/" + process.getName() + ".bpmn2"));
         FileTasks.deleteFile(process.getTargetPath().resolve("war/WEB-INF/classes/" + process.getName() + ".bpmn2-temp"));
 
@@ -136,6 +141,8 @@ public class JbpmEngine extends AbstractBPMNEngine {
     @Override
     public void startup() {
         Path pathToJava7 = Configuration.getJava7Home();
+
+        FileTasks.replaceTokenInFile(getJbpmInstallerPath().resolve("build.xml"),"<env key=\"JAVA_OPTS\" value=\"-XX:MaxPermSize=256m -Xms256m -Xmx512m\" />", "<env key=\"JAVA_OPTS\" value=\"-XX:MaxPermSize=256m -Xms512m -Xmx2048m -XX:-UseGCOverheadLimit\" />");
 
         ConsoleTasks.setupAnt(getAntPath());
 
@@ -198,20 +205,23 @@ public class JbpmEngine extends AbstractBPMNEngine {
             bpmnTester.setTarget(process.getTargetTestBinPathWithCase(testCaseNumber));
             bpmnTester.setReportPath(process.getTargetReportsPathWithCase(testCaseNumber));
 
-            new JbpmTester(
+            BPMNProcessInstanceOutcomeChecker checker = createProcessOutcomeChecker(process.getName());
+
+            new GenericBPMNTester(process,
                     testCase,
+                    getInstanceLogFile(process.getName(), testCaseNumber),
                     bpmnTester,
-                    createProcessOutcomeChecker(),
-                    getInstanceLogFile(testCaseNumber),
-                    getJbossLogDir().resolve("server.log")
+                    checker,
+                    checker,
+                    new JbpmProcessStarter()
             ).runTest();
         }
 
         new BPMNTestcaseMerger(process.getTargetReportsPath()).mergeTestCases();
     }
 
-    private Path getInstanceLogFile(int testCaseNumber) {
-        return getJbpmInstallerPath().resolve("log" + testCaseNumber + ".txt");
+    private Path getInstanceLogFile(String processName, int testCaseNumber) {
+        return getJbpmInstallerPath().resolve("log-" + processName + "-" + testCaseNumber + ".txt");
     }
 
     @Override
@@ -220,17 +230,18 @@ public class JbpmEngine extends AbstractBPMNEngine {
     }
 
     @Override
-    public Path getLogForInstance(String processName) {
-        return getInstanceLogFile(Integer.parseInt(processName));
+    public Path getLogForInstance(String processName, String instanceId) {
+        return getInstanceLogFile(processName, Integer.parseInt(instanceId));
     }
 
-    private static String getDeploymentId(String name) {
+    protected static String getDeploymentId(String name) {
         return "de.uniba.dsg" + ":" + name + ":" + "1.0";
     }
 
     @Override
     public boolean isDeployed(QName process) {
-        return new JbpmDeployer(getJbpmnUrl(), getDeploymentId(process.getLocalPart())).isDeployed();
+        JbpmApiBasedProcessInstanceOutcomeChecker checker = createProcessOutcomeChecker(process.getLocalPart());
+        return checker.isProcessDeployed();
     }
 
     @Override
@@ -239,7 +250,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
         JbpmDeployer deployer = new JbpmDeployer(getJbpmnUrl(), deploymentId);
         deployer.undeploy();
 
-        TimeoutRepository.getTimeout("Jbpm.undeploy").waitFor(() -> !deployer.isDeployed());
+        TimeoutRepository.getTimeout("Jbpm.undeploy").waitFor(() -> !isDeployed(process));
     }
 
     @Override
@@ -251,8 +262,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         builder.buildTests();
     }
 
-    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker() {
-        return JbpmApiBasedProcessInstanceOutcomeChecker.buildWithDeploymentId();
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
+        String url = getJbpmnUrl() + "/rest/runtime/" + getDeploymentId(name) + "/history/instance/1";
+        String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name);
+        return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl);
     }
 
 }
