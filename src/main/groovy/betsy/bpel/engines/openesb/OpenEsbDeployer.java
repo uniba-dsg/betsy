@@ -21,4 +21,12 @@ public class OpenEsbDeployer {
         cli.forceRedeploy(processName, packageFilePath, tmpFolder);
     }
 
+    public void undeploy(String processName, Path tmpFolder) {
+        FileTasks.assertDirectory(tmpFolder);
+        Objects.requireNonNull(processName);
+
+        // create tmp folder
+        cli.undeploy(processName, tmpFolder);
+    }
+
 }
