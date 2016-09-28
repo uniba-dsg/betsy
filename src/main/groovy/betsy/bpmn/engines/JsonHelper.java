@@ -9,6 +9,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.http.options.Option;
 import com.mashape.unirest.http.options.Options;
 import com.mashape.unirest.http.utils.SyncIdleConnectionMonitorThread;
+import com.mashape.unirest.request.HttpRequestWithBody;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -117,14 +118,19 @@ public class JsonHelper {
         }
     }
 
-    public static JSONObject delete(String url, int expectedCode) {
+    public static JSONArray delete(String url, int expectedCode) {
         log.info("HTTP DELETE " + url);
 
         try {
-            HttpResponse<JsonNode> response = Unirest.delete(url).header("Content-Type", "application/json").asJson();
+            HttpRequestWithBody result = Unirest.delete(url).header("Content-Type", "application/json");
+            HttpResponse<JsonNode> response = result.asJson();
             assertHttpCode(expectedCode, response);
             logResponse(response.getBody());
-            return response.getBody().getObject();
+            if(response.getBody() == null) {
+                return new JSONArray();
+            } else {
+                return response.getBody().getArray();
+            }
         } catch (UnirestException e) {
             throw new RuntimeException(REST_CALL_FAILED_WITH_URL + url, e);
         }
