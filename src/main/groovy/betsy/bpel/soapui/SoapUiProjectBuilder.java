@@ -1,7 +1,7 @@
 package betsy.bpel.soapui;
 
 import betsy.bpel.model.BPELProcess;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlProjectFactory;

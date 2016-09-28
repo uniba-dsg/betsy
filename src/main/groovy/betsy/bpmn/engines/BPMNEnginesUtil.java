@@ -9,7 +9,7 @@ import java.util.List;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
 
 public class BPMNEnginesUtil {
 

@@ -14,21 +14,21 @@ import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import pebl.feature.FeatureSet;
-import pebl.feature.Feature;
-import pebl.test.Test;
-import pebl.test.partner.rules.AnyInput;
-import pebl.test.partner.rules.EchoInputAsOutput;
-import pebl.test.partner.ExternalWSDLTestPartner;
-import pebl.test.partner.rules.IntegerInput;
-import pebl.test.partner.rules.IntegerOutputWithStatusCode;
-import pebl.test.partner.NoTestPartner;
-import pebl.test.TestPartner;
-import pebl.test.partner.InternalWSDLTestPartner;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.partner.rules.AnyInput;
+import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
+import pebl.benchmark.test.partner.ExternalWSDLTestPartner;
+import pebl.benchmark.test.partner.rules.IntegerInput;
+import pebl.benchmark.test.partner.rules.IntegerOutputWithStatusCode;
+import pebl.benchmark.test.partner.NoTestPartner;
+import pebl.benchmark.test.TestPartner;
+import pebl.benchmark.test.partner.InternalWSDLTestPartner;
 import betsy.common.tasks.FileTasks;
-import pebl.test.partner.rules.OperationInputOutputRule;
-import pebl.test.partner.rules.RawOutput;
-import pebl.test.partner.rules.TimeoutInsteadOfOutput;
+import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
+import pebl.benchmark.test.partner.rules.RawOutput;
+import pebl.benchmark.test.partner.rules.TimeoutInsteadOfOutput;
 
 public class ErrorProcesses {
 

@@ -14,7 +14,7 @@ import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
 import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.config.Configuration;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;

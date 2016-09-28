@@ -7,16 +7,16 @@ import java.util.Collections;
 
 import betsy.bpel.model.BPELTestCase;
 import betsy.common.util.FileTypes;
-import pebl.feature.Feature;
-import pebl.feature.FeatureSet;
-import pebl.test.Test;
-import pebl.test.partner.InternalWSDLTestPartner;
-import pebl.test.partner.rules.AnyInput;
-import pebl.test.partner.rules.EchoInputAsOutput;
-import pebl.test.partner.rules.IntegerInput;
-import pebl.test.partner.rules.IntegerOutputBasedOnScriptResult;
-import pebl.test.partner.rules.OperationInputOutputRule;
-import pebl.test.partner.rules.SoapFaultOutput;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.partner.InternalWSDLTestPartner;
+import pebl.benchmark.test.partner.rules.AnyInput;
+import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
+import pebl.benchmark.test.partner.rules.IntegerInput;
+import pebl.benchmark.test.partner.rules.IntegerOutputBasedOnScriptResult;
+import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
+import pebl.benchmark.test.partner.rules.SoapFaultOutput;
 
 public class BPELProcessBuilder {
 
@@ -65,35 +65,51 @@ public class BPELProcessBuilder {
     );
 
     public static Test buildPatternProcess(final String name, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Collections.singletonList(testInterface), Collections.emptyList());
+        return new Test(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases),
+                feature,
+                Collections.singletonList(testInterface), Collections.emptyList());
     }
 
     public static Test buildPatternProcessWithPartner(final String name, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(REGULAR_TEST_PARTNER));
+        return new Test(PATH_PREFIX.resolve("cfpatterns/" + name + FileTypes.BPEL), "", Arrays.asList(testCases),
+                feature,
+                Arrays.asList(testInterface, partnerInterface), Collections.singletonList(REGULAR_TEST_PARTNER));
     }
 
     public static Test buildStructuredActivityProcess(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("structured/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Collections.singletonList(testInterface), Collections.emptyList());
+        return new Test(PATH_PREFIX.resolve("structured/" + name + FileTypes.BPEL), description, Arrays.asList(testCases),
+                feature,
+                Collections.singletonList(testInterface), Collections.emptyList());
     }
 
     public static Test buildScopeProcess(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("scopes/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Collections.singletonList(testInterface), Collections.emptyList());
+        return new Test(PATH_PREFIX.resolve("scopes/" + name + FileTypes.BPEL), description, Arrays.asList(testCases),
+                feature,
+                Collections.singletonList(testInterface), Collections.emptyList());
     }
 
     public static Test buildScopeProcessWithPartner(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("scopes/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(REGULAR_TEST_PARTNER));
+        return new Test(PATH_PREFIX.resolve("scopes/" + name + FileTypes.BPEL), description, Arrays.asList(testCases),
+                feature,
+                Arrays.asList(testInterface, partnerInterface), Collections.singletonList(REGULAR_TEST_PARTNER));
     }
 
     public static Test buildBasicActivityProcess(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Collections.singletonList(testInterface), Collections.emptyList());
+        return new Test(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases),
+                feature,
+                Collections.singletonList(testInterface), Collections.emptyList());
     }
 
     public static Test buildBasicProcessWithXsd(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, PATH_PREFIX.resolve("basic/months.xsd")), Collections.emptyList());
+        return new Test(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases),
+                feature,
+                Arrays.asList(testInterface, PATH_PREFIX.resolve("basic/months.xsd")), Collections.emptyList());
     }
 
     public static Test buildBasicProcessWithPartner(String name, String description, Feature feature, BPELTestCase... testCases) {
-        return new Test(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases), feature, Arrays.asList(testInterface, partnerInterface), Collections.singletonList(REGULAR_TEST_PARTNER));
+        return new Test(PATH_PREFIX.resolve("basic/" + name + FileTypes.BPEL), description, Arrays.asList(testCases),
+                feature,
+                Arrays.asList(testInterface, partnerInterface), Collections.singletonList(REGULAR_TEST_PARTNER));
     }
 
     public static Test buildBasicProcessWithRegularAndDummyPartner(String name, String description, Feature feature, BPELTestCase... testCases) {

@@ -1,10 +1,12 @@
 package betsy.common.tasks;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.ExecTask;
@@ -164,6 +166,9 @@ public class ConsoleTasks {
                 FileTasks.assertExecutableFile(command);
             } catch (IllegalArgumentException e) {
                 log.warn("executable file not found: " + e.getMessage());
+                if(Files.exists(command)) {
+                    log.warn("But file itself does exist with content: " + FileTasks.readAllLines(command).stream().collect(Collectors.joining("\n")));
+                }
             }
 
             return build(dir, command.toAbsolutePath().toString());

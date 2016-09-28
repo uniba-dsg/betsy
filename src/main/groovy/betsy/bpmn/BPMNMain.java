@@ -4,7 +4,7 @@ import betsy.bpmn.cli.BPMNCliParameter;
 import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;

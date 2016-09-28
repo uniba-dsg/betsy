@@ -1,10 +1,10 @@
 package betsy.bpmn.reporting;
 
-import pebl.test.Test;
-import pebl.test.TestAssertion;
-import pebl.test.TestCase;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.TestAssertion;
+import pebl.benchmark.test.TestCase;
 import configuration.bpmn.BPMNProcessRepository;
-import pebl.test.assertions.TraceTestAssertion;
+import pebl.benchmark.test.assertions.TraceTestAssertion;
 
 import java.util.List;
 

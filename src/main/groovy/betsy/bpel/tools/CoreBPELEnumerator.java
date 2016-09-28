@@ -1,6 +1,6 @@
 package betsy.bpel.tools;
 
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import betsy.common.util.FileTypes;
 import configuration.bpel.BPELProcessRepository;
 import corebpel.CoreBPEL;

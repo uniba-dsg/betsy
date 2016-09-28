@@ -8,41 +8,41 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
 
-import pebl.test.Test;
-import pebl.test.assertions.SoapFaultTestAssertion;
-import pebl.test.assertions.TraceTestAssertion;
-import pebl.test.assertions.XpathTestAssertion;
-import pebl.test.partner.rules.AnyInput;
-import pebl.test.partner.rules.EchoInputAsOutput;
-import pebl.test.partner.rules.SoapFaultOutput;
-import pebl.test.partner.rules.Input;
-import pebl.test.partner.rules.IntegerInput;
-import pebl.test.partner.rules.IntegerOutput;
-import pebl.test.partner.rules.IntegerOutputBasedOnScriptResult;
-import pebl.test.partner.rules.IntegerOutputWithStatusCode;
-import pebl.test.partner.rules.OperationInputOutputRule;
-import pebl.test.partner.rules.Output;
-import pebl.test.partner.rules.RawOutput;
-import pebl.test.partner.rules.TimeoutInsteadOfOutput;
-import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.DeployableCheckTestStep;
-import pebl.test.steps.NotDeployableCheckTestStep;
-import pebl.test.steps.GatherTracesTestStep;
-import pebl.test.steps.vars.ProcessStartWithVariablesTestStep;
-import pebl.test.steps.soap.SoapTestStep;
-import pebl.test.steps.vars.Variable;
-import pebl.test.partner.ExternalWSDLTestPartner;
-import pebl.test.partner.NoTestPartner;
-import pebl.test.TestAssertion;
-import pebl.test.TestCase;
-import pebl.test.TestPartner;
-import pebl.test.TestStep;
-import pebl.test.partner.InternalWSDLTestPartner;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.assertions.TraceTestAssertion;
+import pebl.benchmark.test.assertions.XpathTestAssertion;
+import pebl.benchmark.test.partner.rules.AnyInput;
+import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
+import pebl.benchmark.test.partner.rules.SoapFaultOutput;
+import pebl.benchmark.test.partner.rules.Input;
+import pebl.benchmark.test.partner.rules.IntegerInput;
+import pebl.benchmark.test.partner.rules.IntegerOutput;
+import pebl.benchmark.test.partner.rules.IntegerOutputBasedOnScriptResult;
+import pebl.benchmark.test.partner.rules.IntegerOutputWithStatusCode;
+import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
+import pebl.benchmark.test.partner.rules.Output;
+import pebl.benchmark.test.partner.rules.RawOutput;
+import pebl.benchmark.test.partner.rules.TimeoutInsteadOfOutput;
+import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.DeployableCheckTestStep;
+import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
+import pebl.benchmark.test.steps.GatherTracesTestStep;
+import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.steps.vars.Variable;
+import pebl.benchmark.test.partner.ExternalWSDLTestPartner;
+import pebl.benchmark.test.partner.NoTestPartner;
+import pebl.benchmark.test.TestAssertion;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestPartner;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.partner.InternalWSDLTestPartner;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pebl.test.steps.soap.WsdlService;
+import pebl.benchmark.test.steps.soap.WsdlService;
 
 class JsonGeneratorTestsEngineIndependent {
 
@@ -91,7 +91,7 @@ class JsonGeneratorTestsEngineIndependent {
 
         testObject.put("engineIndependentFiles", createEngineIndependentFilesArray(p));
 
-        testObject.put("language", p.getProcessLanguage().getID());
+        testObject.put("language", p.getProcessLanguage());
         testObject.put("featureID", p.getFeature().getID());
 
         JSONArray testCasesArray = new JSONArray();

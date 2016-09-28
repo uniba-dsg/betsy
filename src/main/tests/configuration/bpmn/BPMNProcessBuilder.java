@@ -1,18 +1,17 @@
 package configuration.bpmn;
 
 import betsy.bpmn.model.BPMNTestCaseBuilder;
-import pebl.test.Test;
-import pebl.feature.Feature;
+import configuration.Capabilities;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.feature.Feature;
 import betsy.common.util.FileTypes;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BPMNProcessBuilder {
 
@@ -34,47 +33,47 @@ public class BPMNProcessBuilder {
     }
 
     public static Test buildGatewayProcess(String name, String description, Feature feature, BPMNTestCaseBuilder... testCases) {
-        return new Test(ROOT_FOLDER.resolve("gateways").resolve(name + FileTypes.BPMN), description,
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("gateways").resolve(name + FileTypes.BPMN), description,
                 convert(testCases, name),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
     public static Test buildErrorProcess(String name, String description, Feature feature, BPMNTestCaseBuilder... testCases) {
-        return new Test(ROOT_FOLDER.resolve("errors").resolve(name + FileTypes.BPMN),
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("errors").resolve(name + FileTypes.BPMN),
                 description,
                 convert(testCases, name),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
     public static Test buildEventProcess(String name, String description, Feature feature, BPMNTestCaseBuilder... testCases) {
-        return new Test(ROOT_FOLDER.resolve("events").resolve(name + FileTypes.BPMN),
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("events").resolve(name + FileTypes.BPMN),
                 description,
                 convert(testCases, name),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
     public static Test buildBasicProcess(String name, String description, Feature feature, BPMNTestCaseBuilder... testCases) {
-        return new Test(ROOT_FOLDER.resolve("basics").resolve(name + FileTypes.BPMN), description,
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("basics").resolve(name + FileTypes.BPMN), description,
                 convert(testCases, name),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
     public static Test buildDataProcess(String description, Feature feature, BPMNTestCaseBuilder... testCases) {
-        return new Test(ROOT_FOLDER.resolve("data").resolve(feature.getName() + FileTypes.BPMN), description,
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("data").resolve(feature.getName() + FileTypes.BPMN), description,
                 convert(testCases, feature.getName()),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
     public static Test buildPatternProcess (String description, Feature feature, BPMNTestCaseBuilder... testCases){
-        return new Test(ROOT_FOLDER.resolve("cfpatterns").resolve(feature.getName() + FileTypes.BPMN), description,
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("cfpatterns").resolve(feature.getName() + FileTypes.BPMN), description,
                 convert(testCases, feature.getName()),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
     public static Test buildConstraintProcess (String description, Feature feature, BPMNTestCaseBuilder... testCases){
-        return new Test(ROOT_FOLDER.resolve("cfpatterns").resolve(feature.getName() + FileTypes.BPMN), description,
+        return Capabilities.addMetrics(new Test(ROOT_FOLDER.resolve("cfpatterns").resolve(feature.getName() + FileTypes.BPMN), description,
                 convert(testCases, feature.getName()),
-                feature, Collections.emptyList());
+                feature, Collections.emptyList()));
     }
 
 }

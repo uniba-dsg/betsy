@@ -8,7 +8,7 @@ import java.util.StringJoiner;
 import betsy.bpmn.engines.TestCaseUtil;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
 
 public class BPMNTestBuilder {
 

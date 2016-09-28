@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.camunda;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
@@ -8,11 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.namespace.QName;
+
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.GenericBPMNTester;
+import betsy.bpmn.engines.JsonHelper;
+import betsy.bpmn.engines.activiti.ActivitiApiBasedProcessOutcomeChecker;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
@@ -24,10 +29,18 @@ import betsy.common.tasks.XSLTTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import pebl.ProcessLanguage;
-import pebl.test.TestCase;
+import pebl.benchmark.test.TestCase;
+
+import static betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS;
 
 public class CamundaEngine extends AbstractBPMNEngine {
+
+    private static final Logger LOGGER = Logger.getLogger(CamundaEngine.class);
+
 
     @Override
     public EngineExtended getEngineObject() {
@@ -65,6 +78,27 @@ public class CamundaEngine extends AbstractBPMNEngine {
                 FileTasks.hasFileSpecificSubstring(logFile, "Process Application " + name + " Application successfully deployed.") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Process application " + name + " Application successfully deployed") ||
                         FileTasks.hasFileSpecificSubstring(logFile, "Context [/" + name + "] startup failed due to previous errors"));
+    }
+
+    @Override
+    public boolean isDeployed(QName process) {
+        try {
+            return !UNDEPLOYED_PROCESS.equals(new CamundaApiBasedProcessInstanceOutcomeChecker().checkProcessOutcome(process.getLocalPart()));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void undeploy(QName process) {
+        LOGGER.info("Undeploying process " + process);
+        try {
+            JSONArray result = JsonHelper.getJsonArray("http://localhost:8080/engine-rest/engine/default" + "/process-definition", 200);
+            String id = result.optJSONObject(0).optString("deploymentId");
+            JsonHelper.delete("http://localhost:8080/engine-rest/engine/default" + "/deployment/" + id, 204);
+        } catch (Exception e) {
+            LOGGER.info("undeployment failed", e);
+        }
     }
 
     @Override
@@ -150,6 +184,16 @@ public class CamundaEngine extends AbstractBPMNEngine {
 
     @Override
     public void shutdown() {
+        if (!Files.exists(getServerPath())) {
+            LOGGER.info("Shutdown of " + getName() + " not possible as " + getServerPath() + " does not exist.");
+            return;
+        }
+
+        Path shutdownShellScript = getServerPath().resolve("camunda_shutdown.sh");
+        if (!Files.exists(shutdownShellScript)) {
+            LOGGER.info("Shutdown shell script " + shutdownShellScript + " does not exist");
+        }
+
         Path pathToJava7 = Configuration.getJava7Home();
         Map<String, String> map = new LinkedHashMap<>(2);
         map.put("JAVA_HOME", pathToJava7.toString());
@@ -158,7 +202,7 @@ public class CamundaEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.bat")), map);
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq Tomcat"));
 
-        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getServerPath().resolve("camunda_shutdown.sh")), map);
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(shutdownShellScript), map);
     }
 
     @Override

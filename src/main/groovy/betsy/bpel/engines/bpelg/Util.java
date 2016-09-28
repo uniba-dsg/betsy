@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELWsdlOperations;
-import pebl.test.steps.soap.WsdlOperation;
+import pebl.benchmark.test.steps.soap.WsdlOperation;
 
 public class Util {
 

@@ -1,11 +1,11 @@
 package betsy.bpel.soapui;
 
-import pebl.test.TestStep;
-import pebl.test.assertions.ExitAssertion;
-import pebl.test.assertions.SoapFaultTestAssertion;
-import pebl.test.assertions.XpathTestAssertion;
-import pebl.test.steps.soap.SoapTestStep;
-import pebl.test.TestAssertion;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.ExitAssertion;
+import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.assertions.XpathTestAssertion;
+import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.TestAssertion;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest;

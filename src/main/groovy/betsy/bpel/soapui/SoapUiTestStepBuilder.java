@@ -1,12 +1,12 @@
 package betsy.bpel.soapui;
 
 import betsy.bpel.model.BPELWsdlOperations;
-import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.DeployableCheckTestStep;
-import pebl.test.steps.NotDeployableCheckTestStep;
-import pebl.test.steps.soap.SoapTestStep;
-import pebl.test.TestCase;
-import pebl.test.TestStep;
+import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.DeployableCheckTestStep;
+import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
+import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
 import com.eviware.soapui.config.TestStepConfig;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlOperation;
@@ -16,7 +16,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.*;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.WsdlTestRequestStepFactory;
-import pebl.test.steps.soap.WsdlService;
+import pebl.benchmark.test.steps.soap.WsdlService;
 
 import java.util.Objects;
 

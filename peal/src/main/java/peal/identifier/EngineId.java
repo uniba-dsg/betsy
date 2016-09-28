@@ -2,8 +2,11 @@ package peal.identifier;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class EngineId {
 
+    @XmlElement
     private final String engineId;
 
     public EngineId(String engineId) {

@@ -433,6 +433,7 @@ public class TimeoutTest {
         assertEquals("The placeOfUse should be equal.", placeOfUse, timeout.getPlaceOfUse());
         assertEquals("The values in ms should be equal.", value.intValue(), timeout.getTimeoutInMs());
         assertEquals("The timeToRepetitions in ms should be equal.", timeToRepetition.intValue(), timeout.getTimeToRepetitionInMs());
+        assertEquals("timeout ode.deploy for 90000/500 (UNMEASURABLE,EXTERN)", timeout.toString());
     }
 
     @Test

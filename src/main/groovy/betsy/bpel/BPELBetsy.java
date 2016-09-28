@@ -4,7 +4,7 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.validation.BPELValidator;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;

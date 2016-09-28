@@ -264,7 +264,7 @@ public class FileTasks {
             }
 
         } catch (Exception e) {
-            LOGGER.info("Could not read file " + path, e);
+            LOGGER.info("Could not read file " + path + " because " + e.getMessage());
         }
         return false;
     }

@@ -1,6 +1,6 @@
 package betsy.bpmn.cli;
 
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpmn.BPMNProcessRepository;
 
 import java.util.List;

@@ -37,6 +37,8 @@ public class Wso2Engine_v2_1_2 extends Wso2Engine_v3_1_0 {
         FileTasks.deleteLine(unixStartupScript, 217);
         FileTasks.deleteLine(unixStartupScript, 217);
 
+        Path file32bitWrapper = getBinDir().resolve("native").resolve("wrapper-linux-x86-32");
+        FileTasks.move(file32bitWrapper, file32bitWrapper.getParent().resolve("wrapper-linux-x86-32.bak"));
     }
 
     @Override

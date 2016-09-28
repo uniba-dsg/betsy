@@ -4,7 +4,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.common.model.engine.EngineExtended;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import pebl.ProcessLanguage;
 import configuration.bpmn.BPMNProcessRepository;
 
@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+
+import javax.xml.namespace.QName;
 
 public class BPMNBetsyTests {
     @org.junit.Test
@@ -51,6 +53,14 @@ public class BPMNBetsyTests {
 
         @Override
         public void deploy(String name, Path path) {
+
+        }
+
+        @Override public boolean isDeployed(QName process) {
+            return false;
+        }
+
+        @Override public void undeploy(QName process) {
 
         }
 

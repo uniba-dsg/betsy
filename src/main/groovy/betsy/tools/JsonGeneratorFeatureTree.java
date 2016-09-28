@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import pebl.feature.Capability;
-import pebl.feature.FeatureSet;
-import pebl.feature.Feature;
-import pebl.feature.FeatureDimension;
-import pebl.feature.Group;
-import pebl.feature.Language;
-import pebl.test.Test;
+import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.feature.Language;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
@@ -128,9 +128,6 @@ class JsonGeneratorFeatureTree {
         featureObject.put("id", feature.getID());
         featureObject.put("name", feature.getName());
         featureObject.put("description", feature.getDescription());
-        if(!feature.getUpperBound().isEmpty()) {
-            featureObject.put("upperBound", feature.getUpperBound());
-        }
         return featureObject;
     }
 }

@@ -1,0 +1,53 @@
+@startuml
+package "feature" {
+
+	class Metric {
+	}
+
+	class Feature {
+	}
+
+}
+
+package "test" {
+
+	class Test {
+	  id : String
+	  name : String
+	  description : String
+	  additionalData : Map<String, String>
+	  files : List<String>
+	  process : String
+
+	}
+
+	class TestAssertion
+
+	class TestStep {
+	  description : String
+	}
+
+	class TestCase {
+	  name : String
+	  number : int
+	}
+
+	class TestPartner
+
+}
+
+Test "*" -down-> "1" Feature
+Test "1" -> "*" Metric
+Test "1" -left- "*" TestPartner
+Test "1" - "*" TestCase
+TestCase "1" - "*" TestStep
+TestStep "1" - "*" TestAssertion
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

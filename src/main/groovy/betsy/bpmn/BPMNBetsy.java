@@ -4,7 +4,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.validation.BPMNValidator;
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;

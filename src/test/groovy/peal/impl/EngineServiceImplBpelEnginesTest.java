@@ -20,6 +20,8 @@ import peal.ProcessModelService;
 import peal.helper.ZipFileHelper;
 import peal.identifier.EngineId;
 import peal.identifier.ProcessModelId;
+import peal.impl.engine.EngineServiceImpl;
+import peal.impl.processmodel.ProcessModelServiceImpl;
 import peal.observer.EngineState;
 import peal.observer.ProcessModelState;
 import peal.packages.DeploymentPackage;
@@ -84,6 +86,7 @@ public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceClean
         assertState(EngineState.STARTED);
 
         engineService.stop(engineId);
+        WaitTasks.sleep(5000);
         assertState(EngineState.INSTALLED);
         assertState(ProcessModelState.NOT_DEPLOYED);
 
@@ -108,10 +111,6 @@ public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceClean
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
                 .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPEL))
-                // full: ode bpelg orchestra active_bpel wso2
-                // TODO: openesb__2
-                // see without undeploy: openesb__3
-                .filter(p -> !p.toString().startsWith("openesb"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }

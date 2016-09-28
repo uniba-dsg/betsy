@@ -17,15 +17,12 @@ import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.IsEngine;
 import betsy.common.util.GitUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
-import pebl.engine.Engine;
-import pebl.feature.Feature;
-import pebl.test.Test;
-import pebl.tool.Tool;
+import pebl.result.engine.Engine;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.test.Test;
+import pebl.result.tool.Tool;
 import pebl.xsd.Engines;
 import pebl.xsd.Features;
 import pebl.xsd.PEBL;
@@ -52,10 +49,10 @@ public class XmlMain {
 
     public static PEBL getPebl() {
         PEBL pebl = new PEBL();
-        pebl.tools.addAll(getTools());
-        pebl.engines.addAll(getEngines());
-        pebl.tests.addAll(getTests().stream().collect(Collectors.toList()));
-        pebl.capabilities.addAll(new Features(getFeatures()).capabilities);
+        pebl.result.tools.addAll(getTools());
+        pebl.result.engines.addAll(getEngines());
+        pebl.benchmark.tests.addAll(getTests().stream().collect(Collectors.toList()));
+        pebl.benchmark.capabilities.addAll(new Features(getFeatures()).capabilities);
         return pebl;
     }
 

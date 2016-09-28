@@ -19,13 +19,13 @@ import betsy.common.analytics.model.Engine;
 import betsy.common.analytics.model.Test;
 import com.google.common.base.Charsets;
 import configuration.bpmn.BPMNProcessRepository;
-import pebl.feature.FeatureSet;
+import pebl.benchmark.feature.FeatureSet;
 
 public class ResultsPerFeatureSetGenerator {
 
     private final CsvReport csvReport;
 
-    private final List<pebl.test.Test> processes;
+    private final List<pebl.benchmark.test.Test> processes;
 
     public ResultsPerFeatureSetGenerator(Path csvPath, String processes) {
         CsvReportLoader loader = new CsvReportLoader(csvPath, new BPMNCsvReport());
@@ -51,7 +51,7 @@ public class ResultsPerFeatureSetGenerator {
 
         featureSets.forEach(fs -> featureSetMap.put(fs, new ArrayList<>()));
 
-        for(pebl.test.Test p : processes) {
+        for(pebl.benchmark.test.Test p : processes) {
             FeatureSet fs = p.getFeature().getFeatureSet();
             if(featureSetMap.containsKey(fs)) {
                 featureSetMap.get(fs).add(p.getName());

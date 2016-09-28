@@ -9,11 +9,11 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.common.model.ProcessFolderStructure;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.EngineDimension;
-import pebl.feature.Feature;
-import pebl.feature.FeatureDimension;
-import pebl.feature.Group;
-import pebl.test.Test;
-import pebl.test.TestCase;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.TestCase;
 
 public class BPMNProcess implements ProcessFolderStructure, Comparable<BPMNProcess>, FeatureDimension, EngineDimension {
 

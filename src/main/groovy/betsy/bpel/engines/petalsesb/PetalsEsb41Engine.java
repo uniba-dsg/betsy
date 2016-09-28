@@ -1,5 +1,6 @@
 package betsy.bpel.engines.petalsesb;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
@@ -29,6 +30,11 @@ public class PetalsEsb41Engine extends PetalsEsbEngine {
 
     @Override
     public void shutdown() {
+        if (!Files.exists(getPetalsCliBinFolder())) {
+            LOGGER.info("Shutdown of " + getName() + " not done as the folder within it should be installed is not there");
+            return;
+        }
+
         try {
             // create shutdown command script and execute it via the cli
             FileTasks.createFile(getPetalsCliBinFolder().resolve("shutdown-petals.script"), "connect\nstop container --shutdown\nexit");

@@ -6,8 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import pebl.test.Test;
-import pebl.tool.Tool;
+import pebl.benchmark.test.Test;
 
 @XmlRootElement
 public class Tests {

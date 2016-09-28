@@ -2,15 +2,15 @@ package betsy.bpel.model;
 
 import java.util.Objects;
 
-import pebl.test.TestAssertion;
-import pebl.test.TestCase;
-import pebl.test.TestStep;
-import pebl.test.assertions.XpathTestAssertion;
-import pebl.test.steps.DelayTestStep;
-import pebl.test.steps.DeployableCheckTestStep;
-import pebl.test.steps.NotDeployableCheckTestStep;
-import pebl.test.steps.soap.SoapTestStep;
-import pebl.test.steps.soap.WsdlService;
+import pebl.benchmark.test.TestAssertion;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.XpathTestAssertion;
+import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.DeployableCheckTestStep;
+import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
+import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.steps.soap.WsdlService;
 
 public class BPELTestCase extends TestCase {
 

@@ -1,6 +1,6 @@
 package betsy.bpel.model;
 
-import pebl.test.steps.soap.WsdlOperation;
+import pebl.benchmark.test.steps.soap.WsdlOperation;
 
 public class BPELWsdlOperations {
 

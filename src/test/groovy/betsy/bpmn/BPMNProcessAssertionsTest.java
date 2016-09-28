@@ -1,6 +1,6 @@
 package betsy.bpmn;
 
-import pebl.test.Test;
+import pebl.benchmark.test.Test;
 import configuration.bpmn.BPMNProcessRepository;
 
 import static org.junit.Assert.assertEquals;

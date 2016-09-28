@@ -65,10 +65,10 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
-        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2_v3_1_0.startup.sleep").getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2.startup.sleep").getTimeoutInMs());
 
         Path logFile = getLogsFolder().resolve("wso2carbon.log");
-        TimeoutRepository.getTimeout("Wso2_v3_1_0.startup").waitForSubstringInFile(getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
+        TimeoutRepository.getTimeout("Wso2.startup").waitForSubstringInFile(getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
 
     public Path getLogsFolder() {
@@ -88,6 +88,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
         if(Files.exists(getBinDir())) {
             ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
+            WaitTasks.sleep(5000); // wait some time until it is shut down
         }
     }
 

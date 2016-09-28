@@ -12,12 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.namespace.QName;
 
-import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
-import betsy.common.util.IOCapture;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -29,6 +24,9 @@ import peal.helper.ZipFileHelper;
 import peal.identifier.EngineId;
 import peal.identifier.InstanceId;
 import peal.identifier.ProcessModelId;
+import peal.impl.engine.EngineServiceImpl;
+import peal.impl.instance.InstanceServiceImpl;
+import peal.impl.processmodel.ProcessModelServiceImpl;
 import peal.observer.EngineState;
 import peal.observer.InstanceState;
 import peal.observer.ProcessModelState;
@@ -97,7 +95,7 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
 
         WaitTasks.sleep(2000);
         LogPackage instanceLogs = instanceService.getLogs(instanceId);
-        Path instanceLogFile = ZipFileHelper.extractIntoTemporaryFolder(instanceLogs).resolve("log1.txt");
+        Path instanceLogFile = ZipFileHelper.extractIntoTemporaryFolder(instanceLogs).resolve("log-" + processModelId.getProcessId().getLocalPart() + "-1.txt");
         assertEquals(Collections.singletonList("SCRIPT_task1"), Files.readAllLines(instanceLogFile));
         assertState(InstanceState.STOPPED, instanceId);
 
@@ -132,8 +130,6 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
         return new EngineServiceImpl().getSupportedEngines().stream()
                 .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPMN))
                 // full: jbpm
-                // see without undeploy: activiti camunda
-                .filter(p -> p.toString().startsWith("jbpm"))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }
