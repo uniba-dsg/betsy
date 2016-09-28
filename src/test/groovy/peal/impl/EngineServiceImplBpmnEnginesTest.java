@@ -105,6 +105,7 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
         assertState(EngineState.STARTED);
 
         engineService.stop(engineId);
+        WaitTasks.sleep(5000);
         assertState(EngineState.INSTALLED);
         assertState(ProcessModelState.NOT_DEPLOYED);
 
