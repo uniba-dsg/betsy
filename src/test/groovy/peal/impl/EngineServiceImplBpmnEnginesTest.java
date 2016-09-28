@@ -130,7 +130,6 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
                 .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPMN))
-                // full: jbpm
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }
