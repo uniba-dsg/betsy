@@ -1,5 +1,6 @@
 package betsy.bpmn.engines.jbpm;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 import pebl.ProcessLanguage;
@@ -18,8 +19,8 @@ public class JbpmEngine610 extends JbpmEngine {
     }
 
     @Override
-    public String getLogFileNameForShutdownAnalysis() {
-        return "server.log";
+    public Path getLogFileForShutdownAnalysis() {
+        return getServerLog();
     }
 
     @Override

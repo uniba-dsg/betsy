@@ -1,11 +1,16 @@
 package betsy.bpmn.engines.jbpm;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.Variables;
+import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
@@ -17,11 +22,15 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
 
     private static final Logger LOGGER = Logger.getLogger(JbpmProcessStarter.class);
 
+    private static final Pattern LOG_FILE_EXTRACT_DEPLOYMENT_ID = Pattern.compile("DEPLOY job for \\[([^\\]]*)\\]");
+
     private final String user;
     private final String password;
     private final String requestUrl;
+    private final Path serverLog;
 
-    public JbpmProcessStarter() {
+    public JbpmProcessStarter(Path serverLog) {
+        this.serverLog = Objects.requireNonNull(serverLog);
         user = "admin";
         password = "admin";
         requestUrl = "http://localhost:8080/jbpm-console";
@@ -30,7 +39,27 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
     @Override
     public void start(String processName, List<Variable> variables) throws RuntimeException {
         // determine deployment
-        String deploymentID = getDeploymentID(requestUrl,user,password);
+        String deploymentID = getDeploymentID(requestUrl, user, password);
+
+        if (Objects.equals(deploymentID, "")) {
+            deploymentID = FileTasks.readAllLines(serverLog)
+                    .stream()
+                    .map(line -> {
+                        Matcher matcher = LOG_FILE_EXTRACT_DEPLOYMENT_ID.matcher(line);
+                        if (matcher.find()) {
+                            return matcher.group(1);
+                        } else {
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .findFirst().orElse("");
+        }
+
+        if (Objects.equals(deploymentID, "")) {
+            LOGGER.error("Cannot start as the deployment ID cannot be determined for " + processName + " with " + variables);
+            return;
+        }
 
         String queryParameter = new Variables(variables).toQueryParameter();
         String processStartRequestURL = requestUrl + "/rest/runtime/" + deploymentID + "/process/" + processName + "/start" + queryParameter;
@@ -63,7 +92,7 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
         JSONObject jsonObject = json.optJSONObject(0);
         if (jsonObject.has("deploymentUnitList")) {
             JSONArray deploymentUnitList = jsonObject.optJSONArray("deploymentUnitList");
-            if(deploymentUnitList.length() == 0) {
+            if (deploymentUnitList.length() == 0) {
                 LOGGER.error("Could not retrieve deployment ID");
                 return "";
             }

@@ -58,10 +58,6 @@ public class JbpmEngine extends AbstractBPMNEngine {
         return "jboss-as-7.1.1.Final";
     }
 
-    public String getLogFileNameForShutdownAnalysis() {
-        return "boot.log";
-    }
-
     public Path getJbossStandaloneDir() {
         return getJbpmInstallerPath().resolve(getJbossName()).resolve("standalone");
     }
@@ -154,7 +150,15 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getJbpmInstallerPath(), getAntPath().toAbsolutePath() + "/ant").values("-q", "start.demo.noeclipse"), map1);
 
         //waiting for jbpm-console for deployment and instantiating
-        TimeoutRepository.getTimeout("Jbpm.startup").waitForSubstringInFile(getJbossLogDir().resolve("server.log"), "JBAS018559: Deployed \"jbpm-console.war\"");
+        TimeoutRepository.getTimeout("Jbpm.startup").waitForSubstringInFile(getServerLog(), "JBAS018559: Deployed \"jbpm-console.war\"");
+    }
+
+    public Path getLogFileForShutdownAnalysis() {
+        return getJbossBootLog();
+    }
+
+    protected Path getServerLog() {
+        return getJbossLogDir().resolve("server.log");
     }
 
     private Path getJbossLogDir() {
@@ -174,14 +178,14 @@ public class JbpmEngine extends AbstractBPMNEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmInstallerPath, getAntPath().toAbsolutePath() + "/ant -q stop.demo"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmInstallerPath, getAntPath().toAbsolutePath() + "/ant").values("-q", "stop.demo"));
 
-        if (FileTasks.hasNoFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()))) {
-            LOGGER.info("Could not shutdown, because " + getLogFileNameForShutdownAnalysis() + " does not exist. this indicates that the engine was never started");
+        if (FileTasks.hasNoFile(getLogFileForShutdownAnalysis())) {
+            LOGGER.info("Could not shutdown, because " + getLogFileForShutdownAnalysis() + " does not exist. this indicates that the engine was never started");
             return;
         }
 
         try {
             //waiting for shutdown completion using log files; e.g. "12:42:36,345 INFO  [org.jboss.as] JBAS015950: JBoss AS 7.1.1.Final "Brontes" stopped in 31957ms"
-            TimeoutRepository.getTimeout("Jbpm.shutdown").waitForSubstringInFile(getJbossLogDir().resolve(getLogFileNameForShutdownAnalysis()), "JBAS015950");
+            TimeoutRepository.getTimeout("Jbpm.shutdown").waitForSubstringInFile(getLogFileForShutdownAnalysis(), "JBAS015950");
 
             // clean up data (with db and config files in the users home directory)
             ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(jbpmInstallerPath, getAntPath().toAbsolutePath() + "/ant -q clean.demo"));
@@ -189,6 +193,10 @@ public class JbpmEngine extends AbstractBPMNEngine {
         } catch (IllegalStateException ex) {
             //swallow
         }
+    }
+
+    protected Path getJbossBootLog() {
+        return getJbossLogDir().resolve("boot.log");
     }
 
     @Override
@@ -213,7 +221,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
                     bpmnTester,
                     checker,
                     checker,
-                    new JbpmProcessStarter()
+                    new JbpmProcessStarter(getServerLog())
             ).runTest();
         }
 
@@ -226,7 +234,7 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public BPMNProcessStarter getProcessStarter() {
-        return new JbpmProcessStarter();
+        return new JbpmProcessStarter(getServerLog());
     }
 
     @Override
