@@ -240,8 +240,12 @@ public class JbpmEngine extends AbstractBPMNEngine {
 
     @Override
     public boolean isDeployed(QName process) {
-        JbpmApiBasedProcessInstanceOutcomeChecker checker = createProcessOutcomeChecker(process.getLocalPart());
-        return checker.isProcessDeployed();
+        try {
+            JbpmApiBasedProcessInstanceOutcomeChecker checker = createProcessOutcomeChecker(process.getLocalPart());
+            return checker.isProcessDeployed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
