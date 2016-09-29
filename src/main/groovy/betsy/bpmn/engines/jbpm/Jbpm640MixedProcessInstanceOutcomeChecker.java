@@ -17,23 +17,32 @@ public class Jbpm640MixedProcessInstanceOutcomeChecker extends JbpmApiBasedProce
 
     @Override
     public boolean isProcessDeployed() {
+        // check using .../processes
         String result = JsonHelper.getStringWithAuth(processDeploymentUrl, 200, user, password);
         if(result.contains("<process-definition>")) {
             return true;
-        } else {
-            List<String> lines = BPMNProcessInstanceOutcomeChecker.getLines(logFile);
-            for (String line : lines) {
-                if (line.contains("failed to deploy")) {
-                    return false;
-                } else if (line.contains("Unable to deploy")) {
-                    return false;
-                } else if (line.contains("ProcessLoadError")) {
-                    return false;
-                } else if (line.contains("Unable to build KieBaseModel:defaultKieBase")) {
-                    return false;
-                }
-            }
-            return true;
         }
+
+        // otherwise
+        result = JsonHelper.getStringWithAuth(processDeploymentUrl.replace("/processes", ""), 200, user, password);
+        if(!(result.contains("<deployment-status>DEPLOYED</deployment-status>") ||
+                result.contains("<status>DEPLOYED</status>"))) {
+            return false;
+        }
+
+        // check using log files
+        List<String> lines = BPMNProcessInstanceOutcomeChecker.getLines(logFile);
+        for (String line : lines) {
+            if (line.contains("failed to deploy")) {
+                return false;
+            } else if (line.contains("Unable to deploy")) {
+                return false;
+            } else if (line.contains("ProcessLoadError")) {
+                return false;
+            } else if (line.contains("Unable to build KieBaseModel:defaultKieBase")) {
+                return false;
+            }
+        }
+        return true;
     }
 }
