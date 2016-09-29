@@ -28,8 +28,7 @@ import peal.packages.DeploymentPackage;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(Parameterized.class)
-public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceCleanup {
+public class AbstractEngineServiceImplBpelEnginesTest extends AbstractEngineServiceCleanup {
 
     public static final Path SEQUENCE_FOLDER = Paths.get("src/test/resources/Sequence");
 
@@ -39,7 +38,7 @@ public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceClean
     EngineServiceImpl engineService = new EngineServiceImpl();
     ProcessModelService processModelService = new ProcessModelServiceImpl(engineService);
 
-    public EngineServiceImplBpelEnginesTest(EngineId engineId) {
+    public AbstractEngineServiceImplBpelEnginesTest(EngineId engineId) {
         this.engineId = Objects.requireNonNull(engineId);
         this.processModelId = new ProcessModelId(engineId.getEngineId(),
                 new QName("http://dsg.wiai.uniba.de/betsy/activities/bpel/sequence", "Sequence"));

@@ -126,14 +126,6 @@ public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceClean
         assertEquals(engineState, processModelService.getState(processModelId));
     }
 
-    @Parameterized.Parameters(name = "{index} {0}")
-    public static Iterable<Object[]> data() {
-        return new EngineServiceImpl().getSupportedEngines().stream()
-                .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPMN))
-                .map(p -> new Object[] {p})
-                .collect(Collectors.toList());
-    }
-
     @Override public EngineId getEngineId() {
         return engineId;
     }
