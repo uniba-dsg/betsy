@@ -1,14 +1,14 @@
 package betsy.bpel.model;
 
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.EngineDimension;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 import betsy.common.model.ProcessFolderStructure;
-import betsy.common.model.input.TestCase;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.feature.FeatureDimension;
-import betsy.common.model.feature.Group;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.Group;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -17,24 +17,24 @@ import java.util.stream.Collectors;
 
 public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>, FeatureDimension, EngineDimension {
 
-    private EngineIndependentProcess engineIndependentProcess;
+    private Test test;
     private AbstractBPELEngine engine;
     private Path deploymentPackagePath;
 
-    public BPELProcess(EngineIndependentProcess engineIndependentProcess) {
-        this.engineIndependentProcess = Objects.requireNonNull(engineIndependentProcess);
+    public BPELProcess(Test test) {
+        this.test = Objects.requireNonNull(test);
     }
 
     public BPELProcess createCopyWithoutEngine() {
-        return new BPELProcess(engineIndependentProcess);
+        return new BPELProcess(test);
     }
 
-    public EngineIndependentProcess getEngineIndependentProcess() {
-        return engineIndependentProcess;
+    public Test getTest() {
+        return test;
     }
 
-    public void setEngineIndependentProcess(EngineIndependentProcess engineIndependentProcess) {
-        this.engineIndependentProcess = engineIndependentProcess;
+    public void setTest(Test test) {
+        this.test = test;
     }
 
     public Path getDeploymentPackagePath() {
@@ -132,7 +132,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     public List<Path> getAdditionalFilePaths() {
-        return engineIndependentProcess.getFiles().stream().filter(p -> !p.toString().endsWith(".wsdl")).collect(Collectors.toList());
+        return test.getFiles().stream().filter(p -> !p.toString().endsWith(".wsdl")).collect(Collectors.toList());
     }
 
     public String getShortId() {
@@ -140,7 +140,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     public List<Path> getWsdls() {
-        return engineIndependentProcess.getFiles().stream().filter(p -> p.toString().endsWith(".wsdl")).collect(Collectors.toList());
+        return test.getFiles().stream().filter(p -> p.toString().endsWith(".wsdl")).collect(Collectors.toList());
     }
 
     @Override
@@ -150,7 +150,7 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
 
     @Override
     public Path getProcess() {
-        return engineIndependentProcess.getProcess();
+        return test.getProcess();
     }
 
     @Override
@@ -165,12 +165,12 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
 
     @Override
     public Feature getFeature() {
-        return engineIndependentProcess.getFeature();
+        return test.getFeature();
     }
 
     @Override
     public int compareTo(BPELProcess o) {
-        return engineIndependentProcess.compareTo(o.engineIndependentProcess);
+        return test.compareTo(o.test);
     }
 
     public void setEngine(AbstractBPELEngine engine) {
@@ -178,19 +178,19 @@ public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProce
     }
 
     public List<TestCase> getTestCases() {
-        return engineIndependentProcess.getTestCases();
+        return test.getTestCases();
     }
 
     public void setTestCases(List<TestCase> testCases) {
-        engineIndependentProcess = engineIndependentProcess.withNewTestCases(testCases);
+        test = test.withNewTestCases(testCases);
     }
 
     public FeatureDimension getFeatureDimension() {
-        return engineIndependentProcess;
+        return test;
     }
 
     @Override
-    public Engine getEngineObject() {
+    public EngineExtended getEngineObject() {
         return getEngine().getEngineObject();
     }
 }

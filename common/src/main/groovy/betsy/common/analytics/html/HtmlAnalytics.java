@@ -1,6 +1,7 @@
 package betsy.common.analytics.html;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -30,13 +31,13 @@ public class HtmlAnalytics {
     public void toHtmlReport(Path filename) {
         SimpleTemplateEngine engine = new SimpleTemplateEngine();
 
-        Path templatePath = ClasspathHelper.getFilesystemPathFromClasspathPath("/betsy/common/analytics/html/HtmlAnalytics.template");
-        Path cssPath = ClasspathHelper.getFilesystemPathFromClasspathPath("/betsy/common/analytics/html/bootstrap.min.css");
+        URL templatePath = ClasspathHelper.getURLFromClasspathPath("/betsy/common/analytics/html/HtmlAnalytics.template");
+        URL cssPath = ClasspathHelper.getURLFromClasspathPath("/betsy/common/analytics/html/bootstrap.min.css");
 
         try {
-            Writable template = engine.createTemplate(templatePath.toFile()).make(getTemplateBinding());
+            Writable template = engine.createTemplate(templatePath).make(getTemplateBinding());
             FileTasks.createFile(filename, template.toString());
-            FileTasks.copyFileIntoFolderAndOverwrite(cssPath, filename.getParent());
+            FileTasks.copyFileIntoFolderAndOverwrite(cssPath, "bootstrap.min.css", filename.getParent());
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException("could not load template", e);
         }

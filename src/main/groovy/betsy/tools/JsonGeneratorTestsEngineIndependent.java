@@ -8,34 +8,48 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
 
-import betsy.bpel.model.assertions.SoapFaultTestAssertion;
-import betsy.bpel.model.assertions.XpathTestAssertion;
-import betsy.bpel.model.steps.DelayTestStep;
-import betsy.bpel.model.steps.DeployableCheckTestStep;
-import betsy.bpel.model.steps.NotDeployableCheckTestStep;
-import betsy.bpel.model.steps.SoapTestStep;
-import betsy.bpmn.model.BPMNTestCase;
-import betsy.bpmn.model.BPMNTestStep;
-import betsy.bpmn.model.Variable;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.input.ExternalWSDLTestPartner;
-import betsy.common.model.input.NoTestPartner;
-import betsy.common.model.input.TestAssertion;
-import betsy.common.model.input.TestCase;
-import betsy.common.model.input.TestPartner;
-import betsy.common.model.input.TestStep;
-import betsy.common.model.input.InternalWSDLTestPartner;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.assertions.TraceTestAssertion;
+import pebl.benchmark.test.assertions.XpathTestAssertion;
+import pebl.benchmark.test.partner.rules.AnyInput;
+import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
+import pebl.benchmark.test.partner.rules.SoapFaultOutput;
+import pebl.benchmark.test.partner.rules.Input;
+import pebl.benchmark.test.partner.rules.IntegerInput;
+import pebl.benchmark.test.partner.rules.IntegerOutput;
+import pebl.benchmark.test.partner.rules.IntegerOutputBasedOnScriptResult;
+import pebl.benchmark.test.partner.rules.IntegerOutputWithStatusCode;
+import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
+import pebl.benchmark.test.partner.rules.Output;
+import pebl.benchmark.test.partner.rules.RawOutput;
+import pebl.benchmark.test.partner.rules.TimeoutInsteadOfOutput;
+import pebl.benchmark.test.steps.DelayTestStep;
+import pebl.benchmark.test.steps.DeployableCheckTestStep;
+import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
+import pebl.benchmark.test.steps.GatherTracesTestStep;
+import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.steps.vars.Variable;
+import pebl.benchmark.test.partner.ExternalWSDLTestPartner;
+import pebl.benchmark.test.partner.NoTestPartner;
+import pebl.benchmark.test.TestAssertion;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestPartner;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.partner.InternalWSDLTestPartner;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import pebl.benchmark.test.steps.soap.WsdlService;
 
 class JsonGeneratorTestsEngineIndependent {
 
     public static void generateTestsEngineIndependentJson(Path folder) {
         JSONArray array = new JSONArray();
 
-        List<EngineIndependentProcess> processes = new LinkedList<>();
+        List<Test> processes = new LinkedList<>();
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
         processes.addAll(new BPMNProcessRepository().getByName("ALL"));
         convertProcess(array, processes);
@@ -50,7 +64,7 @@ class JsonGeneratorTestsEngineIndependent {
     public static void generateTestsEngineIndependentJsonWithReallyAllProcesses(Path folder) {
         JSONArray array = new JSONArray();
 
-        List<EngineIndependentProcess> processes = new LinkedList<>();
+        List<Test> processes = new LinkedList<>();
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
@@ -64,20 +78,20 @@ class JsonGeneratorTestsEngineIndependent {
         }
     }
 
-    private static void convertProcess(JSONArray array, List<EngineIndependentProcess> processes) {
-        for (EngineIndependentProcess p : processes) {
+    private static void convertProcess(JSONArray array, List<Test> processes) {
+        for (Test p : processes) {
             array.put(createTestObject(p));
         }
     }
 
-    private static JSONObject createTestObject(EngineIndependentProcess p) {
+    private static JSONObject createTestObject(Test p) {
         JSONObject testObject = new JSONObject();
         testObject.put("name", p.getName());
         testObject.put("description", p.getDescription());
 
         testObject.put("engineIndependentFiles", createEngineIndependentFilesArray(p));
 
-        testObject.put("language", p.getProcessLanguage().name());
+        testObject.put("language", p.getProcessLanguage());
         testObject.put("featureID", p.getFeature().getID());
 
         JSONArray testCasesArray = new JSONArray();
@@ -104,63 +118,63 @@ class JsonGeneratorTestsEngineIndependent {
             testPartnerObject.put("type", "WSDL");
             testPartnerObject.put("external", false);
 
-            testPartnerObject.put("interfaceDescription", internalWsdlTestPartner.interfaceDescription);
-            testPartnerObject.put("publishedUrl", internalWsdlTestPartner.publishedUrl);
+            testPartnerObject.put("interfaceDescription", internalWsdlTestPartner.getInterfaceDescription());
+            testPartnerObject.put("publishedUrl", internalWsdlTestPartner.getPublishedUrl());
             testPartnerObject.put("wsdlUrl", internalWsdlTestPartner.getWSDLUrl());
 
             JSONArray rulesArray = new JSONArray();
-            for (InternalWSDLTestPartner.OperationInputOutputRule operationInputOutputRule : internalWsdlTestPartner.getRules()) {
+            for (OperationInputOutputRule operationInputOutputRule : internalWsdlTestPartner.getRules()) {
                 JSONObject ruleObject = new JSONObject();
-                ruleObject.put("operation", operationInputOutputRule.operation);
+                ruleObject.put("operation", operationInputOutputRule.getOperation());
 
-                InternalWSDLTestPartner.Input input = operationInputOutputRule.input;
-                if (input instanceof InternalWSDLTestPartner.AnyInput) {
+                Input input = operationInputOutputRule.getInput();
+                if (input instanceof AnyInput) {
                     JSONObject anyInputObject = new JSONObject();
                     anyInputObject.put("type", "any");
                     ruleObject.put("input", anyInputObject);
-                } else if (input instanceof InternalWSDLTestPartner.IntegerInput) {
+                } else if (input instanceof IntegerInput) {
                     JSONObject integerInputObject = new JSONObject();
                     integerInputObject.put("type", "integer");
-                    integerInputObject.put("value", ((InternalWSDLTestPartner.IntegerInput) input).value);
+                    integerInputObject.put("value", ((IntegerInput) input).getValue());
                     ruleObject.put("input", integerInputObject);
                 } else {
                     throw new IllegalStateException();
                 }
 
-                InternalWSDLTestPartner.Output output = operationInputOutputRule.output;
-                if (output instanceof InternalWSDLTestPartner.IntegerOutputWithStatusCode) {
+                Output output = operationInputOutputRule.getOutput();
+                if (output instanceof IntegerOutputWithStatusCode) {
                     JSONObject object = new JSONObject();
                     object.put("type", "integer");
-                    object.put("value", ((InternalWSDLTestPartner.IntegerOutputWithStatusCode) output).value);
-                    object.put("statusCode", ((InternalWSDLTestPartner.IntegerOutputWithStatusCode) output).statusCode);
+                    object.put("value", ((IntegerOutputWithStatusCode) output).getValue());
+                    object.put("statusCode", ((IntegerOutputWithStatusCode) output).getStatusCode());
                     ruleObject.put("output", object);
-                } else if (output instanceof InternalWSDLTestPartner.IntegerOutput) {
+                } else if (output instanceof IntegerOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "integer");
-                    object.put("value", ((InternalWSDLTestPartner.IntegerOutput) output).value);
+                    object.put("value", ((IntegerOutput) output).getValue());
                     ruleObject.put("output", object);
-                } else if (output instanceof InternalWSDLTestPartner.RawOutput) {
+                } else if (output instanceof RawOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "raw");
-                    object.put("value", ((InternalWSDLTestPartner.RawOutput) output).value);
+                    object.put("value", ((RawOutput) output).getValue());
                     ruleObject.put("output", object);
-                } else if (output instanceof InternalWSDLTestPartner.FaultOutput) {
+                } else if (output instanceof SoapFaultOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "fault");
-                    object.put("value", ((InternalWSDLTestPartner.FaultOutput) output).variant);
+                    object.put("value", ((SoapFaultOutput) output).getVariant());
                     ruleObject.put("output", object);
-                } else if (output instanceof InternalWSDLTestPartner.TimeoutInsteadOfOutput) {
+                } else if (output instanceof TimeoutInsteadOfOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "timeout");
                     ruleObject.put("output", object);
-                } else if (output instanceof InternalWSDLTestPartner.EchoInputAsOutput) {
+                } else if (output instanceof EchoInputAsOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "echo");
                     ruleObject.put("output", object);
-                } else if (output instanceof InternalWSDLTestPartner.IntegerOutputBasedOnScriptResult) {
+                } else if (output instanceof IntegerOutputBasedOnScriptResult) {
                     JSONObject object = new JSONObject();
                     object.put("type", "script");
-                    object.put("value", ((InternalWSDLTestPartner.IntegerOutputBasedOnScriptResult) output).script);
+                    object.put("value", ((IntegerOutputBasedOnScriptResult) output).getScript());
                     ruleObject.put("output", object);
                 } else {
                     // do nothing
@@ -171,14 +185,14 @@ class JsonGeneratorTestsEngineIndependent {
             }
             testPartnerObject.put("rules", rulesArray);
 
-        } else if(testPartner instanceof ExternalWSDLTestPartner){
+        } else if (testPartner instanceof ExternalWSDLTestPartner) {
             testPartnerObject.put("type", "WSDL");
             testPartnerObject.put("external", true);
 
-            testPartnerObject.put("interfaceDescription", ((ExternalWSDLTestPartner) testPartner).wsdl);
-            testPartnerObject.put("publishedUrl", ((ExternalWSDLTestPartner) testPartner).url);
+            testPartnerObject.put("interfaceDescription", ((ExternalWSDLTestPartner) testPartner).getWsdl());
+            testPartnerObject.put("publishedUrl", ((ExternalWSDLTestPartner) testPartner).getUrl());
             testPartnerObject.put("wsdlUrl", ((ExternalWSDLTestPartner) testPartner).getWSDLUrl());
-        } else if(testPartner instanceof NoTestPartner) {
+        } else if (testPartner instanceof NoTestPartner) {
             testPartnerObject.put("type", "NONE");
         }
 
@@ -191,11 +205,8 @@ class JsonGeneratorTestsEngineIndependent {
         testCaseObject.put("number", testCase.getNumber());
         testCaseObject.put("name", testCase.getName());
 
-        if (testCase instanceof BPMNTestCase) {
-            testCaseObject.put("testSteps", createBPMNTestStepArray((BPMNTestCase) testCase));
-        } else {
-            testCaseObject.put("testSteps", createBPELTestStepArray(testCase));
-        }
+        testCaseObject.put("testSteps", createBPELTestStepArray(testCase));
+
         return testCaseObject;
     }
 
@@ -228,9 +239,8 @@ class JsonGeneratorTestsEngineIndependent {
                     testStepObject.put("operation", ((SoapTestStep) testStep).getOperation().getName());
                 }
 
-                testStepObject.put("concurrencyTest", ((SoapTestStep) testStep).isConcurrencyTest());
-                testStepObject.put("testPartner", ((SoapTestStep) testStep).isTestPartner());
-                testStepObject.put("oneWay", ((SoapTestStep) testStep).isOneWay());
+                testStepObject.put("testPartner", ((SoapTestStep) testStep).getService().equals(new WsdlService("testInterface")));
+                testStepObject.put("oneWay", ((SoapTestStep) testStep).getOperation().isOneWay());
 
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("assertions", assertionsArray);
@@ -246,44 +256,41 @@ class JsonGeneratorTestsEngineIndependent {
                     assertionsArray.put(assertionObject);
                 }
 
+            } else if (testStep instanceof GatherTracesTestStep) {
+                testStepObject.put("type", testStep.getClass().getSimpleName());
+                JSONArray assertionsArray = new JSONArray();
+                testStepObject.put("assertions", assertionsArray);
+                for (TestAssertion assertion : ((GatherTracesTestStep) testStep).getAssertions()) {
+                    JSONObject assertionObject = new JSONObject();
+                    assertionObject.put("type", assertion.getClass().getSimpleName());
+                    if (assertion instanceof TraceTestAssertion) {
+                        assertionObject.put("trace", ((TraceTestAssertion) assertion).getTrace().getValue());
+                    }
+                    assertionsArray.put(assertionObject);
+                }
+
+            } else if (testStep instanceof ProcessStartWithVariablesTestStep) {
+                testStepObject.put("type", testStep.getClass().getSimpleName());
+                testStepObject.put("process", ((ProcessStartWithVariablesTestStep) testStep).getProcess());
+                JSONArray assertionsArray = new JSONArray();
+                testStepObject.put("variables", assertionsArray);
+                for (Variable variable : ((ProcessStartWithVariablesTestStep) testStep).getVariables()) {
+                    JSONObject assertionObject = new JSONObject();
+                    testStepObject.put("value", variable.getValue());
+                    testStepObject.put("name", variable.getName());
+                    testStepObject.put("type", variable.getType());
+
+                    assertionsArray.put(assertionObject);
+
+                }
+
             }
             testStepArray.put(testStepObject);
         }
         return testStepArray;
     }
 
-    private static JSONArray createBPMNTestStepArray(BPMNTestCase testCase) {
-        BPMNTestCase bpmnTestCase = testCase;
-        BPMNTestStep testStep = bpmnTestCase.getTestStep();
-        JSONObject testStepObject = new JSONObject();
-        testStepObject.put("type", testStep.getClass().getSimpleName());
-        testStepObject.put("description", testStep.getDescription());
-        testStep.getDelay().ifPresent(delay -> testStepObject.put("delay", delay));
-        JSONArray inputArray = new JSONArray();
-        testStepObject.put("inputs", inputArray);
-        for (Variable var : bpmnTestCase.getVariables()) {
-            JSONObject varObject = new JSONObject();
-            varObject.put("name", var.getName());
-            varObject.put("value", var.getValue());
-            varObject.put("type", var.getType());
-            inputArray.put(varObject);
-        }
-
-        JSONArray assertionsArray = new JSONArray();
-        testStepObject.put("assertions", assertionsArray);
-        for (String assertion : bpmnTestCase.getAssertions()) {
-            JSONObject varObject = new JSONObject();
-            varObject.put("type", "BPMNTestAssertion");
-            varObject.put("trace", assertion);
-            assertionsArray.put(varObject);
-        }
-
-        JSONArray testStepArray = new JSONArray();
-        testStepArray.put(testStepObject);
-        return testStepArray;
-    }
-
-    private static JSONArray createEngineIndependentFilesArray(EngineIndependentProcess p) {
+    private static JSONArray createEngineIndependentFilesArray(Test p) {
         JSONArray engineIndependentFiles = new JSONArray();
         engineIndependentFiles.put(p.getProcess().toString());
         for (Path path : p.getFiles()) {

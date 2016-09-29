@@ -1,11 +1,10 @@
 package configuration.bpel;
 
-import betsy.common.model.feature.Group;
-import betsy.common.model.feature.Language;
 import configuration.Capabilities;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.feature.Language;
 
 public class Groups {
-
 
     public static Language CONFORMANCE_BPEL = new Language(Capabilities.CONFORMANCE, "BPEL");
     public static Language EXPRESSIVENESS_BPEL = new Language(Capabilities.EXPRESSIVENESS, "BPEL");

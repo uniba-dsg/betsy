@@ -23,12 +23,12 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.common.model.ProcessFolderStructure;
-import betsy.common.model.Tool;
 import betsy.common.model.engine.EngineDimension;
-import betsy.common.model.feature.FeatureDimension;
+import pebl.benchmark.feature.FeatureDimension;
 import betsy.common.reporting.CsvRow;
 import betsy.common.reporting.JUnitXmlResultReader;
 import betsy.common.util.DurationCsv;
+import betsy.common.util.GitUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -36,6 +36,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import pebl.result.tool.Tool;
 
 public class TestsEngineDependent {
 
@@ -84,7 +85,7 @@ public class TestsEngineDependent {
         jsonObject.put("featureID", process.getFeature().getID());
         jsonObject.put("engineID", process.getEngineObject().getID());
 
-        jsonObject.put("tool", createToolJsonObject(Tool.BETSY));
+        jsonObject.put("tool", createToolJsonObject(new Tool("betsy", GitUtil.getGitCommit())));
 
         List<String> logFiles = new LinkedList<>();
         try (Stream<Path> list = Files.list(process.getTargetLogsPath())) {
@@ -148,7 +149,7 @@ public class TestsEngineDependent {
     private static JSONObject createToolJsonObject(Tool tool) {
         JSONObject toolObject = new JSONObject();
         toolObject.put("name", tool.getName());
-        toolObject.put("version", tool.version);
+        toolObject.put("version", tool.getVersion());
         toolObject.put("toolID", tool.getID());
         return toolObject;
     }

@@ -10,8 +10,8 @@ import javax.xml.namespace.QName;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 
 public class OrchestraEngine extends AbstractLocalBPELEngine {
@@ -21,8 +21,8 @@ public class OrchestraEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "orchestra", "4.9", LocalDate.of(2012,1,23), "LGPL-2.1+");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "orchestra", "4.9", LocalDate.of(2012,1,23), "LGPL-2.1+");
     }
 
     public Tomcat getTomcat() {

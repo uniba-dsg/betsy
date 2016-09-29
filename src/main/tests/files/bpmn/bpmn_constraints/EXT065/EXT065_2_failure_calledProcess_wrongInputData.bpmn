@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1433838363358" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="2.2.18 (GPLv3, Non-Commercial)" expressionLanguage="http://www.w3.org/1999/XPath" id="_1433838363358" name="" targetNamespace="http://sourceforge.net/bpmn/definitions/_1433838363358" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <itemDefinition id="ID_1" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="ID_2" isCollection="false" itemKind="Information" structureRef="String"/>
+  <itemDefinition id="ID_3" isCollection="false" itemKind="Information" structureRef="xsd:int"/>
+  <message id="MSG_1" itemRef="ID_1" name="inMessage"/>
+  <message id="MSG_2" itemRef="ID_2" name="outMessage"/>
+  <interface id="IF_1" name="Interface">
+    <operation id="OP_1" name="Operation">
+      <inMessageRef>MSG_1</inMessageRef>
+      <outMessageRef>MSG_2</outMessageRef>
+    </operation>
+  </interface>
+  <collaboration id="COLLABORATION_1" isClosed="false">
+    <participant id="_2" name="Participant" processRef="PROCESS_1">
+      <participantMultiplicity maximum="1" minimum="0"/>
+    </participant>
+  </collaboration>
+  <process id="PROCESS_1" isClosed="false" isExecutable="true" processType="None">
+    <supportedInterfaceRef>IF_1</supportedInterfaceRef>
+    <ioSpecification>
+      <dataInput id="_12" isCollection="false" itemSubjectRef="ID_3" name="Data Input"/>
+      <dataOutput id="_17" isCollection="false" itemSubjectRef="ID_2" name="Data Output"/>
+      <inputSet>
+        <dataInputRefs>_12</dataInputRefs>
+      </inputSet>
+      <outputSet>
+        <dataOutputRefs>_17</dataOutputRefs>
+      </outputSet>
+    </ioSpecification>
+    <ioBinding inputDataRef="_12" operationRef="OP_1" outputDataRef="_17"/>
+    <startEvent id="_3" isInterrupting="true" name="Start Event" parallelMultiple="false">
+      <outgoing>_14</outgoing>
+    </startEvent>
+    <endEvent id="_4" name="End Event">
+      <incoming>_15</incoming>
+    </endEvent>
+    <dataObject id="DO_PROCESS_1_1" isCollection="false" itemSubjectRef="ID_1" name="DO_1"/>
+    <task completionQuantity="1" id="_13" isForCompensation="false" name="Task" startQuantity="1">
+      <incoming>_14</incoming>
+      <outgoing>_15</outgoing>
+    </task>
+    <sequenceFlow id="_14" sourceRef="_3" targetRef="_13"/>
+    <sequenceFlow id="_15" sourceRef="_13" targetRef="_4"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=597.6;height=842.4;imageableWidth=587.6;imageableHeight=832.4;imageableX=5.0;imageableY=5.0" id="Yaoqiang_Diagram-_1" name="New Diagram" resolution="96.0">
+    <bpmndi:BPMNPlane bpmnElement="COLLABORATION_1">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2" isExpanded="true" isHorizontal="true">
+        <dc:Bounds height="200.0" width="1053.0" x="50.0" y="89.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="81.0" width="23.609375" x="55.6953125" y="148.5"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" id="Yaoqiang-_12">
+        <dc:Bounds height="38.0" width="29.0" x="103.32608695652168" y="98.69565217391303"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="54.0" x="90.82608695652169" y="138.69565217391303"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" id="Yaoqiang-_17">
+        <dc:Bounds height="38.0" width="29.0" x="372.89130434782606" y="97.82608695652173"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="63.0" x="355.89130434782606" y="137.82608695652175"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" id="Yaoqiang-_3">
+        <dc:Bounds height="32.0" width="32.0" x="112.76086956521733" y="166.17391304347825"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="59.0" x="99.26086956521732" y="206.25594429347825"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" id="Yaoqiang-_4">
+        <dc:Bounds height="32.0" width="32.0" x="316.4565217391304" y="166.04347826086956"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="54.0" x="305.4565217391304" y="206.12550951086956"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" id="Yaoqiang-_13">
+        <dc:Bounds height="55.0" width="85.0" x="184.02173913043475" y="155.04347826086956"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="29.0" x="212.02173913043475" y="174.62550951086956"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_15" id="Yaoqiang-_15" sourceElement="_13" targetElement="_4">
+        <di:waypoint x="268.63043478260863" y="182.54347826086956"/>
+        <di:waypoint x="316.4566539370884" y="182.04347826086956"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="6.0" x="289.73913043478257" y="172.3963551013279"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14" id="Yaoqiang-_14" sourceElement="_3" targetElement="_13">
+        <di:waypoint x="145.15098409230953" y="182.17391304347825"/>
+        <di:waypoint x="184.28260869565213" y="182.54347826086956"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="19.8359375" width="6.0" x="161.39130434782604" y="172.26467953570744"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

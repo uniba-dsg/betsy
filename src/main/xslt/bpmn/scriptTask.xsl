@@ -1,17 +1,19 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL">
-
+    <xsl:param name="processName"/>
     <xsl:template match="bpmn2:script">
 
         <xsl:choose>
 
             <xsl:when test="text() = 'CREATE_LOG_FILE'">
-                <bpmn2:script><![CDATA[
+                <xsl:text disable-output-escaping="yes">
+                &lt;bpmn2:script&gt;&lt;![CDATA[
 try {
-    java.io.File f = new java.io.File("log" + testCaseNumber + ".txt");
+    java.io.File f = new java.io.File("log-</xsl:text><xsl:value-of select="$processName" /><xsl:text disable-output-escaping="yes">-" + testCaseNumber + ".txt");
     f.createNewFile();
 } catch (java.io.IOException ignore) {}
-]]></bpmn2:script>
+]]&gt;&lt;/bpmn2:script&gt;
+                </xsl:text>
             </xsl:when>
 
             <xsl:when test="text() = 'CREATE_MARKER_FILE'">
@@ -134,7 +136,7 @@ try {
 
            <xsl:otherwise>
         <xsl:text disable-output-escaping="yes">&lt;bpmn2:script&gt;&lt;![CDATA[
-java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
+java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log-</xsl:text><xsl:value-of select="$processName" /><xsl:text disable-output-escaping="yes">-" + testCaseNumber + ".txt", true));
 try{
     bw.append("</xsl:text> <xsl:copy-of select="text()"/> <xsl:text disable-output-escaping="yes">");
     bw.newLine();

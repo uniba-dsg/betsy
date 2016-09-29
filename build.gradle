@@ -43,6 +43,7 @@ configurations {
 dependencies {
     internal project(':common')
     internal project(':peal')
+    internal project(':pebl')
     internal 'org.codehaus.groovy:groovy-all:2.4.7'
 
     internal 'org.apache.ant:ant:1.9.7'
@@ -81,7 +82,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.0'
+    gradleVersion = '3.1'
 }
 
 task downloadMaven {
@@ -178,6 +179,10 @@ run {
 test {
     testLogging {
         exceptionFormat "full" // default is "short"
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showCauses true
+        showExceptions true
+        showStackTraces true
     }
 }
 

@@ -11,7 +11,7 @@ import betsy.bpmn.model.BPMNProcess;
 import betsy.common.HasPath;
 import betsy.common.engines.EngineAPI;
 import betsy.common.engines.LocalEngineAPI;
-import betsy.common.model.ProcessLanguage;
+import pebl.ProcessLanguage;
 import betsy.common.tasks.FileTasks;
 
 public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, LocalEngineAPI, HasPath {
@@ -19,7 +19,6 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
     private Path parentFolder;
 
     private final List<BPMNProcess> processes = new ArrayList<>();
-    private BPMNProcessStarter processStarter;
 
     public abstract Path getXsltPath();
 
@@ -96,17 +95,7 @@ public abstract class AbstractBPMNEngine implements EngineAPI<BPMNProcess>, Loca
         return processes;
     }
 
-    @Override
-    public boolean isDeployed(QName process) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
-    public void undeploy(QName process) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
     public abstract BPMNProcessStarter getProcessStarter();
 
-    public abstract Path getLogForInstance(String processName);
+    public abstract Path getLogForInstance(String processName, String instanceId);
 }

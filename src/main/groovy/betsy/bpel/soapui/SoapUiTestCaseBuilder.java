@@ -1,7 +1,7 @@
 package betsy.bpel.soapui;
 
-import betsy.common.model.input.TestCase;
-import betsy.common.model.input.TestStep;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;

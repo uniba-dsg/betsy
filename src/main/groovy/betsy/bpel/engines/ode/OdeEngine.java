@@ -10,8 +10,8 @@ import javax.xml.namespace.QName;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.engines.tomcat.Tomcat;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.util.ClasspathHelper;
@@ -26,8 +26,8 @@ public class OdeEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "ode", "1.3.5", LocalDate.of(2011,2,6), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "ode", "1.3.5", LocalDate.of(2011,2,6), "Apache-2.0");
     }
 
     @Override

@@ -4,7 +4,7 @@ import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.validation.BPMNValidator;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,10 +46,10 @@ public class BPMNBetsy {
         return processes;
     }
 
-    public void setProcesses(List<EngineIndependentProcess> processes) {
+    public void setProcesses(List<Test> processes) {
         List<BPMNProcess> processList = new ArrayList<>();
-        for(EngineIndependentProcess engineIndependentProcess : processes) {
-            processList.add(new BPMNProcess(engineIndependentProcess));
+        for(Test test : processes) {
+            processList.add(new BPMNProcess(test));
         }
         this.processes = processList;
     }

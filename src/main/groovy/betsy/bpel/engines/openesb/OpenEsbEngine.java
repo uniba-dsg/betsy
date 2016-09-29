@@ -1,5 +1,6 @@
 package betsy.bpel.engines.openesb;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -10,14 +11,14 @@ import javax.xml.namespace.QName;
 
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.URLTasks;
 import betsy.common.tasks.XSLTTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.OperatingSystem;
+import pebl.ProcessLanguage;
 
 public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
@@ -29,8 +30,8 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "2.2", LocalDate.of(2009, 12, 1), "CDDL-1.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "openesb", "2.2", LocalDate.of(2009, 12, 1), "CDDL-1.0");
     }
 
     @Override
@@ -89,12 +90,20 @@ public class OpenEsbEngine extends AbstractLocalBPELEngine {
 
     @Override
     public boolean isDeployed(QName process) {
-        return false;
+        return Files.exists(getGlassfishHome().resolve("domains/domain1").resolve("jbi").resolve("service-assemblies").resolve(process.getLocalPart()+ "Application"));
     }
 
     @Override
     public void undeploy(QName process) {
-        throw new UnsupportedOperationException("not yet implemented");
+        OpenEsbDeployer deployer = new OpenEsbDeployer(getCli());
+        Path tmpfolder = null;
+        try {
+            tmpfolder = Files.createTempDirectory("betsy-openesb-2").resolve("TMPFOLDER");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FileTasks.mkdirs(tmpfolder);
+        deployer.undeploy(process.getLocalPart(), tmpfolder);
     }
 
     @Override

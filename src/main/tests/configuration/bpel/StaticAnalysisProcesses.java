@@ -14,23 +14,23 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import betsy.bpel.model.BPELTestCase;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.test.Test;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.FileTypes;
 
 class StaticAnalysisProcesses {
 
-    static List<EngineIndependentProcess> STATIC_ANALYSIS = getStaticAnalysisProcesses();
+    static List<Test> STATIC_ANALYSIS = getStaticAnalysisProcesses();
 
-    static List<EngineIndependentProcess> getStaticAnalysisProcesses() {
+    static List<Test> getStaticAnalysisProcesses() {
         Path path = Paths.get("src/main/tests/files/bpel/sa-rules");
         if (!Files.exists(path)) {
             return Collections.emptyList();
         }
 
-        List<EngineIndependentProcess> result = new LinkedList<>();
+        List<Test> result = new LinkedList<>();
 
         try {
             Files.walk(path, Integer.MAX_VALUE).forEach(dir -> {
@@ -39,7 +39,7 @@ class StaticAnalysisProcesses {
                 if (isTestDirectory) {
                     Path process = getBpelFileInFolder(dir);
                     String rule = getRule(process);
-                    result.add(new EngineIndependentProcess(process,
+                    result.add(new Test(process,
                             FileTasks.getFilenameWithoutExtension(process),
                             Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
                             new Feature(new FeatureSet(Groups.SA, rule), process.getFileName().toString()),
@@ -71,12 +71,12 @@ class StaticAnalysisProcesses {
         }
     }
 
-    static Map<String, List<EngineIndependentProcess>> getGroupsPerRuleForSAProcesses(List<EngineIndependentProcess> processes) {
-        Map<String, List<EngineIndependentProcess>> result = new HashMap<>();
+    static Map<String, List<Test>> getGroupsPerRuleForSAProcesses(List<Test> processes) {
+        Map<String, List<Test>> result = new HashMap<>();
 
         IntStream.rangeClosed(1, 95).forEach((n) -> {
             String rule = convertIntegerToSARuleNumber(n);
-            List<EngineIndependentProcess> processList = processes.stream().filter((p) -> p.getName().startsWith(rule)).collect(Collectors.toList());
+            List<Test> processList = processes.stream().filter((p) -> p.getName().startsWith(rule)).collect(Collectors.toList());
 
             if (!processList.isEmpty()) {
                 result.put(rule, processList);

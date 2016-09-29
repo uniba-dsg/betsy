@@ -14,7 +14,7 @@ import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpel.virtual.host.VirtualEngineAPI;
 import betsy.bpmn.repositories.BPMNEngineRepository;
 import betsy.common.engines.EngineLifecycle;
-import betsy.common.model.engine.Engine;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.IsEngine;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,8 +27,8 @@ class JsonGeneratorEngines {
         for (EngineLifecycle e : getEngines()) {
             boolean excludeVirtualEngines = !(e instanceof VirtualEngineAPI);
             if (e instanceof IsEngine && excludeVirtualEngines) {
-                Engine engine = ((IsEngine) e).getEngineObject();
-                array.put(createEngineObject(engine));
+                EngineExtended engineExtended = ((IsEngine) e).getEngineObject();
+                array.put(createEngineObject(engineExtended));
             }
         }
 
@@ -39,18 +39,18 @@ class JsonGeneratorEngines {
         }
     }
 
-    private static JSONObject createEngineObject(Engine engine) {
+    private static JSONObject createEngineObject(EngineExtended engineExtended) {
         JSONObject object = new JSONObject();
-        object.put("id", engine.getNormalizedId());
-        object.put("name", engine.getName());
-        object.put("version", engine.getVersion());
-        object.put("configuration", engine.getConfiguration());
-        object.put("language", engine.getLanguage().name());
-        object.put("programmingLanguage", engine.getProgrammingLanguage());
-        object.put("license", engine.getLicense());
-        object.put("licenseURL", engine.getLicenseURL());
-        object.put("releaseDate", DateTimeFormatter.ISO_LOCAL_DATE.format(engine.getReleaseDate()));
-        object.put("url", engine.getURL());
+        object.put("id", engineExtended.getNormalizedId());
+        object.put("name", engineExtended.getName());
+        object.put("version", engineExtended.getVersion());
+        object.put("configuration", engineExtended.getConfiguration());
+        object.put("language", engineExtended.getLanguage().getID());
+        object.put("programmingLanguage", engineExtended.getProgrammingLanguage());
+        object.put("license", engineExtended.getLicense());
+        object.put("licenseURL", engineExtended.getLicenseURL());
+        object.put("releaseDate", DateTimeFormatter.ISO_LOCAL_DATE.format(engineExtended.getReleaseDate()));
+        object.put("url", engineExtended.getURL());
 
         return object;
     }

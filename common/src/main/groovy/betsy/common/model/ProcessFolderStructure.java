@@ -2,11 +2,10 @@ package betsy.common.model;
 
 import java.nio.file.Path;
 
-import betsy.common.HasName;
 import betsy.common.HasPath;
 import betsy.common.tasks.FileTasks;
 
-public interface ProcessFolderStructure extends HasName {
+public interface ProcessFolderStructure extends pebl.HasName {
 
     HasPath getEngine();
     Path getProcess();

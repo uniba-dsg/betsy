@@ -3,7 +3,7 @@ package betsy.bpmn.engines;
 import java.util.Collections;
 import java.util.List;
 
-import betsy.bpmn.model.Variable;
+import pebl.benchmark.test.steps.vars.Variable;
 
 public interface BPMNProcessStarter {
 
@@ -14,14 +14,14 @@ public interface BPMNProcessStarter {
      * @param variables
      * @throws RuntimeException in case any failures are detected
      */
-    public void start(String processID, List<Variable> variables) throws RuntimeException;
+    void start(String processID, List<Variable> variables) throws RuntimeException;
 
     /**
      * Starts a new process instance but without any variables.
      *
      * @param processID
      */
-    public default void start(String processID) {
+    default void start(String processID) {
         start(processID, Collections.emptyList());
     }
 

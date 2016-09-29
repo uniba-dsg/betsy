@@ -3,15 +3,15 @@ package betsy.bpel.engines.wso2;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.FileTasks;
 
 public class Wso2Engine_v2_1_2 extends Wso2Engine_v3_1_0 {
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "2.1.2", LocalDate.of(2011, 10, 30), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "wso2", "2.1.2", LocalDate.of(2011, 10, 30), "Apache-2.0");
     }
 
     @Override
@@ -37,6 +37,8 @@ public class Wso2Engine_v2_1_2 extends Wso2Engine_v3_1_0 {
         FileTasks.deleteLine(unixStartupScript, 217);
         FileTasks.deleteLine(unixStartupScript, 217);
 
+        Path file32bitWrapper = getBinDir().resolve("native").resolve("wrapper-linux-x86-32");
+        FileTasks.move(file32bitWrapper, file32bitWrapper.getParent().resolve("wrapper-linux-x86-32.bak"));
     }
 
     @Override

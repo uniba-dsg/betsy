@@ -12,8 +12,8 @@ import javax.xml.namespace.QName;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
@@ -101,12 +101,21 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(deployParams));
 
-        WaitTasks.sleep(5_000);
+        WaitTasks.sleep(10_000);
+
+        String[] shutdownParams = {"-jar", adminBinariesFile, "shut-down-jbi-service-assembly",
+                "--user", "admin",
+                "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
+                processName + "Application"};
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(shutdownParams));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(shutdownParams));
+
+        WaitTasks.sleep(10_000);
 
         String[] startParams = {"-jar", adminBinariesFile, "undeploy-jbi-service-assembly",
                 "--user", "admin",
                 "--passwordfile", StringUtils.toUnixStyle(passwordFilePath),
-                "--force",
                 processName + "Application"};
 
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getInstanceFolder().resolve("lib"), "java").values(startParams));
@@ -237,7 +246,7 @@ public class OpenEsb301StandaloneEngine extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "openesb", "3.0.1", LocalDate.of(2015, 2, 13), "CDDL-1.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "openesb", "3.0.1", LocalDate.of(2015, 2, 13), "CDDL-1.0");
     }
 }

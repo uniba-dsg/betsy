@@ -1,6 +1,6 @@
 package betsy.bpel.tools;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 import betsy.common.util.FileTypes;
 import configuration.bpel.BPELProcessRepository;
 import corebpel.CoreBPEL;
@@ -42,14 +42,14 @@ public class CoreBPELEnumerator {
         Files.createDirectories(outputFolder);
 
         String[] groups = new String[]{"BASIC_ACTIVITIES", "SCOPES", "STRUCTURED_ACTIVITIES"};
-        List<EngineIndependentProcess> processes = BPELProcessRepository.INSTANCE.getByNames(groups);
+        List<Test> processes = BPELProcessRepository.INSTANCE.getByNames(groups);
 
         for (String transformation : CoreBPEL.XSL_SHEETS) {
 
             Path transformationDirectory = outputFolder.resolve(transformation);
             Files.createDirectories(transformationDirectory);
 
-            for (EngineIndependentProcess process : processes) {
+            for (Test process : processes) {
 
                 Path processDirectory = transformationDirectory.resolve(process.getName());
                 Files.createDirectories(processDirectory);

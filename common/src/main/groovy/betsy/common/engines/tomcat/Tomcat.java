@@ -1,5 +1,6 @@
 package betsy.common.engines.tomcat;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
@@ -115,6 +116,10 @@ public class Tomcat {
      * Shutdown the tomcat if running.
      */
     public void shutdown() {
+        if(!Files.exists(getTomcatDir())) {
+
+            return; // not installed means it cannot be shutdown
+        }
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_shutdown.bat")));
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getTomcatName() + "*"));
         ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(parentFolder.resolve("tomcat_shutdown.sh")));

@@ -1,6 +1,6 @@
 package betsy.bpel.validation
 
-import betsy.common.model.input.EngineIndependentProcess
+import pebl.benchmark.test.Test
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -10,9 +10,9 @@ import java.nio.file.Path
  */
 class BPELValidator {
 
-    private final List<EngineIndependentProcess> processes
+    private final List<Test> processes
 
-    BPELValidator(List<EngineIndependentProcess> processes) {
+    BPELValidator(List<Test> processes) {
         this.processes = processes
     }
 

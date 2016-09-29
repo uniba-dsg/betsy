@@ -605,12 +605,12 @@ public class Timeout {
             CalibrationTimeout calibrationTimeout = new CalibrationTimeout(this);
             if (wasSuccessful) {
                 calibrationTimeout.setMeasuredTime(Math.toIntExact(work));
-                LOGGER.info("Condition of wait task was met in " + work + "/" + getTimeoutInMs() + "ms -> proceeding");
+                LOGGER.info("Condition of wait task was met in " + work + "/" + getTimeoutInMs() + "ms -> proceeding (" + this + ")");
                 CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
             } else {
                 calibrationTimeout.setStatus(CalibrationTimeout.Status.EXCEEDED);
                 calibrationTimeout.setMeasuredTime(calibrationTimeout.getTimeoutInMs());
-                LOGGER.info("Condition of wait task NOT met within the specified time");
+                LOGGER.info("Condition of wait task NOT met within the specified time (" + this + ") ");
                 CalibrationTimeoutRepository.addCalibrationTimeout(calibrationTimeout);
                 throw new IllegalStateException("waited for " + getTimeoutInMs() + "ms, but condition was not met");
             }
@@ -668,6 +668,11 @@ public class Timeout {
      */
     public enum PlaceOfUse {
         INTERN, EXTERN
+    }
+
+    @Override
+    public String toString() {
+        return String.format("timeout %s for %d/%d (%s,%s)", getKey(), value, timeToRepetition.orElse(0), category, placeOfUse);
     }
 }
 

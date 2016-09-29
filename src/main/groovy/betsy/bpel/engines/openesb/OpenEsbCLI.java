@@ -72,4 +72,27 @@ public class OpenEsbCLI {
                 values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
     }
 
+    public void undeploy(String processName, Path tmpFolder) {
+        FileTasks.assertDirectory(glassfishHome);
+
+        LOGGER.info("Undeploying " + processName);
+
+        Path deployCommands = tmpFolder.resolve("undeploy_commands.txt");
+
+
+        String scriptContent = "stop-jbi-service-assembly " + processName + "Application\n";
+        scriptContent += "shut-down-jbi-service-assembly " + processName + "Application\n";
+        scriptContent += "undeploy-jbi-service-assembly " + processName + "Application\n";
+
+        FileTasks.createFile(deployCommands, scriptContent);
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminWindows()).
+                values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
+
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinFolder(), "chmod").values("+x", "asadmin"));
+        ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("sync"));
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getAsAdminUnix()).
+                values("multimode", "--file", deployCommands.toAbsolutePath().toString()));
+    }
+
 }

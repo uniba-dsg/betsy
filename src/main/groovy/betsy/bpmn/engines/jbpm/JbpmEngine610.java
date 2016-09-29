@@ -1,15 +1,16 @@
 package betsy.bpmn.engines.jbpm;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 
 public class JbpmEngine610 extends JbpmEngine {
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPMN, "jbpm", "6.1.0", LocalDate.of(2014, 8, 19), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPMN, "jbpm", "6.1.0", LocalDate.of(2014, 8, 19), "Apache-2.0");
     }
 
     @Override
@@ -18,8 +19,8 @@ public class JbpmEngine610 extends JbpmEngine {
     }
 
     @Override
-    public String getLogFileNameForShutdownAnalysis() {
-        return "server.log";
+    public Path getLogFileForShutdownAnalysis() {
+        return getServerLog();
     }
 
     @Override
@@ -30,8 +31,10 @@ public class JbpmEngine610 extends JbpmEngine {
         jbpmInstaller.install();
     }
 
-    @Override
-    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String deploymentId) {
-        return JbpmApiBasedProcessInstanceOutcomeChecker.build();
+    @Override protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
+        String url = getJbpmnUrl() + "/rest/history/instance/1";
+        String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name);
+        return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl);
     }
+
 }

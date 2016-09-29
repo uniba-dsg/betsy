@@ -2,7 +2,7 @@ package betsy.bpmn.cli;
 
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.repositories.BPMNEngineRepository;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 import configuration.bpmn.BPMNProcessRepository;
 import org.apache.commons.cli.*;
 
@@ -19,7 +19,7 @@ public class BPMNCliParser {
         }
 
         @Override
-        public List<EngineIndependentProcess> getProcesses() {
+        public List<Test> getProcesses() {
             return Collections.emptyList();
         }
 
@@ -97,7 +97,7 @@ public class BPMNCliParser {
                 }
 
                 @Override
-                public List<EngineIndependentProcess> getProcesses() {
+                public List<Test> getProcesses() {
                     return new BPMNProcessParser(cmd.getArgs()).parse();
                 }
 

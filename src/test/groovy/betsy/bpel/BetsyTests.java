@@ -3,11 +3,10 @@ package betsy.bpel;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.BPELEnginePackageBuilder;
 import betsy.bpel.model.BPELProcess;
-import betsy.common.model.engine.Engine;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
+import pebl.benchmark.test.Test;
+import pebl.ProcessLanguage;
 import configuration.bpel.BPELProcessRepository;
-import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,10 +17,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 public class BetsyTests {
-    @Test
+    @org.junit.Test
     public void simulateATestRun() throws Exception {
         AbstractBPELEngine engine = new MockEngine();
-        List<EngineIndependentProcess> processes = BPELProcessRepository.INSTANCE.getByName("ALL");
+        List<Test> processes = BPELProcessRepository.INSTANCE.getByName("ALL");
         BPELBetsy betsy = new BPELBetsy();
 
 
@@ -80,8 +79,8 @@ public class BetsyTests {
         }
 
         @Override
-        public Engine getEngineObject() {
-            return new Engine(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
+        public EngineExtended getEngineObject() {
+            return new EngineExtended(ProcessLanguage.BPEL, "mock", "1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
         }
 
         public Path getXsltPath() {

@@ -78,7 +78,7 @@ public class BPMNComposite {
 
     protected void checkRunning(AbstractBPMNEngine engine) {
         if (engine.isRunning()) {
-            throw new IllegalStateException("Engine " + engine.getName() + " is running");
+            throw new IllegalStateException("EngineExtended " + engine.getName() + " is running");
         }
     }
 

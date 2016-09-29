@@ -3,7 +3,7 @@ package betsy.bpel.cli;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.common.config.Configuration;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import org.apache.commons.cli.*;
 
@@ -19,7 +19,7 @@ public class BPELCliParser {
         }
 
         @Override
-        public List<EngineIndependentProcess> getProcesses() {
+        public List<Test> getProcesses() {
             return Collections.emptyList();
         }
 
@@ -134,7 +134,7 @@ public class BPELCliParser {
                 }
 
                 @Override
-                public List<EngineIndependentProcess> getProcesses() {
+                public List<Test> getProcesses() {
                     return new ProcessParser(cmd.getArgs()).parse();
                 }
 

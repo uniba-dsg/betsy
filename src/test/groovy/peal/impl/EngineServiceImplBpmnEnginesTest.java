@@ -12,11 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.namespace.QName;
 
-import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -28,6 +24,9 @@ import peal.helper.ZipFileHelper;
 import peal.identifier.EngineId;
 import peal.identifier.InstanceId;
 import peal.identifier.ProcessModelId;
+import peal.impl.engine.EngineServiceImpl;
+import peal.impl.instance.InstanceServiceImpl;
+import peal.impl.processmodel.ProcessModelServiceImpl;
 import peal.observer.EngineState;
 import peal.observer.InstanceState;
 import peal.observer.ProcessModelState;
@@ -39,7 +38,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class EngineServiceImplBpmnEnginesTest {
+public class EngineServiceImplBpmnEnginesTest extends AbstractEngineServiceCleanup{
 
     public static final Path SEQUENCE_FOLDER = Paths.get("src/test/resources/SequenceFlow");
 
@@ -54,35 +53,6 @@ public class EngineServiceImplBpmnEnginesTest {
         this.engineId = Objects.requireNonNull(engineId);
         this.processModelId = new ProcessModelId(engineId.getEngineId(),
                 new QName("http://dsg.wiai.uniba.de/betsy/activities/bpel/sequence", "SequenceFlow"));
-    }
-
-    @Before
-    public void truncateServerPathFolder() {
-        FileTasks.deleteDirectory(Paths.get("test"));
-
-        Path serverPath = Paths.get("server");
-        FileTasks.deleteDirectory(serverPath);
-        assertFalse(Files.isDirectory(serverPath));
-        FileTasks.mkdirs(serverPath);
-        assertTrue(Files.isDirectory(serverPath));
-        System.out.println("\n\nPREPARATION DONE\n");
-    }
-
-    @BeforeClass
-    public static void ensureEnginesAreShutdown() {
-        new EngineServiceImpl().getSupportedEngines().forEach((e) -> {
-            try {
-                new EngineServiceImpl().stop(e);
-            } catch (Exception ignored) {
-                // ignore
-            }
-        });
-    }
-
-    @After
-    public void ensureEngineIsShutdown() {
-        System.out.println("\n\nSHUTTING DOWN AFTER TEST\n");
-        engineService.stop(engineId);
     }
 
     @Test
@@ -125,7 +95,7 @@ public class EngineServiceImplBpmnEnginesTest {
 
         WaitTasks.sleep(2000);
         LogPackage instanceLogs = instanceService.getLogs(instanceId);
-        Path instanceLogFile = ZipFileHelper.extractIntoTemporaryFolder(instanceLogs).resolve("log1.txt");
+        Path instanceLogFile = ZipFileHelper.extractIntoTemporaryFolder(instanceLogs).resolve("log-" + processModelId.getProcessId().getLocalPart() + "-1.txt");
         assertEquals(Collections.singletonList("SCRIPT_task1"), Files.readAllLines(instanceLogFile));
         assertState(InstanceState.STOPPED, instanceId);
 
@@ -135,6 +105,7 @@ public class EngineServiceImplBpmnEnginesTest {
         assertState(EngineState.STARTED);
 
         engineService.stop(engineId);
+        WaitTasks.sleep(5000);
         assertState(EngineState.INSTALLED);
         assertState(ProcessModelState.NOT_DEPLOYED);
 
@@ -158,11 +129,12 @@ public class EngineServiceImplBpmnEnginesTest {
     @Parameterized.Parameters(name = "{index} {0}")
     public static Iterable<Object[]> data() {
         return new EngineServiceImpl().getSupportedEngines().stream()
-                // full: jbpm
-                // see without undeploy: activiti camunda
-                .filter(p -> p.toString().startsWith("jbpm"))
+                .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPMN))
                 .map(p -> new Object[] {p})
                 .collect(Collectors.toList());
     }
 
+    @Override public EngineId getEngineId() {
+        return engineId;
+    }
 }

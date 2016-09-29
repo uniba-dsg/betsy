@@ -4,8 +4,7 @@ import betsy.bpmn.cli.BPMNCliParameter;
 import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
-import betsy.common.HasName;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
@@ -140,10 +139,10 @@ public class BPMNMain {
         System.setProperty("soapui.log4j.config", "src/main/resources/soapui-log4j.xml");
     }
 
-    protected static void printSelectedEnginesAndProcesses(List<AbstractBPMNEngine> engines, List<EngineIndependentProcess> processes) {
+    protected static void printSelectedEnginesAndProcesses(List<AbstractBPMNEngine> engines, List<Test> processes) {
         // print selection of engines and processes
-        LOGGER.info("Engines (" + engines.size() + "): " + HasName.getNames(engines));
-        LOGGER.info("Processes (" + processes.size() + "): " + HasName.getNames(processes).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("Engines (" + engines.size() + "): " + ((List<? extends pebl.HasName>) engines).stream().map(pebl.HasName::getName).collect(Collectors.toList()));
+        LOGGER.info("Processes (" + processes.size() + "): " + ((List<? extends pebl.HasName>) processes).stream().map(pebl.HasName::getName).collect(Collectors.toList()).stream().limit(10).collect(Collectors.toList()));
     }
 
     public static void onlyBuildSteps(BPMNCliParameter params, BPMNBetsy betsy) {

@@ -1,23 +1,22 @@
 package betsy.bpel;
 
 import betsy.bpel.model.BPELIdShortener;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ShortIdsTests {
 
-    @Test
+    @org.junit.Test
     public void testUniquenessOfShortIds() {
         List<String> shortIds = new LinkedList<>();
 
         BPELProcessRepository processRepository = BPELProcessRepository.INSTANCE;
-        List<EngineIndependentProcess> processed = processRepository.getByName("ALL");
-        for(EngineIndependentProcess process : processed){
+        List<Test> processed = processRepository.getByName("ALL");
+        for(Test process : processed){
             shortIds.add(new BPELIdShortener(process.getName()).getShortenedId());
         }
 

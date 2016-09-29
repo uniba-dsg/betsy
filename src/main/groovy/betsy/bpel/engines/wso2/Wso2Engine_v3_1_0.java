@@ -11,8 +11,8 @@ import javax.xml.namespace.QName;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.common.config.Configuration;
-import betsy.common.model.ProcessLanguage;
-import betsy.common.model.engine.Engine;
+import pebl.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
 import betsy.common.tasks.ConsoleTasks;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
@@ -35,8 +35,8 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     }
 
     @Override
-    public Engine getEngineObject() {
-        return new Engine(ProcessLanguage.BPEL, "wso2", "3.1.0", LocalDate.of(2013, 12, 6), "Apache-2.0");
+    public EngineExtended getEngineObject() {
+        return new EngineExtended(ProcessLanguage.BPEL, "wso2", "3.1.0", LocalDate.of(2013, 12, 6), "Apache-2.0");
     }
 
     @Override
@@ -65,10 +65,10 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
     public void startup() {
         ConsoleTasks.executeOnWindows(ConsoleTasks.CliCommand.build(getServerPath(), "startup.bat"));
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("start")); // start wso2 in background
-        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2_v3_1_0.startup.sleep").getTimeoutInMs());
+        WaitTasks.sleep(TimeoutRepository.getTimeout("Wso2.startup.sleep").getTimeoutInMs());
 
         Path logFile = getLogsFolder().resolve("wso2carbon.log");
-        TimeoutRepository.getTimeout("Wso2_v3_1_0.startup").waitForSubstringInFile(getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
+        TimeoutRepository.getTimeout("Wso2.startup").waitForSubstringInFile(getLogsFolder().resolve("wso2carbon.log"), "WSO2 Carbon started in ");
     }
 
     public Path getLogsFolder() {
@@ -88,6 +88,7 @@ public class Wso2Engine_v3_1_0 extends AbstractLocalBPELEngine {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build("taskkill").values("/FI", "WINDOWTITLE eq " + getName() + "*"));
         if(Files.exists(getBinDir())) {
             ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(getBinDir(), getBinDir().resolve("wso2server.sh")).values("stop"));
+            WaitTasks.sleep(5000); // wait some time until it is shut down
         }
     }
 

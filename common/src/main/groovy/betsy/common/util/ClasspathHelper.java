@@ -18,4 +18,10 @@ public class ClasspathHelper {
         }
     }
 
+    public static URL getURLFromClasspathPath(String classpathPath) {
+        URL resource = ClasspathHelper.class.getResource(Objects.requireNonNull(classpathPath, "given path must not be null"));
+        Objects.requireNonNull(resource, "classpath path could not be found for " + classpathPath);
+        return resource;
+    }
+
 }

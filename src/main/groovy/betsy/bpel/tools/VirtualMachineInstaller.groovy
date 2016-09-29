@@ -114,9 +114,9 @@ class VirtualMachineInstaller {
 		// loop for all selected engines
 		engines.each { engine ->
 			if(installEngine(engine, basicUuid, existingForwardingRules)) {
-				println "Engine '${engine.name}' successfully installed\n\n\n"
+				println "EngineExtended '${engine.name}' successfully installed\n\n\n"
 			}else {
-				error "Engine '${engine.name}' not installed. Continue with next engine...\n\n\n"
+				error "EngineExtended '${engine.name}' not installed. Continue with next engine...\n\n\n"
 			}
 		}
 	}

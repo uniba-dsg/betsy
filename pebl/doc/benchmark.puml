@@ -1,0 +1,103 @@
+@startuml
+package "feature" {
+
+	class ValueType {
+	  type : String
+	}
+
+	class AggregatedMetric {
+	  groovyScript : String
+	}
+
+	class Metric {
+	  id : String
+	  name : String
+	  description : String
+	  unit : String
+	}
+
+	class Capability {
+	  id : String
+	  name : String
+	}
+
+	class Language {
+	  id : String
+	  name : String
+	}
+
+	class Group {
+	  id : String
+	  name : String
+	}
+
+	class FeatureSet {
+	  id : String
+	  name : String
+	}
+
+	class Feature {
+	  id : String
+	  name : String
+	}
+
+}
+
+package "test" {
+
+	class Test {
+	  id : String
+	  name : String
+	  description : String
+	  additionalData : Map<String, String>
+	  files : List<String>
+	  process : String
+
+	}
+
+	class TestAssertion
+
+	class TestStep {
+	  description : String
+	}
+
+	class TestCase {
+	  name : String
+	  number : int
+	}
+
+	class TestPartner
+
+}
+
+Test "*" -down-> "1" Feature
+Test "1" -> "*" Metric
+Test "1" -left- "*" TestPartner
+Test "1" - "*" TestCase
+TestCase "1" - "*" TestStep
+TestStep "1" - "*" TestAssertion
+
+
+
+Feature "*" -right- "1" FeatureSet
+FeatureSet "*" -right- "1" Group
+Group "*" -right- "1" Language
+Language "*" -right- "1" Capability
+
+Metric "*" -left- "1" ValueType
+AggregatedMetric -left-|> Metric
+
+Capability "1" --> "*" AggregatedMetric
+Language "1" --> "*" AggregatedMetric
+Group "1" --> "*" AggregatedMetric
+FeatureSet "1" --> "*" AggregatedMetric
+Feature "1" --> "*" AggregatedMetric
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

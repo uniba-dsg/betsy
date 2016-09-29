@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import betsy.common.model.feature.Capability;
-import betsy.common.model.feature.FeatureSet;
-import betsy.common.model.feature.Feature;
-import betsy.common.model.feature.FeatureDimension;
-import betsy.common.model.feature.Group;
-import betsy.common.model.feature.Language;
-import betsy.common.model.input.EngineIndependentProcess;
+import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.feature.Language;
+import pebl.benchmark.test.Test;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
@@ -27,7 +27,7 @@ class JsonGeneratorFeatureTree {
     public static void generatesConstructsJson(Path folder) {
         JSONArray featureTree = new JSONArray();
 
-        List<EngineIndependentProcess> processes = new LinkedList<>();
+        List<Test> processes = new LinkedList<>();
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
         processes.addAll(new BPMNProcessRepository().getByName("ALL"));
         convertProcess(featureTree, processes);
@@ -42,11 +42,7 @@ class JsonGeneratorFeatureTree {
     public static void generatesConstructsJsonWithReallyAllProcesses(Path folder) {
         JSONArray featureTree = new JSONArray();
 
-        List<EngineIndependentProcess> processes = new LinkedList<>();
-        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
-        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
-        processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
-        processes.addAll(new BPMNProcessRepository().getByName("ALL"));
+        List<Test> processes = getTests();
         convertProcess(featureTree, processes);
 
         try(BufferedWriter writer = Files.newBufferedWriter(folder.resolve("feature-tree.json"), StandardOpenOption.CREATE)) {
@@ -56,8 +52,17 @@ class JsonGeneratorFeatureTree {
         }
     }
 
-    private static void convertProcess(JSONArray rootArray, List<EngineIndependentProcess> processes) {
-        Map<Capability, Map<Language, Map<Group, Map<FeatureSet, List<EngineIndependentProcess>>>>> entries;
+    private static List<Test> getTests() {
+        List<Test> processes = new LinkedList<>();
+        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
+        processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
+        processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
+        processes.addAll(new BPMNProcessRepository().getByName("ALL"));
+        return processes;
+    }
+
+    private static void convertProcess(JSONArray rootArray, List<Test> processes) {
+        Map<Capability, Map<Language, Map<Group, Map<FeatureSet, List<Test>>>>> entries;
         entries = processes.stream().
                 collect(Collectors.groupingBy(FeatureDimension::getCapability,
                         Collectors.groupingBy(FeatureDimension::getLanguage,
@@ -66,7 +71,7 @@ class JsonGeneratorFeatureTree {
 
         JSONArray capabilityArray = rootArray;
 
-        for(Map.Entry<Capability, Map<Language, Map<Group, Map<FeatureSet, List<EngineIndependentProcess>>>>> entryCapability : entries.entrySet()) {
+        for(Map.Entry<Capability, Map<Language, Map<Group, Map<FeatureSet, List<Test>>>>> entryCapability : entries.entrySet()) {
             Capability capability = entryCapability.getKey();
             JSONObject capabilityObject = new JSONObject();
             capabilityObject.put("name", capability.getName());
@@ -74,7 +79,7 @@ class JsonGeneratorFeatureTree {
             JSONArray languagesArray = new JSONArray();
             capabilityObject.put("languages", languagesArray);
 
-            for(Map.Entry<Language, Map<Group, Map<FeatureSet, List<EngineIndependentProcess>>>> entryLanguage : entryCapability.getValue().entrySet()) {
+            for(Map.Entry<Language, Map<Group, Map<FeatureSet, List<Test>>>> entryLanguage : entryCapability.getValue().entrySet()) {
                 Language language = entryLanguage.getKey();
                 JSONObject languageObject = new JSONObject();
                 languageObject.put("name", language.getName());
@@ -82,28 +87,28 @@ class JsonGeneratorFeatureTree {
                 JSONArray groupsArray = new JSONArray();
                 languageObject.put("groups", groupsArray);
 
-                for(Map.Entry<Group, Map<FeatureSet, List<EngineIndependentProcess>>> entryGroup : entryLanguage.getValue().entrySet()) {
+                for(Map.Entry<Group, Map<FeatureSet, List<Test>>> entryGroup : entryLanguage.getValue().entrySet()) {
                     Group group = entryGroup.getKey();
 
                     JSONObject groupObject = new JSONObject();
                     groupObject.put("name", group.getName());
-                    groupObject.put("description", group.description);
+                    groupObject.put("description", group.getDescription());
                     groupObject.put("id", group.getID());
                     JSONArray constructsArray = new JSONArray();
                     groupObject.put("constructs", constructsArray);
 
-                    for(Map.Entry<FeatureSet, List<EngineIndependentProcess>> entryConstruct : entryGroup.getValue().entrySet()) {
+                    for(Map.Entry<FeatureSet, List<Test>> entryConstruct : entryGroup.getValue().entrySet()) {
                         FeatureSet construct = entryConstruct.getKey();
 
                         JSONObject constructObject = new JSONObject();
                         constructObject.put("name", construct.getName());
                         constructObject.put("id", construct.getID());
-                        constructObject.put("description", construct.description);
+                        constructObject.put("description", construct.getDescription());
                         JSONArray featuresArray = new JSONArray();
                         constructObject.put("features", featuresArray);
 
-                        for(EngineIndependentProcess process : entryConstruct.getValue()) {
-                            groupObject.put("description", process.getGroup().description);
+                        for(Test process : entryConstruct.getValue()) {
+                            groupObject.put("description", process.getGroup().getDescription());
 
                             featuresArray.put(createFeatureObject(process));
                         }
@@ -117,13 +122,12 @@ class JsonGeneratorFeatureTree {
         }
     }
 
-    private static JSONObject createFeatureObject(EngineIndependentProcess process) {
+    private static JSONObject createFeatureObject(Test process) {
         Feature feature = process.getFeature();
         JSONObject featureObject = new JSONObject();
         featureObject.put("id", feature.getID());
         featureObject.put("name", feature.getName());
-        featureObject.put("description", feature.description);
-        feature.upperBound.ifPresent(upperBound -> featureObject.put("upperBound", upperBound));
+        featureObject.put("description", feature.getDescription());
         return featureObject;
     }
 }

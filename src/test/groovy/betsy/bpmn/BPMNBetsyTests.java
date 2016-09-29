@@ -3,11 +3,10 @@ package betsy.bpmn;
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.model.BPMNProcess;
-import betsy.common.model.engine.Engine;
-import betsy.common.model.input.EngineIndependentProcess;
-import betsy.common.model.ProcessLanguage;
+import betsy.common.model.engine.EngineExtended;
+import pebl.benchmark.test.Test;
+import pebl.ProcessLanguage;
 import configuration.bpmn.BPMNProcessRepository;
-import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,12 +14,14 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 public class BPMNBetsyTests {
-    @Test
+    @org.junit.Test
     public void simulateATestRun() throws Exception {
         AbstractBPMNEngine engine = new MockEngine();
 
-        List<EngineIndependentProcess> processes = new BPMNProcessRepository().getByName("ALL");
+        List<Test> processes = new BPMNProcessRepository().getByName("ALL");
 
         BPMNBetsy betsy = new BPMNBetsy();
 
@@ -55,6 +56,14 @@ public class BPMNBetsyTests {
 
         }
 
+        @Override public boolean isDeployed(QName process) {
+            return false;
+        }
+
+        @Override public void undeploy(QName process) {
+
+        }
+
         public Path buildArchives(BPMNProcess process) {
             return process.getTargetProcessFilePath();
         }
@@ -69,8 +78,8 @@ public class BPMNBetsyTests {
         }
 
         @Override
-        public Engine getEngineObject() {
-            return new Engine(ProcessLanguage.BPMN, "mock","1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
+        public EngineExtended getEngineObject() {
+            return new EngineExtended(ProcessLanguage.BPMN, "mock","1.0", LocalDate.of(1, 1, 1), "Apache-2.0");
         }
 
         public Path getXsltPath() {
@@ -91,7 +100,7 @@ public class BPMNBetsyTests {
             return null;
         }
 
-        @Override public Path getLogForInstance(String processName) {
+        @Override public Path getLogForInstance(String processName, String instanceId) {
             return null;
         }
 
