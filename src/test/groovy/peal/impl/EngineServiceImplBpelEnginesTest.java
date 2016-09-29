@@ -75,7 +75,7 @@ public class EngineServiceImplBpelEnginesTest extends AbstractEngineServiceClean
         assertState(ProcessModelState.DEPLOYED);
         assertState(EngineState.STARTED);
 
-        WaitTasks.sleep(2000);
+        WaitTasks.sleep(5000);
 
         WSTester.assertCorrectWorkingProcess(getUrlForProcessId(processModelId));
         assertState(ProcessModelState.DEPLOYED);

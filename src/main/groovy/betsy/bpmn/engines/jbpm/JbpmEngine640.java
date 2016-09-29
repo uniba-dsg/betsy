@@ -3,6 +3,8 @@ package betsy.bpmn.engines.jbpm;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
+import javax.xml.namespace.QName;
+
 import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
 
@@ -35,7 +37,7 @@ public class JbpmEngine640 extends JbpmEngine {
     protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
         String url = getJbpmnUrl() + "/rest/history/instance/1";
         String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name) + "/processes";
-        return new Jbpm640MixedProcessInstanceOutcomeChecker(url, deployCheckUrl, getJbossStandaloneDir().resolve("log").resolve("server.log"));
+        return new Jbpm640MixedProcessInstanceOutcomeChecker(url, deployCheckUrl, getServerLog());
     }
 
 }
