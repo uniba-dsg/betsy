@@ -106,14 +106,6 @@ public class AbstractEngineServiceImplBpelEnginesTest extends AbstractEngineServ
         return new URL(new EngineServiceImpl().getEngineByID(processModelId.toEngineId()).getEndpointUrl(processModelId.getProcessId().getLocalPart()));
     }
 
-    @Parameterized.Parameters(name = "{index} {0}")
-    public static Iterable<Object[]> data() {
-        return new EngineServiceImpl().getSupportedEngines().stream()
-                .filter(p -> new EngineServiceImpl().getSupportedLanguage(p).equals(ProcessLanguage.BPEL))
-                .map(p -> new Object[] {p})
-                .collect(Collectors.toList());
-    }
-
     @Override public EngineId getEngineId() {
         return engineId;
     }
