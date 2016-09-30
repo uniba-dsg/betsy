@@ -1,9 +1,8 @@
 package betsy.common.virtual.calibration;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.analytics.model.Test;
 import betsy.common.virtual.cbetsy.DockerEngine;
 import betsy.common.virtual.cbetsy.WorkerTemplate;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.nio.file.Path;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  * @version 1.0
  */
 public class DockerPropertiesTest {
-    @Test
+    @org.junit.Test
     public void readWorkerTemplates() throws Exception {
         Path path = Paths.get("test.properties");
         HashSet<DockerEngine> engines = new HashSet<>();
@@ -32,7 +31,7 @@ public class DockerPropertiesTest {
         dockerEngine.setTime(200);
         dockerEngine.setMemory(500);
 
-        EngineIndependentProcess process = Mockito.mock(EngineIndependentProcess.class);
+        Test process = Mockito.mock(Test.class);
         WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
         ArrayList<WorkerTemplate> workerTemplates = new ArrayList<>();
         workerTemplates.add(workerTemplate);
@@ -41,7 +40,7 @@ public class DockerPropertiesTest {
         assertEquals("The memories have to be equal", memory, workerTemplates.get(0).getDockerEngine().getMemory());
     }
 
-    @Test
+    @org.junit.Test
     public void readEngines() throws Exception {
         Path path = Paths.get("test.properties");
         HashSet<DockerEngine> engines = new HashSet<>();
@@ -60,7 +59,7 @@ public class DockerPropertiesTest {
         path.toFile().delete();
     }
 
-    @Test
+    @org.junit.Test
     public void writeEngines() throws Exception {
         Path path = Paths.get("test.properties");
         HashSet<DockerEngine> engines = new HashSet<>();

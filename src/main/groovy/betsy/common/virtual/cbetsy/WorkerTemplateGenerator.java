@@ -6,9 +6,9 @@ import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpmn.cli.BPMNCliParameter;
 import betsy.bpmn.cli.BPMNCliParser;
 import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.common.model.ProcessFolderStructure;
 import betsy.common.virtual.calibration.DockerProperties;
 import betsy.common.virtual.calibration.Measurement;
+import pebl.benchmark.test.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,7 +50,7 @@ public class WorkerTemplateGenerator {
                     DockerEngine dockerEngine = new DockerEngine(engine.getName(), DockerEngine.TypeOfEngine.BPEL);
                     engines.add(dockerEngine);
                     bpelEngines.add(dockerEngine);
-                    for (ProcessFolderStructure process : bpelParams.getProcesses()) {
+                    for (Test process : bpelParams.getProcesses()) {
                         processes.add(process.getName());
                         bpelProcesses.add(process.getName());
                         WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
@@ -63,10 +63,10 @@ public class WorkerTemplateGenerator {
                     DockerEngine dockerEngine = new DockerEngine(engine.getName(), DockerEngine.TypeOfEngine.BPMN);
                     engines.add(dockerEngine);
                     bpmnEngines.add(dockerEngine);
-                    for (ProcessFolderStructure process : bpmnParams.getProcesses()) {
-                        processes.add(process.getName());
-                        bpmnProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
+                    for (Test test : bpmnParams.getProcesses()) {
+                        processes.add(test.getName());
+                        bpmnProcesses.add(test.getName());
+                        WorkerTemplate workerTemplate = new WorkerTemplate(test.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }
@@ -77,10 +77,10 @@ public class WorkerTemplateGenerator {
                     DockerEngine dockerEngine = new DockerEngine(engine.getName(), DockerEngine.TypeOfEngine.BPEL);
                     engines.add(dockerEngine);
                     bpelEngines.add(dockerEngine);
-                    for (ProcessFolderStructure process : params.getProcesses()) {
-                        processes.add(process.getName());
-                        bpelProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
+                    for (Test test : params.getProcesses()) {
+                        processes.add(test.getName());
+                        bpelProcesses.add(test.getName());
+                        WorkerTemplate workerTemplate = new WorkerTemplate(test.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }
@@ -91,10 +91,10 @@ public class WorkerTemplateGenerator {
                     DockerEngine dockerEngine = new DockerEngine(engine.getName(), DockerEngine.TypeOfEngine.BPMN);
                     engines.add(dockerEngine);
                     bpmnEngines.add(dockerEngine);
-                    for (ProcessFolderStructure process : params.getProcesses()) {
-                        processes.add(process.getName());
-                        bpmnProcesses.add(process.getName());
-                        WorkerTemplate workerTemplate = new WorkerTemplate(process.getName(), dockerEngine);
+                    for (Test test : params.getProcesses()) {
+                        processes.add(test.getName());
+                        bpmnProcesses.add(test.getName());
+                        WorkerTemplate workerTemplate = new WorkerTemplate(test.getName(), dockerEngine);
                         workerTemplates.add(workerTemplate);
                     }
                 }

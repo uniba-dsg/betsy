@@ -1,13 +1,12 @@
 package betsy.common.virtual.cbetsy;
 
-import betsy.common.model.input.EngineIndependentProcess;
+import betsy.common.analytics.model.Test;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.Containers;
 import betsy.common.virtual.docker.Image;
 import betsy.common.virtual.docker.Images;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.nio.file.Paths;
@@ -33,7 +32,7 @@ public class WorkerTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
+    @org.junit.Test
     public void call() throws Exception {
         java.util.Optional<Image> betsyImage = java.util.Optional.ofNullable(Images.getAll().get("betsy"));
         boolean betsyImageWasCreated = false;
@@ -48,7 +47,7 @@ public class WorkerTest {
             Images.buildEngine(Paths.get("docker/image/engine").toAbsolutePath(), "ode__1_3_5");
         }
 
-        EngineIndependentProcess process = Mockito.mock(EngineIndependentProcess.class);
+        Test process = Mockito.mock(Test.class);
         when(process.getName()).thenReturn("sequence");
         DockerEngine dockerEngine = new DockerEngine("ode__1_3_5", DockerEngine.TypeOfEngine.BPEL);
 
