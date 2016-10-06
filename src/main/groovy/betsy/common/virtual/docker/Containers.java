@@ -159,7 +159,7 @@ public class Containers {
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 nextLine = scanner.get().nextLine();
-                LOGGER.info(nextLine);
+                LOGGER.info("["+ containerName +"]" + nextLine);
             }
             container = new Container(nextLine, containerName);
             containers.put(container.getName(), container);
@@ -192,7 +192,7 @@ public class Containers {
         if (scanner.isPresent()) {
             while (scanner.get().hasNextLine()) {
                 nextLine = scanner.get().nextLine();
-                LOGGER.info(nextLine);
+                LOGGER.info("["+ containerName +"]" + nextLine);
             }
         } else {
             throw new DockerException("Executing the task 'run' failed.");
