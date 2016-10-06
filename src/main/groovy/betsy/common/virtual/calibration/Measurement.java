@@ -9,6 +9,9 @@ import betsy.common.virtual.cbetsy.ResourceConfiguration;
 import betsy.common.virtual.docker.Container;
 import betsy.common.virtual.docker.Containers;
 import betsy.common.virtual.docker.Tasks;
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellNotAvailableException;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -286,12 +289,44 @@ public class Measurement {
      * @return The resourceConfiguration of the system.
      */
     public static ResourceConfiguration measureResources() {
-        int freeMemory;
-        int hdd;
+        int freeMemory = 0;
+        int hdd = 0;
 
         if (System.getProperty("os.name").contains("Windows")) {
             hdd = Measurement.measureHDDSpeed(docker.resolve("hdd_test.txt"), 1000);
-            freeMemory = Integer.valueOf(get("dockermachine.run.ram"));
+
+            PowerShell powerShell = null;
+            try {
+                //Creates PowerShell session
+                powerShell = PowerShell.openSession();
+                //Increase timeout to give enough time to the script to finish
+                Map<String, String> config = new HashMap<String, String>();
+                config.put("maxWait", "80000");
+
+                //Execute script
+                PowerShellResponse response = powerShell.configuration(config).executeCommand("Get-VM MobyLinuxVM");
+                String[] lines =  response.getCommandOutput().split("\n");
+
+                int headLine = 0;
+                int firstIndexOfMemory = 0;
+                for(int i = 0; i < lines.length; i++){
+                    if(headLine + 2 == i){
+                        freeMemory = Integer.valueOf(lines[i].substring(firstIndexOfMemory, firstIndexOfMemory + "MemoryAssigned".length()).trim());
+                    }
+                    if(lines[i].contains("MemoryAssigned")){
+                        firstIndexOfMemory = lines[i].indexOf("MemoryAssigned");
+                        headLine = i;
+                    }
+                }
+
+            } catch(PowerShellNotAvailableException ex) {
+                LOGGER.info("Can't execute windows powershell command.");
+            } finally {
+                //Always close PowerShell session to free resources.
+                if (powerShell != null)
+                    powerShell.close();
+            }
+
         } else {
             ProcessBuilder builder = new ProcessBuilder("free");
             Process process = null;
