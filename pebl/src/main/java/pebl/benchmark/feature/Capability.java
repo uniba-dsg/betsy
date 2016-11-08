@@ -35,6 +35,12 @@ public class Capability implements HasID, HasName {
         return this;
     }
 
+    public Capability addCharacteristic(Characteristic c) {
+        characteristics.add(c);
+
+        return this;
+    }
+
     @XmlID
     @XmlAttribute(required = true)
     private final String id;

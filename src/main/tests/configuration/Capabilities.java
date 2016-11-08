@@ -1,18 +1,35 @@
 package configuration;
 
 import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.Characteristic;
 import pebl.benchmark.feature.ValueType;
 import pebl.benchmark.test.Test;
 
 public class Capabilities {
 
-    public static final Capability CONFORMANCE = new Capability("Conformance");
+    public static final Capability CONFORMANCE = new Capability("Conformance")
+            .addCharacteristic(Characteristic.FUNCTIONAL_SUITABILITY)
+            .addCharacteristic(Characteristic.FUNCTIONAL_COMPLETENESS)
+            .addCharacteristic(Characteristic.FUNCTIONAL_CORRECTNESS);
 
-    public static final Capability EXPRESSIVENESS = new Capability("Expressiveness");
+    public static final Capability EXPRESSIVENESS = new Capability("Expressiveness")
+            .addCharacteristic(Characteristic.FUNCTIONAL_SUITABILITY)
+            .addCharacteristic(Characteristic.FUNCTIONAL_COMPLETENESS)
+            .addCharacteristic(Characteristic.FUNCTIONAL_CORRECTNESS);
 
-    public static final Capability ROBUSTNESS = new Capability("Robustness");
+    public static final Capability STATIC_ANALYSIS = new Capability("StaticAnalysis")
+            .addCharacteristic(Characteristic.USABILITY)
+            .addCharacteristic(Characteristic.USER_ERROR_PROTECTION);
 
-    public static final Capability PERFORMANCE = new Capability("Performance");
+    public static final Capability ROBUSTNESS = new Capability("Robustness")
+            .addCharacteristic(Characteristic.RELIABILITY)
+            .addCharacteristic(Characteristic.FAULT_TOLERANCE);
+
+    public static final Capability PERFORMANCE = new Capability("Performance")
+            .addCharacteristic(Characteristic.PERFORMANCE_EFFICIENCY)
+            .addCharacteristic(Characteristic.TIME_BEHAVIOUR)
+            .addCharacteristic(Characteristic.RESOURCE_UTILISATION)
+            .addCharacteristic(Characteristic.CAPACITY);
 
     public static Test addMetrics(Test test) {
         if(test.getCapability().equals(PERFORMANCE)) {
