@@ -2,7 +2,7 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELTestCase;
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.assertions.AssertSoapFault;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
 import betsy.common.util.CollectionsUtil;
@@ -99,7 +99,7 @@ class StructuredActivityProcesses {
             "Flow-Links-JoinCondition",
             "A receive-reply pair with an intermediate flow that contains three assigns, two of which point to the third using links. Both links have transitionConditions and their target a joinCondition defined upon them. A joinFailure should result, given not both of the links are activated.",
             new Feature(FLOW_CONSTRUCT, "Flow-Links-JoinCondition"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("joinFailure")),
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("joinFailure")),
             new BPELTestCase().checkDeployment().sendSync(3, 6)
     );
 
@@ -115,8 +115,8 @@ class StructuredActivityProcesses {
             "Flow-Links-JoinFailure",
             "A receive-reply pair with an intermediate flow that contains three assigns, two of which point to the third using links. Both links have transitionConditions and their target a joinCondition defined upon them. The transitionConditions do never evaluate to true, resulting in a joinFailure on each invocation.",
             new Feature(FLOW_CONSTRUCT, "Flow-Links-JoinFailure"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("joinFailure")),
-            new BPELTestCase().checkDeployment().sendSync(3, new SoapFaultTestAssertion("joinFailure"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("joinFailure")),
+            new BPELTestCase().checkDeployment().sendSync(3, new AssertSoapFault("joinFailure"))
     );
     public static final Test FLOW_TWO_STARTING_ON_MESSAGE_CORRELATION = BPELProcessBuilder.buildStructuredActivityProcess(
             "Flow-Two-Starting-OnMessage-Correlation",
@@ -191,7 +191,7 @@ class StructuredActivityProcesses {
             "If-SubLanguageExecutionFault", "A receive-reply pair with an intermediate if that should throw an subLanguageExecutionFault because of an invalid condition.",
             new Feature(IF_CONSTRUCT, "If-SubLanguageExecutionFault"),
             new BPELTestCase("SubLanguageExecutionFault").checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("subLanguageExecutionFault"))
+                    sendSync(1, new AssertSoapFault("subLanguageExecutionFault"))
     );
 
     public static
@@ -199,7 +199,7 @@ class StructuredActivityProcesses {
             "If-SubLanguageExecutionFault-EmptyCondition", "A receive-reply pair with an intermediate if that should throw an subLanguageExecutionFault because of an empty condition.",
             new Feature(IF_CONSTRUCT, "If-SubLanguageExecutionFault-EmptyCondition"),
             new BPELTestCase("SubLanguageExecutionFault").checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("subLanguageExecutionFault"))
+                    sendSync(1, new AssertSoapFault("subLanguageExecutionFault"))
     );
 
     public static final List<Test> STRUCTURED_ACTIVITIES_IF = Arrays.asList(
@@ -274,27 +274,27 @@ class StructuredActivityProcesses {
     public static final Test FOR_EACH_NEGATIVE_STOP_COUNTER = BPELProcessBuilder.buildStructuredActivityProcess(
             "ForEach-NegativeStopCounter", "A receive-reply pair with an intermediate forEach that should always fail with an invalidExpressionValue fault as finalCounterValue is negative.",
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-NegativeStopCounter"),
-            new BPELTestCase("NegativeStopCounter").checkDeployment().sendSync(1, new SoapFaultTestAssertion("invalidExpressionValue"))
+            new BPELTestCase("NegativeStopCounter").checkDeployment().sendSync(1, new AssertSoapFault("invalidExpressionValue"))
             // NaN or large numbers cannot be sent due to type constraint to xsd:int
     );
 
     public static final Test FOR_EACH_NEGATIVE_START_COUNTER = BPELProcessBuilder.buildStructuredActivityProcess(
             "ForEach-NegativeStartCounter", "A receive-reply pair with an intermediate forEach that should always fail with an invalidExpressionValue fault as startCounterValue is negative.",
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-NegativeStartCounter"),
-            new BPELTestCase("Iterate-Twice").checkDeployment().sendSync(2, new SoapFaultTestAssertion("invalidExpressionValue"))
+            new BPELTestCase("Iterate-Twice").checkDeployment().sendSync(2, new AssertSoapFault("invalidExpressionValue"))
     );
 
     public static
     final Test FOR_EACH_COMPLETION_CONDITION_NEGATIVE_BRANCHES = BPELProcessBuilder.buildStructuredActivityProcess(
             "ForEach-CompletionCondition-NegativeBranches", "A receive-reply pair with an intermediate forEach that should always fail with an invalidExpressionValue fault as branches is initialized with a negative value.",
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-CompletionCondition-NegativeBranches"),
-            new BPELTestCase("Iterate-Twice").checkDeployment().sendSync(2, new SoapFaultTestAssertion("invalidExpressionValue"))
+            new BPELTestCase("Iterate-Twice").checkDeployment().sendSync(2, new AssertSoapFault("invalidExpressionValue"))
     );
 
     public static final Test FOR_EACH_TOO_LARGE_START_COUNTER = BPELProcessBuilder.buildStructuredActivityProcess(
             "ForEach-TooLargeStartCounter", "A receive-reply pair with an intermediate forEach that should always fail with an invalidExpressionValue fault as startCounterValue is initialized with a value that exceeds xs:unsignedInt.",
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-TooLargeStartCounter"),
-            new BPELTestCase("Iterate-Twice").checkDeployment().sendSync(2, new SoapFaultTestAssertion("invalidExpressionValue"))
+            new BPELTestCase("Iterate-Twice").checkDeployment().sendSync(2, new AssertSoapFault("invalidExpressionValue"))
     );
 
     public static final Test FOR_EACH_PARALLEL = BPELProcessBuilder.buildStructuredActivityProcess(
@@ -316,7 +316,7 @@ class StructuredActivityProcesses {
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-CompletionCondition"),
             new BPELTestCase("Skipping the third iteration").checkDeployment().sendSync(2, 1),
             new BPELTestCase("Cannot meet completion condition").checkDeployment().
-                    sendSync(0, new SoapFaultTestAssertion("invalidBranchCondition"))
+                    sendSync(0, new AssertSoapFault("invalidBranchCondition"))
     );
 
     public static final Test FOR_EACH_COMPLETION_CONDITION_PARALLEL = BPELProcessBuilder.buildStructuredActivityProcess(
@@ -324,7 +324,7 @@ class StructuredActivityProcesses {
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-CompletionCondition-Parallel"),
             new BPELTestCase("Skipping the third iteration").checkDeployment().sendSync(2, 1),
             new BPELTestCase("Cannot meet completion condition").checkDeployment().
-                    sendSync(0, new SoapFaultTestAssertion("invalidBranchCondition"))
+                    sendSync(0, new AssertSoapFault("invalidBranchCondition"))
     );
 
     public static
@@ -339,7 +339,7 @@ class StructuredActivityProcesses {
             "ForEach-CompletionConditionFailure", "A receive-reply pair with an intermediate forEach that should terminate given two of its children have terminated. N+1 children are scheduled for execution in parallel, where n is equal to the input. If N+1 is less than two, an invalidBranchConditionFault should be thrown. This is a seperate test case that tests only for the failure.",
             new Feature(FOR_EACH_CONSTRUCT, "ForEach-CompletionConditionFailure"),
             new BPELTestCase("Expect completionConditionFailure").checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("completionConditionFailure"))
+                    sendSync(1, new AssertSoapFault("completionConditionFailure"))
     );
 
     public static final List<Test> STRUCTURED_ACTIVITIES_FOR_EACH = Arrays.asList(

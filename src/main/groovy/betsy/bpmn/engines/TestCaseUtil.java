@@ -8,17 +8,17 @@ import java.util.stream.Collectors;
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestStep;
 import pebl.benchmark.test.assertions.Trace;
-import pebl.benchmark.test.assertions.TraceTestAssertion;
-import pebl.benchmark.test.steps.GatherTracesTestStep;
-import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.assertions.AssertTrace;
+import pebl.benchmark.test.steps.GatherTraces;
+import pebl.benchmark.test.steps.vars.StartProcess;
 
 public class TestCaseUtil {
     public static String getKey(TestCase testCase) {
         return testCase.getTestSteps().stream()
-                .filter(ts -> ts instanceof ProcessStartWithVariablesTestStep)
-                .map(ts -> (ProcessStartWithVariablesTestStep)ts)
+                .filter(ts -> ts instanceof StartProcess)
+                .map(ts -> (StartProcess)ts)
                 .filter(ts -> !ts.getVariables().isEmpty())
-                .map(ProcessStartWithVariablesTestStep::getProcess)
+                .map(StartProcess::getProcess)
                 .findFirst().orElseThrow(() -> new IllegalStateException("test case should a key somewhere: " + testCase));
     }
 
@@ -26,13 +26,13 @@ public class TestCaseUtil {
         return Optional.of(testCase)
                     .map(tc -> tc.getTestSteps()
                             .stream()
-                            .filter(ts -> ts instanceof GatherTracesTestStep)
-                            .map(ts -> (GatherTracesTestStep) ts)
+                            .filter(ts -> ts instanceof GatherTraces)
+                            .map(ts -> (GatherTraces) ts)
                             .map(TestStep::getAssertions)
                             .flatMap(ta -> ta.stream()
-                                    .filter(ts -> ts instanceof TraceTestAssertion)
-                                    .map(ts -> (TraceTestAssertion) ts)
-                                    .map(TraceTestAssertion::getTrace)
+                                    .filter(ts -> ts instanceof AssertTrace)
+                                    .map(ts -> (AssertTrace) ts)
+                                    .map(AssertTrace::getTrace)
                                     .map(Trace::getValue))
                             .collect(Collectors.toList())).orElse(Collections.emptyList());
     }

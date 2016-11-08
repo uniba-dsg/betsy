@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import pebl.benchmark.test.TestAssertion;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class XpathTestAssertion extends TestAssertion {
+public class AssertXpath extends TestAssertion {
 
     @XmlElement(required = true)
     private final String xpathExpression;
@@ -17,11 +17,11 @@ public class XpathTestAssertion extends TestAssertion {
     @XmlElement(required = true)
     private final String expectedOutput;
 
-    XpathTestAssertion() {
+    AssertXpath() {
         this("", "");
     }
 
-    public XpathTestAssertion(String xpathExpression, String expectedOutput) {
+    public AssertXpath(String xpathExpression, String expectedOutput) {
         this.xpathExpression = Objects.requireNonNull(xpathExpression);
         this.expectedOutput = Objects.requireNonNull(expectedOutput);
     }

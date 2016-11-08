@@ -4,7 +4,7 @@ import pebl.benchmark.test.Test;
 import pebl.benchmark.test.TestAssertion;
 import pebl.benchmark.test.TestCase;
 import configuration.bpmn.BPMNProcessRepository;
-import pebl.benchmark.test.assertions.TraceTestAssertion;
+import pebl.benchmark.test.assertions.AssertTrace;
 
 import java.util.List;
 
@@ -104,8 +104,8 @@ public class TestCaseToLatexSerializer {
             }
 
             TestAssertion testAssertion = assertions.get(i);
-            if (testAssertion instanceof TraceTestAssertion) {
-                TraceTestAssertion bpmnAssertion = (TraceTestAssertion) testAssertion;
+            if (testAssertion instanceof AssertTrace) {
+                AssertTrace bpmnAssertion = (AssertTrace) testAssertion;
                 result.append(bpmnAssertion.getTrace().toString().replace("SCRIPT_", "").replace("_", "-"));
             }
         }

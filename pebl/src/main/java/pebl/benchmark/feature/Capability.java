@@ -26,6 +26,9 @@ public class Capability implements HasID, HasName {
     @XmlElement
     private final List<AggregatedMetric> derivedMetrics = new LinkedList<>();
 
+    @XmlElement
+    private final List<Characteristic> characteristics = new LinkedList<>();
+
     public Capability addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
         derivedMetrics.add(new AggregatedMetric(type, name, description, unit, getID(), groovyScript));
 

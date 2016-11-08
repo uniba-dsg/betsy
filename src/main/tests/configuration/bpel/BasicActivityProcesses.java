@@ -2,8 +2,8 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELTestCase;
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.ExitAssertion;
-import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.assertions.AssertExit;
+import pebl.benchmark.test.assertions.AssertSoapFault;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
 import betsy.common.util.CollectionsUtil;
@@ -38,13 +38,13 @@ class BasicActivityProcesses {
             new Feature(EXIT_CONSTRUCT, "Exit"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, new ExitAssertion())
+                    sendSync(1, new AssertExit())
     );
 
     public static final Test VALIDATE = BPELProcessBuilder.buildBasicProcessWithXsd(
             "Validate", "A receive-reply pair with an intermediate variable validation. The variable to be validated describes a month, so only values in the range of 1 and 12 should validate successfully.",
             new Feature(VALIDATE_CONSTRUCT, "Validate"),
-            new BPELTestCase("Input Value 13 should return validation fault").checkDeployment().sendSync(13, new SoapFaultTestAssertion("invalidVariables"))
+            new BPELTestCase("Input Value 13 should return validation fault").checkDeployment().sendSync(13, new AssertSoapFault("invalidVariables"))
     );
 
     public static final Test VALIDATE_INVALID_VARIABLES = BPELProcessBuilder.buildBasicProcessWithXsd(
@@ -52,7 +52,7 @@ class BasicActivityProcesses {
             new Feature(VALIDATE_CONSTRUCT, "Validate-InvalidVariables"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("invalidVariables"))
+                    sendSync(1, new AssertSoapFault("invalidVariables"))
     );
 
     public static final Test VARIABLES_UNINITIALIZED_VARIABLE_FAULT_REPLY = BPELProcessBuilder.buildBasicActivityProcess(
@@ -60,7 +60,7 @@ class BasicActivityProcesses {
             new Feature(VARIABLES_CONSTRUCT, "Variables-UninitializedVariableFault-Reply"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("uninitializedVariable"))
+                    sendSync(1, new AssertSoapFault("uninitializedVariable"))
     );
 
     public static final Test VARIABLES_UNINITIALIZED_VARIABLE_FAULT_INVOKE = BPELProcessBuilder.buildBasicProcessWithPartner(
@@ -68,7 +68,7 @@ class BasicActivityProcesses {
             new Feature(VARIABLES_CONSTRUCT, "Variables-UninitializedVariableFault-Invoke"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("uninitializedVariable"))
+                    sendSync(1, new AssertSoapFault("uninitializedVariable"))
     );
     public static final Test VARIABLES_DEFAULT_INITIALIZATION = BPELProcessBuilder.buildBasicActivityProcess(
             "Variables-DefaultInitialization", "A receive-reply pair where the variable of the reply is assigned with a default value.",
@@ -85,7 +85,7 @@ class BasicActivityProcesses {
     public static final Test WAIT_FOR_INVALID_EXPRESSION_VALUE = BPELProcessBuilder.buildBasicActivityProcess(
             "Wait-For-InvalidExpressionValue", "A receive-reply pair with an intermediate wait. The for element is assigned a value of xs:int, but only xs:duration is allowed.",
             new Feature(WAIT_CONSTRUCT, "Wait-For-InvalidExpressionValue"),
-            new BPELTestCase().checkDeployment().sendSync(5, new SoapFaultTestAssertion("invalidExpressionValue"))
+            new BPELTestCase().checkDeployment().sendSync(5, new AssertSoapFault("invalidExpressionValue"))
     );
 
     public static final Test WAIT_UNTIL = BPELProcessBuilder.buildBasicActivityProcess(
@@ -103,24 +103,24 @@ class BasicActivityProcesses {
     public static final Test THROW = BPELProcessBuilder.buildBasicActivityProcess(
             "Throw", "A receive-reply pair with an intermediate throw. The response should a soap fault containing the bpel fault.",
             new Feature(THROW_CONSTRUCT, "Throw"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("completionConditionFailure"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("completionConditionFailure"))
     );
     public static final Test THROW_WITHOUT_NAMESPACE = BPELProcessBuilder.buildBasicActivityProcess(
             "Throw-WithoutNamespace", "A receive-reply pair with an intermediate throw that uses a bpel fault without explicitly using the bpel namespace. The respone should be a soap fault containing the bpel fault.",
             new Feature(THROW_CONSTRUCT, "Throw-WithoutNamespace"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("completionConditionFailure"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("completionConditionFailure"))
     );
 
     public static final Test THROW_CUSTOM_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "Throw-CustomFault", "A receive-reply pair with an intermediate throw that throws a custom fault that undefined in the given namespace. The response should be a soap fault containing the custom fault.",
             new Feature(THROW_CONSTRUCT, "Throw-CustomFault"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("testFault"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("testFault"))
     );
 
     public static final Test THROW_CUSTOM_FAULT_IN_WSDL = BPELProcessBuilder.buildBasicActivityProcess(
             "Throw-CustomFaultInWsdl", "A receive-reply pair with an intermediate throw that throws a custom fault defined in the myRole WSDL. The response should be a soap fault containing the custom fault.",
             new Feature(THROW_CONSTRUCT, "Throw-CustomFaultInWsdl"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("syncFault"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("syncFault"))
     );
 
     public static final Test THROW_FAULT_DATA = BPELProcessBuilder.buildBasicActivityProcess(
@@ -128,7 +128,7 @@ class BasicActivityProcesses {
             new Feature(THROW_CONSTRUCT, "Throw-FaultData"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, 1, new SoapFaultTestAssertion("completionConditionFailure"))
+                    sendSync(1, 1, new AssertSoapFault("completionConditionFailure"))
     );
 
     public static final Test RETHROW = BPELProcessBuilder.buildBasicActivityProcess(
@@ -137,7 +137,7 @@ class BasicActivityProcesses {
             new Feature(RETHROW_CONSTRUCT, "Rethrow"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, new SoapFaultTestAssertion("completionConditionFailure"))
+                    sendSync(1, new AssertSoapFault("completionConditionFailure"))
     );
     public static final Test RETHROW_FAULT_DATA_UNMODIFIED = BPELProcessBuilder.buildBasicActivityProcess(
             "Rethrow-FaultDataUnmodified",
@@ -145,7 +145,7 @@ class BasicActivityProcesses {
             new Feature(RETHROW_CONSTRUCT, "Rethrow-FaultDataUnmodified"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, 1, new SoapFaultTestAssertion("completionConditionFailure"))
+                    sendSync(1, 1, new AssertSoapFault("completionConditionFailure"))
     );
 
     public static final Test RETHROW_FAULT_DATA = BPELProcessBuilder.buildBasicActivityProcess(
@@ -154,7 +154,7 @@ class BasicActivityProcesses {
             new Feature(RETHROW_CONSTRUCT, "Rethrow-FaultData"),
             new BPELTestCase().
                     checkDeployment().
-                    sendSync(1, 1, new SoapFaultTestAssertion("completionConditionFailure"))
+                    sendSync(1, 1, new AssertSoapFault("completionConditionFailure"))
     );
 
     public static final List<Test> BASIC_ACTIVITIES_THROW = Arrays.asList(
@@ -188,13 +188,13 @@ class BasicActivityProcesses {
     public static final Test RECEIVE_AMBIGUOUS_RECEIVE_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "Receive-AmbiguousReceiveFault", "An asynchronous receive that initiates two correlationSets, followed by a flow with two sequences that contain synchronous receive-reply pairs for the same operation but differnet correlationSets. Should trigger an ambiguousReceive fault.",
             new Feature(RECEIVE_CONSTRUCT, "Receive-AmbiguousReceiveFault"),
-            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(1000).sendSync(1, new SoapFaultTestAssertion("ambiguousReceive"))
+            new BPELTestCase().checkDeployment().sendAsync(1).waitFor(1000).sendSync(1, new AssertSoapFault("ambiguousReceive"))
     );
 
     public static final Test RECEIVE_CONFLICTING_RECEIVE_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "Receive-ConflictingReceiveFault", "An asynchronous receive that initiates a correlationSet, followed by a flow with two sequences that contain synchronous receive-reply pair for the same operation and correlationSet. Should trigger a conflictingReceive fault.",
             new Feature(RECEIVE_CONSTRUCT, "Receive-ConflictingReceiveFault"),
-            new BPELTestCase().checkDeployment().sendSync(1).waitFor(1000).sendSync(1, new SoapFaultTestAssertion("conflictingReceive"))
+            new BPELTestCase().checkDeployment().sendSync(1).waitFor(1000).sendSync(1, new AssertSoapFault("conflictingReceive"))
     );
 
     public static final Test RECEIVE_REPLY_CONFLICTING_REQUEST_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
@@ -203,7 +203,7 @@ class BasicActivityProcesses {
             new BPELTestCase().checkDeployment().
                     sendSync(1, 1).waitFor(1000). // start up, should complete normally
                     sendSyncString(1).waitFor(1000). // no reply, also normal, we need to open the message exchange
-                    sendSyncString(1, new SoapFaultTestAssertion("conflictingRequest")) // now, there should be the fault
+                    sendSyncString(1, new AssertSoapFault("conflictingRequest")) // now, there should be the fault
     );
 
     public static final Test RECEIVE_REPLY = BPELProcessBuilder.buildBasicActivityProcess(
@@ -251,7 +251,7 @@ class BasicActivityProcesses {
     public static final Test RECEIVE_REPLY_CORRELATION_VIOLATION_NO = BPELProcessBuilder.buildBasicActivityProcess(
             "ReceiveReply-CorrelationViolation-No", "A receive-reply pair that uses an uninitiated correlationSet and sets initiate to no. Should trigger a correlationViolation fault.",
             new Feature(RECEIVE_REPLY_CONSTRUCT, "ReceiveReply-CorrelationViolation-No"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("correlationViolation"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("correlationViolation"))
     );
 
     public static final Test RECEIVE_REPLY_CORRELATION_VIOLATION_YES = BPELProcessBuilder.buildBasicActivityProcess(
@@ -259,13 +259,13 @@ class BasicActivityProcesses {
             new Feature(RECEIVE_REPLY_CONSTRUCT, "ReceiveReply-CorrelationViolation-Yes"),
             new BPELTestCase().checkDeployment().
                     sendSync(1, 1).waitFor(1000).
-                    sendSync(1, new SoapFaultTestAssertion("correlationViolation"))
+                    sendSync(1, new AssertSoapFault("correlationViolation"))
     );
 
     public static final Test RECEIVE_REPLY_CORRELATION_VIOLATION_JOIN = BPELProcessBuilder.buildBasicProcessWithPartner(
             "ReceiveReply-CorrelationViolation-Join", "A receive-reply pair that initates a correlationSet with an intermediate invoke that tries to join the correlationSet. The join operation should only work if the correlationSet was initiate with a certain value.",
             new Feature(RECEIVE_REPLY_CONSTRUCT, "ReceiveReply-CorrelationViolation-Join"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("correlationViolation")),
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("correlationViolation")),
             new BPELTestCase().checkDeployment().sendSync(2, 2)
     );
 
@@ -284,7 +284,7 @@ class BasicActivityProcesses {
     public static final Test RECEIVE_REPLY_FAULT = BPELProcessBuilder.buildBasicActivityProcess(
             "ReceiveReply-Fault", "A receive-reply pair replies with a fault instead of a variable.",
             new Feature(RECEIVE_REPLY_CONSTRUCT, "ReceiveReply-Fault"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("syncFault"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("syncFault"))
     );
     public static final List<Test> BASIC_ACTIVITIES_RECEIVE = Arrays.asList(
             RECEIVE,
@@ -323,7 +323,7 @@ class BasicActivityProcesses {
     public static final Test INVOKE_SYNC_FAULT = BPELProcessBuilder.buildBasicProcessWithPartner(
             "Invoke-Sync-Fault", "A receive-reply pair with an intermediate synchronous invoke that should trigger a fault.",
             new Feature(INVOKE_CONSTRUCT, "Invoke-Sync-Fault"),
-            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, new SoapFaultTestAssertion("CustomFault"))
+            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.UNDECLARED_FAULT, new AssertSoapFault("CustomFault"))
     );
 
     public static final Test INVOKE_TO_PARTS = BPELProcessBuilder.buildBasicProcessWithPartner(
@@ -440,7 +440,7 @@ class BasicActivityProcesses {
             "Assign-Validate", "A receive-reply pair with an intermediate assign that has validate set to yes. The assign copies to a variable that represents a month and the validation should fail for values not in the range of one to twelve.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-Validate"),
             new BPELTestCase("Input Value 13 should return validation fault").checkDeployment().
-                    sendSync(13, new SoapFaultTestAssertion("invalidVariables"))
+                    sendSync(13, new AssertSoapFault("invalidVariables"))
     );
 
     public static final Test ASSIGN_PROPERTY = BPELProcessBuilder.buildBasicActivityProcess(
@@ -477,13 +477,13 @@ class BasicActivityProcesses {
     public static final Test ASSIGN_PARTNERLINK_UNSUPPORTED_REFERENCE = BPELProcessBuilder.buildBasicProcessWithPartner(
             "Assign-PartnerLink-UnsupportedReference", "A receive-reply pair with an intermediate assign that assigns a bogus reference to a partnerLink which is used in a subsequent invoke. The reference scheme should not be supported by any engine and fail with a corresponding fault.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-PartnerLink-UnsupportedReference"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("unsupportedReference"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("unsupportedReference"))
     );
 
     public static final Test ASSIGN_MISMATCHED_ASSIGNMENT_FAILURE = BPELProcessBuilder.buildBasicActivityProcess(
             "Assign-MismatchedAssignmentFailure", "An assignment between two incompatible types. A mismatchedAssignmentFailure should be thrown.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-MismatchedAssignmentFailure"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("mismatchedAssignment"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("mismatchedAssignment"))
     );
 
     public static final Test ASSIGN_LITERAL = BPELProcessBuilder.buildBasicActivityProcess(
@@ -525,7 +525,7 @@ class BasicActivityProcesses {
     public static final Test ASSIGN_SELECTION_FAILURE = BPELProcessBuilder.buildBasicActivityProcess(
             "Assign-SelectionFailure", "A receive-reply pair with an intermediate assign that uses a from that retuns zero nodes. This should trigger a selectionFailure.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-SelectionFailure"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("selectionFailure"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("selectionFailure"))
     );
 
     public static final Test ASSIGN_COPY_QUERY = BPELProcessBuilder.buildBasicActivityProcess(
@@ -555,7 +555,7 @@ class BasicActivityProcesses {
     public static final Test ASSIGN_COPY_KEEP_SRC_ELEMENT_NAME = BPELProcessBuilder.buildBasicActivityProcess(
             "Assign-Copy-KeepSrcElementName", "A receive-reply pair with an intermediate assign with a copy that has keepSrcElementName set to yes. This should trigger a fault.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-Copy-KeepSrcElementName"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("mismatchedAssignmentFailure"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("mismatchedAssignmentFailure"))
     );
 
     public static final Test ASSIGN_COPY_IGNORE_MISSING_FROM_DATA = BPELProcessBuilder.buildBasicActivityProcess(
@@ -579,20 +579,20 @@ class BasicActivityProcesses {
     public static final Test ASSIGN_COPY_DO_XSL_TRANSFORM_INVALID_SOURCE_FAULT = BPELProcessBuilder.buildBasicProcessWithXslt(
             "Assign-Copy-DoXslTransform-InvalidSourceFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function without a proper source for the script.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-Copy-DoXslTransform-InvalidSourceFault"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("xsltInvalidSource"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("xsltInvalidSource"))
     );
 
     public static final Test ASSIGN_COPY_DO_XSL_TRANSFORM_STYLESHEET_NOT_FOUND = BPELProcessBuilder.buildBasicProcessWithXslt(
             "Assign-Copy-DoXslTransform-XsltStylesheetNotFound", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the stylesheet does not exist.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-Copy-DoXslTransform-XsltStylesheetNotFound"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("xsltStylesheetNotFound"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("xsltStylesheetNotFound"))
     );
 
     public static
     final Test ASSIGN_COPY_DO_XSL_TRANSFORM_SUB_LANGUAGE_EXECUTION_FAULT = BPELProcessBuilder.buildBasicProcessWithXslt(
             "Assign-Copy-DoXslTransform-SubLanguageExecutionFault", "A receive-reply pair with an intermediate assign that uses the doXslTransform function, but where the actual stylesheet has errors.",
             new Feature(ASSIGN_CONSTRUCT, "Assign-Copy-DoXslTransform-SubLanguageExecutionFault"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("subLanguageExecutionFault"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("subLanguageExecutionFault"))
     );
 
     public static final Test ASSIGN_VARIABLES_UNCHANGED_INSPITE_OF_FAULT = BPELProcessBuilder.buildBasicProcessWithXslt(

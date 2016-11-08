@@ -7,23 +7,23 @@ import javax.xml.bind.annotation.XmlElement;
 import pebl.benchmark.test.TestStep;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class DelayTestStep extends TestStep {
+public class DelayTesting extends TestStep {
     /**
      * Time to wait/delay further test execution after processing this step in milliseconds.
      */
     @XmlElement(required = true)
-    private Integer timeToWaitAfterwards;
+    private Integer milliseconds;
 
     @Override
     public String toString() {
-        return "DelayTestStep{description=" + getDescription() + ", timeToWaitAfterwards=" + timeToWaitAfterwards + "}";
+        return "DelayTestStep{description=" + getDescription() + ", timeToWaitAfterwards=" + milliseconds + "}";
     }
 
-    public Integer getTimeToWaitAfterwards() {
-        return timeToWaitAfterwards;
+    public Integer getMilliseconds() {
+        return milliseconds;
     }
 
-    public void setTimeToWaitAfterwards(Integer timeToWaitAfterwards) {
-        this.timeToWaitAfterwards = timeToWaitAfterwards;
+    public void setMilliseconds(Integer milliseconds) {
+        this.milliseconds = milliseconds;
     }
 }

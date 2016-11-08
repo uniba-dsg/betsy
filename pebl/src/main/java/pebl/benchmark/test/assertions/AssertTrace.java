@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlElement;
 import pebl.benchmark.test.TestAssertion;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class TraceTestAssertion extends TestAssertion{
+public class AssertTrace extends TestAssertion{
 
     @XmlElement(required = true)
     private final Trace trace;
 
-    TraceTestAssertion() {
+    AssertTrace() {
         this(new Trace());
     }
 
-    public TraceTestAssertion(Trace trace) {
+    public AssertTrace(Trace trace) {
         this.trace = Objects.requireNonNull(trace);
     }
 

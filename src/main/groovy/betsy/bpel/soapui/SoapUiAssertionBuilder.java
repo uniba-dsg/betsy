@@ -1,10 +1,10 @@
 package betsy.bpel.soapui;
 
 import pebl.benchmark.test.TestStep;
-import pebl.benchmark.test.assertions.ExitAssertion;
-import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
-import pebl.benchmark.test.assertions.XpathTestAssertion;
-import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.assertions.AssertExit;
+import pebl.benchmark.test.assertions.AssertSoapFault;
+import pebl.benchmark.test.assertions.AssertXpath;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.TestAssertion;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep;
@@ -21,14 +21,14 @@ import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
 import java.util.Objects;
 
 public class SoapUiAssertionBuilder {
-    public static void addSynchronousAssertion(SoapTestStep testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
+    public static void addSynchronousAssertion(SendSoapMessage testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
         for (TestAssertion assertion : testStep.getAssertions()) {
 
-            if (assertion instanceof XpathTestAssertion) {
-                addXpathTestAssertion(soapUiRequest, (XpathTestAssertion) assertion);
-            } else if (assertion instanceof SoapFaultTestAssertion) {
-                addSoapFaultTestAssertion(soapUiRequest, (SoapFaultTestAssertion) assertion);
-            } else if (assertion instanceof ExitAssertion) {
+            if (assertion instanceof AssertXpath) {
+                addXpathTestAssertion(soapUiRequest, (AssertXpath) assertion);
+            } else if (assertion instanceof AssertSoapFault) {
+                addSoapFaultTestAssertion(soapUiRequest, (AssertSoapFault) assertion);
+            } else if (assertion instanceof AssertExit) {
                 addExitAssertion(soapUITestCase, testStepNumber);
             }
 
@@ -39,12 +39,12 @@ public class SoapUiAssertionBuilder {
     }
 
     private static void createNotSoapFaultAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
-        if (!testStep.getAssertions().stream().anyMatch((it) -> it instanceof SoapFaultTestAssertion || it instanceof ExitAssertion)) {
+        if (!testStep.getAssertions().stream().anyMatch((it) -> it instanceof AssertSoapFault || it instanceof AssertExit)) {
             Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create Not Soap Fault Assertion");
         }
     }
 
-    public static void addSoapFaultTestAssertion(WsdlTestRequestStep soapUiRequest, final SoapFaultTestAssertion assertion) {
+    public static void addSoapFaultTestAssertion(WsdlTestRequestStep soapUiRequest, final AssertSoapFault assertion) {
         // validate result
         //Objects.requireNonNull(soapUiRequest.addAssertion(SoapResponseAssertion.LABEL), "Could not create Soap Response Assertion")
         Objects.requireNonNull(soapUiRequest.addAssertion(SoapFaultAssertion.LABEL), "Could not create Soap Fault Assertion");
@@ -93,8 +93,8 @@ public class SoapUiAssertionBuilder {
 
     public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
         for (TestAssertion assertion : testStep.getAssertions()) {
-            if (assertion instanceof XpathTestAssertion) {
-                addXpathTestAssertion(soapUiRequest, (XpathTestAssertion) assertion);
+            if (assertion instanceof AssertXpath) {
+                addXpathTestAssertion(soapUiRequest, (AssertXpath) assertion);
             }
         }
 
@@ -102,7 +102,7 @@ public class SoapUiAssertionBuilder {
 
     }
 
-    public static void addXpathTestAssertion(WsdlTestRequestStep soapUiRequest, XpathTestAssertion assertion) {
+    public static void addXpathTestAssertion(WsdlTestRequestStep soapUiRequest, AssertXpath assertion) {
         // validate result
         Objects.requireNonNull(soapUiRequest.addAssertion(SoapResponseAssertion.LABEL), "Could not create Soap Response Assertion");
 

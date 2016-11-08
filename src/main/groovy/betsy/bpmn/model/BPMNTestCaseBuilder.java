@@ -5,11 +5,11 @@ import java.util.List;
 
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.assertions.Trace;
-import pebl.benchmark.test.assertions.TraceTestAssertion;
-import pebl.benchmark.test.steps.DelayTestStep;
-import pebl.benchmark.test.steps.DeployableCheckTestStep;
-import pebl.benchmark.test.steps.GatherTracesTestStep;
-import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.assertions.AssertTrace;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.GatherTraces;
+import pebl.benchmark.test.steps.vars.StartProcess;
 import pebl.benchmark.test.steps.vars.Variable;
 
 public class BPMNTestCaseBuilder {
@@ -20,7 +20,7 @@ public class BPMNTestCaseBuilder {
         TestCase result = new TestCase();
 
         // add step to check deployability
-        DeployableCheckTestStep deployable = new DeployableCheckTestStep();
+        CheckDeployment deployable = new CheckDeployment();
         result.addStep(deployable);
 
         // skip process start and delays if a deployment failure is expected
@@ -28,13 +28,13 @@ public class BPMNTestCaseBuilder {
 
             if (isParallel) {
                 // add step that starts the parallel process
-                ProcessStartWithVariablesTestStep parallelStart = new ProcessStartWithVariablesTestStep();
+                StartProcess parallelStart = new StartProcess();
                 parallelStart.setProcess(PARALLEL_PROCESS_KEY);
                 result.addStep(parallelStart);
             }
 
             // add step that starts the real process
-            ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = new ProcessStartWithVariablesTestStep();
+            StartProcess processStartWithVariablesTestStep = new StartProcess();
             processStartWithVariablesTestStep.setProcess(key);
             if (input != null) {
                 processStartWithVariablesTestStep.addVariable(input);
@@ -44,16 +44,16 @@ public class BPMNTestCaseBuilder {
             result.addStep(processStartWithVariablesTestStep);
 
             // add delay
-            DelayTestStep delayTestStep = new DelayTestStep();
-            delayTestStep.setTimeToWaitAfterwards(delay);
+            DelayTesting delayTestStep = new DelayTesting();
+            delayTestStep.setMilliseconds(delay);
             result.addStep(delayTestStep);
         }
 
         // add trace gathering step
 
         // add trace evaluation step
-        GatherTracesTestStep gatherTracesTestStep = new GatherTracesTestStep();
-        traces.forEach(trace -> gatherTracesTestStep.addAssertion(new TraceTestAssertion(trace)));
+        GatherTraces gatherTracesTestStep = new GatherTraces();
+        traces.forEach(trace -> gatherTracesTestStep.addAssertion(new AssertTrace(trace)));
         result.addStep(gatherTracesTestStep);
 
         return result;

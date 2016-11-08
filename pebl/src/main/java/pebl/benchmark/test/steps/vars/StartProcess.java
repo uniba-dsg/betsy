@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import pebl.benchmark.test.TestStep;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ProcessStartWithVariablesTestStep extends TestStep {
+public class StartProcess extends TestStep {
 
     @XmlElement
     private List<Variable> variables = new LinkedList<>();
@@ -19,7 +19,7 @@ public class ProcessStartWithVariablesTestStep extends TestStep {
     @XmlElement(required = true)
     private String process;
 
-    public ProcessStartWithVariablesTestStep addVariable(Variable variable) {
+    public StartProcess addVariable(Variable variable) {
         this.variables.add(variable);
 
         return this;

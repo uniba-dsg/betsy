@@ -1,9 +1,9 @@
 package configuration.bpel;
 
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.ExitAssertion;
-import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
-import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.assertions.AssertExit;
+import pebl.benchmark.test.assertions.AssertSoapFault;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import betsy.common.repositories.Repository;
 
 import java.lang.reflect.Field;
@@ -58,16 +58,16 @@ public class BPELProcessRepository {
                 "FAULTS",
                 repo.getByName("ALL").stream().filter((p) ->
                         p.getTestCases().stream().anyMatch((tc) ->
-                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SoapTestStep && ((SoapTestStep) ts).getAssertions().stream().anyMatch((a) ->
-                                        a instanceof SoapFaultTestAssertion)))).collect(Collectors.toList()));
+                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SendSoapMessage && ((SendSoapMessage) ts).getAssertions().stream().anyMatch((a) ->
+                                        a instanceof AssertSoapFault)))).collect(Collectors.toList()));
 
         // automatic group
         repo.put(
                 "WITH_EXIT_ASSERTION",
                 repo.getByName("ALL").stream().filter((p) ->
                         p.getTestCases().stream().anyMatch((tc) ->
-                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SoapTestStep && ((SoapTestStep) ts).getAssertions().stream().anyMatch((a) ->
-                                        a instanceof ExitAssertion)))).collect(Collectors.toList()));
+                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SendSoapMessage && ((SendSoapMessage) ts).getAssertions().stream().anyMatch((a) ->
+                                        a instanceof AssertExit)))).collect(Collectors.toList()));
 
         // insert every process into the map
         for (Test process : repo.getByName("ALL")) {

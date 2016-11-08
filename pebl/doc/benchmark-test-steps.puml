@@ -1,0 +1,48 @@
+@startuml
+
+package "test" {
+
+	class TestStep {
+	  description : String
+	}
+
+	class CheckDeployment extends TestStep
+	class CheckUndeployment extends TestStep
+	class GatherTraces extends TestStep
+	class DelayTesting extends TestStep {
+	  milliseconds : Integer
+	}
+	class SendSoapMessage extends TestStep {
+	  input : String
+
+	}
+	class WsdlService{
+	 name : String
+	}
+	class WsdlOperation {
+	name : String
+	oneWay : boolean
+	}
+	class StartProcess extends TestStep{
+	  process : String
+	}
+	class Variable {
+	  name : String
+	  type : String
+	  value : Object
+	}
+
+}
+
+StartProcess "*" -down-> "*" Variable
+SendSoapMessage "*" -down-> "1" WsdlService
+SendSoapMessage "*" -down-> "1" WsdlOperation
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

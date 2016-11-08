@@ -31,7 +31,8 @@ public class JbpmEngine610 extends JbpmEngine {
         jbpmInstaller.install();
     }
 
-    @Override protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
+    @Override
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
         String url = getJbpmnUrl() + "/rest/history/instance/1";
         String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name);
         return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl);

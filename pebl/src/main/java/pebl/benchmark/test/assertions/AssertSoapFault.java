@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlElement;
 import pebl.benchmark.test.TestAssertion;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class SoapFaultTestAssertion extends TestAssertion {
+public class AssertSoapFault extends TestAssertion {
 
     @XmlElement(required = true)
     private final String faultString;
 
-    SoapFaultTestAssertion() {
+    AssertSoapFault() {
         this("");
     }
 
-    public SoapFaultTestAssertion(String faultString) {
+    public AssertSoapFault(String faultString) {
         this.faultString = faultString;
     }
 

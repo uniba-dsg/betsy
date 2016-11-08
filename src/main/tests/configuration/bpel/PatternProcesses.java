@@ -2,7 +2,7 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELTestCase;
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.ExitAssertion;
+import pebl.benchmark.test.assertions.AssertExit;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
 
@@ -201,7 +201,7 @@ class PatternProcesses {
             "WCP20-CancelCase",
             new Feature(new FeatureSet(Groups.CFPATTERNS, "WCP20_CancelCase"), "WCP20-CancelCase", ""),
             new BPELTestCase().checkDeployment().sendSyncString(1, "1"),
-            new BPELTestCase().checkDeployment().sendSyncString(0, new ExitAssertion())
+            new BPELTestCase().checkDeployment().sendSyncString(0, new AssertExit())
     );
 
     // upper bound: +/-

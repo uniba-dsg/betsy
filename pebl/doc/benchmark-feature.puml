@@ -16,32 +16,43 @@ package "feature" {
 	  unit : String
 	}
 
+	enum Characteristic {
+		ISO 25010
+	}
+
 	class Capability {
 	  id : String
 	  name : String
+	  description : String
 	}
 
 	class Language {
 	  id : String
 	  name : String
+	  description : String
 	}
 
 	class Group {
 	  id : String
 	  name : String
+	  description : String
 	}
 
 	class FeatureSet {
 	  id : String
 	  name : String
+	  description : String
 	}
 
 	class Feature {
 	  id : String
 	  name : String
+	  description : String
 	}
 
 }
+
+Capability "1" -up- "*" Characteristic
 
 Feature "*" -right- "1" FeatureSet
 FeatureSet "*" -right- "1" Group

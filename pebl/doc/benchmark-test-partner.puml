@@ -1,0 +1,25 @@
+@startuml
+package "test" {
+
+   interface NoTestPartner extends TestPartner
+   interface WSDLTestPartner extends TestPartner
+   class InternalWSDLTestPartner extends WSDLTestPartner
+   class ExternalWSDLTestPartner extends WSDLTestPartner
+
+	class Test {
+	}
+
+	class TestPartner
+
+}
+
+Test "1" -left- "*" TestPartner
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

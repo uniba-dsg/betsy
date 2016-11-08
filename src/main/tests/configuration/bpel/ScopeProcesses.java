@@ -2,8 +2,8 @@ package configuration.bpel;
 
 import betsy.bpel.model.BPELTestCase;
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.ExitAssertion;
-import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
+import pebl.benchmark.test.assertions.AssertExit;
+import pebl.benchmark.test.assertions.AssertSoapFault;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
 import betsy.common.util.CollectionsUtil;
@@ -227,13 +227,13 @@ class ScopeProcesses {
     public static final Test SCOPE_EXIT_ON_STANDARD_FAULT = BPELProcessBuilder.buildScopeProcess(
             "Scope-ExitOnStandardFault", "A scope with receive-reply pair and an intermediate throw. There is no faultHandler, but the exitOnStandardFault attribute of the scope is set to yes.",
             new Feature(SCOPE_ATTRIBUTES_CONSTRUCT, "Scope-ExitOnStandardFault"),
-            new BPELTestCase().checkDeployment().sendSync(5, new ExitAssertion())
+            new BPELTestCase().checkDeployment().sendSync(5, new AssertExit())
     );
 
     public static final Test SCOPE_EXIT_ON_STANDARD_FAULT_JOIN_FAILURE = BPELProcessBuilder.buildScopeProcess(
             "Scope-ExitOnStandardFault-JoinFailure", "A scope with a receive-reply pair and an intermediate throw that throws a joinFailure. There is no faultHandler, but the exitOnStandardFault attribute of the scope is set to yes. However, the exitOnStandardFault sematics do not apply to joinFailures.",
             new Feature(SCOPE_ATTRIBUTES_CONSTRUCT, "Scope-ExitOnStandardFault-JoinFailure"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("joinFailure"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("joinFailure"))
     );
 
     public static final Test SCOPE_FAULT_HANDLERS_CATCH_ALL = BPELProcessBuilder.buildScopeProcess(
@@ -382,13 +382,13 @@ class ScopeProcesses {
     public static final Test MISSING_REPLY = BPELProcessBuilder.buildScopeProcess(
             "MissingReply", "A receive for a synchronous operation with no associated reply.",
             new Feature(MESSAGE_EXCHANGES_CONSTRUCT, "MissingReply"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("missingReply"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("missingReply"))
     );
 
     public static final Test MISSING_REQUEST = BPELProcessBuilder.buildScopeProcess(
             "MissingRequest", "A receive and a reply which belong to different messageExchanges. On the execution of the reply, a missingRequest fault should be thrown.",
             new Feature(MESSAGE_EXCHANGES_CONSTRUCT, "MissingRequest"),
-            new BPELTestCase().checkDeployment().sendSync(1, new SoapFaultTestAssertion("missingRequest"))
+            new BPELTestCase().checkDeployment().sendSync(1, new AssertSoapFault("missingRequest"))
     );
 
     public static final List<Test> SCOPES = CollectionsUtil.union(Arrays.asList(

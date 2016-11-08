@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import betsy.bpel.repositories.BPELEngineRepository;
 import betsy.bpel.virtual.host.VirtualEngineAPI;
@@ -31,13 +34,26 @@ import pebl.xsd.Tools;
 
 public class XmlMain {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, JAXBException {
         Path workingDirectory = Paths.get(".");
         generateEnginesXml(workingDirectory);
         generateFeaturesXml(workingDirectory);
         generateTestsXml(workingDirectory);
         generateToolsXml(workingDirectory);
         generatePeblXml(workingDirectory);
+        generatePeblJson(workingDirectory);
+    }
+
+    public static void generatePeblJson(Path workingDirectory) throws IOException, JAXBException {
+        PEBL pebl = getPebl();
+
+        Path targetFile = workingDirectory.resolve("pebl.json");
+
+        JAXBContext jc = JAXBContext.newInstance(PEBL.class);
+        Marshaller m4json= jc.createMarshaller();
+        m4json.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        m4json.setProperty("eclipselink.media-type", "application/json");
+        m4json.marshal(pebl, targetFile.toFile());
     }
 
     public static void generatePeblXml(Path workingDirectory) throws IOException {

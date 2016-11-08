@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import pebl.benchmark.test.TestStep;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class SoapTestStep extends TestStep {
+public class SendSoapMessage extends TestStep {
 
     /**
      * The input value which is send using the <code>operation</code> to the system under test.

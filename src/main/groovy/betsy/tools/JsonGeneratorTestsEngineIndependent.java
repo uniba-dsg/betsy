@@ -9,9 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.SoapFaultTestAssertion;
-import pebl.benchmark.test.assertions.TraceTestAssertion;
-import pebl.benchmark.test.assertions.XpathTestAssertion;
+import pebl.benchmark.test.assertions.AssertSoapFault;
+import pebl.benchmark.test.assertions.AssertTrace;
+import pebl.benchmark.test.assertions.AssertXpath;
 import pebl.benchmark.test.partner.rules.AnyInput;
 import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
 import pebl.benchmark.test.partner.rules.SoapFaultOutput;
@@ -24,12 +24,12 @@ import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
 import pebl.benchmark.test.partner.rules.Output;
 import pebl.benchmark.test.partner.rules.RawOutput;
 import pebl.benchmark.test.partner.rules.TimeoutInsteadOfOutput;
-import pebl.benchmark.test.steps.DelayTestStep;
-import pebl.benchmark.test.steps.DeployableCheckTestStep;
-import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
-import pebl.benchmark.test.steps.GatherTracesTestStep;
-import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
-import pebl.benchmark.test.steps.soap.SoapTestStep;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.CheckUndeployment;
+import pebl.benchmark.test.steps.GatherTraces;
+import pebl.benchmark.test.steps.vars.StartProcess;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.vars.Variable;
 import pebl.benchmark.test.partner.ExternalWSDLTestPartner;
 import pebl.benchmark.test.partner.NoTestPartner;
@@ -217,64 +217,64 @@ class JsonGeneratorTestsEngineIndependent {
             JSONObject testStepObject = new JSONObject();
             testStepObject.put("description", testStep.getDescription());
 
-            if (testStep instanceof DelayTestStep) {
+            if (testStep instanceof DelayTesting) {
                 testStepObject.put("type", testStep.getClass().getSimpleName());
-                testStepObject.put("delay", ((DelayTestStep) testStep).getTimeToWaitAfterwards());
-            } else if (testStep instanceof DeployableCheckTestStep) {
+                testStepObject.put("delay", ((DelayTesting) testStep).getMilliseconds());
+            } else if (testStep instanceof CheckDeployment) {
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("assertions", assertionsArray);
                 JSONObject assertionObject = new JSONObject();
                 assertionObject.put("type", "DeployableAssertion");
                 assertionsArray.put(assertionObject);
-            } else if (testStep instanceof NotDeployableCheckTestStep) {
+            } else if (testStep instanceof CheckUndeployment) {
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("assertions", assertionsArray);
                 JSONObject assertionObject = new JSONObject();
                 assertionObject.put("type", "NotDeployableAssertion");
                 assertionsArray.put(assertionObject);
-            } else if (testStep instanceof SoapTestStep) {
+            } else if (testStep instanceof SendSoapMessage) {
                 testStepObject.put("type", testStep.getClass().getSimpleName());
-                testStepObject.put("input", ((SoapTestStep) testStep).getInput());
-                if (((SoapTestStep) testStep).getOperation() != null) {
-                    testStepObject.put("operation", ((SoapTestStep) testStep).getOperation().getName());
+                testStepObject.put("input", ((SendSoapMessage) testStep).getInput());
+                if (((SendSoapMessage) testStep).getOperation() != null) {
+                    testStepObject.put("operation", ((SendSoapMessage) testStep).getOperation().getName());
                 }
 
-                testStepObject.put("testPartner", ((SoapTestStep) testStep).getService().equals(new WsdlService("testInterface")));
-                testStepObject.put("oneWay", ((SoapTestStep) testStep).getOperation().isOneWay());
+                testStepObject.put("testPartner", ((SendSoapMessage) testStep).getService().equals(new WsdlService("testInterface")));
+                testStepObject.put("oneWay", ((SendSoapMessage) testStep).getOperation().isOneWay());
 
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("assertions", assertionsArray);
-                for (TestAssertion assertion : ((SoapTestStep) testStep).getAssertions()) {
+                for (TestAssertion assertion : ((SendSoapMessage) testStep).getAssertions()) {
                     JSONObject assertionObject = new JSONObject();
                     assertionObject.put("type", assertion.getClass().getSimpleName());
-                    if (assertion instanceof SoapFaultTestAssertion) {
-                        assertionObject.put("faultString", ((SoapFaultTestAssertion) assertion).getFaultString());
-                    } else if (assertion instanceof XpathTestAssertion) {
-                        assertionObject.put("value", ((XpathTestAssertion) assertion).getExpectedOutput());
-                        assertionObject.put("xpathExpression", ((XpathTestAssertion) assertion).getXpathExpression());
+                    if (assertion instanceof AssertSoapFault) {
+                        assertionObject.put("faultString", ((AssertSoapFault) assertion).getFaultString());
+                    } else if (assertion instanceof AssertXpath) {
+                        assertionObject.put("value", ((AssertXpath) assertion).getExpectedOutput());
+                        assertionObject.put("xpathExpression", ((AssertXpath) assertion).getXpathExpression());
                     }
                     assertionsArray.put(assertionObject);
                 }
 
-            } else if (testStep instanceof GatherTracesTestStep) {
+            } else if (testStep instanceof GatherTraces) {
                 testStepObject.put("type", testStep.getClass().getSimpleName());
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("assertions", assertionsArray);
-                for (TestAssertion assertion : ((GatherTracesTestStep) testStep).getAssertions()) {
+                for (TestAssertion assertion : ((GatherTraces) testStep).getAssertions()) {
                     JSONObject assertionObject = new JSONObject();
                     assertionObject.put("type", assertion.getClass().getSimpleName());
-                    if (assertion instanceof TraceTestAssertion) {
-                        assertionObject.put("trace", ((TraceTestAssertion) assertion).getTrace().getValue());
+                    if (assertion instanceof AssertTrace) {
+                        assertionObject.put("trace", ((AssertTrace) assertion).getTrace().getValue());
                     }
                     assertionsArray.put(assertionObject);
                 }
 
-            } else if (testStep instanceof ProcessStartWithVariablesTestStep) {
+            } else if (testStep instanceof StartProcess) {
                 testStepObject.put("type", testStep.getClass().getSimpleName());
-                testStepObject.put("process", ((ProcessStartWithVariablesTestStep) testStep).getProcess());
+                testStepObject.put("process", ((StartProcess) testStep).getProcess());
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("variables", assertionsArray);
-                for (Variable variable : ((ProcessStartWithVariablesTestStep) testStep).getVariables()) {
+                for (Variable variable : ((StartProcess) testStep).getVariables()) {
                     JSONObject assertionObject = new JSONObject();
                     testStepObject.put("value", variable.getValue());
                     testStepObject.put("name", variable.getName());

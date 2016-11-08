@@ -1,0 +1,34 @@
+@startuml
+
+package "test" {
+
+	class TestAssertion {
+	}
+
+	class AssertExit extends TestAssertion
+	class AssertDeployed extends TestAssertion
+	class AssertNotDeployed extends TestAssertion
+	class AssertTrace extends TestAssertion
+	class AssertSoapFault extends TestAssertion {
+	  faultString : String
+	}
+	class AssertXpath extends TestAssertion {
+	  xpathExpression : String
+	  expectedOutput : String
+	}
+	class Trace {
+	  value : String
+	}
+
+}
+
+AssertTrace "*" -down-> "1" Trace
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml
