@@ -33,7 +33,6 @@ package "test" {
        content : String
    }
    class SoapMessageOutput extends HttpOutput {
-          soapMessage : String
       }
    class SoapFaultOutput extends SoapMessageOutput
    class ScriptBasedOutput extends NoOutput {

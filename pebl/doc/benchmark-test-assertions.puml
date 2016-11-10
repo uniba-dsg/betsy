@@ -8,7 +8,9 @@ package "test" {
 	class AssertExit extends TestAssertion
 	class AssertDeployed extends TestAssertion
 	class AssertNotDeployed extends TestAssertion
-	class AssertTrace extends TestAssertion
+	class AssertTrace extends TestAssertion {
+	  trace : String
+	}
 	class AssertSoapFault extends TestAssertion {
 	  faultString : String
 	}
@@ -16,16 +18,11 @@ package "test" {
 	  xpathExpression : String
 	  expectedOutput : String
 	}
-	class Trace {
-	  value : String
-	}
 	class AssertScript extends TestAssertion {
     	  groovyScript : String
     	}
 
 }
-
-AssertTrace "*" -down-> "1" Trace
 
 hide empty members
 hide empty methods
