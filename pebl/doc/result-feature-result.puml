@@ -29,7 +29,7 @@ package "result.feature" {
 
 package "benchmark.feature" {
 
-	class Metric
+	class AggregatedMetric
 
 	class Capability
 
@@ -49,7 +49,7 @@ package "benchmark.test" {
 
 }
 
-Measurement - Metric
+Measurement - AggregatedMetric
 
 TestResult - Test
 TestResult -left- FeatureResult

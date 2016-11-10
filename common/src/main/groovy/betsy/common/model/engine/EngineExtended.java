@@ -21,6 +21,8 @@ public final class EngineExtended implements HasID, HasName {
 
     private final LocalDate releaseDate;
 
+    private final ProcessLanguage processLanguage;
+
     /**
      * http://spdx.org/licenses/
      */
@@ -39,7 +41,8 @@ public final class EngineExtended implements HasID, HasName {
     public EngineExtended(ProcessLanguage language, String name, String version, LocalDate releaseDate, List<String> configuration, String license) {
         List<String> values = new LinkedList<>();
         values.addAll(configuration);
-        this.engine = new Engine(language, name, version, Collections.unmodifiableList(values));
+        this.engine = new Engine(language.getID(), name, version, Collections.unmodifiableList(values));
+        this.processLanguage = language;
         this.releaseDate = releaseDate;
         this.license = license;
     }
@@ -67,7 +70,7 @@ public final class EngineExtended implements HasID, HasName {
     }
 
     public ProcessLanguage getLanguage() {
-        return engine.getLanguage();
+        return processLanguage;
     }
 
     @Override

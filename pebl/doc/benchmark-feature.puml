@@ -52,7 +52,7 @@ package "feature" {
 
 }
 
-Capability "1" -up- "*" Characteristic
+Capability "1" -down- "*" Characteristic
 
 Feature "*" -right- "1" FeatureSet
 FeatureSet "*" -right- "1" Group

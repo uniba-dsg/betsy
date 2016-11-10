@@ -45,7 +45,7 @@ public class TestResult {
     private final List<Measurement> measurements;
 
     @XmlElement
-    private final Map<String, String> additionalInformation;
+    private final Map<String, String> extension;
 
     @XmlElement
     private final List<TestCaseResult> testCaseResults;
@@ -65,7 +65,7 @@ public class TestResult {
             Path deploymentPackage,
             List<Path> files,
             List<Measurement> measurements,
-            Map<String, String> additionalInformation,
+            Map<String, String> extension,
             List<TestCaseResult> testCaseResults) {
         this.test = test;
         this.engine = engine;
@@ -74,7 +74,7 @@ public class TestResult {
         this.deploymentPackage = deploymentPackage;
         this.files = new ArrayList<>(files);
         this.measurements = measurements;
-        this.additionalInformation = additionalInformation;
+        this.extension = extension;
         this.testCaseResults = new ArrayList<>(testCaseResults);
     }
 
@@ -106,8 +106,8 @@ public class TestResult {
         return measurements;
     }
 
-    public Map<String, String> getAdditionalInformation() {
-        return additionalInformation;
+    public Map<String, String> getExtension() {
+        return extension;
     }
 
     public List<TestCaseResult> getTestCaseResults() {

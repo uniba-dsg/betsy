@@ -15,10 +15,9 @@ package "test" {
 	  id : String
 	  name : String
 	  description : String
-	  additionalData : Map<String, String>
 	  files : List<String>
 	  process : String
-
+extension : Map<String, String>
 	}
 
 	class TestAssertion

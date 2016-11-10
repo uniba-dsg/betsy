@@ -3,6 +3,7 @@ package pebl.result.engine;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,7 +12,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
-import pebl.ProcessLanguage;
 import pebl.HasID;
 import pebl.HasName;
 
@@ -32,24 +32,29 @@ public final class Engine implements HasID, HasName {
     private final List<String> configuration;
 
     @XmlElement(required = true)
-    private final ProcessLanguage language;
+    private final String language;
+
+    @XmlElement
+    private final Map<String, String> extension;
 
     public Engine() {
-        this(ProcessLanguage.UNKNOWN, "", "");
+        this("", "", "");
     }
 
-    public Engine(ProcessLanguage language, String name, String version) {
+    public Engine(String language, String name, String version) {
         this(language, name, version, Collections.emptyList());
     }
 
-    public Engine(ProcessLanguage language, String name, String version, String configuration) {
+    public Engine(String language, String name, String version, String configuration) {
         this(language, name, version, Collections.singletonList(configuration));
     }
 
-    public Engine(ProcessLanguage language, String name, String version, List<String> configuration) {
+    public Engine(String language, String name, String version, List<String> configuration) {
         this.language = language;
         this.name = requireNonNull(name);
         this.version = requireNonNull(version);
+
+        this.extension = Collections.emptyMap();
 
         List<String> values = new LinkedList<>();
         values.addAll(configuration);
@@ -74,7 +79,7 @@ public final class Engine implements HasID, HasName {
         return Objects.equals(toString(), engine.toString());
     }
 
-    public ProcessLanguage getLanguage() {
+    public String getLanguage() {
         return language;
     }
 

@@ -1,0 +1,34 @@
+@startuml
+
+package "engine" {
+
+	class Engine {
+	  ID : String
+	  name : String
+	  version : String
+	  configuration : List<String>
+	  language : String
+	  extension : Map<String, String>
+	}
+
+}
+
+package "tool" {
+
+	class Tool {
+	  ID : String
+	  name : String
+	  version : String
+	  extension : Map<String, String>
+	}
+}
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

@@ -1,5 +1,7 @@
 package pebl.result.tool;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,8 +20,10 @@ public class Tool implements HasID, HasName {
     private final String name;
 
     @XmlElement(required = true)
-
     private final String version;
+
+    @XmlElement
+    private final Map<String, String> extension;
 
     public Tool() {
         this("", "");
@@ -28,6 +32,7 @@ public class Tool implements HasID, HasName {
     public Tool(String name, String version) {
         this.name = Objects.requireNonNull(name);
         this.version = Objects.requireNonNull(version);
+        this.extension = Collections.emptyMap();
     }
 
     @Override

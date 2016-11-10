@@ -1,0 +1,74 @@
+@startuml
+
+package "test" {
+   class Test
+}
+
+package "feature" {
+  class Metric
+}
+
+package "engine" {
+
+	class Engine
+
+}
+
+package "tool" {
+
+	class Tool
+}
+
+package "test result" {
+
+	class TestResult {
+	     files : List<String>
+	     logFiles : List<String>
+	     deploymentPackage : String
+		extension : Map<String, String>
+	}
+
+	class TestCaseResult {
+		name : String
+		number : int
+		message : String
+	}
+
+	class Measurement
+
+	class Value
+	class BooleanValue extends Value {
+	  value : boolean
+	}
+	class LongValue extends Value {
+	  value : long
+	}
+	class StringValue extends Value {
+	value : String
+	}
+	class AggregatedValue extends Value {
+	min : double
+	max : double
+	average : double
+	standardDeviation : double
+	relativeStandardDeviation : double
+	}
+}
+Measurement -> Value
+TestResult -->"*" TestCaseResult
+
+TestResult -> Test
+TestResult -> Engine
+TestResult -> Tool
+TestResult ->"*" Measurement
+Measurement -> Metric
+Test ->"*" Metric
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml
