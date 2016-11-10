@@ -21,12 +21,20 @@ public class Variables {
 
         for (Variable entry : variables) {
             Map<String, Object> submap = new HashMap<>();
-            submap.put("value", entry.getValue());
+            submap.put("value", getValue(entry));
             submap.put("type", entry.getType());
             map.put(entry.getName(), submap);
         }
 
         return map;
+    }
+
+    public Object getValue(Variable variable) {
+        if(variable.getValue().equals("Integer")) {
+            return Integer.parseInt(variable.getValue());
+        } else {
+            return variable.getValue();
+        }
     }
 
     public String toQueryParameter() {
@@ -36,7 +44,7 @@ public class Variables {
 
         Map<String, Object> variables = new HashMap<>();
         for (Variable variable : this.variables) {
-            variables.put(variable.getName(), variable.getValue());
+            variables.put(variable.getName(), getValue(variable));
         }
 
         StringJoiner joiner = new StringJoiner("&", "?", "");
@@ -53,7 +61,7 @@ public class Variables {
         for (Variable entry : variables) {
             Map<String, Object> map = new HashMap<>();
             map.put("name", entry.getName());
-            map.put("value", entry.getValue());
+            map.put("value", getValue(entry));
             result[i] = map;
             i++;
         }

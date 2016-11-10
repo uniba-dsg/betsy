@@ -17,7 +17,7 @@ public class StartProcess extends TestStep {
     private List<Variable> variables = new LinkedList<>();
 
     @XmlElement(required = true)
-    private String process;
+    private String processName;
 
     public StartProcess addVariable(Variable variable) {
         this.variables.add(variable);
@@ -29,11 +29,11 @@ public class StartProcess extends TestStep {
         return Collections.unmodifiableList(variables);
     }
 
-    public String getProcess() {
-        return process;
+    public String getProcessName() {
+        return processName;
     }
 
-    public void setProcess(String process) {
-        this.process = process;
+    public void setProcessName(String processName) {
+        this.processName = processName;
     }
 }

@@ -26,7 +26,6 @@ import pebl.benchmark.test.partner.rules.RawOutput;
 import pebl.benchmark.test.partner.rules.TimeoutInsteadOfOutput;
 import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
-import pebl.benchmark.test.steps.CheckUndeployment;
 import pebl.benchmark.test.steps.GatherTraces;
 import pebl.benchmark.test.steps.vars.StartProcess;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
@@ -226,15 +225,9 @@ class JsonGeneratorTestsEngineIndependent {
                 JSONObject assertionObject = new JSONObject();
                 assertionObject.put("type", "DeployableAssertion");
                 assertionsArray.put(assertionObject);
-            } else if (testStep instanceof CheckUndeployment) {
-                JSONArray assertionsArray = new JSONArray();
-                testStepObject.put("assertions", assertionsArray);
-                JSONObject assertionObject = new JSONObject();
-                assertionObject.put("type", "NotDeployableAssertion");
-                assertionsArray.put(assertionObject);
             } else if (testStep instanceof SendSoapMessage) {
                 testStepObject.put("type", testStep.getClass().getSimpleName());
-                testStepObject.put("input", ((SendSoapMessage) testStep).getInput());
+                testStepObject.put("input", ((SendSoapMessage) testStep).getSoapMessage());
                 if (((SendSoapMessage) testStep).getOperation() != null) {
                     testStepObject.put("operation", ((SendSoapMessage) testStep).getOperation().getName());
                 }
@@ -271,7 +264,7 @@ class JsonGeneratorTestsEngineIndependent {
 
             } else if (testStep instanceof StartProcess) {
                 testStepObject.put("type", testStep.getClass().getSimpleName());
-                testStepObject.put("process", ((StartProcess) testStep).getProcess());
+                testStepObject.put("process", ((StartProcess) testStep).getProcessName());
                 JSONArray assertionsArray = new JSONArray();
                 testStepObject.put("variables", assertionsArray);
                 for (Variable variable : ((StartProcess) testStep).getVariables()) {

@@ -13,7 +13,7 @@ public class SendSoapMessage extends TestStep {
      * The input value which is send using the <code>operation</code> to the system under test.
      */
     @XmlElement(required = true)
-    private String input;
+    private String soapMessage;
 
     /**
      * The WSDL operation which is invoked in this test step
@@ -27,18 +27,18 @@ public class SendSoapMessage extends TestStep {
     @Override
     public String toString() {
         return "SoapTestStep{" +
-                "input='" + input + '\'' +
+                "input='" + soapMessage + '\'' +
                 ", operation=" + operation +
                 ", service=" + service +
                 "} " + super.toString();
     }
 
-    public String getInput() {
-        return input;
+    public String getSoapMessage() {
+        return soapMessage;
     }
 
-    public void setInput(String input) {
-        this.input = input;
+    public void setSoapMessage(String soapMessage) {
+        this.soapMessage = soapMessage;
     }
 
     public WsdlOperation getOperation() {

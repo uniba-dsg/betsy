@@ -18,7 +18,7 @@ public class TestCaseUtil {
                 .filter(ts -> ts instanceof StartProcess)
                 .map(ts -> (StartProcess)ts)
                 .filter(ts -> !ts.getVariables().isEmpty())
-                .map(StartProcess::getProcess)
+                .map(StartProcess::getProcessName)
                 .findFirst().orElseThrow(() -> new IllegalStateException("test case should a key somewhere: " + testCase));
     }
 

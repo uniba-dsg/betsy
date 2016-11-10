@@ -16,13 +16,13 @@ public class Variable {
     private final String type;
 
     @XmlElement(required = true)
-    private final Object value;
+    private final String value;
 
     Variable() {
-        this("","",new Object());
+        this("","","");
     }
 
-    public Variable(String name, String type, Object value) {
+    public Variable(String name, String type, String value) {
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type);
         this.value = Objects.requireNonNull(value);
@@ -36,7 +36,7 @@ public class Variable {
         return type;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 

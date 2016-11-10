@@ -1,9 +1,10 @@
 package betsy.bpel.soapui;
 
 import betsy.bpel.model.BPELWsdlOperations;
+import pebl.benchmark.test.assertions.AssertDeployed;
+import pebl.benchmark.test.assertions.AssertNotDeployed;
 import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
-import pebl.benchmark.test.steps.CheckUndeployment;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestStep;
@@ -40,9 +41,12 @@ public class SoapUiTestStepBuilder {
         int testStepNumber = testCase.getTestSteps().indexOf(testStep);
 
         if (testStep instanceof CheckDeployment) {
-            addDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
-        } else if (testStep instanceof CheckUndeployment) {
-            addNotDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
+            if (testStep.getAssertions().contains(new AssertDeployed())) {
+                addDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
+            }
+            if (testStep.getAssertions().contains(new AssertNotDeployed())) {
+                addNotDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
+            }
         } else if (testStep instanceof DelayTesting) {
             addDelayTime(soapUiTestCase, (DelayTesting) testStep, testStepNumber);
         } else if (testStep instanceof SendSoapMessage) {
@@ -89,13 +93,13 @@ public class SoapUiTestStepBuilder {
     private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, SendSoapMessage testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.getTestRequest();
         if (BPELWsdlOperations.SYNC.equals(testStep.getOperation())) {
-            soapUiRequest.setRequestContent(TestMessages.createSyncInputMessage(testStep.getInput()));
+            soapUiRequest.setRequestContent(TestMessages.createSyncInputMessage(testStep.getSoapMessage()));
         } else if (BPELWsdlOperations.ASYNC.equals(testStep.getOperation())) {
-            soapUiRequest.setRequestContent(TestMessages.createAsyncInputMessage(testStep.getInput()));
+            soapUiRequest.setRequestContent(TestMessages.createAsyncInputMessage(testStep.getSoapMessage()));
         } else if (testStep.getService().equals(new WsdlService("testInterface"))) {
-            soapUiRequest.setRequestContent(TestMessages.createSyncTestPartnerInputMessage(testStep.getInput()));
+            soapUiRequest.setRequestContent(TestMessages.createSyncTestPartnerInputMessage(testStep.getSoapMessage()));
         } else {
-            soapUiRequest.setRequestContent(TestMessages.createSyncStringInputMessage(testStep.getInput()));
+            soapUiRequest.setRequestContent(TestMessages.createSyncStringInputMessage(testStep.getSoapMessage()));
         }
 
         soapUiRequest.setTimeout(String.valueOf(requestTimeout));

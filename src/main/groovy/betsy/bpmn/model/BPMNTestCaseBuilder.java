@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.assertions.AssertDeployed;
 import pebl.benchmark.test.assertions.Trace;
 import pebl.benchmark.test.assertions.AssertTrace;
 import pebl.benchmark.test.steps.DelayTesting;
@@ -20,8 +21,7 @@ public class BPMNTestCaseBuilder {
         TestCase result = new TestCase();
 
         // add step to check deployability
-        CheckDeployment deployable = new CheckDeployment();
-        result.addStep(deployable);
+        result.addStep(new CheckDeployment().addAssertion(new AssertDeployed()));
 
         // skip process start and delays if a deployment failure is expected
         if(!traces.contains(new Trace(BPMNAssertions.ERROR_DEPLOYMENT.toString()))) {
@@ -29,18 +29,18 @@ public class BPMNTestCaseBuilder {
             if (isParallel) {
                 // add step that starts the parallel process
                 StartProcess parallelStart = new StartProcess();
-                parallelStart.setProcess(PARALLEL_PROCESS_KEY);
+                parallelStart.setProcessName(PARALLEL_PROCESS_KEY);
                 result.addStep(parallelStart);
             }
 
             // add step that starts the real process
             StartProcess processStartWithVariablesTestStep = new StartProcess();
-            processStartWithVariablesTestStep.setProcess(key);
+            processStartWithVariablesTestStep.setProcessName(key);
             if (input != null) {
                 processStartWithVariablesTestStep.addVariable(input);
             }
-            processStartWithVariablesTestStep.addVariable(new Variable("integerVariable", "Integer", integerVariable));
-            processStartWithVariablesTestStep.addVariable(new Variable("testCaseNumber", "Integer", number));
+            processStartWithVariablesTestStep.addVariable(new Variable("integerVariable", "Integer", Integer.toString(integerVariable)));
+            processStartWithVariablesTestStep.addVariable(new Variable("testCaseNumber", "Integer", Integer.toString(number)));
             result.addStep(processStartWithVariablesTestStep);
 
             // add delay

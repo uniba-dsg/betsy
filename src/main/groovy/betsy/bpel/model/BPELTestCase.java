@@ -5,10 +5,11 @@ import java.util.Objects;
 import pebl.benchmark.test.TestAssertion;
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.AssertDeployed;
+import pebl.benchmark.test.assertions.AssertNotDeployed;
 import pebl.benchmark.test.assertions.AssertXpath;
 import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
-import pebl.benchmark.test.steps.CheckUndeployment;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.soap.WsdlService;
 
@@ -24,7 +25,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase buildPartnerConcurrencySetup() {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___RESET_COUNTERS));
+        step.setSoapMessage(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___RESET_COUNTERS));
         step.setService(new WsdlService("testPartner"));
         step.setOperation(BPELWsdlOperations.SYNC);
 
@@ -33,7 +34,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase assertConcurrencyAtPartner() {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS));
+        step.setSoapMessage(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_CONCURRENT_ACCESS));
         step.setService(new WsdlService("testPartner"));
         step.setOperation(BPELWsdlOperations.SYNC);
 
@@ -48,7 +49,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase assertNumberOfPartnerCalls(int value) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES));
+        step.setSoapMessage(String.valueOf(ConcurrencyDetectionCodes.CODE_CONCURRENCY_DETECTION___GET_TOTAL_ACCESSES));
         step.setService(new WsdlService("testPartner"));
         setPartnerOutput(step, String.valueOf(value));
         step.setOperation(BPELWsdlOperations.SYNC);
@@ -57,16 +58,16 @@ public class BPELTestCase extends TestCase {
     }
 
     public BPELTestCase checkDeployment() {
-        return addStep(new CheckDeployment());
+        return addStep(new CheckDeployment().addAssertion(new AssertDeployed()));
     }
 
     public BPELTestCase checkFailedDeployment() {
-        return addStep(new CheckUndeployment());
+        return addStep(new CheckDeployment().addAssertion(new AssertNotDeployed()));
     }
 
     public BPELTestCase sendAsync(int input) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.ASYNC);
 
@@ -75,7 +76,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase buildSyncOperationOutputAsLeast(int input, int output) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         step.setService(new WsdlService("testInterface"));
         setOutputAsLeast(step, String.valueOf(output));
         step.setOperation(BPELWsdlOperations.SYNC);
@@ -85,7 +86,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSync(int input) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC);
 
@@ -94,7 +95,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSyncString(int input, String output) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         setStringOperationOutput(step, output);
         step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
@@ -104,7 +105,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSyncString(int input) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
 
@@ -113,7 +114,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSyncString(int input, TestAssertion assertion) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
         step.setService(new WsdlService("testInterface"));
         step.getAssertions().add(assertion);
@@ -123,7 +124,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSync(int input, int output, TestAssertion assertion) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         setOutput(step, String.valueOf(output));
         step.setOperation(BPELWsdlOperations.SYNC);
         step.setService(new WsdlService("testInterface"));
@@ -134,7 +135,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSync(int input, int output) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         setOutput(step, String.valueOf(output));
         step.setService(new WsdlService("testInterface"));
         step.setOperation(BPELWsdlOperations.SYNC);
@@ -151,7 +152,7 @@ public class BPELTestCase extends TestCase {
 
     public BPELTestCase sendSync(int input, TestAssertion assertion) {
         SendSoapMessage step = new SendSoapMessage();
-        step.setInput(String.valueOf(input));
+        step.setSoapMessage(String.valueOf(input));
         step.setOperation(BPELWsdlOperations.SYNC);
         step.getAssertions().add(assertion);
         step.setService(new WsdlService("testInterface"));

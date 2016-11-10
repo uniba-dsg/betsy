@@ -38,7 +38,7 @@ public class InstanceServiceImpl implements InstanceService {
         BPMNProcessStarter processStarter = bpmnEngine.getProcessStarter();
         List<pebl.benchmark.test.steps.vars.Variable> variableList = new LinkedList<>();
         for (Variable variable : variables) {
-            variableList.add(new pebl.benchmark.test.steps.vars.Variable(variable.getName(), variable.getType(), variable.getValue()));
+            variableList.add(new pebl.benchmark.test.steps.vars.Variable(variable.getName(), variable.getType(), variable.getValue().toString()));
         }
         processStarter.start(processID.getProcessId().getLocalPart(), variableList);
 

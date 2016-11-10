@@ -6,15 +6,15 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.ExecuteScript;
 import pebl.benchmark.test.steps.GatherTraces;
-import pebl.benchmark.test.steps.CheckUndeployment;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.vars.StartProcess;
 
 @XmlSeeAlso({SendSoapMessage.class, StartProcess.class, DelayTesting.class,
-        CheckDeployment.class, CheckUndeployment.class, GatherTraces.class})
+        CheckDeployment.class, GatherTraces.class, ExecuteScript.class})
 public class TestStep {
 
     /**

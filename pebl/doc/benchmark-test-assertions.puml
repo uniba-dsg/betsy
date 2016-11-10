@@ -19,6 +19,9 @@ package "test" {
 	class Trace {
 	  value : String
 	}
+	class AssertScript extends TestAssertion {
+    	  groovyScript : String
+    	}
 
 }
 

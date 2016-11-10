@@ -7,13 +7,12 @@ package "test" {
 	}
 
 	class CheckDeployment extends TestStep
-	class CheckUndeployment extends TestStep
 	class GatherTraces extends TestStep
 	class DelayTesting extends TestStep {
 	  milliseconds : Integer
 	}
 	class SendSoapMessage extends TestStep {
-	  input : String
+	  soapMessage : String
 
 	}
 	class WsdlService{
@@ -24,12 +23,17 @@ package "test" {
 	oneWay : boolean
 	}
 	class StartProcess extends TestStep{
-	  process : String
+	  processName : String
 	}
+
+	class ExecuteScript extends TestStep {
+	      groovyScript : String
+    	}
+
 	class Variable {
 	  name : String
 	  type : String
-	  value : Object
+	  value : String
 	}
 
 }

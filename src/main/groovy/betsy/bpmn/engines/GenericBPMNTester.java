@@ -64,7 +64,7 @@ public class GenericBPMNTester {
                 try {
                     StartProcess processStartWithVariablesTestStep = (StartProcess) testStep;
                     List<Variable> variables = processStartWithVariablesTestStep.getVariables();
-                    processStarter.start(processStartWithVariablesTestStep.getProcess(), variables);
+                    processStarter.start(processStartWithVariablesTestStep.getProcessName(), variables);
                 } catch (Exception e) {
                     LOGGER.info("Could not start process", e);
                     BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = checkerOutcomeAfter.checkProcessOutcome(bpmnProcess.getName());
