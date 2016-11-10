@@ -11,10 +11,6 @@ import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 @XmlRootElement
 public class SoapMessageOutput extends HttpOutput {
 
-    @XmlElement(required = true)
-    @XmlCDATA
-    private final String soapMessage;
-
     SoapMessageOutput() {
         this("", 200);
     }
@@ -25,11 +21,7 @@ public class SoapMessageOutput extends HttpOutput {
     }
 
     public SoapMessageOutput(String soapMessage, int statusCode) {
-        super(statusCode, "application/soap+xml", "");
-        this.soapMessage = soapMessage;
+        super(statusCode, "application/soap+xml", soapMessage);
     }
 
-    public String getSoapMessage() {
-        return soapMessage;
-    }
 }

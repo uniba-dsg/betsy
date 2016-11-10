@@ -138,12 +138,12 @@ class JsonGeneratorTestsEngineIndependent {
                 if (output instanceof SoapMessageOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "raw");
-                    object.put("value", ((SoapMessageOutput) output).getSoapMessage());
+                    object.put("value", ((SoapMessageOutput) output).getContent());
                     ruleObject.put("output", object);
                 } else if (output instanceof SoapFaultOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "fault");
-                    object.put("value", ((SoapFaultOutput) output).getSoapMessage());
+                    object.put("value", ((SoapFaultOutput) output).getContent());
                     ruleObject.put("output", object);
                 } else if (output instanceof NoOutput) {
                     JSONObject object = new JSONObject();

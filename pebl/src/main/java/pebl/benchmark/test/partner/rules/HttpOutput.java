@@ -38,4 +38,8 @@ public class HttpOutput extends NoOutput {
     public String getMimetype() {
         return mimetype;
     }
+
+    public String getContent() {
+        return content;
+    }
 }
