@@ -15,6 +15,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -41,13 +43,16 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     @XmlElement(required = true)
     private final String description;
 
-    @XmlElement
+    @XmlElement(name="testCase")
+    @XmlElementWrapper( name="testCases" )
     private final List<TestCase> testCases;
 
     @XmlElement
     private final List<Path> files;
 
     @XmlElement(required = true)
+    @XmlElementRef
+    @XmlElementWrapper( name="testPartners" )
     private final List<TestPartner> partners;
 
     @XmlElement

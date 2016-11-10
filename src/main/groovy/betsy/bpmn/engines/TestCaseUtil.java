@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestStep;
-import pebl.benchmark.test.assertions.Trace;
 import pebl.benchmark.test.assertions.AssertTrace;
 import pebl.benchmark.test.steps.GatherTraces;
 import pebl.benchmark.test.steps.vars.StartProcess;
@@ -33,7 +32,7 @@ public class TestCaseUtil {
                                     .filter(ts -> ts instanceof AssertTrace)
                                     .map(ts -> (AssertTrace) ts)
                                     .map(AssertTrace::getTrace)
-                                    .map(Trace::getValue))
+                            )
                             .collect(Collectors.toList())).orElse(Collections.emptyList());
     }
 

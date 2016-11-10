@@ -1,4 +1,4 @@
-package pebl.benchmark.test.assertions;
+package pebl.benchmark.test.partner.rules;
 
 import java.util.Objects;
 
@@ -7,24 +7,22 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import pebl.benchmark.test.TestAssertion;
-
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class AssertTrace extends TestAssertion{
+public class ScriptBasedOutput extends NoOutput {
 
     @XmlElement(required = true)
-    private final String trace;
+    private final String groovyScript;
 
-    AssertTrace() {
+    ScriptBasedOutput() {
         this("");
     }
 
-    public AssertTrace(String trace) {
-        this.trace = Objects.requireNonNull(trace);
+    public ScriptBasedOutput(String groovyScript) {
+        this.groovyScript = Objects.requireNonNull(groovyScript);
     }
 
-    public String getTrace() {
-        return trace;
+    public String getGroovyScript() {
+        return groovyScript;
     }
 }

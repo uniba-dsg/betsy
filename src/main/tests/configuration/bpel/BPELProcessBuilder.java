@@ -10,11 +10,11 @@ import betsy.common.util.FileTypes;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.test.Test;
-import pebl.benchmark.test.partner.InternalWSDLTestPartner;
+import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import pebl.benchmark.test.partner.rules.AnyInput;
-import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
-import pebl.benchmark.test.partner.rules.IntegerInput;
-import pebl.benchmark.test.partner.rules.IntegerOutputBasedOnScriptResult;
+import pebl.benchmark.test.partner.rules.NoOutput;
+import pebl.benchmark.test.partner.rules.SoapMessageInput;
+import pebl.benchmark.test.partner.rules.ScriptBasedOutput;
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
 import pebl.benchmark.test.partner.rules.SoapFaultOutput;
 
@@ -48,20 +48,20 @@ public class BPELProcessBuilder {
     public static final Path partnerInterface = PATH_PREFIX.resolve("TestPartner.wsdl");
     public static final int UNDECLARED_FAULT = -5;
     public static final int DECLARED_FAULT = -6;
-    public static final InternalWSDLTestPartner DUMMY_TEST_PARTNER = new InternalWSDLTestPartner(
+    public static final RuleBasedWSDLTestPartner DUMMY_TEST_PARTNER = new RuleBasedWSDLTestPartner(
             Paths.get("TestPartner.wsdl"), "http://localhost:2000/bpel-assigned-testpartner");
-    public static final InternalWSDLTestPartner REGULAR_TEST_PARTNER = new InternalWSDLTestPartner(
+    public static final RuleBasedWSDLTestPartner REGULAR_TEST_PARTNER = new RuleBasedWSDLTestPartner(
             Paths.get("TestPartner.wsdl"),
             "http://localhost:2000/bpel-testpartner",
             new OperationInputOutputRule("startProcessAsync", new AnyInput()),
             new OperationInputOutputRule("startProcessWithEmptyMessage", new AnyInput()),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(-5), new SoapFaultOutput(getSoapFault())),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(-6), new SoapFaultOutput(getExpectedSoapFault())),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(100), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.access()")),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(101), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(102), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.getNumberOfCalls()")),
-            new OperationInputOutputRule("startProcessSync", new IntegerInput(103), new IntegerOutputBasedOnScriptResult("ConcurrencyDetector.reset()")),
-            new OperationInputOutputRule("startProcessSync", new AnyInput(), new EchoInputAsOutput())
+            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(-5), new SoapFaultOutput(getSoapFault())),
+            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(-6), new SoapFaultOutput(getExpectedSoapFault())),
+            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(100), new ScriptBasedOutput("ConcurrencyDetector.access()")),
+            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(101), new ScriptBasedOutput("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
+            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(102), new ScriptBasedOutput("ConcurrencyDetector.getNumberOfCalls()")),
+            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(103), new ScriptBasedOutput("ConcurrencyDetector.reset()")),
+            new OperationInputOutputRule("startProcessSync", new AnyInput(), new NoOutput()) // TODO should be echo, but not possible
     );
 
     public static Test buildPatternProcess(final String name, Feature feature, BPELTestCase... testCases) {

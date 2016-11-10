@@ -11,47 +11,31 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class InternalWSDLTestPartner extends WSDLTestPartner {
-
-    @Override
-    public String getPublishedURL() {
-        return this.publishedUrl;
-    }
-
-    @XmlElement(required = true)
-    private final Path interfaceDescription;
-
-    @XmlElement(required = true)
-    private final String publishedUrl;
+@XmlRootElement
+public class RuleBasedWSDLTestPartner extends WSDLTestPartner {
 
     // operation -> input -> action
-    @XmlElement
+    @XmlElement(name="rule")
+    @XmlElementWrapper( name="rules" )
     private final List<OperationInputOutputRule> rules;
 
-    InternalWSDLTestPartner() {
+    RuleBasedWSDLTestPartner() {
         this(Paths.get(""), "");
     }
 
-    public InternalWSDLTestPartner(Path interfaceDescription, String publishedUrl, OperationInputOutputRule... operationInputOutputRules) {
-        this.publishedUrl = publishedUrl;
-        this.interfaceDescription = Objects.requireNonNull(interfaceDescription);
+    public RuleBasedWSDLTestPartner(Path interfaceDescription, String publishedUrl, OperationInputOutputRule... operationInputOutputRules) {
+        super(publishedUrl, interfaceDescription);
         this.rules = new LinkedList<>(Arrays.asList(operationInputOutputRules));
     }
 
     public List<OperationInputOutputRule> getRules() {
         return Collections.unmodifiableList(rules);
-    }
-
-    public Path getInterfaceDescription() {
-        return interfaceDescription;
-    }
-
-    public String getPublishedUrl() {
-        return publishedUrl;
     }
 
 }

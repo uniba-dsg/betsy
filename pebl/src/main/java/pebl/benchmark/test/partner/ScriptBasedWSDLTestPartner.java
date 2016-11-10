@@ -1,35 +1,31 @@
-package pebl.benchmark.test.assertions;
+package pebl.benchmark.test.partner;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import pebl.benchmark.test.TestAssertion;
-
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class AssertScript extends TestAssertion {
+public class ScriptBasedWSDLTestPartner extends WSDLTestPartner {
 
+    // operation -> input -> action
     @XmlElement(required = true)
     private final String groovyScript;
 
-    AssertScript() {
-        this("");
+    ScriptBasedWSDLTestPartner() {
+        this(Paths.get(""), "", "");
     }
 
-    public AssertScript(String groovyScript) {
+    public ScriptBasedWSDLTestPartner(Path interfaceDescription, String publishedUrl, String groovyScript) {
+        super(publishedUrl, interfaceDescription);
         this.groovyScript = groovyScript;
     }
 
     public String getGroovyScript() {
         return groovyScript;
-    }
-
-    @Override
-    public String toString() {
-        return "AssertScript{" +
-                "faultString='" + groovyScript + '\'' +
-                '}';
     }
 }

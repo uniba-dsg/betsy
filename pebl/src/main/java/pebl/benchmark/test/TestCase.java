@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * TestCase implements the builder pattern using a fluent interface.
@@ -26,6 +28,8 @@ public class TestCase {
     }
 
     @XmlElement
+    @XmlElementRef
+    @XmlElementWrapper( name="testSteps" )
     public List<TestStep> getTestSteps() {
         return testSteps;
     }

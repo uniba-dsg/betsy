@@ -5,7 +5,6 @@ import java.util.List;
 
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.assertions.AssertDeployed;
-import pebl.benchmark.test.assertions.Trace;
 import pebl.benchmark.test.assertions.AssertTrace;
 import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
@@ -24,7 +23,7 @@ public class BPMNTestCaseBuilder {
         result.addStep(new CheckDeployment().addAssertion(new AssertDeployed()));
 
         // skip process start and delays if a deployment failure is expected
-        if(!traces.contains(new Trace(BPMNAssertions.ERROR_DEPLOYMENT.toString()))) {
+        if(!traces.contains(BPMNAssertions.ERROR_DEPLOYMENT.toString())) {
 
             if (isParallel) {
                 // add step that starts the parallel process
@@ -59,7 +58,7 @@ public class BPMNTestCaseBuilder {
         return result;
     }
 
-    private List<Trace> traces = new LinkedList<>();
+    private List<String> traces = new LinkedList<>();
     private boolean isParallel = false;
     private int delay = 0;
     private Integer integerVariable = 0;
@@ -104,7 +103,7 @@ public class BPMNTestCaseBuilder {
     }
 
     private BPMNTestCaseBuilder addAssertion(BPMNAssertions bpmnAssertions) {
-        this.traces.add(new Trace(bpmnAssertions.toString()));
+        this.traces.add(bpmnAssertions.toString());
 
         return this;
     }

@@ -1,19 +1,54 @@
 @startuml
 package "test" {
 
-   interface NoTestPartner extends TestPartner
-   interface WSDLTestPartner extends TestPartner
-   class InternalWSDLTestPartner extends WSDLTestPartner
-   class ExternalWSDLTestPartner extends WSDLTestPartner
+   class NoTestPartner extends TestPartner
+   class WSDLTestPartner extends TestPartner {
+     url : String
+     wsdl : String
+   }
+   class RuleBasedWSDLTestPartner extends WSDLTestPartner
+   class ScriptBasedWSDLTestPartner extends WSDLTestPartner {
+     groovyScript : String
+   }
 
-	class Test {
-	}
+   class OperationInputOutputRule {
+        operation : String
+   }
+
+
+
+   class AnyInput
+   class SoapMessageInput extends AnyInput {
+     soapMessage : String
+   }
+   class ScriptInput extends AnyInput {
+      groovyScript : String
+   }
+
+
+   class NoOutput
+   class HttpOutput extends NoOutput {
+       statusCode : Integer
+       mimeType : String
+       content : String
+   }
+   class SoapMessageOutput extends HttpOutput {
+          soapMessage : String
+      }
+   class SoapFaultOutput extends SoapMessageOutput
+   class ScriptBasedOutput extends NoOutput {
+       groovyScript : String
+   }
+
+
 
 	class TestPartner
 
 }
 
-Test "1" -left- "*" TestPartner
+RuleBasedWSDLTestPartner "1" -right-> "*" OperationInputOutputRule
+OperationInputOutputRule "1" -down-> "*" AnyInput
+OperationInputOutputRule "1" -right-> "*" NoOutput
 
 hide empty members
 hide empty methods

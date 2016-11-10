@@ -3,8 +3,8 @@ package pebl.benchmark.test.partner.rules;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso({SoapMessageInput.class})
+@XmlSeeAlso({SoapMessageOutput.class, ScriptBasedOutput.class, SoapFaultOutput.class})
 @XmlRootElement
-public class AnyInput {
+public class NoOutput {
 
 }

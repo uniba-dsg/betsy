@@ -12,31 +12,25 @@ import pebl.benchmark.test.Test;
 import pebl.benchmark.test.assertions.AssertSoapFault;
 import pebl.benchmark.test.assertions.AssertTrace;
 import pebl.benchmark.test.assertions.AssertXpath;
-import pebl.benchmark.test.partner.rules.AnyInput;
-import pebl.benchmark.test.partner.rules.EchoInputAsOutput;
 import pebl.benchmark.test.partner.rules.SoapFaultOutput;
-import pebl.benchmark.test.partner.rules.Input;
-import pebl.benchmark.test.partner.rules.IntegerInput;
-import pebl.benchmark.test.partner.rules.IntegerOutput;
-import pebl.benchmark.test.partner.rules.IntegerOutputBasedOnScriptResult;
-import pebl.benchmark.test.partner.rules.IntegerOutputWithStatusCode;
+import pebl.benchmark.test.partner.rules.AnyInput;
+import pebl.benchmark.test.partner.rules.SoapMessageInput;
+import pebl.benchmark.test.partner.rules.ScriptBasedOutput;
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
-import pebl.benchmark.test.partner.rules.Output;
-import pebl.benchmark.test.partner.rules.RawOutput;
-import pebl.benchmark.test.partner.rules.TimeoutInsteadOfOutput;
+import pebl.benchmark.test.partner.rules.NoOutput;
+import pebl.benchmark.test.partner.rules.SoapMessageOutput;
 import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
 import pebl.benchmark.test.steps.GatherTraces;
 import pebl.benchmark.test.steps.vars.StartProcess;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.vars.Variable;
-import pebl.benchmark.test.partner.ExternalWSDLTestPartner;
 import pebl.benchmark.test.partner.NoTestPartner;
 import pebl.benchmark.test.TestAssertion;
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestPartner;
 import pebl.benchmark.test.TestStep;
-import pebl.benchmark.test.partner.InternalWSDLTestPartner;
+import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import org.json.JSONArray;
@@ -111,69 +105,54 @@ class JsonGeneratorTestsEngineIndependent {
     private static JSONObject createTestPartnerObject(TestPartner testPartner) {
         JSONObject testPartnerObject = new JSONObject();
 
-        if (testPartner instanceof InternalWSDLTestPartner) {
-            InternalWSDLTestPartner internalWsdlTestPartner = (InternalWSDLTestPartner) testPartner;
+        if (testPartner instanceof RuleBasedWSDLTestPartner) {
+            RuleBasedWSDLTestPartner ruleBasedWsdlTestPartner = (RuleBasedWSDLTestPartner) testPartner;
 
             testPartnerObject.put("type", "WSDL");
             testPartnerObject.put("external", false);
 
-            testPartnerObject.put("interfaceDescription", internalWsdlTestPartner.getInterfaceDescription());
-            testPartnerObject.put("publishedUrl", internalWsdlTestPartner.getPublishedUrl());
-            testPartnerObject.put("wsdlUrl", internalWsdlTestPartner.getWSDLUrl());
+            testPartnerObject.put("interfaceDescription", ruleBasedWsdlTestPartner.getWsdl());
+            testPartnerObject.put("publishedUrl", ruleBasedWsdlTestPartner.getUrl());
+            testPartnerObject.put("wsdlUrl", ruleBasedWsdlTestPartner.getWSDLUrl());
 
             JSONArray rulesArray = new JSONArray();
-            for (OperationInputOutputRule operationInputOutputRule : internalWsdlTestPartner.getRules()) {
+            for (OperationInputOutputRule operationInputOutputRule : ruleBasedWsdlTestPartner.getRules()) {
                 JSONObject ruleObject = new JSONObject();
                 ruleObject.put("operation", operationInputOutputRule.getOperation());
 
-                Input input = operationInputOutputRule.getInput();
-                if (input instanceof AnyInput) {
+                AnyInput input = operationInputOutputRule.getInput();
+                if (!(input instanceof SoapMessageInput)) {
                     JSONObject anyInputObject = new JSONObject();
                     anyInputObject.put("type", "any");
                     ruleObject.put("input", anyInputObject);
-                } else if (input instanceof IntegerInput) {
+                } else if (input instanceof SoapMessageInput) {
                     JSONObject integerInputObject = new JSONObject();
                     integerInputObject.put("type", "integer");
-                    integerInputObject.put("value", ((IntegerInput) input).getValue());
+                    integerInputObject.put("value", ((SoapMessageInput) input).getSoapMessage());
                     ruleObject.put("input", integerInputObject);
                 } else {
                     throw new IllegalStateException();
                 }
 
-                Output output = operationInputOutputRule.getOutput();
-                if (output instanceof IntegerOutputWithStatusCode) {
-                    JSONObject object = new JSONObject();
-                    object.put("type", "integer");
-                    object.put("value", ((IntegerOutputWithStatusCode) output).getValue());
-                    object.put("statusCode", ((IntegerOutputWithStatusCode) output).getStatusCode());
-                    ruleObject.put("output", object);
-                } else if (output instanceof IntegerOutput) {
-                    JSONObject object = new JSONObject();
-                    object.put("type", "integer");
-                    object.put("value", ((IntegerOutput) output).getValue());
-                    ruleObject.put("output", object);
-                } else if (output instanceof RawOutput) {
+                NoOutput output = operationInputOutputRule.getOutput();
+                if (output instanceof SoapMessageOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "raw");
-                    object.put("value", ((RawOutput) output).getValue());
+                    object.put("value", ((SoapMessageOutput) output).getSoapMessage());
                     ruleObject.put("output", object);
                 } else if (output instanceof SoapFaultOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "fault");
-                    object.put("value", ((SoapFaultOutput) output).getVariant());
+                    object.put("value", ((SoapFaultOutput) output).getSoapMessage());
                     ruleObject.put("output", object);
-                } else if (output instanceof TimeoutInsteadOfOutput) {
+                } else if (output instanceof NoOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "timeout");
                     ruleObject.put("output", object);
-                } else if (output instanceof EchoInputAsOutput) {
-                    JSONObject object = new JSONObject();
-                    object.put("type", "echo");
-                    ruleObject.put("output", object);
-                } else if (output instanceof IntegerOutputBasedOnScriptResult) {
+                } else if (output instanceof ScriptBasedOutput) {
                     JSONObject object = new JSONObject();
                     object.put("type", "script");
-                    object.put("value", ((IntegerOutputBasedOnScriptResult) output).getScript());
+                    object.put("value", ((ScriptBasedOutput) output).getGroovyScript());
                     ruleObject.put("output", object);
                 } else {
                     // do nothing
@@ -183,14 +162,6 @@ class JsonGeneratorTestsEngineIndependent {
 
             }
             testPartnerObject.put("rules", rulesArray);
-
-        } else if (testPartner instanceof ExternalWSDLTestPartner) {
-            testPartnerObject.put("type", "WSDL");
-            testPartnerObject.put("external", true);
-
-            testPartnerObject.put("interfaceDescription", ((ExternalWSDLTestPartner) testPartner).getWsdl());
-            testPartnerObject.put("publishedUrl", ((ExternalWSDLTestPartner) testPartner).getUrl());
-            testPartnerObject.put("wsdlUrl", ((ExternalWSDLTestPartner) testPartner).getWSDLUrl());
         } else if (testPartner instanceof NoTestPartner) {
             testPartnerObject.put("type", "NONE");
         }
@@ -257,7 +228,7 @@ class JsonGeneratorTestsEngineIndependent {
                     JSONObject assertionObject = new JSONObject();
                     assertionObject.put("type", assertion.getClass().getSimpleName());
                     if (assertion instanceof AssertTrace) {
-                        assertionObject.put("trace", ((AssertTrace) assertion).getTrace().getValue());
+                        assertionObject.put("trace", ((AssertTrace) assertion).getTrace());
                     }
                     assertionsArray.put(assertionObject);
                 }

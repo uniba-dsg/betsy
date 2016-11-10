@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public final class OperationInputOutputRule {
@@ -13,20 +14,22 @@ public final class OperationInputOutputRule {
     private final String operation;
 
     @XmlElement(required = true)
-    private final Input input;
+    @XmlElementRef
+    private final AnyInput input;
 
     @XmlElement(required = true)
-    private final Output output;
+    @XmlElementRef
+    private final NoOutput output;
 
     OperationInputOutputRule() {
-        this("", new Input());
+        this("", new AnyInput());
     }
 
-    public OperationInputOutputRule(String operation, Input input) {
-        this(operation, input, new Output());
+    public OperationInputOutputRule(String operation, AnyInput input) {
+        this(operation, input, new NoOutput());
     }
 
-    public OperationInputOutputRule(String operation, Input input, Output output) {
+    public OperationInputOutputRule(String operation, AnyInput input, NoOutput output) {
         this.output = Objects.requireNonNull(output);
         this.operation = Objects.requireNonNull(operation);
         this.input = Objects.requireNonNull(input);
@@ -37,11 +40,11 @@ public final class OperationInputOutputRule {
         return operation;
     }
 
-    public Input getInput() {
+    public AnyInput getInput() {
         return input;
     }
 
-    public Output getOutput() {
+    public NoOutput getOutput() {
         return output;
     }
 }

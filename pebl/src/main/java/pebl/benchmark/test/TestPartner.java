@@ -2,11 +2,11 @@ package pebl.benchmark.test;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import pebl.benchmark.test.partner.ExternalWSDLTestPartner;
-import pebl.benchmark.test.partner.InternalWSDLTestPartner;
+import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import pebl.benchmark.test.partner.NoTestPartner;
+import pebl.benchmark.test.partner.ScriptBasedWSDLTestPartner;
 
-@XmlSeeAlso({ExternalWSDLTestPartner.class, InternalWSDLTestPartner.class, NoTestPartner.class})
+@XmlSeeAlso({RuleBasedWSDLTestPartner.class, NoTestPartner.class, ScriptBasedWSDLTestPartner.class})
 public class TestPartner {
 
 }

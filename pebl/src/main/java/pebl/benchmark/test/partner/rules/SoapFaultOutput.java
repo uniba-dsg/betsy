@@ -2,24 +2,22 @@ package pebl.benchmark.test.partner.rules;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-
-import org.eclipse.persistence.oxm.annotations.XmlCDATA;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class SoapFaultOutput extends Output {
-
-    @XmlCDATA
-    private final String variant;
+@XmlRootElement
+public class SoapFaultOutput extends SoapMessageOutput {
 
     SoapFaultOutput() {
-        this(null);
+
     }
 
-    public SoapFaultOutput(String variant) {
-        this.variant = variant;
+    public SoapFaultOutput(String soapMessage, int statusCode) {
+        super(soapMessage, statusCode);
     }
 
-    public String getVariant() {
-        return variant;
+    public SoapFaultOutput(String soapMessage) {
+        super(soapMessage, 500);
     }
+
 }
