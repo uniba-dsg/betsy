@@ -2,7 +2,6 @@ package pebl.benchmark.feature;
 
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
@@ -17,22 +16,22 @@ public class ValueType {
     public static final ValueType AGGREGATED = new ValueType("AGGREGATED");
 
     @XmlValue
-    private final String type;
+    private final String dataType;
 
     ValueType() {
         this("");
     }
 
-    public ValueType(String type) {
-        this.type = Objects.requireNonNull(type);
+    public ValueType(String dataType) {
+        this.dataType = Objects.requireNonNull(dataType);
     }
 
-    public String getType() {
-        return type;
+    public String getDataType() {
+        return dataType;
     }
 
     @Override
     public String toString() {
-        return type;
+        return dataType;
     }
 }

@@ -16,7 +16,7 @@ public class Metric {
     private final String id;
 
     @XmlElement(required = true)
-    private final ValueType type;
+    private final ValueType dataType;
 
     @XmlElement(required = true)
     private final String name;
@@ -33,16 +33,16 @@ public class Metric {
         this(new ValueType(), "", "", "", "");
     }
 
-    public Metric(ValueType type, String name, String description, String unit, String idPrefix) {
-        this.type = Objects.requireNonNull(type);
+    public Metric(ValueType dataType, String name, String description, String unit, String idPrefix) {
+        this.dataType = Objects.requireNonNull(dataType);
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.unit = Objects.requireNonNull(unit);
-        this.id = idPrefix + "-" + type + "-" + name;
+        this.id = idPrefix + "-" + dataType + "-" + name;
     }
 
-    public ValueType getType() {
-        return type;
+    public ValueType getDataType() {
+        return dataType;
     }
 
     public String getName() {
