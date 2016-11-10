@@ -15,7 +15,7 @@ public class BPELWsdlOperations {
     /**
      * The WSDL WsdlOperation startProcessSyncString
      */
-    public static final WsdlOperation SYNC_STRING = new WsdlOperation("startProcessSyncString", true);
+    public static final WsdlOperation SYNC_STRING = new WsdlOperation("startProcessSyncString", false);
 
 
 

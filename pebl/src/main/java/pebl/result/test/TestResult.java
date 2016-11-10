@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import pebl.result.engine.Engine;
@@ -32,16 +33,19 @@ public class TestResult {
     @XmlIDREF
     private final Tool tool;
 
-    @XmlElement
+    @XmlElement(name="logFile")
+    @XmlElementWrapper(name="logFiles")
     private final List<Path> logFiles;
 
     @XmlElement(required = true)
     private final Path deploymentPackage;
 
-    @XmlElement
+    @XmlElement(name="file")
+    @XmlElementWrapper(name="files")
     private final List<Path> files;
 
-    @XmlElement
+    @XmlElement(name="measurement")
+    @XmlElementWrapper(name="measurements")
     private final List<Measurement> measurements;
 
     @XmlElement

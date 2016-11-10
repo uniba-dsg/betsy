@@ -47,7 +47,8 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     @XmlElementWrapper( name="testCases" )
     private final List<TestCase> testCases;
 
-    @XmlElement
+    @XmlElement(name="file")
+    @XmlElementWrapper(name="files")
     private final List<Path> files;
 
     @XmlElement(required = true)
@@ -59,6 +60,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     private final Map<String, String> additionalData;
 
     @XmlElement(name = "metric")
+    @XmlElementWrapper(name="metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
     public Test addMetric(ValueType type, String name, String description, String unit) {

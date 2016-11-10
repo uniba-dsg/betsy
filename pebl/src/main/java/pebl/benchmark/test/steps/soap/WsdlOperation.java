@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
@@ -15,10 +16,10 @@ public class WsdlOperation {
     /**
      * The name of the WSDL operation.
      */
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final String name;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final boolean isOneWay;
 
     WsdlOperation() {
