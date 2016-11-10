@@ -23,12 +23,20 @@ package "feature" {
 	class AggregatedMetric
 
 	class Feature
+	class Capability
+    	class Language
+    	class Group
+    	class FeatureSet
 
-	Feature -left> AggregatedMetric
+	Feature --> AggregatedMetric
+	Capability --> AggregatedMetric
+	Language --> AggregatedMetric
+	Group --> AggregatedMetric
+	FeatureSet --> AggregatedMetric
 
 }
 
-Measurement -> AggregatedMetric
+Measurement --> AggregatedMetric
 
 hide empty members
 hide empty methods
