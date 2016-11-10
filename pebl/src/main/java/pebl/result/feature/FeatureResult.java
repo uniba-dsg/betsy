@@ -1,54 +1,45 @@
 package pebl.result.feature;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import pebl.benchmark.feature.Feature;
 import pebl.result.Measurement;
-import pebl.result.test.TestResult;
+import pebl.result.engine.Engine;
+import pebl.result.tool.Tool;
 
 public class FeatureResult {
 
-    @XmlIDREF
     @XmlElement(required = true)
-    private final Feature feature;
+    private final Measurement measurement;
 
-    @XmlInverseReference(mappedBy = "featureSetResults")
-    private final FeatureSetResult featureSetResult;
+    @XmlElement(required = true)
+    @XmlIDREF
+    private final Engine engine;
 
-    @XmlElement
-    private final List<Measurement> measurements = new LinkedList<>();
-
-    @XmlElement
-    private final List<TestResult> testResults = new LinkedList<>();
+    @XmlElement(required = true)
+    @XmlIDREF
+    private final Tool tool;
 
     public FeatureResult() {
-        this(new Feature(), new FeatureSetResult());
+        this(new Measurement(), new Engine(), new Tool());
     }
 
-    public FeatureResult(Feature feature, FeatureSetResult featureSetResult) {
-        this.feature = Objects.requireNonNull(feature);
-        this.featureSetResult = Objects.requireNonNull(featureSetResult);
+    public FeatureResult(Measurement measurement, Engine engine, Tool tool) {
+        this.measurement = measurement;
+        this.engine = engine;
+        this.tool = tool;
     }
 
-    public Feature getFeature() {
-        return feature;
+    public Measurement getMeasurement() {
+        return measurement;
     }
 
-    public FeatureSetResult getFeatureSetResult() {
-        return featureSetResult;
+    public Engine getEngine() {
+        return engine;
     }
 
-    public List<Measurement> getMeasurements() {
-        return measurements;
-    }
-
-    public List<TestResult> getTestResults() {
-        return testResults;
+    public Tool getTool() {
+        return tool;
     }
 }
+

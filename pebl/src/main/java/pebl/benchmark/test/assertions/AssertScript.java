@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import pebl.benchmark.test.TestAssertion;
 
@@ -11,7 +12,7 @@ import pebl.benchmark.test.TestAssertion;
 @XmlRootElement
 public class AssertScript extends TestAssertion {
 
-    @XmlElement(required = true)
+    @XmlValue
     private final String groovyScript;
 
     AssertScript() {

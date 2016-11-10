@@ -3,12 +3,13 @@ package pebl.result.metrics;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import pebl.result.Value;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class LongValue extends Value {
-    @XmlElement(required = true)
+    @XmlValue
     private final long value;
 
     LongValue() {

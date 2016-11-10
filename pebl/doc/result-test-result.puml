@@ -1,11 +1,14 @@
 @startuml
 
+package "benchmark" {
+
 package "test" {
    class Test
 }
 
 package "feature" {
   class Metric
+}
 }
 
 package "engine" {
@@ -38,20 +41,23 @@ package "test result" {
 
 	class Value
 	class BooleanValue extends Value {
-	  value : boolean
+	  value : Boolean
 	}
 	class LongValue extends Value {
-	  value : long
+	  value : Long
 	}
+	class DoubleValue extends Value {
+    	  value : Double
+    	}
 	class StringValue extends Value {
 	value : String
 	}
 	class AggregatedValue extends Value {
-	min : double
-	max : double
-	average : double
-	standardDeviation : double
-	relativeStandardDeviation : double
+	min : Double
+	max : Double
+	average : Double
+	standardDeviation : Double
+	relativeStandardDeviation : Double
 	}
 }
 Measurement -> Value

@@ -17,7 +17,7 @@ public class Measurement {
     @XmlElement(required = true)
     private final Value value;
 
-    Measurement() {
+    public Measurement() {
         this(new Metric(), new Value());
     }
 

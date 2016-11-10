@@ -3,6 +3,7 @@ package pebl.benchmark.feature;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * Idea: only primitive types, aggregated as a special type (could be removed as well)
@@ -15,7 +16,7 @@ public class ValueType {
     public static final ValueType DOUBLE = new ValueType("DOUBLE");
     public static final ValueType AGGREGATED = new ValueType("AGGREGATED");
 
-    @XmlElement(required = true)
+    @XmlValue
     private final String type;
 
     ValueType() {

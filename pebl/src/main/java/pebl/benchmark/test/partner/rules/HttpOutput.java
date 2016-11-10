@@ -2,8 +2,10 @@ package pebl.benchmark.test.partner.rules;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 
@@ -11,13 +13,13 @@ import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 @XmlRootElement
 public class HttpOutput extends NoOutput {
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final int statusCode;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final String mimetype;
 
-    @XmlElement(required = true)
+    @XmlValue
     @XmlCDATA
     private final String content;
 

@@ -28,7 +28,7 @@ extension : Map<String, String>
 
 	class TestCase {
 	  name : String
-	  number : int
+	  number : Integer
 	}
 
 	class TestPartner

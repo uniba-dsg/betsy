@@ -4,22 +4,21 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class ScriptBasedOutput extends NoOutput {
+public class ScriptInput extends AnyInput {
 
     @XmlValue
     private final String groovyScript;
 
-    ScriptBasedOutput() {
+    ScriptInput() {
         this("");
     }
 
-    public ScriptBasedOutput(String groovyScript) {
+    public ScriptInput(String groovyScript) {
         this.groovyScript = Objects.requireNonNull(groovyScript);
     }
 

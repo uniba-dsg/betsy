@@ -6,70 +6,29 @@ package "engine" {
 package "tool" {
   class Tool
 }
-package "result.test" {
-  class TestResult
-}
-package "result.feature" {
+package "feature result" {
   class FeatureResult
-  class FeatureSetResult
-  class GroupResult
-  class LanguageResult
-  class CapabilityResult
-
-  class Measurement
   class Value
+  class Measurement
 
-  Measurement - Value
-  FeatureResult -- Measurement
-  FeatureSetResult -- Measurement
-  GroupResult -- Measurement
-  LanguageResult -- Measurement
-  CapabilityResult -- Measurement
+  Measurement -up-> Value
+
+  FeatureResult -> Measurement
+  FeatureResult -> Tool
+  FeatureResult -> Engine
 }
 
-package "benchmark.feature" {
+package "feature" {
 
 	class AggregatedMetric
 
-	class Capability
-
-	class Language
-
-	class Group
-
-	class FeatureSet
-
 	class Feature
 
-}
-
-package "benchmark.test" {
-
-	class Test
+	Feature -left> AggregatedMetric
 
 }
 
-Measurement - AggregatedMetric
-
-TestResult - Test
-TestResult -left- FeatureResult
-Test -left- Feature
-
-Feature "*" -right- "1" FeatureSet
-FeatureSet "*" -right- "1" Group
-Group "*" -right- "1" Language
-Language "*" -right- "1" Capability
-
-FeatureResult "*" -right- "1" FeatureSetResult
-FeatureSetResult "*" -right- "1" GroupResult
-GroupResult "*" -right- "1" LanguageResult
-LanguageResult "*" -right- "1" CapabilityResult
-
-FeatureResult "1" - "1" Feature
-FeatureSetResult "1" - "1" FeatureSet
-GroupResult "1" - "1" Group
-LanguageResult "1" - "1" Language
-CapabilityResult "1" - "1" Capability
+Measurement -> AggregatedMetric
 
 hide empty members
 hide empty methods

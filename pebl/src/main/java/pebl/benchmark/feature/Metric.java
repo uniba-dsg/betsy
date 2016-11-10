@@ -27,6 +27,8 @@ public class Metric {
     @XmlElement(required = true)
     private final String unit;
 
+    // TODO inverse relationship
+
     public Metric() {
         this(new ValueType(), "", "", "", "");
     }

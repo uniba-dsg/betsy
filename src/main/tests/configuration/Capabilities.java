@@ -43,14 +43,14 @@ public class Capabilities {
             test.addMetric(ValueType.AGGREGATED, "executionDuration", "The time the execution of this particular test.", "milliseconds");
             test.addMetric(ValueType.AGGREGATED, "executionTimestamp", "The time the execution of this particular test has been started.", "timestamp");
         } else if(test.getCapability().equals(ROBUSTNESS) || test.getCapability().equals(CONFORMANCE) || test.getCapability().equals(EXPRESSIVENESS)) {
-            test.addMetric(ValueType.AGGREGATED, "testCases", "The number of test cases.", "quantity");
-            test.addMetric(ValueType.AGGREGATED, "testCaseSuccesses", "The number of successful test cases.", "quantity");
-            test.addMetric(ValueType.AGGREGATED, "testCaseFailures", "The number of failed test cases.", "quantity");
-            test.addMetric(ValueType.AGGREGATED, "testDeployable", "Whether the underlying process model was deployed successfully.", "");
-            test.addMetric(ValueType.AGGREGATED, "testSuccessful", "Whether all test cases were successfully.", "");
-            test.addMetric(ValueType.AGGREGATED,  "testResult", "The overall result based on the number of successful test cases compared to the total number of test cases", "");
-            test.addMetric(ValueType.AGGREGATED, "executionDuration", "The time the execution of this particular test.", "milliseconds");
-            test.addMetric(ValueType.AGGREGATED,  "executionTimestamp", "The time the execution of this particular test has been started.", "timestamp");
+            test.addMetric(ValueType.LONG, "testCases", "The number of test cases.", "quantity");
+            test.addMetric(ValueType.LONG, "testCaseSuccesses", "The number of successful test cases.", "quantity");
+            test.addMetric(ValueType.LONG, "testCaseFailures", "The number of failed test cases.", "quantity");
+            test.addMetric(ValueType.BOOLEAN, "testDeployable", "Whether the underlying process model was deployed successfully.", "");
+            test.addMetric(ValueType.BOOLEAN, "testSuccessful", "Whether all test cases were successfully.", "");
+            test.addMetric(ValueType.STRING,  "testResult", "The overall result based on the number of successful test cases compared to the total number of test cases", "");
+            test.addMetric(ValueType.LONG, "executionDuration", "The time the execution of this particular test.", "milliseconds");
+            test.addMetric(ValueType.LONG,  "executionTimestamp", "The time the execution of this particular test has been started.", "timestamp");
         }
 
         return test;

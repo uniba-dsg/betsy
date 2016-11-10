@@ -3,6 +3,7 @@ package pebl.benchmark.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -34,7 +35,7 @@ public class TestCase {
         return testSteps;
     }
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     public String getName() {
         return name;
     }
@@ -43,7 +44,7 @@ public class TestCase {
         this.name = name;
     }
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     public int getNumber() {
         return number;
     }

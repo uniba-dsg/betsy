@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 
@@ -11,7 +12,7 @@ import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 @XmlRootElement
 public class SoapMessageInput extends AnyInput {
 
-    @XmlElement(required = true)
+    @XmlValue
     @XmlCDATA
     private final String soapMessage;
 

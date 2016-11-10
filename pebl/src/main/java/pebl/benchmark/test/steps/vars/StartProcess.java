@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import pebl.benchmark.test.TestStep;
@@ -15,7 +16,8 @@ import pebl.benchmark.test.TestStep;
 @XmlRootElement
 public class StartProcess extends TestStep {
 
-    @XmlElement
+    @XmlElement(name="variable")
+    @XmlElementWrapper(name="variables")
     private List<Variable> variables = new LinkedList<>();
 
     @XmlElement(required = true)
