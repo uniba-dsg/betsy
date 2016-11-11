@@ -52,4 +52,14 @@ public class MetricType {
     public String getUnit() {
         return unit;
     }
+
+    @Override public String toString() {
+        final StringBuffer sb = new StringBuffer("MetricType{");
+        sb.append("dataType=").append(dataType);
+        sb.append(", id='").append(id).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", unit='").append(unit).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

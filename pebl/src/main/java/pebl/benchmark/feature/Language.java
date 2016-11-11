@@ -90,4 +90,7 @@ public class Language implements HasId, HasName {
         return capability;
     }
 
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
 }

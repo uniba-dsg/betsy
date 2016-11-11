@@ -89,4 +89,8 @@ public class Feature implements HasId, HasName {
     public FeatureSet getFeatureSet() {
         return featureSet;
     }
+
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pebl.benchmark.feature.MetricType;
+import pebl.benchmark.feature.ScriptMetricType;
 import pebl.benchmark.feature.ValueType;
 
 public class MetricTypes {
@@ -23,6 +24,14 @@ public class MetricTypes {
     static final MetricType TEST_DEPLOYABLE = new MetricType(ValueType.BOOLEAN, "testDeployable", "Whether the underlying process model was deployed successfully.", "");
     static final MetricType TEST_SUCCESSFUL = new MetricType(ValueType.BOOLEAN, "testSuccessful", "Whether all test cases were successfully.", "");
     static final MetricType TEST_RESULT = new MetricType(ValueType.STRING, "testResult", "The overall result based on the number of successful test cases compared to the total number of test cases", "");
+
+    public static final ScriptMetricType TESTS_COUNT = new ScriptMetricType(ValueType.LONG, "testsCount", "Sum of the test cases", "sum", "SUM(tests)");
+    public static final ScriptMetricType TEST_CASES_SUM = new ScriptMetricType(ValueType.LONG, "testCasesSum", "Sum of the test cases", "sum", "SUM(testCases)");
+    public static final ScriptMetricType TEST_CASES_SUCCESSFUL_SUM = new ScriptMetricType(ValueType.LONG, "testCaseSuccessesSum", "Sum of the test cases", "sum", "SUM(testCaseSuccesses)");
+    public static final ScriptMetricType TEST_CASES_FAILURE_SUM = new ScriptMetricType(ValueType.LONG, "testCaseFailuresSum", "Sum of the test cases", "sum", "SUM(testCaseFailures)");
+    public static final ScriptMetricType TEST_DEPLOYABLE_COUNT = new ScriptMetricType(ValueType.LONG, "testDeployableCount", "Sum of the test cases", "count", "COUNT(testDeployable)");
+    public static final ScriptMetricType TEST_SUCCESSFUL_COUNT = new ScriptMetricType(ValueType.LONG, "testSuccessfulCount", "Sum of the test cases", "count", "COUNT(testSuccessful)");
+    public static final ScriptMetricType TEST_RESULT_TRIVALENT_AGGREGATION = new ScriptMetricType(ValueType.STRING, "testResultTrivalentAggregation", "Sum of the test cases", "trivalent", "TRIVALENT_AGGREGATION(testResult)");
 
     public static List<? extends MetricType> getMetricTypes() {
         final LinkedList<MetricType> metricTypes = new LinkedList<>();

@@ -51,7 +51,8 @@ public class TestResult {
     @XmlElement
     private final Map<String, String> extension;
 
-    @XmlElement
+    @XmlElement(name="testCaseResult")
+    @XmlElementWrapper(name="testCaseResults")
     private final List<TestCaseResult> testCaseResults;
 
     TestResult() {

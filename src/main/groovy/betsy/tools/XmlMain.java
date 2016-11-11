@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBException;
 
+import betsy.tools.pebl.PEBLBuilder;
 import pebl.xsd.Engines;
 import pebl.xsd.Features;
 import pebl.xsd.PEBL;

@@ -1,4 +1,4 @@
-package betsy.tools;
+package betsy.tools.pebl;
 
 import java.io.IOException;
 import java.nio.file.Files;

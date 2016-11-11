@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import betsy.tools.pebl.PEBLBuilder;
 import org.junit.Test;
 import pebl.xsd.PEBL;
 

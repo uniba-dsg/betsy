@@ -32,4 +32,11 @@ public class ScriptMetricType extends MetricType {
     public String getGroovyScript() {
         return groovyScript;
     }
+
+    @Override public String toString() {
+        final StringBuffer sb = new StringBuffer("ScriptMetricType{");
+        sb.append("groovyScript='").append(groovyScript).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

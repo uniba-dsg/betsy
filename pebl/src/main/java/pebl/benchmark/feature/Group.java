@@ -101,4 +101,8 @@ public class Group implements HasId, HasName {
     public String getDescription() {
         return description;
     }
+
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
 }

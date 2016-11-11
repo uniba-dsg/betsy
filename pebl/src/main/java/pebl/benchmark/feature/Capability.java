@@ -37,6 +37,14 @@ public class Capability implements HasId, HasName {
         return this;
     }
 
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
+
+    public List<Characteristic> getCharacteristics() {
+        return characteristics;
+    }
+
     public Capability addCharacteristic(Characteristic c) {
         characteristics.add(c);
 

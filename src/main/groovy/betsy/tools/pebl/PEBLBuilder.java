@@ -1,5 +1,6 @@
-package betsy.tools;
+package betsy.tools.pebl;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,9 @@ import configuration.MetricTypes;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.Metric;
+import pebl.benchmark.feature.MetricType;
+import pebl.benchmark.feature.ScriptMetricType;
 import pebl.benchmark.test.Test;
 import pebl.result.engine.Engine;
 import pebl.result.tool.Tool;
@@ -31,14 +35,63 @@ public class PEBLBuilder {
         pebl.benchmark.tests.addAll(getTests().stream().collect(Collectors.toList()));
         pebl.benchmark.capabilities.addAll(new Features(getFeatures()).capabilities);
         pebl.benchmark.metricTypes.addAll(MetricTypes.getMetricTypes());
+
+        List<ScriptMetricType> metricTypes = Arrays.asList(
+                MetricTypes.TEST_CASES_SUM,
+                MetricTypes.TEST_CASES_SUCCESSFUL_SUM,
+                MetricTypes.TEST_CASES_FAILURE_SUM,
+                MetricTypes.TEST_DEPLOYABLE_COUNT,
+                MetricTypes.TEST_SUCCESSFUL_COUNT,
+                MetricTypes.TEST_RESULT_TRIVALENT_AGGREGATION,
+                MetricTypes.TESTS_COUNT
+        );
+
+        // apply metrics
+        pebl.benchmark.capabilities.stream().filter(c -> !c.getName().equals("Performance")).forEach(c -> {
+
+            for(ScriptMetricType metricType : metricTypes) {
+                c.addMetric(metricType);
+            }
+
+            c.getLanguages().forEach(l -> {
+
+                for(ScriptMetricType metricType : metricTypes) {
+                    l.addMetric(metricType);
+                }
+
+                l.getGroups().forEach(g -> {
+
+                    for(ScriptMetricType metricType : metricTypes) {
+                        g.addMetric(metricType);
+                    }
+
+                    g.getFeatureSets().forEach(fs -> {
+
+                        for(ScriptMetricType metricType : metricTypes) {
+                            fs.addMetric(metricType);
+                        }
+
+                        fs.getFeatures().forEach(f -> {
+
+                            for(ScriptMetricType metricType : metricTypes) {
+                                f.addMetric(metricType);
+                            }
+
+                        });
+                    });
+                });
+            });
+        });
+
+
         return pebl;
     }
 
-    static List<Feature> getFeatures() {
+    public static List<Feature> getFeatures() {
         return getTests().stream().map(Test::getFeature).distinct().collect(Collectors.toList());
     }
 
-    static List<Engine> getEngines() {
+    public static List<Engine> getEngines() {
         return getEngineLifecycles().stream()
                 .filter(e -> !(e instanceof VirtualEngineAPI))
                 .map(e -> (IsEngine) e)
@@ -57,7 +110,7 @@ public class PEBLBuilder {
         return engines;
     }
 
-    static List<Test> getTests() {
+    public static List<Test> getTests() {
         List<Test> processes = new LinkedList<>();
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ALL"));
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
@@ -66,7 +119,7 @@ public class PEBLBuilder {
         return processes;
     }
 
-    static List<Tool> getTools() {
+    public static List<Tool> getTools() {
         return Collections.singletonList(new Tool("betsy", GitUtil.getGitCommit()));
     }
 }
