@@ -5,13 +5,14 @@ package "feature" {
 	  type : String
 	}
 
-	class AggregatedMetric {
+	class ScriptMetricType extends MetricType {
 	  groovyScript : String
 	}
 
-	class Metric {
+	class Metric
+
+	class MetricType {
 	  id : String
-	  name : String
 	  description : String
 	  unit : String
 	}
@@ -59,14 +60,14 @@ FeatureSet "*" -right- "1" Group
 Group "*" -right- "1" Language
 Language "*" -right- "1" Capability
 
-Metric "*" -left- "1" ValueType
-AggregatedMetric -left-|> Metric
+MetricType "*" -right-> "1" ValueType
+Metric -> MetricType
 
-Capability "1" --> "*" AggregatedMetric
-Language "1" --> "*" AggregatedMetric
-Group "1" --> "*" AggregatedMetric
-FeatureSet "1" --> "*" AggregatedMetric
-Feature "1" --> "*" AggregatedMetric
+Capability "1" --> "*" Metric
+Language "1" --> "*" Metric
+Group "1" --> "*" Metric
+FeatureSet "1" --> "*" Metric
+Feature "1" --> "*" Metric
 
 hide empty members
 hide empty methods

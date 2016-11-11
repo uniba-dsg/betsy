@@ -20,7 +20,7 @@ package "feature result" {
 
 package "feature" {
 
-	class AggregatedMetric
+	class Metric
 
 	class Feature
 	class Capability
@@ -28,15 +28,15 @@ package "feature" {
     	class Group
     	class FeatureSet
 
-	Feature --> AggregatedMetric
-	Capability --> AggregatedMetric
-	Language --> AggregatedMetric
-	Group --> AggregatedMetric
-	FeatureSet --> AggregatedMetric
+	Feature --> Metric
+	Capability --> Metric
+	Language --> Metric
+	Group --> Metric
+	FeatureSet --> Metric
 
 }
 
-Measurement --> AggregatedMetric
+Measurement --> Metric
 
 hide empty members
 hide empty methods
