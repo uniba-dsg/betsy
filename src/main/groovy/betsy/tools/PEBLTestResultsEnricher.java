@@ -1,10 +1,8 @@
 package betsy.tools;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -28,7 +26,6 @@ import betsy.common.model.engine.EngineDimension;
 import betsy.common.reporting.CsvRow;
 import betsy.common.reporting.JUnitXmlResultReader;
 import betsy.common.util.DurationCsv;
-import org.json.JSONArray;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -78,8 +75,8 @@ public class PEBLTestResultsEnricher {
             P process,
             PEBL pebl) {
         Tool tool = pebl.result.tools.get(0);
-        Engine engine = pebl.result.engines.stream().filter(e -> e.getID().equals(process.getEngineObject().getID())).findFirst().orElseThrow(() -> new IllegalStateException("could not find engine " + process.getEngineObject().getID()));
-        Test test = pebl.benchmark.tests.stream().filter(t -> t.getID().equals(process.getFeatureID() + "__" + "test")).findFirst().orElseThrow(() -> new IllegalStateException("could not find test " + process.getFeatureID() + "__" + "test"));
+        Engine engine = pebl.result.engines.stream().filter(e -> e.getId().equals(process.getEngineObject().getId())).findFirst().orElseThrow(() -> new IllegalStateException("could not find engine " + process.getEngineObject().getId()));
+        Test test = pebl.benchmark.tests.stream().filter(t -> t.getId().equals(process.getFeatureID() + "__" + "test")).findFirst().orElseThrow(() -> new IllegalStateException("could not find test " + process.getFeatureID() + "__" + "test"));
 
         List<Path> logFiles = new LinkedList<>();
         try (Stream<Path> list = Files.list(process.getTargetLogsPath())) {
@@ -115,43 +112,43 @@ public class PEBLTestResultsEnricher {
                 measurements.add(new Measurement(metric, new LongValue(executionTime)));
             } else if (metric.getMetricType().getId().equals("executionDuration")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 long duration = idToDuration.get(localID);
 
                 measurements.add(new Measurement(metric, new LongValue(duration)));
             } else if (metric.getMetricType().getId().equals("testCases")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 csvRows.stream().filter(row -> localID.equals(String.join("__", row.getEngine(), row.getGroup(), row.getName()))).findFirst().ifPresent(csvRow -> {
                     measurements.add(new Measurement(metric, new LongValue(csvRow.getTests())));
                 });
             } else if (metric.getMetricType().getId().equals("testCaseFailures")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 csvRows.stream().filter(row -> localID.equals(String.join("__", row.getEngine(), row.getGroup(), row.getName()))).findFirst().ifPresent(csvRow -> {
                     measurements.add(new Measurement(metric, new LongValue(csvRow.getFailures())));
                 });
             } else if (metric.getMetricType().getId().equals("testCaseSuccesses")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 csvRows.stream().filter(row -> localID.equals(String.join("__", row.getEngine(), row.getGroup(), row.getName()))).findFirst().ifPresent(csvRow -> {
                     measurements.add(new Measurement(metric, new LongValue(csvRow.getTests() - csvRow.getFailures())));
                 });
             } else if (metric.getMetricType().getId().equals("testSuccessful")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 csvRows.stream().filter(row -> localID.equals(String.join("__", row.getEngine(), row.getGroup(), row.getName()))).findFirst().ifPresent(csvRow -> {
                     measurements.add(new Measurement(metric, new BooleanValue(csvRow.isSuccess())));
                 });
             } else if (metric.getMetricType().getId().equals("testDeployable")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 csvRows.stream().filter(row -> localID.equals(String.join("__", row.getEngine(), row.getGroup(), row.getName()))).findFirst().ifPresent(csvRow -> {
                     measurements.add(new Measurement(metric, new BooleanValue(csvRow.isDeployable())));
                 });
             } else if (metric.getMetricType().getId().equals("testResult")) {
                 String groupFeatureID = process.getGroupFeatureID();
-                String localID = process.getEngineObject().getID() + "__" + groupFeatureID;
+                String localID = process.getEngineObject().getId() + "__" + groupFeatureID;
                 csvRows.stream().filter(row -> localID.equals(String.join("__", row.getEngine(), row.getGroup(), row.getName()))).findFirst().ifPresent(csvRow -> {
                     measurements.add(new Measurement(metric, new StringValue(csvRow.getFailures() == 0 ? "+" : csvRow.getSuccesses() == 0 ? "-" : "+/-")));
                 });

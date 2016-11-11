@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Objects;
 
 import pebl.HasName;
-import pebl.HasID;
+import pebl.HasId;
 import pebl.ProcessLanguage;
 import pebl.result.engine.Engine;
 
 import static java.util.Objects.requireNonNull;
 
-public final class EngineExtended implements HasID, HasName {
+public final class EngineExtended implements HasId, HasName {
 
     public static final String DELIMITER = "--";
 
@@ -41,7 +41,7 @@ public final class EngineExtended implements HasID, HasName {
     public EngineExtended(ProcessLanguage language, String name, String version, LocalDate releaseDate, List<String> configuration, String license) {
         List<String> values = new LinkedList<>();
         values.addAll(configuration);
-        this.engine = new Engine(language.getID(), name, version, Collections.unmodifiableList(values));
+        this.engine = new Engine(language.getId(), name, version, Collections.unmodifiableList(values));
         this.processLanguage = language;
         this.releaseDate = releaseDate;
         this.license = license;
@@ -56,7 +56,7 @@ public final class EngineExtended implements HasID, HasName {
     }
 
     public String getNormalizedId() {
-        return getId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
+        return getInternalId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
     }
 
     @Override
@@ -78,8 +78,8 @@ public final class EngineExtended implements HasID, HasName {
         return Objects.hashCode(toString());
     }
 
-    private String getId() {
-        return engine.getID();
+    private String getInternalId() {
+        return engine.getId();
     }
 
     public String getName() {
@@ -95,7 +95,7 @@ public final class EngineExtended implements HasID, HasName {
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return getNormalizedId();
     }
 

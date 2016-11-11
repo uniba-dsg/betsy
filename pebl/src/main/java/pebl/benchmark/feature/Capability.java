@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 
 import pebl.HasName;
-import pebl.HasID;
+import pebl.HasId;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Capability implements HasID, HasName {
+public class Capability implements HasId, HasName {
 
     @XmlElement(required = true)
     private final String name;
@@ -32,7 +32,7 @@ public class Capability implements HasID, HasName {
     private final List<Characteristic> characteristics = new LinkedList<>();
 
     public Capability addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getID()));
+        metrics.add(new Metric(scriptMetricType, getId()));
 
         return this;
     }
@@ -58,7 +58,7 @@ public class Capability implements HasID, HasName {
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
     }
 
@@ -74,12 +74,12 @@ public class Capability implements HasID, HasName {
         if (o == null || getClass() != o.getClass())
             return false;
         Capability construct = (Capability) o;
-        return Objects.equals(getID(), construct.getID());
+        return Objects.equals(getId(), construct.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID());
+        return Objects.hash(getId());
     }
 
     void addLanguage(Language language) {

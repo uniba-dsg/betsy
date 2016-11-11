@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlID;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasName;
-import pebl.HasID;
+import pebl.HasId;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Language implements HasID, HasName {
+public class Language implements HasId, HasName {
 
     @XmlInverseReference(mappedBy="languages")
     private final Capability capability;
@@ -35,7 +35,7 @@ public class Language implements HasID, HasName {
     private final List<Metric> metrics = new LinkedList<>();
 
     public Language addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getID()));
+        metrics.add(new Metric(scriptMetricType, getId()));
 
         return this;
     }
@@ -48,13 +48,13 @@ public class Language implements HasID, HasName {
         this.capability = Objects.requireNonNull(capability);
         this.name = Objects.requireNonNull(name);
 
-        this.id = String.join(HasID.SEPARATOR, capability.getID(), name);
+        this.id = String.join(HasId.SEPARATOR, capability.getId(), name);
 
         this.capability.addLanguage(this);
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
     }
 
@@ -70,12 +70,12 @@ public class Language implements HasID, HasName {
         if (o == null || getClass() != o.getClass())
             return false;
         Language construct = (Language) o;
-        return Objects.equals(getID(), construct.getID());
+        return Objects.equals(getId(), construct.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID());
+        return Objects.hash(getId());
     }
 
     void addGroup(Group group) {

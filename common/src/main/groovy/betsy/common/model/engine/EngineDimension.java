@@ -5,7 +5,7 @@ public interface EngineDimension {
     EngineExtended getEngineObject();
 
     default String getEngineID() {
-        return getEngineObject().getID();
+        return getEngineObject().getId();
     }
 
 }

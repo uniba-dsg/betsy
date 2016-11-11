@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
-import pebl.HasID;
+import pebl.HasId;
 import pebl.HasName;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Tool implements HasID, HasName {
+public class Tool implements HasId, HasName {
 
     @XmlElement(required = true)
     private final String name;
@@ -47,7 +47,7 @@ public class Tool implements HasID, HasName {
     @Override
     @XmlAttribute(required = true)
     @XmlID
-    public String getID() {
+    public String getId() {
         return String.join(SEPARATOR, name, version);
     }
 }

@@ -5,12 +5,13 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
+import pebl.HasId;
+
 @XmlAccessorType(XmlAccessType.NONE)
-public class Metric {
+public class Metric implements HasId {
 
     @XmlAttribute(required = true)
     @XmlID
@@ -26,7 +27,7 @@ public class Metric {
 
     public Metric(MetricType metricType, String idPrefix) {
         this.metricType = Objects.requireNonNull(metricType);
-        this.id = idPrefix + "-" + metricType.getDataType() + "-" + metricType.getId();
+        this.id = String.join(HasId.SEPARATOR, idPrefix, metricType.getId());
     }
 
     public String getId() {

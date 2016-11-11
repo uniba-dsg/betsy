@@ -2,10 +2,10 @@ package pebl;
 
 import javax.xml.bind.annotation.XmlID;
 
-public interface HasID {
+public interface HasId {
 
     public static final String SEPARATOR = "__";
 
-    String getID();
+    String getId();
 
 }

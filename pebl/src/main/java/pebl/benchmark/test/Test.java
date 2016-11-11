@@ -20,18 +20,15 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import pebl.HasID;
+import pebl.HasId;
 import pebl.HasName;
-import pebl.ProcessLanguage;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureDimension;
 import pebl.benchmark.feature.Metric;
 import pebl.benchmark.feature.MetricType;
-import pebl.benchmark.feature.ValueType;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension {
+public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension {
 
     @XmlIDREF
     @XmlElement(required = true)
@@ -64,7 +61,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     private final List<Metric> metrics = new LinkedList<>();
 
     public Test addMetric(MetricType type) {
-        metrics.add(new Metric(type, getID()));
+        metrics.add(new Metric(type, getId()));
 
         return this;
     }
@@ -106,7 +103,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         this.files = new ArrayList<>(Objects.requireNonNull(files));
         this.additionalData = Collections.emptyMap();
 
-        this.id = String.join(HasID.SEPARATOR,getFeature().getID(), "test");
+        this.id = String.join(HasId.SEPARATOR,getFeature().getId(), "test");
     }
 
     public Test(Path process, List<TestCase> testCases,
@@ -233,7 +230,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
     }
 

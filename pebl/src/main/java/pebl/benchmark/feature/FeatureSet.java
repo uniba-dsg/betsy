@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlID;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasName;
-import pebl.HasID;
+import pebl.HasId;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class FeatureSet implements HasID, HasName {
+public class FeatureSet implements HasId, HasName {
 
     @XmlInverseReference(mappedBy="featureSets")
     private final Group group;
@@ -38,7 +38,7 @@ public class FeatureSet implements HasID, HasName {
     private final List<Metric> metrics = new LinkedList<>();
 
     public FeatureSet addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getID()));
+        metrics.add(new Metric(scriptMetricType, getId()));
 
         return this;
     }
@@ -58,7 +58,7 @@ public class FeatureSet implements HasID, HasName {
 
         this.group.addFeatureSet(this);
 
-        this.id = String.join(HasID.SEPARATOR, group.getID(), name);
+        this.id = String.join(HasId.SEPARATOR, group.getId(), name);
     }
 
     public List<Feature> getFeatures() {
@@ -70,7 +70,7 @@ public class FeatureSet implements HasID, HasName {
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
     }
 
@@ -86,12 +86,12 @@ public class FeatureSet implements HasID, HasName {
         if (o == null || getClass() != o.getClass())
             return false;
         FeatureSet featureSet = (FeatureSet) o;
-        return Objects.equals(getID(), featureSet.getID());
+        return Objects.equals(getId(), featureSet.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID());
+        return Objects.hash(getId());
     }
 
     public Group getGroup() {

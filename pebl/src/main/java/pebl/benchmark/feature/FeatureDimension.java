@@ -37,7 +37,7 @@ public interface FeatureDimension {
     }
 
     default String getFeatureID() {
-        return getFeature().getID();
+        return getFeature().getId();
     }
 
     Feature getFeature();

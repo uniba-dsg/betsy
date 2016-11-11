@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
-import pebl.HasID;
+import pebl.HasId;
 import pebl.HasName;
 
 import static java.util.Objects.requireNonNull;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public final class Engine implements HasID, HasName {
+public final class Engine implements HasId, HasName {
 
     public static final String DELIMITER = "--";
 
@@ -66,7 +66,7 @@ public final class Engine implements HasID, HasName {
     }
 
     private String getNormalizedId() {
-        return getId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
+        return getIdentifier().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
     }
 
     @Override
@@ -88,7 +88,7 @@ public final class Engine implements HasID, HasName {
         return Objects.hashCode(toString());
     }
 
-    private String getId() {
+    private String getIdentifier() {
         List<String> values = new LinkedList<>();
         values.add(name);
         values.add(version);
@@ -112,7 +112,7 @@ public final class Engine implements HasID, HasName {
     @Override
     @XmlAttribute(required = true)
     @XmlID
-    public String getID() {
+    public String getId() {
         return getNormalizedId();
     }
 

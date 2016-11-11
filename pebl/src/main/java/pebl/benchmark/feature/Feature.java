@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import pebl.HasID;
+import pebl.HasId;
 import pebl.HasName;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Feature implements HasID, HasName {
+public class Feature implements HasId, HasName {
 
     @XmlInverseReference(mappedBy="features")
     private final FeatureSet featureSet;
@@ -34,7 +34,7 @@ public class Feature implements HasID, HasName {
     private final List<Metric> metrics = new LinkedList<>();
 
     public Feature addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getID()));
+        metrics.add(new Metric(scriptMetricType, getId()));
 
         return this;
     }
@@ -52,13 +52,13 @@ public class Feature implements HasID, HasName {
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
 
-        this.id = String.join(HasID.SEPARATOR, featureSet.getID(), name);
+        this.id = String.join(HasId.SEPARATOR, featureSet.getId(), name);
 
         this.featureSet.addFeature(this);
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
     }
 
@@ -74,12 +74,12 @@ public class Feature implements HasID, HasName {
         if (o == null || getClass() != o.getClass())
             return false;
         Feature feature = (Feature) o;
-        return Objects.equals(getID(), feature.getID());
+        return Objects.equals(getId(), feature.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID());
+        return Objects.hash(getId());
     }
 
     public String getDescription() {
