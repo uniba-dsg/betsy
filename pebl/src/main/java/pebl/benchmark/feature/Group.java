@@ -35,10 +35,10 @@ public class Group implements HasID, HasName {
     private final String id;
 
     @XmlElement
-    private final List<AggregatedMetric> derivedMetrics = new LinkedList<>();
+    private final List<Metric> metrics = new LinkedList<>();
 
-    public Group addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
-        derivedMetrics.add(new AggregatedMetric(type, name, description, unit, getID(), groovyScript));
+    public Group addMetric(ScriptMetricType scriptMetricType) {
+        metrics.add(new Metric(scriptMetricType, getID()));
 
         return this;
     }

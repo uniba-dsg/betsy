@@ -32,10 +32,10 @@ public class Language implements HasID, HasName {
     private final String id;
 
     @XmlElement
-    private final List<AggregatedMetric> derivedMetrics = new LinkedList<>();
+    private final List<Metric> metrics = new LinkedList<>();
 
-    public Language addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
-        derivedMetrics.add(new AggregatedMetric(type, name, description, unit, getID(), groovyScript));
+    public Language addMetric(ScriptMetricType scriptMetricType) {
+        metrics.add(new Metric(scriptMetricType, getID()));
 
         return this;
     }

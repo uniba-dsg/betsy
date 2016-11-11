@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlID;
 
 import pebl.HasName;
@@ -25,13 +24,13 @@ public class Capability implements HasID, HasName {
     private final List<Language> languages = new LinkedList<>();
 
     @XmlElement
-    private final List<AggregatedMetric> derivedMetrics = new LinkedList<>();
+    private final List<Metric> metrics = new LinkedList<>();
 
     @XmlElement
     private final List<Characteristic> characteristics = new LinkedList<>();
 
-    public Capability addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
-        derivedMetrics.add(new AggregatedMetric(type, name, description, unit, getID(), groovyScript));
+    public Capability addMetric(ScriptMetricType scriptMetricType) {
+        metrics.add(new Metric(scriptMetricType, getID()));
 
         return this;
     }

@@ -10,10 +10,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.test.Test;
 import pebl.result.engine.Engine;
 import pebl.result.feature.FeatureResult;
@@ -53,6 +55,11 @@ public class PEBL {
         @XmlElement(name = "test")
         @XmlElementWrapper(name = "tests")
         public List<Test> tests = new LinkedList<>();
+
+        @XmlElement(name = "metricType")
+        @XmlElementWrapper(name = "metricTypes")
+        @XmlElementRef
+        public List<MetricType> metricTypes = new LinkedList<>();
 
     }
 

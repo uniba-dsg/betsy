@@ -27,6 +27,7 @@ import pebl.ProcessLanguage;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureDimension;
 import pebl.benchmark.feature.Metric;
+import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.feature.ValueType;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -63,8 +64,8 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     @XmlElementWrapper(name="metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
-    public Test addMetric(ValueType type, String name, String description, String unit) {
-        metrics.add(new Metric(type, name, description, unit, getID()));
+    public Test addMetric(MetricType type) {
+        metrics.add(new Metric(type, getID()));
 
         return this;
     }

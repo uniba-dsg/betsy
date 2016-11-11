@@ -12,6 +12,7 @@ import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.IsEngine;
 import betsy.common.util.GitUtil;
+import configuration.Capabilities;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import pebl.benchmark.feature.Feature;
@@ -29,6 +30,7 @@ public class PEBLBuilder {
         pebl.result.engines.addAll(getEngines());
         pebl.benchmark.tests.addAll(getTests().stream().collect(Collectors.toList()));
         pebl.benchmark.capabilities.addAll(new Features(getFeatures()).capabilities);
+        pebl.benchmark.metricTypes.addAll(Capabilities.getMetricTypes());
         return pebl;
     }
 

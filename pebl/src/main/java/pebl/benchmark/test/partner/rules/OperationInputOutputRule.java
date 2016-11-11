@@ -4,13 +4,14 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public final class OperationInputOutputRule {
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final String operation;
 
     @XmlElement(required = true)
@@ -34,7 +35,6 @@ public final class OperationInputOutputRule {
         this.operation = Objects.requireNonNull(operation);
         this.input = Objects.requireNonNull(input);
     }
-
 
     public String getOperation() {
         return operation;
