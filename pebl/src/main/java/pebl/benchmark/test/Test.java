@@ -35,7 +35,6 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
 
     @XmlIDREF
     @XmlElement(required = true)
-    // TODO maybe add this @XmlInverseReference(mappedBy = )
     private final Feature feature;
 
     @XmlElement(required = true)

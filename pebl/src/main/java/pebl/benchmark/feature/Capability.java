@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 
 import pebl.HasName;
@@ -26,7 +27,8 @@ public class Capability implements HasID, HasName {
     @XmlElement
     private final List<Metric> metrics = new LinkedList<>();
 
-    @XmlElement
+    @XmlElement(name="characteristic")
+    @XmlElementWrapper(name="characteristics")
     private final List<Characteristic> characteristics = new LinkedList<>();
 
     public Capability addMetric(ScriptMetricType scriptMetricType) {

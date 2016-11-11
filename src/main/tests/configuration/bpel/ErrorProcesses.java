@@ -6,31 +6,33 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import pebl.benchmark.feature.FeatureSet;
+import betsy.common.tasks.FileTasks;
 import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.test.Test;
+import pebl.benchmark.test.TestPartner;
+import pebl.benchmark.test.partner.NoTestPartner;
+import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import pebl.benchmark.test.partner.WSDLTestPartner;
 import pebl.benchmark.test.partner.rules.AnyInput;
-import pebl.benchmark.test.partner.rules.SoapMessageInput;
-import pebl.benchmark.test.partner.NoTestPartner;
-import pebl.benchmark.test.TestPartner;
-import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
-import betsy.common.tasks.FileTasks;
 import pebl.benchmark.test.partner.rules.NoOutput;
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
+import pebl.benchmark.test.partner.rules.SoapMessageInput;
 import pebl.benchmark.test.partner.rules.SoapMessageOutput;
 
 public class ErrorProcesses {
 
-    public static final TestPartner ERROR_TEST_PARTNER = createErrorTestPartner("http://localhost:2000/bpel-testpartner");
+    public static final TestPartner ERROR_TEST_PARTNER = createErrorTestPartner("http://localhost:2000/bpel-testpartner", 22500);
 
     // TODO 50_002 and 50_003 should be better handled
     // TODO better naming according to the feature-tree for these tests
@@ -112,28 +114,40 @@ public class ErrorProcesses {
         return result;
     }
 
+    //TODO soap raw output is not correctly set
+
     private static final FeatureSet HTTP_CONSTRUCT = new FeatureSet(Groups.ERROR, "http");
     private static final FeatureSet SOAP_CONSTRUCT = new FeatureSet(Groups.ERROR, "soap");
     private static final FeatureSet TCP_CONSTRUCT = new FeatureSet(Groups.ERROR, "tcp");
     private static final FeatureSet APP_CONSTRUCT = new FeatureSet(Groups.ERROR, "app");
 
-    static TestPartner createErrorTestPartner(String url) {
+    static TestPartner createErrorTestPartner(String url, int errorId) {
+
+        Map<Integer, OperationInputOutputRule> errorIdToRule = new HashMap<>();
+
         List<OperationInputOutputRule> tcpActions = new ArrayList<>();
-        tcpActions.add(new OperationInputOutputRule(
-                        "startProcessSync",
-                        new SoapMessageInput(50_001),
-                new NoOutput()));
+        final OperationInputOutputRule rule_50_001 = new OperationInputOutputRule(
+                "startProcessSync",
+                new SoapMessageInput(50_001),
+                new NoOutput());
+        tcpActions.add(rule_50_001);
+        errorIdToRule.put(50_001, rule_50_001);
 
         List<OperationInputOutputRule> httpActions = IntStream.of(
                 100, 101,
                 201, 202, 203, 204, 205, 206,
                 300, 301, 302, 303, 304, 305, 306, 307,
                 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417,
-                500, 501, 502, 503, 504, 505).mapToObj(i -> new OperationInputOutputRule(
-                        "startProcessSync",
-                        new SoapMessageInput(i + 22_000),
-                        new SoapMessageOutput(0, i)
-                )
+                500, 501, 502, 503, 504, 505).mapToObj(i -> {
+                    final OperationInputOutputRule rule = new OperationInputOutputRule(
+                            "startProcessSync",
+                            new SoapMessageInput(i + 22_000),
+                            new SoapMessageOutput(0, i)
+
+                    );
+                    errorIdToRule.put(i + 22_000, rule);
+                    return rule;
+                }
         ).collect(Collectors.toList());
 
         List<OperationInputOutputRule> soapActions = IntStream.range(60_001, 60_027).mapToObj(i -> {
@@ -141,16 +155,18 @@ public class ErrorProcesses {
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/soap");
                 Optional<Path> foundXmlFile = Files.walk(folder).filter(f -> f.getFileName().toString().startsWith(String.valueOf(i))).findFirst();
-                if(foundXmlFile.isPresent()) {
+                if (foundXmlFile.isPresent()) {
                     rawOutput = String.join("\n", Files.readAllLines(foundXmlFile.get()));
                 }
             } catch (IOException e) {
             }
 
-            return new OperationInputOutputRule(
+            final OperationInputOutputRule rule = new OperationInputOutputRule(
                     "startProcessSync",
                     new SoapMessageInput(i),
                     new SoapMessageOutput(rawOutput, 200));
+            errorIdToRule.put(i, rule);
+            return rule;
         }).collect(Collectors.toList());
 
         List<OperationInputOutputRule> appActions = IntStream.range(40_001, 40_027).mapToObj(i -> {
@@ -158,32 +174,36 @@ public class ErrorProcesses {
             try {
                 Path folder = Paths.get("src/tests/files/bpel/errrorsbase/app");
                 Optional<Path> foundXmlFile = Files.walk(folder).filter(f -> f.getFileName().toString().startsWith(String.valueOf(i))).findFirst();
-                if(foundXmlFile.isPresent()) {
+                if (foundXmlFile.isPresent()) {
                     rawOutput = String.join("\n", Files.readAllLines(foundXmlFile.get()));
                 }
             } catch (IOException e) {
             }
 
-            return new OperationInputOutputRule(
+            final OperationInputOutputRule rule = new OperationInputOutputRule(
                     "startProcessSync",
                     new SoapMessageInput(i),
                     new SoapMessageOutput(rawOutput, 200));
+            errorIdToRule.put(i, rule);
+            return rule;
         }).collect(Collectors.toList());
 
         List<OperationInputOutputRule> actions = new ArrayList<>();
         actions.addAll(httpActions);
         actions.addAll(soapActions);
         actions.addAll(appActions);
-        actions.add(new OperationInputOutputRule("startProcessSync", new AnyInput(), new NoOutput()));  // TODO normally echo, but is ignored
+        final OperationInputOutputRule defaultRule = new OperationInputOutputRule("startProcessSync", new AnyInput(), new NoOutput());
+        actions.add(defaultRule);  // TODO normally echo, but is ignored
 
         return new RuleBasedWSDLTestPartner(
                 Paths.get("TestPartner.wsdl"),
                 url,
-                actions.toArray(new OperationInputOutputRule[] {})
+                new OperationInputOutputRule[] { errorIdToRule.get(errorId), defaultRule }
         );
     }
 
     private static class Error {
+
         public final int number;
         public final String name;
         public final FeatureSet featureSet;
@@ -193,7 +213,7 @@ public class ErrorProcesses {
             this.number = number;
             this.name = name;
             this.featureSet = featureSet;
-            this.testPartner = ErrorProcesses.createErrorTestPartner("http://localhost:2000/bpel-testpartner");
+            this.testPartner = ErrorProcesses.createErrorTestPartner("http://localhost:2000/bpel-testpartner", number);
         }
 
         public Error(int number, String name, FeatureSet featureSet, TestPartner testPartner) {
