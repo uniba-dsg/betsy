@@ -26,7 +26,7 @@ public class XmlMainTest {
         Files.createDirectories(round1);
 
         Path round1peblxml = round1.resolve("pebl.xml");
-        PEBL pebl = XmlMain.getPebl();
+        PEBL pebl = PEBLBuilder.getPebl();
         JAXB.marshal(pebl, round1peblxml.toFile());
         PEBL peblFromXml = JAXB.unmarshal(round1peblxml.toFile(), PEBL.class);
 
@@ -58,7 +58,7 @@ public class XmlMainTest {
         Files.createDirectories(round1);
 
         Path round1peblJson = round1.resolve("pebl.json");
-        marshaller.marshal(XmlMain.getPebl(), round1peblJson.toFile());
+        marshaller.marshal(PEBLBuilder.getPebl(), round1peblJson.toFile());
         PEBL peblFromJson = (PEBL) unmarshaller.unmarshal(round1peblJson.toFile());
 
         Path round2 = tempDirectory.resolve("round2");

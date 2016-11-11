@@ -2,7 +2,9 @@ package pebl.result;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import pebl.benchmark.feature.Metric;
@@ -11,10 +13,11 @@ import pebl.benchmark.feature.Metric;
 public class Measurement {
 
     @XmlIDREF
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final Metric metric;
 
     @XmlElement(required = true)
+    @XmlElementRef
     private final Value value;
 
     public Measurement() {

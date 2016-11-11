@@ -6,15 +6,16 @@ import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.reporting.BPMNCsvReport;
 import betsy.bpmn.reporting.BPMNReporter;
 import betsy.common.analytics.Analyzer;
-import betsy.tools.TestsEngineDependent;
+import betsy.tools.PEBLBuilder;
+import betsy.tools.PEBLTestResultsEnricher;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
-import betsy.tools.JsonMain;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.codehaus.groovy.runtime.StackTraceUtils;
+import pebl.xsd.PEBL;
 
 import java.nio.file.Path;
 
@@ -86,8 +87,10 @@ public class BPMNComposite {
         log(testSuite.getReportsPath(), () -> {
             new BPMNReporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPMNCsvReport());
-            new TestsEngineDependent().createJson(testSuite);
-            JsonMain.writeIntoSpecificFolder(testSuite.getPath());
+
+            PEBL pebl = PEBLBuilder.getPebl();
+            new PEBLTestResultsEnricher().addTestResults(testSuite, pebl);
+            pebl.writeTo(testSuite.getPath());
         });
     }
 

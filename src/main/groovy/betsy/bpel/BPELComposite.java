@@ -1,30 +1,29 @@
 package betsy.bpel;
 
+import java.nio.file.Path;
+
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestSuite;
 import betsy.bpel.reporting.BPELCsvReport;
 import betsy.bpel.reporting.Reporter;
 import betsy.common.analytics.Analyzer;
-import betsy.tools.TestsEngineDependent;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
-import betsy.tools.JsonMain;
+import betsy.tools.PEBLBuilder;
+import betsy.tools.PEBLTestResultsEnricher;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.codehaus.groovy.runtime.StackTraceUtils;
-
-import java.nio.file.Path;
+import pebl.xsd.PEBL;
 
 import static betsy.common.config.Configuration.get;
 
 public class BPELComposite {
-
-
 
     private static final Logger LOGGER = Logger.getLogger(BPELComposite.class);
 
@@ -74,10 +73,10 @@ public class BPELComposite {
                         try {
                             executeProcess(process);
                         } catch (Exception e) {
-                            if(get("continue.on.exception").contains("true")){
+                            if (get("continue.on.exception").contains("true")) {
                                 Throwable cleanedException = StackTraceUtils.deepSanitize(e);
                                 LOGGER.error("something went wrong during execution", cleanedException);
-                            }else{
+                            } else {
                                 throw e;
                             }
                         }
@@ -100,8 +99,10 @@ public class BPELComposite {
         log(testSuite.getReportsPath(), () -> {
             new Reporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPELCsvReport());
-            new TestsEngineDependent().createJson(testSuite);
-            JsonMain.writeIntoSpecificFolder(testSuite.getPath());
+
+            PEBL pebl = PEBLBuilder.getPebl();
+            new PEBLTestResultsEnricher().addTestResults(testSuite, pebl);
+            pebl.writeTo(testSuite.getPath());
         });
     }
 
@@ -144,7 +145,7 @@ public class BPELComposite {
                     testingAPI.startup();
                 } catch (Exception ignore) {
                     testingAPI.shutdown();
-                    LOGGER.debug("Address already in use - waiting " + TimeoutRepository.getTimeout("BPELCompositetest").getTimeoutInSeconds()+ " seconds to get available");
+                    LOGGER.debug("Address already in use - waiting " + TimeoutRepository.getTimeout("BPELCompositetest").getTimeoutInSeconds() + " seconds to get available");
                     WaitTasks.sleep(TimeoutRepository.getTimeout("BPELComposite.test").getTimeoutInMs());
                     testingAPI.startup();
                 }

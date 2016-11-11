@@ -6,7 +6,6 @@ import betsy.bpmn.BPMNMain;
 import betsy.tools.AnalyticsMain;
 import betsy.tools.EngineControlGUI;
 import betsy.tools.EngineMain;
-import betsy.tools.JsonMain;
 import betsy.tools.ProcessMain;
 import betsy.tools.TestsPerGroup;
 import betsy.tools.TimeoutCalibrator;
@@ -29,8 +28,6 @@ public class Main {
             ProcessMain.main(createArgsWithoutFirstValue(args));
         } else if ("analytics".equalsIgnoreCase(args[0])) {
             AnalyticsMain.main(createArgsWithoutFirstValue(args));
-        } else if ("json".equalsIgnoreCase(args[0])) {
-            JsonMain.main(new String[] {});
         } else if ("enginecontrol".equalsIgnoreCase(args[0])) {
             EngineControlGUI.main(new String[] {});
         } else if ("partnerservice".equalsIgnoreCase(args[0])) {

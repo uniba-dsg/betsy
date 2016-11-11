@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import betsy.bpel.model.BPELTestCase;
+import configuration.Capabilities;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.test.Test;
@@ -39,11 +40,11 @@ class StaticAnalysisProcesses {
                 if (isTestDirectory) {
                     Path process = getBpelFileInFolder(dir);
                     String rule = getRule(process);
-                    result.add(new Test(process,
+                    result.add(Capabilities.addMetrics(new Test(process,
                             FileTasks.getFilenameWithoutExtension(process),
                             Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
                             new Feature(new FeatureSet(Groups.SA, rule), process.getFileName().toString()),
-                            createXSDandWSDLPaths(dir), Collections.emptyList()));
+                            createXSDandWSDLPaths(dir), Collections.emptyList())));
                 }
             });
 

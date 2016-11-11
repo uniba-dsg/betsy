@@ -236,5 +236,9 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     public String getID() {
         return id;
     }
+
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
 }
 

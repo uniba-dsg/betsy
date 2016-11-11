@@ -6,10 +6,12 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import pebl.result.Value;
 
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement
 public class AggregatedValue extends Value {
 
     private static final double MIN = Double.MIN_VALUE;
