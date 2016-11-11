@@ -61,7 +61,11 @@ public class PEBLAggregator {
                 // ensure that only the test results relevant for the metric are there
                 List<TestResult> testResults = entry.getValue()
                         .stream()
-                        .filter(tr -> metric.getId().equals(tr.getTest().getCapability().getId() + HasId.SEPARATOR + scriptMetricType.getId()))
+                        .filter(tr -> {
+                            final String postfix = HasId.SEPARATOR + metric.getMetricType().getId();
+                            final String featureTreeIdMetricReferences = metric.getId().replace(postfix, "");
+                            return tr.getTest().getId().startsWith(featureTreeIdMetricReferences);
+                        })
                         .collect(Collectors.toList());
 
                 if (testResults.isEmpty()) {
