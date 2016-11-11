@@ -170,8 +170,6 @@ public class PEBLTestResultsEnricher {
             Document document = docBuilder.parse(reportTestCasePath.toFile());
             NodeList testCaseNodes = document.getElementsByTagName("testcase");
 
-            JSONArray testCases = new JSONArray();
-
             List<TestCaseResult> testCaseResults = new LinkedList<>();
 
             for (int i = 0; i < testCaseNodes.getLength(); i++) {
@@ -183,6 +181,8 @@ public class PEBLTestResultsEnricher {
 
             return testCaseResults;
         } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+
             return new LinkedList<>();
         }
     }

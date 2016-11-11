@@ -43,14 +43,14 @@ public class BPMNTestCaseBuilder {
             result.addStep(processStartWithVariablesTestStep);
 
             // add delay
-            DelayTesting delayTestStep = new DelayTesting();
-            delayTestStep.setMilliseconds(delay);
-            result.addStep(delayTestStep);
+            if(delay != 0) {
+                DelayTesting delayTestStep = new DelayTesting();
+                delayTestStep.setMilliseconds(delay);
+                result.addStep(delayTestStep);
+            }
         }
 
-        // add trace gathering step
-
-        // add trace evaluation step
+        // add trace gathering / evaluation step
         GatherTraces gatherTracesTestStep = new GatherTraces();
         traces.forEach(trace -> gatherTracesTestStep.addAssertion(new AssertTrace(trace)));
         result.addStep(gatherTracesTestStep);

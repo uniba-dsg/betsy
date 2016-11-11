@@ -42,7 +42,10 @@ public class Capabilities {
             test.addMetric(ValueType.AGGREGATED, "io", "The IO utilization in MegaByte.", "MB");
             test.addMetric(ValueType.AGGREGATED, "executionDuration", "The time the execution of this particular test.", "milliseconds");
             test.addMetric(ValueType.AGGREGATED, "executionTimestamp", "The time the execution of this particular test has been started.", "timestamp");
-        } else if(test.getCapability().equals(ROBUSTNESS) || test.getCapability().equals(CONFORMANCE) || test.getCapability().equals(EXPRESSIVENESS)) {
+        } else if(test.getCapability().equals(ROBUSTNESS)
+                || test.getCapability().equals(CONFORMANCE)
+                || test.getCapability().equals(EXPRESSIVENESS)
+                || test.getCapability().equals(STATIC_ANALYSIS)) {
             test.addMetric(ValueType.LONG, "testCases", "The number of test cases.", "quantity");
             test.addMetric(ValueType.LONG, "testCaseSuccesses", "The number of successful test cases.", "quantity");
             test.addMetric(ValueType.LONG, "testCaseFailures", "The number of failed test cases.", "quantity");
