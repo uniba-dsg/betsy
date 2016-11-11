@@ -197,6 +197,30 @@ public class PEBLAggregator {
                     .stream()
                     .count()
             );
+        } else if (scriptMetricType.getId().equals("support")) {
+            final int max = testResults
+                    .stream()
+                    .map(tr -> {
+                                final String testResult = tr.getMeasurements()
+                                        .stream()
+                                        .filter(m -> m.getMetric().getMetricType().getId().equals("testResult"))
+                                        .findFirst()
+                                        .map(Measurement::getValue)
+                                        .map(v -> (StringValue) v)
+                                        .map(StringValue::getValue)
+                                        .orElse("-");
+                                String extensionLanguageSupport = tr.getTest().getFeature().getExtension().get(PEBLBuilder.EXTENSION_LANGUAGE_SUPPORT);
+                                if (testResult == "+") {
+                                    return extensionLanguageSupport;
+                                } else {
+                                    return "-";
+                                }
+                            }
+                    )
+                    .mapToInt(s -> s.equals("+") ? 2 : s.equals("+/-") ? 1 : 0)
+                    .max().orElse(0);
+
+            return new StringValue(max == 2 ? "+" : max == 1 ? "+/-" : "-");
         }
 
         throw new IllegalStateException("Cannot compute metric " + scriptMetricType);

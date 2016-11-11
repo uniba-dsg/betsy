@@ -32,6 +32,7 @@ public class MetricTypes {
     public static final ScriptMetricType TEST_DEPLOYABLE_COUNT = new ScriptMetricType(ValueType.LONG, "testDeployableCount", "Sum of the test cases", "count", "COUNT(testDeployable)");
     public static final ScriptMetricType TEST_SUCCESSFUL_COUNT = new ScriptMetricType(ValueType.LONG, "testSuccessfulCount", "Sum of the test cases", "count", "COUNT(testSuccessful)");
     public static final ScriptMetricType TEST_RESULT_TRIVALENT_AGGREGATION = new ScriptMetricType(ValueType.STRING, "testResultTrivalentAggregation", "Sum of the test cases", "trivalent", "TRIVALENT_AGGREGATION(testResult)");
+    public static final ScriptMetricType PATTERN_SUPPORT = new ScriptMetricType(ValueType.STRING, "support", "Support", "trivalent", "TRIVALENT_MAX(testResult,languageSupport)");
 
     public static List<? extends MetricType> getMetricTypes() {
         final LinkedList<MetricType> metricTypes = new LinkedList<>();

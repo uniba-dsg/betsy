@@ -1,7 +1,9 @@
 package pebl.benchmark.feature;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,11 +13,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
+import pebl.HasExtension;
 import pebl.HasId;
 import pebl.HasName;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Feature implements HasId, HasName {
+public class Feature implements HasId, HasName, HasExtension {
 
     @XmlInverseReference(mappedBy="features")
     private final FeatureSet featureSet;
@@ -32,6 +35,9 @@ public class Feature implements HasId, HasName {
 
     @XmlElement
     private final List<Metric> metrics = new LinkedList<>();
+
+    @XmlElement
+    private final Map<String, String> extension = new HashMap<>();
 
     public Feature addMetric(ScriptMetricType scriptMetricType) {
         metrics.add(new Metric(scriptMetricType, getId()));
@@ -92,5 +98,16 @@ public class Feature implements HasId, HasName {
 
     public List<Metric> getMetrics() {
         return metrics;
+    }
+
+    @Override
+    public Map<String, String> getExtension() {
+        return extension;
+    }
+
+    @Override public Feature addExtension(String key, String value) {
+        extension.put(key, value);
+
+        return this;
     }
 }

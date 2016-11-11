@@ -13,13 +13,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import pebl.result.engine.Engine;
-import pebl.result.Measurement;
+import pebl.HasExtension;
 import pebl.benchmark.test.Test;
+import pebl.result.Measurement;
+import pebl.result.engine.Engine;
 import pebl.result.tool.Tool;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class TestResult {
+public class TestResult implements HasExtension {
 
     @XmlElement(required = true)
     @XmlIDREF
@@ -33,26 +34,26 @@ public class TestResult {
     @XmlIDREF
     private final Tool tool;
 
-    @XmlElement(name="logFile")
-    @XmlElementWrapper(name="logFiles")
+    @XmlElement(name = "logFile")
+    @XmlElementWrapper(name = "logFiles")
     private final List<Path> logFiles;
 
     @XmlElement(required = true)
     private final Path deploymentPackage;
 
-    @XmlElement(name="file")
-    @XmlElementWrapper(name="files")
+    @XmlElement(name = "file")
+    @XmlElementWrapper(name = "files")
     private final List<Path> files;
 
-    @XmlElement(name="measurement")
-    @XmlElementWrapper(name="measurements")
+    @XmlElement(name = "measurement")
+    @XmlElementWrapper(name = "measurements")
     private final List<Measurement> measurements;
 
     @XmlElement
     private final Map<String, String> extension;
 
-    @XmlElement(name="testCaseResult")
-    @XmlElementWrapper(name="testCaseResults")
+    @XmlElement(name = "testCaseResult")
+    @XmlElementWrapper(name = "testCaseResults")
     private final List<TestCaseResult> testCaseResults;
 
     TestResult() {
@@ -113,6 +114,13 @@ public class TestResult {
 
     public Map<String, String> getExtension() {
         return extension;
+    }
+
+    @Override
+    public TestResult addExtension(String key, String value) {
+        extension.put(key, value);
+
+        return this;
     }
 
     public List<TestCaseResult> getTestCaseResults() {

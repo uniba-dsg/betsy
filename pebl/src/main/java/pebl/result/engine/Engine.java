@@ -12,13 +12,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
+import pebl.HasExtension;
 import pebl.HasId;
 import pebl.HasName;
 
 import static java.util.Objects.requireNonNull;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public final class Engine implements HasId, HasName {
+public final class Engine implements HasId, HasName, HasExtension {
 
     public static final String DELIMITER = "--";
 
@@ -116,4 +117,14 @@ public final class Engine implements HasId, HasName {
         return getNormalizedId();
     }
 
+    @Override public Map<String, String> getExtension() {
+        return extension;
+    }
+
+    @Override
+    public Engine addExtension(String key, String value) {
+        extension.put(key, value);
+
+        return this;
+    }
 }

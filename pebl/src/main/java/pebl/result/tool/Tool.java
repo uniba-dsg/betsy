@@ -10,11 +10,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
+import pebl.HasExtension;
 import pebl.HasId;
 import pebl.HasName;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Tool implements HasId, HasName {
+public class Tool implements HasId, HasName, HasExtension {
 
     @XmlElement(required = true)
     private final String name;
@@ -49,5 +50,17 @@ public class Tool implements HasId, HasName {
     @XmlID
     public String getId() {
         return String.join(SEPARATOR, name, version);
+    }
+
+    @Override
+    public Map<String, String> getExtension() {
+        return extension;
+    }
+
+    @Override
+    public Tool addExtension(String key, String value) {
+        extension.put(key, value);
+
+        return this;
     }
 }

@@ -21,6 +21,8 @@ package "feature result" {
 package "feature" {
 
 	class Metric
+	class MetricType
+	class ScriptMetricType extends MetricType
 
 	class Feature
 	class Capability
@@ -33,6 +35,8 @@ package "feature" {
 	Language --> Metric
 	Group --> Metric
 	FeatureSet --> Metric
+
+	Metric -left-> MetricType
 
 }
 
