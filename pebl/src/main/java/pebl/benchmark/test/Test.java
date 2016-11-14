@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +20,19 @@ import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import pebl.HasExtension;
+import pebl.HasExtensions;
 import pebl.HasId;
 import pebl.HasName;
+import pebl.MapAdapter;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureDimension;
 import pebl.benchmark.feature.Metric;
 import pebl.benchmark.feature.MetricType;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension, HasExtension {
+public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension, HasExtensions {
 
     @XmlIDREF
     @XmlElement(required = true)
@@ -54,8 +57,8 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     @XmlElementWrapper( name="testPartners" )
     private final List<TestPartner> partners;
 
-    @XmlElement
-    private final Map<String, String> extension;
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions;
 
     @XmlElement(name = "metric")
     @XmlElementWrapper(name="metrics")
@@ -102,7 +105,7 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
         this.description = Objects.requireNonNull(description);
         this.testCases = uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases)));
         this.files = new ArrayList<>(Objects.requireNonNull(files));
-        this.extension = Collections.emptyMap();
+        this.extensions = new HashMap<>();
 
         this.id = String.join(HasId.SEPARATOR,getFeature().getId(), "test");
     }
@@ -112,14 +115,14 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
             List<Path> files,
             String description,
             List<TestPartner> partners,
-            Map<String, String> extension) {
+            Map<String, String> extensions) {
         this.process = process;
         this.testCases = testCases;
         this.feature = feature;
         this.files = files;
         this.description = description;
         this.partners = partners;
-        this.extension = extension;
+        this.extensions = extensions;
         this.id = "";
     }
 
@@ -226,12 +229,12 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
         return Collections.unmodifiableList(partners);
     }
 
-    public Map<String, String> getExtension() {
-        return extension;
+    public Map<String, String> getExtensions() {
+        return extensions;
     }
 
     public Test addExtension(String key, String value) {
-        extension.put(key, value);
+        extensions.put(key, value);
 
         return this;
     }

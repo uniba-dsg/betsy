@@ -9,13 +9,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import pebl.HasExtension;
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+import pebl.HasExtensions;
 import pebl.HasId;
 import pebl.HasName;
+import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Tool implements HasId, HasName, HasExtension {
+public class Tool implements HasId, HasName, HasExtensions {
 
     @XmlElement(required = true)
     private final String name;
@@ -23,8 +26,8 @@ public class Tool implements HasId, HasName, HasExtension {
     @XmlElement(required = true)
     private final String version;
 
-    @XmlElement
-    private final Map<String, String> extension;
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions;
 
     public Tool() {
         this("", "");
@@ -33,7 +36,7 @@ public class Tool implements HasId, HasName, HasExtension {
     public Tool(String name, String version) {
         this.name = Objects.requireNonNull(name);
         this.version = Objects.requireNonNull(version);
-        this.extension = Collections.emptyMap();
+        this.extensions = Collections.emptyMap();
     }
 
     @Override
@@ -53,13 +56,13 @@ public class Tool implements HasId, HasName, HasExtension {
     }
 
     @Override
-    public Map<String, String> getExtension() {
-        return extension;
+    public Map<String, String> getExtensions() {
+        return extensions;
     }
 
     @Override
     public Tool addExtension(String key, String value) {
-        extension.put(key, value);
+        extensions.put(key, value);
 
         return this;
     }

@@ -12,15 +12,17 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import pebl.HasExtension;
+import pebl.HasExtensions;
+import pebl.MapAdapter;
 import pebl.benchmark.test.Test;
 import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 import pebl.result.tool.Tool;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class TestResult implements HasExtension {
+public class TestResult implements HasExtensions {
 
     @XmlElement(required = true)
     @XmlIDREF
@@ -49,8 +51,8 @@ public class TestResult implements HasExtension {
     @XmlElementWrapper(name = "measurements")
     private final List<Measurement> measurements;
 
-    @XmlElement
-    private final Map<String, String> extension;
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions;
 
     @XmlElement(name = "testCaseResult")
     @XmlElementWrapper(name = "testCaseResults")
@@ -71,7 +73,7 @@ public class TestResult implements HasExtension {
             Path deploymentPackage,
             List<Path> files,
             List<Measurement> measurements,
-            Map<String, String> extension,
+            Map<String, String> extensions,
             List<TestCaseResult> testCaseResults) {
         this.test = test;
         this.engine = engine;
@@ -80,7 +82,7 @@ public class TestResult implements HasExtension {
         this.deploymentPackage = deploymentPackage;
         this.files = new ArrayList<>(files);
         this.measurements = measurements;
-        this.extension = extension;
+        this.extensions = extensions;
         this.testCaseResults = new ArrayList<>(testCaseResults);
     }
 
@@ -112,13 +114,13 @@ public class TestResult implements HasExtension {
         return measurements;
     }
 
-    public Map<String, String> getExtension() {
-        return extension;
+    public Map<String, String> getExtensions() {
+        return extensions;
     }
 
     @Override
     public TestResult addExtension(String key, String value) {
-        extension.put(key, value);
+        extensions.put(key, value);
 
         return this;
     }

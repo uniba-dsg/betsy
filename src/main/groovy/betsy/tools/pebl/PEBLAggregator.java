@@ -209,7 +209,7 @@ public class PEBLAggregator {
                                         .map(v -> (StringValue) v)
                                         .map(StringValue::getValue)
                                         .orElse("-");
-                                String extensionLanguageSupport = tr.getTest().getFeature().getExtension().get(PEBLBuilder.EXTENSION_LANGUAGE_SUPPORT);
+                                String extensionLanguageSupport = tr.getTest().getFeature().getExtensions().get(PEBLBuilder.EXTENSION_LANGUAGE_SUPPORT);
                                 if (testResult == "+") {
                                     return extensionLanguageSupport;
                                 } else {

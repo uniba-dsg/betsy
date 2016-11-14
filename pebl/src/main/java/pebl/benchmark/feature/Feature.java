@@ -11,14 +11,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import pebl.HasExtension;
+import pebl.HasExtensions;
 import pebl.HasId;
 import pebl.HasName;
+import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Feature implements HasId, HasName, HasExtension {
+public class Feature implements HasId, HasName, HasExtensions {
 
     @XmlInverseReference(mappedBy="features")
     private final FeatureSet featureSet;
@@ -36,8 +38,8 @@ public class Feature implements HasId, HasName, HasExtension {
     @XmlElement
     private final List<Metric> metrics = new LinkedList<>();
 
-    @XmlElement
-    private final Map<String, String> extension = new HashMap<>();
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions = new HashMap<>();
 
     public Feature addMetric(ScriptMetricType scriptMetricType) {
         metrics.add(new Metric(scriptMetricType, getId()));
@@ -101,12 +103,12 @@ public class Feature implements HasId, HasName, HasExtension {
     }
 
     @Override
-    public Map<String, String> getExtension() {
-        return extension;
+    public Map<String, String> getExtensions() {
+        return extensions;
     }
 
     @Override public Feature addExtension(String key, String value) {
-        extension.put(key, value);
+        extensions.put(key, value);
 
         return this;
     }

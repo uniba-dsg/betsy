@@ -1,5 +1,6 @@
 package betsy.tools.pebl;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,10 +21,14 @@ import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import pebl.benchmark.feature.Capability;
 import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
 import pebl.benchmark.feature.ScriptMetricType;
 import pebl.benchmark.test.Test;
+import pebl.result.Measurement;
 import pebl.result.engine.Engine;
+import pebl.result.test.TestResult;
 import pebl.result.tool.Tool;
 import pebl.xsd.Features;
 import pebl.xsd.PEBL;
@@ -43,7 +48,93 @@ public class PEBLBuilder {
         addMetrics(pebl);
         addExtensionLanguageSupportForPatternImplementations(pebl);
 
+        addPerformance(pebl);
+
         return pebl;
+    }
+
+    private static void addPerformance(PEBL pebl) {
+        // feature tree
+        final Capability performance = new Capability("Performance");
+        final Language bpmn = new Language(performance, "BPMN");
+        final Group def = new Group("Default", bpmn, "");
+        final FeatureSet microBenchmark = new FeatureSet(def, "Micro-Benchmark", "Micro-Benchmark of BPMN 2.0 Workflow Management Systems involving 7 Workflow Patterns");
+        final Feature feature = new Feature(microBenchmark, "Micro-Benchmark", "Micro-Benchmark of BPMN 2.0 Workflow Management Systems involving 7 Workflow Patterns");
+        pebl.benchmark.capabilities.add(performance);
+
+        // test
+        final Test test = new Test(
+                Paths.get("process.bpmn"),
+                "One bpmn workflow containing 7 workflow control flow patterns.",
+                Collections.emptyList(),
+                feature
+        );
+        test.addExtension("loadFunction.description", "A load test function");
+        test.addExtension("loadFunction.thinkTime", "1 sec");
+        test.addExtension("loadFunction.rampUpTime", "30 sec");
+        test.addExtension("loadFunction.steadyStateTime", "9:30 min");
+        test.addExtension("loadFunction.rampDownTime", "0 sec");
+        test.addExtension("loadFunction.connectionTimeout", "20 sec");
+        test.addExtension("loadFunction.users.startUsers", "1");
+        test.addExtension("loadFunction.users.steadyStateUsers", "1500");
+        test.addExtension("loadFunction.users.endUsers", "1500");
+        pebl.benchmark.tests.add(test);
+
+        // engines
+        final Engine engineA = new Engine("BPMN", "engine_a", "N.NN.N");
+        pebl.result.engines.add(engineA);
+        final Engine engineB = new Engine("BPMN", "engine_b", "N.NN.N");
+        pebl.result.engines.add(engineB);
+
+        // tool
+        final Tool benchFlow = new Tool("BenchFlow", "1");
+        pebl.result.tools.add(benchFlow);
+
+        // results
+        final Engine camunda__7_4_0 = pebl.result.engines.stream().filter(e -> e.getId().equals("camunda__7_4_0")).findFirst().orElseThrow(() -> new IllegalStateException("camunda 7.4.0 must be available"));
+        final TestResult testResultCamunda = new TestResult(test,
+                camunda__7_4_0,benchFlow,
+                Collections.emptyList(),
+                Paths.get(""),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                new HashMap<>(),
+                Collections.emptyList());
+        addPerformanceEnvironmentData(testResultCamunda);
+
+        pebl.result.testResults.add(testResultCamunda);
+    }
+
+    private static void addPerformanceEnvironmentData(TestResult testResultCamunda) {
+        testResultCamunda.addExtension("environment.server1.cpu_cores", "64");
+        testResultCamunda.addExtension("environment.server1.cpu_power", "1400 MHz");
+        testResultCamunda.addExtension("environment.server1.ram", "128");
+        testResultCamunda.addExtension("environment.server1.network", "10 Gbit/s");
+        testResultCamunda.addExtension("environment.server1.host_operating_system", "Ubuntu 14.04.3 LTS");
+        testResultCamunda.addExtension("environment.server1.docker_engine", "1.8.2");
+        testResultCamunda.addExtension("environment.server1.configuration", "Ubuntu 14.04.01, Oracle Server 7u79");
+        testResultCamunda.addExtension("environment.server1.docker_container", "");
+        testResultCamunda.addExtension("environment.server1.purpose", "Load Drivers");
+
+        testResultCamunda.addExtension("environment.server2.cpu_cores", "12");
+        testResultCamunda.addExtension("environment.server2.cpu_power", "800 MHz");
+        testResultCamunda.addExtension("environment.server2.ram", "64");
+        testResultCamunda.addExtension("environment.server2.network", "10 Gbit/s");
+        testResultCamunda.addExtension("environment.server2.host_operating_system", "Ubuntu 14.04.3 LTS");
+        testResultCamunda.addExtension("environment.server2.docker_engine", "1.8.2");
+        testResultCamunda.addExtension("environment.server2.configuration", "Ubuntu 14.04.01, Oracle Server 7u79, Max Java Heap: 32GB, Max DB Connections Number: 100");
+        testResultCamunda.addExtension("environment.server2.docker_container", "");
+        testResultCamunda.addExtension("environment.server2.purpose", "WfMS");
+
+        testResultCamunda.addExtension("environment.server3.cpu_cores", "64");
+        testResultCamunda.addExtension("environment.server3.cpu_power", "2300 MHz");
+        testResultCamunda.addExtension("environment.server3.ram", "128");
+        testResultCamunda.addExtension("environment.server3.network", "10 Gbit/s");
+        testResultCamunda.addExtension("environment.server3.host_operating_system", "Ubuntu 14.04.3 LTS");
+        testResultCamunda.addExtension("environment.server3.docker_engine", "1.8.2");
+        testResultCamunda.addExtension("environment.server3.configuration", "MySQL Community Server 5.6.26");
+        testResultCamunda.addExtension("environment.server3.docker_container", "mysql:5.6.26");
+        testResultCamunda.addExtension("environment.server3.purpose", "DBMS");
     }
 
     private static void addExtensionLanguageSupportForPatternImplementations(PEBL pebl) {
