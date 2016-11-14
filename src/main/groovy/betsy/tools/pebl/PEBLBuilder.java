@@ -1,6 +1,7 @@
 package betsy.tools.pebl;
 
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import betsy.common.util.GitUtil;
 import configuration.MetricTypes;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
+import pebl.ProcessLanguage;
 import pebl.benchmark.feature.Capability;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
@@ -81,9 +83,9 @@ public class PEBLBuilder {
         pebl.benchmark.tests.add(test);
 
         // engines
-        final Engine engineA = new Engine("BPMN", "engine_a", "N.NN.N");
+        final Engine engineA = new EngineExtended(ProcessLanguage.BPMN,"engine_a", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
         pebl.result.engines.add(engineA);
-        final Engine engineB = new Engine("BPMN", "engine_b", "N.NN.N");
+        final Engine engineB =  new EngineExtended(ProcessLanguage.BPMN,"engine_b", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
         pebl.result.engines.add(engineB);
 
         // tool

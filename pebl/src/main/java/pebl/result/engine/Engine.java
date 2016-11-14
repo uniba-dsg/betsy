@@ -1,6 +1,7 @@
 package pebl.result.engine;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -48,16 +49,12 @@ public final class Engine implements HasId, HasName, HasExtensions {
         this(language, name, version, Collections.emptyList());
     }
 
-    public Engine(String language, String name, String version, String configuration) {
-        this(language, name, version, Collections.singletonList(configuration));
-    }
-
     public Engine(String language, String name, String version, List<String> configuration) {
         this.language = language;
         this.name = requireNonNull(name);
         this.version = requireNonNull(version);
 
-        this.extensions = Collections.emptyMap();
+        this.extensions = new HashMap<>();
 
         List<String> values = new LinkedList<>();
         values.addAll(configuration);

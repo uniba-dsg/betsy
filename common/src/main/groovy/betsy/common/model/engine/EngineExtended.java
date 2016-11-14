@@ -45,10 +45,16 @@ public final class EngineExtended implements HasId, HasName {
         this.processLanguage = language;
         this.releaseDate = releaseDate;
         this.license = license;
+
+        engine.addExtension("programmingLanguage", "Java");
+        engine.addExtension("releaseDate", releaseDate.toString());
+        engine.addExtension("license", license);
+        engine.addExtension("licenseURL", getLicenseURL());
+        engine.addExtension("url", getURL());
     }
 
     public String getURL() {
-        return EngineDetails.getEngineToURL().get(this.getName());
+        return EngineDetails.getEngineToURL().getOrDefault(this.getName(), "");
     }
 
     public String toString() {
