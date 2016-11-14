@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -24,15 +25,15 @@ import pebl.result.tool.Tool;
 @XmlAccessorType(XmlAccessType.NONE)
 public class TestResult implements HasExtensions {
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     @XmlIDREF
     private final Test test;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     @XmlIDREF
     private final Engine engine;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     @XmlIDREF
     private final Tool tool;
 

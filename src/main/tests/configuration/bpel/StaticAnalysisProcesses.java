@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,6 +16,10 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import betsy.bpel.model.BPELTestCase;
+import betsy.common.util.ClasspathHelper;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Table;
 import configuration.Capabilities;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
@@ -40,11 +46,26 @@ class StaticAnalysisProcesses {
                 if (isTestDirectory) {
                     Path process = getBpelFileInFolder(dir);
                     String rule = getRule(process);
-                    result.add(Capabilities.addMetrics(new Test(process,
+                    final FeatureSet theStaticAnalysisRule = new FeatureSet(Groups.SA, rule);
+
+                    // add tags
+                    addTags(theStaticAnalysisRule, rule);
+
+                    final Feature feature = new Feature(theStaticAnalysisRule, FileTasks.getFilenameWithoutExtension(process));
+                    // add parent feature
+                    feature.addExtension("base", getBase(feature.getName()));
+
+
+
+                    final Test test = new Test(process,
                             FileTasks.getFilenameWithoutExtension(process),
                             Collections.singletonList(new BPELTestCase().checkFailedDeployment()),
-                            new Feature(new FeatureSet(Groups.SA, rule), process.getFileName().toString()),
-                            createXSDandWSDLPaths(dir), Collections.emptyList())));
+                            feature,
+                            createXSDandWSDLPaths(dir), Collections.emptyList());
+
+                    test.addExtension("staticAnalysisChecks", "false");
+
+                    result.add(Capabilities.addMetrics(test));
                 }
             });
 
@@ -53,6 +74,37 @@ class StaticAnalysisProcesses {
         }
 
         return result;
+    }
+
+    private static void addTags(FeatureSet theStaticAnalysisRule, String rule) {
+        final Path file = ClasspathHelper.getFilesystemPathFromClasspathPath("/configuration/bpel/tag2rules.csv");
+        final List<String> lines = FileTasks.readAllLines(file);
+
+        Multimap<String, String> multimap = LinkedListMultimap.create();
+        lines.stream().forEach(line -> {
+            String[] elems = line.split(",");
+            String tag = elems[0];
+            List<String> rules = Arrays.stream(elems[1].split(";")).map(x -> convertIntegerToSARuleNumber(Integer.parseInt(x.trim()))).collect(Collectors.toList());
+            for(String r : rules) {
+                multimap.put(r, tag);
+            }
+        });
+
+        final Collection<String> tags = multimap.get(rule);
+        if(tags.isEmpty()) {
+            System.out.println("No tags found for " + rule);
+        }
+        theStaticAnalysisRule.addExtension("tags", String.join(", ", tags));
+    }
+
+    private static String getBase(String name) {
+        final Path file = ClasspathHelper.getFilesystemPathFromClasspathPath("/configuration/bpel/mapping-satest2featuretest.csv");
+        final List<String> lines = FileTasks.readAllLines(file);
+
+        return lines.stream().filter(line -> line.startsWith(name + ",")).map(line -> line.split(",")[1]).findFirst().orElseGet(() -> {
+            System.out.println("Could not find " + name);
+            return "";
+        });
     }
 
     private static Path getBpelFileInFolder(Path dir) {

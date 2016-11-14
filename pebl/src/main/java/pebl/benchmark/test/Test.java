@@ -35,7 +35,7 @@ import pebl.benchmark.feature.MetricType;
 public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension, HasExtensions {
 
     @XmlIDREF
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final Feature feature;
 
     @XmlElement(required = true)

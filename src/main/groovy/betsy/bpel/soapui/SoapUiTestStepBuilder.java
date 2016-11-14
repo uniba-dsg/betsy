@@ -92,16 +92,8 @@ public class SoapUiTestStepBuilder {
 
     private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, SendSoapMessage testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.getTestRequest();
-        if (BPELWsdlOperations.SYNC.equals(testStep.getOperation())) {
-            soapUiRequest.setRequestContent(TestMessages.createSyncInputMessage(testStep.getSoapMessage()));
-        } else if (BPELWsdlOperations.ASYNC.equals(testStep.getOperation())) {
-            soapUiRequest.setRequestContent(TestMessages.createAsyncInputMessage(testStep.getSoapMessage()));
-        } else if (testStep.getService().equals(new WsdlService("testInterface"))) {
-            soapUiRequest.setRequestContent(TestMessages.createSyncTestPartnerInputMessage(testStep.getSoapMessage()));
-        } else {
-            soapUiRequest.setRequestContent(TestMessages.createSyncStringInputMessage(testStep.getSoapMessage()));
-        }
 
+        soapUiRequest.setRequestContent(testStep.getSoapMessage());
         soapUiRequest.setTimeout(String.valueOf(requestTimeout));
         return soapUiRequest;
     }

@@ -1,8 +1,10 @@
 package pebl.benchmark.feature;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,12 +13,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import pebl.HasExtensions;
 import pebl.HasName;
 import pebl.HasId;
+import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Capability implements HasId, HasName {
+public class Capability implements HasId, HasName, HasExtensions {
 
     @XmlElement(required = true)
     private final String name;
@@ -24,12 +29,16 @@ public class Capability implements HasId, HasName {
     @XmlElement(name="language")
     private final List<Language> languages = new LinkedList<>();
 
-    @XmlElement
+    @XmlElement(name="metric")
+    @XmlElementWrapper(name="metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
     @XmlElement(name="characteristic")
     @XmlElementWrapper(name="characteristics")
     private final List<Characteristic> characteristics = new LinkedList<>();
+
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions = new HashMap<>();
 
     public Capability addMetric(ScriptMetricType scriptMetricType) {
         metrics.add(new Metric(scriptMetricType, getId()));
@@ -96,5 +105,17 @@ public class Capability implements HasId, HasName {
 
     public List<Language> getLanguages() {
         return Collections.unmodifiableList(languages);
+    }
+
+    @Override
+    public Map<String, String> getExtensions() {
+        return extensions;
+    }
+
+    @Override
+    public Capability addExtension(String key, String value) {
+        extensions.put(key, value);
+
+        return this;
     }
 }

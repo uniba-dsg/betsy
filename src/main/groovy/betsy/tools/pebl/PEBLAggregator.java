@@ -217,10 +217,10 @@ public class PEBLAggregator {
                                 }
                             }
                     )
-                    .mapToInt(s -> s.equals("+") ? 2 : s.equals("+/-") ? 1 : 0)
+                    .mapToInt(s -> Ternary.from(s).getNumber())
                     .max().orElse(0);
 
-            return new StringValue(max == 2 ? "+" : max == 1 ? "+/-" : "-");
+            return new StringValue(Ternary.from(max).getString());
         }
 
         throw new IllegalStateException("Cannot compute metric " + scriptMetricType);

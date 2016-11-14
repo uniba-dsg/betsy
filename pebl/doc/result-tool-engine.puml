@@ -8,7 +8,7 @@ package "engine" {
 	  version : String
 	  configuration : List<String>
 	  language : String
-	  extension : Map<String, String>
+	  extensions : Map<String, String>
 	}
 
 }
@@ -19,7 +19,7 @@ package "tool" {
 	  ID : String
 	  name : String
 	  version : String
-	  extension : Map<String, String>
+	  extensions : Map<String, String>
 	}
 }
 

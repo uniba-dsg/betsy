@@ -2,6 +2,7 @@ package betsy.bpel.model;
 
 import java.util.Objects;
 
+import betsy.bpel.soapui.TestMessages;
 import pebl.benchmark.test.TestAssertion;
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestStep;
@@ -30,6 +31,20 @@ public class BPELTestCase extends TestCase {
         step.setOperation(BPELWsdlOperations.SYNC);
 
         return addStep(step);
+    }
+
+    public static String getRequestContent(SendSoapMessage testStep) {
+        String requestContent;
+        if (BPELWsdlOperations.SYNC.equals(testStep.getOperation())) {
+            requestContent = TestMessages.createSyncInputMessage(testStep.getSoapMessage());
+        } else if (BPELWsdlOperations.ASYNC.equals(testStep.getOperation())) {
+            requestContent = TestMessages.createAsyncInputMessage(testStep.getSoapMessage());
+        } else if (testStep.getService().equals(new WsdlService("testPartner"))) {
+            requestContent = TestMessages.createSyncTestPartnerInputMessage(testStep.getSoapMessage());
+        } else {
+            requestContent = TestMessages.createSyncStringInputMessage(testStep.getSoapMessage());
+        }
+        return requestContent;
     }
 
     public BPELTestCase assertConcurrencyAtPartner() {
@@ -161,6 +176,11 @@ public class BPELTestCase extends TestCase {
     }
 
     public BPELTestCase addStep(TestStep step) {
+        if(step instanceof SendSoapMessage) {
+            final SendSoapMessage sendSoapMessage = (SendSoapMessage) step;
+            sendSoapMessage.setSoapMessage(getRequestContent(sendSoapMessage));
+        }
+
         getTestSteps().add(step);
 
         return this;

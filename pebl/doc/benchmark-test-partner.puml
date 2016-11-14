@@ -18,10 +18,10 @@ package "test" {
 
 
    class AnyInput
-   class SoapMessageInput extends AnyInput {
-     soapMessage : String
+   class XpathPredicate extends AnyInput {
+     xpathExpression : String
    }
-   class ScriptInput extends AnyInput {
+   class ScriptPredicate extends AnyInput {
       groovyScript : String
    }
 
@@ -41,7 +41,9 @@ package "test" {
 
 
 
-	class TestPartner
+	class TestPartner {
+	 extensions : Map<String, String>
+	}
 
 }
 

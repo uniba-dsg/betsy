@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -35,7 +36,8 @@ public class Feature implements HasId, HasName, HasExtensions {
     @XmlAttribute(required = true)
     private final String id;
 
-    @XmlElement
+    @XmlElement(name="metric")
+    @XmlElementWrapper(name="metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
     @XmlJavaTypeAdapter(MapAdapter.class)

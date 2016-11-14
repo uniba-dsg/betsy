@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import betsy.bpel.model.BPELTestCase;
+import betsy.bpel.soapui.TestMessages;
 import betsy.common.util.FileTypes;
 import configuration.Capabilities;
 import pebl.benchmark.feature.Feature;
@@ -14,10 +15,10 @@ import pebl.benchmark.test.Test;
 import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import pebl.benchmark.test.partner.rules.AnyInput;
 import pebl.benchmark.test.partner.rules.NoOutput;
-import pebl.benchmark.test.partner.rules.SoapMessageInput;
-import pebl.benchmark.test.partner.rules.ScriptBasedOutput;
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
+import pebl.benchmark.test.partner.rules.ScriptBasedOutput;
 import pebl.benchmark.test.partner.rules.SoapFaultOutput;
+import pebl.benchmark.test.partner.rules.XpathPredicate;
 
 public class BPELProcessBuilder {
 
@@ -56,12 +57,13 @@ public class BPELProcessBuilder {
             "http://localhost:2000/bpel-testpartner",
             new OperationInputOutputRule("startProcessAsync", new AnyInput()),
             new OperationInputOutputRule("startProcessWithEmptyMessage", new AnyInput()),
-            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(-5), new SoapFaultOutput(getSoapFault())),
-            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(-6), new SoapFaultOutput(getExpectedSoapFault())),
-            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(100), new ScriptBasedOutput("ConcurrencyDetector.access()")),
-            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(101), new ScriptBasedOutput("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
-            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(102), new ScriptBasedOutput("ConcurrencyDetector.getNumberOfCalls()")),
-            new OperationInputOutputRule("startProcessSync", new SoapMessageInput(103), new ScriptBasedOutput("ConcurrencyDetector.reset()")),
+            new OperationInputOutputRule("startProcessSync", new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + -5),
+                    new SoapFaultOutput(getSoapFault())),
+            new OperationInputOutputRule("startProcessSync", new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + -6), new SoapFaultOutput(getExpectedSoapFault())),
+            new OperationInputOutputRule("startProcessSync", new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + 100), new ScriptBasedOutput("ConcurrencyDetector.access()")),
+            new OperationInputOutputRule("startProcessSync", new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + 101), new ScriptBasedOutput("ConcurrencyDetector.getNumberOfConcurrentCalls()")),
+            new OperationInputOutputRule("startProcessSync", new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + 102), new ScriptBasedOutput("ConcurrencyDetector.getNumberOfCalls()")),
+            new OperationInputOutputRule("startProcessSync", new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + 103), new ScriptBasedOutput("ConcurrencyDetector.reset()")),
             new OperationInputOutputRule("startProcessSync", new AnyInput(), new NoOutput()) // TODO should be echo, but not possible
     );
 

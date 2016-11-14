@@ -1,10 +1,7 @@
 package pebl.benchmark.test.partner.rules;
 
-import java.util.Objects;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -12,21 +9,21 @@ import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class ScriptBasedOutput extends NoOutput {
+public class XpathPredicate extends AnyInput {
 
     @XmlValue
     @XmlCDATA
-    private final String groovyScript;
+    private final String xpathExpression;
 
-    ScriptBasedOutput() {
-        this("");
+    XpathPredicate() {
+        this(String.valueOf(Integer.MIN_VALUE));
     }
 
-    public ScriptBasedOutput(String groovyScript) {
-        this.groovyScript = Objects.requireNonNull(groovyScript);
+    public XpathPredicate(String xpathExpression) {
+        this.xpathExpression = xpathExpression;
     }
 
-    public String getGroovyScript() {
-        return groovyScript;
+    public String getXpathExpression() {
+        return xpathExpression;
     }
 }

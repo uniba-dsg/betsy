@@ -28,7 +28,7 @@ package "test result" {
 	     files : List<String>
 	     logFiles : List<String>
 	     deploymentPackage : String
-		extension : Map<String, String>
+		extensions : Map<String, String>
 	}
 
 	class TestCaseResult {

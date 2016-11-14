@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
+import betsy.bpel.soapui.TestMessages;
 import betsy.common.tasks.FileTasks;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
@@ -27,7 +28,7 @@ import pebl.benchmark.test.partner.WSDLTestPartner;
 import pebl.benchmark.test.partner.rules.AnyInput;
 import pebl.benchmark.test.partner.rules.NoOutput;
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
-import pebl.benchmark.test.partner.rules.SoapMessageInput;
+import pebl.benchmark.test.partner.rules.XpathPredicate;
 import pebl.benchmark.test.partner.rules.SoapMessageOutput;
 
 public class ErrorProcesses {
@@ -128,7 +129,7 @@ public class ErrorProcesses {
         List<OperationInputOutputRule> tcpActions = new ArrayList<>();
         final OperationInputOutputRule rule_50_001 = new OperationInputOutputRule(
                 "startProcessSync",
-                new SoapMessageInput(50_001),
+                new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + 50_001),
                 new NoOutput());
         tcpActions.add(rule_50_001);
         errorIdToRule.put(50_001, rule_50_001);
@@ -141,9 +142,8 @@ public class ErrorProcesses {
                 500, 501, 502, 503, 504, 505).mapToObj(i -> {
                     final OperationInputOutputRule rule = new OperationInputOutputRule(
                             "startProcessSync",
-                            new SoapMessageInput(i + 22_000),
+                            new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + (i + 22_000)),
                             new SoapMessageOutput(0, i)
-
                     );
                     errorIdToRule.put(i + 22_000, rule);
                     return rule;
@@ -163,7 +163,7 @@ public class ErrorProcesses {
 
             final OperationInputOutputRule rule = new OperationInputOutputRule(
                     "startProcessSync",
-                    new SoapMessageInput(i),
+                    new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + i),
                     new SoapMessageOutput(rawOutput, 200));
             errorIdToRule.put(i, rule);
             return rule;
@@ -182,7 +182,7 @@ public class ErrorProcesses {
 
             final OperationInputOutputRule rule = new OperationInputOutputRule(
                     "startProcessSync",
-                    new SoapMessageInput(i),
+                    new XpathPredicate("declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncRequest = " + i),
                     new SoapMessageOutput(rawOutput, 200));
             errorIdToRule.put(i, rule);
             return rule;

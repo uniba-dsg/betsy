@@ -17,21 +17,27 @@ package "test" {
 	  description : String
 	  files : List<String>
 	  process : String
-extension : Map<String, String>
+extensions : Map<String, String>
 	}
 
-	class TestAssertion
+	class TestAssertion {
+	extensions : Map<String, String>
+	}
 
 	class TestStep {
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class TestCase {
 	  name : String
 	  number : Integer
+	  extensions : Map<String, String>
 	}
 
-	class TestPartner
+	class TestPartner {
+	 extensions : Map<String, String>
+	}
 
 }
 

@@ -1,5 +1,6 @@
 package pebl.result.feature;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -12,11 +13,11 @@ public class FeatureResult {
     @XmlElement(required = true)
     private final Measurement measurement;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     @XmlIDREF
     private final Engine engine;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     @XmlIDREF
     private final Tool tool;
 

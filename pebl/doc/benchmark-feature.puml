@@ -25,30 +25,35 @@ package "feature" {
 	  id : String
 	  name : String
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class Language {
 	  id : String
 	  name : String
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class Group {
 	  id : String
 	  name : String
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class FeatureSet {
 	  id : String
 	  name : String
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class Feature {
 	  id : String
 	  name : String
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 }
