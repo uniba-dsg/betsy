@@ -1,19 +1,23 @@
 @startuml
 package "feature" {
 
-	enum ValueType {
-      BOOLEAN, LONG,
-      DOUBLE, STRING;
-	}
-
-	class Metric
-
 	class MetricType {
+    	  id : String
+    	  description : String
+    	  unit : String
+    	  groovyScript : String
+    	}
+
+    	enum ValueType {
+              BOOLEAN, LONG,
+              DOUBLE, STRING;
+        	}
+
+	class Metric {
 	  id : String
-	  description : String
-	  unit : String
-	  groovyScript : String
 	}
+
+
 
 	enum Characteristic {
 		ISO 25010

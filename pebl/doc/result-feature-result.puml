@@ -20,8 +20,6 @@ package "feature result" {
 package "feature" {
 
 	class Metric
-	class MetricType
-	class ScriptMetricType extends MetricType
 
 	class Feature
 	class Capability
