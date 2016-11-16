@@ -1,5 +1,9 @@
 package pebl.result.feature;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -10,8 +14,8 @@ import pebl.result.tool.Tool;
 
 public class FeatureResult {
 
-    @XmlElement(required = true)
-    private final Measurement measurement;
+    @XmlElement(required = true, name="measurement")
+    private final List<Measurement> measurements;
 
     @XmlAttribute(required = true)
     @XmlIDREF
@@ -22,17 +26,18 @@ public class FeatureResult {
     private final Tool tool;
 
     public FeatureResult() {
-        this(new Measurement(), new Engine(), new Tool());
+        this(Collections.emptyList(), new Engine(), new Tool());
     }
 
-    public FeatureResult(Measurement measurement, Engine engine, Tool tool) {
-        this.measurement = measurement;
+    public FeatureResult(List<Measurement> measurements, Engine engine, Tool tool) {
+        this.measurements = new LinkedList<>();
+        this.measurements.addAll(measurements);
         this.engine = engine;
         this.tool = tool;
     }
 
-    public Measurement getMeasurement() {
-        return measurement;
+    public List<Measurement> getMeasurement() {
+        return measurements;
     }
 
     public Engine getEngine() {

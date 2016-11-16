@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
@@ -48,8 +49,8 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     @XmlElementWrapper( name="testCases" )
     private final List<TestCase> testCases;
 
-    @XmlElement(name="file")
-    @XmlElementWrapper(name="files")
+    @XmlElement(name="files")
+    @XmlList
     private final List<Path> files;
 
     @XmlElement(required = true)

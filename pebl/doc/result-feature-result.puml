@@ -8,12 +8,11 @@ package "tool" {
 }
 package "feature result" {
   class FeatureResult
-  class Value
-  class Measurement
+  class Measurement {
+    value : String
+  }
 
-  Measurement -up-> Value
-
-  FeatureResult -> Measurement
+  FeatureResult "1"->"*" Measurement
   FeatureResult -> Tool
   FeatureResult -> Engine
 }
@@ -36,8 +35,7 @@ package "feature" {
 	Group --> Metric
 	FeatureSet --> Metric
 
-	Metric -left-> MetricType
-
+	Metric -right-> MetricType
 }
 
 Measurement --> Metric

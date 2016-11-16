@@ -1,8 +1,9 @@
 @startuml
 package "feature" {
 
-	class ValueType {
-	  type : String
+	enum ValueType {
+      BOOLEAN, LONG,
+      DOUBLE, STRING;
 	}
 
 	class ScriptMetricType extends MetricType {

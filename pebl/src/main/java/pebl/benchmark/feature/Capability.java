@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
@@ -33,8 +34,8 @@ public class Capability implements HasId, HasName, HasExtensions {
     @XmlElementWrapper(name="metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
-    @XmlElement(name="characteristic")
-    @XmlElementWrapper(name="characteristics")
+    @XmlElement(name="characteristics")
+    @XmlList
     private final List<Characteristic> characteristics = new LinkedList<>();
 
     @XmlJavaTypeAdapter(MapAdapter.class)

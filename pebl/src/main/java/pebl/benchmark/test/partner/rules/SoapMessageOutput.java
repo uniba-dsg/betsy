@@ -15,7 +15,6 @@ public class SoapMessageOutput extends HttpOutput {
         this("", 200);
     }
 
-    // TODO convert to soap/body
     public SoapMessageOutput(int v, int statusCode) {
         this(String.valueOf(v), statusCode);
     }

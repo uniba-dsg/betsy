@@ -22,13 +22,13 @@ import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
 import pebl.ProcessLanguage;
 import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.Characteristic;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
 import pebl.benchmark.feature.ScriptMetricType;
 import pebl.benchmark.test.Test;
-import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 import pebl.result.test.TestResult;
 import pebl.result.tool.Tool;
@@ -57,7 +57,11 @@ public class PEBLBuilder {
 
     private static void addPerformance(PEBL pebl) {
         // feature tree
-        final Capability performance = new Capability("Performance");
+        final Capability performance = new Capability("Performance")
+                .addCharacteristic(Characteristic.PERFORMANCE_EFFICIENCY)
+                .addCharacteristic(Characteristic.RESOURCE_UTILISATION)
+                .addCharacteristic(Characteristic.TIME_BEHAVIOUR)
+                .addCharacteristic(Characteristic.CAPACITY);
         final Language bpmn = new Language(performance, "BPMN");
         final Group def = new Group("Default", bpmn, "");
         final FeatureSet microBenchmark = new FeatureSet(def, "Micro-Benchmark", "Micro-Benchmark of BPMN 2.0 Workflow Management Systems involving 7 Workflow Patterns");
@@ -83,9 +87,9 @@ public class PEBLBuilder {
         pebl.benchmark.tests.add(test);
 
         // engines
-        final Engine engineA = new EngineExtended(ProcessLanguage.BPMN,"engine_a", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
+        final Engine engineA = new EngineExtended(ProcessLanguage.BPMN, "engine_a", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
         pebl.result.engines.add(engineA);
-        final Engine engineB =  new EngineExtended(ProcessLanguage.BPMN,"engine_b", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
+        final Engine engineB = new EngineExtended(ProcessLanguage.BPMN, "engine_b", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
         pebl.result.engines.add(engineB);
 
         // tool
@@ -95,7 +99,7 @@ public class PEBLBuilder {
         // results
         final Engine camunda__7_4_0 = pebl.result.engines.stream().filter(e -> e.getId().equals("camunda__7_4_0")).findFirst().orElseThrow(() -> new IllegalStateException("camunda 7.4.0 must be available"));
         final TestResult testResultCamunda = new TestResult(test,
-                camunda__7_4_0,benchFlow,
+                camunda__7_4_0, benchFlow,
                 Collections.emptyList(),
                 Paths.get(""),
                 Collections.emptyList(),

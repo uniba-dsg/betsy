@@ -9,9 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import pebl.HasId;
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class MetricType {
+public class MetricType implements HasId {
 
     @XmlAttribute(required = true)
     private final ValueType dataType;
@@ -27,7 +29,7 @@ public class MetricType {
     private final String unit;
 
     public MetricType() {
-        this(new ValueType(), "", "", "");
+        this(ValueType.STRING, "", "", "");
     }
 
     public MetricType(ValueType dataType, String id, String description, String unit) {

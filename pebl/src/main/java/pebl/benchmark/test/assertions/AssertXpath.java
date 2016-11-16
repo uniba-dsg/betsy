@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,10 +14,10 @@ import pebl.benchmark.test.TestAssertion;
 @XmlRootElement
 public class AssertXpath extends TestAssertion {
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final String xpathExpression;
 
-    @XmlElement(required = true)
+    @XmlAttribute(required = true)
     private final String expectedOutput;
 
     AssertXpath() {

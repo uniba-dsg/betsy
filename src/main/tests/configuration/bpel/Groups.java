@@ -16,7 +16,7 @@ public class Groups {
     public static Group SCOPES = new Group("scopes", CONFORMANCE_BPEL, "Scopes provide the execution context of their enclosed activities.");
     public static Group CFPATTERNS = new Group("cfpatterns", EXPRESSIVENESS_BPEL, "The original 20 Workflow Control-Flow patterns from van der Aalst et al.");
 
-    public static Group SA = new Group("sa", STATIC_ANALYSIS_BPEL, "The 94 static analysis rules of BPEL.");
+    public static Group SA = new Group("rules", STATIC_ANALYSIS_BPEL, "The 94 static analysis rules of BPEL.");
 
     public static Group ERROR = new Group("error", ROBUSTNESS_BPEL, "The robustness or fault tolerant tests.");
 }

@@ -97,7 +97,7 @@ public class Group implements HasId, HasName, HasExtensions {
     }
 
     void addFeatureSet(FeatureSet featureSet) {
-        if(featureSets.contains(featureSet)) {
+        if(featureSets.stream().anyMatch(fs -> fs.getId().equals(featureSet.getId()))) {
             return;
         }
         this.featureSets.add(featureSet);

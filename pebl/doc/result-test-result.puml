@@ -37,36 +37,16 @@ package "test result" {
 		message : String
 	}
 
-	class Measurement
-
-	class Value
-	class BooleanValue extends Value {
-	  value : Boolean
-	}
-	class LongValue extends Value {
-	  value : Long
-	}
-	class DoubleValue extends Value {
-    	  value : Double
-    	}
-	class StringValue extends Value {
-	value : String
-	}
-	class AggregatedValue extends Value {
-	min : Double
-	max : Double
-	average : Double
-	standardDeviation : Double
-	relativeStandardDeviation : Double
+	class Measurement {
+	   value : String
 	}
 }
-Measurement -> Value
-TestResult -->"*" TestCaseResult
+TestResult "1"-left->"*" TestCaseResult
 
 TestResult -> Test
 TestResult -> Engine
 TestResult -> Tool
-TestResult ->"*" Measurement
+TestResult "1"-down->"*" Measurement
 Measurement -> Metric
 Test ->"*" Metric
 

@@ -36,7 +36,6 @@ public class ErrorProcesses {
     public static final TestPartner ERROR_TEST_PARTNER = createErrorTestPartner("http://localhost:2000/bpel-testpartner", 22500);
 
     // TODO 50_002 and 50_003 should be better handled
-    // TODO better naming according to the feature-tree for these tests
 
     private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
 
@@ -115,8 +114,6 @@ public class ErrorProcesses {
         return result;
     }
 
-    //TODO soap raw output is not correctly set
-
     private static final FeatureSet HTTP_CONSTRUCT = new FeatureSet(Groups.ERROR, "http");
     private static final FeatureSet SOAP_CONSTRUCT = new FeatureSet(Groups.ERROR, "soap");
     private static final FeatureSet TCP_CONSTRUCT = new FeatureSet(Groups.ERROR, "tcp");
@@ -193,7 +190,7 @@ public class ErrorProcesses {
         actions.addAll(soapActions);
         actions.addAll(appActions);
         final OperationInputOutputRule defaultRule = new OperationInputOutputRule("startProcessSync", new AnyInput(), new NoOutput());
-        actions.add(defaultRule);  // TODO normally echo, but is ignored
+        actions.add(defaultRule);
 
         return new RuleBasedWSDLTestPartner(
                 Paths.get("TestPartner.wsdl"),

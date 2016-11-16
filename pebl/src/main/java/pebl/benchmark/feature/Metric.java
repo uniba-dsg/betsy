@@ -17,8 +17,7 @@ public class Metric implements HasId {
     @XmlID
     private final String id;
 
-    @XmlAttribute(required = true)
-    @XmlIDREF
+    @XmlIDREF //TODO make it an attribute
     private final MetricType metricType;
 
     public Metric() {

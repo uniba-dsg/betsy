@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
@@ -33,6 +34,7 @@ public final class Engine implements HasId, HasName, HasExtensions {
     private final String version;
 
     @XmlElement(required = true)
+    @XmlList
     private final List<String> configuration;
 
     @XmlElement(required = true)

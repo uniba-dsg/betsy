@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
@@ -37,15 +38,15 @@ public class TestResult implements HasExtensions {
     @XmlIDREF
     private final Tool tool;
 
-    @XmlElement(name = "logFile")
-    @XmlElementWrapper(name = "logFiles")
+    @XmlElement(name = "logFiles")
+    @XmlList
     private final List<Path> logFiles;
 
     @XmlElement(required = true)
     private final Path deploymentPackage;
 
-    @XmlElement(name = "file")
-    @XmlElementWrapper(name = "files")
+    @XmlElement(name = "files")
+    @XmlList
     private final List<Path> files;
 
     @XmlElement(name = "measurement")

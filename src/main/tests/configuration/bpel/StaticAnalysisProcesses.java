@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -46,7 +47,14 @@ class StaticAnalysisProcesses {
                 if (isTestDirectory) {
                     Path process = getBpelFileInFolder(dir);
                     String rule = getRule(process);
-                    final FeatureSet theStaticAnalysisRule = new FeatureSet(Groups.SA, rule);
+
+                    final Optional<FeatureSet> first = Groups.SA.getFeatureSets().stream().filter(fs -> fs.getName().equals(rule)).findFirst();
+                    final FeatureSet theStaticAnalysisRule;
+                    if(first.isPresent()) {
+                        theStaticAnalysisRule = first.get();
+                    } else {
+                        theStaticAnalysisRule = new FeatureSet(Groups.SA, rule);
+                    }
 
                     // add tags
                     addTags(theStaticAnalysisRule, rule);
@@ -54,8 +62,6 @@ class StaticAnalysisProcesses {
                     final Feature feature = new Feature(theStaticAnalysisRule, FileTasks.getFilenameWithoutExtension(process));
                     // add parent feature
                     feature.addExtension("base", getBase(feature.getName()));
-
-
 
                     final Test test = new Test(process,
                             FileTasks.getFilenameWithoutExtension(process),
