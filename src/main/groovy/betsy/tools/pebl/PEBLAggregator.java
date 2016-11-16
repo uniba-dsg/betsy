@@ -1,18 +1,15 @@
 package betsy.tools.pebl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import pebl.HasId;
 import pebl.benchmark.feature.Metric;
 import pebl.benchmark.feature.MetricType;
-import pebl.benchmark.feature.ScriptMetricType;
 import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 import pebl.result.feature.FeatureResult;
@@ -47,11 +44,9 @@ public class PEBLAggregator {
 
         for (Metric metric : metrics) {
             final MetricType metricType = metric.getMetricType();
-            if (!(metricType instanceof ScriptMetricType)) {
+            if (metricType.getGroovyScript() == null || metricType.getGroovyScript().trim().isEmpty()) {
                 throw new IllegalStateException("Metric type must be a script metric type");
             }
-            ScriptMetricType scriptMetricType = (ScriptMetricType) metricType;
-
             for (Map.Entry<String, List<TestResult>> entry : resultsPerEngineTool.entrySet()) {
 
                 if (entry.getValue().isEmpty()) {
@@ -74,7 +69,7 @@ public class PEBLAggregator {
 
                 System.out.println("Computing " + metric.getId() + " for " + entry.getKey());
 
-                String value = computeThroughScript(scriptMetricType, testResults);
+                String value = computeThroughScript(metricType, testResults);
 
                 Engine engine = testResults.get(0).getEngine();
                 Tool tool = testResults.get(0).getTool();
@@ -92,8 +87,8 @@ public class PEBLAggregator {
         }
     }
 
-    private String computeThroughScript(ScriptMetricType scriptMetricType, List<TestResult> testResults) {
-        if (scriptMetricType.getId().equals("testCasesSum")) {
+    private String computeThroughScript(MetricType metricType, List<TestResult> testResults) {
+        if (metricType.getId().equals("testCasesSum")) {
             return String.valueOf(testResults
                     .stream()
                     .map(tr -> tr.getMeasurements()
@@ -106,7 +101,7 @@ public class PEBLAggregator {
                     .mapToLong(Long::parseLong)
                     .sum()
             );
-        } else if (scriptMetricType.getId().equals("testCaseSuccessesSum")) {
+        } else if (metricType.getId().equals("testCaseSuccessesSum")) {
             return String.valueOf(testResults
                     .stream()
                     .map(tr -> tr.getMeasurements()
@@ -119,7 +114,7 @@ public class PEBLAggregator {
                     .mapToLong(Long::parseLong)
                     .sum()
             );
-        } else if (scriptMetricType.getId().equals("testCaseFailuresSum")) {
+        } else if (metricType.getId().equals("testCaseFailuresSum")) {
             return String.valueOf(testResults
                     .stream()
                     .map(tr -> tr.getMeasurements()
@@ -132,7 +127,7 @@ public class PEBLAggregator {
                     .mapToLong(Long::parseLong)
                     .sum()
             );
-        } else if (scriptMetricType.getId().equals("testSuccessfulCount")) {
+        } else if (metricType.getId().equals("testSuccessfulCount")) {
             return String.valueOf(testResults
                     .stream()
                     .map(tr -> tr.getMeasurements()
@@ -146,7 +141,7 @@ public class PEBLAggregator {
                     .filter(x -> x)
                     .count()
             );
-        } else if (scriptMetricType.getId().equals("testDeployableCount")) {
+        } else if (metricType.getId().equals("testDeployableCount")) {
             return String.valueOf(testResults
                     .stream()
                     .map(tr -> tr.getMeasurements()
@@ -160,7 +155,7 @@ public class PEBLAggregator {
                     .filter(x -> x)
                     .count()
             );
-        } else if (scriptMetricType.getId().equals("testResultTrivalentAggregation")) {
+        } else if (metricType.getId().equals("testResultTrivalentAggregation")) {
             final long testCaseSuccesses = testResults
                     .stream()
                     .map(tr -> tr.getMeasurements()
@@ -191,12 +186,12 @@ public class PEBLAggregator {
             } else {
                 return "+/-";
             }
-        } else if (scriptMetricType.getId().equals("testsCount")) {
+        } else if (metricType.getId().equals("testsCount")) {
             return String.valueOf(testResults
                     .stream()
                     .count()
             );
-        } else if (scriptMetricType.getId().equals("support")) {
+        } else if (metricType.getId().equals("support")) {
             final int max = testResults
                     .stream()
                     .map(tr -> {
@@ -220,7 +215,7 @@ public class PEBLAggregator {
             return Ternary.from(max).getString();
         }
 
-        throw new IllegalStateException("Cannot compute metric " + scriptMetricType);
+        throw new IllegalStateException("Cannot compute metric " + metricType);
     }
 
 }

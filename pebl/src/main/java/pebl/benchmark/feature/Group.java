@@ -47,8 +47,8 @@ public class Group implements HasId, HasName, HasExtensions {
     @XmlJavaTypeAdapter(MapAdapter.class)
     private final Map<String, String> extensions = new HashMap<>();
 
-    public Group addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getId()));
+    public Group addMetric(MetricType metricType) {
+        metrics.add(new Metric(metricType, getId()));
 
         return this;
     }

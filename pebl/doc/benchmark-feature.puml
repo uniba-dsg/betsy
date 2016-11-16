@@ -6,16 +6,13 @@ package "feature" {
       DOUBLE, STRING;
 	}
 
-	class ScriptMetricType extends MetricType {
-	  groovyScript : String
-	}
-
 	class Metric
 
 	class MetricType {
 	  id : String
 	  description : String
 	  unit : String
+	  groovyScript : String
 	}
 
 	enum Characteristic {

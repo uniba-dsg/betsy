@@ -58,7 +58,6 @@ public class PEBL {
 
         @XmlElement(name = "metricType")
         @XmlElementWrapper(name = "metricTypes")
-        @XmlElementRef
         public List<MetricType> metricTypes = new LinkedList<>();
 
     }

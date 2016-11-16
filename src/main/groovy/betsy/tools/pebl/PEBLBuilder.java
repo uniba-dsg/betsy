@@ -27,7 +27,7 @@ import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
-import pebl.benchmark.feature.ScriptMetricType;
+import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.test.Test;
 import pebl.result.engine.Engine;
 import pebl.result.test.TestResult;
@@ -229,7 +229,7 @@ public class PEBLBuilder {
     }
 
     private static void addMetrics(PEBL pebl) {
-        List<ScriptMetricType> metricTypes = Arrays.asList(
+        List<MetricType> metricTypes = Arrays.asList(
                 MetricTypes.TEST_CASES_SUM,
                 MetricTypes.TEST_CASES_SUCCESSFUL_SUM,
                 MetricTypes.TEST_CASES_FAILURE_SUM,
@@ -242,31 +242,31 @@ public class PEBLBuilder {
         // apply metrics
         pebl.benchmark.capabilities.stream().filter(c -> !c.getName().equals("Performance")).forEach(c -> {
 
-            for (ScriptMetricType metricType : metricTypes) {
+            for (MetricType metricType : metricTypes) {
                 c.addMetric(metricType);
             }
 
             c.getLanguages().forEach(l -> {
 
-                for (ScriptMetricType metricType : metricTypes) {
+                for (MetricType metricType : metricTypes) {
                     l.addMetric(metricType);
                 }
 
                 l.getGroups().forEach(g -> {
 
-                    for (ScriptMetricType metricType : metricTypes) {
+                    for (MetricType metricType : metricTypes) {
                         g.addMetric(metricType);
                     }
 
                     g.getFeatureSets().forEach(fs -> {
 
-                        for (ScriptMetricType metricType : metricTypes) {
+                        for (MetricType metricType : metricTypes) {
                             fs.addMetric(metricType);
                         }
 
                         fs.getFeatures().forEach(f -> {
 
-                            for (ScriptMetricType metricType : metricTypes) {
+                            for (MetricType metricType : metricTypes) {
                                 f.addMetric(metricType);
                             }
 

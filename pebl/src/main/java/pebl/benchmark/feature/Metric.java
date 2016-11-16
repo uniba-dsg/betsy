@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -17,7 +18,8 @@ public class Metric implements HasId {
     @XmlID
     private final String id;
 
-    @XmlIDREF //TODO make it an attribute
+    @XmlAttribute(required = true)
+    @XmlIDREF
     private final MetricType metricType;
 
     public Metric() {

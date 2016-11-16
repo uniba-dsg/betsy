@@ -44,8 +44,8 @@ public class Language implements HasId, HasName, HasExtensions {
     @XmlJavaTypeAdapter(MapAdapter.class)
     private final Map<String, String> extensions = new HashMap<>();
 
-    public Language addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getId()));
+    public Language addMetric(MetricType metricType) {
+        metrics.add(new Metric(metricType, getId()));
 
         return this;
     }

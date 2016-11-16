@@ -43,8 +43,8 @@ public class Feature implements HasId, HasName, HasExtensions {
     @XmlJavaTypeAdapter(MapAdapter.class)
     private final Map<String, String> extensions = new HashMap<>();
 
-    public Feature addMetric(ScriptMetricType scriptMetricType) {
-        metrics.add(new Metric(scriptMetricType, getId()));
+    public Feature addMetric(MetricType metricType) {
+        metrics.add(new Metric(metricType, getId()));
 
         return this;
     }
