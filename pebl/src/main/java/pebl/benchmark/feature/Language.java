@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasExtensions;
-import pebl.HasName;
 import pebl.HasId;
+import pebl.HasName;
 import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)

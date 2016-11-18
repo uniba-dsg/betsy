@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
-import pebl.HasName;
 import pebl.HasId;
+import pebl.HasName;
 import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)

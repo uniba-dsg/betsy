@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.eclipse.persistence.oxm.annotations.XmlPath;
 import pebl.HasExtensions;
 import pebl.HasId;
 import pebl.HasName;

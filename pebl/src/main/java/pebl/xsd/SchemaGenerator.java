@@ -9,8 +9,6 @@ import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.persistence.internal.jaxb.json.schema.JsonSchemaGenerator;
-
 /**
  * Generates the XSD of PEBL
  */

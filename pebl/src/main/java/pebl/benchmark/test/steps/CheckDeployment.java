@@ -1,9 +1,6 @@
 package pebl.benchmark.test.steps;
 
-import javax.xml.bind.annotation.XmlAccessOrder;
-import javax.xml.bind.annotation.XmlAccessorOrder;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import pebl.benchmark.test.TestStep;
 
