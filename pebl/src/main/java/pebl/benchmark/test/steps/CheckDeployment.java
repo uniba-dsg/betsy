@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlType;
 import pebl.benchmark.test.TestStep;
 
 @XmlRootElement
-@XmlAccessorOrder(value = XmlAccessOrder.ALPHABETICAL)
 public class CheckDeployment extends TestStep {
     @Override
     public String toString() {

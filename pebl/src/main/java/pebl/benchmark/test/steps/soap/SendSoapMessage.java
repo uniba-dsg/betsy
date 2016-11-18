@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 import pebl.benchmark.test.TestStep;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -19,6 +20,7 @@ public class SendSoapMessage extends TestStep {
      * The input value which is send using the <code>operation</code> to the system under test.
      */
     @XmlElement(required = true)
+    @XmlCDATA
     private String soapMessage;
 
     /**

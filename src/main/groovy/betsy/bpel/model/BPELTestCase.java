@@ -57,7 +57,7 @@ public class BPELTestCase extends TestCase {
                 "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';//test:testElementSyncResponse > 0",
                 "true"
         );
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
 
         return addStep(step);
     }
@@ -132,7 +132,7 @@ public class BPELTestCase extends TestCase {
         step.setSoapMessage(String.valueOf(input));
         step.setOperation(BPELWsdlOperations.SYNC_STRING);
         step.setService(new WsdlService("testInterface"));
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
 
         return addStep(step);
     }
@@ -143,7 +143,7 @@ public class BPELTestCase extends TestCase {
         setOutput(step, String.valueOf(output));
         step.setOperation(BPELWsdlOperations.SYNC);
         step.setService(new WsdlService("testInterface"));
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
 
         return addStep(step);
     }
@@ -169,7 +169,7 @@ public class BPELTestCase extends TestCase {
         SendSoapMessage step = new SendSoapMessage();
         step.setSoapMessage(String.valueOf(input));
         step.setOperation(BPELWsdlOperations.SYNC);
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
         step.setService(new WsdlService("testInterface"));
 
         return addStep(step);
@@ -191,7 +191,7 @@ public class BPELTestCase extends TestCase {
                 "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';number(//test:testElementSyncResponse) cast as xs:integer",
                 output
         );
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
     }
 
     public void setPartnerOutput(SendSoapMessage step, String output) {
@@ -199,7 +199,7 @@ public class BPELTestCase extends TestCase {
                 "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner';number(//test:testElementSyncResponse) cast as xs:integer",
                 output
         );
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
     }
 
     public void setStringOperationOutput(SendSoapMessage step, String output) {
@@ -207,7 +207,7 @@ public class BPELTestCase extends TestCase {
                 "declare namespace test='http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface';//test:testElementSyncStringResponse",
                 output
         );
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
     }
 
     public void setOutputAsLeast(SendSoapMessage step, final String output) {
@@ -215,7 +215,7 @@ public class BPELTestCase extends TestCase {
                 "declare namespace test=\'http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface\';//test:testElementSyncResponse >= ",
                 "true"
         );
-        step.getAssertions().add(assertion);
+        step.getTestAssertions().add(assertion);
     }
 
 }

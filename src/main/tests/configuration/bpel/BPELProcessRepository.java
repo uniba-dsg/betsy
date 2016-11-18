@@ -58,7 +58,7 @@ public class BPELProcessRepository {
                 "FAULTS",
                 repo.getByName("ALL").stream().filter((p) ->
                         p.getTestCases().stream().anyMatch((tc) ->
-                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SendSoapMessage && ((SendSoapMessage) ts).getAssertions().stream().anyMatch((a) ->
+                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SendSoapMessage && ((SendSoapMessage) ts).getTestAssertions().stream().anyMatch((a) ->
                                         a instanceof AssertSoapFault)))).collect(Collectors.toList()));
 
         // automatic group
@@ -66,7 +66,7 @@ public class BPELProcessRepository {
                 "WITH_EXIT_ASSERTION",
                 repo.getByName("ALL").stream().filter((p) ->
                         p.getTestCases().stream().anyMatch((tc) ->
-                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SendSoapMessage && ((SendSoapMessage) ts).getAssertions().stream().anyMatch((a) ->
+                                tc.getTestSteps().stream().anyMatch((ts) -> ts instanceof SendSoapMessage && ((SendSoapMessage) ts).getTestAssertions().stream().anyMatch((a) ->
                                         a instanceof AssertExit)))).collect(Collectors.toList()));
 
         // insert every process into the map

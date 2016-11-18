@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -33,7 +32,7 @@ public class TestStep implements HasExtensions {
     /**
      * List of assertions which are evaluated after the test step has been executed/the messages have been sent.
      */
-    private List<TestAssertion> assertions = new ArrayList<>();
+    private List<TestAssertion> testAssertions = new ArrayList<>();
 
     @XmlJavaTypeAdapter(MapAdapter.class)
     private final Map<String, String> extensions = new HashMap<>();
@@ -60,16 +59,16 @@ public class TestStep implements HasExtensions {
     @XmlElement
     @XmlElementRef
     @XmlElementWrapper( name="testAssertions" )
-    public List<TestAssertion> getAssertions() {
-        return assertions;
+    public List<TestAssertion> getTestAssertions() {
+        return testAssertions;
     }
 
-    public void setAssertions(List<TestAssertion> assertions) {
-        this.assertions = assertions;
+    public void setTestAssertions(List<TestAssertion> testAssertions) {
+        this.testAssertions = testAssertions;
     }
 
     public TestStep addAssertion(TestAssertion testAssertion) {
-        this.assertions.add(testAssertion);
+        this.testAssertions.add(testAssertion);
 
         return this;
     }

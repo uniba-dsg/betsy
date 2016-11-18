@@ -117,7 +117,7 @@ public class GenericBPMNTester {
     }
 
     private boolean shouldDeploymentFail(TestStep testStep) {
-        if(testStep.getAssertions().stream().filter(a -> a instanceof AssertTrace && ((AssertTrace) a).getTrace().equals(
+        if(testStep.getTestAssertions().stream().filter(a -> a instanceof AssertTrace && ((AssertTrace) a).getTrace().equals(
                 BPMNAssertions.ERROR_DEPLOYMENT.toString()))
                 .findFirst().isPresent()) {
             // Ensure existence of instanceLogFile for JUnit test execution

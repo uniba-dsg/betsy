@@ -27,7 +27,7 @@ public class TestCaseUtil {
                             .stream()
                             .filter(ts -> ts instanceof GatherTraces)
                             .map(ts -> (GatherTraces) ts)
-                            .map(TestStep::getAssertions)
+                            .map(TestStep::getTestAssertions)
                             .flatMap(ta -> ta.stream()
                                     .filter(ts -> ts instanceof AssertTrace)
                                     .map(ts -> (AssertTrace) ts)

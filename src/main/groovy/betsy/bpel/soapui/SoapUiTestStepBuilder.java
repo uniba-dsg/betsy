@@ -1,6 +1,5 @@
 package betsy.bpel.soapui;
 
-import betsy.bpel.model.BPELWsdlOperations;
 import pebl.benchmark.test.assertions.AssertDeployed;
 import pebl.benchmark.test.assertions.AssertNotDeployed;
 import pebl.benchmark.test.steps.DelayTesting;
@@ -41,10 +40,10 @@ public class SoapUiTestStepBuilder {
         int testStepNumber = testCase.getTestSteps().indexOf(testStep);
 
         if (testStep instanceof CheckDeployment) {
-            if (testStep.getAssertions().contains(new AssertDeployed())) {
+            if (testStep.getTestAssertions().contains(new AssertDeployed())) {
                 addDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
             }
-            if (testStep.getAssertions().contains(new AssertNotDeployed())) {
+            if (testStep.getTestAssertions().contains(new AssertNotDeployed())) {
                 addNotDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
             }
         } else if (testStep instanceof DelayTesting) {

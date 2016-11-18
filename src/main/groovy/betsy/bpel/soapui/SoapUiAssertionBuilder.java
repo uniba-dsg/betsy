@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class SoapUiAssertionBuilder {
     public static void addSynchronousAssertion(SendSoapMessage testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {
-        for (TestAssertion assertion : testStep.getAssertions()) {
+        for (TestAssertion assertion : testStep.getTestAssertions()) {
 
             if (assertion instanceof AssertXpath) {
                 addXpathTestAssertion(soapUiRequest, (AssertXpath) assertion);
@@ -39,7 +39,7 @@ public class SoapUiAssertionBuilder {
     }
 
     private static void createNotSoapFaultAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
-        if (!testStep.getAssertions().stream().anyMatch((it) -> it instanceof AssertSoapFault || it instanceof AssertExit)) {
+        if (!testStep.getTestAssertions().stream().anyMatch((it) -> it instanceof AssertSoapFault || it instanceof AssertExit)) {
             Objects.requireNonNull(soapUiRequest.addAssertion(NotSoapFaultAssertion.LABEL), "Could not create Not Soap Fault Assertion");
         }
     }
@@ -92,7 +92,7 @@ public class SoapUiAssertionBuilder {
     }
 
     public static void addTestPartnerAssertion(TestStep testStep, WsdlTestRequestStep soapUiRequest) {
-        for (TestAssertion assertion : testStep.getAssertions()) {
+        for (TestAssertion assertion : testStep.getTestAssertions()) {
             if (assertion instanceof AssertXpath) {
                 addXpathTestAssertion(soapUiRequest, (AssertXpath) assertion);
             }
