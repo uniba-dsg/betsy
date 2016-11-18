@@ -31,6 +31,7 @@ public class Language implements HasId, HasName, HasExtensions {
     private final String name;
 
     @XmlElement(name="group")
+    @XmlElementWrapper(name= "groups")
     private final List<Group> groups = new LinkedList<>();
 
     @XmlID

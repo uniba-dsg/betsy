@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import pebl.benchmark.feature.Capability;
 import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.test.Test;
@@ -30,6 +31,7 @@ public class PEBL {
         Marshaller m4json = jc.createMarshaller();
         m4json.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         m4json.setProperty("eclipselink.media-type", "application/json");
+        m4json.setProperty(MarshallerProperties.JSON_WRAPPER_AS_ARRAY_NAME, true);
         m4json.marshal(this, path.toFile());
     }
 

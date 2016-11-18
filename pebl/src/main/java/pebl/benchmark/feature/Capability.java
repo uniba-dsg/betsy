@@ -28,6 +28,7 @@ public class Capability implements HasId, HasName, HasExtensions {
     private final String name;
 
     @XmlElement(name="language")
+    @XmlElementWrapper(name= "languages")
     private final List<Language> languages = new LinkedList<>();
 
     @XmlElement(name="metric")

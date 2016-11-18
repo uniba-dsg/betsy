@@ -34,6 +34,7 @@ public class Group implements HasId, HasName, HasExtensions {
     private final String description;
 
     @XmlElement(name = "featureSet")
+    @XmlElementWrapper(name= "featureSets")
     private final List<FeatureSet> featureSets = new LinkedList<>();
 
     @XmlID

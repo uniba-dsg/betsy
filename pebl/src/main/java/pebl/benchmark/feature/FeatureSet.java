@@ -34,6 +34,7 @@ public class FeatureSet implements HasId, HasName, HasExtensions {
     private final String description;
 
     @XmlElement(name = "feature")
+    @XmlElementWrapper(name= "features")
     private final List<Feature> features = new LinkedList<>();
 
     @XmlID
