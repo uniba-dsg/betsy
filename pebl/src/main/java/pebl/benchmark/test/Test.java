@@ -45,24 +45,24 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     @XmlElement(required = true)
     private final String description;
 
-    @XmlElement(name="testCase")
-    @XmlElementWrapper( name="testCases" )
+    @XmlElement(name = "testCase")
+    @XmlElementWrapper(name = "testCases")
     private final List<TestCase> testCases;
 
-    @XmlElement(name="files")
+    @XmlElement(name = "files", type = String.class)
     @XmlList
     private final List<Path> files;
 
     @XmlElement(required = true)
     @XmlElementRef
-    @XmlElementWrapper( name="testPartners" )
+    @XmlElementWrapper(name = "testPartners")
     private final List<TestPartner> partners;
 
     @XmlJavaTypeAdapter(MapAdapter.class)
     private final Map<String, String> extensions;
 
     @XmlElement(name = "metric")
-    @XmlElementWrapper(name="metrics")
+    @XmlElementWrapper(name = "metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
     public Test addMetric(MetricType type) {
@@ -108,7 +108,7 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
         this.files = new ArrayList<>(Objects.requireNonNull(files));
         this.extensions = new HashMap<>();
 
-        this.id = String.join(HasId.SEPARATOR,getFeature().getId(), "test");
+        this.id = String.join(HasId.SEPARATOR, getFeature().getId(), "test");
     }
 
     public Test(Path process, List<TestCase> testCases,

@@ -1,14 +1,18 @@
 package pebl.benchmark.test.steps.soap;
 
+import javax.xml.bind.annotation.XmlAccessOrder;
 import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorOrder;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import pebl.benchmark.test.TestStep;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
+@XmlAccessorOrder(value = XmlAccessOrder.ALPHABETICAL)
 public class SendSoapMessage extends TestStep {
 
     /**

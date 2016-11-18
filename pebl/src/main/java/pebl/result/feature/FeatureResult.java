@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import pebl.result.Measurement;
@@ -15,6 +16,7 @@ import pebl.result.tool.Tool;
 public class FeatureResult {
 
     @XmlElement(required = true, name="measurement")
+    @XmlElementWrapper(name="measurements")
     private final List<Measurement> measurements;
 
     @XmlAttribute(required = true)

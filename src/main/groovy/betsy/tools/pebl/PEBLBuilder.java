@@ -145,6 +145,24 @@ public class PEBLBuilder {
 
     private static void addExtensionLanguageSupportForPatternImplementations(PEBL pebl) {
         final Capability expressiveness = pebl.benchmark.capabilities.stream().filter(c -> c.getName().equals("Expressiveness")).findFirst().orElseThrow(() -> new IllegalStateException("Expressiveness Capability must be there"));
+        addLanguageSupportForPatternImplementations(expressiveness);
+        addLanguageSupportForPatterns(expressiveness);
+
+        expressiveness.getLanguages()
+                .stream()
+                .flatMap(l -> l.getGroups().stream())
+                .flatMap(g -> g.getFeatureSets().stream())
+                .flatMap(fs -> fs.getFeatures().stream())
+                .forEach(f -> f.addMetric(MetricTypes.PATTERN_SUPPORT));
+
+        expressiveness.getLanguages()
+                .stream()
+                .flatMap(l -> l.getGroups().stream())
+                .flatMap(g -> g.getFeatureSets().stream())
+                .forEach(fs -> fs.addMetric(MetricTypes.PATTERN_SUPPORT));
+    }
+
+    private static void addLanguageSupportForPatternImplementations(Capability expressiveness) {
         final List<Feature> patternImplementations = expressiveness.getLanguages()
                 .stream()
                 .flatMap(l -> l.getGroups().stream())
@@ -213,19 +231,63 @@ public class PEBLBuilder {
                 throw new IllegalStateException("should not happen for feature " + name);
             }
         }
+    }
 
-        expressiveness.getLanguages()
+    private static void addLanguageSupportForPatterns(Capability expressiveness) {
+        final List<FeatureSet> patterns = expressiveness.getLanguages()
                 .stream()
                 .flatMap(l -> l.getGroups().stream())
                 .flatMap(g -> g.getFeatureSets().stream())
-                .flatMap(fs -> fs.getFeatures().stream())
-                .forEach(f -> f.addMetric(MetricTypes.PATTERN_SUPPORT));
+                .collect(Collectors.toList());
 
-        expressiveness.getLanguages()
-                .stream()
-                .flatMap(l -> l.getGroups().stream())
-                .flatMap(g -> g.getFeatureSets().stream())
-                .forEach(fs -> fs.addMetric(MetricTypes.PATTERN_SUPPORT));
+        Map<String, String> patternToUpperBoundForBPMN = new HashMap<>();
+        patternToUpperBoundForBPMN.put("WCP01_Sequence", "+");
+        patternToUpperBoundForBPMN.put("WCP02_ParallelSplit", "+");
+        patternToUpperBoundForBPMN.put("WCP03_Synchronization", "+");
+        patternToUpperBoundForBPMN.put("WCP04_ExclusiveChoice", "+");
+        patternToUpperBoundForBPMN.put("WCP05_SimpleMerge", "+");
+        patternToUpperBoundForBPMN.put("WCP06_MultiChoice", "+");
+        patternToUpperBoundForBPMN.put("WCP08_MultiMerge", "+");
+        patternToUpperBoundForBPMN.put("WCP10_ArbitraryCycles", "+");
+        patternToUpperBoundForBPMN.put("WCP11_ImplicitTermination", "+");
+        patternToUpperBoundForBPMN.put("WCP12_MultipleInstancesWithoutSynchronization", "+");
+        patternToUpperBoundForBPMN.put("WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge", "+");
+        patternToUpperBoundForBPMN.put("WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge", "+");
+        patternToUpperBoundForBPMN.put("WCP16_DeferredChoice", "+");
+        patternToUpperBoundForBPMN.put("WCP19_CancelTask", "+");
+        patternToUpperBoundForBPMN.put("WCP20_CancelCase", "+");
+        patternToUpperBoundForBPMN.put("WCP07_StructuredSynchronizingMerge", "+/-");
+        patternToUpperBoundForBPMN.put("WCP09_Structured_Discriminator", "+/-");
+        patternToUpperBoundForBPMN.put("WCP17_InterleavedParallelRouting", "+/-");
+
+        Map<String, String> patternToUpperBoundForBPEL = new HashMap<>();
+        patternToUpperBoundForBPEL.put("WCP01_Sequence", "+");
+        patternToUpperBoundForBPEL.put("WCP02_ParallelSplit", "+");
+        patternToUpperBoundForBPEL.put("WCP03_Synchronization", "+");
+        patternToUpperBoundForBPEL.put("WCP04_ExclusiveChoice", "+");
+        patternToUpperBoundForBPEL.put("WCP05_SimpleMerge", "+");
+        patternToUpperBoundForBPEL.put("WCP06_MultiChoice", "+");
+        patternToUpperBoundForBPEL.put("WCP07_SynchronizingMerge", "+");
+        patternToUpperBoundForBPEL.put("WCP11_ImplicitTermination", "+");
+        patternToUpperBoundForBPEL.put("WCP16_DeferredChoice", "+");
+        patternToUpperBoundForBPEL.put("WCP12_MultipleInstancesWithoutSynchronization", "+");
+        patternToUpperBoundForBPEL.put("WCP13_MultipleInstancesWithAPrioriDesignTimeKnowledge", "+");
+        patternToUpperBoundForBPEL.put("WCP14_MultipleInstancesWithAPrioriRuntimeKnowledge", "+");
+        patternToUpperBoundForBPEL.put("WCP20_CancelCase", "+");
+        patternToUpperBoundForBPEL.put("WCP19_CancelActivity", "+/-");
+        patternToUpperBoundForBPEL.put("WCP18_Milestone", "+/-");
+        patternToUpperBoundForBPEL.put("WCP17_InterleavedParallelRouting", "+/-");
+
+        for (FeatureSet featureSet : patterns) {
+            final String name = featureSet.getName();
+            if (patternToUpperBoundForBPEL.containsKey(name)) {
+                featureSet.addExtension(EXTENSION_LANGUAGE_SUPPORT, patternToUpperBoundForBPEL.get(name));
+            } else if (patternToUpperBoundForBPMN.containsKey(name)) {
+                featureSet.addExtension(EXTENSION_LANGUAGE_SUPPORT, patternToUpperBoundForBPMN.get(name));
+            } else {
+                throw new IllegalStateException("should not happen for feature set " + featureSet.getId());
+            }
+        }
     }
 
     private static void addMetrics(PEBL pebl) {

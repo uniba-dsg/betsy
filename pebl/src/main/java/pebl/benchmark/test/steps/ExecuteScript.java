@@ -7,7 +7,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import pebl.MapAdapter;
 import pebl.benchmark.test.TestStep;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -18,6 +21,7 @@ public class ExecuteScript extends TestStep {
     private final String name;
 
     @XmlElement(required = true)
+    @XmlJavaTypeAdapter(MapAdapter.class)
     private final Map<String, String> parameters;
 
     ExecuteScript() {
