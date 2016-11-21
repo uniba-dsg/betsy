@@ -18,5 +18,6 @@ public class Groups {
 
     public static Group SA = new Group("rules", STATIC_ANALYSIS_BPEL, "The 94 static analysis rules of BPEL.");
 
-    public static Group ERROR = new Group("error", ROBUSTNESS_BPEL, "The robustness or fault tolerant tests.");
+    public static Group BACKDOOR_ROBUSTNESS = new Group("backdoor-robustness", ROBUSTNESS_BPEL, "The robustness or fault tolerant tests.");
+    public static Group IMPROVED_BACKDOOR_ROBUSTNESS = new Group("improved-backdoor-robustness", ROBUSTNESS_BPEL, "The robustness or fault tolerant tests.");
 }

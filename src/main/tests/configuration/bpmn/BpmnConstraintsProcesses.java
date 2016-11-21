@@ -39,7 +39,7 @@ class BpmnConstraintsProcesses {
                         String constraint = getConstraint(process);
                         result.add(new Test(process, FileTasks.getFilenameWithoutExtension(process),
                                 Collections.singletonList(new BPMNTestCaseBuilder().assertDeploymentFailed().getTestCase(1, FileTasks.getFilenameWithoutExtension(process))),
-                                new Feature(new FeatureSet(Groups.BPMN_CONSTRAINTS, constraint),
+                                new Feature(Groups.BPMN_CONSTRAINTS.getOrCreate(constraint),
                                         FileTasks.getFilenameWithoutExtension(process))));
                     });
                 }

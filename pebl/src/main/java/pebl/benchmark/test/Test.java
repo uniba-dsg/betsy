@@ -76,14 +76,14 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     private final String id;
 
     public Test() {
-        this(Paths.get(""), "", Collections.emptyList(), new Feature());
+        this(Paths.get(""), "", new ArrayList<>(), new Feature());
     }
 
     public Test(Path process,
             String description,
             List<? extends TestCase> testCases,
             Feature feature) {
-        this(process, description, testCases, feature, Collections.emptyList(), Collections.emptyList());
+        this(process, description, testCases, feature, new ArrayList<>(), new ArrayList<>());
     }
 
     public Test(Path process,
@@ -91,7 +91,7 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
             List<? extends TestCase> testCases,
             Feature feature,
             List<TestPartner> partners) {
-        this(process, description, testCases, feature, Collections.emptyList(), partners);
+        this(process, description, testCases, feature, new ArrayList<>(), partners);
     }
 
     public Test(Path process,
@@ -228,6 +228,10 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
 
     public List<TestPartner> getTestPartners() {
         return Collections.unmodifiableList(partners);
+    }
+
+    public void addTestPartner(TestPartner testPartner) {
+        this.partners.add(testPartner);
     }
 
     public Map<String, String> getExtensions() {

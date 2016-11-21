@@ -47,7 +47,7 @@ public class TestStep implements HasExtensions {
         return this;
     }
 
-    @XmlElement(required = true)
+    @XmlElement
     public String getDescription() {
         return description;
     }

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -102,6 +103,15 @@ public class Group implements HasId, HasName, HasExtensions {
             return;
         }
         this.featureSets.add(featureSet);
+    }
+
+    public FeatureSet getOrCreate(String name) {
+        Optional<FeatureSet> featureSetOptional = featureSets.stream().filter(fs -> fs.getName().equals(name)).findFirst();
+        if(featureSetOptional.isPresent()) {
+            return featureSetOptional.get();
+        } else {
+            return new FeatureSet(this, name);
+        }
     }
 
     public List<FeatureSet> getFeatureSets() {

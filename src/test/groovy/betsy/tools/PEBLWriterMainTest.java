@@ -16,7 +16,7 @@ import pebl.xsd.PEBL;
 
 import static org.junit.Assert.assertEquals;
 
-public class XmlMainTest {
+public class PEBLWriterMainTest {
 
     @Test
     public void roundTripXml() throws IOException {

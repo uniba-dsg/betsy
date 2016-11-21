@@ -10,16 +10,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
-import betsy.bpel.soapui.TestMessages;
 import betsy.common.tasks.FileTasks;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Group;
 import pebl.benchmark.test.Test;
 import pebl.benchmark.test.TestPartner;
 import pebl.benchmark.test.partner.NoTestPartner;
@@ -33,79 +34,79 @@ import pebl.benchmark.test.partner.rules.SoapMessageOutput;
 
 public class ErrorProcesses {
 
+    public static class TestTemplate {
+
+        public static final TestTemplate BACKDOOR_ROBUSTNESS = new TestTemplate(
+                BPELProcessBuilder.buildErrorProcessWithPartner(
+                "BackdoorRobustness",
+                "BackdoorRobustness",
+                "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+                new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)),
+                Groups.BACKDOOR_ROBUSTNESS);
+
+
+        public static final TestTemplate IMPROVED_BACKDOOR_ROBUSTNESS = new TestTemplate(
+                BPELProcessBuilder.buildErrorProcessWithPartner(
+                "ImprovedBackdoorRobustness",
+                "ImprovedBackdoorRobustness",
+                "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
+                new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1)),
+                Groups.IMPROVED_BACKDOOR_ROBUSTNESS);
+
+        private final Test base;
+        private final Group group;
+
+        public TestTemplate(Test base, Group group) {
+            this.base = Objects.requireNonNull(base);
+            this.group = group;
+        }
+
+        private Test createTest(final int number, final Feature feature, Path errorsDir) {
+            // copy file
+            String shortenedId = new BPELIdShortener(base.getName()).getShortenedId();
+            final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + feature.getName();
+            Path newPath = errorsDir.resolve(filename + ".bpel");
+
+            return base.withNewProcessAndFeature(newPath, new Feature(feature.getFeatureSet(), FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
+        }
+
+        public Test getBase() {
+            return base;
+        }
+
+        public Group getGroup() {
+            return group;
+        }
+    }
+
     public static final TestPartner ERROR_TEST_PARTNER = createErrorTestPartner("http://localhost:2000/bpel-testpartner", 22500);
 
     // TODO 50_002 and 50_003 should be better handled
-
-    private static final Path ERRORS_DIR = Paths.get("src/main/tests/files/bpel/errors");
-
-    private static final Test BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
-            "BackdoorRobustness",
-            "BackdoorRobustness",
-            "A receive followed by a scope with fault handlers and an invoke activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
-            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
-    private static final Test IMPROVED_BACKDOOR_ROBUSTNESS = BPELProcessBuilder.buildErrorProcessWithPartner(
-            "ImprovedBackdoorRobustness",
-            "ImprovedBackdoorRobustness",
-            "A receive followed by a scope with fault handlers and an invoke as well as a validate activity. The fault from the invoke activity from the partner service is caught by the scope-level catchAll faultHandler. Inside this faultHandler is the reply to the initial receive.",
-            new BPELTestCase().checkDeployment().sendSync(BPELProcessBuilder.DECLARED_FAULT, -1));
-
-    private static List<Test> createProcesses() {
-        FileTasks.deleteDirectory(ERRORS_DIR);
-        FileTasks.mkdirs(ERRORS_DIR);
-
-        List<Test> result = getProcesses();
-
-        for (Test process : result) {
-            // update fileName
-            String processFileName = process.getName();
-            if (processFileName.startsWith("IBR_")) {
-                XMLTasks.updatesNameAndNamespaceOfRootElement(IMPROVED_BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), processFileName);
-            } else if (processFileName.startsWith("BR_")) {
-                XMLTasks.updatesNameAndNamespaceOfRootElement(BACKDOOR_ROBUSTNESS.getProcess(), process.getProcess(), processFileName);
-            }
-        }
-
-        return result;// make sure the happy path is the first test
-    }
-
-    public static void main(String... args) {
-        createProcesses(); // this is to recreate the error processes
-    }
 
     public static List<Test> getProcesses() {
         Path errorsDir = Paths.get("src/main/tests/files/bpel/errors");
 
         List<Test> result = new LinkedList<>();
 
-        result.addAll(createTests(errorsDir, BACKDOOR_ROBUSTNESS));
-        result.addAll(createTests(errorsDir, IMPROVED_BACKDOOR_ROBUSTNESS));
+        result.addAll(createTestsFromTemplate(errorsDir, TestTemplate.BACKDOOR_ROBUSTNESS));
+        result.addAll(createTestsFromTemplate(errorsDir, TestTemplate.IMPROVED_BACKDOOR_ROBUSTNESS));
 
         Collections.sort(result);
 
         return result;// make sure the happy path is the first test
     }
 
-    private static Test cloneErrorBetsyProcess(final Test baseProcess, final int number, final Feature feature, Path errorsDir) {
-        // copy file
-        String shortenedId = new BPELIdShortener(baseProcess.getName()).getShortenedId();
-        final String filename = shortenedId + "_ERR" + String.valueOf(number) + "_" + feature.getName();
-        Path newPath = errorsDir.resolve(filename + ".bpel");
-
-        return baseProcess.withNewProcessAndFeature(newPath, new Feature(feature.getFeatureSet(), FileTasks.getFilenameWithoutExtension(newPath.getFileName().toString())));
-    }
-
-    private static List<Test> createTests(Path errorsDir, Test baseProcess) {
+    private static List<Test> createTestsFromTemplate(Path errorsDir, TestTemplate baseProcess) {
         List<Test> result = new LinkedList<>();
 
-        Test happyPathProcess = cloneErrorBetsyProcess(baseProcess, 0, new Feature(APP_CONSTRUCT, "happy-path"), errorsDir);
+        Test happyPathProcess = baseProcess.createTest(0, new Feature(baseProcess.getGroup().getOrCreate(APP_CONSTRUCT), "happy-path"), errorsDir);
         happyPathProcess = happyPathProcess.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(0, 0))));
         result.add(happyPathProcess);
 
         for (Error error : getInputToErrorCode()) {
             int number = error.number;
-            Feature feature = new Feature(error.featureSet, error.name);
-            Test process = cloneErrorBetsyProcess(baseProcess, number, feature, errorsDir);
+            Feature feature = new Feature(baseProcess.getGroup().getOrCreate(error.featureSet), error.name);
+            Test process = baseProcess.createTest(number, feature, errorsDir);
             process = process.withNewTestCases(new ArrayList<>(Collections.singletonList(new BPELTestCase().checkDeployment().sendSync(number, -1))));
 
             result.add(process);
@@ -114,10 +115,10 @@ public class ErrorProcesses {
         return result;
     }
 
-    private static final FeatureSet HTTP_CONSTRUCT = new FeatureSet(Groups.ERROR, "http");
-    private static final FeatureSet SOAP_CONSTRUCT = new FeatureSet(Groups.ERROR, "soap");
-    private static final FeatureSet TCP_CONSTRUCT = new FeatureSet(Groups.ERROR, "tcp");
-    private static final FeatureSet APP_CONSTRUCT = new FeatureSet(Groups.ERROR, "app");
+    private static final String HTTP_CONSTRUCT = "http";
+    private static final String SOAP_CONSTRUCT = "soap";
+    private static final String TCP_CONSTRUCT = "tcp";
+    private static final String APP_CONSTRUCT = "app";
 
     static TestPartner createErrorTestPartner(String url, int errorId) {
 
@@ -203,17 +204,17 @@ public class ErrorProcesses {
 
         public final int number;
         public final String name;
-        public final FeatureSet featureSet;
+        public final String featureSet;
         public final TestPartner testPartner;
 
-        private Error(int number, String name, FeatureSet featureSet) {
+        private Error(int number, String name, String featureSet) {
             this.number = number;
             this.name = name;
             this.featureSet = featureSet;
             this.testPartner = ErrorProcesses.createErrorTestPartner("http://localhost:2000/bpel-testpartner", number);
         }
 
-        public Error(int number, String name, FeatureSet featureSet, TestPartner testPartner) {
+        public Error(int number, String name, String featureSet, TestPartner testPartner) {
             this.number = number;
             this.name = name;
             this.featureSet = featureSet;

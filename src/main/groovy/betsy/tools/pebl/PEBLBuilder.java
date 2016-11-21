@@ -29,6 +29,7 @@ import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
 import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.test.Test;
+import pebl.benchmark.test.partner.NoTestPartner;
 import pebl.result.engine.Engine;
 import pebl.result.test.TestResult;
 import pebl.result.tool.Tool;
@@ -52,7 +53,14 @@ public class PEBLBuilder {
 
         addPerformance(pebl);
 
+        // as a very last step
+        addNoTestPartnerForAllTestsWithoutTestPartners(pebl);
+
         return pebl;
+    }
+
+    private static void addNoTestPartnerForAllTestsWithoutTestPartners(PEBL pebl) {
+        pebl.benchmark.tests.stream().filter(t -> t.getTestPartners().isEmpty()).forEach(t -> t.addTestPartner(new NoTestPartner()));
     }
 
     private static void addPerformance(PEBL pebl) {

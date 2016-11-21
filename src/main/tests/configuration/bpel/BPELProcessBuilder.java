@@ -128,7 +128,8 @@ public class BPELProcessBuilder {
         return Capabilities.addMetrics(new Test(PATH_PREFIX.resolve("errorsbase").resolve(name + FileTypes.BPEL),
                 description,
                 Arrays.asList(testCases),
-                new Feature(new FeatureSet(Groups.ERROR, constructName), name),
+                // feature is only dummy, will be replaced later on, as a test template is created here
+                new Feature(new FeatureSet(Groups.BACKDOOR_ROBUSTNESS, constructName), name),
                 Arrays.asList(testInterface, partnerInterface), Arrays.asList(ErrorProcesses.ERROR_TEST_PARTNER)));
     }
 
