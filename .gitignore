@@ -35,3 +35,4 @@ vm_extraction/
 ovas
 
 *.bpmn.png
+/peal/src/main/resources/schemas/
