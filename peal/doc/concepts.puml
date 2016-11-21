@@ -1,0 +1,54 @@
+@startuml
+
+class EngineId {
+  engineId : String
+}
+
+class ProcessModelId extends EngineId {
+  processId : Qname
+}
+
+class InstanceId extends ProcessModelId {
+  instanceId : String
+}
+
+
+enum EngineState {
+    NOT_INSTALLED
+    INSTALLED
+    STARTED
+}
+
+enum ProcessModelState {
+    NOT_DEPLOYED
+    DEPLOYED
+}
+
+enum InstanceState {
+    NOT_STARTED
+    STARTED
+    STOPPED
+}
+
+EngineState -[hidden]down- ProcessModelState
+ProcessModelState -[hidden]down- InstanceState
+
+
+class Package {
+  data : byte[]
+}
+
+class LogPackage extends Package
+class ProcessModelPackage extends Package
+class DeploymentPackage extends ProcessModelPackage
+
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

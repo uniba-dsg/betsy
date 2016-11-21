@@ -31,4 +31,30 @@ public enum Ternary {
     public static Ternary from(String string) {
         return Arrays.stream(Ternary.values()).filter(t -> t.getString().equals(string)).findFirst().orElseThrow(() -> new IllegalArgumentException("String " + string + " not available"));
     }
+
+    public Ternary aggregate(Ternary b) {
+        if(this.equals(b)) {
+            return this;
+        } else {
+            return PLUS_MINUS;
+        }
+    }
+
+    public Ternary max(Ternary b) {
+        if(PLUS.equals(this) || PLUS.equals(b)) {
+            return PLUS;
+        } else if(PLUS_MINUS.equals(this) || PLUS_MINUS.equals(b)) {
+            return PLUS_MINUS;
+        } else {
+            return MINUS;
+        }
+    }
+
+    public Ternary atMost(Ternary b) {
+        int n = number;
+        if(n > b.getNumber()) {
+            n = b.getNumber();
+        }
+        return Ternary.from(n);
+    }
 }

@@ -1,6 +1,7 @@
 package betsy.tools.pebl;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class PEBLAggregator {
 
                 System.out.println("Computing " + metric.getId() + " for " + entry.getKey());
 
-                String value = computeThroughScript(metricType, testResults);
+                String value = computeThroughScript(metric, testResults);
 
                 Engine engine = testResults.get(0).getEngine();
                 Tool tool = testResults.get(0).getTool();
@@ -78,7 +79,7 @@ public class PEBLAggregator {
                 final Optional<FeatureResult> featureResultOptional = pebl.result.featureResults.stream()
                         .filter(fr -> fr.getEngine().getId().equals(engine.getId()) && fr.getTool().getId().equals(tool.getId()))
                         .findFirst();
-                if(featureResultOptional.isPresent()) {
+                if (featureResultOptional.isPresent()) {
                     featureResultOptional.get().getMeasurement().add(measurement);
                 } else {
                     pebl.result.featureResults.add(new FeatureResult(Arrays.asList(measurement), engine, tool));
@@ -87,135 +88,145 @@ public class PEBLAggregator {
         }
     }
 
-    private String computeThroughScript(MetricType metricType, List<TestResult> testResults) {
+    private String computeThroughScript(Metric metric, List<TestResult> testResults) {
+        MetricType metricType = metric.getMetricType();
         if (metricType.getId().equals("testCasesSum")) {
-            return String.valueOf(testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testCases"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("0")
-                    )
-                    .mapToLong(Long::parseLong)
-                    .sum()
-            );
+            return String.valueOf(getTestCases(testResults));
         } else if (metricType.getId().equals("testCaseSuccessesSum")) {
-            return String.valueOf(testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testCaseSuccesses"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("0")
-                    )
-                    .mapToLong(Long::parseLong)
-                    .sum()
-            );
+            return String.valueOf(getTestCaseSuccesses(testResults));
         } else if (metricType.getId().equals("testCaseFailuresSum")) {
-            return String.valueOf(testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testCaseFailures"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("0")
-                    )
-                    .mapToLong(Long::parseLong)
-                    .sum()
-            );
+            return String.valueOf(getTestCaseFailures(testResults));
         } else if (metricType.getId().equals("testSuccessfulCount")) {
-            return String.valueOf(testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testSuccessful"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("false")
-                    )
-                    .map(Boolean::parseBoolean)
-                    .filter(x -> x)
-                    .count()
-            );
+            return String.valueOf(getTestSuccessfulCount(testResults));
         } else if (metricType.getId().equals("testDeployableCount")) {
-            return String.valueOf(testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testDeployable"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("false")
-                    )
-                    .map(Boolean::parseBoolean)
-                    .filter(x -> x)
-                    .count()
-            );
+            return String.valueOf(getTestDeployable(testResults));
         } else if (metricType.getId().equals("testResultTrivalentAggregation")) {
-            final long testCaseSuccesses = testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testCaseSuccesses"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("0")
-                    )
-                    .mapToLong(Long::parseLong)
-                    .sum();
-            final long testCasesFailures = testResults
-                    .stream()
-                    .map(tr -> tr.getMeasurements()
-                            .stream()
-                            .filter(m -> m.getMetric().getMetricType().getId().equals("testCaseFailures"))
-                            .findFirst()
-                            .map(Measurement::getValue)
-                            .orElse("0")
-                    )
-                    .mapToLong(Long::parseLong)
-                    .sum();
-
-            if (testCasesFailures == 0) {
-                return "+";
-            } else if (testCaseSuccesses == 0) {
-                return "-";
-            } else {
-                return "+/-";
-            }
+            return testResults.stream().map(this::getResultTrivalentAggregation).reduce(Ternary.PLUS, Ternary::aggregate).getString();
         } else if (metricType.getId().equals("testsCount")) {
-            return String.valueOf(testResults
-                    .stream()
-                    .count()
-            );
-        } else if (metricType.getId().equals("support")) {
-            final int max = testResults
-                    .stream()
-                    .map(tr -> {
-                                final String testResult = tr.getMeasurements()
-                                        .stream()
-                                        .filter(m -> m.getMetric().getMetricType().getId().equals("testResult"))
-                                        .findFirst()
-                                        .map(Measurement::getValue)
-                                        .orElse("-");
-                                String extensionLanguageSupport = tr.getTest().getFeature().getExtensions().get(PEBLBuilder.EXTENSION_LANGUAGE_SUPPORT);
-                                if (testResult == "+") {
-                                    return extensionLanguageSupport;
-                                } else {
-                                    return "-";
-                                }
-                            }
-                    )
-                    .mapToInt(s -> Ternary.from(s).getNumber())
-                    .max().orElse(0);
+            return String.valueOf(testResults.stream().count());
+        } else if (metricType.getId().equals("patternSupport")) {
+            return getSupport(testResults).getString();
+        }   else if (metricType.getId().equals("patternImplementationSupport")) {
+            return getSupport(testResults.get(0)).getString();
+        } else if (metricType.getId().equals("patternImplementationFulfilledLanguageSupport")) {
+            return String.valueOf(!getSupport(testResults.get(0)).equals(Ternary.MINUS));
+        } else if (metricType.getId().equals("patternFulfilledLanguageSupport")) {
+            Ternary support = getSupport(testResults);
+            Ternary languageSupportOfFeatureSet = Ternary.from(testResults.get(0).getTest().getFeature().getFeatureSet().getExtensions().get("languageSupport"));
 
-            return Ternary.from(max).getString();
+            return String.valueOf(support.equals(languageSupportOfFeatureSet));
         }
 
         throw new IllegalStateException("Cannot compute metric " + metricType);
+    }
+
+    private long getTestSuccessfulCount(List<TestResult> testResults) {
+        return testResults
+                .stream()
+                .map(tr -> tr.getMeasurements()
+                        .stream()
+                        .filter(m -> m.getMetric().getMetricType().getId().equals("testSuccessful"))
+                        .findFirst()
+                        .map(Measurement::getValue)
+                        .orElse("false")
+                )
+                .map(Boolean::parseBoolean)
+                .filter(x -> x)
+                .count();
+    }
+
+    private Ternary getResultTrivalentAggregation(TestResult testResult) {
+        final long testCaseSuccesses = getTestCaseSuccesses(Collections.singletonList(testResult));
+        final long testCasesFailures = getTestCaseFailures(Collections.singletonList(testResult));
+
+        if (testCasesFailures == 0) {
+            return Ternary.PLUS;
+        } else if (testCaseSuccesses == 0) {
+            return Ternary.MINUS;
+        } else {
+            return Ternary.PLUS_MINUS;
+        }
+    }
+
+    private Ternary getSupport(TestResult testResult) {
+        return Optional.of(testResult)
+                .map(tr -> {
+                            final String result = tr.getMeasurements()
+                                    .stream()
+                                    .filter(m -> m.getMetric().getMetricType().getId().equals("testResult"))
+                                    .findFirst()
+                                    .map(Measurement::getValue)
+                                    .orElse("-");
+                            String extensionLanguageSupport = tr.getTest().getFeature().getExtensions().get(PEBLBuilder.EXTENSION_LANGUAGE_SUPPORT);
+                            if (result.equals("+")) {
+                                return Ternary.from(extensionLanguageSupport);
+                            } else {
+                                return Ternary.MINUS;
+                            }
+                        }
+                ).orElse(Ternary.MINUS);
+    }
+
+    private Ternary getSupport(List<TestResult> testResults) {
+        Ternary languageSupportOfFeatureSet = Ternary.from(testResults.get(0).getTest().getFeature().getFeatureSet().getExtensions().get("languageSupport"));
+        return testResults.stream().map(this::getSupport).map(t -> t.atMost(languageSupportOfFeatureSet)).reduce(Ternary.MINUS, Ternary::max);
+    }
+
+    private long getTestDeployable(List<TestResult> testResults) {
+        return testResults
+                .stream()
+                .map(tr -> tr.getMeasurements()
+                        .stream()
+                        .filter(m -> m.getMetric().getMetricType().getId().equals("testDeployable"))
+                        .findFirst()
+                        .map(Measurement::getValue)
+                        .orElse("false")
+                )
+                .map(Boolean::parseBoolean)
+                .filter(x -> x)
+                .count();
+    }
+
+    private long getTestCaseSuccesses(List<TestResult> testResults) {
+        return testResults
+                .stream()
+                .map(tr -> tr.getMeasurements()
+                        .stream()
+                        .filter(m -> m.getMetric().getMetricType().getId().equals("testCaseSuccesses"))
+                        .findFirst()
+                        .map(Measurement::getValue)
+                        .orElse("0")
+                )
+                .mapToLong(Long::parseLong)
+                .sum();
+    }
+
+    private long getTestCases(List<TestResult> testResults) {
+        return testResults
+                .stream()
+                .map(tr -> tr.getMeasurements()
+                        .stream()
+                        .filter(m -> m.getMetric().getMetricType().getId().equals("testCases"))
+                        .findFirst()
+                        .map(Measurement::getValue)
+                        .orElse("0")
+                )
+                .mapToLong(Long::parseLong)
+                .sum();
+    }
+
+    private long getTestCaseFailures(List<TestResult> testResults) {
+        return testResults
+                .stream()
+                .map(tr -> tr.getMeasurements()
+                        .stream()
+                        .filter(m -> m.getMetric().getMetricType().getId().equals("testCaseFailures"))
+                        .findFirst()
+                        .map(Measurement::getValue)
+                        .orElse("0")
+                )
+                .mapToLong(Long::parseLong)
+                .sum();
     }
 
 }

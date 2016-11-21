@@ -161,13 +161,13 @@ public class PEBLBuilder {
                 .flatMap(l -> l.getGroups().stream())
                 .flatMap(g -> g.getFeatureSets().stream())
                 .flatMap(fs -> fs.getFeatures().stream())
-                .forEach(f -> f.addMetric(MetricTypes.PATTERN_SUPPORT));
+                .forEach(f -> f.addMetric(MetricTypes.PATTERN_IMPLEMENTATION_SUPPORT).addMetric(MetricTypes.PATTERN_IMPLEMENTATION_FULFILLED_LANGUAGE_SUPPORT));
 
         expressiveness.getLanguages()
                 .stream()
                 .flatMap(l -> l.getGroups().stream())
                 .flatMap(g -> g.getFeatureSets().stream())
-                .forEach(fs -> fs.addMetric(MetricTypes.PATTERN_SUPPORT));
+                .forEach(fs -> fs.addMetric(MetricTypes.PATTERN_SUPPORT).addMetric(MetricTypes.PATTERN_FULFILLED_LANGUAGE_SUPPORT));
     }
 
     private static void addLanguageSupportForPatternImplementations(Capability expressiveness) {

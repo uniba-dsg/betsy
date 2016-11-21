@@ -31,7 +31,11 @@ public class MetricTypes {
     public static final MetricType TEST_DEPLOYABLE_COUNT = new MetricType(ValueType.LONG, "testDeployableCount", "Sum of the test cases", "count", "COUNT(testDeployable)");
     public static final MetricType TEST_SUCCESSFUL_COUNT = new MetricType(ValueType.LONG, "testSuccessfulCount", "Sum of the test cases", "count", "COUNT(testSuccessful)");
     public static final MetricType TEST_RESULT_TRIVALENT_AGGREGATION = new MetricType(ValueType.STRING, "testResultTrivalentAggregation", "Sum of the test cases", "trivalent", "TRIVALENT_AGGREGATION(testResult)");
-    public static final MetricType PATTERN_SUPPORT = new MetricType(ValueType.STRING, "support", "Support", "trivalent", "TRIVALENT_MAX(testResult,languageSupport)");
+    public static final MetricType PATTERN_SUPPORT = new MetricType(ValueType.STRING, "patternSupport", "Pattern Support", "trivalent", "TRIVALENT_MAX(testResult,languageSupport)");
+    public static final MetricType PATTERN_IMPLEMENTATION_SUPPORT = new MetricType(ValueType.STRING, "patternImplementationSupport", "Pattern Implementation Support", "trivalent", "TRIVALENT_MAX(testResult,languageSupport)");
+
+    public static final MetricType PATTERN_IMPLEMENTATION_FULFILLED_LANGUAGE_SUPPORT = new MetricType(ValueType.STRING, "patternImplementationFulfilledLanguageSupport", "patternImplementationFulfilledLanguageSupport", "boolean", "testResult == languageSupport ? + : -");
+    public static final MetricType PATTERN_FULFILLED_LANGUAGE_SUPPORT = new MetricType(ValueType.STRING, "patternFulfilledLanguageSupport", "patternFulfilledLanguageSupport", "boolean", "testResult == languageSupport ? + : -");
 
     public static List<? extends MetricType> getMetricTypes() {
         final LinkedList<MetricType> metricTypes = new LinkedList<>();
@@ -61,6 +65,9 @@ public class MetricTypes {
         metricTypes.add(TEST_SUCCESSFUL_COUNT);
         metricTypes.add(TEST_RESULT_TRIVALENT_AGGREGATION);
         metricTypes.add(PATTERN_SUPPORT);
+        metricTypes.add(PATTERN_IMPLEMENTATION_SUPPORT);
+        metricTypes.add(PATTERN_IMPLEMENTATION_FULFILLED_LANGUAGE_SUPPORT);
+        metricTypes.add(PATTERN_FULFILLED_LANGUAGE_SUPPORT);
 
 
         return metricTypes;
