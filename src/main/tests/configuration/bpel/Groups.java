@@ -1,6 +1,7 @@
 package configuration.bpel;
 
 import configuration.Capabilities;
+import pebl.benchmark.feature.Capability;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
 
@@ -20,4 +21,6 @@ public class Groups {
 
     public static Group BACKDOOR_ROBUSTNESS = new Group("backdoor-robustness", ROBUSTNESS_BPEL, "The robustness or fault tolerant tests.");
     public static Group IMPROVED_BACKDOOR_ROBUSTNESS = new Group("improved-backdoor-robustness", ROBUSTNESS_BPEL, "The robustness or fault tolerant tests.");
+
+    public static Group DUMMY = new Group("dummy", new Language(new Capability("dummy"), "dummy"), "");
 }

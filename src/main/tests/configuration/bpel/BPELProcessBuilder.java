@@ -129,7 +129,7 @@ public class BPELProcessBuilder {
                 description,
                 Arrays.asList(testCases),
                 // feature is only dummy, will be replaced later on, as a test template is created here
-                new Feature(new FeatureSet(Groups.BACKDOOR_ROBUSTNESS, constructName), name),
+                new Feature(new FeatureSet(Groups.DUMMY, constructName), name),
                 Arrays.asList(testInterface, partnerInterface), Arrays.asList(ErrorProcesses.ERROR_TEST_PARTNER)));
     }
 
