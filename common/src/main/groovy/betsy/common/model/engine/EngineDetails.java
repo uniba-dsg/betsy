@@ -11,6 +11,7 @@ public class EngineDetails {
         result.put("jbpm", "http://www.jbpm.org/");
         result.put("activiti", "http://www.activiti.org/");
         result.put("camunda", "http://www.camunda.org/");
+        result.put("flowable", "http://www.flowable.org/");
 
         result.put("ode", "http://ode.apache.org/");
         result.put("bpelg", "https://code.google.com/archive/p/bpel-g/");
