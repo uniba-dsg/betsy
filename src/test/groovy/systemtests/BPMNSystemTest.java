@@ -1,12 +1,13 @@
 package systemtests;
 
-import betsy.Main;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import betsy.Main;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.assertEquals;
 
@@ -116,6 +117,11 @@ public class BPMNSystemTest extends AbstractSystemTest {
     @Test
     public void test_A_BpmnjBPM640SequenceFlow() throws IOException {
         testBPMNEngine("jbpm__6_4_0");
+    }
+
+    @Test
+    public void test_A_BpmnjBPM650SequenceFlow() throws IOException {
+        testBPMNEngine("jbpm__6_5_0");
     }
 
     private void testBPMNEngine(String engine) throws IOException {
