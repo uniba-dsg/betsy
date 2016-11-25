@@ -94,7 +94,7 @@ public class Language implements HasId, HasName, HasExtensions {
     }
 
     public List<Group> getGroups() {
-        return Collections.unmodifiableList(groups);
+        return groups;
     }
 
     public Capability getCapability() {

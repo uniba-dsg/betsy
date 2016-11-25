@@ -115,7 +115,7 @@ public class Group implements HasId, HasName, HasExtensions {
     }
 
     public List<FeatureSet> getFeatureSets() {
-        return Collections.unmodifiableList(featureSets);
+        return featureSets;
     }
 
     public Language getLanguage() {

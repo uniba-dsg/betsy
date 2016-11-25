@@ -12,6 +12,12 @@ import javax.xml.bind.JAXBException;
 import betsy.tools.pebl.PEBLAggregator;
 import org.xml.sax.SAXException;
 import pebl.HasId;
+import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.feature.Language;
+import pebl.benchmark.feature.MetricType;
 import pebl.result.test.TestResult;
 import pebl.xsd.PEBL;
 
@@ -43,10 +49,53 @@ public class PEBLMergerMain {
         List<String> metricTypeIds = peblTarget.benchmark.metricTypes.stream().map(HasId::getId).collect(Collectors.toList());
         peblSource.benchmark.metricTypes.stream().filter(e -> !metricTypeIds.contains(e.getId())).forEach(e -> peblTarget.benchmark.metricTypes.add(e));
 
-        // add capabilities if not yet available
-        List<String> capabilities = peblTarget.benchmark.capabilities.stream().map(HasId::getId).collect(Collectors.toList());
-        peblSource.benchmark.capabilities.stream().filter(e -> !capabilities.contains(e.getId())).forEach(e -> peblTarget.benchmark.capabilities.add(e));
-        // TODO add other features
+        // apply metrics
+        peblSource.benchmark.capabilities.forEach(c -> {
+
+            final Optional<Capability> capabilityOptional = peblTarget.benchmark.capabilities.stream().filter(x -> x.getId().equals(c.getId())).findFirst();
+
+            if(!capabilityOptional.isPresent()) {
+                peblTarget.benchmark.capabilities.add(c);
+            } else {
+                final Capability capability = capabilityOptional.get();
+                c.getLanguages().forEach(l -> {
+
+                    final Optional<Language> languageOptional = capability.getLanguages().stream().filter(x -> x.getId().equals(c.getId())).findFirst();
+                    if(!languageOptional.isPresent()) {
+                        capability.getLanguages().add(l);
+                    } else {
+                        final Language language = languageOptional.get();
+                        l.getGroups().forEach(g -> {
+
+                            final Optional<Group> groupOptional = language.getGroups().stream().filter(x -> x.getId().equals(c.getId())).findFirst();
+                            if(!groupOptional.isPresent()) {
+                                language.getGroups().add(g);
+                            } else {
+                                final Group group = groupOptional.get();
+
+                                g.getFeatureSets().forEach(fs -> {
+
+                                    final Optional<FeatureSet> featureSetOptional = group.getFeatureSets().stream().filter(x -> x.getId().equals(c.getId())).findFirst();
+                                    if(!featureSetOptional.isPresent()) {
+                                        group.getFeatureSets().add(fs);
+                                    } else {
+                                        final FeatureSet featureSet = featureSetOptional.get();
+
+                                        fs.getFeatures().forEach(f -> {
+
+                                            final Optional<Feature> featureOptional = featureSet.getFeatures().stream().filter(x -> x.getId().equals(c.getId())).findFirst();
+                                            if(!featureOptional.isPresent()) {
+                                                featureSet.getFeatures().add(f);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
         // add tests if not yet available
         List<String> testIds = peblTarget.benchmark.tests.stream().map(HasId::getId).collect(Collectors.toList());

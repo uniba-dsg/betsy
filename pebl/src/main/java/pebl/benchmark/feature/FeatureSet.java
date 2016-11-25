@@ -73,7 +73,7 @@ public class FeatureSet implements HasId, HasName, HasExtensions {
     }
 
     public List<Feature> getFeatures() {
-        return Collections.unmodifiableList(features);
+        return features;
     }
 
     void addFeature(Feature feature) {

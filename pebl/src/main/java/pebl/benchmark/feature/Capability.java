@@ -106,7 +106,7 @@ public class Capability implements HasId, HasName, HasExtensions {
     }
 
     public List<Language> getLanguages() {
-        return Collections.unmodifiableList(languages);
+        return languages;
     }
 
     @Override
