@@ -2,9 +2,11 @@ package betsy.tools;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -78,7 +80,7 @@ public class PEBLStoreFilesAlongMain {
         if (!currentFile.equals(relativePath)) {
             try {
                 Files.createDirectories(relativePath.getParent());
-                Files.copy(currentFile, relativePath);
+                Files.copy(currentFile, relativePath, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }

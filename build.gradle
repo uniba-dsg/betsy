@@ -41,7 +41,6 @@ configurations {
 }
 
 dependencies {
-    internal fileTree(dir: 'lib', include: '*.jar')
     internal project(':common')
     internal project(':peal')
     internal project(':pebl')
@@ -76,6 +75,8 @@ dependencies {
             'groovy*', 'junit*', 'log4j*', 'commons-io*', 'commons-cli*', 'commons-lang*',
             'http*', 'commons-http*', 'commons-codec*'
     ]))
+
+    internal fileTree(dir: 'lib', include: '*.jar')
 
     compile configurations.internal
     compile configurations.external

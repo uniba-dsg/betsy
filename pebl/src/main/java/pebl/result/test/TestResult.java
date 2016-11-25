@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,8 +84,8 @@ public class TestResult implements HasExtensions, HasId {
         this.logFiles = new ArrayList<>(logFiles);
         this.deploymentPackage = deploymentPackage;
         this.files = new ArrayList<>(files);
-        this.measurements = measurements;
-        this.extensions = extensions;
+        this.measurements = new LinkedList<>(measurements);
+        this.extensions = new HashMap<>(extensions);
         this.testCaseResults = new ArrayList<>(testCaseResults);
     }
 

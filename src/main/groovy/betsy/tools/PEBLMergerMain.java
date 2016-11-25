@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
@@ -65,7 +66,7 @@ public class PEBLMergerMain {
 
         // add test results if not yet available
         List<String> testResultIds = peblTarget.result.testResults.stream().map(HasId::getId).collect(Collectors.toList());
-        peblSource.result.testResults.stream().filter(e -> !testResultIds.contains(e.getId())).forEach(e -> {
+        peblSource.result.testResults.forEach(e -> {
             final List<Path> files = e.getFiles().stream().map(newRelativeDataFolder::relativize).collect(Collectors.toList());
             e.getFiles().clear();
             e.getFiles().addAll(files);
@@ -74,7 +75,13 @@ public class PEBLMergerMain {
             e.getLogFiles().clear();
             e.getLogFiles().addAll(logFiles);
 
-            peblTarget.result.testResults.add(e);
+            final Optional<TestResult> testResultOptional = peblTarget.result.testResults.stream().filter(tr -> tr.getId().equals(e.getId())).findAny();
+            if(testResultOptional.isPresent()) {
+                final int index = peblTarget.result.testResults.indexOf(testResultOptional.get());
+                peblTarget.result.testResults.set(index, e);
+            } else {
+                peblTarget.result.testResults.add(e);
+            }
         });
     }
 
