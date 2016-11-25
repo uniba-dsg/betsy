@@ -17,7 +17,7 @@ public class BPMNEngineRepository {
     public BPMNEngineRepository() {
         List<AbstractBPMNEngine> all = new ArrayList<>(Arrays.asList(
                 new CamundaEngine(), new Camunda710Engine(), new Camunda720Engine(), new Camunda730Engine(), new Camunda740Engine(), new Camunda750Engine(),
-                new Activiti5151Engine(), new ActivitiEngine(), new Activiti5170Engine(), new Activiti5180Engine(), new Activiti5190Engine(), new Activiti51902Engine(), new Activiti5200Engine(), new Activiti600Beta1Engine(),
+                new Activiti5151Engine(), new ActivitiEngine(), new Activiti5170Engine(), new Activiti5180Engine(), new Activiti5190Engine(), new Activiti51902Engine(), new Activiti5200Engine(), new Activiti5210Engine(), new Activiti5220Engine(),
                 new JbpmEngine(), new JbpmEngine610(), new JbpmEngine620(), new JbpmEngine630(), new JbpmEngine640()));
         repo.put("ALL", all);
 
