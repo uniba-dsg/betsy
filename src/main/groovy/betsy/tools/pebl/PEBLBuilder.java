@@ -32,7 +32,6 @@ import pebl.benchmark.test.Test;
 import pebl.benchmark.test.partner.NoTestPartner;
 import pebl.result.engine.Engine;
 import pebl.result.test.TestResult;
-import pebl.result.tool.Tool;
 import pebl.xsd.Features;
 import pebl.xsd.PEBL;
 
@@ -42,7 +41,6 @@ public class PEBLBuilder {
 
     public static PEBL getPebl() {
         PEBL pebl = new PEBL();
-        pebl.result.tools.addAll(getTools());
         pebl.result.engines.addAll(getEngines());
         pebl.benchmark.tests.addAll(getTests().stream().collect(Collectors.toList()));
         pebl.benchmark.capabilities.addAll(new Features(getFeatures()).capabilities);
@@ -78,7 +76,7 @@ public class PEBLBuilder {
 
         // test
         final Test test = new Test(
-                Paths.get("process.bpmn"),
+                Paths.get("src/main/tests/files/bpmn/basics/SequenceFlow.bpmn"),
                 "One bpmn workflow containing 7 workflow control flow patterns.",
                 Collections.emptyList(),
                 feature
@@ -101,8 +99,7 @@ public class PEBLBuilder {
         pebl.result.engines.add(engineB);
 
         // tool
-        final Tool benchFlow = new Tool("BenchFlow", "1");
-        pebl.result.tools.add(benchFlow);
+        final String benchFlow = "BenchFlow__1";
 
         // results
         final Engine camunda__7_4_0 = pebl.result.engines.stream().filter(e -> e.getId().equals("camunda__7_4_0")).findFirst().orElseThrow(() -> new IllegalStateException("camunda 7.4.0 must be available"));
@@ -377,9 +374,5 @@ public class PEBLBuilder {
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
         processes.addAll(new BPMNProcessRepository().getByName("ALL"));
         return processes;
-    }
-
-    public static List<Tool> getTools() {
-        return Collections.singletonList(new Tool("betsy", GitUtil.getGitCommit()));
     }
 }

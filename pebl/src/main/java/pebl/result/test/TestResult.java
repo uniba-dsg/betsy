@@ -17,14 +17,14 @@ import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
+import pebl.HasId;
 import pebl.MapAdapter;
 import pebl.benchmark.test.Test;
 import pebl.result.Measurement;
 import pebl.result.engine.Engine;
-import pebl.result.tool.Tool;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class TestResult implements HasExtensions {
+public class TestResult implements HasExtensions, HasId {
 
     @XmlAttribute(required = true)
     @XmlIDREF
@@ -35,8 +35,7 @@ public class TestResult implements HasExtensions {
     private final Engine engine;
 
     @XmlAttribute(required = true)
-    @XmlIDREF
-    private final Tool tool;
+    private final String tool;
 
     @XmlElement(name = "logFiles")
     @XmlList
@@ -61,7 +60,7 @@ public class TestResult implements HasExtensions {
     private final List<TestCaseResult> testCaseResults;
 
     TestResult() {
-        this(new Test(), new Engine(), new Tool(),
+        this(new Test(), new Engine(), "",
                 Collections.emptyList(),
                 Paths.get(""),
                 Collections.emptyList(), Collections.emptyList(),
@@ -70,7 +69,7 @@ public class TestResult implements HasExtensions {
 
     public TestResult(Test test,
             Engine engine,
-            Tool tool,
+            String tool,
             List<Path> logFiles,
             Path deploymentPackage,
             List<Path> files,
@@ -96,12 +95,12 @@ public class TestResult implements HasExtensions {
         return engine;
     }
 
-    public Tool getTool() {
+    public String getTool() {
         return tool;
     }
 
     public List<Path> getLogFiles() {
-        return Collections.unmodifiableList(logFiles);
+        return logFiles;
     }
 
     public Path getDeploymentPackage() {
@@ -109,7 +108,7 @@ public class TestResult implements HasExtensions {
     }
 
     public List<Path> getFiles() {
-        return Collections.unmodifiableList(files);
+        return files;
     }
 
     public List<Measurement> getMeasurements() {
@@ -129,5 +128,10 @@ public class TestResult implements HasExtensions {
 
     public List<TestCaseResult> getTestCaseResults() {
         return Collections.unmodifiableList(testCaseResults);
+    }
+
+    @Override
+    public String getId() {
+        return getEngine().getId() + HasId.SEPARATOR + getTest().getId();
     }
 }

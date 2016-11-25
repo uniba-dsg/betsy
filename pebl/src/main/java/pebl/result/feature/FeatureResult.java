@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import pebl.result.Measurement;
 import pebl.result.engine.Engine;
-import pebl.result.tool.Tool;
 
 public class FeatureResult {
 
@@ -23,19 +22,14 @@ public class FeatureResult {
     @XmlIDREF
     private final Engine engine;
 
-    @XmlAttribute(required = true)
-    @XmlIDREF
-    private final Tool tool;
-
     public FeatureResult() {
-        this(Collections.emptyList(), new Engine(), new Tool());
+        this(Collections.emptyList(), new Engine());
     }
 
-    public FeatureResult(List<Measurement> measurements, Engine engine, Tool tool) {
+    public FeatureResult(List<Measurement> measurements, Engine engine) {
         this.measurements = new LinkedList<>();
         this.measurements.addAll(measurements);
         this.engine = engine;
-        this.tool = tool;
     }
 
     public List<Measurement> getMeasurement() {
@@ -46,8 +40,5 @@ public class FeatureResult {
         return engine;
     }
 
-    public Tool getTool() {
-        return tool;
-    }
 }
 

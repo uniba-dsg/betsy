@@ -3,9 +3,6 @@
 package "engine" {
   class Engine
 }
-package "tool" {
-  class Tool
-}
 package "feature result" {
   class FeatureResult
   class Measurement {
@@ -13,7 +10,6 @@ package "feature result" {
   }
 
   FeatureResult "1"->"*" Measurement
-  FeatureResult -> Tool
   FeatureResult -> Engine
 }
 

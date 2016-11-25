@@ -20,7 +20,7 @@ import pebl.xsd.SchemaGenerator;
 public class PEBLWriterMain {
 
     public static void main(String[] args) throws IOException, JAXBException, SAXException {
-        Path workingDirectory = Paths.get(".");
+        Path workingDirectory = Paths.get(args[0]);
         writeInDirectory(workingDirectory);
         System.out.println("Written pebl to disk");
         validateXml(workingDirectory);
@@ -30,12 +30,10 @@ public class PEBLWriterMain {
     public static void writeInDirectory(Path workingDirectory) {
         PEBL pebl = PEBLBuilder.getPebl();
         pebl.writeTo(workingDirectory);
-
-        workingDirectory.resolve("pebl.xml");
     }
 
     public static void validateXml(Path workingDirectory) throws JAXBException, IOException, SAXException {
-        Path xsd = Paths.get("pebl/src/main/resources/pebl/pebl.xsd"); //SchemaGenerator.generateXSD();
+        Path xsd = Paths.get("pebl/src/main/resources/pebl/pebl.xsd");
 
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 

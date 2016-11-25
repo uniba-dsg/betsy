@@ -17,11 +17,6 @@ package "engine" {
 
 }
 
-package "tool" {
-
-	class Tool
-}
-
 package "test result" {
 
 	class TestResult {
@@ -45,7 +40,6 @@ TestResult "1"-left->"*" TestCaseResult
 
 TestResult -> Test
 TestResult -> Engine
-TestResult -> Tool
 TestResult "1"-down->"*" Measurement
 Measurement -> Metric
 Test ->"*" Metric

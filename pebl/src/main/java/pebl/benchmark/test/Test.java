@@ -40,7 +40,7 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     private final Feature feature;
 
     @XmlElement(required = true)
-    private final Path process;
+    private Path process;
 
     @XmlElement(required = true)
     private final String description;
@@ -136,7 +136,7 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     }
 
     public List<Path> getFiles() {
-        return Collections.unmodifiableList(files);
+        return files;
     }
 
     private List<TestCase> uniqueifyTestCaseNames(List<TestCase> testCases) {
@@ -251,6 +251,10 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
 
     public List<Metric> getMetrics() {
         return metrics;
+    }
+
+    public void setProcess(Path process) {
+        this.process = process;
     }
 }
 

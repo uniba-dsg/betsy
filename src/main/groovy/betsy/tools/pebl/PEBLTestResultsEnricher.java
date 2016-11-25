@@ -26,11 +26,13 @@ import betsy.common.model.engine.EngineDimension;
 import betsy.common.reporting.CsvRow;
 import betsy.common.reporting.JUnitXmlResultReader;
 import betsy.common.util.DurationCsv;
+import betsy.common.util.GitUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import pebl.HasId;
 import pebl.benchmark.feature.FeatureDimension;
 import pebl.benchmark.feature.Metric;
 import pebl.benchmark.test.Test;
@@ -38,7 +40,6 @@ import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 import pebl.result.test.TestCaseResult;
 import pebl.result.test.TestResult;
-import pebl.result.tool.Tool;
 import pebl.xsd.PEBL;
 
 public class PEBLTestResultsEnricher {
@@ -71,7 +72,7 @@ public class PEBLTestResultsEnricher {
             List<CsvRow> csvRows,
             P process,
             PEBL pebl) {
-        Tool tool = pebl.result.tools.get(0);
+        String tool = "betsy" + HasId.SEPARATOR + GitUtil.getGitCommit();
         Engine engine = pebl.result.engines.stream().filter(e -> e.getId().equals(process.getEngineObject().getId())).findFirst().orElseThrow(() -> new IllegalStateException("could not find engine " + process.getEngineObject().getId()));
         Test test = pebl.benchmark.tests.stream().filter(t -> t.getId().equals(process.getFeatureID() + "__" + "test")).findFirst().orElseThrow(() -> new IllegalStateException("could not find test " + process.getFeatureID() + "__" + "test"));
 

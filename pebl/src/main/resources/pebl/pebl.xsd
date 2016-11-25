@@ -101,13 +101,6 @@
                </xsd:sequence>
             </xsd:complexType>
          </xsd:element>
-         <xsd:element name="tools" minOccurs="0">
-            <xsd:complexType>
-               <xsd:sequence>
-                  <xsd:element name="tool" type="tool" minOccurs="0" maxOccurs="unbounded"/>
-               </xsd:sequence>
-            </xsd:complexType>
-         </xsd:element>
          <xsd:element name="testResults" minOccurs="0">
             <xsd:complexType>
                <xsd:sequence>
@@ -412,14 +405,6 @@
          </xsd:element>
       </xsd:sequence>
    </xsd:complexType>
-   <xsd:complexType name="tool">
-      <xsd:sequence>
-         <xsd:element name="name" type="xsd:string"/>
-         <xsd:element name="version" type="xsd:string"/>
-         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
-      </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:ID" use="required"/>
-   </xsd:complexType>
    <xsd:complexType name="ruleBasedWSDLTestPartner">
       <xsd:complexContent>
          <xsd:extension base="wsdlTestPartner">
@@ -540,7 +525,7 @@
       </xsd:sequence>
       <xsd:attribute name="test" type="xsd:IDREF" use="required"/>
       <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
-      <xsd:attribute name="tool" type="xsd:IDREF" use="required"/>
+      <xsd:attribute name="tool" type="xsd:string" use="required"/>
    </xsd:complexType>
    <xsd:complexType name="featureResult">
       <xsd:sequence>
@@ -553,7 +538,6 @@
          </xsd:element>
       </xsd:sequence>
       <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
-      <xsd:attribute name="tool" type="xsd:IDREF" use="required"/>
    </xsd:complexType>
    <xsd:complexType name="testCase">
       <xsd:sequence>

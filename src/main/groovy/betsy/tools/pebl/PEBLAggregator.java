@@ -15,13 +15,12 @@ import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 import pebl.result.feature.FeatureResult;
 import pebl.result.test.TestResult;
-import pebl.result.tool.Tool;
 import pebl.xsd.PEBL;
 
 public class PEBLAggregator {
 
     public void computeFeatureResults(PEBL pebl) {
-        final Map<String, List<TestResult>> resultsPerEngineTool = pebl.result.testResults.stream().collect(Collectors.groupingBy(t -> t.getEngine().getId() + HasId.SEPARATOR + t.getTool().getId()));
+        final Map<String, List<TestResult>> resultsPerEngineTool = pebl.result.testResults.stream().collect(Collectors.groupingBy(HasId::getId));
 
         // everything is recalculated
         pebl.result.featureResults.clear();
@@ -73,16 +72,15 @@ public class PEBLAggregator {
                 String value = computeThroughScript(metric, testResults);
 
                 Engine engine = testResults.get(0).getEngine();
-                Tool tool = testResults.get(0).getTool();
                 Measurement measurement = new Measurement(metric, value);
 
                 final Optional<FeatureResult> featureResultOptional = pebl.result.featureResults.stream()
-                        .filter(fr -> fr.getEngine().getId().equals(engine.getId()) && fr.getTool().getId().equals(tool.getId()))
+                        .filter(fr -> fr.getEngine().getId().equals(engine.getId()))
                         .findFirst();
                 if (featureResultOptional.isPresent()) {
                     featureResultOptional.get().getMeasurement().add(measurement);
                 } else {
-                    pebl.result.featureResults.add(new FeatureResult(Arrays.asList(measurement), engine, tool));
+                    pebl.result.featureResults.add(new FeatureResult(Arrays.asList(measurement), engine));
                 }
             }
         }
@@ -103,7 +101,7 @@ public class PEBLAggregator {
         } else if (metricType.getId().equals("testResultTrivalentAggregation")) {
             return testResults.stream().map(this::getResultTrivalentAggregation).reduce(Ternary.PLUS, Ternary::aggregate).getString();
         } else if (metricType.getId().equals("testsCount")) {
-            return String.valueOf(testResults.stream().count());
+            return String.valueOf((long) testResults.size());
         } else if (metricType.getId().equals("patternSupport")) {
             return getSupport(testResults).getString();
         }   else if (metricType.getId().equals("patternImplementationSupport")) {

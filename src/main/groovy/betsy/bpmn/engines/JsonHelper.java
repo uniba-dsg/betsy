@@ -12,6 +12,7 @@ import com.mashape.unirest.http.utils.SyncIdleConnectionMonitorThread;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonHelper {
@@ -106,7 +107,11 @@ public class JsonHelper {
 
     public static JSONObject post(String url, JSONObject requestBody, int expectedCode) {
         log.info("HTTP POST " + url);
-        log.info("CONTENT: " + requestBody.toString(2));
+        try {
+            log.info("CONTENT: " + requestBody.toString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         try {
             HttpResponse<JsonNode> response = Unirest.post(url).header("Content-Type", "application/json").body(requestBody.toString()).asJson();
@@ -138,7 +143,11 @@ public class JsonHelper {
 
     public static String postStringWithAuth(String url, JSONObject requestBody, int expectedCode, String username, String password) {
         log.info("HTTP POST " + url);
-        log.info("CONTENT: " + requestBody.toString(2));
+        try {
+            log.info("CONTENT: " + requestBody.toString(2));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             HttpResponse<String> response = Unirest.post(url).header("Content-Type", "application/json").basicAuth(username, password).body(requestBody.toString()).asString();
@@ -196,7 +205,11 @@ public class JsonHelper {
         if (response == null) {
             log.info("HTTP RESPONSE is empty.");
         } else {
-            log.info("HTTP RESPONSE: " + response.toString(2));
+            try {
+                log.info("HTTP RESPONSE: " + response.toString(2));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -212,7 +225,11 @@ public class JsonHelper {
         if (response == null) {
             log.info("HTTP RESPONSE is empty.");
         } else {
-            log.info("HTTP RESPONSE: " + response.toString(2));
+            try {
+                log.info("HTTP RESPONSE: " + response.toString(2));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

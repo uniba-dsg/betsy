@@ -15,6 +15,7 @@ import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import pebl.benchmark.test.steps.vars.Variable;
 
@@ -97,7 +98,12 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
                 return "";
             }
 
-            JSONObject firstElement = deploymentUnitList.getJSONObject(0);
+            JSONObject firstElement = null;
+            try {
+                firstElement = deploymentUnitList.getJSONObject(0);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
             if (firstElement.has("deployment-unit")) {
                 JSONObject deploymentUnit = firstElement.optJSONObject("deployment-unit");
                 return getDeploymentID(deploymentUnit);

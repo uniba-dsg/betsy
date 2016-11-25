@@ -41,6 +41,7 @@ configurations {
 }
 
 dependencies {
+    internal fileTree(dir: 'lib', include: '*.jar')
     internal project(':common')
     internal project(':peal')
     internal project(':pebl')

@@ -88,7 +88,7 @@
                "type" : "array",
                "items" : {
                   "type" : "string",
-                  "enum" : [ "FUNCTIONAL_COMPLETENESS", "CONFIDENTIALITY", "REUSABILITY", "COMPATABILITY", "LEARNABILITY", "NON_REPUDIATION", "PERFORMANCE_EFFICIENCY", "AVAILABILITY", "ADAPTABILITY", "TIME_BEHAVIOUR", "CO_EXISTENCE", "AUTHENTICITY", "INTEROPERABILITY", "TESTABILITY", "USER_ERROR_PROTECTION", "ACCESSIBILITY", "USER_INTERFACE_AESTHETICS", "ANALYSABILITY", "RELIABILITY", "CAPACITY", "OPERABILITY", "INTEGRITY", "INSTALLABILITY", "APPROPRIATENESS_RECOGNISABILITY", "RECOVERABILITY", "MATURITY", "ACCOUNTABILITY", "MAINTAINABILITY", "FAULT_TOLERANCE", "RESOURCE_UTILISATION", "USABILITY", "MODIFIABILITY", "FUNCTIONAL_CORRECTNESS", "FUNCTIONAL_SUITABILITY", "MODULARITY", "REPLACEABILITY", "SECURITY", "FUNCTIONAL_APPROPRIATENESS", "PORTABILITY" ]
+                  "enum" : [ "TIME_BEHAVIOUR", "AUTHENTICITY", "PORTABILITY", "APPROPRIATENESS_RECOGNISABILITY", "ACCESSIBILITY", "MODULARITY", "COMPATABILITY", "FUNCTIONAL_CORRECTNESS", "CONFIDENTIALITY", "FUNCTIONAL_SUITABILITY", "CO_EXISTENCE", "LEARNABILITY", "ANALYSABILITY", "OPERABILITY", "REPLACEABILITY", "MATURITY", "FAULT_TOLERANCE", "AVAILABILITY", "ADAPTABILITY", "RECOVERABILITY", "USABILITY", "RELIABILITY", "MAINTAINABILITY", "USER_INTERFACE_AESTHETICS", "NON_REPUDIATION", "SECURITY", "REUSABILITY", "MODIFIABILITY", "INTEGRITY", "FUNCTIONAL_APPROPRIATENESS", "INTEROPERABILITY", "USER_ERROR_PROTECTION", "INSTALLABILITY", "FUNCTIONAL_COMPLETENESS", "RESOURCE_UTILISATION", "PERFORMANCE_EFFICIENCY", "TESTABILITY", "ACCOUNTABILITY", "CAPACITY" ]
                }
             },
             "extensions" : {
@@ -1569,17 +1569,6 @@
                   }
                }
             },
-            "tools" : {
-               "type" : "object",
-               "properties" : {
-                  "tool" : {
-                     "type" : "array",
-                     "items" : {
-                        "$ref" : "#/definitions/Tool"
-                     }
-                  }
-               }
-            },
             "testResults" : {
                "type" : "object",
                "properties" : {
@@ -1621,24 +1610,6 @@
                }
             },
             "language" : {
-               "type" : "string"
-            },
-            "extensions" : {
-               "$ref" : "#/definitions/AdaptedMap"
-            },
-            "id" : {
-               "type" : "string"
-            }
-         },
-         "additionalProperties" : false
-      },
-      "Tool" : {
-         "type" : "object",
-         "properties" : {
-            "name" : {
-               "type" : "string"
-            },
-            "version" : {
                "type" : "string"
             },
             "extensions" : {
@@ -1747,9 +1718,6 @@
                }
             },
             "engine" : {
-               "type" : "string"
-            },
-            "tool" : {
                "type" : "string"
             }
          },

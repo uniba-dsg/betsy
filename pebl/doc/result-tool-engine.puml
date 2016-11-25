@@ -13,16 +13,6 @@ package "engine" {
 
 }
 
-package "tool" {
-
-	class Tool {
-	  ID : String
-	  name : String
-	  version : String
-	  extensions : Map<String, String>
-	}
-}
-
 
 hide empty members
 hide empty methods

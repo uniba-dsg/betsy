@@ -5,19 +5,16 @@ package "test"
 }
 package "result"{
 package "engine"
-package "tool"
 package "test.result"
 package "feature.result"
 }
 
 test -> feature
 test.result -up-> engine
-test.result -up-> tool
 test.result -> test
 feature.result -> test.result
 feature.result -> feature
 feature.result -up-> engine
-feature.result -up-> tool
 
 
 hide empty members

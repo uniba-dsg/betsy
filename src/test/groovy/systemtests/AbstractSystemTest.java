@@ -13,7 +13,7 @@ public class AbstractSystemTest {
 
     @After
     public void cleanupTestFolders() throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("."), "test-*")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(""), "test-*")) {
             for (Path path : stream) {
                 if (Files.isDirectory(path)) {
                     try {
@@ -28,7 +28,7 @@ public class AbstractSystemTest {
 
     @After
     public void cleanupEngineFolders() throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(".").resolve("server"))) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("").resolve("server"))) {
             for (Path path : stream) {
                 if (Files.isDirectory(path)) {
                     try {
