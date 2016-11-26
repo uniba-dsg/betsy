@@ -1,18 +1,24 @@
 package betsy;
 
+import java.io.IOException;
+
+import javax.xml.bind.JAXBException;
+
 import betsy.bpel.BPELMain;
 import betsy.bpel.tools.PartnerServiceControlGUI;
 import betsy.bpmn.BPMNMain;
 import betsy.tools.AnalyticsMain;
+import betsy.tools.CreateInitialDatabase;
 import betsy.tools.EngineControlGUI;
 import betsy.tools.EngineMain;
 import betsy.tools.ProcessMain;
 import betsy.tools.TestsPerGroup;
 import betsy.tools.TimeoutCalibrator;
+import org.xml.sax.SAXException;
 
 public class Main {
 
-    public static void main(String... args) {
+    public static void main(String... args) throws JAXBException, IOException, SAXException {
         if (args.length == 0) {
             printUsage();
             return;
@@ -36,6 +42,10 @@ public class Main {
             TestsPerGroup.main(new String[] {});
         } else if ("calibrate".equalsIgnoreCase(args[0])) {
             TimeoutCalibrator.main(createArgsWithoutFirstValue(args));
+        } else if ("loader".equalsIgnoreCase(args[0])) {
+            loader.Main.main(createArgsWithoutFirstValue(args));
+        } else if ("create-initial-database".equalsIgnoreCase(args[0])) {
+            CreateInitialDatabase.main(createArgsWithoutFirstValue(args));
         } else {
             printUsage();
         }
@@ -64,5 +74,8 @@ public class Main {
         System.out.println("");
         System.out.println("\tanalytics\t\tCreate dashboard using the results.csv file");
         System.out.println("\tjson\t\t\tCreate json files containing test, engine and feature data");
+        System.out.println("");
+        System.out.println("\tloader\t\t\tLoads run(s) into database");
+        System.out.println("\tcreate-initial-database\t\t\tCreates initial database");
     }
 }

@@ -14,7 +14,7 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
-import betsy.tools.pebl.PEBLAggregator;
+import pebl.aggregation.PEBLAggregator;
 import betsy.tools.pebl.PEBLBuilder;
 import betsy.tools.pebl.PEBLTestResultsEnricher;
 import org.apache.log4j.Logger;

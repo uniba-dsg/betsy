@@ -2,9 +2,9 @@ package betsy.tools.pebl;
 
 import org.junit.Test;
 
-import static betsy.tools.pebl.Ternary.MINUS;
-import static betsy.tools.pebl.Ternary.PLUS;
-import static betsy.tools.pebl.Ternary.PLUS_MINUS;
+import static pebl.aggregation.Ternary.MINUS;
+import static pebl.aggregation.Ternary.PLUS;
+import static pebl.aggregation.Ternary.PLUS_MINUS;
 import static org.junit.Assert.*;
 
 public class TernaryTest {

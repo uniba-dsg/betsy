@@ -6,7 +6,7 @@ import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.reporting.BPMNCsvReport;
 import betsy.bpmn.reporting.BPMNReporter;
 import betsy.common.analytics.Analyzer;
-import betsy.tools.pebl.PEBLAggregator;
+import pebl.aggregation.PEBLAggregator;
 import betsy.tools.pebl.PEBLBuilder;
 import betsy.tools.pebl.PEBLTestResultsEnricher;
 import betsy.common.tasks.FileTasks;

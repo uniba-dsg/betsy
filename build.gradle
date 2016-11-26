@@ -11,11 +11,23 @@ apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'pmd'
 
+allprojects {
+    apply plugin: "java"
+    task wrapper(type: Wrapper) {
+        gradleVersion = '3.2.1'
+    }
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        jcenter()
+    }
+}
+
 // Main class of betsy
 mainClassName = "betsy.Main"
 
 repositories {
-    jcenter()
     maven { url 'http://repository.jboss.org/nexus/content/groups/public' }
 }
 
@@ -44,6 +56,7 @@ dependencies {
     internal project(':common')
     internal project(':peal')
     internal project(':pebl')
+    internal project(':loader')
     internal 'org.codehaus.groovy:groovy-all:2.4.7'
 
     internal 'org.apache.ant:ant:1.9.7'
@@ -76,14 +89,8 @@ dependencies {
             'http*', 'commons-http*', 'commons-codec*'
     ]))
 
-    internal fileTree(dir: 'lib', include: '*.jar')
-
     compile configurations.internal
     compile configurations.external
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
 }
 
 task downloadMaven {

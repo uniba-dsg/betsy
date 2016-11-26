@@ -12,7 +12,9 @@ import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBException;
 
 /**
  * @author Christoph Broeker
@@ -29,11 +33,11 @@ public class TimeoutCalibrator {
 
     private static final Logger LOGGER = Logger.getLogger(TimeoutCalibrator.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException, IOException, SAXException {
         calibrateTimeouts(args);
     }
 
-    private static void calibrateTimeouts(String[] args) {
+    private static void calibrateTimeouts(String[] args) throws JAXBException, IOException, SAXException {
         LOGGER.info("Calibration is started.");
         //If it's true, SoapUI turns off after first run
         BPELMain.shutdownSoapUiAfterCompletion(false);

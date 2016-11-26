@@ -1,4 +1,4 @@
-package betsy.tools;
+package loader;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
 
-import betsy.tools.pebl.PEBLAggregator;
+import pebl.aggregation.PEBLAggregator;
 import org.xml.sax.SAXException;
 import pebl.HasId;
 import pebl.benchmark.feature.Capability;
@@ -17,7 +17,6 @@ import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
-import pebl.benchmark.feature.MetricType;
 import pebl.result.test.TestResult;
 import pebl.xsd.PEBL;
 

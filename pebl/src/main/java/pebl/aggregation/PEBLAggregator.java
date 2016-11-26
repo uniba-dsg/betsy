@@ -1,4 +1,4 @@
-package betsy.tools.pebl;
+package pebl.aggregation;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,7 +155,7 @@ public class PEBLAggregator {
                                     .findFirst()
                                     .map(Measurement::getValue)
                                     .orElse("-");
-                            String extensionLanguageSupport = tr.getTest().getFeature().getExtensions().get(PEBLBuilder.EXTENSION_LANGUAGE_SUPPORT);
+                            String extensionLanguageSupport = tr.getTest().getFeature().getExtensions().get("languageSupport");
                             if (result.equals("+")) {
                                 return Ternary.from(extensionLanguageSupport);
                             } else {

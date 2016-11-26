@@ -1,4 +1,4 @@
-package betsy.tools.pebl;
+package pebl.aggregation;
 
 import java.util.Arrays;
 

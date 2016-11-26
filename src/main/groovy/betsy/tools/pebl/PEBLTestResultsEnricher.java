@@ -44,8 +44,6 @@ import pebl.xsd.PEBL;
 
 public class PEBLTestResultsEnricher {
 
-    private static final String FILE_NAME = "tests-engine-dependent.json";
-
     public void addTestResults(BPMNTestSuite testSuite, PEBL pebl) {
         Map<String, Long> idToDuration = DurationCsv.readDurations(testSuite.getCsvDurationFilePath());
         List<CsvRow> csvRows = new JUnitXmlResultReader(testSuite.getJUnitXMLFilePath()).readRows();
