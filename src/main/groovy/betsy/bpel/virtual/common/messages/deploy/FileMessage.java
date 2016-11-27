@@ -1,12 +1,12 @@
 package betsy.bpel.virtual.common.messages.deploy;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link FileMessage} contains the binary data and the name (with extension)

@@ -1,5 +1,10 @@
 package betsy.bpel.virtual.host.virtualbox;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import betsy.bpel.virtual.host.ServiceAddress;
 import betsy.bpel.virtual.host.VirtualBoxException;
 import betsy.bpel.virtual.host.VirtualBoxMachine;
@@ -13,11 +18,6 @@ import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 public class SnapshotCreator {
 

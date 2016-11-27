@@ -1,11 +1,11 @@
 package betsy.bpel.virtual.server.comm;
 
-import betsy.bpel.virtual.common.Protocol;
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import betsy.bpel.virtual.common.Protocol;
+import org.apache.log4j.Logger;
 
 /**
  * @author Cedric Roeck

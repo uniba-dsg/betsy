@@ -1,13 +1,12 @@
 package betsy.bpel.virtual.host.virtualbox.utils;
 
+import java.util.List;
+
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.host.ServiceAddress;
 import betsy.bpel.virtual.host.comm.HostTcpClient;
-import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.Timeout;
-
-import java.util.List;
 
 /**
  * The {@link ServiceValidator} validates a {@link ServiceAddress} and can

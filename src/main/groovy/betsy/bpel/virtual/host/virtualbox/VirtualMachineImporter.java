@@ -1,13 +1,12 @@
 package betsy.bpel.virtual.host.virtualbox;
 
+import java.nio.file.Path;
+import java.util.Objects;
+
 import betsy.common.config.Configuration;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.NetworkTasks;
 import org.apache.log4j.Logger;
-
-import java.net.URL;
-import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * The {@link VirtualMachineImporter} offers several methods to prepare and
