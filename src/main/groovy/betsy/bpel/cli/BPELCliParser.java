@@ -44,16 +44,6 @@ public class BPELCliParser {
         }
 
         @Override
-        public boolean transformToCoreBpel() {
-            return false;
-        }
-
-        @Override
-        public String getCoreBPELTransformations() {
-            return null;
-        }
-
-        @Override
         public String getCustomPartnerAddress() {
             return null;
         }
@@ -100,7 +90,6 @@ public class BPELCliParser {
     public static final String USE_EXTERNAL_PARTNER_SERVICE = "use-external-partner-service";
     public static final String BUILD_ONLY = "build-only";
     public static final String PARTNER_ADDRESS = "partner-address";
-    public static final String TO_CORE_BPEL = "to-core-bpel";
     private static final String USE_INSTALLED_ENGINE = "use-installed-engine";
     private static final String USE_RUNNING_ENGINE = "use-running-engine";
     private static final String USE_CUSTOM_TEST_FOLDER= "use-custom-test-folder";
@@ -164,16 +153,6 @@ public class BPELCliParser {
                 }
 
                 @Override
-                public boolean transformToCoreBpel() {
-                    return cmd.hasOption(TO_CORE_BPEL);
-                }
-
-                @Override
-                public String getCoreBPELTransformations() {
-                    return cmd.getOptionValue(TO_CORE_BPEL);
-                }
-
-                @Override
                 public String getCustomPartnerAddress() {
                     return cmd.getOptionValue(PARTNER_ADDRESS);
                 }
@@ -227,7 +206,6 @@ public class BPELCliParser {
         options.addOption("i", USE_INSTALLED_ENGINE, false, "Use already installed engine.");
 
         options.addOption("p", PARTNER_ADDRESS, true, "Partner IP and Port (defaults to " + Configuration.get("partner.ipAndPort") + ")");
-        options.addOption("t", TO_CORE_BPEL, true, "Transform to Core BPEL");
         options.addOption("f", USE_CUSTOM_TEST_FOLDER, true, "Use custom test folder");
         options.addOption("k", KEEP_ENGINE_RUNNING, false, "Keep the engine running. No engine shutdown!");
         options.addOption("r", USE_RUNNING_ENGINE, false, "Use already running engine.");

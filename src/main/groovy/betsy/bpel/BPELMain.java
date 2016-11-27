@@ -2,7 +2,6 @@ package betsy.bpel;
 
 import betsy.bpel.cli.BPELCliParameter;
 import betsy.bpel.cli.BPELCliParser;
-import betsy.bpel.corebpel.CoreBPELEngineExtension;
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
@@ -15,7 +14,6 @@ import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.config.Configuration;
 import pebl.benchmark.test.Test;
-import corebpel.CoreBPEL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
@@ -60,7 +58,6 @@ public class BPELMain {
             assertBindabilityOfInternalPartnerService(params, betsy);
 
             checkDeployment(params, params.getProcesses());
-            coreBpel(params, params.getEngines());
             virtualEngines(params.getEngines());
 
             onlyBuildStepsOrUseInstalledEngine(params, betsy);
@@ -304,40 +301,4 @@ public class BPELMain {
 
     }
 
-    protected static void coreBpel(BPELCliParameter params, List<AbstractBPELEngine> engines) {
-        if (params.transformToCoreBpel()) {
-
-            String transformations = params.getCoreBPELTransformations();
-
-            switch (transformations) {
-                case "ALL":
-                    for (AbstractBPELEngine engine : engines) {
-                        if (engine instanceof AbstractVirtualBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, CoreBPEL.ALL_OPTION);
-                        } else if (engine instanceof AbstractLocalBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(engine, CoreBPEL.ALL_OPTION);
-                        }
-                    }
-
-                    break;
-                case "NONE":
-                    // do nothing - default value
-                    break;
-                default:
-                    List<String> xsls = Arrays.asList(transformations.split(","));
-
-                    for (AbstractBPELEngine engine : engines) {
-                        if (engine instanceof AbstractVirtualBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(((AbstractVirtualBPELEngine) engine).defaultEngine, xsls);
-                        } else if (engine instanceof AbstractLocalBPELEngine) {
-                            CoreBPELEngineExtension.extendEngine(engine, xsls);
-                        }
-                    }
-
-                    break;
-            }
-
-        }
-
-    }
 }

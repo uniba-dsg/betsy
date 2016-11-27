@@ -13,8 +13,6 @@ public interface BPELCliParameter extends CliParameter {
 
     boolean checkDeployment();
     boolean hasCustomPartnerAddress();
-    boolean transformToCoreBpel();
-    String getCoreBPELTransformations();
     String getCustomPartnerAddress();
     boolean useExternalPartnerService();
 
