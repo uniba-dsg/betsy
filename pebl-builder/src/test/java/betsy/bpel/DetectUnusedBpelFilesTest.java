@@ -1,11 +1,5 @@
 package betsy.bpel;
 
-import configuration.FilesLocation;
-import pebl.benchmark.test.Test;
-import betsy.common.util.FileTypes;
-import configuration.bpel.BPELProcessRepository;
-import org.junit.Assert;
-
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -15,6 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import betsy.common.util.FileTypes;
+import configuration.FilesLocation;
+import configuration.bpel.BPELProcessRepository;
+import org.junit.Assert;
+import pebl.benchmark.test.Test;
 
 public class DetectUnusedBpelFilesTest {
 

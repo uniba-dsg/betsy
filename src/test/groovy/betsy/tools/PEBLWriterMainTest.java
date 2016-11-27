@@ -10,11 +10,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.junit.Ignore;
+import org.junit.Test;
 import pebl.builder.Builder;
 import pebl.builder.PEBLEngineAdder;
 import pebl.builder.PEBLPerformanceResultsAdder;
-import org.junit.Ignore;
-import org.junit.Test;
 import pebl.xsd.PEBL;
 
 import static org.junit.Assert.assertEquals;

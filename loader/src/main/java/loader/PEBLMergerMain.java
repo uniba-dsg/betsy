@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
 
-import pebl.builder.Aggregator;
 import org.xml.sax.SAXException;
 import pebl.HasId;
 import pebl.benchmark.feature.Capability;
@@ -17,6 +16,7 @@ import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.feature.Language;
+import pebl.builder.Aggregator;
 import pebl.result.test.TestResult;
 import pebl.xsd.PEBL;
 

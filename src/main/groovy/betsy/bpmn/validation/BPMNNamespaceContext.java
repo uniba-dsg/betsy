@@ -1,7 +1,8 @@
 package betsy.bpmn.validation;
 
-import javax.xml.namespace.NamespaceContext;
 import java.util.Iterator;
+
+import javax.xml.namespace.NamespaceContext;
 
 public class BPMNNamespaceContext implements NamespaceContext {
 

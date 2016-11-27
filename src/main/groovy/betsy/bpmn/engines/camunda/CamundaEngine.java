@@ -16,8 +16,6 @@ import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.GenericBPMNTester;
-import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.engines.activiti.ActivitiApiBasedProcessOutcomeChecker;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.config.Configuration;
@@ -31,8 +29,6 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.ClasspathHelper;
 import betsy.common.util.FileTypes;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import pebl.ProcessLanguage;
 import pebl.benchmark.test.TestCase;
 

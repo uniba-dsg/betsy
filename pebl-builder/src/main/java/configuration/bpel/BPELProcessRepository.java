@@ -1,14 +1,19 @@
 package configuration.bpel;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import betsy.common.repositories.Repository;
 import pebl.benchmark.test.Test;
 import pebl.benchmark.test.assertions.AssertExit;
 import pebl.benchmark.test.assertions.AssertSoapFault;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
-import betsy.common.repositories.Repository;
-
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class BPELProcessRepository {
 

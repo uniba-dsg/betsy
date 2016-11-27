@@ -1,9 +1,9 @@
 package betsy.bpel.cli;
 
-import pebl.benchmark.test.Test;
-import configuration.bpel.BPELProcessRepository;
-
 import java.util.List;
+
+import configuration.bpel.BPELProcessRepository;
+import pebl.benchmark.test.Test;
 
 public class ProcessParser {
 

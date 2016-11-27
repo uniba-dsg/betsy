@@ -1,13 +1,17 @@
 package systemtests;
 
-import betsy.bpel.BPELMain;
-import betsy.bpel.soapui.SoapUIShutdownHelper;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import betsy.bpel.BPELMain;
+import betsy.bpel.soapui.SoapUIShutdownHelper;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.assertEquals;
 

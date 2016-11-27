@@ -7,8 +7,8 @@ import betsy.bpmn.engines.JsonHelper;
 import betsy.bpmn.model.Variables;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
-import pebl.benchmark.test.steps.vars.Variable;
 import org.json.JSONObject;
+import pebl.benchmark.test.steps.vars.Variable;
 
 public class CamundaProcessStarter implements BPMNProcessStarter {
 

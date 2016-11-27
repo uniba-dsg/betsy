@@ -1,13 +1,13 @@
 package configuration.bpel;
 
-import betsy.bpel.model.BPELTestCase;
-import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.AssertExit;
-import pebl.benchmark.feature.FeatureSet;
-import pebl.benchmark.feature.Feature;
-
 import java.util.Arrays;
 import java.util.List;
+
+import betsy.bpel.model.BPELTestCase;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.assertions.AssertExit;
 
 class PatternProcesses {
 

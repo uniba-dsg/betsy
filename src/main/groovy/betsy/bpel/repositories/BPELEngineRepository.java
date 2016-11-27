@@ -1,5 +1,10 @@
 package betsy.bpel.repositories;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.bpel.engines.activebpel.ActiveBpelEngine;
 import betsy.bpel.engines.bpelg.BpelgEngine;
@@ -8,7 +13,11 @@ import betsy.bpel.engines.ode.Ode136Engine;
 import betsy.bpel.engines.ode.Ode136InMemoryEngine;
 import betsy.bpel.engines.ode.OdeEngine;
 import betsy.bpel.engines.ode.OdeInMemoryEngine;
-import betsy.bpel.engines.openesb.*;
+import betsy.bpel.engines.openesb.OpenEsb231Engine;
+import betsy.bpel.engines.openesb.OpenEsb23Engine;
+import betsy.bpel.engines.openesb.OpenEsb301StandaloneEngine;
+import betsy.bpel.engines.openesb.OpenEsb305StandaloneEngine;
+import betsy.bpel.engines.openesb.OpenEsbEngine;
 import betsy.bpel.engines.orchestra.OrchestraEngine;
 import betsy.bpel.engines.petalsesb.PetalsEsb41Engine;
 import betsy.bpel.engines.petalsesb.PetalsEsbEngine;
@@ -17,13 +26,13 @@ import betsy.bpel.engines.wso2.Wso2Engine_v3_0_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_1_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_2_0;
 import betsy.bpel.engines.wso2.Wso2Engine_v3_5_1;
-import betsy.bpel.virtual.host.engines.*;
+import betsy.bpel.virtual.host.engines.VirtualActiveBpelEngine;
+import betsy.bpel.virtual.host.engines.VirtualBpelgEngine;
+import betsy.bpel.virtual.host.engines.VirtualOdeEngine;
+import betsy.bpel.virtual.host.engines.VirtualOpenEsbEngine;
+import betsy.bpel.virtual.host.engines.VirtualOrchestraEngine;
+import betsy.bpel.virtual.host.engines.VirtualPetalsEsbEngine;
 import betsy.common.repositories.Repository;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * CAPITAL LETTERS for GROUPS of engines, lower case letters for engines

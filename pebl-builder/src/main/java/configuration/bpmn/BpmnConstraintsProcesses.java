@@ -14,10 +14,8 @@ import betsy.bpmn.model.BPMNTestCaseBuilder;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.FileTypes;
 import pebl.benchmark.feature.Feature;
-import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.test.Test;
 
-import static configuration.FilesLocation.BPEL_LOCATION;
 import static configuration.FilesLocation.BPMN_LOCATION;
 
 class BpmnConstraintsProcesses {

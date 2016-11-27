@@ -1,14 +1,14 @@
 package configuration.bpel;
 
-import betsy.bpel.model.BPELTestCase;
-import pebl.benchmark.test.Test;
-import pebl.benchmark.test.assertions.AssertSoapFault;
-import pebl.benchmark.feature.FeatureSet;
-import pebl.benchmark.feature.Feature;
-import betsy.common.util.CollectionsUtil;
-
 import java.util.Arrays;
 import java.util.List;
+
+import betsy.bpel.model.BPELTestCase;
+import betsy.common.util.CollectionsUtil;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.assertions.AssertSoapFault;
 
 class StructuredActivityProcesses {
 

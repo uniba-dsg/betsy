@@ -2,10 +2,10 @@ package pebl.builder;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static pebl.builder.Ternary.MINUS;
 import static pebl.builder.Ternary.PLUS;
 import static pebl.builder.Ternary.PLUS_MINUS;
-import static org.junit.Assert.*;
 
 public class TernaryTest {
     @Test

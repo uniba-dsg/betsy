@@ -6,12 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import pebl.HasName;
 import pebl.HasId;
+import pebl.HasName;
 import pebl.ProcessLanguage;
 import pebl.result.engine.Engine;
-
-import static java.util.Objects.requireNonNull;
 
 public final class EngineExtended implements HasId, HasName {
 

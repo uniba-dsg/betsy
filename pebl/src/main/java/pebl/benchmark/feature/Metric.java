@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import pebl.HasId;
 
 @XmlAccessorType(XmlAccessType.NONE)

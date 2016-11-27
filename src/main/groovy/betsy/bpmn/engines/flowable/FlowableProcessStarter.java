@@ -6,7 +6,6 @@ import java.util.Map;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.engines.activiti.ActivitiEngine;
 import betsy.bpmn.model.Variables;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;

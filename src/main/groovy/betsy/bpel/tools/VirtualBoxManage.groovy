@@ -1,13 +1,11 @@
 package betsy.bpel.tools
 
-import betsy.common.config.Configuration;
+import betsy.bpel.virtual.host.VirtualBoxException
+import betsy.common.config.Configuration
+import org.apache.commons.lang.StringUtils
 
 import java.nio.file.Files
 import java.nio.file.Path
-
-import org.apache.commons.lang.StringUtils
-
-import betsy.bpel.virtual.host.VirtualBoxException
 
 public class VirtualBoxManage {
 

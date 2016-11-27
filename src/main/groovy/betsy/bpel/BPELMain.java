@@ -1,9 +1,16 @@
 package betsy.bpel;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import betsy.bpel.cli.BPELCliParameter;
 import betsy.bpel.cli.BPELCliParser;
 import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.bpel.engines.AbstractLocalBPELEngine;
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELTestCase;
 import betsy.bpel.soapui.SoapUIShutdownHelper;
@@ -13,20 +20,11 @@ import betsy.bpel.virtual.host.virtualbox.VBoxWebService;
 import betsy.bpel.virtual.host.virtualbox.VirtualBoxImpl;
 import betsy.bpel.ws.TestPartnerServicePublisherExternal;
 import betsy.common.config.Configuration;
-import pebl.benchmark.test.Test;
+import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.groovy.runtime.StackTraceUtils;
-import betsy.common.timeouts.calibration.CalibrationTimeoutRepository;
-
-import java.awt.*;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import pebl.benchmark.test.Test;
 
 public class BPELMain {
 

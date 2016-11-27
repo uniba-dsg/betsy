@@ -8,8 +8,8 @@ import pebl.benchmark.test.TestStep;
 import pebl.benchmark.test.assertions.AssertDeployed;
 import pebl.benchmark.test.assertions.AssertNotDeployed;
 import pebl.benchmark.test.assertions.AssertXpath;
-import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.DelayTesting;
 import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.soap.WsdlService;
 

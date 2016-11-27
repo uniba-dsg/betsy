@@ -1,7 +1,5 @@
 package betsy.common.timeouts;
 
-import java.util.NoSuchElementException;
-
 import betsy.common.timeouts.timeout.Timeout;
 import org.junit.Test;
 

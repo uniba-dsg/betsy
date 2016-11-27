@@ -3,13 +3,10 @@ package systemtests;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javax.xml.bind.JAXBException;
-
 import betsy.Main;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 

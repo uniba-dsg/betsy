@@ -1,5 +1,16 @@
 package betsy.tools;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBException;
+
 import betsy.Main;
 import betsy.bpel.BPELMain;
 import betsy.bpel.soapui.SoapUIShutdownHelper;
@@ -13,17 +24,6 @@ import betsy.common.timeouts.timeout.Timeout;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.xml.bind.JAXBException;
 
 /**
  * @author Christoph Broeker

@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.Variables;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
@@ -75,11 +74,11 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
                 try {
                     JsonHelper.postStringWithAuth(processStartRequestURL, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {
-                    LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
+                    LOGGER.info("Runtime error: Instantiation still not possible. Aborting test.", innerEx);
                     throw new RuntimeException(innerEx);
                 }
             } else {
-                LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+                LOGGER.info("Runtime error: Instantiation of process failed. Reason:", ex);
                 throw new RuntimeException(ex);
             }
         }

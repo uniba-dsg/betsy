@@ -1,12 +1,12 @@
 package betsy.bpmn.reporting;
 
+import java.util.List;
+
+import configuration.bpmn.BPMNProcessRepository;
 import pebl.benchmark.test.Test;
 import pebl.benchmark.test.TestAssertion;
 import pebl.benchmark.test.TestCase;
-import configuration.bpmn.BPMNProcessRepository;
 import pebl.benchmark.test.assertions.AssertTrace;
-
-import java.util.List;
 
 /**
  * Creates a LaTeX table from a list of processes and writes it to standard output

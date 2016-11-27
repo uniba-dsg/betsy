@@ -1,17 +1,13 @@
 package configuration.bpel;
 
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
-import groovy.lang.Closure;
 import groovy.util.XmlSlurper;
 import groovy.util.slurpersupport.GPathResult;
 import groovy.xml.XmlUtil;
 import org.apache.log4j.Logger;
-import org.codehaus.groovy.runtime.NioGroovyMethods;
 
 public class XMLTasks {
 

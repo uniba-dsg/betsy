@@ -1,9 +1,9 @@
 package betsy.bpel.ws;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Detects concurrency from the perspective of the partner service.

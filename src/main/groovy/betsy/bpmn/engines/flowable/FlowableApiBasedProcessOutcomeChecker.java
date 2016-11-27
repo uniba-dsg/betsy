@@ -2,7 +2,6 @@ package betsy.bpmn.engines.flowable;
 
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.engines.activiti.ActivitiEngine;
 import org.json.JSONException;
 import org.json.JSONObject;
 

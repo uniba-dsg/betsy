@@ -1,11 +1,7 @@
 package betsy.bpel.soapui;
 
-import pebl.benchmark.test.TestStep;
-import pebl.benchmark.test.assertions.AssertExit;
-import pebl.benchmark.test.assertions.AssertSoapFault;
-import pebl.benchmark.test.assertions.AssertXpath;
-import pebl.benchmark.test.steps.soap.SendSoapMessage;
-import pebl.benchmark.test.TestAssertion;
+import java.util.Objects;
+
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest;
@@ -17,8 +13,12 @@ import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.NotSoapFaultAssert
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapFaultAssertion;
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapResponseAssertion;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
-
-import java.util.Objects;
+import pebl.benchmark.test.TestAssertion;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.AssertExit;
+import pebl.benchmark.test.assertions.AssertSoapFault;
+import pebl.benchmark.test.assertions.AssertXpath;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
 
 public class SoapUiAssertionBuilder {
     public static void addSynchronousAssertion(SendSoapMessage testStep, WsdlTestRequestStep soapUiRequest, WsdlTestCase soapUITestCase, int testStepNumber) {

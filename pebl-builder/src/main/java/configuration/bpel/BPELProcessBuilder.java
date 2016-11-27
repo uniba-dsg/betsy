@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import betsy.bpel.model.BPELTestCase;
-import betsy.bpel.model.TestMessages;
 import betsy.common.util.FileTypes;
 import configuration.Capabilities;
 import pebl.benchmark.feature.Feature;

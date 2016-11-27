@@ -19,7 +19,6 @@ import betsy.bpel.model.BPELIdShortener;
 import betsy.bpel.model.BPELTestCase;
 import betsy.common.tasks.FileTasks;
 import pebl.benchmark.feature.Feature;
-import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.test.Test;
 import pebl.benchmark.test.TestPartner;
@@ -29,8 +28,8 @@ import pebl.benchmark.test.partner.WSDLTestPartner;
 import pebl.benchmark.test.partner.rules.AnyInput;
 import pebl.benchmark.test.partner.rules.NoOutput;
 import pebl.benchmark.test.partner.rules.OperationInputOutputRule;
-import pebl.benchmark.test.partner.rules.XpathPredicate;
 import pebl.benchmark.test.partner.rules.SoapMessageOutput;
+import pebl.benchmark.test.partner.rules.XpathPredicate;
 
 import static configuration.FilesLocation.BPEL_LOCATION;
 

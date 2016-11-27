@@ -1,13 +1,13 @@
 package systemtests;
 
-import betsy.common.tasks.FileTasks;
-import org.junit.After;
-
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import betsy.common.tasks.FileTasks;
+import org.junit.After;
 
 public class AbstractSystemTest {
 

@@ -1,16 +1,16 @@
 package betsy.bpel.soapui;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import betsy.bpel.model.BPELProcess;
-import pebl.benchmark.test.TestCase;
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlProjectFactory;
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite;
 import com.eviware.soapui.support.SoapUIException;
 import org.apache.xmlbeans.XmlException;
-
-import java.io.IOException;
-import java.nio.file.Path;
+import pebl.benchmark.test.TestCase;
 
 /**
  * Creates a soapUI project from a Process.

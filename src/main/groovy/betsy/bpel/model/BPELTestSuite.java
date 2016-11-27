@@ -1,12 +1,12 @@
 package betsy.bpel.model;
 
-import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.common.model.AbstractTestSuite;
-
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import betsy.bpel.engines.AbstractBPELEngine;
+import betsy.common.model.AbstractTestSuite;
 
 public class BPELTestSuite extends AbstractTestSuite<AbstractBPELEngine, BPELProcess> {
 

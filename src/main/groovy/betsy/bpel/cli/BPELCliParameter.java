@@ -1,10 +1,10 @@
 package betsy.bpel.cli;
 
+import java.util.List;
+
 import betsy.bpel.engines.AbstractBPELEngine;
 import betsy.common.cli.CliParameter;
 import pebl.benchmark.test.Test;
-
-import java.util.List;
 
 public interface BPELCliParameter extends CliParameter {
 

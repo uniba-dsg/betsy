@@ -1,16 +1,34 @@
 package betsy.bpmn.repositories;
 
-import betsy.bpmn.engines.AbstractBPMNEngine;
-import betsy.bpmn.engines.activiti.*;
-import betsy.bpmn.engines.camunda.*;
-import betsy.bpmn.engines.flowable.Flowable5220Engine;
-import betsy.bpmn.engines.jbpm.*;
-import betsy.common.repositories.Repository;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import betsy.bpmn.engines.AbstractBPMNEngine;
+import betsy.bpmn.engines.activiti.Activiti5151Engine;
+import betsy.bpmn.engines.activiti.Activiti5170Engine;
+import betsy.bpmn.engines.activiti.Activiti5180Engine;
+import betsy.bpmn.engines.activiti.Activiti51902Engine;
+import betsy.bpmn.engines.activiti.Activiti5190Engine;
+import betsy.bpmn.engines.activiti.Activiti5200Engine;
+import betsy.bpmn.engines.activiti.Activiti5210Engine;
+import betsy.bpmn.engines.activiti.Activiti5220Engine;
+import betsy.bpmn.engines.activiti.ActivitiEngine;
+import betsy.bpmn.engines.camunda.Camunda710Engine;
+import betsy.bpmn.engines.camunda.Camunda720Engine;
+import betsy.bpmn.engines.camunda.Camunda730Engine;
+import betsy.bpmn.engines.camunda.Camunda740Engine;
+import betsy.bpmn.engines.camunda.Camunda750Engine;
+import betsy.bpmn.engines.camunda.CamundaEngine;
+import betsy.bpmn.engines.flowable.Flowable5220Engine;
+import betsy.bpmn.engines.jbpm.JbpmEngine;
+import betsy.bpmn.engines.jbpm.JbpmEngine610;
+import betsy.bpmn.engines.jbpm.JbpmEngine620;
+import betsy.bpmn.engines.jbpm.JbpmEngine630;
+import betsy.bpmn.engines.jbpm.JbpmEngine640;
+import betsy.bpmn.engines.jbpm.JbpmEngine650;
+import betsy.common.repositories.Repository;
 
 public class BPMNEngineRepository {
     private final Repository<AbstractBPMNEngine> repo = new Repository<>();

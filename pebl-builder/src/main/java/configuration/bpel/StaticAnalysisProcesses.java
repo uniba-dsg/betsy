@@ -17,15 +17,15 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import betsy.bpel.model.BPELTestCase;
+import betsy.common.tasks.FileTasks;
 import betsy.common.util.ClasspathHelper;
+import betsy.common.util.FileTypes;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import configuration.Capabilities;
-import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
 import pebl.benchmark.test.Test;
-import betsy.common.tasks.FileTasks;
-import betsy.common.util.FileTypes;
 
 import static configuration.FilesLocation.BPEL_LOCATION;
 

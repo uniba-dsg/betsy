@@ -1,12 +1,12 @@
 package configuration.bpmn;
 
-import betsy.bpmn.model.BPMNTestCaseBuilder;
-import pebl.benchmark.test.Test;
-import pebl.benchmark.feature.FeatureSet;
-import pebl.benchmark.feature.Feature;
-
 import java.util.Arrays;
 import java.util.List;
+
+import betsy.bpmn.model.BPMNTestCaseBuilder;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureSet;
+import pebl.benchmark.test.Test;
 
 /**
  * Class defining the processes and tests for the basic Workflow Control-Flow Patterns (WCP) 1-20

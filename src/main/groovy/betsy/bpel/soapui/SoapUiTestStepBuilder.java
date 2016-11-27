@@ -1,24 +1,28 @@
 package betsy.bpel.soapui;
 
-import pebl.benchmark.test.assertions.AssertDeployed;
-import pebl.benchmark.test.assertions.AssertNotDeployed;
-import pebl.benchmark.test.steps.DelayTesting;
-import pebl.benchmark.test.steps.CheckDeployment;
-import pebl.benchmark.test.steps.soap.SendSoapMessage;
-import pebl.benchmark.test.TestCase;
-import pebl.benchmark.test.TestStep;
+import java.util.Objects;
+
 import com.eviware.soapui.config.TestStepConfig;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlOperation;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
-import com.eviware.soapui.impl.wsdl.teststeps.*;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequestStep;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestStep;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.WsdlTestRequestStepFactory;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.AssertDeployed;
+import pebl.benchmark.test.assertions.AssertNotDeployed;
+import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.soap.WsdlService;
-
-import java.util.Objects;
 
 public class SoapUiTestStepBuilder {
 

@@ -1,17 +1,17 @@
 package configuration.bpmn;
 
-import betsy.bpmn.model.BPMNTestCaseBuilder;
-import configuration.Capabilities;
-import pebl.benchmark.test.Test;
-import pebl.benchmark.feature.Feature;
-import betsy.common.util.FileTypes;
-import pebl.benchmark.test.TestCase;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import betsy.bpmn.model.BPMNTestCaseBuilder;
+import betsy.common.util.FileTypes;
+import configuration.Capabilities;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.TestCase;
 
 import static configuration.FilesLocation.BPMN_LOCATION;
 
