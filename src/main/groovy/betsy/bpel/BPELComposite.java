@@ -14,9 +14,11 @@ import betsy.common.timeouts.timeout.TimeoutRepository;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
 import betsy.common.util.Progress;
-import pebl.aggregation.PEBLAggregator;
-import betsy.tools.pebl.PEBLBuilder;
-import betsy.tools.pebl.PEBLTestResultsEnricher;
+import pebl.builder.PEBLEngineAdder;
+import pebl.builder.PEBLPerformanceResultsAdder;
+import pebl.builder.Aggregator;
+import pebl.builder.Builder;
+import pebl.builder.PEBLTestResultsEnricher;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.codehaus.groovy.runtime.StackTraceUtils;
@@ -101,9 +103,11 @@ public class BPELComposite {
             new Reporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPELCsvReport());
 
-            PEBL pebl = PEBLBuilder.getPebl();
+            PEBL pebl = Builder.getPebl();
+            PEBLEngineAdder.addEngines(pebl);
+            PEBLPerformanceResultsAdder.addPerformanceResults(pebl);
             new PEBLTestResultsEnricher().addTestResults(testSuite, pebl);
-            new PEBLAggregator().computeFeatureResults(pebl);
+            new Aggregator().computeFeatureResults(pebl);
             pebl.writeTo(testSuite.getPath());
         });
     }

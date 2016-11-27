@@ -1,0 +1,24 @@
+@startuml
+
+class VirtualMachineService {
+  start() : void
+  kill() : void
+  restore() : void
+  getState() : VirtualMachineState
+}
+
+class VirtualMachineState {
+  OFF
+  SAVED
+  ACTIVE
+  ABORTED
+}
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

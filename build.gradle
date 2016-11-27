@@ -37,7 +37,7 @@ sourceSets {
             srcDirs = ['src/main/groovy', 'src/main/tests', 'src/main/java']
         }
         resources {
-            srcDirs = ['src/main/groovy', 'src/main/resources', 'src/main/xslt', 'src/main/tests']
+            srcDirs = ['src/main/groovy', 'src/main/resources', 'src/main/xslt']
         }
     }
 }
@@ -56,6 +56,8 @@ dependencies {
     internal project(':common')
     internal project(':peal')
     internal project(':pebl')
+    internal project(':pebl-builder')
+    internal project(':pebl-aggregator')
     internal project(':loader')
     internal 'org.codehaus.groovy:groovy-all:2.4.7'
 

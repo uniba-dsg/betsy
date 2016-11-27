@@ -6,9 +6,11 @@ import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.reporting.BPMNCsvReport;
 import betsy.bpmn.reporting.BPMNReporter;
 import betsy.common.analytics.Analyzer;
-import pebl.aggregation.PEBLAggregator;
-import betsy.tools.pebl.PEBLBuilder;
-import betsy.tools.pebl.PEBLTestResultsEnricher;
+import pebl.builder.PEBLEngineAdder;
+import pebl.builder.PEBLPerformanceResultsAdder;
+import pebl.builder.Aggregator;
+import pebl.builder.Builder;
+import pebl.builder.PEBLTestResultsEnricher;
 import betsy.common.tasks.FileTasks;
 import betsy.common.util.IOCapture;
 import betsy.common.util.LogUtil;
@@ -89,9 +91,11 @@ public class BPMNComposite {
             new BPMNReporter(testSuite).createReports();
             new Analyzer(testSuite.getCsvFilePath(), testSuite.getReportsPath()).createAnalytics(new BPMNCsvReport());
 
-            PEBL pebl = PEBLBuilder.getPebl();
+            PEBL pebl = Builder.getPebl();
+            PEBLEngineAdder.addEngines(pebl);
+            PEBLPerformanceResultsAdder.addPerformanceResults(pebl);
             new PEBLTestResultsEnricher().addTestResults(testSuite, pebl);
-            new PEBLAggregator().computeFeatureResults(pebl);
+            new Aggregator().computeFeatureResults(pebl);
             pebl.writeTo(testSuite.getPath());
         });
     }

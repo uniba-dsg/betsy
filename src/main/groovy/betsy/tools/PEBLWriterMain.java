@@ -12,10 +12,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import betsy.tools.pebl.PEBLBuilder;
+import pebl.builder.Builder;
+import pebl.builder.PEBLEngineAdder;
+import pebl.builder.PEBLPerformanceResultsAdder;
 import org.xml.sax.SAXException;
 import pebl.xsd.PEBL;
-import pebl.xsd.SchemaGenerator;
 
 public class PEBLWriterMain {
 
@@ -28,7 +29,9 @@ public class PEBLWriterMain {
     }
 
     public static void writeInDirectory(Path workingDirectory) {
-        PEBL pebl = PEBLBuilder.getPebl();
+        PEBL pebl = Builder.getPebl();
+        PEBLEngineAdder.addEngines(pebl);
+        PEBLPerformanceResultsAdder.addPerformanceResults(pebl);
         pebl.writeTo(workingDirectory);
     }
 

@@ -5,6 +5,7 @@ mainClassName = "loader.Main"
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
     compile project(":pebl")
+    compile project(":pebl-aggregator")
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

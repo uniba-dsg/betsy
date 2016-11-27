@@ -10,7 +10,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import betsy.tools.pebl.PEBLBuilder;
+import pebl.builder.Builder;
+import pebl.builder.PEBLEngineAdder;
+import pebl.builder.PEBLPerformanceResultsAdder;
 import org.junit.Ignore;
 import org.junit.Test;
 import pebl.xsd.PEBL;
@@ -28,7 +30,9 @@ public class PEBLWriterMainTest {
         Files.createDirectories(round1);
 
         Path round1peblxml = round1.resolve("pebl.xml");
-        PEBL pebl = PEBLBuilder.getPebl();
+        PEBL pebl = Builder.getPebl();
+        PEBLEngineAdder.addEngines(pebl);
+        PEBLPerformanceResultsAdder.addPerformanceResults(pebl);
         JAXB.marshal(pebl, round1peblxml.toFile());
         PEBL peblFromXml = JAXB.unmarshal(round1peblxml.toFile(), PEBL.class);
 
@@ -60,7 +64,10 @@ public class PEBLWriterMainTest {
         Files.createDirectories(round1);
 
         Path round1peblJson = round1.resolve("pebl.json");
-        marshaller.marshal(PEBLBuilder.getPebl(), round1peblJson.toFile());
+        final PEBL pebl = Builder.getPebl();
+        PEBLEngineAdder.addEngines(pebl);
+        PEBLPerformanceResultsAdder.addPerformanceResults(pebl);
+        marshaller.marshal(pebl, round1peblJson.toFile());
         PEBL peblFromJson = (PEBL) unmarshaller.unmarshal(round1peblJson.toFile());
 
         Path round2 = tempDirectory.resolve("round2");

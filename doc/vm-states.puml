@@ -1,0 +1,18 @@
+@startuml
+
+[*] -> OFF
+OFF -> SAVED : restore
+SAVED -> ACTIVE : start
+ACTIVE --> ABORTED : kill
+
+ABORTED --> SAVED : restore
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+
+@enduml

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
 
-import pebl.aggregation.PEBLAggregator;
+import pebl.builder.Aggregator;
 import org.xml.sax.SAXException;
 import pebl.HasId;
 import pebl.benchmark.feature.Capability;
@@ -36,7 +36,7 @@ public class PEBLMergerMain {
         PEBLStoreFilesAlongMain.copyFilesRelative(peblTarget, peblTargetPath);
         PEBLBpmnPngImageAdderMain.createBpmnPngs(peblTarget, peblTargetPath);
 
-        new PEBLAggregator().computeFeatureResults(peblTarget);
+        new Aggregator().computeFeatureResults(peblTarget);
 
         peblTarget.writeTo(peblTargetPath.getParent());
     }
