@@ -6,9 +6,18 @@ import configuration.Capabilities;
 
 public class Groups {
 
-    public static Language CONFORMANCE_BPMN = new Language(Capabilities.CONFORMANCE, "BPMN");
-    public static Language EXPRESSIVENESS_BPMN = new Language(Capabilities.EXPRESSIVENESS, "BPMN");
-    public static Language STATIC_ANALYSIS_BPMN = new Language(Capabilities.STATIC_ANALYSIS, "BPMN");
+    public static Language CONFORMANCE_BPMN = new Language(Capabilities.CONFORMANCE, "BPMN")
+            .addExtension("feature", "construct configuration")
+            .addExtension("featureSet", "construct")
+            .addExtension("group", "construct group");
+    public static Language EXPRESSIVENESS_BPMN = new Language(Capabilities.EXPRESSIVENESS, "BPMN")
+            .addExtension("feature", "pattern implementation")
+            .addExtension("featureSet", "pattern")
+            .addExtension("group", "pattern catalog");
+    public static Language STATIC_ANALYSIS_BPMN = new Language(Capabilities.STATIC_ANALYSIS, "BPMN")
+            .addExtension("feature", "rule configuration")
+            .addExtension("featureSet", "rule")
+            .addExtension("group", "rule set");
 
     public static Group BASICS = new Group("basics", CONFORMANCE_BPMN, "The basic building blocks of BPMN.");
     public static Group ACTIVITIES = new Group("activities", CONFORMANCE_BPMN, "Activities can be Tasks, different kinds of SubProcesses, and CallActivities, and they model specific tasks in the real world.");

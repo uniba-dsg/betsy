@@ -17,6 +17,7 @@ import betsy.common.engines.EngineLifecycle;
 import betsy.common.model.engine.EngineExtended;
 import betsy.common.model.engine.IsEngine;
 import betsy.common.util.GitUtil;
+import configuration.Capabilities;
 import configuration.MetricTypes;
 import configuration.bpel.BPELProcessRepository;
 import configuration.bpmn.BPMNProcessRepository;
@@ -63,12 +64,11 @@ public class PEBLBuilder {
 
     private static void addPerformance(PEBL pebl) {
         // feature tree
-        final Capability performance = new Capability("Performance")
-                .addCharacteristic(Characteristic.PERFORMANCE_EFFICIENCY)
-                .addCharacteristic(Characteristic.RESOURCE_UTILISATION)
-                .addCharacteristic(Characteristic.TIME_BEHAVIOUR)
-                .addCharacteristic(Characteristic.CAPACITY);
-        final Language bpmn = new Language(performance, "BPMN");
+        final Capability performance = Capabilities.PERFORMANCE;
+        final Language bpmn = new Language(performance, "BPMN")
+                .addExtension("feature", "experiment")
+                .addExtension("featureSet", "")
+                .addExtension("group", "");
         final Group def = new Group("Default", bpmn, "");
         final FeatureSet microBenchmark = new FeatureSet(def, "Micro-Benchmark", "Micro-Benchmark of BPMN 2.0 Workflow Management Systems involving 7 Workflow Patterns");
         final Feature feature = new Feature(microBenchmark, "Micro-Benchmark", "Micro-Benchmark of BPMN 2.0 Workflow Management Systems involving 7 Workflow Patterns");
