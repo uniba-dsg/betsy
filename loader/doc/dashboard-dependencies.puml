@@ -6,6 +6,10 @@ package Moment.js
 package Handlebars
 package Bootstrap
 
+package PEBL{
+	package pebl.json
+}
+
 package PEBDASH {
 	package dashboard
 	package filter
@@ -26,13 +30,16 @@ package PEBDASH {
 	dashboard --> filter
 	dashboard --> model
 	dashboard --> fetcher
+	viewmodel -up-> model
+	viewmodel -up-> filter
 }
 
 PEBDASH -> Bootstrap
 PEBDASH -> Underscore.js
 PEBDASH -> Moment.js
-jQuery <- Bootstrap
-fetcher --> jQuery
+PEBDASH -> jQuery
+
+fetcher ...> pebl.json
 
 
 

@@ -3,16 +3,16 @@ package Loader {
 	package CLI
 }
 
-package PEBWORK {
-	package PEBL.Mapping
-	package PEBL.Aggregator
+package PEBL {
+	package Mapping
+	package Aggregator
 }
 package BPMNviz
 package Yaoqiang.BPMN.Editor
-CLI --> PEBL.Mapping
+CLI --> Mapping
 CLI --> BPMNviz
-PEBL.Aggregator -> PEBL.Mapping
-CLI --> PEBL.Aggregator
+Aggregator -> Mapping
+CLI --> Aggregator
 BPMNviz --> Yaoqiang.BPMN.Editor
 
 hide empty members
