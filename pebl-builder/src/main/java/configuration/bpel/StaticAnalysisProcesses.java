@@ -49,18 +49,13 @@ class StaticAnalysisProcesses {
                     Path process = getBpelFileInFolder(dir);
                     String rule = getRule(process);
 
-                    final Optional<FeatureSet> first = Groups.SA.getFeatureSets().stream().filter(fs -> fs.getName().equals(rule)).findFirst();
-                    final FeatureSet theStaticAnalysisRule;
-                    if(first.isPresent()) {
-                        theStaticAnalysisRule = first.get();
-                    } else {
-                        theStaticAnalysisRule = new FeatureSet(Groups.SA, rule);
-                    }
+                    final Optional<FeatureSet> featureSetOptional = Groups.SA.getFeatureSets().stream().filter(fs -> fs.getName().equals(rule)).findFirst();
+                    final FeatureSet featureSet = featureSetOptional.orElseGet(() -> new FeatureSet(Groups.SA, rule));
 
                     // add tags
-                    addTags(theStaticAnalysisRule, rule);
+                    addTags(featureSet, rule);
 
-                    final Feature feature = new Feature(theStaticAnalysisRule, FileTasks.getFilenameWithoutExtension(process));
+                    final Feature feature = new Feature(featureSet, FileTasks.getFilenameWithoutExtension(process));
                     // add parent feature
                     feature.addExtension("base", getBase(feature.getName()));
 
@@ -84,20 +79,20 @@ class StaticAnalysisProcesses {
     }
 
     private static void addTags(FeatureSet theStaticAnalysisRule, String rule) {
-        final List<String> lines =  ClasspathHelper.getContentsForFileOfClasspath("/configuration/bpel/tag2rules.csv");
+        final List<String> lines = ClasspathHelper.getContentsForFileOfClasspath("/configuration/bpel/tag2rules.csv");
 
         Multimap<String, String> multimap = LinkedListMultimap.create();
-        lines.stream().forEach(line -> {
+        lines.forEach(line -> {
             String[] elems = line.split(",");
             String tag = elems[0];
             List<String> rules = Arrays.stream(elems[1].split(";")).map(x -> convertIntegerToSARuleNumber(Integer.parseInt(x.trim()))).collect(Collectors.toList());
-            for(String r : rules) {
+            for (String r : rules) {
                 multimap.put(r, tag);
             }
         });
 
         final Collection<String> tags = multimap.get(rule);
-        if(tags.isEmpty()) {
+        if (tags.isEmpty()) {
             System.out.println("No tags found for " + rule);
         }
         theStaticAnalysisRule.addExtension("tags", String.join(", ", tags));
@@ -114,7 +109,7 @@ class StaticAnalysisProcesses {
 
     private static Path getBpelFileInFolder(Path dir) {
         try (Stream<Path> list = Files.list(dir)) {
-            return list.filter(FileTypes::isBpelFile).findFirst().get();
+            return list.filter(FileTypes::isBpelFile).findFirst().orElseThrow(() -> new IllegalStateException("could not find bpel file in path " + dir));
         } catch (IOException e) {
             throw new IllegalStateException("could not find a bpel file in folder " + dir);
         }
