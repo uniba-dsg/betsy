@@ -1,0 +1,25 @@
+@startuml
+package Loader {
+	package CLI
+}
+
+package PEBWORK {
+	package PEBL.Mapping
+	package PEBL.Aggregator
+}
+package BPMNviz
+package Yaoqiang.BPMN.Editor
+CLI --> PEBL.Mapping
+CLI --> BPMNviz
+PEBL.Aggregator -> PEBL.Mapping
+CLI --> PEBL.Aggregator
+BPMNviz --> Yaoqiang.BPMN.Editor
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml
