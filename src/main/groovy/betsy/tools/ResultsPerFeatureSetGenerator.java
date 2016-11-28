@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import betsy.bpmn.reporting.BPMNCsvReport;
-import betsy.common.aggregation.TrivalentResult;
+import betsy.common.analytics.aggregation.TrivalentResult;
 import betsy.common.analytics.CsvReportLoader;
 import betsy.common.analytics.model.CsvReport;
 import betsy.common.analytics.model.Engine;

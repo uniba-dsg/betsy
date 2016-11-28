@@ -1,0 +1,63 @@
+@startuml
+
+
+package soapUI
+package ant
+package maven
+
+package PEBL {
+	package Mapping
+	package Aggregator
+
+	Aggregator -> Mapping
+}
+
+package PEAL {
+	package IMPL
+	package API
+
+	API -> IMPL
+	IMPL -> ant
+	IMPL -> maven
+}
+
+package PEBWORK {
+
+	package CLI
+
+	package BPEL {
+	  package BPEL.CLI
+	  package validation
+	}
+	package BPMN
+	package common {
+		package tasks
+		package configuration
+		package logging
+		package timeouts
+		package util
+	}
+	BPEL --> common
+	BPMN --> common
+	CLI --> BPEL
+	CLI --> BPMN
+
+	note "Wie detailliert soll es werden?" as N1
+
+}
+
+package Eclipse.MOXy
+Mapping -> Eclipse.MOXy
+
+PEBWORK -> PEBL
+PEBWORK -> PEAL
+BPEL -> soapUI
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

@@ -84,8 +84,7 @@ class StaticAnalysisProcesses {
     }
 
     private static void addTags(FeatureSet theStaticAnalysisRule, String rule) {
-        final Path file = ClasspathHelper.getFilesystemPathFromClasspathPath("/configuration/bpel/tag2rules.csv");
-        final List<String> lines = FileTasks.readAllLines(file);
+        final List<String> lines =  ClasspathHelper.getContentsForFileOfClasspath("/configuration/bpel/tag2rules.csv");
 
         Multimap<String, String> multimap = LinkedListMultimap.create();
         lines.stream().forEach(line -> {
@@ -105,8 +104,7 @@ class StaticAnalysisProcesses {
     }
 
     private static String getBase(String name) {
-        final Path file = ClasspathHelper.getFilesystemPathFromClasspathPath("/configuration/bpel/mapping-satest2featuretest.csv");
-        final List<String> lines = FileTasks.readAllLines(file);
+        final List<String> lines = ClasspathHelper.getContentsForFileOfClasspath("/configuration/bpel/mapping-satest2featuretest.csv");
 
         return lines.stream().filter(line -> line.startsWith(name + ",")).map(line -> line.split(",")[1]).findFirst().orElseGet(() -> {
             System.out.println("Could not find " + name);

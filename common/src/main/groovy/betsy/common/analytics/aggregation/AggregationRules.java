@@ -1,4 +1,4 @@
-package betsy.common.aggregation;
+package betsy.common.analytics.aggregation;
 
 import static java.util.Objects.requireNonNull;
 

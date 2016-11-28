@@ -30,7 +30,6 @@ env:
     - TESTS=peal.helper.*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=betsy.*Test*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=configuration.bpel.*        JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
-    - TESTS=corebpel.*                  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
 
 install:
   - TERM=dumb travis_retry ./gradlew assemble --stacktrace

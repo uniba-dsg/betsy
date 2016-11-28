@@ -1,4 +1,4 @@
-package betsy.common.engines;
+package betsy.common.util;
 
 import java.io.IOException;
 
@@ -10,9 +10,9 @@ import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.xml.sax.SAXException;
 
-public final class Util {
+public final class XMLUtil {
 
-    private Util() {}
+    private XMLUtil() {}
 
     public static String canonicalizeXML(String text) {
         Init.init();
