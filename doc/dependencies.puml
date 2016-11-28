@@ -4,6 +4,7 @@
 package soapUI
 package ant
 package maven
+package engines
 
 package PEBL {
 	package Mapping
@@ -19,6 +20,7 @@ package PEAL {
 	API -> IMPL
 	IMPL -> ant
 	IMPL -> maven
+	IMPL -> engines
 }
 
 package PEBWORK {

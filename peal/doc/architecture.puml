@@ -1,9 +1,18 @@
 @startuml
+package ant
+package maven
+package engines
 
-[*] -> OFF
-OFF -> SAVED : restore
-SAVED --> ACTIVE : start
-ACTIVE --> OFF : kill
+package PEAL {
+	package IMPL
+	package API
+
+	API -> IMPL
+	IMPL -> ant
+	IMPL -> maven
+	IMPL -> engines
+}
+
 
 hide empty members
 hide empty methods
@@ -12,5 +21,4 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
-
 @enduml

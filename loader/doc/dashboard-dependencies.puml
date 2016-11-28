@@ -1,11 +1,5 @@
 @startuml
 
-package jQuery
-package Underscore.js
-package Moment.js
-package Handlebars
-package Bootstrap
-
 package PEBL{
 	package pebl.json
 }
@@ -19,27 +13,27 @@ package PEBDASH {
      filters, tables, popovers,
      checkboxes, and radiobuttons
     end note
+
+    component -> component
+
 	package template
 	package viewmodel
-	package fetcher
 	component --> template
 	component --> viewmodel
 	template -> viewmodel
-	template -> Handlebars
 	dashboard --> component
 	dashboard --> filter
 	dashboard --> model
-	dashboard --> fetcher
+	filter -> model
 	viewmodel -up-> model
 	viewmodel -up-> filter
+
+	note bottom of template
+      using Handlebars
+    end note
 }
 
-PEBDASH -> Bootstrap
-PEBDASH -> Underscore.js
-PEBDASH -> Moment.js
-PEBDASH -> jQuery
-
-fetcher ...> pebl.json
+model .> pebl.json : fetch
 
 
 
