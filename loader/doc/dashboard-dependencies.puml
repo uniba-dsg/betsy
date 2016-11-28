@@ -1,0 +1,46 @@
+@startuml
+
+package jQuery
+package Underscore.js
+package Moment.js
+package Handlebars
+package Bootstrap
+
+package PEBDASH {
+	package dashboard
+	package filter
+	package model
+	package component
+    note top of component
+     filters, tables, popovers,
+     checkboxes, and radiobuttons
+    end note
+	package template
+	package viewmodel
+	package fetcher
+	component --> template
+	component --> viewmodel
+	template -> viewmodel
+	template -> Handlebars
+	dashboard --> component
+	dashboard --> filter
+	dashboard --> model
+	dashboard --> fetcher
+}
+
+PEBDASH -> Bootstrap
+PEBDASH -> Underscore.js
+PEBDASH -> Moment.js
+jQuery <- Bootstrap
+fetcher --> jQuery
+
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

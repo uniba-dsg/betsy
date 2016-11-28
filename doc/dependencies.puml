@@ -25,6 +25,9 @@ package PEBWORK {
 
 	package CLI
 
+	package TestPartnerService
+	package TestExecutionService
+
 	package BPEL {
 	  package BPEL.CLI
 	  package validation
