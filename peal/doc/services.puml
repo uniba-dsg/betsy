@@ -9,7 +9,7 @@ interface EngineService {
     start(engine : EngineId)
     stop(engine : EngineId)
     getState(engine : EngineId) : EngineState
-    retrieveLogFiles(engine : EngineId) : LogPackage
+    getLogs(engine : EngineId) : LogPackage
 }
 
 interface ProcessModelService {
