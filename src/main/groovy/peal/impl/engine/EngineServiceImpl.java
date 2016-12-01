@@ -202,7 +202,7 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public LogPackage retrieveLogFiles(EngineId engineId) {
+    public LogPackage getLogs(EngineId engineId) {
         EngineAPI<?> abstractLocalBPELEngine = getEngineByID(engineId);
         return ZipFileHelper.createLogPackage(abstractLocalBPELEngine.getLogs());
     }

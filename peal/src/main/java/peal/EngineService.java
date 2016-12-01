@@ -18,5 +18,5 @@ public interface EngineService {
 
     EngineState getState(EngineId engineId);
 
-    LogPackage retrieveLogFiles(EngineId engineId);
+    LogPackage getLogs(EngineId engineId);
 }
