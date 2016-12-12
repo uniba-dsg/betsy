@@ -1,15 +1,17 @@
 @startuml
 
-[*] -> OFF
-OFF -> SAVED : restore
-SAVED --> ACTIVE : start
-ACTIVE --> OFF : kill
-
-state ACTIVE {
-   [*] -> FRESH
-   FRESH -> USED
+package PEBL {
+	package Mapping
+	package Aggregator
 }
 
+package EclipseLink {
+	package Moxy
+}
+
+Mapping -> Moxy
+
+Aggregator -> Mapping
 hide empty members
 hide empty methods
 hide circle
@@ -17,5 +19,4 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
-
 @enduml

@@ -1,17 +1,14 @@
 @startuml
 
-package "engine" {
-
-	class Engine {
-	  ID : String
-	  name : String
-	  version : String
-	  configuration : List<String>
-	  language : String
-	  extensions : Map<String, String>
-	}
-
+class Engine {
+  ID : String
+  name : String
+  version : String
+  configuration : List<String>
+  language : String
+  extensions : Map<String, String>
 }
+
 
 
 hide empty members

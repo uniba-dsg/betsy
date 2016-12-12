@@ -1,6 +1,5 @@
 @startuml
 
-package "test" {
 
 	class TestAssertion {
 	extensions : Map<String, String>
@@ -23,7 +22,6 @@ package "test" {
     	  groovyScript : String
     	}
 
-}
 
 hide empty members
 hide empty methods

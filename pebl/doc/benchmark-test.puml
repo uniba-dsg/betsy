@@ -1,15 +1,9 @@
 @startuml
-package "feature" {
 
-	class Metric {
-	}
+class Metric
+class Feature
 
-	class Feature {
-	}
-
-}
-
-package "test" {
+package "" {
 
 	class Test {
 	  id : String

@@ -1,5 +1,4 @@
 @startuml
-package "test" {
 
    class NoTestPartner extends TestPartner
    class WSDLTestPartner extends TestPartner {
@@ -45,7 +44,6 @@ package "test" {
 	 extensions : Map<String, String>
 	}
 
-}
 
 RuleBasedWSDLTestPartner "1" -right-> "*" OperationInputOutputRule
 OperationInputOutputRule "1" -down-> "*" AnyInput

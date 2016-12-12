@@ -1,5 +1,4 @@
 @startuml
-package "feature" {
 
 	class MetricType {
     	  id : String
@@ -58,7 +57,7 @@ package "feature" {
 	  extensions : Map<String, String>
 	}
 
-}
+
 
 Capability "1" -down- "*" Characteristic
 

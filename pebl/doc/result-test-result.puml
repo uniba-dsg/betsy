@@ -1,23 +1,14 @@
 @startuml
 
-package "benchmark" {
 
-package "test" {
-   class Test
-}
+class Test
+class Metric
 
-package "feature" {
-  class Metric
-}
-}
 
-package "engine" {
+
+package "" {
 
 	class Engine
-
-}
-
-package "test result" {
 
 	class TestResult {
 	     files : List<String>

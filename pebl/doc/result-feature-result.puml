@@ -1,19 +1,17 @@
 @startuml
 
-package "engine" {
+package "" {
   class Engine
-}
-package "feature result" {
-  class FeatureResult
+
+  class AggregatedResult
   class Measurement {
     value : String
   }
 
-  FeatureResult "1"->"*" Measurement
-  FeatureResult -> Engine
+  AggregatedResult "1"->"*" Measurement
+  AggregatedResult --> Engine
 }
 
-package "feature" {
 
 	class Metric
 
@@ -30,7 +28,7 @@ package "feature" {
 	FeatureSet --> Metric
 
 	Metric -right-> MetricType
-}
+
 
 Measurement --> Metric
 

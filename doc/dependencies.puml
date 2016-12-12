@@ -1,27 +1,10 @@
 @startuml
 
-
 package soapUI
-package ant
-package maven
-package engines
 
-package PEBL {
-	package Mapping
-	package Aggregator
+package PEBL
 
-	Aggregator -> Mapping
-}
-
-package PEAL {
-	package IMPL
-	package API
-
-	API -> IMPL
-	IMPL -> ant
-	IMPL -> maven
-	IMPL -> engines
-}
+package PEAL
 
 package PEBWORK {
 
@@ -50,9 +33,6 @@ package PEBWORK {
 	note "Wie detailliert soll es werden?" as N1
 
 }
-
-package Eclipse.MOXy
-Mapping -> Eclipse.MOXy
 
 PEBWORK -> PEBL
 PEBWORK -> PEAL

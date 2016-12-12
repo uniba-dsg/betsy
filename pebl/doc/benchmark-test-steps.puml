@@ -1,7 +1,5 @@
 @startuml
 
-package "test" {
-
 	class TestStep {
 	  description : String
 	  extensions : Map<String, String>
@@ -37,7 +35,6 @@ package "test" {
 	  value : String
 	}
 
-}
 
 StartProcess "*" -down-> "*" Variable
 SendSoapMessage "*" -down-> "1" WsdlService
