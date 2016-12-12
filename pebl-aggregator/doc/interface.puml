@@ -1,0 +1,13 @@
+@startuml
+interface AggregateScript {
+    String aggregate(testResults : List<TestResult> )
+}
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

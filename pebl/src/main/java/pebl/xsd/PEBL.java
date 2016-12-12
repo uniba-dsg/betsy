@@ -24,7 +24,7 @@ import pebl.benchmark.feature.Capability;
 import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.test.Test;
 import pebl.result.engine.Engine;
-import pebl.result.feature.FeatureResult;
+import pebl.result.feature.AggregatedResult;
 import pebl.result.test.TestResult;
 
 @XmlRootElement
@@ -191,9 +191,9 @@ public class PEBL {
         @XmlElementWrapper(name = "testResults")
         public List<TestResult> testResults = new LinkedList<>();
 
-        @XmlElement(name = "featureResult")
-        @XmlElementWrapper(name = "featureResults")
-        public List<FeatureResult> featureResults = new LinkedList<>();
+        @XmlElement(name = "aggregatedResult")
+        @XmlElementWrapper(name = "aggregatedResults")
+        public List<AggregatedResult> aggregatedResults = new LinkedList<>();
 
     }
 

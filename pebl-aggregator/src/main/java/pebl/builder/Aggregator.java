@@ -13,7 +13,7 @@ import pebl.benchmark.feature.Metric;
 import pebl.benchmark.feature.MetricType;
 import pebl.result.Measurement;
 import pebl.result.engine.Engine;
-import pebl.result.feature.FeatureResult;
+import pebl.result.feature.AggregatedResult;
 import pebl.result.test.TestResult;
 import pebl.xsd.PEBL;
 
@@ -23,7 +23,7 @@ public class Aggregator {
         final Map<String, List<TestResult>> resultsPerEngineTool = pebl.result.testResults.stream().collect(Collectors.groupingBy(HasId::getId));
 
         // everything is recalculated
-        pebl.result.featureResults.clear();
+        pebl.result.aggregatedResults.clear();
 
         List<Metric> metrics = new LinkedList<>();
         pebl.benchmark.capabilities.forEach(c -> {
@@ -74,13 +74,13 @@ public class Aggregator {
                 Engine engine = testResults.get(0).getEngine();
                 Measurement measurement = new Measurement(metric, value);
 
-                final Optional<FeatureResult> featureResultOptional = pebl.result.featureResults.stream()
+                final Optional<AggregatedResult> featureResultOptional = pebl.result.aggregatedResults.stream()
                         .filter(fr -> fr.getEngine().getId().equals(engine.getId()))
                         .findFirst();
                 if (featureResultOptional.isPresent()) {
                     featureResultOptional.get().getMeasurement().add(measurement);
                 } else {
-                    pebl.result.featureResults.add(new FeatureResult(Arrays.asList(measurement), engine));
+                    pebl.result.aggregatedResults.add(new AggregatedResult(Arrays.asList(measurement), engine));
                 }
             }
         }
@@ -88,6 +88,7 @@ public class Aggregator {
 
     private String computeThroughScript(Metric metric, List<TestResult> testResults) {
         MetricType metricType = metric.getMetricType();
+        // TODO use AggregateScript as a wrapper through GroovyShell
         if (metricType.getId().equals("testCasesSum")) {
             return String.valueOf(getTestCases(testResults));
         } else if (metricType.getId().equals("testCaseSuccessesSum")) {

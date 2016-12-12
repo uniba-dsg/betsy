@@ -1,0 +1,51 @@
+@startuml
+package SmartBear {
+package soapUI
+}
+package Apache {
+package ant
+}
+package JUnit
+
+package PEBL
+
+package PEAL
+
+package PEBWORK {
+
+	package CLI
+	package executor
+	package BPEL
+	package BPMN
+
+	package tasks
+	package config
+	package logging
+	package reporting
+	package timeouts
+
+	BPEL -right-|> executor
+	BPMN -|> executor
+
+	CLI --> executor
+	executor --> tasks
+	executor --> config
+	executor --> logging
+	executor --> reporting
+	tasks --> timeouts
+}
+
+PEBWORK -> PEBL
+PEBWORK -> PEAL
+BPEL -> soapUI
+BPMN -left-> JUnit
+tasks -> ant
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

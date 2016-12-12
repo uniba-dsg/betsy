@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 
-public class FeatureResult {
+public class AggregatedResult {
 
     @XmlElement(required = true, name="measurement")
     @XmlElementWrapper(name="measurements")
@@ -22,11 +22,11 @@ public class FeatureResult {
     @XmlIDREF
     private final Engine engine;
 
-    public FeatureResult() {
+    public AggregatedResult() {
         this(Collections.emptyList(), new Engine());
     }
 
-    public FeatureResult(List<Measurement> measurements, Engine engine) {
+    public AggregatedResult(List<Measurement> measurements, Engine engine) {
         this.measurements = new LinkedList<>();
         this.measurements.addAll(measurements);
         this.engine = engine;
