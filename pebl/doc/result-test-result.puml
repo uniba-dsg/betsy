@@ -4,11 +4,17 @@
 class Test
 class Metric
 
+class Engine {
+  ID : String
+  name : String
+  version : String
+  configuration : List<String>
+  language : String
+  extensions : Map<String, String>
+}
 
 
 package "" {
-
-	class Engine
 
 	class TestResult {
 	     files : List<String>

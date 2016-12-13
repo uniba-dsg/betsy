@@ -1,7 +1,19 @@
 @startuml
 interface AggregateScript {
-    String aggregate(testResults : List<TestResult> )
+    aggregate(List<TestResult>) : String
 }
+
+interface StepScript {
+	execute(TestCase) : void
+}
+
+interface AssertionScript {
+	check(TestCase) : void {AssertionError}
+}
+
+AggregateScript -[hidden]right- StepScript
+StepScript -[hidden]right- AssertionScript
+
 
 hide empty members
 hide empty methods
