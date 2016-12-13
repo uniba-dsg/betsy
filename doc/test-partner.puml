@@ -1,13 +1,13 @@
 @startuml
 
-class TestPartner {
-  start() : void
-  stop() : void
+interface TestPartner {
+  start()
+  stop()
   getLogs() : LogPackage
   getState() : TestPartnerState
 }
 
-class TestPartnerState {
+enum TestPartnerState {
   NOT_STARTED
   STARTED
 }

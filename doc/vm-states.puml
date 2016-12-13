@@ -1,13 +1,13 @@
 @startuml
 
-[*] -> OFF
+[*] -> OFF : provision
 OFF -> SAVED : restore
-SAVED --> ACTIVE : start
 ACTIVE --> OFF : kill
+SAVED --> ACTIVE : start
 
 state ACTIVE {
    [*] -> FRESH
-   FRESH -> USED
+   FRESH -> USED : use
 }
 
 hide empty members

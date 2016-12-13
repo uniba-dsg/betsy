@@ -4,11 +4,11 @@ interface AggregateScript {
 }
 
 interface StepScript {
-	execute(TestCase) : void
+	execute(TestCase)
 }
 
 interface AssertionScript {
-	check(TestCase) : void {AssertionError}
+	check(TestCase) {AssertionError}
 }
 
 AggregateScript -[hidden]right- StepScript

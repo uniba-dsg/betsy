@@ -1,17 +1,24 @@
 @startuml
 
-class VirtualMachineService {
-  start() : void
-  kill() : void
-  restore() : void
+interface VirtualMachineProvider {
+  provision(EngineId) : VirtualMachineService
+}
+
+interface VirtualMachineService {
+  start()
+  kill()
+  restore()
   getState() : VirtualMachineState
 }
 
-class VirtualMachineState {
+enum VirtualMachineState {
   OFF
   SAVED
   ACTIVE
 }
+
+VirtualMachineProvider -[hidden]right- VirtualMachineService
+VirtualMachineService -[hidden]right- VirtualMachineState
 
 hide empty members
 hide empty methods
