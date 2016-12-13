@@ -1,6 +1,8 @@
 @startuml
-package ant
-package maven
+package Apache {
+	package ant
+	package maven
+}
 package engines
 
 package PEAL {

@@ -3,31 +3,31 @@
 
 interface EngineService {
     getSupportedEngines() : List<EngineId>
-    getSupportedLanguage(engine : EngineId) : ProcessLanguage
-    install(engine : EngineId)
-    uninstall(engine : EngineId)
-    start(engine : EngineId)
-    stop(engine : EngineId)
-    getState(engine : EngineId) : EngineState
-    getLogs(engine : EngineId) : LogPackage
+    getSupportedLanguage(EngineId) : ProcessLanguage
+    install(EngineId)
+    uninstall(EngineId)
+    start(EngineId)
+    stop(EngineId)
+    getState(EngineId) : EngineState
+    getLogs(EngineId) : LogPackage
 }
 
 interface ProcessModelService {
-    makeDeployable(engine : EngineId, processModelPackage : ProcessModelPackage) : DeploymentPackage
-    deploy(engine : EngineId, deploymentPackage : DeploymentPackage) : ProcessModelId
-    undeploy(processModel : ProcessModelId)
-    getState(processModel : ProcessModelId) : ProcessModelState
+    makeDeployable(EngineId, ProcessModelPackage) : DeploymentPackage
+    deploy(EngineId, DeploymentPackage) : ProcessModelId
+    undeploy(ProcessModelId)
+    getState(ProcessModelId) : ProcessModelState
     getDeployedProcessModels() : List<ProcessModelId>
 }
 
 interface InstanceService {
-    start(model : ProcessModelId, variables : List<Variable>) : Instanced
-    getState(instance : InstanceId) : InstanceState
-    getStateDetailed(instance : InstanceId) : InstanceStateDetailed
+    start(ProcessModelId, List<Variable>) : Instanced
+    getState(InstanceId) : InstanceState
+    getStateDetailed(InstanceId) : InstanceStateDetailed
 }
 
 EngineService -[hidden]down- ProcessModelService
-ProcessModelService -[hidden]down- InstanceService
+EngineService -[hidden]right- InstanceService
 
 
 
