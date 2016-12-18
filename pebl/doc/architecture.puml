@@ -3,6 +3,7 @@
 package PEBL {
 	package Mapping
 	package Aggregator
+	package Validation
 }
 
 package EclipseLink {
@@ -12,6 +13,7 @@ package EclipseLink {
 Mapping -> Moxy
 
 Aggregator -> Mapping
+Validation -left-> Mapping
 hide empty members
 hide empty methods
 hide circle
