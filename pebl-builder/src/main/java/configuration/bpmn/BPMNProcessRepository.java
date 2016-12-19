@@ -54,6 +54,10 @@ public class BPMNProcessRepository {
             repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
         }
 
+        for (Test process : repo.getByName("BPMN_CONSTRAINTS")) {
+            repo.put(process.getName(), new ArrayList<>(Collections.singletonList(process)));
+        }
+
     }
 
     public List<Test> getByName(String name) {
