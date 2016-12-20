@@ -288,6 +288,7 @@ public class Builder {
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("ERRORS"));
         processes.addAll(BPELProcessRepository.INSTANCE.getByName("STATIC_ANALYSIS"));
         processes.addAll(new BPMNProcessRepository().getByName("ALL"));
+        processes.addAll(new BPMNProcessRepository().getByName("BPMN_CONSTRAINTS"));
         return processes;
     }
 }
