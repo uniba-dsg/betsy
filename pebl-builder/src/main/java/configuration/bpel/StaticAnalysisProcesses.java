@@ -56,8 +56,7 @@ class StaticAnalysisProcesses {
                     addTags(featureSet, rule);
 
                     final Feature feature = new Feature(featureSet, FileTasks.getFilenameWithoutExtension(process));
-                    // add parent feature
-                    feature.addExtension("base", getBase(feature.getName()));
+
 
                     final Test test = new Test(process,
                             FileTasks.getFilenameWithoutExtension(process),
@@ -65,6 +64,8 @@ class StaticAnalysisProcesses {
                             feature,
                             createXSDandWSDLPaths(dir), Collections.emptyList());
 
+                    // add parent feature
+                    test.addExtension("base", getBase(feature.getName()) + "__test");
                     test.addExtension("staticAnalysisChecks", "false");
 
                     result.add(Capabilities.addMetrics(test));
