@@ -10,10 +10,14 @@ package EclipseLink {
 	package Moxy
 }
 
+package BPELlint
+package BPMNspector
 Mapping -> Moxy
 
 Aggregator -> Mapping
 Validation -left-> Mapping
+Validation -> BPELlint
+Validation -> BPMNspector
 hide empty members
 hide empty methods
 hide circle
