@@ -7,22 +7,10 @@ import pebl.benchmark.feature.Language;
 
 public class Groups {
 
-    public static Language CONFORMANCE_BPEL = new Language(Capabilities.CONFORMANCE, "BPEL")
-            .addExtension("feature", "construct configuration")
-            .addExtension("featureSet", "construct")
-            .addExtension("group", "construct group");
-    public static Language EXPRESSIVENESS_BPEL = new Language(Capabilities.EXPRESSIVENESS, "BPEL")
-            .addExtension("feature", "pattern implementation")
-            .addExtension("featureSet", "pattern")
-            .addExtension("group", "pattern catalog");
-    public static Language ROBUSTNESS_BPEL = new Language(Capabilities.ROBUSTNESS, "BPEL")
-            .addExtension("feature", "mutation")
-            .addExtension("featureSet", "message layer")
-            .addExtension("group", "fault scenario");
-    public static Language STATIC_ANALYSIS_BPEL = new Language(Capabilities.STATIC_ANALYSIS, "BPEL")
-            .addExtension("feature", "rule configuration")
-            .addExtension("featureSet", "rule")
-            .addExtension("group", "rule set");
+    public static Language CONFORMANCE_BPEL = new Language(Capabilities.CONFORMANCE, "BPEL");
+    public static Language EXPRESSIVENESS_BPEL = new Language(Capabilities.EXPRESSIVENESS, "BPEL");
+    public static Language ROBUSTNESS_BPEL = new Language(Capabilities.ROBUSTNESS, "BPEL");
+    public static Language STATIC_ANALYSIS_BPEL = new Language(Capabilities.STATIC_ANALYSIS, "BPEL");
 
     public static Group BASIC = new Group("basic", CONFORMANCE_BPEL, "Basic activities are the basic building blocks of a BPEL process.");
     public static Group STRUCTURED = new Group("structured", CONFORMANCE_BPEL, "Structured activities compose basic activities into a control-flow graph.");
