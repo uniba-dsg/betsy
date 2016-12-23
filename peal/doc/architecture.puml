@@ -9,7 +9,7 @@ package PEAL {
 	package IMPL
 	package API
 
-	API -> IMPL
+	API <- IMPL
 	IMPL -> ant
 	IMPL -> maven
 	IMPL -> engines
