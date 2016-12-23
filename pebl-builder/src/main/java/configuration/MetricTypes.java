@@ -20,9 +20,9 @@ public class MetricTypes {
     static final MetricType TEST_CASES = new MetricType(ValueType.LONG, "testCases", "The number of test cases.", "quantity");
     static final MetricType TEST_CASES_SUCCESSFUL = new MetricType(ValueType.LONG, "testCaseSuccesses", "The number of successful test cases.", "quantity");
     static final MetricType TEST_CASES_FAILURE = new MetricType(ValueType.LONG, "testCaseFailures", "The number of failed test cases.", "quantity");
-    static final MetricType TEST_DEPLOYABLE = new MetricType(ValueType.BOOLEAN, "testDeployable", "Whether the underlying process model was deployed successfully.", "");
-    static final MetricType TEST_SUCCESSFUL = new MetricType(ValueType.BOOLEAN, "testSuccessful", "Whether all test cases were successfully.", "");
-    static final MetricType TEST_RESULT = new MetricType(ValueType.STRING, "testResult", "The overall result based on the number of successful test cases compared to the total number of test cases", "");
+    static final MetricType TEST_DEPLOYABLE = new MetricType(ValueType.BOOLEAN, "testDeployable", "Whether the underlying process model was deployed successfully.", "boolean");
+    static final MetricType TEST_SUCCESSFUL = new MetricType(ValueType.BOOLEAN, "testSuccessful", "Whether all test cases were successfully.", "boolean");
+    static final MetricType TEST_RESULT = new MetricType(ValueType.STRING, "testResult", "The overall result based on the number of successful test cases compared to the total number of test cases", "trivalent");
 
     public static final MetricType TESTS_COUNT = new MetricType(ValueType.LONG, "testsCount", "Sum of the test cases", "sum", "SUM(tests)");
     public static final MetricType TEST_CASES_SUM = new MetricType(ValueType.LONG, "testCasesSum", "Sum of the test cases", "sum", "SUM(testCases)");
