@@ -18,6 +18,13 @@ deactivate testpartner
 instance --> framework : receive observable output
 destroy instance
 
+opt assertions
+ framework -> testpartner : query state
+ activate testpartner
+ testpartner --> framework: state
+ deactivate testpartner
+end
+
 hide footbox
 
 hide empty members
