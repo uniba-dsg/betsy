@@ -19,4 +19,11 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
+
+skinparam frame {
+    FontSize 18
+}
+skinparam node {
+    FontSize 18
+}
 @enduml
