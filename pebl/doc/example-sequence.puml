@@ -1,0 +1,21 @@
+@startuml
+
+participant framework as "Test System"
+box "Engine under Test"
+	participant instance as "Process Instance"
+end box
+
+create instance
+framework as "Test System" -> instance  : send input
+activate instance
+instance --> framework : receive observable output
+destroy instance
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml
