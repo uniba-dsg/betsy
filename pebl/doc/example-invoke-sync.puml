@@ -18,6 +18,8 @@ deactivate testpartner
 instance --> framework : receive observable output
 destroy instance
 
+hide footbox
+
 hide empty members
 hide empty methods
 hide circle

@@ -6,23 +6,20 @@ box "Engine under Test"
 end box
 participant testpartner as "Test Partner"
 
-== Arrange ==
-
 framework -> testpartner : set up concurrency detection
-
-== Act ==
+note left : Arrange
 
 create instance
 framework as "Test System" -> instance  : send input
 activate instance
+note left : Act
 
-
-loop parallel
+group parallel
 instance  -> testpartner : send
 activate testpartner
 hnote over testpartner
  delay for period
- detect parallelism
+ detect concurrency
 endhnote
 testpartner --> instance : receive
 deactivate testpartner
@@ -31,16 +28,14 @@ end
 instance --> framework : receive observable output
 destroy instance
 
-== Assert ==
 
 framework -> testpartner : is concurrency detected?
+note left : Assert
 activate testpartner
 testpartner --> framework : concurrency detection flag
 deactivate testpartner
-framework -> testpartner : get number of calls
-activate testpartner
-testpartner --> framework : number of calls
-deactivate testpartner
+
+hide footbox
 
 hide empty members
 hide empty methods
