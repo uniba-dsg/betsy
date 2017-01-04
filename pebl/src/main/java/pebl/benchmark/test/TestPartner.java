@@ -8,11 +8,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import pebl.HasExtensions;
 import pebl.MapAdapter;
-import pebl.benchmark.test.partner.NoTestPartner;
 import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import pebl.benchmark.test.partner.ScriptBasedWSDLTestPartner;
 
-@XmlSeeAlso({RuleBasedWSDLTestPartner.class, NoTestPartner.class, ScriptBasedWSDLTestPartner.class})
+@XmlSeeAlso({RuleBasedWSDLTestPartner.class, ScriptBasedWSDLTestPartner.class})
 public class TestPartner implements HasExtensions {
 
     @XmlJavaTypeAdapter(MapAdapter.class)

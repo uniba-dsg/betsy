@@ -88,7 +88,7 @@
                "type" : "array",
                "items" : {
                   "type" : "string",
-                  "enum" : [ "TIME_BEHAVIOUR", "AUTHENTICITY", "PORTABILITY", "APPROPRIATENESS_RECOGNISABILITY", "ACCESSIBILITY", "MODULARITY", "COMPATABILITY", "FUNCTIONAL_CORRECTNESS", "CONFIDENTIALITY", "FUNCTIONAL_SUITABILITY", "CO_EXISTENCE", "LEARNABILITY", "ANALYSABILITY", "OPERABILITY", "REPLACEABILITY", "MATURITY", "FAULT_TOLERANCE", "AVAILABILITY", "ADAPTABILITY", "RECOVERABILITY", "USABILITY", "RELIABILITY", "MAINTAINABILITY", "USER_INTERFACE_AESTHETICS", "NON_REPUDIATION", "SECURITY", "REUSABILITY", "MODIFIABILITY", "INTEGRITY", "FUNCTIONAL_APPROPRIATENESS", "INTEROPERABILITY", "USER_ERROR_PROTECTION", "INSTALLABILITY", "FUNCTIONAL_COMPLETENESS", "RESOURCE_UTILISATION", "PERFORMANCE_EFFICIENCY", "TESTABILITY", "ACCOUNTABILITY", "CAPACITY" ]
+                  "enum" : [ "FUNCTIONAL_COMPLETENESS", "LEARNABILITY", "ADAPTABILITY", "AVAILABILITY", "INTEGRITY", "REPLACEABILITY", "USER_INTERFACE_AESTHETICS", "INTEROPERABILITY", "ANALYSABILITY", "FUNCTIONAL_SUITABILITY", "PERFORMANCE_EFFICIENCY", "COMPATABILITY", "ACCESSIBILITY", "FAULT_TOLERANCE", "FUNCTIONAL_APPROPRIATENESS", "RECOVERABILITY", "ACCOUNTABILITY", "MAINTAINABILITY", "AUTHENTICITY", "TIME_BEHAVIOUR", "MODULARITY", "MATURITY", "NON_REPUDIATION", "INSTALLABILITY", "CONFIDENTIALITY", "TESTABILITY", "REUSABILITY", "MODIFIABILITY", "FUNCTIONAL_CORRECTNESS", "USABILITY", "RELIABILITY", "SECURITY", "CO_EXISTENCE", "OPERABILITY", "CAPACITY", "APPROPRIATENESS_RECOGNISABILITY", "PORTABILITY", "RESOURCE_UTILISATION", "USER_ERROR_PROTECTION" ]
                }
             },
             "extensions" : {
@@ -317,16 +317,6 @@
                            "$ref" : "#/definitions/RuleBasedWSDLTestPartner"
                         }, {
                            "$ref" : "#/definitions/ScriptBasedWSDLTestPartner"
-                        }, {
-                           "$ref" : "#/definitions/TestPartner"
-                        } ]
-                     }
-                  },
-                  "noTestPartner" : {
-                     "type" : "array",
-                     "items" : {
-                        "anyOf" : [ {
-                           "$ref" : "#/definitions/NoTestPartner"
                         }, {
                            "$ref" : "#/definitions/TestPartner"
                         } ]
@@ -1307,9 +1297,9 @@
                "anyOf" : [ {
                   "$ref" : "#/definitions/AnyInput"
                }, {
-                  "$ref" : "#/definitions/ScriptPredicate"
-               }, {
                   "$ref" : "#/definitions/XpathPredicate"
+               }, {
+                  "$ref" : "#/definitions/ScriptPredicate"
                } ]
             },
             "xpathPredicate" : {
@@ -1522,18 +1512,6 @@
          },
          "additionalProperties" : false
       },
-      "NoTestPartner" : {
-         "type" : "object",
-         "properties" : {
-            "type" : {
-               "type" : "string"
-            },
-            "extensions" : {
-               "$ref" : "#/definitions/AdaptedMap"
-            }
-         },
-         "additionalProperties" : false
-      },
       "MetricType" : {
          "type" : "object",
          "properties" : {
@@ -1580,13 +1558,13 @@
                   }
                }
             },
-            "featureResults" : {
+            "aggregatedResults" : {
                "type" : "object",
                "properties" : {
-                  "featureResult" : {
+                  "aggregatedResult" : {
                      "type" : "array",
                      "items" : {
-                        "$ref" : "#/definitions/FeatureResult"
+                        "$ref" : "#/definitions/AggregatedResult"
                      }
                   }
                }
@@ -1703,7 +1681,7 @@
          },
          "additionalProperties" : false
       },
-      "FeatureResult" : {
+      "AggregatedResult" : {
          "type" : "object",
          "properties" : {
             "measurements" : {

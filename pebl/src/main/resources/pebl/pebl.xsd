@@ -16,13 +16,6 @@
          </xsd:extension>
       </xsd:complexContent>
    </xsd:complexType>
-   <xsd:complexType name="noTestPartner">
-      <xsd:complexContent>
-         <xsd:extension base="testPartner">
-            <xsd:sequence/>
-         </xsd:extension>
-      </xsd:complexContent>
-   </xsd:complexType>
    <xsd:complexType name="featureSet">
       <xsd:sequence>
          <xsd:element name="name" type="xsd:string"/>
@@ -53,6 +46,18 @@
             <xsd:attribute name="expectedOutput" type="xsd:string" use="required"/>
          </xsd:extension>
       </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="aggregatedResult">
+      <xsd:sequence>
+         <xsd:element name="measurements" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="measurement" type="measurement" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
    </xsd:complexType>
    <xsd:complexType name="language">
       <xsd:sequence>
@@ -108,10 +113,10 @@
                </xsd:sequence>
             </xsd:complexType>
          </xsd:element>
-         <xsd:element name="featureResults" minOccurs="0">
+         <xsd:element name="aggregatedResults" minOccurs="0">
             <xsd:complexType>
                <xsd:sequence>
-                  <xsd:element name="featureResult" type="featureResult" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="aggregatedResult" type="aggregatedResult" minOccurs="0" maxOccurs="unbounded"/>
                </xsd:sequence>
             </xsd:complexType>
          </xsd:element>
@@ -308,10 +313,9 @@
          <xsd:element name="testPartners" minOccurs="0">
             <xsd:complexType>
                <xsd:sequence>
-                  <xsd:choice maxOccurs="unbounded">
+                  <xsd:choice minOccurs="0" maxOccurs="unbounded">
                      <xsd:element ref="ruleBasedWSDLTestPartner"/>
                      <xsd:element ref="wsdlTestPartner"/>
-                     <xsd:element ref="noTestPartner"/>
                      <xsd:element ref="scriptBasedWSDLTestPartner"/>
                   </xsd:choice>
                </xsd:sequence>
@@ -527,18 +531,6 @@
       <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
       <xsd:attribute name="tool" type="xsd:string" use="required"/>
    </xsd:complexType>
-   <xsd:complexType name="featureResult">
-      <xsd:sequence>
-         <xsd:element name="measurements" minOccurs="0">
-            <xsd:complexType>
-               <xsd:sequence>
-                  <xsd:element name="measurement" type="measurement" maxOccurs="unbounded"/>
-               </xsd:sequence>
-            </xsd:complexType>
-         </xsd:element>
-      </xsd:sequence>
-      <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
-   </xsd:complexType>
    <xsd:complexType name="testCase">
       <xsd:sequence>
          <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
@@ -561,7 +553,6 @@
       <xsd:attribute name="number" type="xsd:int" use="required"/>
    </xsd:complexType>
    <xsd:element name="sendSoapMessage" type="sendSoapMessage"/>
-   <xsd:element name="noTestPartner" type="noTestPartner"/>
    <xsd:element name="assertXpath" type="assertXpath"/>
    <xsd:element name="pebl" type="pebl"/>
    <xsd:element name="anyInput" type="anyInput"/>

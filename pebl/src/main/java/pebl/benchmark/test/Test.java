@@ -53,7 +53,7 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
     @XmlList
     private final List<Path> files;
 
-    @XmlElement(required = true)
+    @XmlElement
     @XmlElementRef
     @XmlElementWrapper(name = "testPartners")
     private final List<TestPartner> partners;

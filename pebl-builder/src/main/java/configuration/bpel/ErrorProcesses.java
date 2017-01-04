@@ -22,7 +22,6 @@ import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.Group;
 import pebl.benchmark.test.Test;
 import pebl.benchmark.test.TestPartner;
-import pebl.benchmark.test.partner.NoTestPartner;
 import pebl.benchmark.test.partner.RuleBasedWSDLTestPartner;
 import pebl.benchmark.test.partner.WSDLTestPartner;
 import pebl.benchmark.test.partner.rules.AnyInput;
@@ -301,7 +300,7 @@ public class ErrorProcesses {
         result.add(new Error(60025, "soap-xsd-mod_ns-wrong_ns", SOAP_CONSTRUCT));
         result.add(new Error(60026, "soap-xsd-mod_ns-unbound_prefix", SOAP_CONSTRUCT));
         result.add(new Error(50001, "tcp-dns-unresolveable", TCP_CONSTRUCT, new WSDLTestPartner("http://thishostisnotusedeverreally:2000/bpel-testpartner", Paths.get("TestPartner.wsdl"))));
-        result.add(new Error(50002, "tcp-host-unreachable", TCP_CONSTRUCT, new NoTestPartner()));
+        result.add(new Error(50002, "tcp-host-unreachable", TCP_CONSTRUCT, null));
         result.add(new Error(50003, "tcp-timeout", TCP_CONSTRUCT, new RuleBasedWSDLTestPartner(Paths.get("TestPartner.wsdl"),
                 "http://localhost:2000/bpel-testpartner",
                 new OperationInputOutputRule("startProcessSync", new AnyInput(), new NoOutput()))));

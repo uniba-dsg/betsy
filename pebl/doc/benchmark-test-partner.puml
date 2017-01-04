@@ -1,6 +1,5 @@
 @startuml
 
-   class NoTestPartner extends TestPartner
    class WSDLTestPartner extends TestPartner {
      url : String
      wsdl : String
