@@ -55,15 +55,15 @@ public class PEBLStoreFilesAlongMain {
             t.getFiles().clear();
             t.getFiles().addAll(files);
 
-            final List<Path> logFiles = t.getLogFiles()
+            final List<Path> logFiles = t.getLogs()
                     .stream()
                     .map(file -> copyAndGetRelativePath(id, file, s -> "testResults/" + s + "/logFiles", parent))
                     .collect(Collectors.toList());
 
             assertNoDuplicates(id, files);
 
-            t.getLogFiles().clear();
-            t.getLogFiles().addAll(logFiles);
+            t.getLogs().clear();
+            t.getLogs().addAll(logFiles);
         });
     }
 

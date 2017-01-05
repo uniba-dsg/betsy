@@ -39,9 +39,9 @@ public class TestResult implements HasExtensions, HasId {
     @XmlAttribute(required = true)
     private final String tool;
 
-    @XmlElement(name = "logFiles")
+    @XmlElement(name = "logs")
     @XmlList
-    private final List<Path> logFiles;
+    private final List<Path> logs;
 
     @XmlElement(required = true)
     private final Path deploymentPackage;
@@ -72,7 +72,7 @@ public class TestResult implements HasExtensions, HasId {
     public TestResult(Test test,
             Engine engine,
             String tool,
-            List<Path> logFiles,
+            List<Path> logs,
             Path deploymentPackage,
             List<Path> files,
             List<Measurement> measurements,
@@ -81,7 +81,7 @@ public class TestResult implements HasExtensions, HasId {
         this.test = test;
         this.engine = engine;
         this.tool = tool;
-        this.logFiles = new ArrayList<>(logFiles);
+        this.logs = new ArrayList<>(logs);
         this.deploymentPackage = deploymentPackage;
         this.files = new ArrayList<>(files);
         this.measurements = new LinkedList<>(measurements);
@@ -101,8 +101,8 @@ public class TestResult implements HasExtensions, HasId {
         return tool;
     }
 
-    public List<Path> getLogFiles() {
-        return logFiles;
+    public List<Path> getLogs() {
+        return logs;
     }
 
     public Path getDeploymentPackage() {

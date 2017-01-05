@@ -18,7 +18,7 @@ package "" {
 
 	class TestResult {
 	     files : List<String>
-	     logFiles : List<String>
+	     logs : List<String>
 	     deploymentPackage : String
 		extensions : Map<String, String>
 	}

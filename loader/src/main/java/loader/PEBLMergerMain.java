@@ -119,9 +119,9 @@ public class PEBLMergerMain {
             e.getFiles().clear();
             e.getFiles().addAll(files);
 
-            final List<Path> logFiles = e.getLogFiles().stream().map(newRelativeDataFolder::relativize).collect(Collectors.toList());
-            e.getLogFiles().clear();
-            e.getLogFiles().addAll(logFiles);
+            final List<Path> logFiles = e.getLogs().stream().map(newRelativeDataFolder::relativize).collect(Collectors.toList());
+            e.getLogs().clear();
+            e.getLogs().addAll(logFiles);
 
             final Optional<TestResult> testResultOptional = peblTarget.result.testResults.stream().filter(tr -> tr.getId().equals(e.getId())).findAny();
             if(testResultOptional.isPresent()) {

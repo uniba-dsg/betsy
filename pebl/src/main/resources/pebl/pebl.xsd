@@ -500,7 +500,7 @@
    </xsd:complexType>
    <xsd:complexType name="testResult">
       <xsd:sequence>
-         <xsd:element name="logFiles" minOccurs="0">
+         <xsd:element name="logs" minOccurs="0">
             <xsd:simpleType>
                <xsd:list itemType="xsd:string"/>
             </xsd:simpleType>

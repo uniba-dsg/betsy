@@ -2,7 +2,11 @@ package pebl.xsd;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -54,7 +58,12 @@ public class SchemaGenerator {
 
         };
         jc.generateSchema(sor);
-        return xsd.toPath();
+        final Path xsdPath = xsd.toPath();
+
+        final List<String> lines = Files.readAllLines(xsdPath, StandardCharsets.UTF_8);
+        Files.write(xsdPath, lines.stream().map(s -> s.replace("##other", "##any")).collect(Collectors.toList()), StandardCharsets.UTF_8);
+
+        return xsdPath;
     }
 
 }

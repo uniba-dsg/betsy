@@ -73,7 +73,7 @@ public class PEBL {
         });
         result.testResults.forEach(e -> {
             e.getFiles().stream().filter(missing.or(relative)).forEach(unlinked::add);
-            e.getLogFiles().stream().filter(missing.or(relative)).forEach(unlinked::add);
+            e.getLogs().stream().filter(missing.or(relative)).forEach(unlinked::add);
         });
 
         if(unlinked.size() > 0) {
@@ -120,13 +120,13 @@ public class PEBL {
             e.getFiles().clear();
             e.getFiles().addAll(files);
 
-            final List<Path> logFiles = e.getLogFiles()
+            final List<Path> logFiles = e.getLogs()
                     .stream()
                     .map(workingDirectory::resolve)
                     .map(Path::toAbsolutePath)
                     .collect(Collectors.toList());
-            e.getLogFiles().clear();
-            e.getLogFiles().addAll(logFiles);
+            e.getLogs().clear();
+            e.getLogs().addAll(logFiles);
         });
     }
 
@@ -155,13 +155,13 @@ public class PEBL {
             e.getFiles().clear();
             e.getFiles().addAll(files);
 
-            final List<Path> logFiles = e.getLogFiles()
+            final List<Path> logFiles = e.getLogs()
                     .stream()
                     .map(Path::toAbsolutePath)
                     .map(workingDirectory::relativize)
                     .collect(Collectors.toList());
-            e.getLogFiles().clear();
-            e.getLogFiles().addAll(logFiles);
+            e.getLogs().clear();
+            e.getLogs().addAll(logFiles);
         });
     }
 

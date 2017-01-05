@@ -1611,7 +1611,7 @@
             "tool" : {
                "type" : "string"
             },
-            "logFiles" : {
+            "logs" : {
                "type" : "array",
                "items" : {
                   "type" : "string"
