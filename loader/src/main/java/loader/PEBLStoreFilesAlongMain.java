@@ -69,7 +69,9 @@ public class PEBLStoreFilesAlongMain {
 
     private static void assertNoDuplicates(String id, List<Path> files) {
         if(new HashSet<>(files).size() < files.size()) {
-            throw new IllegalStateException("Duplicates detected in " + id + ": " + files);
+            final String message = "Duplicates detected in " + id + ": " + files;
+            System.out.println(message);
+            //TODO enable exception later: throw new IllegalStateException(message);
         }
     }
 

@@ -21,7 +21,7 @@ public enum BPMNAssertions {
     ERROR_PROCESS_ABORTED("ERROR_processAborted"),
     ERROR_THROWN_ERROR_EVENT("ERROR_thrownErrorEvent"),
     ERROR_THROWN_ESCALATION_EVENT("ERROR_thrownEscalationEvent"),
-    ERROR_GENERIC("ERROR_generic"),
+    ERROR_GENERIC("ERROR"),
 
     EXECUTION_PARALLEL("EXECUTION_parallel"),
 
@@ -29,7 +29,7 @@ public enum BPMNAssertions {
 
     DATA_CORRECT("DATA_correct"),
 
-    INCREMENT("INCREMENT");
+    INCREMENT("INCREMENT_correct");
 
     private final String name;
 

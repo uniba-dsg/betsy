@@ -43,7 +43,8 @@ public class PEBL {
         }
         pebl.makeFilesAbsolute(path.toAbsolutePath().getParent());
 
-        pebl.assertLinksWork();
+        //TODO reenable link assertion
+        //pebl.assertLinksWork();
 
         return pebl;
     }

@@ -22,7 +22,8 @@ public class CreateInitialDatabase {
             System.out.println("PEBL PNGs");
             PEBLBpmnPngImageAdderMain.main(new String[] {"database/pebl.xml"});
         } catch (JAXBException | IOException | SAXException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error during creating initial database " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

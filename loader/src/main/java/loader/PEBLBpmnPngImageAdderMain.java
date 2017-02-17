@@ -29,6 +29,7 @@ public class PEBLBpmnPngImageAdderMain {
             Optional.of(t.getProcess())
                     .filter(isBpmnFile)
                     .filter(missesPngFile)
+                    .filter(f -> !f.getFileName().toString().startsWith("EXT")) // EXT files can break BPMNviz
                     .map(PEBLBpmnPngImageAdderMain::createBPMNImage)
                     .ifPresent(f -> {
                         if (!t.getFiles().contains(f)) {
@@ -41,6 +42,7 @@ public class PEBLBpmnPngImageAdderMain {
                     .stream()
                     .filter(isBpmnFile)
                     .filter(missesPngFile)
+                    .filter(f -> !f.getFileName().toString().startsWith("EXT")) // EXT files can break BPMNviz
                     .map(PEBLBpmnPngImageAdderMain::createBPMNImage)
                     .collect(Collectors.toList());
             for (Path png : newPngs) {
@@ -56,7 +58,7 @@ public class PEBLBpmnPngImageAdderMain {
         try {
             bpmnviz.Main.main(args);
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Failed to create image for " + bpmnFile + " because of " + e.getMessage());
         }
         return Paths.get(bpmnFile.toString() + (".png")).toAbsolutePath();
     }

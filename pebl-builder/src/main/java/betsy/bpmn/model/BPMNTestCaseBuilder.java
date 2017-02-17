@@ -158,10 +158,6 @@ public class BPMNTestCaseBuilder {
         return addAssertion(BPMNAssertions.ERROR_THROWN_ERROR_EVENT);
     }
 
-    public BPMNTestCaseBuilder assertErrorThrownEscalationEvent() {
-        return addAssertion(BPMNAssertions.ERROR_THROWN_ESCALATION_EVENT);
-    }
-
     public BPMNTestCaseBuilder assertGenericError() {
         return addAssertion(BPMNAssertions.ERROR_GENERIC);
     }

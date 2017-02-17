@@ -179,6 +179,8 @@ shadowJar {
 }
 
 run {
+    systemProperty "file.encoding", "utf-8"
+
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }

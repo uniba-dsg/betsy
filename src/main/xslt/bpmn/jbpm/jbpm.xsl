@@ -142,7 +142,7 @@ kcontext.setVariable("integerVariable", integerVariable+1);
 // log execution
 java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter("log" + testCaseNumber + ".txt", true));
 try {
-    bw.append("INCREMENT");
+    bw.append("INCREMENT_correct");
     bw.newLine();
 } catch(java.io.IOException e) {
 } finally{
