@@ -5,8 +5,8 @@
 
 # BPEL
 ./betsy bpel ode sequence,WCP04-ExclusiveChoice,SA00095 # STRUCTURED_ACTIVITIES, CFPATTERN, SA
-./betsy loader load pebl.xml database/pebl.xml
+./betsy loader load test/pebl.xml database/pebl.xml
 
 # BPMN
 ./betsy bpmn activiti sequenceflow,WCP04_ExclusiveChoice,REF_1 # GATEWAYS, CFPATTERN, SA
-./betsy loader load pebl.xml database/pebl.xml
+./betsy loader load test/pebl.xml database/pebl.xml

@@ -45,10 +45,12 @@ public class PEBLMergerMain {
         // Algorithm: add elements whose id was not yet there
 
         // add metric types if not yet available
+        System.out.println("MERGING metric types");
         List<String> metricTypeIds = peblTarget.benchmark.metricTypes.stream().map(HasId::getId).collect(Collectors.toList());
         peblSource.benchmark.metricTypes.stream().filter(e -> !metricTypeIds.contains(e.getId())).forEach(e -> peblTarget.benchmark.metricTypes.add(e));
 
         // apply metrics
+        System.out.println("MERGING feature tree");
         peblSource.benchmark.capabilities.forEach(c -> {
 
             final Optional<Capability> capabilityOptional = peblTarget.benchmark.capabilities.stream().filter(x -> x.getId().equals(c.getId())).findFirst();
@@ -97,6 +99,7 @@ public class PEBLMergerMain {
         });
 
         // add tests if not yet available
+        System.out.println("MERGING tests");
         List<String> testIds = peblTarget.benchmark.tests.stream().map(HasId::getId).collect(Collectors.toList());
         peblSource.benchmark.tests.stream().filter(e -> !testIds.contains(e.getId())).forEach(e -> {
             final List<Path> files = e.getFiles().stream().map(newRelativeDataFolder::relativize).collect(Collectors.toList());
@@ -109,10 +112,12 @@ public class PEBLMergerMain {
         });
 
         // add engines if not yet available
+        System.out.println("MERGING engines");
         List<String> engineIds = peblTarget.result.engines.stream().map(HasId::getId).collect(Collectors.toList());
         peblSource.result.engines.stream().filter(e -> !engineIds.contains(e.getId())).forEach(e -> peblTarget.result.engines.add(e));
 
         // add test results if not yet available
+        System.out.println("MERGING test results");
         List<String> testResultIds = peblTarget.result.testResults.stream().map(HasId::getId).collect(Collectors.toList());
         peblSource.result.testResults.forEach(e -> {
             final List<Path> files = e.getFiles().stream().map(newRelativeDataFolder::relativize).collect(Collectors.toList());
