@@ -27,4 +27,10 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
+
+skinparam classBackgroundColor white
+skinparam stateBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
 @enduml
