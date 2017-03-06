@@ -26,4 +26,9 @@ skinparam frame {
 skinparam node {
     FontSize 18
 }
+
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
 @enduml

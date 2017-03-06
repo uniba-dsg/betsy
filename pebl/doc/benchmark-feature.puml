@@ -82,4 +82,6 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
+skinparam classBackgroundColor white
+
 @enduml
