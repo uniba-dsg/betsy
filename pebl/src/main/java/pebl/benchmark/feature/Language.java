@@ -21,7 +21,7 @@ import pebl.HasName;
 import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Language implements HasId, HasName, HasExtensions {
+public class Language implements HasId, HasName, HasExtensions, HasMetrics {
 
     @XmlInverseReference(mappedBy="languages")
     private final Capability capability;
@@ -114,5 +114,10 @@ public class Language implements HasId, HasName, HasExtensions {
         extensions.put(key, value);
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }

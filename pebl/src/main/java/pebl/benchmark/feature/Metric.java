@@ -37,4 +37,9 @@ public class Metric implements HasId {
     public MetricType getMetricType() {
         return metricType;
     }
+
+    @Override
+    public String toString() {
+        return getId();
+    }
 }

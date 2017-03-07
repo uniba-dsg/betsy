@@ -63,8 +63,9 @@ public final class Engine implements HasId, HasName, HasExtensions {
         this.configuration = requireNonNull(values);
     }
 
+    @Override
     public String toString() {
-        return getNormalizedId();
+        return getId();
     }
 
     private String getNormalizedId() {

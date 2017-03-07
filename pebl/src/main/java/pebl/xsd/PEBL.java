@@ -3,11 +3,13 @@ package pebl.xsd;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -21,6 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import pebl.benchmark.feature.Capability;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.HasMetrics;
+import pebl.benchmark.feature.Metric;
 import pebl.benchmark.feature.MetricType;
 import pebl.benchmark.test.Test;
 import pebl.result.engine.Engine;
@@ -203,5 +208,60 @@ public class PEBL {
 
     @XmlElement(required = true)
     public Result result = new Result();
+
+    public Engine getEngine(String id) {
+        return this.result.engines.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(id));
+    }
+
+    public Test getTest(String id) {
+        return this.benchmark.tests.stream().filter(e -> e.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new IllegalStateException(id));
+    }
+
+    public Capability getCapability(String id) {
+        return this.benchmark.capabilities.stream().filter(e -> e.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new IllegalStateException(id));
+    }
+
+    public MetricType getMetricType(String id) {
+        return this.benchmark.metricTypes.stream()
+                .filter(e -> e.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new IllegalStateException(id));
+    }
+
+    public Metric getMetric(String id) {
+        List<HasMetrics> list = new LinkedList<>();
+        this.benchmark.capabilities.stream()
+                .peek(list::add)
+                .flatMap(c -> c.getLanguages().stream())
+                .peek(list::add)
+                .flatMap(l -> l.getGroups().stream())
+                .peek(list::add)
+                .flatMap(g -> g.getFeatureSets().stream())
+                .peek(list::add)
+                .flatMap(fs -> fs.getFeatures().stream())
+                .peek(list::add)
+                .count();
+        this.benchmark.tests.forEach(list::add);
+
+        return list.stream()
+                .flatMap(e -> e.getMetrics().stream())
+                .filter(m -> m.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(id));
+    }
+
+    public Feature getFeature(String id) {
+        return this.benchmark.capabilities.stream()
+                .flatMap(c -> c.getLanguages().stream())
+                .flatMap(l -> l.getGroups().stream())
+                .flatMap(g -> g.getFeatureSets().stream())
+                .flatMap(fs -> fs.getFeatures().stream())
+                .filter(e -> e.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new IllegalStateException(id));
+    }
 
 }

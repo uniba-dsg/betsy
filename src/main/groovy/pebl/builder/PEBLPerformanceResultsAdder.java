@@ -27,7 +27,7 @@ public class PEBLPerformanceResultsAdder {
         final String benchFlow = "BenchFlow__1";
 
         // results
-        final Engine camunda__7_4_0 = pebl.result.engines.stream().filter(e -> e.getId().equals("camunda__7_4_0")).findFirst().orElseThrow(() -> new IllegalStateException("camunda 7.4.0 must be available"));
+        final Engine camunda__7_4_0 = pebl.getEngine("camunda__7_4_0");
         final TestResult testResultCamunda = new TestResult(test,
                 camunda__7_4_0, benchFlow,
                 Collections.emptyList(),

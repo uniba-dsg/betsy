@@ -29,11 +29,12 @@ import pebl.HasName;
 import pebl.MapAdapter;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.HasMetrics;
 import pebl.benchmark.feature.Metric;
 import pebl.benchmark.feature.MetricType;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension, HasExtensions {
+public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension, HasExtensions, HasMetrics {
 
     @XmlIDREF
     @XmlAttribute(required = true)
@@ -167,11 +168,6 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
         return getLanguage().getName();
     }
 
-    @Override
-    public String toString() {
-        return getName();
-    }
-
     public boolean equals(Object o) {
         if (o == this) {
             return true;
@@ -255,6 +251,11 @@ public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension,
 
     public void setProcess(Path process) {
         this.process = process;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }
 

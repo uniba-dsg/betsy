@@ -22,7 +22,7 @@ import pebl.HasName;
 import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Group implements HasId, HasName, HasExtensions {
+public class Group implements HasId, HasName, HasExtensions, HasMetrics {
 
     @XmlElement(required = true)
     private final String name;
@@ -70,11 +70,6 @@ public class Group implements HasId, HasName, HasExtensions {
 
     public String getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Group " + getId();
     }
 
     @Override
@@ -139,5 +134,10 @@ public class Group implements HasId, HasName, HasExtensions {
         extensions.put(key, value);
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }

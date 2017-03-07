@@ -21,7 +21,7 @@ import pebl.HasName;
 import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class FeatureSet implements HasId, HasName, HasExtensions {
+public class FeatureSet implements HasId, HasName, HasExtensions, HasMetrics {
 
     @XmlInverseReference(mappedBy="featureSets")
     private final Group group;
@@ -126,5 +126,10 @@ public class FeatureSet implements HasId, HasName, HasExtensions {
         extensions.put(key, value);
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }

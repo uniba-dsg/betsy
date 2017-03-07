@@ -136,4 +136,9 @@ public class TestResult implements HasExtensions, HasId {
     public String getId() {
         return getEngine().getId() + HasId.SEPARATOR + getTest().getId();
     }
+
+    @Override
+    public String toString() {
+        return getId();
+    }
 }
