@@ -1,8 +1,7 @@
 @startuml
 
    class WsdlTestPartner extends TestPartner {
-     url : String
-     wsdl : String
+     wsdl : File
    }
    class RuleBasedWsdlTestPartner extends WsdlTestPartner
    class ScriptBasedWsdlTestPartner extends WsdlTestPartner {
@@ -12,8 +11,6 @@
    class OperationInputOutputRule {
         operation : QName
    }
-
-
 
    class Input
    class XpathPredicate extends Input {
