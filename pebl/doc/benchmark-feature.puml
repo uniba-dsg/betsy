@@ -4,7 +4,7 @@
     	  id : String
     	  description : String
     	  unit : String
-    	  groovyScript : String
+    	  script : GroovyScript
     	}
 
     	enum ValueType {

@@ -15,11 +15,11 @@
 	  faultString : String
 	}
 	class AssertXpath extends TestAssertion {
-	  xpathExpression : String
+	  expression : XpathExpression
 	  expectedOutput : String
 	}
 	class AssertScript extends TestAssertion {
-    	  groovyScript : String
+    	  script : GroovyScript
     	}
 
 

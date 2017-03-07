@@ -26,7 +26,7 @@
 	}
 
 	class ExecuteScript extends TestStep {
-	      groovyScript : String
+	      script : GroovyScript
     	}
 
 	class Variable {

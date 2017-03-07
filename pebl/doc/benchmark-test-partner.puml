@@ -6,7 +6,7 @@
    }
    class RuleBasedWSDLTestPartner extends WSDLTestPartner
    class ScriptBasedWSDLTestPartner extends WSDLTestPartner {
-     groovyScript : String
+     script : GroovyScript
    }
 
    class OperationInputOutputRule {
@@ -17,10 +17,10 @@
 
    class AnyInput
    class XpathPredicate extends AnyInput {
-     xpathExpression : String
+     expression : XpathExpression
    }
    class ScriptPredicate extends AnyInput {
-      groovyScript : String
+      script : GroovyScript
    }
 
 
@@ -34,7 +34,7 @@
       }
    class SoapFaultOutput extends SoapMessageOutput
    class ScriptBasedOutput extends NoOutput {
-       groovyScript : String
+       script : GroovyScript
    }
 
 
