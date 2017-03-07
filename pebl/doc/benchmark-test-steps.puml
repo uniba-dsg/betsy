@@ -11,18 +11,12 @@
 	  milliseconds : Integer
 	}
 	class SendSoapMessage extends TestStep {
-	  soapMessage : String
-
-	}
-	class WsdlService{
-	 name : String
-	}
-	class WsdlOperation {
-	name : String
-	oneWay : Boolean
+	  message : SoapMessage
+	  operation : QName
+	  portType : QName
 	}
 	class StartProcess extends TestStep{
-	  processName : String
+	  process : QName
 	}
 
 	class ExecuteScript extends TestStep {
@@ -37,8 +31,6 @@
 
 
 StartProcess "*" -down-> "*" Variable
-SendSoapMessage "*" -down-> "1" WsdlService
-SendSoapMessage "*" -down-> "1" WsdlOperation
 
 hide empty members
 hide empty methods

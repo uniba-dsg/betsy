@@ -1,39 +1,42 @@
 @startuml
 
-   class WSDLTestPartner extends TestPartner {
+   class WsdlTestPartner extends TestPartner {
      url : String
      wsdl : String
    }
-   class RuleBasedWSDLTestPartner extends WSDLTestPartner
-   class ScriptBasedWSDLTestPartner extends WSDLTestPartner {
+   class RuleBasedWsdlTestPartner extends WsdlTestPartner
+   class ScriptBasedWsdlTestPartner extends WsdlTestPartner {
      script : GroovyScript
    }
 
    class OperationInputOutputRule {
-        operation : String
+        operation : QName
    }
 
 
 
-   class AnyInput
-   class XpathPredicate extends AnyInput {
+   class Input
+   class XpathPredicate extends Input {
      expression : XpathExpression
    }
-   class ScriptPredicate extends AnyInput {
+   class ScriptPredicate extends Input {
       script : GroovyScript
    }
 
 
-   class NoOutput
-   class HttpOutput extends NoOutput {
+   class Output
+   class HttpOutput extends Output {
        statusCode : Integer
        mimeType : String
        content : String
    }
-   class SoapMessageOutput extends HttpOutput {
+   class SoapMessageOutput extends Output {
+        statusCode : Integer
+        mimeType : String
+      message : SoapMessage
       }
    class SoapFaultOutput extends SoapMessageOutput
-   class ScriptBasedOutput extends NoOutput {
+   class ScriptBasedOutput extends Output {
        script : GroovyScript
    }
 
@@ -44,9 +47,9 @@
 	}
 
 
-RuleBasedWSDLTestPartner "1" -right-> "*" OperationInputOutputRule
-OperationInputOutputRule "1" -down-> "*" AnyInput
-OperationInputOutputRule "1" -right-> "*" NoOutput
+RuleBasedWsdlTestPartner "1" -right-> "*" OperationInputOutputRule
+OperationInputOutputRule -down-> "0..1" Input
+OperationInputOutputRule -right-> "0..1" Output
 
 hide empty members
 hide empty methods
