@@ -2,12 +2,16 @@ package pebl.builder;
 
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import betsy.common.model.engine.EngineExtended;
+import configuration.MetricTypes;
 import pebl.ProcessLanguage;
 import pebl.benchmark.test.Test;
+import pebl.result.Measurement;
 import pebl.result.engine.Engine;
 import pebl.result.test.TestResult;
 import pebl.xsd.PEBL;
@@ -15,7 +19,9 @@ import pebl.xsd.PEBL;
 public class PEBLPerformanceResultsAdder {
 
     public static void addPerformanceResults(PEBL pebl) {
-        Test test = pebl.benchmark.tests.stream().filter(t -> t.getCapability().getName().equalsIgnoreCase("performance")).findAny().orElseThrow(IllegalStateException::new);
+        Test test = pebl.benchmark.tests.stream()
+                .filter(t -> t.getCapability().getName().equalsIgnoreCase("performance"))
+                .findAny().orElseThrow(IllegalStateException::new);
 
         // engines
         final Engine engineA = new EngineExtended(ProcessLanguage.BPMN, "engine_a", "N.NN.N", LocalDate.MIN, "Apache-2.0").getEngine();
@@ -28,12 +34,19 @@ public class PEBLPerformanceResultsAdder {
 
         // results
         final Engine camunda__7_4_0 = pebl.getEngine("camunda__7_4_0");
+        final List<Measurement> measurements = Arrays.asList(
+                new Measurement(test.getMetrics().stream().filter(m -> m.getMetricType().equals(MetricTypes.THROUGHPUT)).findAny().orElseThrow(IllegalStateException::new), "1061.27"),
+                new Measurement(test.getMetrics().stream().filter(m -> m.getMetricType().equals(MetricTypes.NUMBER_OF_PROCESS_INSTANCES)).findAny().orElseThrow(IllegalStateException::new), "575210"),
+                new Measurement(test.getMetrics().stream().filter(m -> m.getMetricType().equals(MetricTypes.PROCESS_DURATION)).findAny().orElseThrow(IllegalStateException::new), "0;434;1.22 +/- 0.02;4.21"),
+                new Measurement(test.getMetrics().stream().filter(m -> m.getMetricType().equals(MetricTypes.CPU)).findAny().orElseThrow(IllegalStateException::new), "24.48;56.35;48.52 +/- 0.28;5"),
+                new Measurement(test.getMetrics().stream().filter(m -> m.getMetricType().equals(MetricTypes.RAM)).findAny().orElseThrow(IllegalStateException::new), "677.1;1073.15;991.86 +/- 4.24;75.21")
+        );
         final TestResult testResultCamunda = new TestResult(test,
                 camunda__7_4_0, benchFlow,
                 Collections.emptyList(),
                 Paths.get(""),
                 Collections.emptyList(),
-                Collections.emptyList(),
+                measurements,
                 new HashMap<>(),
                 Collections.emptyList());
         addPerformanceEnvironmentData(testResultCamunda);

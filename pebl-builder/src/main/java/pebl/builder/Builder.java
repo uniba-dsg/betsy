@@ -68,6 +68,14 @@ public class Builder {
         test.addExtension("loadFunction.users.startUsers", "1");
         test.addExtension("loadFunction.users.steadyStateUsers", "1500");
         test.addExtension("loadFunction.users.endUsers", "1500");
+
+        test.addMetric(MetricTypes.IO);
+        test.addMetric(MetricTypes.SIZE_OF_STORED_DATA);
+        test.addMetric(MetricTypes.RAM);
+        test.addMetric(MetricTypes.CPU);
+        test.addMetric(MetricTypes.NUMBER_OF_PROCESS_INSTANCES);
+        test.addMetric(MetricTypes.THROUGHPUT);
+        test.addMetric(MetricTypes.PROCESS_DURATION);
         pebl.benchmark.tests.add(test);
     }
 
