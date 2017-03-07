@@ -9,8 +9,8 @@ package "" {
 	  id : String
 	  name : String
 	  description : String
-	  files : List<String>
-	  process : String
+	  files : List<File>
+	  process : File
 extensions : Map<String, String>
 	}
 

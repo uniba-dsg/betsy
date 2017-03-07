@@ -17,9 +17,9 @@ class Engine {
 package "" {
 
 	class TestResult {
-	     files : List<String>
-	     logs : List<String>
-	     deploymentPackage : String
+	     files : List<File>
+	     logs : List<File>
+	     deploymentPackage : File
 		extensions : Map<String, String>
 	}
 
