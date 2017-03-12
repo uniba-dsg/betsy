@@ -2,7 +2,7 @@
 
 package PEBL {
 	package Mapping
-	package Aggregator
+	package Aggregation
 	package Validation
 }
 
@@ -14,7 +14,7 @@ package BPELlint
 package BPMNspector
 Mapping -> Moxy
 
-Aggregator -> Mapping
+Aggregation -> Mapping
 Validation -left-> Mapping
 Validation -> BPELlint
 Validation -> BPMNspector

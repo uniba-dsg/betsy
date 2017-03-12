@@ -15,17 +15,17 @@ package "" {
 
 	class Metric
 
-	class Feature
 	class Capability
     	class Language
     	class Group
     	class FeatureSet
+	class Feature
 
-	Feature --> Metric
 	Capability --> Metric
 	Language --> Metric
 	Group --> Metric
 	FeatureSet --> Metric
+	Feature --> Metric
 
 	Metric -right-> MetricType
 

@@ -5,14 +5,16 @@ package Loader {
 
 package PEBL {
 	package Mapping
-	package Aggregator
+	package Aggregation
+	package Validation
 }
 package BPMNviz
 package Yaoqiang.BPMN.Editor
 CLI --> Mapping
 CLI --> BPMNviz
-Aggregator -> Mapping
-CLI --> Aggregator
+Validation -> Mapping
+Mapping <- Aggregation
+CLI --> Aggregation
 BPMNviz --> Yaoqiang.BPMN.Editor
 
 hide empty members
