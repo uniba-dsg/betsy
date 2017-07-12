@@ -1,0 +1,68 @@
+@startuml
+
+class MetricType
+enum ValueType
+class Metric
+enum Characteristic
+class Capability
+class Language
+class Group
+class FeatureSet
+class Feature
+class Test
+class TestAssertion
+class TestStep
+class TestCase
+class TestPartner
+class TestAssertion
+class Engine
+class AggregatedResult
+class Measurement
+class TestResult
+class TestCaseResult
+class Measurement
+
+
+TestResult --> Test
+TestResult -up-> Engine
+TestResult "1"-down->"*" Measurement
+Measurement --> Metric
+
+Capability "1" -down- "*" Characteristic
+
+Feature "*" -right- "1" FeatureSet
+FeatureSet "*" -right- "1" Group
+Group "*" -right- "1" Language
+Language "*" -right- "1" Capability
+
+MetricType "*" -right-> "1" ValueType
+Metric -> MetricType
+
+Capability "1" --> "*" Metric
+Language "1" --> "*" Metric
+Group "1" --> "*" Metric
+FeatureSet "1" --> "*" Metric
+Feature "1" --> "*" Metric
+
+
+Test "*" -down-> "1" Feature
+Test "1" -> "*" Metric
+Test "1" -left- "*" TestPartner
+Test "1" -down- "*" TestCase
+TestCase "1" -down- "*" TestStep
+TestStep "1" -down "*" TestAssertion
+
+TestResult "1"-left->"*" TestCaseResult
+AggregatedResult "1"-->"*" Measurement
+AggregatedResult -up-> Engine
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+
+@enduml
