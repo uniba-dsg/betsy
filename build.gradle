@@ -83,11 +83,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
-    external files(fileTree(dir: "${props.getProperty("soapui.home")}/bin", includes: ['*.jar']))
-    external files(fileTree(dir: "${props.getProperty("soapui.home")}/lib", includes: ['*.jar'], excludes: [
-            'groovy*', 'junit*', 'log4j*', 'commons-io*', 'commons-cli*', 'commons-lang*',
-            'http*', 'commons-http*', 'commons-codec*'
-    ]))
+    external files(fileTree(dir: "lib", includes: ['*.jar']))
 
     compile configurations.internal
     compile configurations.external
@@ -117,31 +113,6 @@ task installMaven {
     }
 }
 
-task downloadSoapUI {
-    outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("soapui.download.filename")}")
-
-    doLast {
-        ant.mkdir dir: props.getProperty("downloads.dir")
-    // maxtime is set to this value to ensure that travis-ci can download this file
-        ant.get dest: props.getProperty("downloads.dir"), skipexisting: true, maxtime: 1524, verbose: true, {
-            ant.url url: props.getProperty("soapui.download.url")
-        }
-    }
-}
-
-task installSoapUI {
-    ext.srcFile = new File("${props.getProperty("downloads.dir")}/${props.getProperty("soapui.download.filename")}")
-    ext.destDir = props.getProperty("soapui.container")
-
-    inputs.file srcFile
-    outputs.dir destDir
-
-    doLast {
-        ant.mkdir dir: props.getProperty("soapui.home")
-        ant.unzip src: srcFile, dest: destDir
-    }
-}
-
 task downloadAnt {
     outputs.file new File("${props.getProperty("downloads.dir")}/${props.getProperty("ant.download.filename")}")
 
@@ -167,12 +138,10 @@ task installAnt {
 
 }
 
-installMaven.dependsOn downloadMaven
-installSoapUI.dependsOn downloadSoapUI
-compileGroovy.dependsOn installSoapUI
 installAnt.dependsOn downloadAnt
-installSoapUI.dependsOn installAnt
-installSoapUI.dependsOn installMaven
+installMaven.dependsOn downloadMaven
+compileGroovy.dependsOn installAnt
+compileGroovy.dependsOn installMaven
 
 shadowJar {
     classifier 'fat'
