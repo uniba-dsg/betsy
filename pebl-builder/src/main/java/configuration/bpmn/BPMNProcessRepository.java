@@ -24,6 +24,8 @@ public class BPMNProcessRepository {
         all.addAll(PatternProcesses.PATTERNS);
         repo.put("ALL", all);
 
+        repo.put("cfpattern", PatternProcesses.PATTERNS);
+
         List<Field> fields = new LinkedList<>();
         fields.addAll(Arrays.asList(GatewayProcesses.class.getDeclaredFields()));
         fields.addAll(Arrays.asList(ActivityProcesses.class.getDeclaredFields()));

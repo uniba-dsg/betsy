@@ -30,7 +30,7 @@
 	}
 
 
-StartProcess "*" -down-> "*" Variable
+StartProcess "1" -down-> "*" Variable
 
 hide empty members
 hide empty methods

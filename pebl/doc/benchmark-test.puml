@@ -35,7 +35,7 @@ extensions : Map<String, String>
 
 }
 
-Test "*" -down-> "1" Feature
+Test "*" --> "1" Feature
 Test "1" -> "*" Metric
 Test "1" -left- "*" TestPartner
 Test "1" -down- "*" TestCase

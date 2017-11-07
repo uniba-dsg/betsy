@@ -3,17 +3,20 @@ package Apache {
 	package ant
 	package maven
 }
+
 package engines
 
 package PEAL {
 	package IMPL
 	package API
-
-	API <- IMPL
-	IMPL -> ant
-	IMPL -> maven
-	IMPL -> engines
 }
+
+API <- IMPL
+IMPL -> ant
+IMPL --> maven
+IMPL --> engines
+
+
 
 
 hide empty members

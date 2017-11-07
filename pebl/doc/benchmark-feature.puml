@@ -67,7 +67,7 @@ Group "*" -right- "1" Language
 Language "*" -right- "1" Capability
 
 MetricType "*" -right-> "1" ValueType
-Metric -> MetricType
+Metric "*" -> "1" MetricType
 
 Capability "1" --> "*" Metric
 Language "1" --> "*" Metric
