@@ -9,6 +9,7 @@ deploy.xml
 tmp/
 /test/
 /test*
+/results
 out/
 build/
 build-bvms/

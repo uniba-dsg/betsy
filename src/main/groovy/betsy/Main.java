@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBException;
 import betsy.bpel.BPELMain;
 import betsy.bpel.tools.PartnerServiceControlGUI;
 import betsy.bpmn.BPMNMain;
+import betsy.common.virtual.cbetsy.DockerMain;
 import betsy.tools.AnalyticsMain;
 import betsy.tools.CreateInitialDatabase;
 import betsy.tools.EngineControlGUI;
@@ -35,17 +36,18 @@ public class Main {
         } else if ("analytics".equalsIgnoreCase(args[0])) {
             AnalyticsMain.main(createArgsWithoutFirstValue(args));
         } else if ("enginecontrol".equalsIgnoreCase(args[0])) {
-            EngineControlGUI.main(new String[] {});
+            EngineControlGUI.main();
         } else if ("partnerservice".equalsIgnoreCase(args[0])) {
-            PartnerServiceControlGUI.main(new String[] {});
+            PartnerServiceControlGUI.main();
         } else if ("tests-per-group".equalsIgnoreCase(args[0])) {
-            TestsPerGroup.main(new String[] {});
-        } else if ("calibrate".equalsIgnoreCase(args[0])) {
-            TimeoutCalibrator.main(createArgsWithoutFirstValue(args));
+            TestsPerGroup.main();
+            DockerMain.main(createArgsWithoutFirstValue(args));
         } else if ("loader".equalsIgnoreCase(args[0])) {
-            loader.Main.main(createArgsWithoutFirstValue(args));
         } else if ("create-initial-database".equalsIgnoreCase(args[0])) {
             CreateInitialDatabase.main(createArgsWithoutFirstValue(args));
+        } else if ("calibrate".equalsIgnoreCase(args[0])) {
+            TimeoutCalibrator.main(createArgsWithoutFirstValue(args));
+        }else if ("docker".equalsIgnoreCase(args[0])) {
         } else {
             printUsage();
         }

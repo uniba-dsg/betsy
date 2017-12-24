@@ -1,17 +1,18 @@
 package betsy.common.timeouts;
 
+import betsy.common.tasks.FileTasks;
+import betsy.common.timeouts.calibration.CalibrationTimeout;
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import betsy.common.tasks.FileTasks;
-import betsy.common.timeouts.calibration.CalibrationTimeout;
-import org.apache.log4j.Logger;
 
 /**
  * @author Christoph Broeker
@@ -41,7 +42,7 @@ public class CSV {
      */
     public static void write(Path csv, List<CalibrationTimeout> timeouts, int numberOfIteration) {
         Objects.requireNonNull(csv, "The csv file can't be null.");
-        try (BufferedWriter writer = Files.newBufferedWriter(csv)) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(csv.toFile(), true))) {
             if (!csv.toFile().exists()) {
                 writer.append("Iteration").append(';');
                 writer.append("Key").append(';');

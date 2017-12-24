@@ -64,7 +64,7 @@ public class TimeoutCalibrator {
                     break;
                 }else if(numberOfDuration > 0){
                     //write all timeouts to csv for traceability
-                    CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration++);
+                    CalibrationTimeoutRepository.writeToCSV(csv, numberOfDuration);
                 }
             }else{
                 SoapUIShutdownHelper.shutdownSoapUIForReal();
@@ -157,7 +157,7 @@ public class TimeoutCalibrator {
         Objects.requireNonNull(csv, "The csv file can't be null.");
         if (timeouts.size() > 0) {
             for (CalibrationTimeout timeout : timeouts.values()) {
-                timeout.setValue(calculateTimeout(timeout, 2, csv));
+                timeout.setValue(calculateTimeout(timeout, 3, csv));
             }
         } else {
             LOGGER.info("The number of the timeouts has to be greater than null to determine the timeouts.");
