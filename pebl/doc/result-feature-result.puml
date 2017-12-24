@@ -1,0 +1,46 @@
+@startuml
+
+package "" {
+  class Engine
+
+  class AggregatedResult
+  class Measurement {
+    value : String
+  }
+
+  AggregatedResult "1"->"*" Measurement
+  AggregatedResult --> Engine
+}
+
+
+	class Metric
+
+	class Capability
+    	class Language
+    	class Group
+    	class FeatureSet
+	class Feature
+
+	Capability --> Metric
+	Language --> Metric
+	Group --> Metric
+	FeatureSet --> Metric
+	Feature --> Metric
+
+	Metric -right-> MetricType
+
+
+Measurement --> Metric
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

@@ -1,6 +1,5 @@
 package peal;
 
-import java.util.List;
 import java.util.Set;
 
 import peal.identifier.EngineId;
@@ -19,5 +18,5 @@ public interface EngineService {
 
     EngineState getState(EngineId engineId);
 
-    LogPackage retrieveLogFiles(EngineId engineId);
+    LogPackage getLogs(EngineId engineId);
 }

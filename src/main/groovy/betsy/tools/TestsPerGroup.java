@@ -1,10 +1,10 @@
 package betsy.tools;
 
-import configuration.bpel.BPELProcessRepository;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import configuration.bpel.BPELProcessRepository;
 
 /**
  * Prints the processes per process group to the console.

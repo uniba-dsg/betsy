@@ -1,10 +1,10 @@
 package betsy.bpel.virtual.host.virtualbox;
 
+import java.nio.file.Path;
+
 import betsy.bpel.virtual.host.VirtualBox;
 import betsy.bpel.virtual.host.VirtualBoxMachine;
 import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
-
-import java.nio.file.Path;
 
 public class VirtualBoxImpl implements VirtualBox {
 

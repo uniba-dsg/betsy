@@ -1,24 +1,28 @@
 package betsy.bpel.soapui;
 
-import betsy.bpel.model.BPELWsdlOperations;
-import pebl.benchmark.test.steps.DelayTestStep;
-import pebl.benchmark.test.steps.DeployableCheckTestStep;
-import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
-import pebl.benchmark.test.steps.soap.SoapTestStep;
-import pebl.benchmark.test.TestCase;
-import pebl.benchmark.test.TestStep;
+import java.util.Objects;
+
 import com.eviware.soapui.config.TestStepConfig;
 import com.eviware.soapui.impl.wsdl.WsdlInterface;
 import com.eviware.soapui.impl.wsdl.WsdlOperation;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
-import com.eviware.soapui.impl.wsdl.teststeps.*;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlGroovyScriptTestStep;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequest;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestRequestStep;
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestStep;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.DelayStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.GroovyScriptStepFactory;
 import com.eviware.soapui.impl.wsdl.teststeps.registry.WsdlTestRequestStepFactory;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
+import pebl.benchmark.test.assertions.AssertDeployed;
+import pebl.benchmark.test.assertions.AssertNotDeployed;
+import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
 import pebl.benchmark.test.steps.soap.WsdlService;
-
-import java.util.Objects;
 
 public class SoapUiTestStepBuilder {
 
@@ -39,17 +43,20 @@ public class SoapUiTestStepBuilder {
     public void addTestStep(TestStep testStep) {
         int testStepNumber = testCase.getTestSteps().indexOf(testStep);
 
-        if (testStep instanceof DeployableCheckTestStep) {
-            addDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
-        } else if (testStep instanceof NotDeployableCheckTestStep) {
-            addNotDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
-        } else if (testStep instanceof DelayTestStep) {
-            addDelayTime(soapUiTestCase, (DelayTestStep) testStep, testStepNumber);
-        } else if (testStep instanceof SoapTestStep) {
-            if (((SoapTestStep) testStep).getService().equals(new WsdlService("testPartner"))) {
-                addStepForTestPartner((SoapTestStep) testStep, testStepNumber);
+        if (testStep instanceof CheckDeployment) {
+            if (testStep.getTestAssertions().contains(new AssertDeployed())) {
+                addDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
+            }
+            if (testStep.getTestAssertions().contains(new AssertNotDeployed())) {
+                addNotDeployableTestSteps(soapUiTestCase, wsdlEndpoint);
+            }
+        } else if (testStep instanceof DelayTesting) {
+            addDelayTime(soapUiTestCase, (DelayTesting) testStep, testStepNumber);
+        } else if (testStep instanceof SendSoapMessage) {
+            if (((SendSoapMessage) testStep).getService().equals(new WsdlService("testPartner"))) {
+                addStepForTestPartner((SendSoapMessage) testStep, testStepNumber);
             } else {
-                addStepForTestInterface((SoapTestStep) testStep, testStepNumber);
+                addStepForTestInterface((SendSoapMessage) testStep, testStepNumber);
             }
 
         } else {
@@ -57,12 +64,12 @@ public class SoapUiTestStepBuilder {
         }
     }
 
-    public static void addDelayTime(WsdlTestCase soapUITestCase, DelayTestStep testStep, int testStepNumber) {
+    public static void addDelayTime(WsdlTestCase soapUITestCase, DelayTesting testStep, int testStepNumber) {
         WsdlDelayTestStep delay = (WsdlDelayTestStep) soapUITestCase.addTestStep(DelayStepFactory.DELAY_TYPE, "Delay for Step #" + String.valueOf(testStepNumber));
-        delay.setDelay(testStep.getTimeToWaitAfterwards());
+        delay.setDelay(testStep.getMilliseconds());
     }
 
-    public void addStepForTestPartner(SoapTestStep testStep, int testStepNumber) {
+    public void addStepForTestPartner(SendSoapMessage testStep, int testStepNumber) {
         WsdlTestRequestStep partnerRequestStep = createTestStepConfig(soapUiTestCase, testStepNumber, "TestPartnerPortTypeBinding", "startProcessSync");
         createSoapUiRequest(partnerRequestStep, testStep);
         SoapUiAssertionBuilder.addTestPartnerAssertion(testStep, partnerRequestStep);
@@ -86,23 +93,15 @@ public class SoapUiTestStepBuilder {
         return (WsdlTestRequestStep) soapUiTestStep;
     }
 
-    private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, SoapTestStep testStep) {
+    private WsdlTestRequest createSoapUiRequest(WsdlTestRequestStep soapUiRequestStep, SendSoapMessage testStep) {
         WsdlTestRequest soapUiRequest = soapUiRequestStep.getTestRequest();
-        if (BPELWsdlOperations.SYNC.equals(testStep.getOperation())) {
-            soapUiRequest.setRequestContent(TestMessages.createSyncInputMessage(testStep.getInput()));
-        } else if (BPELWsdlOperations.ASYNC.equals(testStep.getOperation())) {
-            soapUiRequest.setRequestContent(TestMessages.createAsyncInputMessage(testStep.getInput()));
-        } else if (testStep.getService().equals(new WsdlService("testInterface"))) {
-            soapUiRequest.setRequestContent(TestMessages.createSyncTestPartnerInputMessage(testStep.getInput()));
-        } else {
-            soapUiRequest.setRequestContent(TestMessages.createSyncStringInputMessage(testStep.getInput()));
-        }
 
+        soapUiRequest.setRequestContent(testStep.getSoapMessage());
         soapUiRequest.setTimeout(String.valueOf(requestTimeout));
         return soapUiRequest;
     }
 
-    public void addStepForTestInterface(SoapTestStep testStep, int testStepNumber) {
+    public void addStepForTestInterface(SendSoapMessage testStep, int testStepNumber) {
         WsdlTestRequestStep soapUiRequestStep = createTestStepConfig(soapUiTestCase, testStepNumber, "TestInterfacePortTypeBinding", testStep.getOperation().getName());
         WsdlTestRequest soapUiRequest = createSoapUiRequest(soapUiRequestStep, testStep);
 

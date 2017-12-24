@@ -1,6 +1,6 @@
 package betsy.common.analytics.additional
 
-import betsy.common.aggregation.TrivalentResult
+import betsy.common.analytics.aggregation.TrivalentResult
 import betsy.common.analytics.CsvReportLoader
 import betsy.common.analytics.model.CsvReport
 

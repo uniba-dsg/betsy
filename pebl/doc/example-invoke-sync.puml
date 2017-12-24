@@ -1,0 +1,37 @@
+@startuml
+
+participant framework as "Test System"
+
+box "Engine under Test"
+	participant instance as "Process Instance"
+end box
+
+participant testpartner as "Test Partner"
+
+create instance
+framework as "Test System" -> instance  : send input
+activate instance
+instance  -> testpartner : send message
+activate testpartner
+testpartner --> instance : receive message
+deactivate testpartner
+instance --> framework : receive observable output
+destroy instance
+
+opt assertions
+ framework -> testpartner : query state
+ activate testpartner
+ testpartner --> framework: state
+ deactivate testpartner
+end
+
+hide footbox
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

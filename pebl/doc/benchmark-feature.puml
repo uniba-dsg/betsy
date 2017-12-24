@@ -1,61 +1,79 @@
 @startuml
-package "feature" {
 
-	class ValueType {
-	  type : String
-	}
+	class MetricType {
+    	  id : String
+    	  description : String
+    	  unit : String
+    	  script : GroovyScript
+    	}
 
-	class AggregatedMetric {
-	  groovyScript : String
-	}
+    	enum ValueType {
+              BOOLEAN, LONG,
+              DOUBLE, STRING;
+        	}
 
 	class Metric {
 	  id : String
-	  name : String
-	  description : String
-	  unit : String
+	}
+
+
+
+	enum Characteristic {
+		ISO 25010
 	}
 
 	class Capability {
 	  id : String
 	  name : String
+	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class Language {
 	  id : String
 	  name : String
+	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class Group {
 	  id : String
 	  name : String
+	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class FeatureSet {
 	  id : String
 	  name : String
+	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class Feature {
 	  id : String
 	  name : String
+	  description : String
+	  extensions : Map<String, String>
 	}
 
-}
+
+
+Capability "1" -down- "*" Characteristic
 
 Feature "*" -right- "1" FeatureSet
 FeatureSet "*" -right- "1" Group
 Group "*" -right- "1" Language
 Language "*" -right- "1" Capability
 
-Metric "*" -left- "1" ValueType
-AggregatedMetric -left-|> Metric
+MetricType "*" -right-> "1" ValueType
+Metric "*" -> "1" MetricType
 
-Capability "1" --> "*" AggregatedMetric
-Language "1" --> "*" AggregatedMetric
-Group "1" --> "*" AggregatedMetric
-FeatureSet "1" --> "*" AggregatedMetric
-Feature "1" --> "*" AggregatedMetric
+Capability "1" --> "*" Metric
+Language "1" --> "*" Metric
+Group "1" --> "*" Metric
+FeatureSet "1" --> "*" Metric
+Feature "1" --> "*" Metric
 
 hide empty members
 hide empty methods
@@ -64,4 +82,6 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
+skinparam classBackgroundColor white
+
 @enduml

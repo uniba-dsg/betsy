@@ -1,6 +1,5 @@
 # betsy (BPEL/BPMN Engine Test System)
 
-[![Build Status](https://travis-ci.org/uniba-dsg/betsy.png?branch=master)](https://travis-ci.org/uniba-dsg/betsy)
 [![Dependency Status](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53b3c3b20d5bb8eb3c00001f)
 [![Coverage Status](https://coveralls.io/repos/uniba-dsg/betsy/badge.svg?branch=master&service=github)](https://coveralls.io/github/uniba-dsg/betsy?branch=master)
 

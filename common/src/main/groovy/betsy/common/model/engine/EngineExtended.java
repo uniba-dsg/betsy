@@ -6,20 +6,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import pebl.HasId;
 import pebl.HasName;
-import pebl.HasID;
 import pebl.ProcessLanguage;
 import pebl.result.engine.Engine;
 
-import static java.util.Objects.requireNonNull;
-
-public final class EngineExtended implements HasID, HasName {
+public final class EngineExtended implements HasId, HasName {
 
     public static final String DELIMITER = "--";
 
     private final Engine engine;
 
     private final LocalDate releaseDate;
+
+    private final ProcessLanguage processLanguage;
 
     /**
      * http://spdx.org/licenses/
@@ -39,13 +39,20 @@ public final class EngineExtended implements HasID, HasName {
     public EngineExtended(ProcessLanguage language, String name, String version, LocalDate releaseDate, List<String> configuration, String license) {
         List<String> values = new LinkedList<>();
         values.addAll(configuration);
-        this.engine = new Engine(language, name, version, Collections.unmodifiableList(values));
+        this.engine = new Engine(language.getId(), name, version, Collections.unmodifiableList(values));
+        this.processLanguage = language;
         this.releaseDate = releaseDate;
         this.license = license;
+
+        engine.addExtension("programmingLanguage", "Java");
+        engine.addExtension("releaseDate", releaseDate.toString());
+        engine.addExtension("license", license);
+        engine.addExtension("licenseURL", getLicenseURL());
+        engine.addExtension("url", getURL());
     }
 
     public String getURL() {
-        return EngineDetails.getEngineToURL().get(this.getName());
+        return EngineDetails.getEngineToURL().getOrDefault(this.getName(), "");
     }
 
     public String toString() {
@@ -53,7 +60,7 @@ public final class EngineExtended implements HasID, HasName {
     }
 
     public String getNormalizedId() {
-        return getId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
+        return getInternalId().replaceAll(DELIMITER, "__").replaceAll("\\.", "_");
     }
 
     @Override
@@ -67,7 +74,7 @@ public final class EngineExtended implements HasID, HasName {
     }
 
     public ProcessLanguage getLanguage() {
-        return engine.getLanguage();
+        return processLanguage;
     }
 
     @Override
@@ -75,8 +82,8 @@ public final class EngineExtended implements HasID, HasName {
         return Objects.hashCode(toString());
     }
 
-    private String getId() {
-        return engine.getID();
+    private String getInternalId() {
+        return engine.getId();
     }
 
     public String getName() {
@@ -92,7 +99,7 @@ public final class EngineExtended implements HasID, HasName {
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return getNormalizedId();
     }
 

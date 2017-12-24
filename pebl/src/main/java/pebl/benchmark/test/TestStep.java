@@ -1,21 +1,28 @@
 package pebl.benchmark.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import pebl.benchmark.test.steps.DelayTestStep;
-import pebl.benchmark.test.steps.DeployableCheckTestStep;
-import pebl.benchmark.test.steps.GatherTracesTestStep;
-import pebl.benchmark.test.steps.NotDeployableCheckTestStep;
-import pebl.benchmark.test.steps.soap.SoapTestStep;
-import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.HasExtensions;
+import pebl.MapAdapter;
+import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.ExecuteScript;
+import pebl.benchmark.test.steps.GatherTraces;
+import pebl.benchmark.test.steps.soap.SendSoapMessage;
+import pebl.benchmark.test.steps.vars.StartProcess;
 
-@XmlSeeAlso({SoapTestStep.class, ProcessStartWithVariablesTestStep.class, DelayTestStep.class,
-        DeployableCheckTestStep.class, NotDeployableCheckTestStep.class, GatherTracesTestStep.class})
-public class TestStep {
+@XmlSeeAlso({SendSoapMessage.class, StartProcess.class, DelayTesting.class,
+        CheckDeployment.class, GatherTraces.class, ExecuteScript.class})
+public class TestStep implements HasExtensions {
 
     /**
      * just for documentation purposes
@@ -25,9 +32,22 @@ public class TestStep {
     /**
      * List of assertions which are evaluated after the test step has been executed/the messages have been sent.
      */
-    private List<TestAssertion> assertions = new ArrayList<>();
+    private List<TestAssertion> testAssertions = new ArrayList<>();
 
-    @XmlElement(required = true)
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions = new HashMap<>();
+
+    public Map<String, String> getExtensions() {
+        return extensions;
+    }
+
+    public TestStep addExtension(String key, String value) {
+        extensions.put(key, value);
+
+        return this;
+    }
+
+    @XmlElement
     public String getDescription() {
         return description;
     }
@@ -37,16 +57,18 @@ public class TestStep {
     }
 
     @XmlElement
-    public List<TestAssertion> getAssertions() {
-        return assertions;
+    @XmlElementRef
+    @XmlElementWrapper( name="testAssertions" )
+    public List<TestAssertion> getTestAssertions() {
+        return testAssertions;
     }
 
-    public void setAssertions(List<TestAssertion> assertions) {
-        this.assertions = assertions;
+    public void setTestAssertions(List<TestAssertion> testAssertions) {
+        this.testAssertions = testAssertions;
     }
 
     public TestStep addAssertion(TestAssertion testAssertion) {
-        this.assertions.add(testAssertion);
+        this.testAssertions.add(testAssertion);
 
         return this;
     }

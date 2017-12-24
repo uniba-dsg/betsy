@@ -1,5 +1,7 @@
 package betsy.bpel.virtual;
 
+import java.util.LinkedList;
+
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.Protocol;
 import betsy.bpel.virtual.common.exceptions.CommunicationException;
@@ -11,8 +13,6 @@ import betsy.bpel.virtual.common.messages.deploy.FileMessage;
 import betsy.bpel.virtual.host.comm.HostTcpClient;
 import betsy.bpel.virtual.server.comm.VirtualMachineTcpServer;
 import org.junit.Test;
-
-import java.util.LinkedList;
 
 public class CommunicationTest {
 

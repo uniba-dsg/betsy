@@ -1,11 +1,13 @@
 package betsy.bpel.soapui;
 
+import java.awt.Frame;
+import java.awt.Window;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.JFrame;
+
 import com.eviware.soapui.SoapUI;
 import com.eviware.soapui.impl.wsdl.support.http.SoapUIMultiThreadedHttpConnectionManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.concurrent.TimeUnit;
 
 public class SoapUIShutdownHelper {
 

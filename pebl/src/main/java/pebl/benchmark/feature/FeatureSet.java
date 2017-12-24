@@ -1,22 +1,27 @@
 package pebl.benchmark.feature;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
+import pebl.HasExtensions;
+import pebl.HasId;
 import pebl.HasName;
-import pebl.HasID;
+import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class FeatureSet implements HasID, HasName {
+public class FeatureSet implements HasId, HasName, HasExtensions, HasMetrics {
 
     @XmlInverseReference(mappedBy="featureSets")
     private final Group group;
@@ -28,17 +33,22 @@ public class FeatureSet implements HasID, HasName {
     private final String description;
 
     @XmlElement(name = "feature")
+    @XmlElementWrapper(name= "features")
     private final List<Feature> features = new LinkedList<>();
 
     @XmlID
     @XmlAttribute(required = true)
     private final String id;
 
-    @XmlElement
-    private final List<AggregatedMetric> derivedMetrics = new LinkedList<>();
+    @XmlElement(name="metric")
+    @XmlElementWrapper(name="metrics")
+    private final List<Metric> metrics = new LinkedList<>();
 
-    public FeatureSet addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
-        derivedMetrics.add(new AggregatedMetric(type, name, description, unit, getID(), groovyScript));
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions = new HashMap<>();
+
+    public FeatureSet addMetric(MetricType metricType) {
+        metrics.add(new Metric(metricType, getId()));
 
         return this;
     }
@@ -58,11 +68,11 @@ public class FeatureSet implements HasID, HasName {
 
         this.group.addFeatureSet(this);
 
-        this.id = String.join(HasID.SEPARATOR, group.getID(), name);
+        this.id = String.join(HasId.SEPARATOR, group.getId(), name);
     }
 
     public List<Feature> getFeatures() {
-        return Collections.unmodifiableList(features);
+        return features;
     }
 
     void addFeature(Feature feature) {
@@ -70,7 +80,7 @@ public class FeatureSet implements HasID, HasName {
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
     }
 
@@ -86,12 +96,12 @@ public class FeatureSet implements HasID, HasName {
         if (o == null || getClass() != o.getClass())
             return false;
         FeatureSet featureSet = (FeatureSet) o;
-        return Objects.equals(getID(), featureSet.getID());
+        return Objects.equals(getId(), featureSet.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID());
+        return Objects.hash(getId());
     }
 
     public Group getGroup() {
@@ -100,5 +110,26 @@ public class FeatureSet implements HasID, HasName {
 
     public String getDescription() {
         return description;
+    }
+
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
+
+    @Override
+    public Map<String, String> getExtensions() {
+        return extensions;
+    }
+
+    @Override
+    public FeatureSet addExtension(String key, String value) {
+        extensions.put(key, value);
+
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }

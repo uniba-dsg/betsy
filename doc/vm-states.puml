@@ -1,0 +1,26 @@
+@startuml
+
+[*] -> OFF : provision
+OFF -> SAVED : restore
+ACTIVE --> OFF : kill
+SAVED --> ACTIVE : start
+
+state ACTIVE {
+   [*] -> FRESH
+   FRESH -> USED : use
+}
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+
+skinparam stateBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+
+@enduml

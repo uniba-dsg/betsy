@@ -1,8 +1,5 @@
 # enables container build on travis
-sudo: required
-
-services:
-  - docker
+sudo: false
 
 language: java
 jdk:
@@ -29,11 +26,10 @@ env:
     - TESTS=systemtests.BPMNSystemTest.*jBPM*       JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=systemtests.BPMNSystemTest.*Camunda*    JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=systemtests.BPMNSystemTest.*Activiti*   JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
+    - TESTS=systemtests.BPMNSystemTest.*Flowable*   JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=peal.helper.*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=betsy.*Test*                JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
     - TESTS=configuration.bpel.*        JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
-    - TESTS=corebpel.*                  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
-    - TESTS=systemtests.TimeoutsSystemTest  JAVA7_HOME=/usr/lib/jvm/java-7-oracle/jre/
 
 install:
   - TERM=dumb travis_retry ./gradlew assemble --stacktrace

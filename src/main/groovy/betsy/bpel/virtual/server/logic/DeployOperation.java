@@ -1,5 +1,10 @@
 package betsy.bpel.virtual.server.logic;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import betsy.bpel.engines.activebpel.ActiveBpelDeployer;
 import betsy.bpel.engines.bpelg.BpelgDeployer;
 import betsy.bpel.engines.ode.OdeDeployer;
@@ -14,11 +19,6 @@ import betsy.bpel.virtual.common.exceptions.DeployException;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployResponse;
 import org.apache.log4j.Logger;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class DeployOperation {
 

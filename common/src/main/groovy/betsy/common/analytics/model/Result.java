@@ -3,8 +3,8 @@ package betsy.common.analytics.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import betsy.common.aggregation.AggregationRules;
-import betsy.common.aggregation.TrivalentResult;
+import betsy.common.analytics.aggregation.AggregationRules;
+import betsy.common.analytics.aggregation.TrivalentResult;
 
 public class Result {
 

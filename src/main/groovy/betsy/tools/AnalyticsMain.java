@@ -1,11 +1,9 @@
 package betsy.tools;
 
+import java.nio.file.Paths;
+
 import betsy.common.analytics.Analyzer;
 import betsy.common.analytics.model.CsvReport;
-import configuration.bpel.BPELProcessRepository;
-import configuration.bpmn.BPMNProcessRepository;
-
-import java.nio.file.Paths;
 
 public class AnalyticsMain {
 

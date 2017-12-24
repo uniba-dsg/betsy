@@ -1,11 +1,3 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    jcenter()
-}
-
 dependencies {
     compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.moxy', version: '2.5.2'
     compile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.6'

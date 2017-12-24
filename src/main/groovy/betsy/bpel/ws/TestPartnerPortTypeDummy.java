@@ -1,10 +1,10 @@
 package betsy.bpel.ws;
 
-import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
-import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType;
-
 import javax.jws.WebParam;
 import javax.jws.WebService;
+
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.FaultMessage;
+import de.uniba.wiai.dsg.betsy.activities.wsdl.testpartner.TestPartnerPortType;
 
 @WebService(
         name = "TestPartnerPortType",

@@ -1,12 +1,12 @@
 package betsy.bpel;
 
-import betsy.bpel.model.BPELIdShortener;
-import pebl.benchmark.test.Test;
-import configuration.bpel.BPELProcessRepository;
-import org.junit.Assert;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import betsy.bpel.model.BPELIdShortener;
+import configuration.bpel.BPELProcessRepository;
+import org.junit.Assert;
+import pebl.benchmark.test.Test;
 
 public class ShortIdsTests {
 

@@ -1,19 +1,19 @@
 package betsy.bpel.model;
 
-import betsy.bpel.engines.AbstractBPELEngine;
-import betsy.common.model.engine.EngineExtended;
-import betsy.common.model.engine.EngineDimension;
-import pebl.benchmark.test.Test;
-import betsy.common.model.ProcessFolderStructure;
-import pebl.benchmark.test.TestCase;
-import pebl.benchmark.feature.Feature;
-import pebl.benchmark.feature.FeatureDimension;
-import pebl.benchmark.feature.Group;
-
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import betsy.bpel.engines.AbstractBPELEngine;
+import betsy.common.model.ProcessFolderStructure;
+import betsy.common.model.engine.EngineDimension;
+import betsy.common.model.engine.EngineExtended;
+import pebl.benchmark.feature.Feature;
+import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.Group;
+import pebl.benchmark.test.Test;
+import pebl.benchmark.test.TestCase;
 
 public class BPELProcess implements ProcessFolderStructure, Comparable<BPELProcess>, FeatureDimension, EngineDimension {
 

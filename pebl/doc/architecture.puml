@@ -1,0 +1,31 @@
+@startuml
+
+package PEBL {
+	package Mapping
+	package Aggregation
+	package Validation
+}
+
+package EclipseLink {
+	package Moxy
+}
+
+package BPELlint
+package BPMNspector
+Mapping -> Moxy
+
+Aggregation -> Mapping
+Validation -left-> Mapping
+Validation -> BPELlint
+Validation -> BPMNspector
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam packageBackgroundColor white
+
+@enduml

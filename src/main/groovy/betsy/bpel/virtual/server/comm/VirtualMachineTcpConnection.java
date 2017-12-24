@@ -1,5 +1,13 @@
 package betsy.bpel.virtual.server.comm;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.Objects;
+
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.Protocol;
 import betsy.bpel.virtual.common.exceptions.CommunicationException;
@@ -9,10 +17,6 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesResponse;
 import betsy.bpel.virtual.common.messages.deploy.DeployRequest;
 import betsy.bpel.virtual.common.messages.deploy.DeployResponse;
 import org.apache.log4j.Logger;
-
-import java.io.*;
-import java.net.Socket;
-import java.util.Objects;
 
 /**
  * The {@link VirtualMachineTcpConnection} manages the connection to a previously connected

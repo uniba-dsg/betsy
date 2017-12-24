@@ -8,13 +8,13 @@ import java.util.regex.Pattern;
 
 import betsy.bpmn.engines.BPMNProcessStarter;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.Variables;
 import betsy.common.tasks.FileTasks;
 import betsy.common.tasks.WaitTasks;
 import betsy.common.timeouts.timeout.TimeoutRepository;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import pebl.benchmark.test.steps.vars.Variable;
 
@@ -74,11 +74,11 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
                 try {
                     JsonHelper.postStringWithAuth(processStartRequestURL, new JSONObject(), 200, user, password);
                 } catch (RuntimeException innerEx) {
-                    LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation still not possible. Aborting test.", innerEx);
+                    LOGGER.info("Runtime error: Instantiation still not possible. Aborting test.", innerEx);
                     throw new RuntimeException(innerEx);
                 }
             } else {
-                LOGGER.info(BPMNAssertions.ERROR_RUNTIME + ": Instantiation of process failed. Reason:", ex);
+                LOGGER.info("Runtime error: Instantiation of process failed. Reason:", ex);
                 throw new RuntimeException(ex);
             }
         }
@@ -97,7 +97,12 @@ public class JbpmProcessStarter implements BPMNProcessStarter {
                 return "";
             }
 
-            JSONObject firstElement = deploymentUnitList.getJSONObject(0);
+            JSONObject firstElement = null;
+            try {
+                firstElement = deploymentUnitList.getJSONObject(0);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
             if (firstElement.has("deployment-unit")) {
                 JSONObject deploymentUnit = firstElement.optJSONObject("deployment-unit");
                 return getDeploymentID(deploymentUnit);

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.model.BPELWsdlOperations;
+import betsy.common.util.XMLUtil;
 import pebl.benchmark.test.steps.soap.WsdlOperation;
 
 public class Util {
@@ -19,7 +20,7 @@ public class Util {
     public static List<String> computeMatchingPattern(BPELProcess process) {
         // This method works based on the knowledge that we have no more than two operations available anyway
         String text = getText(process.getProcess());
-        String canonicalText = betsy.common.engines.Util.canonicalizeXML(text);
+        String canonicalText = XMLUtil.canonicalizeXML(text);
 
         Set<WsdlOperation> operations = new HashSet<>();
         operations.addAll(Arrays.asList(BPELWsdlOperations.SYNC_STRING, BPELWsdlOperations.SYNC, BPELWsdlOperations.ASYNC));

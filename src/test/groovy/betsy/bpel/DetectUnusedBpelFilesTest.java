@@ -1,10 +1,5 @@
 package betsy.bpel;
 
-import pebl.benchmark.test.Test;
-import betsy.common.util.FileTypes;
-import configuration.bpel.BPELProcessRepository;
-import org.junit.Assert;
-
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -14,6 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import betsy.common.util.FileTypes;
+import configuration.FilesLocation;
+import configuration.bpel.BPELProcessRepository;
+import org.junit.Assert;
+import pebl.benchmark.test.Test;
 
 public class DetectUnusedBpelFilesTest {
 
@@ -26,7 +27,7 @@ public class DetectUnusedBpelFilesTest {
         processed.addAll(errors);
 
         List<Path> referencedBpelFiles = getBetsyProcessesPaths(processed);
-        List<Path> actualBpelFiles = getBpelFiles(Paths.get("src/main/tests"));
+        List<Path> actualBpelFiles = getBpelFiles(Paths.get(FilesLocation.BPEL_LOCATION));
 
         List<Path> actualBpelFilesThatAreUnreferenced = new LinkedList<>(actualBpelFiles);
         actualBpelFilesThatAreUnreferenced.removeAll(referencedBpelFiles);
@@ -35,8 +36,8 @@ public class DetectUnusedBpelFilesTest {
                 .stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\n"));
-        String expectedUnreferencedFiles = Stream.of(Paths.get("src/main/tests/files/bpel/errorsbase/BackdoorRobustness.bpel"),
-                Paths.get("src/main/tests/files/bpel/errorsbase/ImprovedBackdoorRobustness.bpel"))
+        String expectedUnreferencedFiles = Stream.of(Paths.get(FilesLocation.BPEL_LOCATION).resolve("/errorsbase/BackdoorRobustness.bpel"),
+                Paths.get(FilesLocation.BPEL_LOCATION).resolve("/errorsbase/ImprovedBackdoorRobustness.bpel"))
                 .map(Object::toString)
                 .collect(Collectors.joining("\n"));
         Assert.assertEquals(expectedUnreferencedFiles, unreferencedFiles);

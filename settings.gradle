@@ -2,4 +2,7 @@ include 'common'
 include 'peal'
 include 'pebl'
 include 'pebl'
+include 'loader'
+include 'pebl-builder'
+include 'pebl-aggregator'
 

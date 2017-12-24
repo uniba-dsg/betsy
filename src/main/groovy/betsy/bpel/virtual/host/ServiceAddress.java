@@ -1,9 +1,9 @@
 package betsy.bpel.virtual.host;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link ServiceAddress} is an address to a service that is mandatory for the

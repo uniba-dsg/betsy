@@ -1,15 +1,27 @@
 package betsy.bpel.virtual.host.virtualbox;
 
-import betsy.common.tasks.FileTasks;
-import betsy.bpel.virtual.host.VirtualBoxMachine;
-import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.virtualbox_4_2.*;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import betsy.bpel.virtual.host.VirtualBoxMachine;
+import betsy.bpel.virtual.host.exceptions.vm.VirtualMachineNotFoundException;
+import betsy.common.tasks.FileTasks;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.virtualbox_4_2.CleanupMode;
+import org.virtualbox_4_2.IAppliance;
+import org.virtualbox_4_2.IMachine;
+import org.virtualbox_4_2.IMedium;
+import org.virtualbox_4_2.ISession;
+import org.virtualbox_4_2.IVirtualBox;
+import org.virtualbox_4_2.LockType;
+import org.virtualbox_4_2.VBoxException;
+import org.virtualbox_4_2.VirtualBoxManager;
 
 /**
  * The {@link VBoxController} establishes the connection between betsy and

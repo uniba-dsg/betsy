@@ -1,14 +1,22 @@
 package betsy.bpel.virtual.host.virtualbox;
 
+import java.util.Objects;
+import java.util.Set;
+
 import betsy.bpel.virtual.host.VirtualBoxException;
 import betsy.bpel.virtual.host.VirtualBoxMachine;
 import betsy.bpel.virtual.host.exceptions.vm.VBoxExceptionCode;
-import org.apache.log4j.Logger;
-import org.virtualbox_4_2.*;
 import betsy.common.timeouts.timeout.TimeoutRepository;
-
-import java.util.Objects;
-import java.util.Set;
+import org.apache.log4j.Logger;
+import org.virtualbox_4_2.IConsole;
+import org.virtualbox_4_2.IMachine;
+import org.virtualbox_4_2.IProgress;
+import org.virtualbox_4_2.ISession;
+import org.virtualbox_4_2.ISnapshot;
+import org.virtualbox_4_2.LockType;
+import org.virtualbox_4_2.MachineState;
+import org.virtualbox_4_2.VBoxException;
+import org.virtualbox_4_2.VirtualBoxManager;
 
 /**
  * The {@link VirtualBoxMachineImpl} represents a virtual machine running on

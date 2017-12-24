@@ -1,10 +1,10 @@
 package betsy.bpel.soapui;
 
-import pebl.benchmark.test.TestCase;
-import pebl.benchmark.test.TestStep;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
+import pebl.benchmark.test.TestCase;
+import pebl.benchmark.test.TestStep;
 
 public class SoapUiTestCaseBuilder {
     private final WsdlTestSuite soapUiTestSuite;

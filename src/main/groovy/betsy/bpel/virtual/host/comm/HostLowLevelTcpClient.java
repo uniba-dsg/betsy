@@ -1,15 +1,19 @@
 package betsy.bpel.virtual.host.comm;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+
 import betsy.bpel.virtual.common.Constants;
 import betsy.bpel.virtual.common.exceptions.CommunicationException;
 import betsy.bpel.virtual.common.exceptions.ConnectionException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class HostLowLevelTcpClient implements AutoCloseable {
 

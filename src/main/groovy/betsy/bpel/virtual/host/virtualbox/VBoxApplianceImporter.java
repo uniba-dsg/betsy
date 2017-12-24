@@ -1,15 +1,20 @@
 package betsy.bpel.virtual.host.virtualbox;
 
-import org.apache.log4j.Logger;
-import org.virtualbox_4_2.*;
-import betsy.common.timeouts.timeout.TimeoutRepository;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import betsy.common.timeouts.timeout.TimeoutRepository;
+import org.apache.log4j.Logger;
+import org.virtualbox_4_2.IAppliance;
+import org.virtualbox_4_2.IMachine;
+import org.virtualbox_4_2.IProgress;
+import org.virtualbox_4_2.ISharedFolder;
+import org.virtualbox_4_2.IVirtualBox;
+import org.virtualbox_4_2.ImportOptions;
 
 /**
  * Offers methods to import an Appliance and adjust the settings of an imported

@@ -1,47 +1,46 @@
 @startuml
-package "feature" {
 
-	class Metric {
-	}
+class Metric
+class Feature
 
-	class Feature {
-	}
-
-}
-
-package "test" {
+package "" {
 
 	class Test {
 	  id : String
 	  name : String
 	  description : String
-	  additionalData : Map<String, String>
-	  files : List<String>
-	  process : String
-
+	  files : List<File>
+	  process : File
+extensions : Map<String, String>
 	}
 
-	class TestAssertion
+	class TestAssertion {
+	extensions : Map<String, String>
+	}
 
 	class TestStep {
 	  description : String
+	  extensions : Map<String, String>
 	}
 
 	class TestCase {
 	  name : String
-	  number : int
+	  number : Integer
+	  extensions : Map<String, String>
 	}
 
-	class TestPartner
+	class TestPartner {
+	 extensions : Map<String, String>
+	}
 
 }
 
-Test "*" -down-> "1" Feature
+Test "*" --> "1" Feature
 Test "1" -> "*" Metric
 Test "1" -left- "*" TestPartner
-Test "1" - "*" TestCase
-TestCase "1" - "*" TestStep
-TestStep "1" - "*" TestAssertion
+Test "1" -down- "*" TestCase
+TestCase "1" -left- "*" TestStep
+TestStep "1" -left "*" TestAssertion
 
 hide empty members
 hide empty methods
@@ -50,4 +49,6 @@ hide circle
 skinparam monochrome true
 skinparam shadowing false
 skinparam packageStyle rect
+skinparam classBackgroundColor white
+
 @enduml

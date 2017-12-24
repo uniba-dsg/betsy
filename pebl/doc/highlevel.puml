@@ -1,0 +1,31 @@
+@startuml
+package "benchmark" {
+package "feature"
+package "test"
+}
+package "result"{
+package "engine"
+package "test.result"
+package "feature.result"
+}
+
+test -> feature
+test.result -up-> engine
+test.result -> test
+feature.result -> test.result
+feature.result -> feature
+feature.result -up-> engine
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

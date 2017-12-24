@@ -1,19 +1,19 @@
 package systemtests;
 
-import betsy.common.tasks.FileTasks;
-import org.junit.After;
-
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import betsy.common.tasks.FileTasks;
+import org.junit.After;
+
 public class AbstractSystemTest {
 
     @After
     public void cleanupTestFolders() throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("."), "test-*")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(""), "test-*")) {
             for (Path path : stream) {
                 if (Files.isDirectory(path)) {
                     try {
@@ -28,7 +28,7 @@ public class AbstractSystemTest {
 
     @After
     public void cleanupEngineFolders() throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(".").resolve("server"))) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("").resolve("server"))) {
             for (Path path : stream) {
                 if (Files.isDirectory(path)) {
                     try {

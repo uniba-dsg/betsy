@@ -1,0 +1,36 @@
+@startuml
+
+interface VirtualMachineProvider {
+  provision(EngineId) : VirtualMachineService
+}
+
+interface VirtualMachineService {
+  start()
+  kill()
+  restore()
+  getState() : VirtualMachineState
+}
+
+enum VirtualMachineState {
+  OFF
+  SAVED
+  ACTIVE
+}
+
+VirtualMachineProvider -[hidden]right- VirtualMachineService
+VirtualMachineService -[hidden]right- VirtualMachineState
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+
+skinparam classBackgroundColor white
+skinparam stateBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

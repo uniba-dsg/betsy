@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns:ti="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:tp="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
+         targetNamespace="BR_ERR22416_header-correctMessage-statusCode-416"
+         name="BR_ERR22416_header-correctMessage-statusCode-416">
+   <import importType="http://schemas.xmlsoap.org/wsdl/"
+           namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testinterface"
+           location="../TestInterface.wsdl"/>
+   <import importType="http://schemas.xmlsoap.org/wsdl/"
+           namespace="http://dsg.wiai.uniba.de/betsy/activities/wsdl/testpartner"
+           location="../TestPartner.wsdl"/>
+   <partnerLinks>
+      <partnerLink myRole="testInterfaceRole" name="MyRoleLink"
+                   partnerLinkType="ti:TestInterfacePartnerLinkType"/>
+      <partnerLink partnerRole="testPartnerRole" name="TestPartnerLink"
+                   partnerLinkType="tp:TestPartnerLinkType"/>
+   </partnerLinks>
+   <variables>
+      <variable messageType="tp:executeProcessSyncResponse" name="PartnerReplyData"/>
+      <variable messageType="ti:executeProcessSyncResponse" name="ReplyData"/>
+      <variable messageType="ti:executeProcessSyncRequest" name="InitData"/>
+      <variable messageType="tp:executeProcessSyncRequest" name="PartnerInitData"/>
+   </variables>
+   <sequence>
+      <receive portType="ti:TestInterfacePortType" createInstance="yes"
+               partnerLink="MyRoleLink"
+               variable="InitData"
+               name="InitialReceive"
+               operation="startProcessSync"/>
+      <assign name="AssignPartnerInitData">
+         <copy>
+            <from part="inputPart" variable="InitData"/>
+            <to part="inputPart" variable="PartnerInitData"/>
+         </copy>
+      </assign>
+      <scope name="Scope">
+         <faultHandlers>
+            <catchAll>
+               <sequence>
+                  <assign name="AssignReplyDataInsideCatch">
+                     <copy>
+                        <from>
+                           <literal>-1</literal>
+                        </from>
+                        <to part="outputPart" variable="ReplyData"/>
+                     </copy>
+                  </assign>
+                  <reply portType="ti:TestInterfacePortType" partnerLink="MyRoleLink"
+                         variable="ReplyData"
+                         name="ReplyToInitialReceiveInsideCatch"
+                         operation="startProcessSync"/>
+               </sequence>
+            </catchAll>
+         </faultHandlers>
+         <sequence>
+            <invoke portType="tp:TestPartnerPortType" inputVariable="PartnerInitData"
+                    outputVariable="PartnerReplyData"
+                    partnerLink="TestPartnerLink"
+                    name="InvokePartner"
+                    operation="startProcessSync"/>
+            <assign name="AssignReplyDataInsideCatch">
+               <copy>
+                  <from>
+                     <literal>0</literal>
+                  </from>
+                  <to part="outputPart" variable="ReplyData"/>
+               </copy>
+            </assign>
+            <reply portType="ti:TestInterfacePortType" partnerLink="MyRoleLink"
+                   variable="ReplyData"
+                   name="ReplyToInitialReceive"
+                   operation="startProcessSync"/>
+         </sequence>
+      </scope>
+   </sequence>
+</process>

@@ -1,0 +1,51 @@
+@startuml
+
+package PEBL{
+	package pebl.json
+}
+
+package PEBDASH {
+	package dashboard
+	package filter
+	package model
+	package component
+    note top of component
+     filters, tables, popovers,
+     checkboxes, and radiobuttons
+    end note
+
+    component -> component
+
+	package template
+	package viewmodel
+	component --> template
+	component --> viewmodel
+	template -> viewmodel
+	dashboard --> component
+	dashboard --> filter
+	dashboard --> model
+	filter -> model
+	viewmodel -up-> model
+	viewmodel -up-> filter
+
+	note bottom of template
+      using Handlebars
+    end note
+}
+
+model .> pebl.json : fetch
+
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

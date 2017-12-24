@@ -1,13 +1,13 @@
 package betsy.bpel;
 
+import java.nio.file.Path;
+
 import betsy.bpel.model.BPELProcess;
 import betsy.bpel.soapui.TestBuilder;
 import betsy.bpel.ws.DummyAndRegularTestPartnerService;
 import betsy.bpel.ws.TestPartnerService;
-import soapui.SoapUiRunner;
 import betsy.common.timeouts.timeout.TimeoutRepository;
-
-import java.nio.file.Path;
+import soapui.SoapUiRunner;
 
 public class TestingAPI implements TestPartnerService{
 

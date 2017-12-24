@@ -1,0 +1,43 @@
+@startuml
+
+	class TestStep {
+	  description : String
+	  extensions : Map<String, String>
+	}
+
+	class CheckDeployment extends TestStep
+	class GatherTraces extends TestStep
+	class DelayTesting extends TestStep {
+	  milliseconds : Integer
+	}
+	class SendSoapMessage extends TestStep {
+	  message : SoapMessage
+	  operation : QName
+	  portType : QName
+	}
+	class StartProcess extends TestStep{
+	  process : QName
+	}
+
+	class ExecuteScript extends TestStep {
+	      script : GroovyScript
+    	}
+
+	class Variable {
+	  name : String
+	  type : String
+	  value : String
+	}
+
+
+StartProcess "1" -down-> "*" Variable
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+@enduml

@@ -13,12 +13,11 @@ import betsy.common.tasks.WaitTasks;
 import org.apache.log4j.Logger;
 import pebl.benchmark.test.TestCase;
 import pebl.benchmark.test.TestStep;
-import pebl.benchmark.test.assertions.Trace;
-import pebl.benchmark.test.assertions.TraceTestAssertion;
-import pebl.benchmark.test.steps.DelayTestStep;
-import pebl.benchmark.test.steps.DeployableCheckTestStep;
-import pebl.benchmark.test.steps.GatherTracesTestStep;
-import pebl.benchmark.test.steps.vars.ProcessStartWithVariablesTestStep;
+import pebl.benchmark.test.assertions.AssertTrace;
+import pebl.benchmark.test.steps.CheckDeployment;
+import pebl.benchmark.test.steps.DelayTesting;
+import pebl.benchmark.test.steps.GatherTraces;
+import pebl.benchmark.test.steps.vars.StartProcess;
 import pebl.benchmark.test.steps.vars.Variable;
 
 public class GenericBPMNTester {
@@ -54,17 +53,17 @@ public class GenericBPMNTester {
     public void runTest() {
 
         for (TestStep testStep : testCase.getTestSteps()) {
-            if (testStep instanceof DeployableCheckTestStep) {
+            if (testStep instanceof CheckDeployment) {
                 BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeBeforeTest = checkerOutcomeBefore
                         .checkProcessOutcome(bpmnProcess.getName());
                 if (outcomeBeforeTest == BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome.UNDEPLOYED_PROCESS) {
                     BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_DEPLOYMENT);
                 }
-            } else if (testStep instanceof ProcessStartWithVariablesTestStep) {
+            } else if (testStep instanceof StartProcess) {
                 try {
-                    ProcessStartWithVariablesTestStep processStartWithVariablesTestStep = (ProcessStartWithVariablesTestStep) testStep;
+                    StartProcess processStartWithVariablesTestStep = (StartProcess) testStep;
                     List<Variable> variables = processStartWithVariablesTestStep.getVariables();
-                    processStarter.start(processStartWithVariablesTestStep.getProcess(), variables);
+                    processStarter.start(processStartWithVariablesTestStep.getProcessName(), variables);
                 } catch (Exception e) {
                     LOGGER.info("Could not start process", e);
                     BPMNProcessInstanceOutcomeChecker.ProcessInstanceOutcome outcomeAfterTest = checkerOutcomeAfter.checkProcessOutcome(bpmnProcess.getName());
@@ -75,9 +74,9 @@ public class GenericBPMNTester {
                         BPMNAssertions.appendToFile(instanceLogFile, BPMNAssertions.ERROR_RUNTIME);
                     }
                 }
-            } else if (testStep instanceof DelayTestStep) {
-                WaitTasks.sleep(((DelayTestStep) testStep).getTimeToWaitAfterwards());
-            } else if (testStep instanceof GatherTracesTestStep) {
+            } else if (testStep instanceof DelayTesting) {
+                WaitTasks.sleep(((DelayTesting) testStep).getMilliseconds());
+            } else if (testStep instanceof GatherTraces) {
 
                 if(shouldDeploymentFail(testStep)) {
                     // Skip further processing if process is expected to be undeployed
@@ -118,8 +117,8 @@ public class GenericBPMNTester {
     }
 
     private boolean shouldDeploymentFail(TestStep testStep) {
-        if(testStep.getAssertions().stream().filter(a -> a instanceof TraceTestAssertion && ((TraceTestAssertion) a).getTrace().equals(new Trace(
-                BPMNAssertions.ERROR_DEPLOYMENT.toString())))
+        if(testStep.getTestAssertions().stream().filter(a -> a instanceof AssertTrace && ((AssertTrace) a).getTrace().equals(
+                BPMNAssertions.ERROR_DEPLOYMENT.toString()))
                 .findFirst().isPresent()) {
             // Ensure existence of instanceLogFile for JUnit test execution
             if(!Files.exists(instanceLogFile)) {

@@ -1,9 +1,9 @@
 package betsy.bpel.virtual.common.messages.deploy;
 
-import betsy.common.timeouts.timeout.Timeout;
-
 import java.io.Serializable;
 import java.util.Objects;
+
+import betsy.common.timeouts.timeout.Timeout;
 
 /**
  * A {@link DeployRequest} contains all relevant information for the

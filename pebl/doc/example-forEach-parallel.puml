@@ -1,0 +1,47 @@
+@startuml
+
+participant framework as "Test System"
+box "Engine under Test"
+	participant instance as "Process Instance"
+end box
+participant testpartner as "Test Partner"
+
+framework -> testpartner : set up concurrency detection
+note left : Arrange
+
+create instance
+framework as "Test System" -> instance  : send input
+activate instance
+note left : Act
+
+group parallel
+instance  -> testpartner : send
+activate testpartner
+hnote over testpartner
+ delay for period
+ detect concurrency
+endhnote
+testpartner --> instance : receive
+deactivate testpartner
+end
+
+instance --> framework : receive observable output
+destroy instance
+
+
+framework -> testpartner : is concurrency detected?
+note left : Assert
+activate testpartner
+testpartner --> framework : concurrency detection flag
+deactivate testpartner
+
+hide footbox
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+@enduml

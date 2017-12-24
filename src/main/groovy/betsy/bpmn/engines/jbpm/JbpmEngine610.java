@@ -3,8 +3,8 @@ package betsy.bpmn.engines.jbpm;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
-import pebl.ProcessLanguage;
 import betsy.common.model.engine.EngineExtended;
+import pebl.ProcessLanguage;
 
 public class JbpmEngine610 extends JbpmEngine {
 
@@ -31,7 +31,8 @@ public class JbpmEngine610 extends JbpmEngine {
         jbpmInstaller.install();
     }
 
-    @Override protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
+    @Override
+    protected JbpmApiBasedProcessInstanceOutcomeChecker createProcessOutcomeChecker(String name) {
         String url = getJbpmnUrl() + "/rest/history/instance/1";
         String deployCheckUrl = getJbpmnUrl() + "/rest/deployment/" + getDeploymentId(name);
         return new JbpmApiBasedProcessInstanceOutcomeChecker(url, deployCheckUrl);

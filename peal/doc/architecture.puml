@@ -1,0 +1,33 @@
+@startuml
+package Apache {
+	package ant
+	package maven
+}
+
+package engines
+
+package PEAL {
+	package IMPL
+	package API
+}
+
+API <- IMPL
+IMPL -> ant
+IMPL --> maven
+IMPL --> engines
+
+
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

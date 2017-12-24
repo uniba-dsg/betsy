@@ -1,10 +1,10 @@
 package soapui;
 
+import java.nio.file.Path;
+
 import betsy.common.tasks.FileTasks;
 import com.eviware.soapui.tools.SoapUITestCaseRunner;
 import org.apache.log4j.Logger;
-
-import java.nio.file.Path;
 
 /**
  * Runs soap ui tests programmatically within the current JVM. Requires soapUI to be present in the class path.

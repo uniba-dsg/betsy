@@ -78,7 +78,8 @@ public interface ProcessFolderStructure extends pebl.HasName {
     }
 
     default Path getTargetReportsPathJUnitXml() {
-        return getTargetReportsPath().resolve("TEST-Complete.TestSuite.xml");
+        return FileTasks.findFirstMatchInFolder(getTargetReportsPath(), "*.xml");
+        //return getTargetReportsPath().resolve("TEST-Complete.TestSuite.xml");
     }
 
     /**

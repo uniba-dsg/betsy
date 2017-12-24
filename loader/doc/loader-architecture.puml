@@ -1,0 +1,31 @@
+@startuml
+package Loader {
+	package CLI
+}
+
+package PEBL {
+	package Mapping
+	package Aggregation
+	package Validation
+}
+package BPMNviz
+package Yaoqiang.BPMN.Editor
+CLI --> Mapping
+CLI --> BPMNviz
+Validation -> Mapping
+Mapping <- Aggregation
+CLI --> Aggregation
+BPMNviz --> Yaoqiang.BPMN.Editor
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

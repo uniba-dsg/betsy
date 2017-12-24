@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -15,49 +16,58 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import pebl.HasID;
+import pebl.HasExtensions;
+import pebl.HasId;
 import pebl.HasName;
-import pebl.ProcessLanguage;
+import pebl.MapAdapter;
 import pebl.benchmark.feature.Feature;
 import pebl.benchmark.feature.FeatureDimension;
+import pebl.benchmark.feature.HasMetrics;
 import pebl.benchmark.feature.Metric;
-import pebl.benchmark.feature.ValueType;
+import pebl.benchmark.feature.MetricType;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension {
+public class Test implements Comparable<Test>, HasName, HasId, FeatureDimension, HasExtensions, HasMetrics {
 
     @XmlIDREF
-    @XmlElement(required = true)
-    // TODO maybe add this @XmlInverseReference(mappedBy = )
+    @XmlAttribute(required = true)
     private final Feature feature;
 
     @XmlElement(required = true)
-    private final Path process;
+    private Path process;
 
     @XmlElement(required = true)
     private final String description;
 
-    @XmlElement
+    @XmlElement(name = "testCase")
+    @XmlElementWrapper(name = "testCases")
     private final List<TestCase> testCases;
 
-    @XmlElement
+    @XmlElement(name = "files", type = String.class)
+    @XmlList
     private final List<Path> files;
 
-    @XmlElement(required = true)
+    @XmlElement
+    @XmlElementRef
+    @XmlElementWrapper(name = "testPartners")
     private final List<TestPartner> partners;
 
-    @XmlElement
-    private final Map<String, String> additionalData;
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions;
 
     @XmlElement(name = "metric")
+    @XmlElementWrapper(name = "metrics")
     private final List<Metric> metrics = new LinkedList<>();
 
-    public Test addMetric(ValueType type, String name, String description, String unit) {
-        metrics.add(new Metric(type, name, description, unit, getID()));
+    public Test addMetric(MetricType type) {
+        metrics.add(new Metric(type, getId()));
 
         return this;
     }
@@ -67,14 +77,14 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     private final String id;
 
     public Test() {
-        this(Paths.get(""), "", Collections.emptyList(), new Feature());
+        this(Paths.get(""), "", new ArrayList<>(), new Feature());
     }
 
     public Test(Path process,
             String description,
             List<? extends TestCase> testCases,
             Feature feature) {
-        this(process, description, testCases, feature, Collections.emptyList(), Collections.emptyList());
+        this(process, description, testCases, feature, new ArrayList<>(), new ArrayList<>());
     }
 
     public Test(Path process,
@@ -82,7 +92,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
             List<? extends TestCase> testCases,
             Feature feature,
             List<TestPartner> partners) {
-        this(process, description, testCases, feature, Collections.emptyList(), partners);
+        this(process, description, testCases, feature, new ArrayList<>(), partners);
     }
 
     public Test(Path process,
@@ -97,9 +107,9 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         this.description = Objects.requireNonNull(description);
         this.testCases = uniqueifyTestCaseNames(new ArrayList<>(Objects.requireNonNull(testCases)));
         this.files = new ArrayList<>(Objects.requireNonNull(files));
-        this.additionalData = Collections.emptyMap();
+        this.extensions = new HashMap<>();
 
-        this.id = String.join(HasID.SEPARATOR,getFeature().getID(), "test");
+        this.id = String.join(HasId.SEPARATOR, getFeature().getId(), "test");
     }
 
     public Test(Path process, List<TestCase> testCases,
@@ -107,14 +117,14 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
             List<Path> files,
             String description,
             List<TestPartner> partners,
-            Map<String, String> additionalData) {
+            Map<String, String> extensions) {
         this.process = process;
         this.testCases = testCases;
         this.feature = feature;
         this.files = files;
         this.description = description;
         this.partners = partners;
-        this.additionalData = additionalData;
+        this.extensions = extensions;
         this.id = "";
     }
 
@@ -127,7 +137,7 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
     }
 
     public List<Path> getFiles() {
-        return Collections.unmodifiableList(files);
+        return files;
     }
 
     private List<TestCase> uniqueifyTestCaseNames(List<TestCase> testCases) {
@@ -156,11 +166,6 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
 
     public String getProcessLanguage() {
         return getLanguage().getName();
-    }
-
-    @Override
-    public String toString() {
-        return getName();
     }
 
     public boolean equals(Object o) {
@@ -221,13 +226,36 @@ public class Test implements Comparable<Test>, HasName, HasID, FeatureDimension 
         return Collections.unmodifiableList(partners);
     }
 
-    public Map<String, String> getAdditionalData() {
-        return additionalData;
+    public void addTestPartner(TestPartner testPartner) {
+        this.partners.add(testPartner);
+    }
+
+    public Map<String, String> getExtensions() {
+        return extensions;
+    }
+
+    public Test addExtension(String key, String value) {
+        extensions.put(key, value);
+
+        return this;
     }
 
     @Override
-    public String getID() {
+    public String getId() {
         return id;
+    }
+
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
+
+    public void setProcess(Path process) {
+        this.process = process;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }
 

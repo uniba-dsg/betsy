@@ -6,7 +6,7 @@ import org.junit.Test;
 import peal.identifier.EngineId;
 import peal.impl.engine.EngineServiceImpl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class EngineServiceImplTest {
 

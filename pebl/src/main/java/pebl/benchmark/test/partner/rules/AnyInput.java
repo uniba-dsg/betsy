@@ -1,5 +1,10 @@
 package pebl.benchmark.test.partner.rules;
 
-public class AnyInput extends Input {
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+@XmlSeeAlso({XpathPredicate.class, ScriptPredicate.class})
+@XmlRootElement
+public class AnyInput {
 
 }

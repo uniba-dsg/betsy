@@ -136,14 +136,14 @@ public class ConsoleTasks {
         private String[] values;
 
         public static CliCommand build(String command) {
-            return build(Paths.get("."), command);
+            return build(Paths.get(""), command);
         }
 
         /**
          * Execute currentdir $ command args[0] args[1] ...
          */
         public static CliCommand build(Path command) {
-            return build(Paths.get("."), command);
+            return build(Paths.get(""), command);
         }
 
         /**

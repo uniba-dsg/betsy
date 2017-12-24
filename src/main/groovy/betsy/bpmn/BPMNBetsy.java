@@ -1,15 +1,15 @@
 package betsy.bpmn;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import betsy.bpmn.engines.AbstractBPMNEngine;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestSuite;
 import betsy.bpmn.validation.BPMNValidator;
 import pebl.benchmark.test.Test;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 public class BPMNBetsy {
 

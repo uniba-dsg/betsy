@@ -1,9 +1,5 @@
 apply plugin: "groovy"
 
-repositories {
-    jcenter()
-}
-
 sourceSets {
     main {
         groovy {
@@ -30,8 +26,4 @@ dependencies {
     compile 'org.apache.santuario:xmlsec:2.0.7' // for canonical XML form
 
     testCompile 'junit:junit:4.12'
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.0'
 }

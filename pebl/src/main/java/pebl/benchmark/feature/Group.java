@@ -1,22 +1,28 @@
 package pebl.benchmark.feature;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
+import pebl.HasExtensions;
+import pebl.HasId;
 import pebl.HasName;
-import pebl.HasID;
+import pebl.MapAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Group implements HasID, HasName {
+public class Group implements HasId, HasName, HasExtensions, HasMetrics {
 
     @XmlElement(required = true)
     private final String name;
@@ -28,17 +34,22 @@ public class Group implements HasID, HasName {
     private final String description;
 
     @XmlElement(name = "featureSet")
+    @XmlElementWrapper(name= "featureSets")
     private final List<FeatureSet> featureSets = new LinkedList<>();
 
     @XmlID
     @XmlAttribute(required = true)
     private final String id;
 
-    @XmlElement
-    private final List<AggregatedMetric> derivedMetrics = new LinkedList<>();
+    @XmlElement(name="metric")
+    @XmlElementWrapper(name="metrics")
+    private final List<Metric> metrics = new LinkedList<>();
 
-    public Group addMetric(ValueType type, String name, String description, String unit, String groovyScript) {
-        derivedMetrics.add(new AggregatedMetric(type, name, description, unit, getID(), groovyScript));
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    private final Map<String, String> extensions = new HashMap<>();
+
+    public Group addMetric(MetricType metricType) {
+        metrics.add(new Metric(metricType, getId()));
 
         return this;
     }
@@ -52,18 +63,13 @@ public class Group implements HasID, HasName {
         this.language = Objects.requireNonNull(language);
         this.description = Objects.requireNonNull(description);
 
-        this.id = String.join(HasID.SEPARATOR, language.getID(), name);
+        this.id = String.join(HasId.SEPARATOR, language.getId(), name);
 
         this.language.addGroup(this);
     }
 
-    public String getID() {
+    public String getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Group " + getID();
     }
 
     @Override
@@ -78,20 +84,32 @@ public class Group implements HasID, HasName {
         if (o == null || getClass() != o.getClass())
             return false;
         Group group = (Group) o;
-        return Objects.equals(getID(), group.getID());
+        return Objects.equals(getId(), group.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID());
+        return Objects.hash(getId());
     }
 
     void addFeatureSet(FeatureSet featureSet) {
+        if(featureSets.stream().anyMatch(fs -> fs.getId().equals(featureSet.getId()))) {
+            return;
+        }
         this.featureSets.add(featureSet);
     }
 
+    public FeatureSet getOrCreate(String name) {
+        Optional<FeatureSet> featureSetOptional = featureSets.stream().filter(fs -> fs.getName().equals(name)).findFirst();
+        if(featureSetOptional.isPresent()) {
+            return featureSetOptional.get();
+        } else {
+            return new FeatureSet(this, name);
+        }
+    }
+
     public List<FeatureSet> getFeatureSets() {
-        return Collections.unmodifiableList(featureSets);
+        return featureSets;
     }
 
     public Language getLanguage() {
@@ -100,5 +118,26 @@ public class Group implements HasID, HasName {
 
     public String getDescription() {
         return description;
+    }
+
+    public List<Metric> getMetrics() {
+        return metrics;
+    }
+
+    @Override
+    public Map<String, String> getExtensions() {
+        return extensions;
+    }
+
+    @Override
+    public Group addExtension(String key, String value) {
+        extensions.put(key, value);
+
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
 }

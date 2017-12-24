@@ -1,5 +1,9 @@
 package betsy.bpel.virtual.server.logic;
 
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+
 import betsy.bpel.virtual.common.exceptions.CollectLogfileException;
 import betsy.bpel.virtual.common.exceptions.CommunicationException;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFile;
@@ -8,10 +12,6 @@ import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesRequest;
 import betsy.bpel.virtual.common.messages.collect_log_files.LogFilesResponse;
 import betsy.common.tasks.FileTasks;
 import org.apache.log4j.Logger;
-
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * The {@link CollectLogFilesOperation} collects the log files of the engine and betsy

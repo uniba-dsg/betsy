@@ -1,0 +1,56 @@
+@startuml
+
+
+class Test
+class Metric
+
+class Engine {
+  ID : String
+  name : String
+  version : String
+  configuration : List<String>
+  language : String
+  extensions : Map<String, String>
+}
+
+
+package "" {
+
+	class TestResult {
+	     tool : String
+	     files : List<File>
+	     logs : List<File>
+	     deploymentPackage : File
+		extensions : Map<String, String>
+	}
+
+	class TestCaseResult {
+		name : String
+		number : int
+		message : String
+	}
+
+	class Measurement {
+	   value : String
+	}
+}
+TestResult "1"-left->"*" TestCaseResult
+
+TestResult -> Engine
+TestResult ---> Test
+TestResult "1" -->"*" Measurement
+Measurement -> Metric
+Test "1" -> "*" Metric
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

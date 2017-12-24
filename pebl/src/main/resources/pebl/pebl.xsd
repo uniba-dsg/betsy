@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:complexType name="testPartner">
+      <xsd:sequence>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="sendSoapMessage">
+      <xsd:complexContent>
+         <xsd:extension base="testStep">
+            <xsd:sequence>
+               <xsd:element name="operation" type="wsdlOperation"/>
+               <xsd:element name="service" type="wsdlService"/>
+               <xsd:element name="soapMessage" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="featureSet">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string"/>
+         <xsd:element name="description" type="xsd:string"/>
+         <xsd:element name="features" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="feature" type="feature" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="metrics" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metric" type="metric" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="assertXpath">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence/>
+            <xsd:attribute name="xpathExpression" type="xsd:string" use="required"/>
+            <xsd:attribute name="expectedOutput" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="aggregatedResult">
+      <xsd:sequence>
+         <xsd:element name="measurements" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="measurement" type="measurement" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="language">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string"/>
+         <xsd:element name="groups" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="group" type="group" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="metrics" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metric" type="metric" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="pebl">
+      <xsd:sequence>
+         <xsd:element name="benchmark" type="benchmark"/>
+         <xsd:element name="result" type="result"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="anyInput"/>
+   <xsd:complexType name="measurement">
+      <xsd:sequence/>
+      <xsd:attribute name="metric" type="xsd:IDREF" use="required"/>
+      <xsd:attribute name="value" type="xsd:string" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="adaptedMap">
+      <xsd:sequence>
+         <xsd:any processContents="skip" namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="result">
+      <xsd:sequence>
+         <xsd:element name="engines" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="engine" type="engine" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="testResults" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="testResult" type="testResult" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="aggregatedResults" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="aggregatedResult" type="aggregatedResult" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="metricType">
+      <xsd:simpleContent>
+         <xsd:extension base="xsd:string">
+            <xsd:attribute name="dataType" type="xsd:string" use="required"/>
+            <xsd:attribute name="id" type="xsd:ID" use="required"/>
+            <xsd:attribute name="description" type="xsd:string" use="required"/>
+            <xsd:attribute name="unit" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:simpleContent>
+   </xsd:complexType>
+   <xsd:complexType name="capability">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string"/>
+         <xsd:element name="languages" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="language" type="language" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="metrics" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metric" type="metric" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="characteristics" minOccurs="0">
+            <xsd:simpleType>
+               <xsd:list itemType="characteristic"/>
+            </xsd:simpleType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="testAssertion">
+      <xsd:sequence>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="wsdlTestPartner">
+      <xsd:complexContent>
+         <xsd:extension base="testPartner">
+            <xsd:sequence>
+               <xsd:element name="url" type="xsd:string"/>
+               <xsd:element name="wsdl" type="xsd:string"/>
+               <xsd:element name="WSDLUrl" type="xsd:string"/>
+               <xsd:element name="publishedURL" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="feature">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string"/>
+         <xsd:element name="description" type="xsd:string"/>
+         <xsd:element name="metrics" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metric" type="metric" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="engine">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string"/>
+         <xsd:element name="version" type="xsd:string"/>
+         <xsd:element name="configuration">
+            <xsd:simpleType>
+               <xsd:list itemType="xsd:string"/>
+            </xsd:simpleType>
+         </xsd:element>
+         <xsd:element name="language" type="xsd:string"/>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="scriptBasedWSDLTestPartner">
+      <xsd:complexContent>
+         <xsd:extension base="wsdlTestPartner">
+            <xsd:sequence>
+               <xsd:element name="groovyScript" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="assertTrace">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence/>
+            <xsd:attribute name="trace" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="soapMessageOutput">
+      <xsd:complexContent>
+         <xsd:extension base="httpOutput">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="testStep">
+      <xsd:sequence>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+         <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+         <xsd:element name="testAssertions" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                     <xsd:element ref="assertScript"/>
+                     <xsd:element ref="assertXpath"/>
+                     <xsd:element ref="assertDeployed"/>
+                     <xsd:element ref="assertSoapFault"/>
+                     <xsd:element ref="assertExit"/>
+                     <xsd:element ref="assertTrace"/>
+                     <xsd:element ref="assertNotDeployed"/>
+                  </xsd:choice>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="assertScript">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence>
+               <xsd:element name="groovyScript" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="assertExit">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="group">
+      <xsd:sequence>
+         <xsd:element name="name" type="xsd:string"/>
+         <xsd:element name="description" type="xsd:string"/>
+         <xsd:element name="featureSets" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="featureSet" type="featureSet" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="metrics" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metric" type="metric" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="assertDeployed">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="test">
+      <xsd:sequence>
+         <xsd:element name="process" type="xsd:string"/>
+         <xsd:element name="description" type="xsd:string"/>
+         <xsd:element name="testCases" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="testCase" type="testCase" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="files" minOccurs="0">
+            <xsd:simpleType>
+               <xsd:list itemType="xsd:string"/>
+            </xsd:simpleType>
+         </xsd:element>
+         <xsd:element name="testPartners" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                     <xsd:element ref="ruleBasedWSDLTestPartner"/>
+                     <xsd:element ref="wsdlTestPartner"/>
+                     <xsd:element ref="scriptBasedWSDLTestPartner"/>
+                  </xsd:choice>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+         <xsd:element name="metrics" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metric" type="metric" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="feature" type="xsd:IDREF" use="required"/>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="startProcess">
+      <xsd:complexContent>
+         <xsd:extension base="testStep">
+            <xsd:sequence>
+               <xsd:element name="variables" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="variable" type="variable" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="processName" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="executeScript">
+      <xsd:complexContent>
+         <xsd:extension base="testStep">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string"/>
+               <xsd:element name="parameters" type="adaptedMap"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="noOutput"/>
+   <xsd:complexType name="testCaseResult">
+      <xsd:simpleContent>
+         <xsd:extension base="xsd:string">
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="number" type="xsd:int" use="required"/>
+         </xsd:extension>
+      </xsd:simpleContent>
+   </xsd:complexType>
+   <xsd:complexType name="delayTesting">
+      <xsd:complexContent>
+         <xsd:extension base="testStep">
+            <xsd:sequence>
+               <xsd:element name="milliseconds" type="xsd:int"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="assertNotDeployed">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="benchmark">
+      <xsd:sequence>
+         <xsd:element name="capabilities" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="capability" type="capability" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="tests" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="test" type="test" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="metricTypes" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="metricType" type="metricType" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ruleBasedWSDLTestPartner">
+      <xsd:complexContent>
+         <xsd:extension base="wsdlTestPartner">
+            <xsd:sequence>
+               <xsd:element name="rules" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="rule" type="operationInputOutputRule" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="wsdlOperation">
+      <xsd:sequence/>
+      <xsd:attribute name="name" type="xsd:string" use="required"/>
+      <xsd:attribute name="isOneWay" type="xsd:boolean" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="wsdlService">
+      <xsd:sequence/>
+      <xsd:attribute name="name" type="xsd:string" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="gatherTraces">
+      <xsd:complexContent>
+         <xsd:extension base="testStep">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="metric">
+      <xsd:sequence/>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+      <xsd:attribute name="metricType" type="xsd:IDREF" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="checkDeployment">
+      <xsd:complexContent>
+         <xsd:extension base="testStep">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="operationInputOutputRule">
+      <xsd:sequence>
+         <xsd:choice>
+            <xsd:element ref="scriptPredicate"/>
+            <xsd:element ref="anyInput"/>
+            <xsd:element ref="xpathPredicate"/>
+         </xsd:choice>
+         <xsd:choice>
+            <xsd:element ref="soapFaultOutput"/>
+            <xsd:element ref="soapMessageOutput"/>
+            <xsd:element ref="scriptBasedOutput"/>
+            <xsd:element ref="noOutput"/>
+            <xsd:element ref="httpOutput"/>
+         </xsd:choice>
+      </xsd:sequence>
+      <xsd:attribute name="operation" type="xsd:string" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="variable">
+      <xsd:sequence/>
+      <xsd:attribute name="name" type="xsd:string" use="required"/>
+      <xsd:attribute name="type" type="xsd:string" use="required"/>
+      <xsd:attribute name="value" type="xsd:string" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="httpOutput">
+      <xsd:simpleContent>
+         <xsd:extension base="xsd:string">
+            <xsd:attribute name="statusCode" type="xsd:int" use="required"/>
+            <xsd:attribute name="mimetype" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:simpleContent>
+   </xsd:complexType>
+   <xsd:complexType name="assertSoapFault">
+      <xsd:complexContent>
+         <xsd:extension base="testAssertion">
+            <xsd:sequence/>
+            <xsd:attribute name="faultString" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="soapFaultOutput">
+      <xsd:complexContent>
+         <xsd:extension base="soapMessageOutput">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="testResult">
+      <xsd:sequence>
+         <xsd:element name="logs" minOccurs="0">
+            <xsd:simpleType>
+               <xsd:list itemType="xsd:string"/>
+            </xsd:simpleType>
+         </xsd:element>
+         <xsd:element name="deploymentPackage" type="xsd:string"/>
+         <xsd:element name="files" minOccurs="0">
+            <xsd:simpleType>
+               <xsd:list itemType="xsd:string"/>
+            </xsd:simpleType>
+         </xsd:element>
+         <xsd:element name="measurements" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="measurement" type="measurement" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+         <xsd:element name="testCaseResults" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="testCaseResult" type="testCaseResult" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="test" type="xsd:IDREF" use="required"/>
+      <xsd:attribute name="engine" type="xsd:IDREF" use="required"/>
+      <xsd:attribute name="tool" type="xsd:string" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="testCase">
+      <xsd:sequence>
+         <xsd:element name="extensions" type="adaptedMap" minOccurs="0"/>
+         <xsd:element name="testSteps" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                     <xsd:element ref="startProcess"/>
+                     <xsd:element ref="delayTesting"/>
+                     <xsd:element ref="executeScript"/>
+                     <xsd:element ref="sendSoapMessage"/>
+                     <xsd:element ref="checkDeployment"/>
+                     <xsd:element ref="gatherTraces"/>
+                  </xsd:choice>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string" use="required"/>
+      <xsd:attribute name="number" type="xsd:int" use="required"/>
+   </xsd:complexType>
+   <xsd:element name="sendSoapMessage" type="sendSoapMessage"/>
+   <xsd:element name="assertXpath" type="assertXpath"/>
+   <xsd:element name="pebl" type="pebl"/>
+   <xsd:element name="anyInput" type="anyInput"/>
+   <xsd:element name="wsdlTestPartner" type="wsdlTestPartner"/>
+   <xsd:element name="scriptPredicate" type="scriptPredicate"/>
+   <xsd:element name="scriptBasedWSDLTestPartner" type="scriptBasedWSDLTestPartner"/>
+   <xsd:element name="assertTrace" type="assertTrace"/>
+   <xsd:element name="soapMessageOutput" type="soapMessageOutput"/>
+   <xsd:element name="assertScript" type="assertScript"/>
+   <xsd:element name="assertExit" type="assertExit"/>
+   <xsd:element name="assertDeployed" type="assertDeployed"/>
+   <xsd:element name="startProcess" type="startProcess"/>
+   <xsd:element name="executeScript" type="executeScript"/>
+   <xsd:element name="noOutput" type="noOutput"/>
+   <xsd:element name="delayTesting" type="delayTesting"/>
+   <xsd:element name="assertNotDeployed" type="assertNotDeployed"/>
+   <xsd:element name="ruleBasedWSDLTestPartner" type="ruleBasedWSDLTestPartner"/>
+   <xsd:element name="xpathPredicate" type="xpathPredicate"/>
+   <xsd:element name="scriptBasedOutput" type="scriptBasedOutput"/>
+   <xsd:element name="gatherTraces" type="gatherTraces"/>
+   <xsd:element name="checkDeployment" type="checkDeployment"/>
+   <xsd:element name="httpOutput" type="httpOutput"/>
+   <xsd:element name="assertSoapFault" type="assertSoapFault"/>
+   <xsd:element name="soapFaultOutput" type="soapFaultOutput"/>
+   <xsd:simpleType name="xpathPredicate">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="scriptBasedOutput">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="scriptPredicate">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="adaptedEntry">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="characteristic">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="FUNCTIONAL_SUITABILITY"/>
+         <xsd:enumeration value="FUNCTIONAL_COMPLETENESS"/>
+         <xsd:enumeration value="FUNCTIONAL_CORRECTNESS"/>
+         <xsd:enumeration value="FUNCTIONAL_APPROPRIATENESS"/>
+         <xsd:enumeration value="PERFORMANCE_EFFICIENCY"/>
+         <xsd:enumeration value="TIME_BEHAVIOUR"/>
+         <xsd:enumeration value="RESOURCE_UTILISATION"/>
+         <xsd:enumeration value="CAPACITY"/>
+         <xsd:enumeration value="COMPATABILITY"/>
+         <xsd:enumeration value="CO_EXISTENCE"/>
+         <xsd:enumeration value="INTEROPERABILITY"/>
+         <xsd:enumeration value="USABILITY"/>
+         <xsd:enumeration value="APPROPRIATENESS_RECOGNISABILITY"/>
+         <xsd:enumeration value="LEARNABILITY"/>
+         <xsd:enumeration value="OPERABILITY"/>
+         <xsd:enumeration value="USER_ERROR_PROTECTION"/>
+         <xsd:enumeration value="USER_INTERFACE_AESTHETICS"/>
+         <xsd:enumeration value="ACCESSIBILITY"/>
+         <xsd:enumeration value="RELIABILITY"/>
+         <xsd:enumeration value="MATURITY"/>
+         <xsd:enumeration value="AVAILABILITY"/>
+         <xsd:enumeration value="FAULT_TOLERANCE"/>
+         <xsd:enumeration value="RECOVERABILITY"/>
+         <xsd:enumeration value="SECURITY"/>
+         <xsd:enumeration value="CONFIDENTIALITY"/>
+         <xsd:enumeration value="INTEGRITY"/>
+         <xsd:enumeration value="NON_REPUDIATION"/>
+         <xsd:enumeration value="ACCOUNTABILITY"/>
+         <xsd:enumeration value="AUTHENTICITY"/>
+         <xsd:enumeration value="MAINTAINABILITY"/>
+         <xsd:enumeration value="MODULARITY"/>
+         <xsd:enumeration value="REUSABILITY"/>
+         <xsd:enumeration value="ANALYSABILITY"/>
+         <xsd:enumeration value="MODIFIABILITY"/>
+         <xsd:enumeration value="TESTABILITY"/>
+         <xsd:enumeration value="PORTABILITY"/>
+         <xsd:enumeration value="ADAPTABILITY"/>
+         <xsd:enumeration value="INSTALLABILITY"/>
+         <xsd:enumeration value="REPLACEABILITY"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+</xsd:schema>

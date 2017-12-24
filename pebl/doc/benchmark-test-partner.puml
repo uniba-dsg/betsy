@@ -1,0 +1,59 @@
+@startuml
+
+   class WsdlTestPartner extends TestPartner {
+     wsdl : File
+   }
+   class RuleBasedWsdlTestPartner extends WsdlTestPartner
+   class ScriptBasedWsdlTestPartner extends WsdlTestPartner {
+     script : GroovyScript
+   }
+
+   class OperationInputOutputRule {
+        operation : QName
+   }
+
+   class Input
+   class XpathPredicate extends Input {
+     expression : XpathExpression
+   }
+   class ScriptPredicate extends Input {
+      script : GroovyScript
+   }
+
+
+   class Output
+   class HttpOutput extends Output {
+       statusCode : Integer
+       mimeType : String
+       content : String
+   }
+   class SoapMessageOutput extends Output {
+        statusCode : Integer
+        mimeType : String
+      message : SoapMessage
+      }
+   class SoapFaultOutput extends SoapMessageOutput
+   class ScriptBasedOutput extends Output {
+       script : GroovyScript
+   }
+
+
+
+	class TestPartner {
+	 extensions : Map<String, String>
+	}
+
+
+RuleBasedWsdlTestPartner "1" -right-> "*" OperationInputOutputRule
+OperationInputOutputRule -down-> "0..1" Input
+OperationInputOutputRule -right-> "0..1" Output
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+
+interface TestPartner {
+  start()
+  stop()
+  getLogs() : LogPackage
+  getState() : TestPartnerState
+}
+
+enum TestPartnerState {
+  NOT_STARTED
+  STARTED
+}
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+
+skinparam classBackgroundColor white
+skinparam stateBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

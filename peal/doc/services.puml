@@ -1,0 +1,46 @@
+@startuml
+
+
+interface EngineService {
+    getSupportedEngines() : List<EngineId>
+    getSupportedLanguage(EngineId) : ProcessLanguage
+    install(EngineId)
+    uninstall(EngineId)
+    start(EngineId)
+    stop(EngineId)
+    getState(EngineId) : EngineState
+    getLogs(EngineId) : LogPackage
+}
+
+interface ProcessModelService {
+    makeDeployable(EngineId, ProcessModelPackage) : DeploymentPackage
+    deploy(EngineId, DeploymentPackage) : ProcessModelId
+    undeploy(ProcessModelId)
+    getState(ProcessModelId) : ProcessModelState
+    getDeployedProcessModels() : List<ProcessModelId>
+}
+
+interface InstanceService {
+    start(ProcessModelId, List<Variable>) : Instanced
+    getState(InstanceId) : InstanceState
+    getStateDetailed(InstanceId) : InstanceStateDetailed
+}
+
+EngineService -[hidden]down- ProcessModelService
+EngineService -[hidden]right- InstanceService
+
+
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

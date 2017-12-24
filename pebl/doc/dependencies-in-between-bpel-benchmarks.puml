@@ -1,0 +1,34 @@
+@startuml
+left to right direction
+
+node aptitude as "Aptitude Test" #White
+frame conformance as "Conformance"
+frame expressiveness as "Expressiveness"
+frame sa as "Static Analysis"
+frame robustness as "Robustness"
+
+conformance --> aptitude
+expressiveness --> conformance
+sa --> conformance
+robustness --> conformance
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+
+skinparam frame {
+    FontSize 18
+}
+skinparam node {
+    FontSize 18
+}
+
+skinparam classBackgroundColor white
+skinparam nodeBackgroundColor white
+skinparam frameBackgroundColor white
+skinparam packageBackgroundColor white
+@enduml

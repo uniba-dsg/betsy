@@ -1,0 +1,35 @@
+@startuml
+
+
+	class TestAssertion {
+	extensions : Map<String, String>
+	}
+
+	class AssertExit extends TestAssertion
+	class AssertDeployed extends TestAssertion
+	class AssertNotDeployed extends TestAssertion
+	class AssertTrace extends TestAssertion {
+	  trace : String
+	}
+	class AssertSoapFault extends TestAssertion {
+	  faultString : String
+	}
+	class AssertXpath extends TestAssertion {
+	  expression : XpathExpression
+	  expectedOutput : String
+	}
+	class AssertScript extends TestAssertion {
+    	  script : GroovyScript
+    	}
+
+
+hide empty members
+hide empty methods
+hide circle
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam packageStyle rect
+skinparam classBackgroundColor white
+
+@enduml

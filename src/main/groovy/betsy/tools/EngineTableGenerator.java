@@ -37,7 +37,7 @@ public class EngineTableGenerator {
                     .thenComparing(EngineExtended::getVersion));
             for (EngineExtended engine : engines) {
                 String line = String.join(" & ", Arrays.asList(
-                        engine.getLanguage().getID(),
+                        engine.getLanguage().getId(),
                         engine.getName(),
                         engine.getVersion(),
                         engine.getLicense(),

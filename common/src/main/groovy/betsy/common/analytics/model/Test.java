@@ -4,8 +4,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import betsy.common.aggregation.AggregationRules;
-import betsy.common.aggregation.TrivalentResult;
+import betsy.common.analytics.aggregation.AggregationRules;
+import betsy.common.analytics.aggregation.TrivalentResult;
 
 public class Test implements Comparable<Test> {
     public String getFullName() {

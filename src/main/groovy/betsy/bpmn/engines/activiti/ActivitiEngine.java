@@ -14,7 +14,6 @@ import betsy.bpmn.engines.BPMNTestcaseMerger;
 import betsy.bpmn.engines.BPMNTester;
 import betsy.bpmn.engines.GenericBPMNTester;
 import betsy.bpmn.engines.JsonHelper;
-import betsy.bpmn.model.BPMNAssertions;
 import betsy.bpmn.model.BPMNProcess;
 import betsy.bpmn.model.BPMNTestBuilder;
 import betsy.common.engines.tomcat.Tomcat;

@@ -3,6 +3,7 @@ package betsy.bpmn.engines.camunda;
 import betsy.bpmn.engines.BPMNProcessInstanceOutcomeChecker;
 import betsy.bpmn.engines.JsonHelper;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class CamundaApiBasedProcessInstanceOutcomeChecker implements BPMNProcessInstanceOutcomeChecker {
 
@@ -21,8 +22,12 @@ public class CamundaApiBasedProcessInstanceOutcomeChecker implements BPMNProcess
         JSONArray result = JsonHelper.getJsonArray(restURL+"/process-definition", 200);
 
         for(int i=0; i<result.length(); i++) {
-            if((key+".bpmn").equals(result.getJSONObject(i).get("resource"))) {
-                return true;
+            try {
+                if((key+".bpmn").equals(result.getJSONObject(i).get("resource"))) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         }
 

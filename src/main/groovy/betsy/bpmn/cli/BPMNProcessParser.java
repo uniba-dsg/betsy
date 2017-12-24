@@ -1,9 +1,9 @@
 package betsy.bpmn.cli;
 
-import pebl.benchmark.test.Test;
-import configuration.bpmn.BPMNProcessRepository;
-
 import java.util.List;
+
+import configuration.bpmn.BPMNProcessRepository;
+import pebl.benchmark.test.Test;
 
 public class BPMNProcessParser {
 

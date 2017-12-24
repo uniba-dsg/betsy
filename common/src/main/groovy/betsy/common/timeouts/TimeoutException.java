@@ -1,8 +1,6 @@
 package betsy.common.timeouts;
 
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 
 import betsy.common.timeouts.timeout.Timeout;
 
