@@ -36,11 +36,11 @@ public class Main {
         } else if ("analytics".equalsIgnoreCase(args[0])) {
             AnalyticsMain.main(createArgsWithoutFirstValue(args));
         } else if ("enginecontrol".equalsIgnoreCase(args[0])) {
-            EngineControlGUI.main(new String[] {});
+            EngineControlGUI.main();
         } else if ("partnerservice".equalsIgnoreCase(args[0])) {
-            PartnerServiceControlGUI.main(new String[] {});
+            PartnerServiceControlGUI.main();
         } else if ("tests-per-group".equalsIgnoreCase(args[0])) {
-            TestsPerGroup.main(new String[] {});
+            TestsPerGroup.main();
             DockerMain.main(createArgsWithoutFirstValue(args));
         } else if ("loader".equalsIgnoreCase(args[0])) {
         } else if ("create-initial-database".equalsIgnoreCase(args[0])) {
